@@ -18,6 +18,7 @@ include_once ("ini.php");
 			var $windchill;
 			var $solarradiation;
 			var $uv;
+                        var $pm10;
 			var $cloudiness;
 			var $heatidx;
 			var $rainrate;
@@ -159,6 +160,9 @@ include_once ("ini.php");
 		 function set_hum($hum){
 				$this->hum = $hum;
 		 }
+                 function set_pm10($pm10){
+				$this->pm10 = $pm10;
+		 }
 		 function set_thw($thw){
 				$this->thw = c_or_f($thw);
 		 }
@@ -225,6 +229,9 @@ include_once ("ini.php");
 		 }
 		 function get_hum(){
 				return $this->hum;
+		 }
+                 function get_pm10(){
+				return $this->pm10;
 		 }
 		 function get_windspd(){
 				return $this->windspd;
