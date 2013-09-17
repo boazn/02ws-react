@@ -998,7 +998,7 @@ function isRaining()
 		echo "<br>now rain:".$now->get_rain();
 	if (($current->get_rainrate() !== "0.0")&& ($current->get_rainrate() !== "")&& ($current->get_rainrate() > 0))
 		return true;
-	if (($now->get_rain() != "0.00")&& ($now->get_rain() != "")&& ($now->get_rain() > 0) && ($hour > 7))	return true;
+	if (($now->get_rain() != "0.00")&& ($now->get_rain() != "")&& ($now->get_rain() > 0) && ($current->get_windspd() > 0))	return true;
 	return false;
 }
 
