@@ -208,7 +208,7 @@ if ($current->get_pm10() > 100)
     updateSigWeather(
 		"dust.gif", 
 		$HIGH_DUST, 
-		array($DUST[$EN].": ".$current->get_pm10()."µg/m3", $DUST[$HEB].": ".$current->get_pm10().$current->get_tempunit()."µg/m3"), get_query_edited_url(get_url(), 'section', 'dust.html'));
+		array($DUST[$EN].": ".$current->get_pm10()."µg/m3", $DUST[$HEB].": ".$current->get_pm10()."µg/m3"), get_query_edited_url(get_url(), 'section', 'dust.html'));
 }
 if ($current->get_uv() > 10)
 {
