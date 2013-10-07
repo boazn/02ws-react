@@ -128,12 +128,12 @@
 			    
 			     <div id="forcast_hours" class="contentbox">
 				 <? echo($GIVEN[$lang_idx]." ".$AT[$lang_idx]." ".$timetaf.":00 ".$dayF."/".$monthF."/".$yearF);?>
-				 <div id="for24_details">
+				 <div id="for24_literal">
 										<?=$forcastTicker?>
 					<span id="tempForecastDiv" style="display:none">
 					</span>
 				</div>
-				<ul>
+				<ul id="for24_hours">
 				 <? 
 				 foreach ($forecastHour as $hour_f){
 				 if ($hour_f['time'] % 3 == 0)
@@ -384,7 +384,7 @@
 					<h3><? echo $LIVE_PICTURE[$lang_idx];?></h3>
                                         <h4></h4>
 					<a href="<? echo "station.php?section=webCamera.jpg&amp;lang=".$lang_idx;?>"><p><? echo $PIC_DESC[$lang_idx];?><?=get_arrow()?></p>
-					<img title="שידור חי  - מצלמה 2" src="phpThumb.php?src=images/webCameraB.jpg&amp;sx=200&amp;sy=180&amp;sw=350&amp;sh=350&amp;fltr[]=gam|0.4" />
+					<img title="שידור חי  - מצלמה 2" src="phpThumb.php?src=images/webCameraB.jpg&amp;sx=200&amp;sy=150&amp;sw=350&amp;sh=350&amp;fltr[]=gam|0.4" />
 					</a>
 					
 					
@@ -420,14 +420,14 @@
                         
     		      <h2><?=$FILTERRING_BY_SUBJECT[$lang_idx]?></h2>
 			<div id="forum_filter">
-			    <div class='filter_icon1' key='1' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 1 )'></div>
-			    <div class='filter_icon2' key='2' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 2 )'></div>
-			    <div class='filter_icon3' key='3' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 3 )'></div>
-			    <div class='filter_icon4' key='4' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 4 )'></div>
-			    <div class='filter_icon5' key='5' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 5 )'></div>
-			    <div class='filter_icon6' key='6' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 6 )'></div>
-			    <div class='filter_icon7' key='7' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 7 )'></div>
-			    <div class='filter_icon8' key='8' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 8 )'></div>
+			    <div class='filter_icon1' title="Questions" key='1' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 1 )'></div>
+			    <div class='filter_icon2' title="Hot or Cold" key='2' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 2 )'></div>
+			    <div class='filter_icon3' title="Picture" key='3' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 3 )'></div>
+			    <div class='filter_icon4' title="Rain" key='4' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 4 )'></div>
+			    <div class='filter_icon5' title="Snow" key='5' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 5 )'></div>
+			    <div class='filter_icon6' title="Wind" key='6' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 6 )'></div>
+			    <div class='filter_icon7' title="Heat or sun" key='7' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 7 )'></div>
+			    <div class='filter_icon8' title="Link" key='8' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 8 )'></div>
 			</div>
 			<ul>
                             <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService(<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-1, date("y"))); ?>, 0, 0, <?=$lang_idx?>)"><?=$LAST_DAY[$lang_idx]?></li>
@@ -465,7 +465,7 @@
 			    </div>
 			    <div  class="span2">
                                 <div id="subject_container">
-				<p><?=$SUBJECT[$lang_idx]?></p>
+				<p><?=$MSG_SUBJECT[$lang_idx]?></p>
 				<div id="subject_icon"></div>
 				<div id="subject_left" onclick="change_subject('left')"></div>
 				<div id="subject_right" onclick="change_subject('right')"></div>
@@ -491,10 +491,7 @@
                     </div>
 		    </div>
 		    <div class="row" id="posts">
-			<a id="chat" ></a>
-
-
-	
+			<a id="chat" ></a>	
                         <input type="hidden" value="" name="current_new_msg_idx" id="current_new_msg_idx" />
                         <input type="hidden" value="" id="current_display_name" />
                         <input type="hidden" value="0" id="current_forum_startline" />
