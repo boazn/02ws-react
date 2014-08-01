@@ -327,7 +327,7 @@ include_once ("ini.php");
 		var $lowwindchill;
 		var $highuv;
 		var $lowuv;
-		var $higradiation;
+		var $highradiation;
 		var $lowradiation;
 		/* function Period($hitemp, $lowtemp, $highhum, $lowhum, $highbar, $lowbar, $highwind, $highrainrate) {
 			$this->hightemp = $hitemp;
@@ -355,7 +355,7 @@ include_once ("ini.php");
 			$this->highheatindex = new Parameter();
 			$this->highuv = new Parameter();
 			$this->lowuv = new Parameter();
-			$this->higradiation = new Parameter();
+			$this->highradiation = new Parameter();
 			$this->lowradiation = new Parameter();
 		 	
 		 }
@@ -376,6 +376,18 @@ include_once ("ini.php");
 		 }
 		 function get_highwind(){
 				return $this->highwind->get_value();
+		 }
+                 function get_highuv(){
+				return $this->highuv->get_value();
+		 }
+                 function get_highuv_time(){
+				return $this->highuv->get_time();
+		 }
+                 function get_highradiation(){
+				return $this->highradiation->get_value();
+		 }
+                 function get_highradiation_time(){
+				return $this->highradiation->get_time();
 		 }
 		 function get_lowbar(){
 				return number_format($this->lowbar->get_value(), 1);
@@ -488,8 +500,8 @@ include_once ("ini.php");
 				$this->lowuv->set_time($time);
 		 }
 		 function set_highradiation($sr, $time){
-				$this->higradiation->set_value($sr);
-				$this->higradiation->set_time($time);
+				$this->highradiation->set_value($sr);
+				$this->highradiation->set_time($time);
 		 }
 		 function set_lowradiation($sr, $time){
 				$this->lowradiation->set_value($sr);
@@ -996,6 +1008,8 @@ function isRaining()
 	global $current, $now, $hour;
 	if ($_GET['debug'] >= 2)
 		echo "<br>now rain:".$now->get_rain();
+        if (SNOW_IS_MELTING == 1)
+            return false;
 	if (($current->get_rainrate() !== "0.0")&& ($current->get_rainrate() !== "")&& ($current->get_rainrate() > 0))
 		return true;
 	if (($now->get_rain() != "0.00")&& ($now->get_rain() != "")&& ($now->get_rain() > 0) && ($current->get_windspd() > 0))	return true;
@@ -1005,7 +1019,7 @@ function isRaining()
 function isSnowing()
 {
 	global $current;
-	return (isRaining()&&($current->get_temp() < 2));
+	return ((isRaining()&&($current->get_temp() < 2))||(IS_SNOWING == 1));
 }
 
 
@@ -1350,16 +1364,34 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment)
 	//$headers .= "Content-Language: he\r\n";
 	$headers .= "From: {$source}\r\n";		
 	$headers .= "Reply-To: {$source}\r\n";
+        $headers .= "Return-Path: {$source}\r\n"; 
+        $headers .= "Organization: 02WS\r\n"; 
+        $headers .= "Message-ID: <".md5(uniqid(time()))."@{$_SERVER['SERVER_NAME']}>";
+        $header .=  "X-MSmail-Priority: Normal";
+        $headers .= "X-Priority: 3\r\n";
+        $headers .= "X-Mailer: PHP". phpversion() ."\r\n" ;
+        $headers .= "X-Priority: 3\r\n";
+        $headers .= "X-AntiAbuse: This is a solicited email for 02WS.co.il website\r\n";
+        $headers .= "X-AntiAbuse: Servername - {$_SERVER['SERVER_NAME']}\r\n";
+        
         
         //$headers .= "Subject: =?UTF-8?Q?".base64_encode($sourcename)."?=";
 
-	//echo("message body = ".$messageBody);		
+	//echo("message body = ".$messageBody);
+        if (is_array($messageBody)){
+            for ($i=0 ; $i < count($messageBody) ; $i++)
+            {
+                $msg_extracted .= $messageBody[$i];
+            }
+            $messageBody = $msg_extracted;
+        }
+            
 	$messageBody = str_replace("\n", "<br />", $messageBody);
 	$messageBody = str_replace("display:none", "", $messageBody);
 	$textToSend = "<html";
 	if (($source !== EMAIL_ADDRESS)||(isHeb()))
 			$textToSend .= " dir=\"rtl\" ";
-	$textToSend .= "><head><link href=\"".BASE_URL."/generalstyle.php?lang=".$lang_idx."&amp;forground_color=".$forground_color."&amp;base_color=".$base_color."\" rel=\"stylesheet\" type=\"text/css\"> </head><body><div style=\"padding:1em\" class=\"topbase slogan float\"><img align=\"absmiddle\" src=\"".BASE_URL."/".$header_pic."\" />&nbsp;".$WEBSITE_TITLE[$lang_idx]."</div><div style=\"padding:1em\" class=\"clear float inv_plain_3_zebra big\">".$messageBody."</div></div>";
+	$textToSend .= "><head><link href=\"".BASE_URL."/main.php?lang=".$lang_idx."\" rel=\"stylesheet\" type=\"text/css\"> </head><body><div style=\"padding:1em\" class=\"topbase slogan float\"><img align=\"absmiddle\" src=\"".BASE_URL."/".$header_pic."\" />&nbsp;".$WEBSITE_TITLE[$lang_idx]."</div><div style=\"padding:1em\" class=\"clear float inv_plain_3 big\">".$messageBody."</div></div>";
         if ($target!=ME)
 		$textToSend .= "\n<div style=\"clear:both;direction:rtl\" class=\"inv big\">".$MORE_INFO[$HEB]." - <a href=\"".BASE_URL."\">".BASE_URL."</a><br />אשמח להערות ותגובות<br />Do you have something to say? Want to get this in other language? reply to this Email</div>";
 	$textToSend .= "</body></html>";
@@ -1452,9 +1484,9 @@ function getUsersOnline(){
     function get_img_tag($change_in_param){
 		global $GOING_UP, $GOING_DOWN, $lang_idx;
 		if ($change_in_param>0)
-			return "<div class='spriteB up float' title=\"".$GOING_UP[$lang_idx]."\"></div>&nbsp;";
+			return "<div class='spriteB up invfloat' title=\"".$GOING_UP[$lang_idx]."\"></div>&nbsp;";
 		else if ($change_in_param<0)
-			return "<div class='spriteB down float' title=\"".$GOING_DOWN[$lang_idx]."\"></div>&nbsp;";
+			return "<div class='spriteB down invfloat' title=\"".$GOING_DOWN[$lang_idx]."\"></div>&nbsp;";
 
 	}
 
@@ -1514,6 +1546,12 @@ function getUsersOnline(){
 		 else
 			 return "right";
 	}
+        function getDirection(){
+             if (isHeb()) 
+			 return "rtl";
+		 else
+			 return "ltr";
+        }
         function get_sunset_ut(){
             global $sunset;
              $sunset_a = explode(":",$sunset);
@@ -1892,7 +1930,7 @@ function getUsersOnline(){
 			$messageAction .= "<br/>".$message;
 			$actionActive = $action;
 			$EmailSubject = $messageTitle;
-			logger("update_action - ".$EmailSubject.": ".$message);
+			logger("update_action - ".$EmailSubject[$HEB].": ".$message);
              @mysqli_close($link);
 		}
 		else
@@ -1904,7 +1942,7 @@ function getUsersOnline(){
 	{
 		global $messageAction, $link;
 		
-		$result = db_init("SELECT * FROM sendmailsms WHERE (Action='$action')");
+		$result = db_init("SELECT * FROM sendmailsms WHERE (Action=?)", $action);
 		$row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
 		$sent = $row["Sent"];
                 @mysqli_close($link);
@@ -1940,8 +1978,8 @@ function getUsersOnline(){
 		  $periodm = sprintf("%02d", $month)."/{$year}";
 
 	   array_push ($messageBroken, 
-		   array("<div style=\"width:100%\" id=\"broken".$highorlow.$param."\" ><div><a href=\"javascript:void(0)\" onmouseover=\"toggleBrokenData(this)\" onmouseout=\"toggleBrokenData(this)\">$highorlowm[$EN] $ON[$EN] $periodm ".get_arrow()."</a></div><div style=\"display:none;padding:0.3em;direction:ltr\" class=\"grad big\" >$extdata $param</div>",  
-			     "<div id=\"broken".$highorlow.$param."\" style=\"text-align:right\"><div><a href=\"javascript:void(0)\" onmouseover=\"toggleBrokenData(this)\" onmouseout=\"toggleBrokenData(this)\">$highorlowm[$HEB] $ON[$HEB] $periodm ".get_arrow()."</a></div><div style=\"display:none;padding:0.3em;direction:rtl\" class=\"grad big\" >$extdata</div>"));
+		   array("<div style=\"width:100%\" id=\"broken".$highorlow.$param."\" ><div class=\"innerbroken\"><a href=\"javascript:void(0)\" onmouseover=\"toggleBrokenData(this)\" onmouseout=\"toggleBrokenData(this)\">$highorlowm[$EN] $ON[$EN] $periodm ".get_arrow()."</a></div><div style=\"display:none\" class=\"grad big brokendatatitle\" >$extdata</div>",  
+			     "<div id=\"broken".$highorlow.$param."\" style=\"text-align:right\"><div class=\"innerbroken\"><a href=\"javascript:void(0)\" onmouseover=\"toggleBrokenData(this)\" onmouseout=\"toggleBrokenData(this)\">$highorlowm[$HEB] $ON[$HEB] $periodm ".get_arrow()."</a></div><div style=\"display:none\" class=\"grad big brokendatatitle\" >$extdata</div>"));
 	   
 	   $EmailSubject = array( $prefEmailSubject[$EN]." $ON[$EN] $periodm", $prefEmailSubject[$HEB]." $ON[$HEB] $periodm");		  
 	
@@ -1952,7 +1990,7 @@ function getUsersOnline(){
 
         $record_col = "{$period}_{$highorlow}";
 	$date_col = "{$record_col}_date";
-        $result = db_init("SELECT * FROM extremes where (param='$param')");
+        $result = db_init("SELECT * FROM extremes where (param=?)", $param);
         $row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
         global $link;
         $old_date = $row["$date_col"];		
@@ -1970,7 +2008,7 @@ function getUsersOnline(){
          if ($updateMessage) {
            $query = "UPDATE extremes SET $record_col='$extdata', $date_col='$datenotime', old_{$highorlow}_date='$old_date', old_{$highorlow}_record=$old_record WHERE (param='$param')";
                if (!mysqli_query($link, $query))
-                       logger("Error in setBrokenData: %s\n", mysqli_error($link));
+                       logger(sprintf("Error in setBrokenData: %s\n", mysqli_error($link)));
                
                 
 
@@ -1987,14 +2025,18 @@ function getUsersOnline(){
         array_push ($messageBroken, array("</div>","</div>"));
         array_push ($messageBroken, array("\n<script type=\"text/javascript\">\nvar tdBroken = document.getElementById('brokenlatest".$param."');\ndivBroken = document.getElementById('broken".$highorlow.$param."');\ntdBroken.appendChild(divBroken);\n</script>", "\n<script type=\"text/javascript\">\nvar tdBroken = document.getElementById('brokenlatest".$param."');\ndivBroken = document.getElementById('broken".$highorlow.$param."');\ntdBroken.appendChild(divBroken);\n</script>"));		
 
-        if (ShouldSendMsg($highorlow, $param, $period))
-        	echo "should SEND - ".$highorlow." ".$param." ".$period." !!!!!!!!!!!!!!!!!";
+        //if (ShouldSendMsg($highorlow, $param, $period))
+        //	echo "should SEND - ".$highorlow." ".$param." ".$period." !!!!!!!!!!!!!!!!!";
         //logger($highorlow." ".$param." ".$period);
         if ($updateMessage) // to send only once
            if (ShouldSendMsg($highorlow, $param, $period))
                 {
-                       array_push ($messageBrokenToSend, $messageBroken);     	
-                        logger("Prepered to be sent: ".$highorlow." ".$param." ".$period);
+                       array_push ($messageBrokenToSend, $messageBroken); 
+                        for ($i=0 ; $i < count($messageBroken) ; $i++)
+                        {
+                                $brokendata .= $messageBroken[$i][$HEB];
+                        }
+                        logger("Prepered to be sent: ".$highorlow." ".$param." ".$period." ".$brokendata);
                 }
 
          // Free resultset 
@@ -2701,20 +2743,44 @@ function getClothTitle($imagename)
 
 }
 
-function db_init($query)
+function db_init($query, $param)
 {
-	global $link, $error_db;
-	$link = mysqli_connect(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+	global $link, $stmt, $error_db;
+	$link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
 	if (mysqli_connect_errno()) {
 	   printf("Connect failed: %s\n", mysqli_connect_error());
 	   $error_db = true;
 	   exit();
 	}
 	//mysqli_query($link, "SET CHARACTER SET utf8;");
-	mysqli_query($link, "SET NAMES utf8;");
+	$link->query("SET NAMES utf8;");
 	
 	if ($query != "")
-		$result = mysqli_query($link, $query);
+        {
+               
+		$stmt = $link->stmt_init();
+                if(!$stmt->prepare($query))
+                {
+                    print "error in prepare: ".$stmt->error;
+                }
+                if ($param != "")
+                {
+                     $param = $link->real_escape_string ($param);
+                    if (is_float($param))
+                        $res = $stmt->bind_param('d' , $param);
+                    else if (is_numeric($param))
+                        $res = $stmt->bind_param('d' , $param);
+                    else
+                        $res = $stmt->bind_param('s' , $param);
+                    if (!$res)
+                        logger("query=".$query." param=".$param." error in binding: ".$stmt->error);
+                 
+                }
+                $res = $stmt->execute();
+                if (!$res)
+                    logger(print "error in execute: ".$stmt->error);
+               $result = $stmt->get_result();
+        }
 	return $result;
 }
 
@@ -2786,8 +2852,8 @@ function ieversion() {
     return floatval($reg[1]);
 }
 function getSurvey($surveyid){
-    $query = "SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id and s.survey_id={$surveyid}";
-    $result = db_init($query);
+    $query ="SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id and s.survey_id=?";
+    $result = db_init($query, $surveyid);
     return $result;
 }
 function getSpecificChat($idx)
@@ -2803,26 +2869,15 @@ function getSpecificChat($idx)
    
 	   $totalText = $totalText + strlen($line["name"]) + strlen($line["body"]);
 		$dateInLineStart = date("D   H:i", strtotime("0 hours -0 minutes", $timestamp_date));
-		if (time() - $timestamp_date > 550000)
-			$dateInLineStart = date("D G:i j/m/y", strtotime("0 hours -0 minutes", $timestamp_date));
-		if ($lang_idx == $HEB)	
-			$dateInLineStart = replaceDays($dateInLineStart);
-		if ($lines % 2 == 1)
-			$class =  " border_3 inv_plain_3 ";
-		else
-			$class =  " inv_plain_3 ";
-		
-		print "\n\t<div class=\"chatthreadcell ".$class."\" style=\"margin:0.5em 0;\" ";
-		$name = urldecode($line["name"]);
-		//$name = str_replace("<s", "", $name);
-		$old_body = urlencode($line["body"]);
+						
+		print "\n\t<div class=\"chatthreadcell white_box2".$class."\" style=\"margin:0.3em\" ";
 		print ">";
-		print "\n\t\t<div class=\"chatdate\" >";
-		//print $dateInLineStart;
-		if (($line["sticky"]) == 1)
-			print "<br />"."<img src=\"images/pin.png\" alt=\"sticky\" width=\"32\" height=\"32\" />";
-		print "</div>";
-		print "\n\t\t<div class=\"chatmainbody\">\n\t\t\t<div class=\"float\"><strong><span title=\"".base64_encode($line["IP"])."\">".$name."</span></strong>: </div>".urldecode($line["body"])."\n\t\t</div>";
+		print "<div class=\"filter_icon".$line["Category"]."\"></div>"; // category icon
+                print "<div class=\"pic_user\">";
+                print "<h3>".urldecode($line["name"])."</h3>";
+                print "<h4>"."</h4>";
+                print "</div>"; // user
+		print "\n\t\t<div class=\"chatmainbody\">\n\t\t\t".urldecode($line["body"])."\n\t\t</div>";
 		print "\n\t</div>\n";
 	}
 
@@ -2832,7 +2887,7 @@ function getSpecificChat($idx)
 @mysqli_close($link);
 }
 
-function getCurrentChat($searchname, $filter_is_on, $startLine, $limitLines, $timestamp_filter, $category)
+function getCurrentChat($searchname, $filter_is_on, $startLine, $limitLines, $timestamp_from, $timestamp_to,  $category)
 {
 
 global $lang_idx, $HEB, $NEED_TO_REGISTER, $REPLY, $REPLY_EXP, $link;
@@ -2840,9 +2895,9 @@ global $lang_idx, $HEB, $NEED_TO_REGISTER, $REPLY, $REPLY_EXP, $link;
 //echo "limitlines:".$limitLines;
 
 if ($searchname != "")
-	$query = "SELECT * FROM  `chat` WHERE  `name` LIKE  '%".$searchname."%' OR `body` LIKE  '%".$searchname."%' ";
+	$query = "SELECT * FROM  `chat` c WHERE  `name` LIKE  '%".$searchname."%' OR `body` LIKE  '%".$searchname."%' ";
 else
-	$query = "SELECT * From chat ";
+	$query = "SELECT * FROM  `chat` c ";
 
 if ($category != ""){
 	if ($searchname != "")
@@ -2872,8 +2927,8 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	
    if ( $limitLines == -1 && (!$filter_is_on) || 
 		$limitLines == "" && (!$filter_is_on) || 
-	    (($lines < $limitLines) && (!$filter_is_on)) ||
-	     ($timestamp_date > $timestamp_filter) && ($filter_is_on))
+	    (($lines <= $limitLines) && (!$filter_is_on)) ||
+	     ($timestamp_date > $timestamp_from) && ($timestamp_date < $timestamp_to) && ($filter_is_on))
 	{
 	   $totalText = $totalText + strlen($line["name"]) + strlen($line["body"]);
 		$dateInLineStart = date("D   H:i", strtotime("0 hours -0 minutes", $timestamp_date));
@@ -2906,7 +2961,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		if (($line["Locked"]) == 1)
 			print "<br />"."<img src=\"images/locked.png\" alt=\"locked\" width=\"32\" height=\"32\" />";
 		print "</div>";
-		
+		if (($line["Locked"]) <> 1)
                 print "\n\t\t<div class=\"pivotpointer\" id=\"replydiv".$line["idx"]."\" title=\"".$REPLY_EXP[$lang_idx]."\" ".$onclickmain."><input class=\"comment_btn\" type='button' value=\"".$REPLY[$lang_idx]."\" style=\"cursor:pointer;\" /></div>";
                 print "\n\t</div>\n";
 		
@@ -2921,10 +2976,26 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 function getWindStatus()
 {
 	global $current, $min10, $WITHOUT_WIND, $LIGHT_WIND, $MODERATE_WIND, $WINDY, $lang_idx;
-	if (($current->get_windspd() == 0)&&($min10->get_windspd() == 0)) return $WITHOUT_WIND[$lang_idx]; 
-			   else if ($current->get_windspd() < 2.5) return $LIGHT_WIND[$lang_idx];
-			   else if ($current->get_windspd() < 10) return $MODERATE_WIND[$lang_idx];
-			   else return $WINDY[$lang_idx];
+        
+	if (($current->get_windspd() == 0)&&($min10->get_windspd() == 0)) {
+                            $windtitle =  $WITHOUT_WIND[$lang_idx];
+                            $wind_class="light_wind";
+                            }
+			   else if ($min10->get_windspd() < 2.5) {
+                               $windtitle = $LIGHT_WIND[$lang_idx];
+                               $wind_class="light_wind";
+                           }
+			   else if ($min10->get_windspd() < 10) {
+                               $windtitle =  $MODERATE_WIND[$lang_idx];
+                               $wind_class="moderate_wind";
+                           }
+			   else {
+                               $windtitle = $WINDY[$lang_idx];
+                               $wind_class="high_wind";
+                           }
+         $div_wind_icon = "<div title=\"".$windtitle."\" class=\"wind_icon ".$wind_class." \"></div>";
+         $div_wind_title = "<div class=\"wind_title\" >".$windtitle."</div>";
+         return $div_wind_icon.$div_wind_title;
    
 }
 
@@ -2966,6 +3037,7 @@ $where_clause_archive = array();
 	global $tablestobeSearched;
 	global $where_clause_archivemin; 
 	global $where_clause_archive;
+        global $tableToSearch;
 	$startingYearFromMyStation = 2005;
 	if (count($_POST['years']) > 0){
 		foreach ($_POST['years'] as $yearToSearch)
@@ -2975,13 +3047,13 @@ $where_clause_archive = array();
 				foreach ($_POST['months'] as $monthToSearch)
 				{
 					
-					if ($yearToSearch < $startingYearFromMyStation)
+					if ($tableToSearch != "archive")
 					{
 						array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
 						if (!in_array("archivemin", $tablestobeSearched)) 
 							array_push ($tablestobeSearched, "archivemin");
 					}
-					else
+					else 
 					{
 						array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
 						if (!in_array("archive", $tablestobeSearched))
@@ -2992,7 +3064,7 @@ $where_clause_archive = array();
 			else //no month selected
 			{
 				
-				if ($yearToSearch < $startingYearFromMyStation)
+				if ($tableToSearch != "archive")
 				{
 					if ($monthMode)
 					{
@@ -3015,8 +3087,8 @@ $where_clause_archive = array();
 					}
 					else
 						array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
-					if (!in_array("archive", $tablestobeSearched))
-						 array_push ($tablestobeSearched, "archive");
+					//if (!in_array("archive", $tablestobeSearched))
+					//	 array_push ($tablestobeSearched, "archive");
 					
 				}
 			}
@@ -3088,6 +3160,7 @@ function getReport($min_year,$current_year, $report)
 		$param = "Hum";
 		$AscOrDesc = "DESC";
 		$unit = "%";
+                $tableToSearch="archive";
 	}
 	else if ($report == "minhum")
 	{
@@ -3095,6 +3168,7 @@ function getReport($min_year,$current_year, $report)
 		$param = "Hum";
 		$AscOrDesc = "ASC";
 		$unit = "%";
+                $tableToSearch="archive";
 	}
 	else if ($report == "maxdew")
 	{
@@ -3102,6 +3176,7 @@ function getReport($min_year,$current_year, $report)
 		$param = "Dew";
 		$AscOrDesc = "Desc";
 		$unit = "&#176;C";
+                $tableToSearch="archive";
 	}
 	else if ($report == "maxrain")
 	{
