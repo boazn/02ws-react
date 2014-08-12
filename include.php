@@ -620,6 +620,39 @@ include_once ("ini.php");
 		}
 
 	}
+        class ContentSection {
+            var $Description;
+            var $img_src;
+            var $href;
+            var $Title;
+            function get_description(){
+             return $this->Description;
+            }
+            function set_description($desc){
+                $this->Description = $desc;
+            }
+            
+            function get_img_src(){
+              return $this->img_src;
+            }
+            function set_img_src($img_src){
+                $this->img_src = $img_src;
+            }
+            function get_href(){
+             return $this->href;
+            }
+            function set_href($href){
+                $this->href = $href;
+            }
+            function get_Title(){
+             return $this->Title;
+            }
+            function set_Title($Title){
+                $this->Title = $Title;
+            }
+       
+            
+        }
 
 	function randomFile ($file){
 		$items = file($file);
@@ -909,6 +942,11 @@ include_once ("ini.php");
 	   for($Int = 0; $Int < $ArgC; $Int++) define($ArgV[$Int], $Int);
 }
 enum("ME", "ALL", "GroupA", "SPECIAL");
+class Chance  {
+const Low = 1;
+const Good = 2;
+const High = 3;
+}
 /********************************************************************/
 	// This function is called for every opening XML tag. We
 // need to keep track of our path in the XML file, so we
@@ -2761,7 +2799,7 @@ function db_init($query, $param)
 		$stmt = $link->stmt_init();
                 if(!$stmt->prepare($query))
                 {
-                    print "error in prepare: ".$stmt->error;
+                    logger("query=".$query." param=".$param."; error in prepare: ".$stmt->error);
                 }
                 if ($param != "")
                 {
@@ -2773,12 +2811,12 @@ function db_init($query, $param)
                     else
                         $res = $stmt->bind_param('s' , $param);
                     if (!$res)
-                        logger("query=".$query." param=".$param." error in binding: ".$stmt->error);
+                        logger("query=".$query." param=".$param."; error in binding: ".$stmt->error);
                  
                 }
                 $res = $stmt->execute();
                 if (!$res)
-                    logger(print "error in execute: ".$stmt->error);
+                    logger("query=".$query." param=".$param."; error in execute: ".$stmt->error);
                $result = $stmt->get_result();
         }
 	return $result;
