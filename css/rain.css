@@ -4,11 +4,10 @@ body {
     background-repeat:repeat;
     color:#fff;
 }
-
-#info_circle {
-    background-image:url("../img/info_circle_rain.png");
+#logo{
+	background-image:url("../img/logo_rain.png");
+        width: 130px;
 }
-
 .clothes_text {
     color:#fff;
 }
@@ -57,6 +56,40 @@ body {
 #bg2-1 {
     margin-left:-100px;
 }
+.cloud1, .cloud2, .cloud3, .cloud4, .cloud-big {
+    background-color: #6D8FA3;
+    background-image: -webkit-linear-gradient(top, #648599 10%, #4F6F87);
+    background-image: -moz-linear-gradient(top, #648599, #4F6F87);
+    background-image: -ms-linear-gradient(top, #648599, #4F6F87);
+    background-image: -o-linear-gradient(top, #648599, #4F6F87);
+}
+
+.cloud1:after, .cloud3:after, .cloud4:after, .cloud2:after, .cloud-big:after,
+.cloud1:before, .cloud2:before, .cloud3:before, .cloud4:before, .cloud-big:before {
+     background-color: #6D8FA3;
+    background-image: -webkit-linear-gradient(top, #6D8FA3 10%, #4F6F87);
+    background-image: -moz-linear-gradient(top, #6D8FA3, #4F6F87);
+    background-image: -ms-linear-gradient(top, #6D8FA3, #4F6F87);
+    background-image: -o-linear-gradient(top, #6D8FA3, #4F6F87);
+}
+
+.cloud1-more, .cloud2-more, .cloud3-more, .cloud4-more, .cloud-big-more, .cloud3-more:after, .cloud4-more:after {
+    background-color: #6D8FA3;
+    background-image: -webkit-linear-gradient(top, #83A0B2 10%, #4F6F87);
+    background-image: -moz-linear-gradient(top, #83A0B2, #4F6F87);
+    background-image: -ms-linear-gradient(top, #83A0B2, #4F6F87);
+    background-image: -o-linear-gradient(top, #83A0B2, #4F6F87);
+}
+
+.cloud1-more:before, .cloud1-more:after, .cloud2-more:before, .cloud2-more:after, .cloud3-more:before, .cloud4-more:before,
+.cloud-big-more:before, .cloud-big-more:after {
+    background-color: #6D8FA3;
+    background-image: -webkit-linear-gradient(top, #83A0B2 10%, #5A7A91);
+    background-image: -moz-linear-gradient(top, #83A0B2, #5A7A91);
+    background-image: -ms-linear-gradient(top, #83A0B2, #5A7A91);
+    background-image: -o-linear-gradient(top, #83A0B2, #5A7A91);
+}
+
 .cloud-lg1{
 	background-image:url("../img/cloud-lg1_rain.png");
 	width:198;
@@ -234,4 +267,7 @@ h2 {
 .main_nav .active{
     background-color:#fff;
     color:#2C3A42;
+}
+.white_box2{
+color:#000
 }

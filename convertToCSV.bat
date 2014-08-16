@@ -1,0 +1,1 @@
+D:\Web\site\Weather\Station\txt2csv.exe 2004-08.txt > "D:\\Web\\site\\Weather\\Station\\reports\\2004-08.csv" 

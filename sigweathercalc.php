@@ -128,12 +128,12 @@ if (($today->get_highwind() == $thisYear->get_highwind())
    &&($min30->get_windspdchange() < -4) 
    &&($today->get_highwind() != ""))
 		setBrokenData("yearly", "high",  
-						$today->get_highwind().$windUnits." ".$AT[$lang_idx]." ".$today->get_highwind_time(), 
+						$today->get_highwind()." ".$KNOTS[$lang_idx]." ".$AT[$lang_idx]." ".$today->get_highwind_time(), 
 						"wind");
 else if (($today->get_highwind() == $thisMonth->get_highwind())
 		&&($min30->get_windspdchange() < -4))
 			setBrokenData("monthly", "high", 
-							$today->get_highwind().$windUnits." ".$AT[$lang_idx]." ".$today->get_highwind_time(), 
+							$today->get_highwind()." ".$KNOTS[$lang_idx]." ".$AT[$lang_idx]." ".$today->get_highwind_time(), 
 							"wind");
 
 
@@ -161,6 +161,19 @@ if (($hour < 11)&&($dew_over_night))
 		$HIGH_DEW_OVER_NIGHT, 
 		array($today->get_highhum()."%"." ".$HUMIDITY[$EN], $today->get_highhum()."%"." ".$HUMIDITY[$HEB]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=2&amp;lang=$lang_idx");
 }
+if (isRaining()||(IS_SNOWING == 1))
+{
+	$rainOrSnow = $ITS_RAINING;
+	if (($current->get_rainrate() > 20)||($current->get_windspd() > 15))
+		$rainOrSnow =  $STORMY;
+	if (isSnowing())
+		$rainOrSnow =  $ITS_SNOWING;
+	updateSigWeather(
+		"rain1.jpg", 
+		$rainOrSnow, 
+		array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
+    update_action ("RainStarted", "<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$HEB]\" width=\"150px\" border=\"0\"></div><div class=\" float loading\" >".$hour.":".$min."<br/>"."&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<strong>".$ALT[$HEB]."</strong></div>", $ALT);
+}
 if (($rainrateHour !== "0.0") && 
 		 (!isRaining()) && 
 		 (!$dew_over_night))
@@ -182,19 +195,7 @@ if (($today->get_highrainrate() !== "0.0") &&
 		$RAIN_HAS_GONE, 
 		array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
 }
-if (isRaining())
-{
-	$rainOrSnow = $ITS_RAINING;
-	if (($current->get_rainrate() > 20)||($current->get_windspd() > 15))
-		$rainOrSnow =  $STORMY;
-	if ($current->get_temp() < 2)
-		$rainOrSnow =  $ITS_SNOWING;
-	updateSigWeather(
-		"rain1.jpg", 
-		$rainOrSnow, 
-		array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
-    update_action ("RainStarted", "<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$HEB]\" width=\"150px\" border=\"0\"></div><div class=\" float loading\" >".$hour.":".$min."<br/>"."&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<strong>".$ALT[$HEB]."</strong></div>", $ALT);
-}
+
 if (($current->get_temp() < 2)&&($current->get_temp() != ""))
 {
 	updateSigWeather(
@@ -208,7 +209,7 @@ if ($current->get_pm10() > 100)
     updateSigWeather(
 		"dust.gif", 
 		$HIGH_DUST, 
-		array($DUST[$EN].": ".$current->get_pm10()."µg/m3", $DUST[$HEB].": ".$current->get_pm10()."µg/m3"), get_query_edited_url(get_url(), 'section', 'dust.html'));
+		array($DUST[$EN].": ".$current->get_pm10()." µg/m3", $DUST[$HEB].": ".$current->get_pm10()." µg/m3"), get_query_edited_url(get_url(), 'section', 'dust.html'));
 }
 if ($current->get_uv() > 10)
 {
@@ -245,7 +246,29 @@ if	((($min15->get_prschange() < -0.3)||
 		"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=baro.php&amp;profile=1&amp;lang=$lang_idx");
  	//update_action ("PrsSinking", "<span class=\"topbase\">".$current->get_time()."</span> "."$CURRENT_SIG_WEATHER[$EN] <b>".$ALT[$EN]."</b>{$extrainfoS[$EN]}<IMG src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$EN]\" width=\"600\" border=0>", $ALT);
 }
-
+if ($current->get_dew() > 16)
+{
+    $extrainfoS = array (
+		$DEW[$EN].": ".$current->get_dew() , 
+		$DEW[$HEB].": ".$current->get_dew());
+        updateSigWeather(
+		"hum.jpg", 
+		$HIGH_HUMIDITY, 
+		$extrainfoS, 
+		"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=dewpt.php&amp;profile=1&amp;lang=$lang_idx");
+}
+if (($current->get_hum() < 20)&&($current->get_hum() != ""))
+{
+	$extrainfoS = array (
+		$HUMIDITY[$EN].": ".$current->get_hum()."%" , 
+		$HUMIDITY[$HEB].": ".$current->get_hum()."%");
+   updateSigWeather(
+		"dry_ground_1.jpg", 
+		$VERY_DRY, 
+		 $extrainfoS, 
+		 "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=1&amp;lang=$lang_idx");
+	update_action ("Dry", "<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$HEB]\" width=\"250px\" border=\"0\" /></div><div class=\"float loading\">".$hour.":".$min."<br/>"."&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<strong>".$ALT[$HEB]."</strong><div class=\"loading float big\">&nbsp;{$extrainfoS[$HEB]}</div></div>", $ALT);
+}
 if ((($min15->get_prschange() > 0.2)||
 	 ($min30->get_prschange() > 0.5)||
 	 ($oneHour->get_prschange() > 1))&& (notnull()))
@@ -442,29 +465,7 @@ if ((($current->get_temp() > 27)&&
 		"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=3&amp;lang=$lang_idx");
 	//update_action ("HeatWave", "<span class=\"topbase\">".$current->get_time()."</span> "."$CURRENT_SIG_WEATHER[$EN] <b>".$ALT[$EN]."</b>\n{$extrainfoS[$EN]}<IMG src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$EN]\" width=150 height=150 border=0>", $ALT);
 }
-if ($current->get_dew() > 18)
-{
-    $extrainfoS = array (
-		$DEW[$EN].": ".$current->get_dew() , 
-		$DEW[$HEB].": ".$current->get_dew());
-        updateSigWeather(
-		"hum.jpg", 
-		$HIGH_HUMIDITY, 
-		$extrainfoS, 
-		"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=dewpt.php&amp;profile=1&amp;lang=$lang_idx");
-}
-if (($current->get_hum() < 20)&&($current->get_hum() != ""))
-{
-	$extrainfoS = array (
-		$HUMIDITY[$EN].": ".$current->get_hum()."%" , 
-		$HUMIDITY[$HEB].": ".$current->get_hum()."%");
-   updateSigWeather(
-		"dry_ground_1.jpg", 
-		$VERY_DRY, 
-		 $extrainfoS, 
-		 "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=1&amp;lang=$lang_idx");
-	update_action ("Dry", "<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$HEB]\" width=\"250px\" border=\"0\" /></div><div class=\"float loading\">".$hour.":".$min."<br/>"."&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<strong>".$ALT[$HEB]."</strong><div class=\"loading float big\">&nbsp;{$extrainfoS[$HEB]}</div></div>", $ALT);
-}
+
 if (stristr($current->get_winddir(), 'W')
 		&& !stristr($min15->get_winddir(), 'W') && (strlen($min15->get_winddir()) > 0)
 		&& !stristr($min30->get_winddir(), 'W') && (strlen($min30->get_winddir()) > 0)
@@ -584,8 +585,8 @@ if (($lowtemp_diffFromAv > 2)
 	"hot.gif", 
 	array ($WARMER_THAN_AVERAGE[$EN]." ".$TODAY[$EN], $WARMER_THAN_AVERAGE[$HEB]." ".$TODAY[$HEB]), 
 	 array (
-			$TODAY[$EN]." ".$MAX[$EN]." ".$today->get_hightemp().$current->get_tempunit()."&nbsp; - ".$monthInWord." ".$AVERAGE[$EN].": ".$monthAverge->get_hightemp().$current->get_tempunit(), 
-			$TODAY[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp().$current->get_tempunit()."&nbsp; - ".$monthInWord." ".$AVERAGE[$HEB].": ".$monthAverge->get_hightemp().$current->get_tempunit()), 
+			$TODAY[$EN]." ".$MAX[$EN]." ".$today->get_hightemp().$current->get_tempunit()."<br />".$monthInWord." ".$AVERAGE[$EN].": ".$monthAverge->get_hightemp().$current->get_tempunit(), 
+			$TODAY[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp().$current->get_tempunit()."<br />".$monthInWord." ".$AVERAGE[$HEB].": ".$monthAverge->get_hightemp().$current->get_tempunit()), 
 	"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=2&amp;lang=$lang_idx");
 		//update_action ("Warmer", "<span class=\"topbase\">".$current->get_time()."</span> "."$CURRENT_SIG_WEATHER[$EN] <b><b>".$ALT[$EN]."</b></b>\n{$extrainfo[$EN]}<IMG src=\"".BASE_URL."/images/$pic\" ALT=\"$ALT[$EN]\" width=150 height=150 border=0>", $ALT);
 }

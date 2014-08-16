@@ -2622,11 +2622,7 @@ function ieversion() {
   else
     return floatval($reg[1]);
 }
-function getSurvey($surveyid){
-    $query = "SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id and s.survey_id={$surveyid}";
-    $result = db_init($query);
-    return $result;
-}
+
 function getSpecificChat($idx)
 {
 	global $lang_idx, $HEB, $link;

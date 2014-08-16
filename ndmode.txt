@@ -1,0 +1,28 @@
+:Applet Info
+::General Information|information.html
+::Installation Instructions|installation.html
+::Using the applet with JavaScript|javascript.html
+::-
+::Ordering Information|http://navsurf.com/orderform.asp
+
+:Java Applets|images/nd_applet.gif
+::Navigation Applets
+:::NavBar|http://navsurf.com/navbar.asp
+:::NavBar Deluxe|http://navsurf.com/navdeluxe.asp
+:::NavButton|http://navsurf.com/navbutton.asp
+:::NavMenu Lite|http://navsurf.com/navmenu.asp
+:::NavMenu Pro|http://navsurf.com/navpro.asp
+:::NavTool|http://navsurf.com/navtool.asp
+::Freeware Applets
+:::Billboard|http://navsurf.com/billboard.asp
+:::Ticker|http://navsurf.com/ticker.asp
+:::FontList|http://navsurf.com/fontlist.asp
+::-
+::NavPackage|http://navsurf.com/navpackage.asp
+::Customised Applets|http://navsurf.com/contact.asp
+
+:Examples
+::Opens in new window|information.html|_blank
+::Opens in same window|information.html|_self
+::Javascript|javascript:open_window('example.html')|_self
+::Send an email|mailto:nobody@home|_self

@@ -1,0 +1,7 @@
+<?
+$adminpassword = "bigsam";
+$archive_name[++$index] = "The BigSam Team";
+$archive_mail[  $index] = "bigsam@gezzed.net";
+$archive_date[  $index] = "11th March 2001 - 12:00:00 PM";
+$archive_text[  $index] = "Thank you for using Big Sam v.1.1.13.";
+?>

@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+  <HEAD>
+    <TITLE>
+      Live Stream
+    </TITLE>
+  </HEAD>
+  <BODY>
+	<CENTER> 
+	Live stream for 1 minute<br>
+   	<SCRIPT language="JavaScript" type="text/javascript">
+		 BN = navigator.appName;
+		if (BN == "Netscape") 
+		{
+			document.write('<IMG SRC="http://82.166.212.17:81/video/jpeg-1" BORDER=0 WIDTH=640 HEIGHT=480>');    
+		}
+		else
+		{
+			document.write('<APPLET CODEBASE="http://82.166.212.17:81/" CODE="VgsStream.class" WIDTH="640" HEIGHT="480">');
+			document.write('<PARAM NAME="port" VALUE="81">');
+			document.write('<PARAM NAME="username" VALUE="">');
+			document.write('<PARAM NAME="password" VALUE="">');
+			document.write('<PARAM NAME="device" VALUE="1">');
+			document.write('<\/APPLET>');
+		}
+	</SCRIPT>
+
+    </CENTER>
+  </BODY>
+</HTML>
+

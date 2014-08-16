@@ -1,0 +1,36 @@
+[07-Jul-2009 11:53:02] PHP Parse error:  syntax error, unexpected T_STRING in /home3/zertwows/public_html/avishai/index.php on line 4
+[01-Jun-2010 15:36:33] PHP Fatal error:  Call to undefined function  get_s_align() in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 199
+[01-Jun-2010 15:36:36] PHP Fatal error:  Call to undefined function  get_s_align() in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 199
+[01-Jun-2010 15:36:37] PHP Fatal error:  Call to undefined function  get_s_align() in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 199
+[01-Jun-2010 15:37:30] PHP Fatal error:  Call to undefined function  get_s_align() in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 199
+[01-Jun-2010 15:37:32] PHP Fatal error:  Call to undefined function  get_s_align() in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 199
+[01-Jun-2010 15:38:38] PHP Fatal error:  Call to undefined function  get_s_align() in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 199
+[01-Jun-2010 15:38:42] PHP Fatal error:  Call to undefined function  get_s_align() in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 199
+[01-Jun-2010 15:42:17] PHP Parse error:  syntax error, unexpected T_ELSE in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 58
+[01-Jun-2010 15:42:49] PHP Fatal error:  Call to undefined function  get_s_align() in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 168
+[01-Jun-2010 15:42:54] PHP Fatal error:  Call to undefined function  get_s_align() in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 168
+[02-Jun-2010 12:32:29] PHP Warning:  include(album) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home3/zertwows/public_html/avishai/index.php on line 33
+[02-Jun-2010 12:32:29] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'album' for inclusion (include_path='.:/usr/lib64/php:/usr/lib/php') in /home3/zertwows/public_html/avishai/index.php on line 33
+[02-Jun-2010 12:33:49] PHP Warning:  include(album) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:33:49] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'album' for inclusion (include_path='.:/usr/lib64/php:/usr/lib/php') in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:34:09] PHP Warning:  include(album) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:34:09] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'album' for inclusion (include_path='.:/usr/lib64/php:/usr/lib/php') in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:35:38] PHP Warning:  include(album) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:35:38] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'album' for inclusion (include_path='.:/usr/lib64/php:/usr/lib/php') in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:36:13] PHP Warning:  include(album) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:36:13] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'album' for inclusion (include_path='.:/usr/lib64/php:/usr/lib/php') in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:36:48] PHP Warning:  include(album) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:36:48] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'album' for inclusion (include_path='.:/usr/lib64/php:/usr/lib/php') in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:37:45] PHP Warning:  include(album) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:37:45] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'album' for inclusion (include_path='.:/usr/lib64/php:/usr/lib/php') in /home3/zertwows/public_html/avishai/index.php on line 35
+[02-Jun-2010 12:51:17] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/zertwows/public_html/avishai/index.php:12) in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 169
+[02-Jun-2010 12:53:09] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/zertwows/public_html/avishai/index.php:12) in /home3/zertwows/public_html/avishai/album/index.php on line 2
+[02-Jun-2010 12:55:20] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/zertwows/public_html/avishai/index.php:12) in /home3/zertwows/public_html/avishai/spgm/index.php on line 2
+[02-Jun-2010 12:55:20] PHP Warning:  readdir(): supplied argument is not a valid Directory resource in /home3/zertwows/public_html/avishai/spgm/spgm.php on line 871
+[02-Jun-2010 12:55:20] PHP Warning:  closedir(): supplied argument is not a valid Directory resource in /home3/zertwows/public_html/avishai/spgm/spgm.php on line 879
+[02-Jun-2010 12:56:21] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/zertwows/public_html/avishai/index.php:12) in /home3/zertwows/public_html/avishai/spgm/index.php on line 2
+[02-Jun-2010 12:56:21] PHP Warning:  readdir(): supplied argument is not a valid Directory resource in /home3/zertwows/public_html/avishai/spgm/spgm.php on line 871
+[02-Jun-2010 12:56:21] PHP Warning:  closedir(): supplied argument is not a valid Directory resource in /home3/zertwows/public_html/avishai/spgm/spgm.php on line 879
+[02-Jun-2010 12:56:53] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/zertwows/public_html/avishai/index.php:12) in /home3/zertwows/public_html/avishai/album/index.php on line 2
+[02-Jun-2010 13:08:57] PHP Warning:  require(phpmailer/class.phpmailer.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 31
+[02-Jun-2010 13:08:57] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required 'phpmailer/class.phpmailer.php' (include_path='.:/usr/lib64/php:/usr/lib/php') in /home3/zertwows/public_html/avishai/SendEmailForm.php on line 31

@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+  <HEAD>
+    <TITLE>
+      visionGS
+    </TITLE>
+  </HEAD>
+  <BODY bgcolor="#FFFFFF" text="#000000" link="#0000CC" vlink="#0000CC" alink="#0000CC">
+    <CENTER>
+  <P>&nbsp;</P>
+      
+  <h3><font face="Verdana, Arial, Helvetica, sans-serif">My Live Stream Webcam 
+    (320x240pixel)</font></h3>
+  <P> 
+    <SCRIPT language="JavaScript" type="text/javascript">
+  BN = navigator.appName;
+  if (BN == "Netscape") 
+    {
+    document.write('<IMG SRC="http://82.166.23.2/video/jpeg" BORDER=0 WIDTH=320 HEIGHT=240>');    
+    }
+    else
+    {
+    document.write('<APPLET CODEBASE="http://82.166.23.2/" CODE="VgsStream.class" WIDTH="320" HEIGHT="240 ">');
+    document.write('<PARAM NAME="video" VALUE="/">');
+    document.write('<\/APPLET>');
+    }
+</SCRIPT>
+</CENTER>
+  </BODY>
+</HTML>
+

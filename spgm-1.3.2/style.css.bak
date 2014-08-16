@@ -1,0 +1,14 @@
+@import "../../general.css";
+@import "flavors/default/spgm_style.css";
+
+body {
+  background-image:url("../../images/2k2_bg.jpg");
+  background-color: #efefef;
+  color: #cccccc;
+  font-family: verdana, arial, "sans-serif";
+  text-align: center;
+}
+
+h1 {
+  font-size: 18pt;
+}

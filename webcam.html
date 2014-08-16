@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>VisionGS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0033CC" vlink="#0033CC" alink="#0033CC">
+<p align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="5"><b>VisionGS
+  Webcam Example</b></font></p>
+<center>
+<!-- visionGS Still Code Begin -->
+<IMG src="webCamera.jpg" width="320" height="240" border="1" name="visiongs" onload="LoadImg()" onerror="ErrorImg()">
+<SCRIPT language="JavaScript" type="text/javascript">
+<!--
+var t = 300 // interval in seconds
+imgsrc = "";
+image = "webCamera.jpg" //name of the image
+function ErrorImg() {
+setTimeout("LoadImg()", t*1000)
+}
+function LoadImg() {
+if (imgsrc == "") imgsrc = document.images.visiongs.src;
+tmp = new Date();
+tmp = "?"+tmp.getTime()
+document.images.visiongs.src = imgsrc+tmp
+setTimeout("LoadImg()", t*1000)
+}
+// -->
+</SCRIPT>
+ <!-- visionGS Still Code End -->
+  <p><a href="http://www.visiongs.de/"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">VisionGS
+    Webcam Software</font></a></p>
+  <p>&nbsp;</p>
+</center>
+</body>
+</html>
