@@ -1,0 +1,24 @@
+P {
+	FONT-FAMILY: Verdana, Helvetica, Arial, Sans; FONT-SIZE: x-small; FONT-STYLE: normal; FONT-WEIGHT: normal
+}
+A {
+	COLOR: blue; FONT-FAMILY: Verdana, Helvetica, Arial, Sans; FONT-SIZE: x-small; FONT-STYLE: italic; FONT-WEIGHT: normal
+}
+A:visited {
+	COLOR: gray; FONT-FAMILY: Verdana, Helvetica, Arial, Sans; FONT-SIZE: x-small; FONT-STYLE: italic; FONT-WEIGHT: normal
+}
+A:active {
+	COLOR: blue; FONT-FAMILY: Verdana, Helvetica, Arial, Sans; FONT-SIZE: x-small; FONT-STYLE: normal; FONT-WEIGHT: normal
+}
+A:hover {
+	COLOR: blue; FONT-FAMILY: Verdana, Helvetica, Arial, Sans; FONT-SIZE: x-small; FONT-STYLE: normal; FONT-WEIGHT: normal
+}
+BODY {
+	FONT-FAMILY: Verdana, Helvetica, Arial, Sans; FONT-SIZE: x-small; FONT-STYLE: normal; FONT-WEIGHT: normal
+}
+TD {
+	FONT-FAMILY: Verdana, Helvetica, Arial, Sans; FONT-SIZE: x-small; FONT-STYLE: normal; FONT-WEIGHT: normal
+}
+TH {
+	FONT-FAMILY: Verdana, Helvetica, Arial, Sans; FONT-SIZE: x-small; FONT-STYLE: normal; FONT-WEIGHT: bold
+}

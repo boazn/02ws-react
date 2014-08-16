@@ -1,0 +1,44 @@
+<?php
+
+# add <meta content="text/html; charset=windows-1251" http-equiv=Content-Type />
+
+# link to SPGM
+$cfg['locale']['spgmLink'] = 'Галерията е създадена от >SPGM_LINK<';
+
+# thumbnails navi bar
+$cfg['locale']['thumbnailNaviBar'] = 'Страница >CURRENT_PAGE< от >NB_PAGES<';
+
+# filter label
+$cfg['locale']['filter'] = 'филтър';
+
+# filter value for 'new pictures'
+$cfg['locale']['filterNew'] = 'нови';
+
+# filter value for 'all pictures'
+$cfg['locale']['filterAll'] = 'всички';
+
+# filter value for 'slideshow'
+$cfg['locale']['filterSlideshow'] = 'Slideshow';
+
+# pictures navi bar
+$cfg['locale']['pictureNaviBar'] = 'Изображение >CURRENT_PIC< на >NB_PICS<';
+
+# picture label (as in '1 picture')
+$cfg['locale']['picture'] = 'изображение';
+
+# pictures label (as in '2 pictures')
+$cfg['locale']['pictures'] = 'изображение';
+
+# new picture label (as in '1 new picture')
+$cfg['locale']['newPicture'] = 'ново изображение';
+
+# new pictures label (as in '2 new pictures')
+$cfg['locale']['newPictures'] = 'нови изображения';
+
+# new gallery label
+$cfg['locale']['newGallery'] = 'нова галерия';
+
+# main gallery label
+$cfg['locale']['rootGallery'] = 'Основна галерия';
+
+?>

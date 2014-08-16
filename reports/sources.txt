@@ -1,0 +1,27 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on 30-09-2010
+THESE DATA CAN BE USED FREELY PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED:
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://eca.knmi.nl
+
+FILE FORMAT (MISSING VALUE CODE IS -9999):
+
+ 01- 06 STAID  : Station identifier
+ 07- 12 SOUID  : Source identifier
+ 14- 53 SOUNAME: Source name
+ 55- 56 CN     : Country code (ISO3116 country codes)
+ 58- 66 LAT    : Latitude in degrees:minutes:seconds (+: North, -: South)
+ 68- 76 LON    : Longitude in degrees:minutes:seconds (+: East, -: West)
+ 78- 81 HGHT   : Station elevation in meters
+ 83- 86 ELEI   : Element identifier (see website at Daily Data > Data dictionary > Elements)
+ 88- 95 BEGIN  : Begin date YYYYMMDD
+ 97-104 END    : End date YYYYMMDD
+106-110 PARID  : Participant identifier
+112-162 PARNAME: Participant name
+
+STAID, SOUID,SOUNAME                                 ,CN,      LAT,      LON,HGHT,ELEI,   BEGIN,     END,PARID,PARNAME
+
+  132,100476,JERUSALEM CENTRAL                       ,IL,+31:46:00,+35:13:00, 815, TX2,19640102,19960331,   18,Avner Furshpan                                    
+  132,100479,JERUSALEM CENTRAL                       ,IL,+31:46:00,+35:13:00, 815, TX2,19960402,20041231,   18,Avner Furshpan                                    

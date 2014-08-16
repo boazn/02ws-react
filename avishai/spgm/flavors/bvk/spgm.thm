@@ -1,0 +1,29 @@
+<?php
+
+###########################################
+#       BVK theme file
+#
+################# by Braden Kuznia ########
+
+# the gallery icon (small size)
+$cfg['theme']['gallerySmallIcon'] = 'gal.png';
+
+# the gallery icon (thumbnail size)
+$cfg['theme']['galleryBigIcon'] = 'gal.png';
+
+# the image that highlights new pictures
+$cfg['theme']['newItemIcon'] = 'new.png';
+
+# previous picture button icon
+$cfg['theme']['previousPictureIcon'] = 'previous_pic.png';
+
+# next picture button icon
+$cfg['theme']['nextPictureIcon'] = 'next_pic.png';
+
+# previous thumnail page button icon
+$cfg['theme']['previousPageIcon'] = 'previous_page.png';
+
+# next thumnail page button icon
+$cfg['theme']['nextPageIcon'] = 'next_page.png';
+
+?>

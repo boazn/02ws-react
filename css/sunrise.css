@@ -1,0 +1,41 @@
+
+body {
+    background-image:url("../img/bg_sunrise.png");
+    background-repeat:repeat;
+    color:#000;
+}
+
+.cloud1, .cloud2, .cloud3, .cloud4, .cloud-big
+{
+    background-color: #D8E9E3;
+    background-image: -webkit-linear-gradient(top, #D8E9E3, #B1D5D9);
+    background-image: -moz-linear-gradient(top, #D8E9E3, #B1D5D9);
+    background-image: -ms-linear-gradient(top, #D8E9E3, #B1D5D9);
+    background-image: -o-linear-gradient(top, #D8E9E3, #B1D5D9);
+}
+
+cloud1:after, .cloud3:after, .cloud4:after, .cloud2:after, .cloud-big:after,
+.cloud1:before, .cloud2:before, .cloud3:before, .cloud4:before, .cloud-big:before {
+     background-color: #D8E9E3;
+    background-image: -webkit-linear-gradient(top, #F2F5EA, #B9D6D6);
+    background-image: -moz-linear-gradient(top, #F2F5EA, #B9D6D6);
+    background-image: -ms-linear-gradient(top, #F2F5EA, #B9D6D6);
+    background-image: -o-linear-gradient(top, #F2F5EA, #B9D6D6);
+}
+
+.cloud1-more, .cloud2-more, .cloud3-more, .cloud4-more, .cloud-big-more, .cloud3-more:after, .cloud4-more:after {
+    background-color: #D8E9E3;
+    background-image: -webkit-linear-gradient(top, #FFFCED, #B9D6D6);
+    background-image: -moz-linear-gradient(top, #FFFCED, #B9D6D6);
+    background-image: -ms-linear-gradient(top, #FFFCED, #B9D6D6);
+    background-image: -o-linear-gradient(top, #FFFCED, #B9D6D6);
+}
+
+.cloud1-more:before, .cloud2-more:before, .cloud2-more:after, .cloud3-more:before, .cloud4-more:before,
+.cloud-big-more:before, .cloud-big-more:after, .cloud1-more:after {
+    background-color: #D8E9E3;
+    background-image: -webkit-linear-gradient(top, #FFFCED, #C8E1DF);
+    background-image: -moz-linear-gradient(top, #FFFCED, #C8E1DF);
+    background-image: -ms-linear-gradient(top, #FFFCED, #C8E1DF);
+    background-image: -o-linear-gradient(top, #FFFCED, #C8E1DF);
+}

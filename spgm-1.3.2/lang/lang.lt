@@ -1,0 +1,42 @@
+<?php
+
+# link to SPGM
+$cfg['locale']['spgmLink'] = 'galerija sukurta >SPGM_LINK<';
+
+# thumbnails navi bar
+$cfg['locale']['thumbnailNaviBar']  = 'Puslapis >CURRENT_PAGE< i¹ >NB_PAGES<';
+
+# filter label
+$cfg['locale']['filter'] = 'filtras';
+
+# filter value for 'new pictures'
+$cfg['locale']['filterNew'] = 'naujos';
+
+# filter value for 'all pictures'
+$cfg['locale']['filterAll'] = 'visos';
+
+# filter value for 'slideshow'
+$cfg['locale']['filterSlideshow'] = 'Slideshow';
+
+# pictures navi bar
+$cfg['locale']['pictureNaviBar'] = 'nuotrauka >CURRENT_PIC< i¹ >NB_PICS<';
+
+# picture label (as in '1 picture')
+$cfg['locale']['picture'] = 'nuotrauk.';
+
+# pictures label (as in '2 pictures')
+$cfg['locale']['pictures'] = 'nuotrauk.';
+
+# new picture label (as in '1 new picture')
+$cfg['locale']['newPicture'] = 'nauja nuotrauk.';
+
+# new pictures label (as in '2 new pictures')
+$cfg['locale']['newPictures'] = 'naujos nuotrauk.';
+
+# new gallery label
+$cfg['locale']['newGallery'] = 'nauja galerija';
+
+# main gallery label
+$cfg['locale']['rootGallery'] = 'Pagrindine galerija';
+
+?>

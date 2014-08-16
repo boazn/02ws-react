@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<wml>
+
+<head>
+<meta name="keywords" content="wap, wml, xml, Jerusalem, Weather, Station, Israel" />
+<meta name="description" content="Jerusalem weather station" />
+</head>
+
+<card id="latest" title="Jerusalem Weather station">
+<p>
+Jerusalem,   820 m<br/>
+19:30 18/01/06<br/>
+
+Temp: 6.6 C<br/>
+Hum: 85%<br/>
+Windspeed: 6.1 kts<br/>
+Dir:  222 SW<br/>
+Bar: 1021.7 mb<br/>
+Daily rain: 12.2 mm<br/>
+maxTemp: 7.8°C (15:41)<br/>
+minTemp: 4.8°C ( 6:22)<br/>
+maxWindSpeed: 33.0kt at  6:59<br/>
+</p>
+</card>
+
+<card id="sun" title="Sun and Moon">
+<p>
+sun rise time:   6:38<br/>
+sunset time: 17:00<br/>
+</p>
+</card>
+
+<card id="contact" title="Contact">
+<p>
+Email: boazn1@013.net.il<br/>
+phone: +972-54-4854456<br/>
+Address: 25 Canada Hill St., Jerusalem, Israel<br/>
+</p>
+</card>
+
+</wml>

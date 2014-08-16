@@ -1,0 +1,82 @@
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+	<title>02WS</title>
+	<link>http://www.02ws.com</link>
+	<description>Updates every 10 min</description>
+	<language>en-us</language>
+	<docs>http://www.02ws.com/station.php</docs>
+	<generator>Boaz Nechemia</generator>
+	<managingEditor>02ws.yerushamaim@gmail.com</managingEditor>
+	<webMaster>02ws.yerushamaim@gmail.com</webMaster>
+	<ttl>10</ttl>
+	<image>
+	<width>144</width>
+	<height>50</height>
+	<url>http://www.02ws.com/images/header/header_small1_text.jpg</url>
+	<title>Jerusalem Live Pic</title>
+	<link>http://www.02ws.com/station.php?section=webCamera.jpg</link>
+	</image>
+	<item>
+		<title>16:18 Sun 12/08/12 30.3&#176;C</title>
+		<link>http://www.02ws.com</link>
+		<description>Jerusalem: Temperature 30.3 ; [14:00]  Hi: 32.1&#176;C ; [04:01]  Lo: 21.9&#176;C</description>
+		<content:encoded>
+		<![CDATA[
+		<br />Height 755m<br />
+		16:18 Sun 12/08/12<br />
+		<img src="http://www.02ws.com/images/profile1/OutsideTempHistory.gif"></img><br />
+		<br /> 
+		Pressure 1005.56mb <br />
+		Wind 7.0 ktsWSW<br />
+				
+		]]>
+		</content:encoded>
+		<author>02ws.yerushamaim@gmail.com</author>
+		<guid>http://www.02ws.com/station.php#webCamera</guid>
+	</item>
+	<item>
+		<title>Humidity: 39%</title>
+		<link>http://www.02ws.com</link>
+		<description>Jerusalem: Humidity: [04:29]  Hi: 48% ; 
+		[09:14]  Lo:  30%</description>
+		<content:encoded>
+		<![CDATA[
+		<br />Height 755m<br />
+		16:18 Sun 12/08/12<br />
+		<img src="http://www.02ws.com/images/profile1/OutsideHumidityHistory.gif"></img>
+		
+		]]>
+		</content:encoded>
+		<author>02ws.yerushamaim@gmail.com</author>
+		<guid>http://www.02ws.com/station.php#OutsideHumidityHistory</guid>
+	</item>
+	<item>
+		<title>Jerusalem Daily rain: 0.0mm</title>
+		<link>http://www.02ws.com</link>
+		<description>Jerusalem: Humidity: 39% Daily rain: 0.0mm</description>
+		<content:encoded>
+		<![CDATA[
+		16:18 Sun 12/08/12<br />
+		<img src="http://www.02ws.com/images/profile1/RainHistory.gif"></img>
+		
+		
+		]]>
+		</content:encoded>
+		<author>02ws.yerushamaim@gmail.com</author>
+		<guid>http://www.02ws.com/station.php#OutsideRainHistory</guid>
+	</item>
+	<item>
+		<title>Jerusalem sun rise:  06:02 sun set: 19:26</title>
+		<link>http://www.02ws.com</link>
+		<description>Jerusalem: Humidity: 39% Daily rain: 0.0mm</description>
+		<content:encoded>
+		<![CDATA[
+		
+		
+		]]>
+		</content:encoded>
+		<author>02ws.yerushamaim@gmail.com</author>
+		<guid>http://www.02ws.com/station.php</guid>
+	</item>
+</channel>
+</rss>

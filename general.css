@@ -1,0 +1,402 @@
+BODY
+{
+    FONT-SIZE: 12px;
+	position: relative;
+	MARGIN: 0;
+	PADDING: 0;
+    BACKGROUND: url(images/) #304a5c fixed 0px 0px;
+    COLOR: #cccccc;
+    FONT-FAMILY: Franklin Gothic Book, Verdana, Arial, serif
+}
+.tbl
+{
+	MARGIN: 0;
+    BACKGROUND: #3a5a70;
+    TEXT-ALIGN: center;
+	PADDING: 2px;
+}
+.toptbl
+{
+    BORDER: gray 1px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 1.2em;
+    HEIGHT: 30px;
+	PADDING: 4px;
+	BACKGROUND: url(images/) #42667D fixed 1px 1px;
+    TEXT-ALIGN: center;
+	
+}
+.glow
+{
+	height: 1.1em;
+	filter: Shadow(Color=#42667D, Direction=135, Strength=8);
+	line-height: 1em;
+}
+.glow:before {
+  display: block;
+  margin: 0 0 -2.12em 0.15em;
+  padding: 0;
+  color: #666666; 
+}
+#header2
+{
+	BACKGROUND: url(images/header_gradient.gif) repeat-x;
+}
+.grad
+{
+	BACKGROUND-IMAGE: url(buttongradient.php?bg2=466c86&bg=00314a&width=212&height=55);
+	TEXT-ALIGN: center
+}
+A
+{
+    FONT-WEIGHT: bold;
+    COLOR: #accbd5;
+    TEXT-DECORATION: none
+}
+A:hover
+{
+    COLOR: lime
+}
+A.hlink
+{
+    BACKGROUND: none transparent scroll repeat 0% 0%
+}
+TR.smalltbl
+{
+    FONT-SIZE: 0.85em;
+    BACKGROUND: #3a5a70;
+    TEXT-ALIGN: center
+}
+#main_table
+{
+    BACKGROUND: inherit;
+}
+TABLE
+{
+    FONT-SIZE: 1em;
+	border: none;
+}
+Table.box
+{
+	BORDER: gray 1px solid;
+}
+TD
+{
+	border: none;
+}
+TR
+{
+    COLOR: #dcdfe2;
+}
+TH
+{
+	BORDER-RIGHT: black 1px;
+    BACKGROUND-POSITION: 0% 0%;
+    BORDER-TOP: black 1px;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 1.1em;
+    BACKGROUND-ATTACHMENT: scroll;
+    BACKGROUND-IMAGE: url(button.php?R=66&G=102&B=125&width=212&height=25);
+    BORDER-LEFT: black 1px;
+    BORDER-BOTTOM: black 1px;
+    BACKGROUND-REPEAT: repeat;
+    HEIGHT: 25px;
+    TEXT-ALIGN: center
+}
+TR.smalltbl:hover
+{
+    BACKGROUND-COLOR: #466c86
+}
+TR.tbl:hover
+{
+    BACKGROUND-COLOR: #466c86
+}
+
+
+TD.smalltbl
+{
+    FONT-SIZE: 0.8em;
+    TEXT-ALIGN: center
+}
+TR.space
+{
+    HEIGHT: 5px
+}
+.hr
+{
+	height:8px;
+	border: none;
+	color:transparent;
+	background-color:transparent;
+}
+
+.info
+{
+    POSITION: relative;
+    TEXT-ALIGN: center;
+    TEXT-DECORATION: none
+}
+.info:hover
+{
+    BACKGROUND: transparent;
+    COLOR: #411;
+	Z-INDEX: 1;
+}
+.info SPAN
+{
+    DISPLAY: none
+}
+.info:hover SPAN
+{
+	BACKGROUND-COLOR: #00314a;
+    BORDER-RIGHT: gray 1px dashed;
+    BORDER-TOP: gray 1px dashed;
+    DISPLAY: block;
+    FONT-SIZE: 0.8em;
+    LEFT: -2em;
+    BORDER-LEFT: gray 1px dashed;
+    WIDTH: 13em;
+    COLOR: #cccccc;
+    BORDER-BOTTOM: gray 1px dashed;
+    POSITION: absolute;
+    TOP: 2em;
+    TEXT-ALIGN: center
+}
+IMG
+{
+    BORDER-RIGHT: #accbd5 1px;
+    BORDER-TOP: #accbd5 1px;
+    BORDER-LEFT: #accbd5 1px;
+    BORDER-BOTTOM: #accbd5 1px
+}
+.border1
+{
+    BORDER-RIGHT: lime 4px solid;
+    BORDER-TOP: lime 4px solid;
+    BORDER-LEFT: lime 4px solid;
+    BORDER-BOTTOM: lime 4px solid
+}
+.raincontaniner
+{
+    BACKGROUND-COLOR: #3a5a70;
+	BORDER-RIGHT: gray 1px solid;
+    PADDING-RIGHT: 1px;
+    BORDER-TOP: gray 1px solid;
+    DISPLAY: inline;
+    PADDING-LEFT: 1px;
+    FLOAT: left;
+    PADDING-BOTTOM: 1px;
+    MARGIN: 1px;
+    BORDER-LEFT: gray 1px solid;
+    COLOR: #cccccc;
+    PADDING-TOP: 1px;
+    BORDER-BOTTOM: gray 1px solid;
+    TEXT-DECORATION: none
+}
+.small
+{
+    FONT-SIZE: 0.9em
+}
+.verysmall
+{
+    FONT-SIZE: 0.7em
+}
+.afont
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 1.1em;
+    FONT-FAMILY: Comic Sans MS, Garamond, Verdana;
+    text-shadow: 0.2em 0.2em
+}
+.big
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 1.3em
+}
+.high
+{
+    COLOR: #F96959
+}
+.low
+{
+    COLOR: #00ccff
+}
+.less
+{
+    COLOR: #ffff00
+}
+.more
+{
+    COLOR: #33ff33
+}
+.indexLow
+{
+    FONT-SIZE: 0.8em;
+    BACKGROUND: #669900;
+    COLOR: #000000
+}
+.indexMedium
+{
+    FONT-SIZE: 0.8em;
+    BACKGROUND: #99FF00;
+    COLOR: #000000
+}
+.indexHigh
+{
+    FONT-SIZE: 0.8em;
+    BACKGROUND: #FFCC00;
+    COLOR: #000000
+}
+.indexExtreme
+{
+    FONT-SIZE: 0.8em;
+    BACKGROUND: #FF0000;
+    COLOR: #000000
+}
+.excludetopborder
+{
+    BORDER-RIGHT: #84baca 1px dashed;
+    BORDER-LEFT: #84baca 1px dashed;
+    BORDER-BOTTOM: #84baca 1px dashed
+}
+#rainwrapper
+{
+    VISIBILITY: hidden;
+    POSITION: absolute
+}
+#daily
+{
+    VISIBILITY: hidden;
+    POSITION: absolute
+}
+#modelbar
+{
+    VISIBILITY: hidden;
+    POSITION: absolute;
+    TOP: 120px
+}
+#searchbar
+{
+    POSITION: absolute
+}
+#navcontainer
+{
+    POSITION: absolute
+}
+#navcontainer UL
+{
+    PADDING-LEFT: 0px;
+    FLOAT: left;
+    MARGIN-LEFT: 0px;
+    WIDTH: 100%;
+    COLOR: #001e3e;
+    FONT-FAMILY: arial, helvetica, sans-serif;
+    BACKGROUND-COLOR: transparent;
+    TEXT-ALIGN: center
+}
+#navcontainer UL LI
+{
+    DISPLAY: inline
+}
+#navcontainer UL LI A
+{
+    BORDER-RIGHT: #fff 1px solid;
+    PADDING-RIGHT: 1em;
+    PADDING-LEFT: 1em;
+    FLOAT: left;
+    PADDING-BOTTOM: 0.2em;
+    COLOR: #001e3e;
+    PADDING-TOP: 0.2em;
+    BACKGROUND-COLOR: transparent;
+    TEXT-DECORATION: none
+}
+#navcontainer UL LI A:hover
+{
+	BACKGROUND-COLOR: inherit;
+    COLOR: #9cb4d8;
+}
+.nav
+{
+	margin: 0;
+	padding: 0;
+}
+
+.nav ul { /* all lists */
+	padding: 0;
+	list-style: none;
+	overflow:visible;
+	Z-INDEX: 50;
+	
+}
+
+.nav li { /* all list items */
+	 Z-INDEX: 50;
+	 list-style: none;
+	 position: relative;
+     float:left;
+     background-color:transparent;
+     height:auto;
+	 padding: 0.3em;
+     margin: 0.1em;
+     border-right: #42667D 1px solid;
+	 color:#3a5a70;
+}
+.nav li:hover 
+{
+	background-color:#3a5a70;
+}
+
+.nav li ul { /* second-level lists */
+	Z-INDEX: 50;
+	display: none;
+	position: absolute;
+	top: 1.5em;
+	left: -4em;
+	width:11em;
+	background-color:#3a5a70;
+	color:#42667D;
+}
+.nav li ul li
+{
+	float:none;
+	width:11em;
+	padding: 0.2em;
+    margin: 0.2em;
+	border-bottom: #304a5c 1px solid;
+	border-right: none;
+}
+.nav li ul li a
+{
+	display:block;
+}
+.nav a:hover
+{
+	background-color:#304a5c;
+	color:#42667D;
+}
+/* non-IE browsers see this */
+.nav ul li>ul, .nav ul ul li>ul{
+     
+}
+
+.nav li:hover ul ul, 
+.nav li:hover ul ul ul, 
+.nav li:hover ul ul ul ul, 
+.nav li:hover ul ul ul ul ul{
+     display:none;
+}
+
+.nav li:hover ul, 
+.nav ul li:hover ul, 
+.nav ul ul li:hover ul, 
+.nav ul ul ul li:hover ul, 
+.nav ul ul ul ul li:hover ul{
+     display:block;
+}
+
+li>ul {
+     top: auto;
+     left: auto;
+}
+
+

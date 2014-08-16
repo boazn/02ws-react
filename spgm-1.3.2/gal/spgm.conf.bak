@@ -1,0 +1,26 @@
+<?php
+
+  $cfg['conf']['newStatusDuration'] = 30;
+  $cfg['conf']['thumbnailsPerPage'] = 10;
+  $cfg['conf']['thumbnailsPerRow'] = 5;
+  $cfg['conf']['galleryListingCols'] = 1;
+  $cfg['conf']['galleryCaptionPos'] = BOTTOM;
+  $cfg['conf']['subGalleryLevel'] = 0;
+  $cfg['conf']['gallerySortType'] = SORTTYPE_CREATION_DATE;
+  $cfg['conf']['gallerySortOptions'] = SORT_DESCENDING;
+  $cfg['conf']['pictureSortType'] = SORTTYPE_CREATION_DATE;
+  $cfg['conf']['pictureSortOptions'] = SORT_DESCENDING;
+  $cfg['conf']['pictureInfoedThumbnails'] = true;
+  $cfg['conf']['captionedThumbnails'] = true;
+  $cfg['conf']['popupPictures'] = true;
+  $cfg['conf']['popupWidth'] = 800;
+  $cfg['conf']['popupHeight'] = 600;
+  $cfg['conf']['filters'] = 't';
+  $cfg['conf']['zoomFactors'] = array(50, 100, 150);
+  $cfg['conf']['galleryIconType'] = GALICON_RANDOM;
+  $cfg['conf']['galleryIconHeight'] = 40;
+  $cfg['conf']['galleryIconWidth'] = ORIGINAL_SIZE;
+  //$cfg['conf']['language'] = 'en';
+  //$cfg['conf']['theme'] = '';
+
+?>

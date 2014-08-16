@@ -1,0 +1,256 @@
+[Sat Dec 22 20:49:28 2012] [error] [client 85.250.139.7] File does not exist: /home/boazn/public/02ws.com/public/undefined, referer: http://www.02ws.com/station.php
+[Sat Dec 22 20:50:12 2012] [error] [client 82.205.48.179] File does not exist: /home/boazn/public/02ws.com/public/cache/24010fa818d7467956ae1d919a2ca15d, referer: http://www.02ws.com/station.php
+[Sat Dec 22 20:50:24 2012] [error] [client 82.205.48.179] File does not exist: /home/boazn/public/02ws.com/public/cache/24010fa818d7467956ae1d919a2ca15d, referer: http://www.02ws.com/station.php?&lang=0
+[Sat Dec 22 20:50:42 2012] [error] [client 213.57.92.179] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72-precomposed.png
+[Sat Dec 22 20:50:42 2012] [error] [client 213.57.92.179] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72.png
+[Sat Dec 22 20:50:42 2012] [error] [client 213.57.92.179] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 20:50:42 2012] [error] [client 213.57.92.179] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 20:51:49 2012] [error] [client 46.19.80.140] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 20:51:50 2012] [error] [client 46.19.80.140] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 20:51:52 2012] [error] [client 213.57.92.179] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72-precomposed.png
+[Sat Dec 22 20:51:52 2012] [error] [client 213.57.92.179] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72.png
+[Sat Dec 22 20:51:52 2012] [error] [client 213.57.92.179] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 20:51:52 2012] [error] [client 213.57.92.179] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 20:52:56 2012] [error] [client 82.205.48.179] File does not exist: /home/boazn/public/02ws.com/public/cache/24010fa818d7467956ae1d919a2ca15d, referer: http://www.02ws.com/station.php
+[Sat Dec 22 20:53:08 2012] [error] [client 82.205.48.179] File does not exist: /home/boazn/public/02ws.com/public/cache/24010fa818d7467956ae1d919a2ca15d, referer: http://www.02ws.com/station.php?&lang=0
+[Sat Dec 22 20:57:08 2012] [error] [client 84.108.104.87] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72-precomposed.png
+[Sat Dec 22 20:57:08 2012] [error] [client 84.108.104.87] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72.png
+[Sat Dec 22 20:57:08 2012] [error] [client 84.108.104.87] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 20:57:08 2012] [error] [client 84.108.104.87] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 20:58:08 2012] [error] [client 2.55.112.98] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114-precomposed.png
+[Sat Dec 22 20:58:09 2012] [error] [client 2.55.112.98] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114.png
+[Sat Dec 22 20:58:10 2012] [error] [client 2.55.112.98] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 20:58:10 2012] [error] [client 2.55.112.98] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 20:59:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72-precomposed.png
+[Sat Dec 22 20:59:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72.png
+[Sat Dec 22 20:59:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 20:59:09 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:01:04 2012] [error] [client 37.26.146.157] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:01:05 2012] [error] [client 37.26.146.157] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:04:06 2012] [error] [client 87.68.163.162] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114-precomposed.png
+[Sat Dec 22 21:04:06 2012] [error] [client 87.68.163.162] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114.png
+[Sat Dec 22 21:04:06 2012] [error] [client 87.68.163.162] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:04:07 2012] [error] [client 87.68.163.162] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:04:32 2012] [error] [client 94.159.137.201] File does not exist: /home/boazn/public/02ws.com/public/cache/11838d63c01492cc608014c27e33a644, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:04:41 2012] [error] [client 46.116.180.200] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114-precomposed.png
+[Sat Dec 22 21:04:41 2012] [error] [client 46.116.180.200] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114.png
+[Sat Dec 22 21:04:41 2012] [error] [client 46.116.180.200] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:04:42 2012] [error] [client 46.116.180.200] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:05:12 2012] [error] [client 85.65.98.115] File does not exist: /home/boazn/public/02ws.com/public/undefined, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:08:16 2012] [error] [client 84.228.80.97] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114-precomposed.png
+[Sat Dec 22 21:08:17 2012] [error] [client 84.228.80.97] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114.png
+[Sat Dec 22 21:08:17 2012] [error] [client 84.228.80.97] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:08:18 2012] [error] [client 84.228.80.97] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:09:30 2012] [error] [client 217.114.79.90] File does not exist: /home/boazn/public/02ws.com/public/images/ta7day.jpg
+[Sat Dec 22 21:09:51 2012] [error] [client 46.120.240.103] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:09:52 2012] [error] [client 212.76.103.146] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:16:49 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72-precomposed.png
+[Sat Dec 22 21:16:49 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72.png
+[Sat Dec 22 21:16:50 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:16:50 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:18:33 2012] [error] [client 89.139.244.133] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:19:19 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72-precomposed.png
+[Sat Dec 22 21:19:20 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72.png
+[Sat Dec 22 21:19:20 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:19:20 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:23:28 2012] [error] [client 213.8.7.236] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:23:33 2012] [error] [client 109.67.22.53] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:23:33 2012] [error] [client 79.179.182.85] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:23:34 2012] [error] [client 79.179.182.85] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:23:43 2012] [error] [client 37.60.43.130] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=survey.php&survey_id=1&lang=1
+[Sat Dec 22 21:23:45 2012] [error] [client 79.179.173.188] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:23:50 2012] [error] [client 217.132.109.226] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=forecast.php&lang=0
+[Sat Dec 22 21:23:52 2012] [error] [client 217.132.109.226] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-144x144-precomposed.png
+[Sat Dec 22 21:23:52 2012] [error] [client 217.132.109.226] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-144x144.png
+[Sat Dec 22 21:23:53 2012] [error] [client 217.132.109.226] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:23:53 2012] [error] [client 217.132.109.226] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:23:53 2012] [error] [client 87.69.136.214] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:02 2012] [error] [client 95.86.123.47] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:02 2012] [error] [client 95.86.123.47] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:05 2012] [error] [client 109.66.12.45] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:06 2012] [error] [client 37.60.43.130] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=survey.php&survey_id=1&lang=1
+[Sat Dec 22 21:24:06 2012] [error] [client 82.102.207.67] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:07 2012] [error] [client 212.76.116.194] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=webCamera.jpg&lang=1
+[Sat Dec 22 21:24:07 2012] [error] [client 46.116.231.60] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:10 2012] [error] [client 66.249.75.148] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717
+[Sat Dec 22 21:24:11 2012] [error] [client 87.69.136.214] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:24:11 2012] [error] [client 87.69.136.214] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:24:12 2012] [error] [client 212.179.87.186] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:16 2012] [error] [client 79.176.168.203] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=radar.php&lang=1
+[Sat Dec 22 21:24:16 2012] [error] [client 87.69.103.169] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:17 2012] [error] [client 79.176.168.203] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=radar.php&lang=1
+[Sat Dec 22 21:24:21 2012] [error] [client 87.69.240.16] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:30 2012] [error] [client 77.126.103.226] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:34 2012] [error] [client 84.108.105.160] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:36 2012] [error] [client 46.116.155.104] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:40 2012] [error] [client 93.173.182.94] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:41 2012] [error] [client 87.69.103.169] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=radar.php&lang=1
+[Sat Dec 22 21:24:42 2012] [error] [client 95.86.104.8] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:43 2012] [error] [client 212.76.116.194] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=faq.php&lang=1
+[Sat Dec 22 21:24:50 2012] [error] [client 77.126.103.226] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=graph.php&graph=rain.php&profile=1&lang=1&tempunit=C&style=
+[Sat Dec 22 21:24:51 2012] [error] [client 85.130.179.177] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:24:52 2012] [error] [client 79.181.112.201] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:24:57 2012] [error] [client 37.142.189.28] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:25:20 2012] [error] [client 62.219.114.196] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:25:21 2012] [error] [client 85.65.20.218] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:25:32 2012] [error] [client 213.151.46.226] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:25:34 2012] [error] [client 93.172.44.153] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:25:35 2012] [error] [client 84.111.189.229] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:25:57 2012] [error] [client 87.68.56.156] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:25:57 2012] [error] [client 213.57.140.81] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:01 2012] [error] [client 46.116.220.75] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:01 2012] [error] [client 46.116.220.75] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:07 2012] [error] [client 79.176.203.178] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:08 2012] [error] [client 37.46.44.5] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:11 2012] [error] [client 132.64.43.94] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:14 2012] [error] [client 212.76.116.194] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=openclosewindow.php&lang=1
+[Sat Dec 22 21:26:17 2012] [error] [client 87.69.153.89] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:17 2012] [error] [client 79.176.18.198] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:21 2012] [error] [client 95.86.89.41] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:26:28 2012] [error] [client 212.76.116.194] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:26:32 2012] [error] [client 185.3.147.210] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=forecast.php&lang=1
+[Sat Dec 22 21:26:34 2012] [error] [client 31.210.190.150] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:36 2012] [error] [client 46.253.83.139] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:26:37 2012] [error] [client 151.252.96.250] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:37 2012] [error] [client 46.19.81.138] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:37 2012] [error] [client 46.253.83.139] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:26:40 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:26:41 2012] [error] [client 89.139.169.109] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114-precomposed.png
+[Sat Dec 22 21:26:41 2012] [error] [client 89.139.169.109] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114.png
+[Sat Dec 22 21:26:42 2012] [error] [client 79.183.25.36] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:42 2012] [error] [client 89.139.169.109] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:26:42 2012] [error] [client 194.90.37.109] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:42 2012] [error] [client 89.139.169.109] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:26:43 2012] [error] [client 194.90.37.109] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:26:55 2012] [error] [client 151.252.96.250] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?&lang=0
+[Sat Dec 22 21:27:02 2012] [error] [client 2.55.131.93] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:02 2012] [error] [client 46.19.80.133] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:03 2012] [error] [client 84.108.108.187] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:07 2012] [error] [client 95.35.62.141] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=radar.php&lang=1
+[Sat Dec 22 21:27:10 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:27:11 2012] [error] [client 87.69.153.89] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:19 2012] [error] [client 84.108.145.169] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:25 2012] [error] [client 85.65.52.200] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:27 2012] [error] [client 87.68.56.156] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=webCamera.jpg&lang=1
+[Sat Dec 22 21:27:28 2012] [error] [client 95.35.62.141] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:27:34 2012] [error] [client 87.69.153.89] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:41 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 716, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:27:41 2012] [error] [client 87.69.153.89] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:42 2012] [error] [client 46.117.36.153] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:27:48 2012] [error] [client 31.44.132.212] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:27:54 2012] [error] [client 87.68.153.33] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:54 2012] [error] [client 87.68.153.33] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:27:57 2012] [error] [client 2.54.230.24] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:28:11 2012] [error] [client 87.69.153.89] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:28:15 2012] [error] [client 89.139.12.170] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:28:28 2012] [error] [client 46.116.182.79] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:28:40 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:28:41 2012] [error] [client 87.69.153.89] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:28:56 2012] [error] [client 79.183.172.80] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:29:11 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:29:11 2012] [error] [client 89.139.12.170] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:29:11 2012] [error] [client 87.69.153.89] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 716, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:29:15 2012] [error] [client 217.66.228.102] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?&lang=0
+[Sat Dec 22 21:29:16 2012] [error] [client 79.182.70.206] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:29:17 2012] [error] [client 109.186.155.41] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:29:22 2012] [error] [client 109.253.99.234] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:29:23 2012] [error] [client 89.139.12.170] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=reports/downld02.txt&lang=1
+[Sat Dec 22 21:29:33 2012] [error] [client 79.181.187.89] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:29:34 2012] [error] [client 79.181.187.89] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:29:39 2012] [error] [client 77.171.152.124] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=webCamera.jpg
+[Sat Dec 22 21:29:41 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:29:41 2012] [error] [client 87.69.153.89] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:29:43 2012] [error] [client 80.246.133.249] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114-precomposed.png
+[Sat Dec 22 21:29:49 2012] [error] [client 80.246.133.249] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-114x114.png
+[Sat Dec 22 21:29:50 2012] [error] [client 66.249.75.148] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715
+[Sat Dec 22 21:29:50 2012] [error] [client 95.35.63.47] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:29:53 2012] [error] [client 79.183.25.36] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=survey.php&survey_id=2&lang=1
+[Sat Dec 22 21:29:54 2012] [error] [client 93.172.111.105] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:30:01 2012] [error] [client 84.94.178.55] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:05 2012] [error] [client 89.139.12.170] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=./reports/NOAAMO.TXT&lang=1
+[Sat Dec 22 21:30:06 2012] [error] [client 93.172.35.150] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=forecast.php&lang=1
+[Sat Dec 22 21:30:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72-precomposed.png
+[Sat Dec 22 21:30:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72.png
+[Sat Dec 22 21:30:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:30:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:30:10 2012] [error] [client 213.151.44.14] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:12 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:30:15 2012] [error] [client 84.94.112.202] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:16 2012] [error] [client 217.132.214.229] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:18 2012] [error] [client 79.183.25.36] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=graph.php&graph=rain.php&profile=1&lang=1&tempunit=C&style=
+[Sat Dec 22 21:30:19 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72-precomposed.png
+[Sat Dec 22 21:30:19 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72.png
+[Sat Dec 22 21:30:19 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:30:19 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:30:20 2012] [error] [client 109.65.23.181] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:24 2012] [error] [client 93.186.31.83] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:30:28 2012] [error] [client 109.64.10.23] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:30 2012] [error] [client 37.60.47.113] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:30 2012] [error] [client 95.102.230.116] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=snow.php&lang=0
+[Sat Dec 22 21:30:32 2012] [error] [client 109.186.3.173] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:32 2012] [error] [client 212.76.116.194] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=webCamera.jpg&lang=1
+[Sat Dec 22 21:30:36 2012] [error] [client 213.151.55.75] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:42 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:30:42 2012] [error] [client 85.250.117.6] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:48 2012] [error] [client 77.126.112.71] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:51 2012] [error] [client 84.228.47.133] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=radar.php&lang=1
+[Sat Dec 22 21:30:53 2012] [error] [client 79.176.112.7] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:30:58 2012] [error] [client 95.102.230.116] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=snow.php&lang=0
+[Sat Dec 22 21:30:58 2012] [error] [client 84.109.136.96] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:04 2012] [error] [client 89.139.12.170] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=yesterday.php&lang=1
+[Sat Dec 22 21:31:07 2012] [error] [client 213.151.55.75] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:07 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72-precomposed.png
+[Sat Dec 22 21:31:07 2012] [error] [client 217.132.204.22] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-72x72.png
+[Sat Dec 22 21:31:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:31:08 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:31:12 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:31:12 2012] [error] [client 109.65.23.181] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=radar.php&lang=1
+[Sat Dec 22 21:31:17 2012] [error] [client 79.180.194.221] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:21 2012] [error] [client 84.108.108.187] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:24 2012] [error] [client 85.65.52.28] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:28 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:31:39 2012] [error] [client 79.176.168.148] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:42 2012] [error] [client 212.106.91.121] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:31:42 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:31:47 2012] [error] [client 94.159.184.56] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=picoftheday.php&lang=1
+[Sat Dec 22 21:31:49 2012] [error] [client 84.108.214.175] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:51 2012] [error] [client 5.144.60.190] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:53 2012] [error] [client 79.176.112.7] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=webCamera.jpg&lang=1
+[Sat Dec 22 21:31:57 2012] [error] [client 109.65.116.163] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:31:58 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:31:59 2012] [error] [client 213.151.63.66] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:32:02 2012] [error] [client 85.65.80.193] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?&lang=0
+[Sat Dec 22 21:32:02 2012] [error] [client 95.86.93.70] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=forecast.php&lang=1
+[Sat Dec 22 21:32:02 2012] [error] [client 109.186.121.80] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:32:04 2012] [error] [client 188.64.204.88] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:32:06 2012] [error] [client 84.111.189.229] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=radar.php&lang=1
+[Sat Dec 22 21:32:15 2012] [error] [client 87.68.26.246] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:32:22 2012] [error] [client 109.64.235.202] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=0
+[Sat Dec 22 21:32:24 2012] [error] [client 212.76.104.17] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:32:28 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:32:33 2012] [error] [client 95.86.86.134] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:32:42 2012] [error] [client 109.253.99.234] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:32:52 2012] [error] [client 212.76.126.19] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:32:58 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:33:08 2012] [error] [client 66.249.75.148] File does not exist: /home/boazn/public/02ws.com/public/images/profile60034
+[Sat Dec 22 21:33:11 2012] [error] [client 62.219.114.196] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:33:14 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 716, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:33:26 2012] [error] [client 212.143.99.204] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:33:28 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:33:30 2012] [error] [client 84.111.189.229] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?section=radar.php&lang=1
+[Sat Dec 22 21:33:41 2012] [error] [client 109.253.99.234] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php?section=graph&graph=RainHistory.gif&profile=1&lang=1
+[Sat Dec 22 21:33:58 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 717, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:34:19 2012] [error] [client 91.135.102.160] File does not exist: /home/boazn/public/02ws.com/public/images/winddir/wr----.png, referer: http://www.02ws.com/station.php
+[Sat Dec 22 21:34:28 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:34:58 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:35:28 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 716, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:35:58 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 715, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:36:04 2012] [error] [client 84.108.108.187] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/boazn/public/02ws.com/public/updateForecast.php:273) in /home/boazn/public/02ws.com/public/requiredDBTasks.php on line 5, referer: http://www.02ws.com/station.php?section=updateForecast.php
+[Sat Dec 22 21:36:24 2012] [error] [client 109.64.18.189] File does not exist: /home/boazn/public/02ws.com/public/images/profile1/RainHistory, referer: http://www.02ws.com/station.php?section=graph&graph=RainHistory&profile=1
+[Sat Dec 22 21:36:28 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 716, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:36:58 2012] [error] [client 109.253.99.234] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/boazn/public/02ws.com/public/include.php on line 716, referer: http://www.02ws.com/station.php?lang=1
+[Sat Dec 22 21:39:39 2012] [error] [client 109.64.28.135] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon-precomposed.png
+[Sat Dec 22 21:39:40 2012] [error] [client 109.64.28.135] File does not exist: /home/boazn/public/02ws.com/public/apple-touch-icon.png
+[Sat Dec 22 21:43:51 2012] [error] [client 79.242.220.251] File does not exist: /home/boazn/public/02ws.com/public/images/profile1/RainHistory, referer: http://www.02ws.com/station.php?section=graph.php&graph=RainHistory&profile=1&lang=0
+[Sat Dec 22 21:45:38 2012] [error] [client 109.160.187.134] File does not exist: /home/boazn/public/02ws.com/public/station

@@ -1,0 +1,14 @@
+<option	 value="LLHA">Haifa חיפה</option>
+<option	 value="LLBG">BG airport נתב"ג</option>
+<option  value="LLET">Eilat אילת</option>
+<option  value="OLBA">Beirut, Lebanon</option>
+<option	 value="OJAM">Amman, Jordan</option>
+<option  value="HEAX">Alexandria, Egypt</option>
+<option  value="OSDI">Damascus דמשק</option>
+<option  value="LCLK">Larnaka, Cyprus לרנקה</option>
+<option  value="LTAI">Antalia, Turky</option>
+<option value="LGIR">Crete, Greece כריתים</option>
+<option value="KJFK">New York ניו-יורק</option>
+<option	value="EGLL">London לונדון</option>  
+<option	value="NZWN">New Zealand</option> 
+<option	value="PANC">Alaska אלסקה</option>	   

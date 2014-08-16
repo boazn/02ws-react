@@ -1,9 +1,9 @@
- <article id="forecast">
-	<?include_once("forecastlib.php");
+<article id="forecast">
+	<?
          include_once "picasaproxy.php";$mediumSizeUrl = "phpThumb.php?src=".$contentUrl."&amp;w=180&amp;h=180&amp;zc=C";
           $sig_url = $sig[0]['url'];
         $sig_title = $sig[0]['sig'][$lang_idx];
-        $imagefile = "phpThumb.php?src=".getUpdatedPic()."&amp;w=200&amp;h=200&amp;zc=C&amp;fltr[]=gam|0.8";//&amp;fltr[]=cont|50
+        $imagefile = "phpThumb.php?src=".getUpdatedPic()."&amp;w=200&amp;h=200&amp;zc=C&amp;fltr%5B%5D=gam%7C0.8";//&amp;fltr[]=cont|50
         $current_story_img_src = "phpThumb.php?src=".$current_story_img_src."&amp;w=200&amp;h=200&amp;zc=C";//&amp;fltr[]=cont|50 ;
         /////////////////////////////////////////
         $floated = false;
@@ -25,8 +25,8 @@
 			    <div id="forcast_days" class="contentbox">
 				<ul id="forcast_icons">
 				    <li id="morning_icon"></li>
-				    <li id="noon_icon" alt="צהריים"></li>
-				    <li id="night_icon" alt="ערב"></li>
+				    <li id="noon_icon"></li>
+				    <li id="night_icon"></li>
 				</ul>
 				<ul id="forcast_table">
 					<? if  (count($forecastDaysDB) == 0) 
@@ -37,14 +37,65 @@
 						}
 						else 
 						{
-							//print_r($forecastDaysDB);
-	 
+                                                    $date_a = explode("/", $forecastDaysDB[0]['date']);
+                                                      if ($date_a[0] == $day)//passed midnight
+                                                      {
+                                                          $hightemp_value = $yest->get_hightemp();
+                                                          $lowtemp_value = $yest->get_lowtemp();
+                                                          $day_value = replaceDays(date("D ",  mktime ($hour, $min, 0, $month, $day-1 ,$year)));
+                                                          $date_value = date("j/n",  mktime ($hour, $min, 0, $month, $day-1 ,$year));
+                                                      }
+                                                      else
+                                                      {
+                                                          $hightemp_value = $today->get_hightemp();
+                                                          $lowtemp_value = $today->get_lowtemp();
+                                                          $day_value = replaceDays(date("D ",  mktime ($hour, $min, 0, $month, $day ,$year)));
+                                                          $date_value = date("j/n",  mktime ($hour, $min, 0, $month, $day ,$year));
+                                                      }
+                                                }  
+							?>
+                                                        <li class="forcast_each" id="yesterday_line" style="display:none">
+							<ul>
+                                                                <li class="forcast_off_day">
+
+                                                                </li>
+								<li class="forcast_day">
+                                                                    <? echo $day_value;?>
+								</li>
+								<li class="forcast_date">
+								<? echo $date_value;?>
+								</li>
+								<li class="forcast_morning">
+								<?=c_or_f($lowtemp_value)?>
+								</li>
+								<li class="forcast_noon">
+								<?=c_or_f($hightemp_value)?>
+								</li>
+								<li class="forcast_night">
+								
+								</li>
+								 <li>
+                                                                     
+                                                                 </li>
+								 <li class="forcast_text">
+									
+								</li>
+							</ul>
+							 </li>
+                                            <?
 							for ($i = 0; $i < count($forecastDaysDB); $i++) 
 							{
 							
 					 ?>
 							<li class="forcast_each <?if ($i >= 5) echo "tashkif";?>" id="<?=$i?>">
 							<ul>
+                                                                <li class="forcast_off_day">
+                                                                    <?if ($i == 0) {?>
+                                                                    <a hrf="javascript:void(0)" onclick="toggle('yesterday_line');">
+                                                                        <img src="images/undo.png" width="32" height="32" title="<?=$LAST_DAY[$lang_idx]?>" />
+                                                                    </a>
+                                                                    <?}?>
+                                                                </li>
 								<li class="forcast_day">
 								<? echo replaceDays($forecastDaysDB[$i]['day_name']." ");?><? if ($i >= 5) echo "<p>".$overlook_d."</p>";?>
 								</li>
@@ -60,7 +111,7 @@
 								<li class="forcast_night">
 								<?=c_or_f($forecastDaysDB[$i]['TempNight'])?>&nbsp;<img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempNightCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" />
 								</li>
-								 <li><img src="<? echo "images/icons/day/".$forecastDaysDB[$i]['icon']; ?>" width="37" height="37" alt="<?=$forecastDaysDB[$i]['date']?>" /></li>
+								 <li><img src="<? echo "images/icons/day/".$forecastDaysDB[$i]['icon']; ?>" width="40" height="40" alt="<?=$forecastDaysDB[$i]['date']?>" /></li>
 								 <li class="forcast_text">
 									<? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastDaysDB[$i][$dscpIdx]);?>
 								</li>
@@ -68,10 +119,13 @@
 							 </li>
 						<?
 								}
-						   }
+						   
 						?>
 				    <li class="forcast_each extra" style="margin-top:0.8em">
 					<ul>
+                                            <li class="forcast_off_day">
+                                                
+                                            </li>
 					    <li style="border-top:1px dashed">
 							<a href="<? echo get_query_edited_url($url_cur, 'section', 'averages.php');?>" title="<? echo $monthInWord." ".$AVERAGE[$lang_idx]; ?>">
 									<? echo $AVERAGE[$lang_idx];?>
@@ -98,6 +152,9 @@
 				    
 				    <li class="forcast_each extra" >
 					<ul>
+                                            <li class="forcast_off_day">
+                                                
+                                            </li>
 					    <li style="padding:0.2em 0">
 							<a href="<? echo get_query_edited_url($url_cur, 'section', 'reports.php');?>" title="<? echo $monthInWord." ".$RECORDS[$lang_idx]; ?>">
 									<? echo $RECORDS[$lang_idx];?>
@@ -139,11 +196,33 @@
 				 if ($hour_f['time'] % 3 == 0)
 				 {
 				 echo "<li class=\"nav forecasttimebox forcast_each\" ><ul>";
-				 echo "<li class=\"tsfh\" style=\"text-align:center;width:3%;display:none\">".$hour_f['currentDateTime']."</li>";
+				 echo "<li class=\"tsfh\" style=\"text-align:center;width:0%;display:none\">".$hour_f['currentDateTime']."</li>";
+                                 echo "<li class=\"tsfh\" style=\"text-align:center;width:10%\">".date("j/m", $hour_f['currentDateTime'])."</li>";
 				 echo "<li class=\"timefh forcast_date\" style=\"text-align:center;width:8%\">".$hour_f['time']."</li>";
 				 echo "<li class=\"forecasttemp forcast_morning\" style=\"text-align:center;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
-				 echo "<li style=\"text-align:center;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></li>";
-				 echo "<li>".$hour_f['wind'].",</li>";
+				 echo "<li style=\"margin-top:0;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></li>";
+				
+				 if ($hour_f['wind'] > 30){
+					  $windtitle=$EXTREME_WINDS[$lang_idx];
+					  $wind_class="high_wind";
+				 }
+					
+				else if ($hour_f['wind'] > 20){
+					  $windtitle=$STRONG_WINDS[$lang_idx];
+					  $wind_class="high_wind";
+				 }
+					
+				else if ($hour_f['wind'] > 10){
+					  $windtitle=$MODERATE_WINDS[$lang_idx];
+					  $wind_class="moderate_wind";
+				 }
+					
+				else{
+					  $windtitle=$WEAK_WINDS[$lang_idx];
+					  $wind_class="light_wind";
+				 }
+					
+				 echo "<li style=\"margin-top:0;\"><div title=\"".$windtitle."\" class=\"wind_icon ".$wind_class." \"></div></li>";
 				 echo "<li>".$hour_f['title']."</li>";
 				 echo "</ul></li>";
 				 }
@@ -164,8 +243,17 @@
 			</div><!-- contentbox-wrapper -->
 			
 		    </div> <!-- forcast_main -->
-			<? if (($current->is_light())&&(!isRaining())) {$adsense_color = "#4B6371"; if ($current->is_sunset()) $adsense_background = "#FDAC60"; else $adsense_background = "#BCE3EA";} elseif (isRaining()) {$adsense_color = "#FFFFFF";$adsense_background = "#6288A4";} else {$adsense_color = "#FFFFFF";$adsense_background = "#5B6A92";};?>
-		    <div id="mainadsense" style="box-shadow:3px 3px 15px 15px <?=$adsense_background?>">
+			<? if (($current->is_light())&&(!isRaining())) 
+					{$adsense_color = "#4B6371";
+					if ($current->is_sunset()) $adsense_background = "#F1C3A2";
+					elseif ($current->get_pm10() > 250) $adsense_background = "#C9CEB8";
+                                        elseif ($current->get_cloudiness() > 5) $adsense_background = "#B8D2DC";
+					else $adsense_background = "#A4D2E7";}
+                                 elseif (isSnowing()) {$adsense_color = "#000000";$adsense_background = "#D7E7E9";}
+				 elseif (isRaining()) {$adsense_color = "#FFFFFF";$adsense_background = "#6288A4";} 
+				 else {$adsense_color = "#FFFFFF"; if ($current->get_pm10() > 250) $adsense_background = "#4F5352"; else $adsense_background = "#5B6A92";};
+			?>
+		    <div id="mainadsense" style="line-height: 0;box-shadow:3px 3px 15px 15px <?=$adsense_background?>">
 			    <script type="text/javascript"><!--
 				google_ad_client = "pub-2706630587106567";
 				/* 300x250, created 10/20/10 */
@@ -204,9 +292,9 @@
                         </p>
 		    </div>
                     <div class="moon_sun span2">
-			 <div id="moon_rise" onclick="window.open('http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=6&YE=2013&TI=Wise+Observatory+Schedule&LO=35.167&LA=31.783&TZ=2&PLACE=2');">
+			 <div id="moon_rise" onclick="window.open('http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=<? echo $month;?>&amp;YE=<? echo $year;?>&amp;TI=Wise+Observatory+Schedule&amp;LO=35.167&amp;LA=31.783&amp;TZ=<?=GMT_TZ?>&amp;PLACE=2');">
                              <div id="moon_img" class="float">
-                             <a href="http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=<? echo $month;?>&amp;YE=<? echo $year;?>&amp;TI=Wise+Observatory+Schedule&amp;LO=35.167&amp;LA=31.783&amp;TZ=2&amp;PLACE=2" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>">
+                             <a href="http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=<? echo $month;?>&amp;YE=<? echo $year;?>&amp;TI=Wise+Observatory+Schedule&amp;LO=35.167&amp;LA=31.783&amp;TZ=<?=GMT_TZ?>&amp;PLACE=2" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>">
                                         <?
                                         $moonurl = "http://www.almanac.com/sites/new.almanac.com/files/moon.gif";
                                         /*
@@ -247,9 +335,9 @@
 		    <div class="row">
 		    <a href="<? echo "station.php?section=mainstory.php&amp;lang=".$lang_idx;?>">
 		    <div class="span5 offset4 white_box">
-			<h2><? echo $current_story_title;?></h2>
+			<h2><? echo $MainStory->get_title();?></h2>
 			<p class="box_text">
-			 <? echo mb_substr($current_story, 0, 68, "UTF-8");?>...<?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
+			 <? echo mb_substr($MainStory->get_description(), 0, 68, "UTF-8");?>...<?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
 			</p>
 		    </div>
 		    </a>
@@ -272,7 +360,7 @@
 				<li><a id="weather_hul" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a></li>
 				<li><a id="weather_movies" href="<? echo get_query_edited_url($url_cur, 'section', 'weatherclips.php');?>" title="<? echo $WEATHER_CLIPS[$lang_idx];?>" class="hlink"><? echo $WEATHER_CLIPS[$lang_idx];?></a></li>
                 <li><a id="weather_songs" href="<? echo get_query_edited_url($url_cur, 'section', 'songs.php');?>"><?=$SONGS[$lang_idx]?></a></li>
-				<li><a id="snow_poems" href="<? echo get_query_edited_url($url_cur, 'section', 'snowpoetry.php');?>" title="חמשירים" class="hlink">חמשירי שלג ועוד</a></li>
+				<li><a id="snow_poems" href="<? echo get_query_edited_url($url_cur, 'section', 'snow.php');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a></li>
 			    </ul>
 			    
                 <ul id="share_icons">
@@ -292,27 +380,29 @@
             <div class="row">
             <ul id="share_mixed" class="offset3 span4">
             	<li >
-            	<div class="addthis_toolbox addthis_default_style ">
-                <a class="addthis_button_compact"></a>
+            	
                 <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FJerusalem-Israel%2F02ws-yrwsmyym-mzg-hwwyr-bzmn-mt%2F118726368187010&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" style="border:none; overflow:hidden; width:100px; height:21px;allowTransparency:true"></iframe>
-                </div>
-					</li>
-					<li>
-						
-					</li>
+                
+                </li>
+                <li>
+
+                </li>
             </ul> 
             </div>      
              <div class="row">  
                  <div id="qrcode" class="span2"> 
-                         <a href="small.php<?echo "?lang=".$lang_idx;?>" title="<? echo $IPHONE[$lang_idx];?>"><img src="images/qrcode.png" width="68" height="68" /></a>
+                         <a href="small.php<?echo "?lang=".$lang_idx;?>" title="<? echo $IPHONE[$lang_idx];?>"><img src="images/qrcode.png" width="68" height="68" alt="qrcode" /></a>
                  </div>
 				
             </div>
 			<div class="row"> 
 				 <?if (isHeb()) {?>
 				 <ul id="outside_links">
+                              
+                             
                             <li><a href="http://www.jlm.israel.net/home/" title='מה יש היום בירושלים' rel='external'>מה יש היום בירושלים</a></li>
                             <li><a href="http://www.open02.com" title='open02' target="_blank">פתוח בשבת</a></li>
+                            <li><a href="https://play.google.com/store/apps/details?id=com.upsoft.burningspace.app" title='משחק לאנדרואיד' target="_blank">משחק לאנדרואיד</a></li>        
                             <li><a href="http://www.weather2day.co.il" title='Weather2day' target="_blank">מזג האוויר - Weather2day</a></li>
                             <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tracks.php');?>">טיולים בירושלים</a></li>
                             <li><a href="http://hair2.co.il" title="מרכז האפילציה" rel='external'>הסרת שיער לצמיתות</a></li>
@@ -358,9 +448,9 @@
 			<div id="crow" onMouseOver="playSound('crow_sound')"></div>
 			<audio id="crow_sound">
                             <? if ($current->is_light()) { ?>
-			    <source src="audio/crow.mp3"></source>
+			    <source src="audio/crow.mp3" />
                             <?} else {?>
-                            <source src="audio/owl.mp3"></source>
+                            <source src="audio/owl.mp3" />
                             <?}?>
 			</audio>
                         
@@ -371,8 +461,8 @@
 			    <div id="pic_empty"></div>
 			    
 			    <div id="map_thumbs">
-				<img id="pic_thumb1" onclick="change_pic_to('0px')" src="<?=$mediumSizeUrl?>" alt="<? echo $PIC_OF_THE_DAY[$lang_idx];?>"></img>
-				<img id="pic_thumb2" onclick="change_pic_to('0px')" src="<?=$imagefile?>" alt="<? echo $LIVE_PICTURE[$lang_idx];?>"></img>
+				<img id="pic_thumb1" onclick="change_pic_to('0px')" src="<?=$mediumSizeUrl?>" alt="<? echo $PIC_OF_THE_DAY[$lang_idx];?>" />
+				<img id="pic_thumb2" onclick="change_pic_to('0px')" src="<?=$imagefile?>" alt="<? echo $LIVE_PICTURE[$lang_idx];?>" />
 	    
 			    </div>
 			    		    
@@ -384,7 +474,7 @@
 					<h3><? echo $LIVE_PICTURE[$lang_idx];?></h3>
                                         <h4></h4>
 					<a href="<? echo "station.php?section=webCamera.jpg&amp;lang=".$lang_idx;?>"><p><? echo $PIC_DESC[$lang_idx];?><?=get_arrow()?></p>
-					<img title="שידור חי  - מצלמה 2" src="phpThumb.php?src=images/webCameraB.jpg&amp;sx=200&amp;sy=150&amp;sw=350&amp;sh=350&amp;fltr[]=gam|0.4" />
+					<img title="שידור חי  - מצלמה 2" src="phpThumb.php?src=<?=getUpdatedPic()?>&amp;sx=200&amp;sy=150&amp;sw=350&amp;sh=350&amp;fltr%5B%5D=gam%7C0.8" alt="live pic" />
 					</a>
 					
 					
@@ -416,26 +506,27 @@
 			<h2><?=$SEARCH_IN[$lang_idx]?></h2>
 			
 			    <input type="text"  class="search-query" id='searchname' name="searchname" size="20" maxlength="255" value="" />
-			    <input type="button" name="SearchSendButton" class="button" value="<?=$SEARCH_IN[$lang_idx]?>" onclick="getMessageService(<?=$limitLines?>, 0, 1, <?=$lang_idx?>)" />
+			    <input type="button" name="SearchSendButton" class="button" value="<?=$SEARCH_IN[$lang_idx]?>" onclick="getMessageService(<?=$limitLines?>, '', 0, 1, <?=$lang_idx?>)" />
                         
     		      <h2><?=$FILTERRING_BY_SUBJECT[$lang_idx]?></h2>
 			<div id="forum_filter">
-			    <div class='filter_icon1' title="Questions" key='1' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 1 )'></div>
-			    <div class='filter_icon2' title="Hot or Cold" key='2' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 2 )'></div>
-			    <div class='filter_icon3' title="Picture" key='3' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 3 )'></div>
-			    <div class='filter_icon4' title="Rain" key='4' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 4 )'></div>
-			    <div class='filter_icon5' title="Snow" key='5' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 5 )'></div>
-			    <div class='filter_icon6' title="Wind" key='6' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 6 )'></div>
-			    <div class='filter_icon7' title="Heat or sun" key='7' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 7 )'></div>
-			    <div class='filter_icon8' title="Link" key='8' onclick='getMessageService(<?=$limitLines?>, 0, 0, <?=$lang_idx?>, 8 )'></div>
+			    <div class='filter_icon1' title="Questions" data-key='1' onclick='getMessageService(<?=$limitLines?>,"", 0, 0, <?=$lang_idx?>, 1 )'></div>
+			    <div class='filter_icon2' title="Hot or Cold" data-key='2' onclick='getMessageService(<?=$limitLines?>,"", 0, 0, <?=$lang_idx?>, 2 )'></div>
+			    <div class='filter_icon3' title="Picture" data-key='3' onclick='getMessageService(<?=$limitLines?>,"", 0, 0, <?=$lang_idx?>, 3 )'></div>
+			    <div class='filter_icon4' title="Rain" data-key='4' onclick='getMessageService(<?=$limitLines?>,"", 0, 0, <?=$lang_idx?>, 4 )'></div>
+			    <div class='filter_icon5' title="Snow" data-key='5' onclick='getMessageService(<?=$limitLines?>,"", 0, 0, <?=$lang_idx?>, 5 )'></div>
+			    <div class='filter_icon6' title="Wind" data-key='6' onclick='getMessageService(<?=$limitLines?>,"", 0, 0, <?=$lang_idx?>, 6 )'></div>
+			    <div class='filter_icon7' title="Heat or sun" data-key='7' onclick='getMessageService(<?=$limitLines?>,"", 0, 0, <?=$lang_idx?>, 7 )'></div>
+			    <div class='filter_icon8' title="Link" data-key='8' onclick='getMessageService(<?=$limitLines?>,"", 0, 0, <?=$lang_idx?>, 8 )'></div>
 			</div>
 			<ul>
-                            <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService(<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-1, date("y"))); ?>, 0, 0, <?=$lang_idx?>)"><?=$LAST_DAY[$lang_idx]?></li>
-                            <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService(<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-3, date("y"))); ?>, 0, 0, <?=$lang_idx?>)">3 <?=$DAYS[$lang_idx]?></li>
-                            <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService(<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-7, date("y"))); ?>, 0, 0, <?=$lang_idx?>)">7 <?=$DAYS[$lang_idx]?></li>
-			    <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, $month, 1, $year)); ?>', 0, 0,  <?=$lang_idx?>)"><? echo $monthInWord." ".$year; ?></li>
-			    <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, getPrevMonth($month), 1, getPrevMonthYear($month, $year))); ?>', 0, 0,  <?=$lang_idx?>)"><? echo $prevMonthInWord." ".getPrevMonthYear($month, $year); ?></li>
-                            <!--<li onclick="$(this).parent().children('selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, 1, 1, $year)); ?>', 0, 0,  <?=$lang_idx?>)"><? echo  $year; ?></li>-->
+                            <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-1, date("y"))); ?>', '', 0, 0, <?=$lang_idx?>)"><?=$LAST_DAY[$lang_idx]?></li>
+                            <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-3, date("y"))); ?>', '', 0, 0, <?=$lang_idx?>)">3 <?=$DAYS[$lang_idx]?></li>
+                            <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-7, date("y"))); ?>', '', 0, 0, <?=$lang_idx?>)">7 <?=$DAYS[$lang_idx]?></li>
+			    <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, $month, 1, $year)); ?>', '', 0, 0,  <?=$lang_idx?>)"><? echo $monthInWord." ".$year; ?></li>
+			    <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, getPrevMonth($month), 1, getPrevMonthYear($month, $year))); ?>','<? echo date("dmY", mktime(0, 0, 0, $month, 1, $year)); ?>', 0, 0,  <?=$lang_idx?>)"><? echo $prevMonthInWord." ".getPrevMonthYear($month, $year); ?></li>
+                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'snowpoetry.php');?>" title="חמשירים" class="hlink">חמשירי שלג ועוד</a></li>
+                            <li><a href="http://madeinjlm.org/" target="_blank"><img src="images/madeinjlm.png" width="146" height="144" alt="Made in Jerusalem" /></a></li>
 			    
 			</ul>
 		    </div>
@@ -470,8 +561,9 @@
 				<div id="subject_left" onclick="change_subject('left')"></div>
 				<div id="subject_right" onclick="change_subject('right')"></div>
                                 </div>
+                                <div id="new_post_private"><input type="checkbox" id="check_private_msg" /><?=$PRIVATE_MSG[$lang_idx]?></div>
     				<div id="new_post_cancel" onclick="closeNewPost();restoreTopDiv();"><?=$CANCEL[$lang_idx]?></div>
-				<div id="new_post_okay" onclick="getMessageService(<?=$limitLines?>, 0, 1, <?=$lang_idx?>, $('#current_forum_filter').attr('key'));closeNewPost()"><?=$SEND[$lang_idx]?></div>
+				<div id="new_post_okay" onclick="getMessageService(<?=$limitLines?>, '', 0, 1, <?=$lang_idx?>, $('#current_forum_filter').attr('data-key'));closeNewPost()"><?=$SEND[$lang_idx]?></div>
 			    </div>
 			</div>
 		    </div>

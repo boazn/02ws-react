@@ -1,0 +1,138 @@
+<html>
+<head>
+<title>Jerusalem Weather station</title>
+</head>
+<body >
+<center>
+<H4>תמונה בזרימה - לראות את מזג-האויר עכשיו</H4>
+<H4>Jerusalem Weather Single Frame Streaming</H4>
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-2706630587106567";
+		google_ad_width = 120;
+		google_ad_height = 240;
+		google_ad_format = "120x240_as";
+		google_ad_type = "text";
+		//2007-04-15: stream
+		google_ad_channel = "5161014980";
+		google_color_border = ["FEFEFE"];
+		google_color_bg = ["FEFEFE"];
+		google_color_link = ["265C99"];
+		google_color_url = ["265C99"];
+		google_color_text = ["265C99"];
+		//-->
+		</script>
+		<script type="text/javascript"
+		  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+		
+<script Language="JavaScript">
+// VisionGS Stream Code Begin /
+/*
+
+newImg = new Image();
+var imgsrc = "";
+function StreamError()
+{
+newImg.onload="";
+newImg.onerror="";
+newImg.src="http://jweather.dyndns.org:81/error.jpg";
+document.images.visiongs.src=newImg.src;
+window.status = "Live Video Error";
+}
+function StreamLoad()
+{
+uniq = new Date();
+uniq = uniq.getTime();
+document.images.visiongs.src=newImg.src;
+newImg.src=imgsrc+"?"+uniq;
+window.status = "Live Video";
+}
+function StreamInit()
+{
+imgsrc = document.images.visiongs.src;
+uniq = new Date();
+uniq = uniq.getTime();
+newImg.onload=StreamLoad;
+newImg.onerror=StreamError;
+newImg.src=imgsrc+"?"+uniq;
+document.images.visiongs.onload="";
+}
+document.write('<IMG SRC="http://jweather.dyndns.org:81/video/pull-1" name=visiongs onload="StreamInit()" width=640 height=480>');
+*/
+// VisionGS Stream Code End /
+</script>
+<img src="http://jweather.dyndns.org:8080/loading.jpg" class="webcam" id="webcam1" onmousedown="PTZMouseDown1(event)" width="320" height="240" alt="Live Stream" />
+
+<script type="text/javascript">
+<!--
+currentCamera1= 1;
+errorimg1= 0;
+document.images.webcam1.onload = DoIt1;
+document.images.webcam1.onerror = ErrorImage1;
+function LoadImage1()
+{
+        uniq1 = Math.random();
+        document.images.webcam1.src = "http://93.172.67.171:8080/cam_" + currentCamera1 + ".jpg?uniq="+uniq1;
+        document.images.webcam1.onload = DoIt1;
+}
+function PTZMouseDown1(e)
+{
+        var IE = document.all?true:false;
+        var x,y;
+        var myx,myy;
+        var myifr = document.getElementById("_iframe-ptz");
+        tp = getElPos1();
+        myx = tp[0];
+        myy = tp[1];
+        if(IE){
+        var scrollX = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft;
+        var scrollY = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+        x = event.clientX - myx + scrollX;
+        y = event.clientY - myy + scrollY;
+        } else {
+        x = e.pageX - myx;
+        y = e.pageY - myy;
+        }
+        if (width_array[currentCamera1] > 0) x = Math.round((x * 400) / width_array[currentCamera1]);
+        if (height_array[currentCamera1] > 0) y = Math.round((y * 300) / height_array[currentCamera1]);
+        if (x > 400) x = 400;
+        if (y > 300) y = 300;
+        if (myifr != null) myifr.src = "http://93.172.67.171:8080/ptz?src=" + currentCamera1 + "&moveto_x=" + x + "&moveto_y=" + y +"";
+        return true;
+}
+function getElPos1()
+{
+            el = document.images.webcam1;
+            x = el.offsetLeft;
+            y = el.offsetTop;
+            elp = el.offsetParent;
+            while(elp!=null)
+              { x+=elp.offsetLeft;
+                y+=elp.offsetTop;
+                elp=elp.offsetParent;
+              }
+            return new Array(x,y);
+}
+function ErrorImage1()
+{
+        errorimg1++;
+        if (errorimg1>3){
+              document.images.webcam1.onload = "";
+              document.images.webcam1.onerror = "";
+              document.images.webcam1.src = "offline.jpg";
+              }else{
+                uniq1 = Math.random();
+            document.images.webcam1.src = "http://93.172.67.171:8080/cam_" + currentCamera1 + ".jpg?uniq="+uniq1;
+              }
+}
+function DoIt1()
+{
+        errorimg1=0;
+        window.setTimeout("LoadImage1();", 40);
+}
+//-->
+</script>
+
+
+
+</center></font></body></html>

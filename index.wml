@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE wml PUBLIC "-//WAP//DTD WML 1.1//EN" "http://www.weather-display.de/DTD/wml_1.1.xml">
+<wml>
+<head>
+<meta name="keywords" content="wap, wml, xml, Jerusalem, Weather, Station, Israel" />
+<meta name="description" content="Jerusalem weather station" />
+</head>
+<card id="latest" title="Current Weather">
+<p>
+Jerusalem, 810m<br/>
+21:30 PM 25/12/2003<br/>
+Temperature: 11.4 C<br/>
+Windspeed: 0.0 kts<br/>
+Gustspeed: 0.0 kts<br/>
+Dir:  SE 136<br/>
+Bar: 1013.1 mb<br/>
+Humidity: 67%<br/>
+Todays rain: 0.0 mm<br/>
+max temp: 13.1 C (at 12:55 PM)<br/>
+min temp: 7.3 C (at 06:21 AM)<br/>
+max wind speed: 11.3 kts ESE (at 00:04 AM)<br/>
+</p>
+</card>
+<card id="sun" title="Sun and Moon">
+<p>
+sun rise time: 06:35<br/>
+sunset time: 16:39<br/>
+moon rise time: 01:49<br/>
+moon set time: 13:24<br/>
+</p>
+</card>
+<card id="contact" title="Contact">
+<p>
+Email: boazna@myrealbox.com<br/>
+phone: +972-54-854456<br/>
+Address: 25 Canada Hill St., Jerusalem, Israel<br/>
+</p>
+</card>
+</wml>

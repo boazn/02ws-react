@@ -1,0 +1,32 @@
+11.12.2005	Graph for every day starting from January 2004. Look at <A HREF="station.php?section=browsedate.php">here</a>.
+01.11.2005	Live Stream from outside in 2 forms: 1. <A HREF="mms://jweather.dyndns.org:8000">windows media</a> and 2. <A HREF="station.php?section=stream_singleFrameJWS.html">single frame</a>
+04.06.2005	Moonrise and moonset is displayed in the <A HREF="station.php?section=extended">extended</A> view.
+06.04.2005	<A HREF="station.php?section=radiosonde.php">Fire Index</A> (2 - 6) tells if the risk of fire is high or low.
+28.03.2005	<A HREF="station.php?section=graph&graph=RainHistory&profile=1&lang=1">New graph</A> for accumulated rainfall. This graph displays the total amount of rain for the current storm (the last 48 hours) in 15 minutes interval.
+15.03.2005	I <a href="station.php?section=extended>compare</a> current temp, humidity, barometer and wind (including low/high values) to Ein Kerem station.
+01.02.2005	Multiple language support (Hebrew and English)
+15.12.2004	Global warming from 2001 for Jerusalem. It is calculated by adding the "departure from normal" of temp of all the years from 2001.
+01.12.2004	live picture <a href="station.php?section=dailypicloop.html">loop</a> for the last day. In this way you can see weather summary for the last day.
+01.11.2004	Bracknell model maps for 500mb, 700mb, 850mb, surface and precipitation.
+01.09.2004	<a href="station.php?section=season20034">Graphs</a> of season 2003-2004 are now under summary. You can enlarge them and put graph on graph.
+01.08.2004	<a href="station.php?section=season20012">Graphs</a> of season 2001-2002 are now under summary. It is one gif with a lot of graphs that can be enlarged.
+02.12.2003	Live pic looking to the north. 
+17.09.2003	Forecast icon for the coming day. The forecast is from nearest airport (Amman, Jordan). The Jerusalem airport is not active right now. 
+10.09.2003	Trends of 15 minutes, 30 minutes and 1 hour are displayed on the main page.
+08.09.2003	<a href="station.php?section=season20023">Graphs</a> of season 2002-2003 are now under summary. You can enlarge them and put graph on graph.
+18.08.2003	New and handy look to the pictures section.
+05.08.2003	Moved to a new place at the height of 810m above sea level. This place is on the edge of a ridge, so it will be much more windy and fogy than the past. 
+23.07.2003	last extreme record is displayed (with its date) when it is broken by new record.
+12.07.2003	Graph over graph: simply press on this <img src="images/ex1.gif">, for example, and than go over with the mouse the second value --> you will get graph over graph.
+21.01.2003	You can <a href="station.php?section=browsedate.php">search</a> for a date in the raw data (15 minutes interval) and get all available data for that date.
+06.01.2003	<a href="station.php?section=rainSeasons.php">Rain Season</a> chart with total amount for every season.
+29.12.2002	2 comparisons are made: one with the previous day - with displaying the relevant graph, and one with the <a href="station.php?section=averages">average</a> data for the same time.
+16.09.2002	Added  <a href="station.php?section=averages">total averages</a> for temparture, humidity and rain accumulation which the NOAA <a href="station.php?section=chooseMonth">reports</a> use.
+01.09.2002	Parameter change from Yestarday is shown on the main page for the relevant time.
+09.08.2002	The menu has changed - now supports also Netscape, Mozilla and Opera.
+08.08.2002	Added &nbsp;<a href="guestbook.php">guestbook</a> for leaving remarks and usfull staff. You can write in English and Hebrew.
+04.08.2002	Added <a href="station.php?section=pics">pictures</a> of my station and its environment.
+02.08.2002	Added archive data of every <a href="station.php?section=chooseMonth">month</a> from November 2001 and on. The display is like NOAA professional report.
+31.07.2002	40.3°C peek was measured.
+24.07.2002	The station has been moved to a more shadowed location. I will move it back on October when the rain will come and it will need an open space.
+20.07.2002	The site has been launched at the height of 770m (German Colony). The data before that day is from another location (Rehavia) at the height of 770m.

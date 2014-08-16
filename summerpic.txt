@@ -1,0 +1,9 @@
+./images/summer/ane1_1.jpg
+./images/summer/ane2_1.jpg
+./images/summer/station1_1.jpg
+./images/summer/station2_1.jpg
+./images/summer/station3_1.jpg
+./images/summer/station4_1.jpg
+./images/summer/house_1.jpg
+./images/console1_1.jpg
+./images/console2_1.jpg

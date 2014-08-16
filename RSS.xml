@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+	<title>Jerusalem Weather Station</title>
+	<link>http://jm.maabarot.org.il/</link>
+	<description>Updates every 15 min</description>
+	<language>en-us</language>
+	<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+	<generator>EditPlus 2.0</generator>
+	<managingEditor>boazn1@013.net</managingEditor>
+	<webMaster>boazn1@013.net</webMaster>
+	<ttl>15</ttl>
+	<image>
+	<width>200</width>
+	<height>50</height>
+	<url>http://jm.maabarot.org.il/images/spring/PICT0005.JPG</url>
+	<title>a look at the station and nearby</title>
+	<link>http://jm.maabarot.org.il/station.php</link>
+	</image>
+	<item>
+		<title>Latest Data from JWS 18/01/06  19:45</title>
+		<link>http://jm.maabarot.org.il/station.php</link>
+		<description>Latest Data from JWS</description>
+		<content:encoded>
+		<![CDATA[
+		<table><tr><td>Jerusalem, 810m</td></tr>
+		<tr><td>  18/01/06  19:45</td></tr>
+		<tr><td> Temperature: 6.6 C </td><td><img src="http://jm.maabarot.org.il/images/profile1/OutsideTempHistory.gif"></img></td></tr>
+		<tr><td> High Temp: 7.8 C at 15:41 </td></tr>
+		<tr><td> Low Temp: 4.8 C at  6:22 </td></tr>
+		<tr><td> humidity: 83 %  </td><td><img src="http://jm.maabarot.org.il/images/profile1/OutsideHumidityHistory.gif"></img></td></tr>
+		<tr><td></td></tr>
+		<tr><td> High humidity: 97 %  at 10:48 </td></tr>
+		<tr><td> Low humidity: 83 %  at  0:12 </td></tr>
+		<tr><td> Barometer: 1021.8 mb </td></tr>
+		<tr><td> 10 min wind speed: 9.6 kt  WSW </td></tr>
+		<tr><td> Daily rain: 12.2 mm </td></tr>
+		
+		]]>
+		</content:encoded>
+		<author>boazn1@013.net</author>
+		<guid>http://jm.maabarot.org.il/station.php</guid>
+	</item>
+	<item>
+		<title>Temperature: 6.6 C</title>
+		<link>http://jm.maabarot.org.il/images/profile1/OutsideTempHistory.gif</link>
+		<description>High Temp: 7.8 C at 15:41<br></br>Low Temp: 4.8 C at  6:22</description>
+		<guid>http://jm.maabarot.org.il/images/profile1/OutsideTempHistory.gif</guid>
+	</item>
+	<item>
+		<title>Humidity: 83 % </title>
+		<link>http://jm.maabarot.org.il/images/profile1/OutsideHumidityHistory.gif</link>
+		<description>High humidity: 97 %  at 10:48<br></br>Low humidity: 83 %  at  0:12</description>
+		<guid>http://jm.maabarot.org.il/images/profile1/OutsideHumidityHistory.gif</guid>
+	</item>
+	<item>
+		<title>Daily rain: 12.2 mm</title>
+		<link>http://jm.maabarot.org.il/images/profile1/RainRateHistory.gif</link>
+		<description>Daily rain: 12.2 mm</description>
+		<guid>http://jm.maabarot.org.il/images/profile1/RainRateHistory.gif</guid>
+	</item>
+	<item>
+		<title>sun rise:  6:38 sun set: 17:00</title>
+		<link>http://jm.maabarot.org.il/small.php</link>
+		<description>sun rise:  6:38 sun set: 17:00</description>
+		<guid>http://jm.maabarot.org.il/small.php</guid>
+	</item>
+	<item>
+		<title>Live Pic</title>
+		<link>http://jm.maabarot.org.il/station.php?section=webCamera.jpg</link>
+		<description>Web Camera looking to the north</description>
+		<content:encoded>
+		<![CDATA[
+			<img src="http://jm.maabarot.org.il/images/webCamera.jpg" width=400>
+		]]>
+		</content:encoded>
+		<guid>http://jm.maabarot.org.il/station.php?section=webCamera.jpg</guid>
+	</item>
+</channel>
+</rss>
