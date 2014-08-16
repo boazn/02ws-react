@@ -268,6 +268,7 @@ function set_new_password($email, $pass)
       {
           $stmt->close();
           logger($query);
+          $_SESSION['email'] = $email;
         header("location:station.php");
       }
 }

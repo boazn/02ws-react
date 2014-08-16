@@ -62,10 +62,10 @@ function make_user_active($email, $user_id, $key){
 <html  <? if (isHeb()) echo "lang=\"he\" xml:lang=\"he\""; ?> xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<link title="Default Colors" href="generalstyle.php<?echo "?lang=".$lang_idx."&amp;forground_color=".$forground_color."&amp;base_color=".$base_color;?>" rel="stylesheet" type="text/css" media="screen" />
+<link title="Default Colors" href="main.php<?echo "?lang=".$lang_idx."&amp;forground_color=".$forground_color."&amp;base_color=".$base_color;?>" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
-<div class="float" style="padding:1em">
+<div style="padding:1em">
 <img src="<?=$header_pic?>" />
 </div>
 <? if (!check_email_address($_GET['email']))
