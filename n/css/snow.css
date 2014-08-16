@@ -1,0 +1,100 @@
+
+body {
+    background-image:url("../img/bg_snow.png");
+}
+
+#info_circle {
+    background-image:url("../img/info_circle_snow.png");
+}
+
+#lion {
+    background-image:url("../img/lion_snow.png");
+    width:200px;
+    height:230px;
+    background-position:left;
+    background-repeat:no-repeat;
+    position:fixed;
+    top:140px;
+    margin-top:-60px;
+    margin-left:19px;
+    z-index:99;
+}
+
+#crow {
+     background-image:url("../img/crow_snow.png");
+}
+
+#tree {
+     background-image:url("../img/tree_snow.png");
+}
+
+.footer {
+    background-image:url("../img/footer_snow.png");
+}
+
+
+#forum_grass {
+    background-image:url("../img/forum_grass_snow.png");
+    left:1200px;
+}
+
+#pic_thumb1 {
+    left:640px;
+    top:420px;
+}
+
+#pic_thumb4 {
+    top:500px;
+    left:700px;
+}
+
+#bg_map {
+    background-image:url("../img/bg_map_snow.png");
+}
+
+#bg_hills {
+    background-image:url("../img/bg_hills_snow.png");
+}
+
+#bg_backHills {
+    background-image:url("../img/bg_backHills_snow.png");
+}
+
+#bg_grass {
+    background-image:url("../img/bg_grass_snow.png");
+}
+
+#forum {
+	background-color: #EBEDCC;
+	background: -webkit-linear-gradient(top, #EBEDCC, #E3E5CA);
+}
+
+#upload_pic {
+    color:#829CAA;
+}
+
+#forum h2 {
+    color:#2C3A42;
+    border-color:#2C3A42;
+}
+
+#new_post_btn {
+     color:#2C3A42;
+}
+
+#forum_sidebar ul {
+     border-color:#2C3A42;
+}
+
+#forum_sidebar li{
+     color:#2C3A42;
+}
+
+#posts {
+    border-color:#2C3A42;
+}
+
+
+.footer {
+    color:#2C3A42;
+}

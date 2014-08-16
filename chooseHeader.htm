@@ -1,0 +1,93 @@
+<html>
+
+<head>
+<title>choose month/year</title>
+<base target="header">
+<link href="general.css" rel="stylesheet" type="text/css">
+<script language="JavaScript">
+<!--
+function namosw_goto_byselect(sel, targetstr)
+{
+  var index = sel.selectedIndex;
+  if (sel.options[index].value != '') {
+     if (targetstr == 'blank') {
+       window.open(sel.options[index].value, 'win1');
+     } else {
+       var frameobj;
+       if (targetstr == '') targetstr = 'self';
+       if ((frameobj = eval(targetstr)) != null)
+         frameobj.location = sel.options[index].value;
+     }
+  }
+}
+
+// -->
+</script>
+</head>
+
+<body>
+<P align="center">
+<select size="1" OnChange="namosw_goto_byselect(this, 'parent.main')" name="chooseMonth">
+<option selected>Choose Month</option>
+<option value="reports/1101.txt">Nov 2001</option>
+<option value="reports/1201.txt">Dec 2001</option>
+<option value="reports/0102.txt">Jan 2002</option>
+<option value="reports/0202.txt">Feb 2002</option>
+<option value="reports/0302.txt">Mar 2002</option>
+<option value="reports/0402.txt">Apr 2002</option>
+<option value="reports/0502.txt">May 2002</option>
+<option value="reports/0602.txt">Jun 2002</option>
+<option value="reports/0702.txt">Jul 2002</option>
+<option value="reports/0802.txt">Aug 2002</option>
+<option value="reports/0902.txt">Sep 2002</option>
+<option value="reports/1002.txt">Oct 2002</option>
+<option value="reports/1102.txt">Nov 2002</option>
+<option value="reports/1202.txt">Dec 2002</option>
+<option value="reports/0103.txt">Jan 2003</option>
+<option value="reports/0203.txt">Feb 2003</option>
+<option value="reports/0303.txt">Mar 2003</option>
+<option value="reports/0403.txt">Apr 2003</option>
+<option value="reports/0503.txt">May 2003</option>
+<option value="reports/0603.txt">Jun 2003</option>
+<option value="reports/0703.txt">Jul 2003</option>
+<option value="reports/0803.txt">Aug 2003</option>
+<option value="reports/0903.txt">Sep 2003</option>
+<option value="reports/1003.txt">Oct 2003</option>
+<option value="reports/1103.txt">Nov 2003</option>
+<option value="reports/1203.txt">Dec 2003</option>
+<option value="reports/0104.txt">Jan 2004</option>
+<option value="reports/0204.txt">Feb 2004</option>
+<option value="reports/0304.txt">Mar 2004</option>
+<option value="reports/0404.txt">Apr 2004</option>
+<option value="reports/0504.txt">May 2004</option>
+<option value="reports/0604.txt">Jun 2004</option>
+<option value="reports/0704.txt">Jul 2004</option>
+<option value="reports/0804.txt">Aug 2004</option>
+<option value="reports/0904.txt">Sep 2004</option>
+<option value="reports/1004.txt">Oct 2004</option>
+<option value="reports/1104.txt">Nov 2004</option>
+<option value="reports/1204.txt">Dec 2004</option>
+<option value="reports/0105.txt">Jan 2005</option>
+<option value="reports/0205.txt">Feb 2005</option>
+<option value="reports/0305.txt">Mar 2005</option>
+<option value="reports/0405.txt">Apr 2005</option>
+<option value="reports/0505.txt">May 2005</option>
+<option value="reports/0605.txt">Jun 2005</option>
+<option value="reports/0705.txt">Jul 2005</option>
+<option value="reports/0805.txt">Aug 2005</option>
+<option value="reports/0905.txt">Sep 2005</option>
+<option value="reports/1005.txt">Oct 2005</option>
+<option value="reports/1105.txt">Nov 2005</option>
+<option value="reports/1205.txt">Dec 2005</option>
+</select>
+<select size="1" OnChange="namosw_goto_byselect(this, 'parent.main')" name="chooseMonth">
+<option selected>Choose Year</option>
+<option value="reports/2002.txt">2002</option>
+<option value="reports/2003.txt">2003</option>
+<option value="reports/2004.txt">2004</option>
+<option value="reports/2005.txt">2005</option>
+</select>
+</P>
+</body>
+
+</html>

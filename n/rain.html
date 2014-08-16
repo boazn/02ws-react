@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>ירושמיים</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+	<!--<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+	<link rel="stylesheet" href="css/bootstrap-responsive.css">-->
+		    
+        <style>
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+        </style>
+        
+	 <link rel="icon" 
+      type="image/png" 
+      href="img/favicon_rain.png">
+	
+        <link rel="stylesheet" href="css/main.css">
+	    <link rel="stylesheet" href="css/rain.css">
+        
+        
+	<script src="js/modernizr.custom.37797.js"></script> 
+		<!-- Grab Google CDN's jQuery. fall back to local if necessary --> 
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
+		<script>!window.jQuery && document.write('<script src="/js/jquery-1.6.1.min.js"><\/script>')</script>
+		<script src="js/parallax.js"></script>
+	
+	<script language="javascript">
+	    
+	   
+	    
+	    function changeClothes(whichCloth) {
+		
+		
+		var scrolled = $(window).scrollTop();
+		
+		if (whichCloth == "coat") {
+		    document.getElementById("lion").style.backgroundPosition = "-400px";
+		    document.getElementById("coat_text").style.visibility = "visible";
+		    document.getElementById("coat_text").style.top = ((scrolled) + "px");
+		} else if (whichCloth == "meilon") {
+		    document.getElementById("lion").style.backgroundPosition = "-600px";
+		    document.getElementById("meilon_text").style.visibility = "visible";
+		    document.getElementById("meilon_text").style.top = ((scrolled) + "px");
+		} else {
+		      document.getElementById("lion").style.backgroundPosition = "-800px";
+		    document.getElementById("long_text").style.visibility = "visible";
+		    document.getElementById("long_text").style.top = ((scrolled) + "px");
+		}
+		document.getElementById("clothes_line").style.visibility = "visible";
+		document.getElementById("clothes_line").style.top = ((scrolled) + "px");
+	    }
+	    
+	    function changeBack() {
+		document.getElementById("lion").style.backgroundPosition = "left";
+		document.getElementById("long_text").style.visibility = "hidden";
+		document.getElementById("meilon_text").style.visibility = "hidden";
+		document.getElementById("coat_text").style.visibility = "hidden";
+		document.getElementById("clothes_line").style.visibility = "hidden";
+	    }
+	    
+	    
+	   function change_main(id, t){
+	    //animate to the div id.
+	    
+	    if (id == "#forcast_days") {
+		$("#forcast_main .contentbox-wrapper").animate({"right": "0px"}, 600);
+	    } else if (id == "#forcast_hours") {
+		$("#forcast_main .contentbox-wrapper").animate({"right": "-620px"}, 600);
+	    } else {
+		$("#forcast_main .contentbox-wrapper").animate({"right": "-1240px"}, 600);
+	    }
+	    
+	 
+	    // remove "active" class from all links inside #nav
+	    $('#forcast_title div').removeClass('for_active');
+	 
+	    // add active class to the current link
+	    $(t).addClass('for_active');
+	    }
+
+	    function change_pic(whichSide) {
+		 var x = document.getElementById("pic_contentbox").offsetLeft;
+		 var w = document.getElementById("pic_contentbox").offsetWidth;
+		//alert(x);
+		if ((whichSide == "left") && (x<0)) {
+		    $("#pic_contentbox").animate({"right": -(x+w) + "px"}, 400, "swing");
+		} else if ( (whichSide == "right") && (x > -(w-300) ) ) {;
+		    $("#pic_frame .contentbox-wrapper").animate({"right": -(x+w-600) + "px"}, 400, "swing");
+		}
+	    }
+	    
+	    function change_pic_to(rightValue) {
+		 $("#pic_contentbox").animate({"right": rightValue}, 400, "swing");
+	    }
+	    
+	    
+	    function change_circle(toWhat, line_id) {
+		document.getElementById("info_circle").style.backgroundPosition = toWhat;
+		
+		document.getElementById("now_line").style.visibility = "hidden";
+		document.getElementById("temp_line").style.visibility = "hidden";
+		document.getElementById("moist_line").style.visibility = "hidden";
+		document.getElementById("wind_line").style.visibility = "hidden";
+		document.getElementById("air_line").style.visibility = "hidden";
+		document.getElementById("rain_line").style.visibility = "hidden";
+		document.getElementById("rad_line").style.visibility = "hidden";
+		document.getElementById("uv_line").style.visibility = "hidden";
+		document.getElementById("cold_line").style.visibility = "hidden";
+		document.getElementById("mood_line").style.visibility = "hidden";
+		document.getElementById("season_line").style.visibility = "hidden";
+		
+		document.getElementById(line_id).style.visibility = "visible";
+	    }
+	    
+	    function playSound(id) {
+		var audio = document.getElementById(id);
+		audio.currentTime = 0;
+		audio.play();
+		if (id == "purr_sound") {
+		   document.getElementById("lion").style.backgroundPosition = "right";
+		}
+		
+	    }
+	    
+	    function stopSound(id) {
+		var audio = document.getElementById(id);
+		//alert(id);
+		audio.pause();
+		if (id == "purr_sound") {
+		   document.getElementById("lion").style.backgroundPosition = "left";
+		}
+	    }
+	    
+	    function chooseLocation(){
+		//var d = document.getElementById("pic_stuff");
+		document.getElementById("pic_empty").addEventListener("click", addLocation);
+		document.getElementById("pic_empty").style.cursor = "url(img/cursor_upload.png), auto";
+		document.getElementById("upload_text").style.visibility = "visible";
+		document.body.addEventListener("mousemove", bodyMove);
+	    }
+	    
+	    function bodyMove() {
+		document.body.addEventListener("click", removeHover);
+	    }
+	    
+	    function removeHover() {
+		//alert("click");
+		document.getElementById("pic_empty").style.cursor = "auto";
+		document.getElementById("upload_text").style.visibility = "hidden";
+		document.getElementById("pic_empty").removeEventListener("click", addLocation);
+		document.body.removeEventListener("click", removeHover);
+		document.body.removeEventListener("mousemove", bodyMove);
+	    }
+	    
+	    function addLocation() {
+		//alert("click");
+		var e = window.event;
+		//alert("y: "+e.clientY);
+		document.getElementById("upload_form").location.value = "";
+		document.getElementById("upload_form").description.value = "";
+		document.getElementById("upload_window").style.visibility = "visible";
+		document.getElementById("upload_window").style.left = (e.clientX-580)+"px";
+		document.getElementById("upload_window").style.top = (1500+ e.clientY-180)+"px";
+	    
+	    }
+	    
+	    
+	    function changeBg(id, color) {
+		document.getElementById(id).style.backgroundColor=color;
+	    }
+	    
+	    function openNewPost() {
+		document.getElementById("new_post").style.visibility = "visible";
+		document.getElementById("forum_hr").style.marginTop = "210px";
+		document.getElementById("new_post_ta").value = "";
+	    }
+	    
+	    function closeNewPost() {
+		document.getElementById("new_post").style.visibility = "hidden";
+		document.getElementById("forum_hr").style.marginTop = "10px";
+	    }
+	    
+	    
+	    
+	</script>
+	
+      <script src="js/modernizr.custom.37797.js"></script> 
+		<!-- Grab Google CDN's jQuery. fall back to local if necessary --> 
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
+		<script>!window.jQuery && document.write('<script src="/js/jquery-1.6.1.min.js"><\/script>')</script>
+		<script src="js/parallax.js"></script>
+		<script src="js/rain.js"></script>
+        
+    </head>
+    <body>
+	
+	
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
+      
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container row">
+		    
+		    <div class="span6">	
+			
+			<ul id="top_links">
+			    <li><a>שאלות ותשובות</a></li>
+			    <li><a>אודות</a></li>
+			     <li><a>ארכיון</a></li>
+			    <li><a>צרו קשר</a></li>
+			</ul>
+		    </div>
+    
+		   
+                    
+		    
+		     <div class="span6">
+			<div id="user_info">
+			    
+			     <p id="user_name">
+				galizo
+			    </p>
+			     <div id="user_icon"></div>
+			     <div class="dd_arrow"> 
+			    </div>
+			 </div>
+			 <form class="searchForm" method="get" action="http://www.google.com/search">
+                           
+			    <input type="text"  class="search-query" name="q" size="31" maxlength="255" value="" />
+			     <input type="submit" value="" />
+                            <input type="hidden" name="sitesearch" value="02ws.co.il" checked/>
+                        </form>
+			<p id="english">English</p>
+			<p id="arabic">العربية</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container row">
+            <div class="fixed_nav span2">
+                 <img class="logo" src="img/logo_rain.png"/>
+
+                 <ul class="main_nav">
+                    <li>
+			<a class="now active" href="#now">מה עכשיו</a>
+                    </li>
+                    <li>
+			<a class="more" href="#more">מה עוד</a>
+                    </li>
+                    <li>
+			<a class="pics" href="#pics">תמונות</a>
+                    </li>
+                    <li>
+			<a class="forum" href="#forum">פורום</a>
+                    </li>
+                 </ul>
+            </div>
+        </div>
+ <div class="container">
+        <div id="lion" onmousedown="playSound('purr_sound')" onmouseup="stopSound('purr_sound')">
+        </div>
+        <audio id="purr_sound" loop>
+		 <source src="audio/purr.mp3"></source>
+	</audio>
+	
+	
+        <img id="cloud_lion" src="img/cloud_lion_rain.png" alt="cloud"/>
+        
+        <div id="content">
+            <article id="now">
+               <div class="row"> 
+		<div class="main_info span6 offset3">
+		    <ul class="info_btns">
+			    <li id="now_btn" onclick="change_circle('0px', 'now_line')"></li>
+			     <hr id="now_line"></hr>
+			    <li id="temp_btn" onclick="change_circle('-440px', 'temp_line')"></li>
+			    <hr id="temp_line"></hr>
+			    <li id="moist_btn" onclick="change_circle('-660px', 'moist_line')"></li>
+			    <hr id="moist_line"></hr>
+			    <li id="air_btn" onclick="change_circle('-880px', 'air_line')"></li>
+			    <hr id="air_line"></hr>
+			    <li id="wind_btn" onclick="change_circle('-1100px', 'wind_line')"></li>
+			    <hr id="wind_line"></hr>
+			    <li id="rain_btn" onclick="change_circle('-1320px', 'rain_line')"></li>
+			    <hr id="rain_line"></hr>
+			    <li id="rad_btn" onclick="change_circle('-1540px', 'rad_line')"></li>
+			    <hr id="rad_line"></hr>
+			    <li id="uv_btn" onclick="change_circle('-1760px', 'uv_line')"></li>
+			    <hr id="uv_line"></hr>
+			</ul>
+		    
+		    <div id="info_circle">   
+		    </div>
+		    
+		    <ul class="seker_btns">
+			<li id="cold_btn" onclick="change_circle('-220px', 'cold_line')">מדד הקור</li>
+			<hr id="cold_line"></hr>
+			<li id="mood_btn" onclick="change_circle('-2200px', 'mood_line')">סקר מצב רוח</li>
+			<hr id="mood_line"></hr>
+			<li id="season_btn" onclick="change_circle('-1980px', 'season_line')">עונה אהובה</li>
+			<hr id="season_line"></hr>
+		    </ul>
+		</div>
+		
+		 <hr id="clothes_line"></hr>
+		 
+		<p class="clothes_text" id="meilon_text">
+		כדאי ללבוש מעילון
+		</p>
+		
+		<p class="clothes_text" id="long_text">
+		כדאי ללבוש חולצה ארוכה
+		</p>
+		
+		<p class="clothes_text" id="coat_text">
+		כדאי ללבוש
+		<br>
+		מעיל גשם
+		</p>
+		
+	       </div>
+	
+		<div class="row">
+		    <div id="forcast_title" class="span2">
+			<div class="forcast_title_btns for_active" onClick="change_main('#forcast_days', this); return false">תחזית לימים הקרובים</div>
+			<div class="forcast_title_btns" onClick="change_main('#forcast_hours', this); return false">תחזית ל–24 שעות</div>
+			<div class="forcast_title_btns" onClick="change_main('#what_is_forcast', this); return false">מה זאת תחזית?</div>
+			
+			<div class="moon_sun">
+			    <div id="moon_rise" onclick="window.open('http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=6&YE=2013&TI=Wise+Observatory+Schedule&LO=35.167&LA=31.783&TZ=2&PLACE=2');">
+			    <p>זריחה: 05:09</p>
+			    <p>שקיעה: 19:19</p>
+			    </div>
+			    
+			    <div id="sun_rise" onClick="window.open('http://www.sunrisesunset.com/calendar.asp?comb_city_info=Jerusalem,%20Israel;-35.25;31.75;2;9&month=6&year=2013&time_type=0');">
+			    <p>זריחה: 05:33</p>
+			    <p>שקיעה: 19:44</p>
+			    </div>
+			    <div id="sun_hours">
+				<h3>5.7</h3>
+				<p>שעות שמש עד עכשיו</p>
+			    </div>
+			</div>
+		    </div>
+		    
+		    <div id="forcast_main" class="span8">
+			
+			<div class="contentbox-wrapper">
+			    <div id="forcast_days" class="contentbox">
+				<ul id="forcast_icons">
+				    <li id="morning_icon"></li>
+				    <li id="noon_icon" alt="צהריים"></li>
+				    <li id="night_icon" alt="ערב"></li>
+				</ul>
+				<ul id="forcast_table">
+				    <li class="forcast_each" id="1">
+					<ul>
+					    <li class="forcast_day">
+						ה
+					    </li>
+					    <li class="forcast_date">
+						6/2
+					    </li>
+					    <li class="forcast_morning" onmouseover="changeClothes('coat')" onmouseout="changeBack()">
+						7˚
+					    </li>
+					    <li class="forcast_noon" onmouseover="changeClothes('coat')" onmouseout="changeBack()">
+						12˚
+					    </li>
+					    <li class="forcast_night" onmouseover="changeClothes('coat')" onmouseout="changeBack()">
+						5˚
+					    </li>
+					     <li class="forcast_rain"></li>
+					     <li class="forcast_text">
+						יום גשום
+					    </li>
+					</ul>
+				    </li>
+				    
+				    <li class="forcast_each" id="2">
+					<ul>
+					    <li class="forcast_day">
+						ו
+					    </li>
+					    <li class="forcast_date">
+						7/2
+					    </li>
+					    <li class="forcast_morning" onmouseover="changeClothes('coat')" onmouseout="changeBack()">
+						12˚
+					    </li>
+					    <li class="forcast_noon" onmouseover="changeClothes('long')" onmouseout="changeBack()">
+						26˚
+					    </li>
+					    <li class="forcast_night" onmouseover="changeClothes('meilon')" onmouseout="changeBack()">
+						20˚
+					    </li>
+					     <li class="forcast_sunRain"></li>
+					     <li class="forcast_text multiline">
+						מעונן חלקית, רוחות ערות, טפטוף עד הצהריים
+						  <br>
+						קריר בערב
+					    </li>
+					</ul>
+				    </li>
+				    
+				    <li class="forcast_each" id="3">
+					<ul>
+					    <li class="forcast_day">
+						ש
+					    </li>
+					    <li class="forcast_date">
+						8/2
+					    </li>
+					    <li class="forcast_morning" onmouseover="changeClothes('coat')" onmouseout="changeBack()">
+						13˚
+					    </li>
+					    <li class="forcast_noon" onmouseover="changeClothes('long')" onmouseout="changeBack()">
+						23˚
+					    </li>
+					    <li class="forcast_night" onmouseover="changeClothes('meilon')" onmouseout="changeBack()">
+						17˚
+					    </li>
+					     <li class="forcast_cloudy"></li>
+					     <li class="forcast_text">
+						מעונן וקריר
+					    </li>
+					</ul>
+				    </li>
+				    
+				    <li class="forcast_each" id="4">
+					<ul>
+					    <li class="forcast_day">
+						א
+					    </li>
+					    <li class="forcast_date">
+						9/2
+					    </li>
+					    <li class="forcast_morning" onmouseover="changeClothes('coat')" onmouseout="changeBack()">
+						12˚
+					    </li>
+					    <li class="forcast_noon" onmouseover="changeClothes('coat')" onmouseout="changeBack()">
+						17˚
+					    </li>
+					    <li class="forcast_night" onmouseover="changeClothes('coat')" onmouseout="changeBack()">
+						10˚
+					    </li>
+					     <li class="forcast_rain"></li>
+					     <li class="forcast_text">
+						גשום וקריר, רוחות ערות
+					    </li>
+					</ul>
+				    </li>
+				    
+				    <li class="forcast_each" id="5">
+					<ul>
+					    <li class="forcast_day">
+						ב
+					    </li>
+					    <li class="forcast_date">
+						10/6
+					    </li>
+					    <li class="forcast_morning" onmouseover="changeClothes('coat')" onmouseout="changeBack()">
+						12˚
+					    </li>
+					    <li class="forcast_noon" onmouseover="changeClothes('long')" onmouseout="changeBack()">
+						21˚
+					    </li>
+					    <li class="forcast_night" onmouseover="changeClothes('meilon')" onmouseout="changeBack()">
+						15˚
+					    </li>
+					     <li class="forcast_sunCloud"></li>
+					     <li class="forcast_text">
+						יום קריר ונעים יותר, מעט מעל לממוצע
+					    </li>
+					</ul>
+				    </li>
+				    
+				    <li class="forcast_each tashkif" id="6">
+					<ul>
+					    <li class="forcast_day">
+						ג
+						<p>תשקיף</p>
+					    </li>
+					    <li class="forcast_date">
+						11/2
+					    </li>
+					    <li class="forcast_morning" onmouseover="changeClothes('meilon')" onmouseout="changeBack()">
+						15˚
+					    </li>
+					    <li class="forcast_noon" onmouseover="changeClothes('long')" onmouseout="changeBack()">
+						20˚
+					    </li>
+					    <li class="forcast_night" onmouseover="changeClothes('meilon')" onmouseout="changeBack()">
+						16˚
+					    </li>
+					     <li class="forcast_sunCloud"></li>
+					     <li class="forcast_text">
+						ללא שינוי ניכר
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each tashkif" id="7">
+					<ul>
+					    <li class="forcast_day">
+						ד
+						<p>תשקיף</p>
+					    </li>
+					    <li class="forcast_date">
+						12/2
+					    </li>
+					    <li class="forcast_morning" onmouseover="changeClothes('meilon')" onmouseout="changeBack()">
+						20˚
+					    </li>
+					    <li class="forcast_noon" onmouseover="changeClothes('long')" onmouseout="changeBack()">
+						24˚
+					    </li>
+					    <li class="forcast_night" onmouseover="changeClothes('meilon')" onmouseout="changeBack()">
+						15˚
+					    </li>
+					     <li class="forcast_sunny"></li>
+					     <li class="forcast_text">
+						שמשי אך קריר
+					    </li>
+					</ul>
+				    </li>
+				    
+				</ul>
+					
+			    </div> <!-- forcast_days -->
+			    
+			     <div id="forcast_hours" class="contentbox">
+				<ul>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						15:00
+					    </li>
+					    <li class="forcast_morning">
+						12˚
+					    </li>
+					     <li class="forcast_rain"></li>
+					     <li class="forcast_text">
+						גשום, רוח ערה
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						18:00
+					    </li>
+					    <li class="forcast_morning">
+						13˚
+					    </li>
+					    <li class="forcast_rain"></li>
+					     <li class="forcast_text">
+						גשום, רוח ערה
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						21:00
+					    </li>
+					    <li class="forcast_morning">
+						13˚
+					    </li>
+					    <li class="forcast_rain"></li>
+					     <li class="forcast_text">
+						גשום, רוח ערה
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						0:00
+					    </li>
+					    <li class="forcast_morning">
+						13˚
+					    </li>
+					    <li class="forcast_rain"></li>
+					     <li class="forcast_text">
+						גשום, רוח קלה
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						3:00
+					    </li>
+					    <li class="forcast_morning">
+						12˚
+					    </li>
+					    <li class="forcast_rain"></li>
+					     <li class="forcast_text">
+						גשום, רוח קלה
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						6:00
+					    </li>
+					    <li class="forcast_morning">
+						14˚
+					    </li>
+					    <li class="forcast_cloudy"></li>
+					     <li class="forcast_text">
+						ללא גשם, מעונן, רוח קלה
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						9:00
+					    </li>
+					    <li class="forcast_morning">
+						16˚
+					    </li>
+					    <li class="forcast_cloudy"></li>
+					     <li class="forcast_text">
+						ללא גשם, מעונן, רוח קלה
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						12:00
+					    </li>
+					    <li class="forcast_morning">
+						16˚
+					    </li>
+					    <li class="forcast_cloudy"></li>
+					     <li class="forcast_text">
+						ללא גשם, מעונן, רוח קלה
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						15:00
+					    </li>
+					    <li class="forcast_morning">
+						17˚
+					    </li>
+					    <li class="forcast_sunRain"></li>
+					     <li class="forcast_text">
+						מעונן חלקית, יתכן טפטוף
+					    </li>
+					</ul>
+				    </li>
+				    <li class="forcast_each">
+					<ul>
+					    <li class="forcast_date">
+						18:00
+					    </li>
+					    <li class="forcast_morning">
+						19˚
+					    </li>
+					    <li class="forcast_sunCloud"></li>
+					     <li class="forcast_text">
+						מעונן חלקית
+					    </li>
+					</ul>
+				    </li>
+				   
+				    
+				</ul>
+			    </div>
+			    
+			    <div id="what_is_forcast" class="contentbox">
+				<div class="span4">
+				<p>
+				    <strong>
+				מה זאת תחזית?
+				    </strong>
+				זאת תחזית עבור ירושלים. אם מחפשים יעד קרוב בגובה אחר - צריך להעלות 0.8 מעלות לכל 100 מ' ירידה בגובה.
+				</p>
+				
+				<p>
+	תחזית נוצרת מתנאי התחלה הנלקחים מבלונים המופרחים לאוויר בנקודות מדגמיות בעולם, הלא הן הרדיוסונדות. בארץ יש רק מקום אחד שממנו מופרח בלון כזה. משום שזה מדגמי ובגלל הסיבוכיות של האטמוספירה, אפשר לחזות רק ל–4-5 ימים בדיוק לא רע עבור אזורים ולתת תשקיף לשבוע מראש. לא עבור נקודות על המפה. אבל כאן אנחנו מדברים על תחזית לנקודה ספציפית - ירושלים.
+				</p>
+				</div>
+				 <div class="span4">
+				<p>
+כאן באתר יש ניסיון לתת ניואנסים בתחזית שיתאימו לאיזור ירושלים, דבר שלא קיים בתחזיות הכלליות שניתנות במקומות אחרים. 
+				</p>
+				
+			   
+				<p>
+				בחורה הולכת במדרכה יבשה בתלפיות, כאשר בגבעה הצרפתית הכל רטוב והיא תגיד לעצמה: 'איפה הגשם?' 
+	כלבלב ילך להשתין להנאתו בגן סאקר ויתפלא שלא יורד גשם, כאשר חברו בתלפיות יעשה סקי מים בשלוליות שליד ביתו.			
+				</p>
+				<p>
+				אחרי שנאמרו כל הדברים, קורה גם שהתחזית נכשלת וכן, זה מבאס. אבל, הכל בא מתוך רצון לתת שירות שלא קיים ברשת. אז תיהנו!
+				</p>
+			    </div>
+			    </div>
+			    
+			</div><!-- contentbox-wrapper -->
+			
+		    </div> <!-- forcast_main -->
+		    
+		    
+		    
+		    <div id="now_stuff">
+			<h2>יורד גשם</h2>
+			<p>גשם היום מחצות: 45 מ"מ</p>
+			<div id="month_peak">
+			    <p>שיאי החודש</p>
+			    <h2 id="peak_max">22.2˚</h2>
+			    <h2 id="peak_min">4.2˚</h2>
+			</div>
+			<div id="month_avarage">
+			    <p>ממוצע החודש</p>
+			    <h2 id="avarage_max">17.6˚</h2>
+			    <h2 id="avarage_min">7.8˚</h2>
+			</div>
+			
+		    </div>
+		</div> <!-- row -->
+		
+            </article>
+            
+	    <div class="cover_clouds">
+		<img id="cover_clouds-1" src="img/cloud_cover1_night.png" alt="cloud"/>
+		<img id="cover_clouds-2" src="img/cloud_cover2_night.png" alt="cloud"/>
+		<img id="cover_clouds-3" src="img/cloud_cover1_night.png" alt="cloud"/>
+		<img id="cover_clouds-4" src="img/cloud_cover2_night.png" alt="cloud"/>
+	    </div>
+	    
+         <article id="more">
+	    
+		<div class="now_messages">
+		    <div class="row">
+		    <div class="span4 offset4 white_box speach">
+			<h2>פינת ההודעות</h2>
+			<p class="box_text">
+			    אנחנו בישורת האחרונה לפני הכניסה לקיץ. 
+			</p>
+			<p class="box_text">
+			הישורת הזאת לא ממש ישרה, כי השרבים גורמים לתזזיתיות בטמפרטורות.
+			</p>
+			<p class="box_text">
+			האפיק העונתי של הקיץ יחד עם הרמה למעלה מנסים להתיישב עלינו ובסופו של דבר זה יקרה.
+			</p>
+		    </div>
+		    </div>
+		    <br>
+			
+		    <div class="row">
+		    <a href="http://earthengine.google.org/#timelapse/v=31.77695,35.19674,10.812,latLng&t=2.87" target="_blank">
+		    <div class="span4 offset4 white_box">
+			<h2>שנים של שינוי בכדור הארץ</h2>
+			<p class="box_text">
+			גוגל בשיתוף טיים, נאסא ועוד גורמים יצרה סרטון אנימציה של כל מקום בכדור הארץ.
+			</p>
+			<p class="box_text">
+			בקליק על הטקסט ניתן לראות את השינויים שעברו על אזור י-ם ב-30 השנים האחרונות.
+			</p>
+			<p class="box_text">
+			אפשר לשנות מיקום לאזורים אחרים ולראות נסיגת קרחונים ועוד תהליכים ארוכי שנים.
+			</p>
+			<p class="box_text">
+			מה אתם יכולים לראות?
+			</p>
+		    </div>
+		    </a>
+		    </div>
+		    
+		    <div class="row more_stuff">
+			<div id="newsletter">
+			    <h2>רשימת תפוצה</h2>
+			    <form class="email_form" method="get" action="">
+				<input type="text"  class="search-query" name="q" value="youremail@domain.com" onfocus="if(this.value == 'youremail@domain.com') { this.value = ''; }" onfocusout="if(this.value == '') { this.value = 'youremail@domain.com'; }"/>
+				 <input type="submit" value="שליחה" />
+			    </form>
+			</div>
+			
+			<div id="outside_links">
+			    <h2>קישורים חיצוניים</h2>
+			    <a>מה יש היום בירושלים</a>
+			    <a>פתוח בשבת</a>
+			    <a>Weather2day</a>
+			    <a>טיולים בירושלים</a>
+			    <a>הסרת שיער לצמיתות</a>
+			    <a>קידום אתרים</a>
+			    <a>Israel Weather</a>
+			</div>
+			
+			<div class="span8 more_icons">
+			    <ul>
+				<li><a id="weather_israel">תחזית לארץ</a></li>
+				<li><a id="weather_hul">תחזית לחו"ל</a></li>
+				<li><a id="weather_movies">סרטוני מזג אוויר</a></li>
+				<li><a id="weather_songs">שירי מזג אוויר</a></li>
+				<li><a id="snow_poems">חמשירי שלג</a></li>
+			    </ul>
+			    
+			    <ul id="share_icons">
+				<li><a id="rss"></a></li>
+				<li><a href="https://twitter.com/YERU02WS" target="_blank" id="twitter"></a></li>
+				<li><a href="https://www.facebook.com/pages/02ws-ירושמיים-מזג-האוויר-בזמן-אמת/118726368187010" target="_blank" id="facebook"></a></li>
+				<li><a id="addthis"></a></li>
+			    </ul>
+			
+			</div>
+			
+			<div id="did_you_know">
+			    <h2>הידעת?</h2>
+			    <p>
+				השנה הגשומה ביותר היתה 1991. באותה שנה ירדו 1134 מ"מ גשם!
+			    </p>
+			    <a>לשיאים נוספים לחצו כאן</a>
+			</div>
+
+		    </div>
+		</div>
+					
+	</article>
+			
+	<div id="upload_window">
+	    <form id="upload_form" action="" method="post" name="fileupload">
+		 <input type="file" name="fileupload" accept="image/*" onmouseover="changeBg('upload_btn', '#B1BE5A')" onmouseout="changeBg('upload_btn', '#C0CE61')"/>
+		 <div id="upload_btn">בחרו קובץ</div>
+		 <input name="location" type="text" placeholder="איפה התמונה צולמה"></input>
+		 <textarea name="description" placeholder="מה רואים בתמונה"></textarea>
+		 <div id="pic_holder"></div>
+		 <div class="okay_close">
+		    <div class="okay_icon" onclick='document.getElementById("upload_window").style.visibility = "hidden";'></div>
+		    <div class="close_icon" onclick='document.getElementById("upload_window").style.visibility = "hidden";'></div>
+		 </div>
+	    </form>	
+	 </div>
+				
+	<article id="pics">
+			  <div id="tree"></div>
+			<div id="crow" onMouseOver="playSound('crow_sound')"></div>
+			<audio id="crow_sound">
+			    <source src="audio/crow.mp3"></source>
+			</audio>
+			
+			<div class="row" id="pic_stuff">
+			    
+			    
+			    
+			    <div id="upload_text">לחצו על המפה להוספת תמונה במקום בו צולמה</div>
+			    
+			    <div id="upload_pic" onclick="chooseLocation()">
+				הוספת תמונה
+			    </div>
+			    <div id="pic_empty"></div>
+			    
+			    <div id="map_thumbs">
+				<img id="pic_thumb1" onclick="change_pic_to('0px')" src="img/picoftheday_rain.png" alt="תמונת היום"></img>
+				<img id="pic_thumb2" onclick="change_pic_to('-300px')" src="img/pic_live_rain.png" alt="שידור חי"></img>
+				<img id="pic_thumb3" onclick="change_pic_to('-600px')" src="img/pic_user1.png"></img>
+				<img id="pic_thumb4" onclick="change_pic_to('-900px')" src="img/pic_user2.png"></img>
+				<img id="pic_thumb5" onclick="change_pic_to('-1200px')" src="img/pic_user4.png"></img>
+			    
+			    </div>
+			    
+			    <div id="pic_left" onClick="change_pic('left'); return false"></div>
+			     <div id="pic_right" onClick="change_pic('right'); return false"></div>
+			    <div class="span4 offset8 white_box2" id="pic_frame">
+				
+				<div id="pic_contentbox" class="contentbox-wrapper">
+				    
+				   <div id="picoftheday" class="contentbox pic_user">
+					<div class="avatar picoftheday_avatar"></div>
+					<h3>תמונת היום</h3>
+					<h4>6.2.13, 13:34, גילה</h4>
+					<p>ערפל בגילה</p>
+					
+					<img src="img/picoftheday_rain.png" alt="תמונת היום"></img>
+				    </div>
+				    <div id="live_pic" class="contentbox pic_user">
+					<div class="avatar live_avatar"></div>
+					<h3>שידור חי</h3>
+					<a><p>לארכיון ואנימציה של תמונות אחרונות</p></a>
+					<!--<object width="280" height="280" data="http://www.wunderground.com/swf/flowplayer.commercial-3.2.8.swf" type="application/x-shockwave-flash"><param name="movie" value="http://www.wunderground.com/swf/flowplayer.commercial-3.2.8.swf"><param name="allowfullscreen" value="true"><param name="allowscriptaccess" value="always"><param name="flashvars" value="config={&quot;key&quot;:&quot;#@8d339434b223613a374&quot;,&quot;clip&quot;:{&quot;url&quot;:&quot;http://icons.wunderground.com/webcamcurrent/b/o/boazn1/2/current.mp4&quot;,&quot;autoPlay&quot;:false,&quot;autoBuffering&quot;:true},&quot;plugins&quot;:{&quot;controls&quot;:{&quot;all&quot;:true,&quot;mute&quot;:true,&quot;play&quot;:true}},&quot;playlist&quot;:[{&quot;url&quot;:&quot;http://icons.wunderground.com/webcamcurrent/b/o/boazn1/2/current.mp4&quot;,&quot;autoPlay&quot;:false,&quot;autoBuffering&quot;:true}]}"></object>
+				    -->
+					<img src="img/pic_live_rain.png" alt="שידור חי"></img>
+				    </div>
+			    
+				    <div id="pic_user1" class="contentbox pic_user">
+					<div class="avatar user_avatar1"></div>
+					<h3>אברהם</h3>
+					<h4>5.5.13, 11:23, רוממה</h4>
+					<p>גשר המיתרים על רקע שמיים כחולים</p>
+					<img src="img/pic_user1.png"></img>
+				    </div>
+			
+				     <div id="pic_user2" class="contentbox pic_user">
+					<div class="avatar user_avatar2"></div>
+					<h3>לאה</h3>
+					<h4>5.5.13, 10:53, מרכז העיר</h4>
+					<p>עננים יפים במרכז העיר</p>
+					<img src="img/pic_user2.png"></img>
+				    </div>
+				     
+				      <div id="pic_user3" class="contentbox pic_user">
+					<div class="avatar user_avatar3"></div>
+					<h3>גליזו</h3>
+					<h4>5.5.13, 9:23, הר הצופים</h4>
+					<p>ערפל מכסה את עיסוויה</p>
+					<img src="img/pic_user4.png"></img>
+				    </div>
+			
+				</div>
+			    </div>
+			</div>
+					
+	</article>
+				
+	<article id="forum">		
+		<div class="container">
+		  <div id="forum_grass"></div>
+		    
+		      <div id="forum_sidebar">
+			<h2>חיפוש בפורום</h2>
+			<form class="searchForm" method="get" action="http://www.google.com/search">
+			    <input type="text"  class="search-query" name="q" size="20" maxlength="255" value="" />
+			    <input type="submit" value="" />
+                        </form>
+			<h2>סינון לפי נושאים</h2>
+			<div id="forum_filter">
+			    <div id="filter_icon1"></div>
+			    <div id="filter_icon2"></div>
+			    <div id="filter_icon3"></div>
+			    <div id="filter_icon4"></div>
+			    <div id="filter_icon5"></div>
+			    <div id="filter_icon6"></div>
+			    <div id="filter_icon7"></div>
+			    <div id="filter_icon8"></div>
+			</div>
+			<ul>
+			    <li class="selected">יוני 2013</li>
+			    <li>מאי 2013</li>
+			    <li>מרץ 2013</li>
+			    <li>פברואר 2013</li>
+			    <li>ינואר 2013</li>
+			    <li>2012</li>
+			    <li>2011</li>
+			    <li>2010</li>
+			    <li>2009</li>
+			    <li>2008</li>
+			</ul>
+		    </div>
+		    
+		    <div class="row">
+			<div class="span1 offset3">
+			    <div id="new_post_btn" onclick="openNewPost()">
+				הודעה חדשה
+			    </div>
+			</div>
+			
+			<div class="span8">
+			    <ul id="forum_rules">
+				<li>הודעות מהנהלת האתר מסומנות באדום, על כל שאר ההודעות אין אחריות.</li>
+				<li>תעברו על התחזית לטווח קצר והתחזית לטווח בינוני ואם אין מענה לשאלתכם - פרסמו שאלה.</li>
+				<li>הפורום לא נועד להשוואות עם תחזיות של אתרים אחרים. זה לא המקום.</li>
+				<li>להודעות כפולות שכבר קיימות בלוח לא תנתן תשובה.</li>
+				<li>תגובות שאינן קשורות להודעה המקורית תמחקנה. נא להוסיף הודעות או תגובות במקום המתאים לה.</li>
+			    </ul>
+			</div>
+			
+			
+		    </div>
+		    
+		    
+		    <div class="row">
+			<div class="span9 offset3 white_box" id="new_post">
+			    <div id="new_post_user"></div>
+			    <div class="span7">
+				<p>תוכן ההודעה:</p>
+				<div class="new_post_icons">
+				    <div id="new_post_link"></div>
+				    <div id="new_post_pic"></div>
+				    <div id="new_post_bold"></div>
+				    <div id="new_post_emoticon"></div>
+				</div>
+				<textarea id="new_post_ta"></textarea>
+			    </div>
+			    <div class="span2">
+				<p>נושא:</p>
+				<div id="subject_icon"></div>
+				<div id="subject_left"></div>
+				<div id="subject_right"></div>
+    				<div id="new_post_cancel" onclick="closeNewPost()">ביטול</div>
+				<div id="new_post_okay" onclick="closeNewPost()">אישור</div>
+			    </div>
+			</div>
+		    </div>
+		    
+		    <hr id="forum_hr"></hr>
+		    
+		    <div class="row" id="posts">
+			<div class="span3 offset3">
+			    <div class="white_box2">
+				<div class="post_icon1"></div>
+				<div class="pic_user">
+				    <div class="avatar user_avatar4"></div>
+				    <h3>RolandOfGilead:</h3>
+				    <h4>5.5.13, 13:34</h4>
+				</div>
+				<p>
+					ועוד שאלה: מהו גובה של פסגת זאב על פני המים?
+				</p>
+				<div class="post_reply">
+				    <div class="pic_user">
+					<div class="avatar admin_avatar"></div>
+					<h3 class="admin">מנהל ירושמיים:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				     <p>
+			    באתר "עמוד ענן" או במפות של גוגל.
+				    </p>
+			    
+				    <div class="pic_user">
+					<div class="avatar user_avatar1"></div>
+					<h3>כוכב הצפון:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				     <p>
+			    :roland היקר, התכוונת גובה מעל פני הים, ובכן, ממוצע הגובה של פסגת זאב הוא כ-800 מטר מעל פני הים. ונכון ל-2010, יש בה 41,992 תושבים, השכונה הכי גדולה בירושלים! לגבי האקלים, או יותר נכון, מזג האוויר, בועז מבין יותר טוב ממני, אדיוס !
+				    </p>
+				</div>
+				<div class="comment_btn">תגובה</div>
+				
+			    </div>
+			    <div class="white_box2">
+				<div class="post_icon4"></div>
+				<div class="pic_user">
+				    <div class="avatar user_avatar2"></div>
+				    <h3>לאה</h3>
+				    <h4>5.5.13, 10:53, מרכז העיר</h4>
+				</div>
+					<p>עננים יפים במרכז העיר</p>
+					<img src="img/pic_user2.png"></img>
+					<div class="comment_btn">תגובה</div>
+			    </div>
+			    <div class="white_box2">
+				<div class="post_icon2"></div>
+				<div class="pic_user">
+				    <div class="avatar user_avatar5"></div>
+				    <h3>דרומי:</h3>
+				    <h4>5.5.13, 13:34</h4>
+				</div>
+				<p>
+				    בשבת יהיה חם באופקים כמו שהיה ביום ראשון האחרון? חבל שאין אייקון של דואג כי החום הזה באמת היה נוראי שאני מודאג שיהיה כך בשבת. ורק עוד שאלה נוספת: אל השרב בשבת יתלווה אובך או כיסוי עננות משמעותי שיכולים להפחית מהחום? תודה רבה ושנזכה למזג אוויר נורמלי.המים?
+				</p>
+				
+				<div class="post_reply">
+				    
+				    <div class="pic_user">
+					<div class="avatar user_avatar6"></div>
+					<h3>נעה:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				    <p>
+					מצטרפת לשאלה, על שני חלקיה בקשר לירושליים.
+				    </p>
+				    
+				    <div class="pic_user">
+					<div class="avatar admin_avatar"></div>
+					<h3 class="admin">מנהל ירושמיים:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				     <p>
+    יהיה פחות חם, כי השרב יתפתח במהלך היום, כלומר לא יהיו תנאי שרב כל היממה. לגבי אובך - רק במוצאי שבת וביום ראשון.
+				     </p>
+				    
+				    <div class="pic_user">
+					<div class="avatar user_avatar6"></div>
+					<h3>נעה:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				    <p>
+				    אובך בסולם כינים ובטטות, או אובך "סתם".
+				    </p>
+				    
+				</div>
+				<div class="comment_btn">תגובה</div>
+			    </div>
+			    
+			    
+			</div>
+			
+			<div class="span3">
+			     <div class="white_box2">
+				<div class="post_icon4"></div>
+				<div class="pic_user">
+					<div class="avatar user_avatar1"></div>
+					<h3>אברהם</h3>
+					<h4>5.5.13, 11:23, רוממה</h4>
+				</div>
+				    <p>גשר המיתרים על רקע שמיים כחולים</p>
+				    <img src="img/pic_user1.png"></img>
+				    <div class="comment_btn">תגובה</div>
+			    </div>
+			
+			    <div class="white_box2">
+				<div class="post_icon2"></div>
+				<div class="pic_user">
+				    <div class="avatar user_avatar1"></div>
+				    <h3>כוכב הצפון:</h3>
+				    <h4>5.5.13, 13:34</h4>
+				</div>
+				<p>
+				    צהרים טובים בועז וכל החברים, רציתי לשאול בועז על הרמה הסובטרופית. האם היא קיימת כל השנה, או רק בעונת הקיץ? והאם יש קשר בין הרמה הזו לאוויר החם שעולה מקו המשווה ומתמוכך מצפון ומדרום לו בקווי רוחב 15 ו-30? והאם לחץ האוויר הגבוה של רמה זו קשורה לאוויר החם הזה מקו המשווה? תודה.
+				</p>
+				<div class="post_reply">
+				    <div class="pic_user">
+					<div class="avatar admin_avatar"></div>
+					<h3 class="admin">מנהל ירושמיים:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				     <p>
+			    הרמה הסובטרופית, כשמה כן היא, נמצאת ברחבים הסובטרופיים (אזור מדבר סהרה) כל השנה ומצפינה בקיץ. היא נוצרת מ"תאי הדלי" שמופיעים כתוצאה מהעברת חום מקו המשווה צפונה.
+				    </p>
+			    
+				    <div class="pic_user">
+					<div class="avatar user_avatar1"></div>
+					<h3>כוכב הצפון:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				     <p>
+			    תודה. האם הרמה הזו משפיעה על מזג האוויר באירופה, והאם רמה זו קיימת גם בדרום וצפון אמריקה?
+				    </p>
+				</div>
+				<div class="comment_btn">תגובה</div>
+			    </div>
+			    
+			    <div class="white_box2">
+				<div class="post_icon4"></div>
+				<div class="pic_user">
+				    <div class="avatar user_avatar3"></div>
+					<h3>גליזו</h3>
+					<h4>5.5.13, 9:23, הר הצופים</h4>
+				</div>			
+				<p>ערפל מכסה את עיסוויה</p>
+				<img src="img/pic_user4.png"></img>
+				<div class="comment_btn">תגובה</div>
+			    </div>
+			    
+			</div>
+			
+			<div class="span3">
+			    <div class="white_box2">
+				<div class="post_icon3"></div>
+				<div class="pic_user">
+				    <div class="avatar admin_avatar"></div>
+				    <h3 class="admin">מנהל ירושמיים:</h3>
+				    <h4>5.5.13, 13:34</h4>
+				</div>
+				<p>
+				    התבוננות במים - ספר בתהליך של כתיבה:
+			       
+				<a>לצפייה בתמונות ממנו עם הסברים לחצו כאן</a>
+				 </p>
+				<div class="comment_btn">תגובה</div>
+			    </div>
+			    
+			    <div class="white_box2">
+				<div class="post_icon2"></div>
+				<div class="pic_user">
+				    <div class="avatar user_avatar5"></div>
+				    <h3>דרומי:</h3>
+				    <h4>5.5.13, 13:34</h4>
+				</div>
+				<p>
+				    בשבת יהיה חם באופקים כמו שהיה ביום ראשון האחרון? חבל שאין אייקון של דואג כי החום הזה באמת היה נוראי שאני מודאג שיהיה כך בשבת. ורק עוד שאלה נוספת: אל השרב בשבת יתלווה אובך או כיסוי עננות משמעותי שיכולים להפחית מהחום? תודה רבה ושנזכה למזג אוויר נורמלי.המים?
+				</p>
+				
+				<div class="post_reply">
+				    
+				    <div class="pic_user">
+					<div class="avatar user_avatar6"></div>
+					<h3>נעה:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				    <p>
+					מצטרפת לשאלה, על שני חלקיה בקשר לירושליים.
+				    </p>
+				    
+				    <div class="pic_user">
+					<div class="avatar admin_avatar"></div>
+					<h3 class="admin">מנהל ירושמיים:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				     <p>
+    יהיה פחות חם, כי השרב יתפתח במהלך היום, כלומר לא יהיו תנאי שרב כל היממה. לגבי אובך - רק במוצאי שבת וביום ראשון.
+				     </p>
+				    
+				    <div class="pic_user">
+					<div class="avatar user_avatar6"></div>
+					<h3>נעה:</h3>
+					<h4>5.5.13, 13:34</h4>
+				    </div>
+				    <p>
+				    אובך בסולם כינים ובטטות, או אובך "סתם".
+				    </p>
+				    
+				</div>
+				<div class="comment_btn">תגובה</div>
+			    </div>
+			    
+			     <div class="white_box2">
+				<div class="post_icon4"></div>
+				<div class="pic_user">
+				    <div class="avatar admin_avatar"></div>
+				    <h3 class="admin">מנהל ירושמיים:</h3>
+				    <h4>5.5.13, 13:34, ניות</h4>
+					
+				</div>
+				    <p>ערפל בגילה</p>
+				    <img src="img/picoftheday_rain.png" alt="תמונת היום"></img>
+				    <div class="comment_btn">תגובה</div>
+			     </div>
+			    
+			</div>
+			
+		    </div>
+		    <p class="footer"></p>
+		</div>
+		<img id="hill1" src="img/hill3_night.png" alt="hill"/>
+		<img id="hill2" src="img/hill2_night.png" alt="hill"/>
+		<img id="hill3" src="img/hill1_night.png" alt="hill"/>
+		<img id="hill4" src="img/hill3_night.png" alt="hill"/>
+		<img id="hill5" src="img/hill1_night.png" alt="hill"/>
+		<img id="hill6" src="img/hill2_night.png" alt="hill"/>
+		
+		  	
+	    </article>
+
+        </div>
+
+        </div> <!-- /container -->
+        <div id="bottom_bg">
+	     <div  id="bg_backHills"></div>
+	     <div id="bg_hills"></div>
+	    <div id="bg_map"></div>
+	   <div id="bg_grass"></div>
+	      
+	    
+	</div>
+
+	<audio id="crow_sound">
+		<source src="audio/rain.mp3"></source>
+	</audio>
+
+	<!-- SNOW EFFECT-->
+	<canvas id="canvas"></canvas>
+	
+	
+	
+<!-- Parallax  midground clouds -->
+                            <div id="parallax-bg2">
+                                    <img id="bg2-1" src="img/cloud-lg1_rain.png" alt="cloud"/>
+                                    <img id="bg2-2" src="img/cloud-lg2_night.png" alt="cloud"/>
+                                    <img id="bg2-3" src="img/cloud-lg2_big_rain.png" alt="cloud"/>
+                                    <img id="bg2-4" src="img/cloud-lg1_rain.png" alt="cloud"/>
+                                    <img id="bg2-5" src="img/cloud-lg1_rain.png" alt="cloud"/>
+				    
+                            </div>
+                            
+                            <!-- Parallax  background clouds -->
+                            <div id="parallax-bg1">
+                                    <img id="bg1-1" src="img/cloud-lg3_rain.png" alt="cloud"/>
+                                    <img id="bg1-2" src="img/cloud-lg2_rain.png" alt="cloud"/>
+                                    <img id="bg1-3" src="img/cloud-lg2_night.png" alt="cloud"/>
+                                    <img id="bg1-4" src="img/cloud-lg2_rain.png" alt="cloud"/>
+                            </div>        
+
+        
+    </body>
+</html>
