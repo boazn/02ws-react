@@ -1,0 +1,6 @@
+AuthType Basic
+AuthName "Members Only"
+AuthUserFile /home/boazn/public/02ws.com/public/secured/.htpasswd
+<limit GET PUT POST>
+require valid-user
+</limit>

@@ -1,0 +1,3 @@
+./images/automn/station5_1.jpg
+./images/console1_1.jpg
+./images/console2_1.jpg
