@@ -170,5 +170,12 @@ tinymce.addI18n('he_IL',{
 "Tools": "\u05db\u05dc\u05d9\u05dd",
 "View": "\u05ea\u05e6\u05d5\u05d2\u05d4",
 "Table": "\u05d8\u05d1\u05dc\u05d4",
-"Format": "\u05e4\u05d5\u05e8\u05de\u05d8"
+"Format": "\u05e4\u05d5\u05e8\u05de\u05d8",
+image:{
+image_desc:"הכנס תמונה",
+delta_width:"-50"
+},
+link:{
+delta_width:"-50"
+},
 });
