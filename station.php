@@ -1,29 +1,30 @@
 <?
 header('Content-type: text/html; charset=utf-8');
-ini_set("display_errors","On");
-//if ($_GET['debug'] == '')
-//    include "begin_caching.php";
+//ini_set("display_errors","On");
+if ($_GET['debug'] == '')
+    include "begin_caching.php";
 set_include_path(get_include_path() . PATH_SEPARATOR . "/home/boazn/02ws.com/public". PATH_SEPARATOR ."./");
 include_once("include.php"); 
 include_once("start.php");
 include_once("requiredDBTasks.php");
 include_once "sigweathercalc.php";
+include_once("forecastlib.php");
 
 ?>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+ <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title><? echo getPageTitle()?></title>
-        <meta name="description" content=" ירושמים  . תחנה המדווחת על מזג-האויר בירושלים. יש כאן מצלמה דיגיטלית המצלמת את המתרחש בחוץ כל 10 דקות, תחזית לי-ם, חו''ל, גרפים, נתונים מפורטים , ארכיון וזו רק ההתחלה... What is the weather in Jerusalem, Israel? Here you have 6 days forecast, current significant conditions, live pictures, weather graphs,  detailed archive and much more. This is online weather station which updates every minute." />
-        <meta name="keywords" content="climate, storm, snow, monthly, stat , תחזית מזג אויר , אקלים, קר , חם , טיולים, מפות, ירושמים "/>
+        <meta name="description" content="<? if (isHeb()) {?>מתעדכן כל דקה מתחנה פיזית על הגג. תחזית ל-24 שעות, לימים הבאים , ארכיון וכל מה שרצית לדעת<?} else {?>What is the weather in Jerusalem, Israel? Here you have 6 days forecast, current significant conditions, live pictures, weather graphs,  detailed archive and much more. This is online weather station which updates every minute. <?} ?>"/>
+        <meta name="keywords" content="climate, forecast, weather, jerusalem תחזית מזג אויר , אקלים, שלג, ממוצע, ארכיון"/>
         <meta name="author" content="Boaz" />
-		<meta http-equiv="Refresh" content="1800" />
+	<meta http-equiv="Refresh" content="1800" />
+        <meta property="og:image" content="http://www.02ws.co.il/02ws_short.png?p=<?=time()?>" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="628" />
+        <meta property="og:description" content="<? echo "{$sig[0]['sig'][$lang_idx]}"; ?>" /> 
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-        <link rel="stylesheet" href="css/bootstrap.php<?echo "?lang=".$lang_idx; ?>" type="text/css" media="screen">
+        <link rel="stylesheet" href="css/bootstrap<?=$lang_idx; ?>.css" type="text/css" media="screen">
 	<!--<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.css">-->
         <style>
@@ -32,25 +33,32 @@ include_once "sigweathercalc.php";
                 padding-bottom: 40px;
             }
         </style>
-        <link rel="stylesheet" href="css/main.php<?echo "?lang=".$lang_idx;?>" type="text/css" media="screen">
+        <link rel="stylesheet" href="css/main.php?lang=<?=$lang_idx;?>" type="text/css" media="screen">
         <? if ($current->is_sunset()) { ?>
         <link rel="stylesheet" href="css/sunset.css">
         <? }?>
         <? if ($current->is_sunrise()) { ?>
         <link rel="stylesheet" href="css/sunrise.css">
         <? }?>
-        <? if (!$current->is_light()) { ?>
-        <link rel="stylesheet" href="css/night.css">
-        <? }?>
-        <? if ($current->get_pm10() > 500) { ?>
+        <? if ($current->get_pm10() > 250) { ?>
         <link rel="stylesheet" href="css/dust.css">
         <? }?>
+        <? if (!$current->is_light()) { ?>
+        <link rel="stylesheet" href="css/night.css">
+            <? if ($current->get_pm10() > 250) { ?>
+            <link rel="stylesheet" href="css/dust-night.css">
+            <? }?>
+        <? }?>
         <? if (isRaining()){ ?>
-			<link rel="stylesheet" href="css/rain.css">
-	    <? }?>
-		<? if (((isRaining())&&($current->get_temp() < 2))||(stristr($template_routing, 'snow'))) { ?>
-			<link rel="stylesheet" href="css/snow.css">
-		 <? }?>
+	<link rel="stylesheet" href="css/rain.css">
+        <? }?>
+        <? if (((isRaining())&&($current->get_temp() < 2))||(stristr($template_routing, 'snow'))||(IS_SNOWING == 1)) { ?>
+        <? if ($current->is_light()){?>
+        <link rel="stylesheet" href="css/snow.css">
+        <? } else {?>
+        <link rel="stylesheet" href="css/snow_night.css">
+        <? }?>
+        <? }?>
         <link rel="icon" type="image/png" href="img/favicon_sun.png">
         <script type="text/javascript">
 
@@ -67,28 +75,27 @@ include_once "sigweathercalc.php";
         </script>
     </head>
     <body>
-        <!--[if (gte IE 5.5)&(lt IE 9)]>	
-	<div class="topbase" id="topmessage" style="z-index:9999"><div class="big">Please update you browser. The site does not support internet explorer 6-8.<br /><br />אנא עדכן את הדפדפן<a href="http://www.mozilla.com"><img border="0" alt="Firefox 3" title="Firefox 3" src="http://sfx-images.mozilla.org/affiliates/Buttons/firefox3/120x240.png" /></a>
+        <!--[if lt IE 9 ]>	
+	<div class="topbase" id="topmessage" class="big" style="z-index:9999">
+        Please update you browser. The site does not support internet explorer 6-8.<br /><br />אנא עדכן את הדפדפן<a href="http://www.mozilla.com"><img border="0" alt="Firefox 3" title="Firefox 3" src="http://sfx-images.mozilla.org/affiliates/Buttons/firefox3/120x240.png" /></a>
 	<a href="http://www.google.com/chrome/"><img src="http://www.techdigest.tv/assets_c/2009/02/google-chrome-logo-thumb-300x300-75857.jpg" alt="Chrome" width="150px"></a>
         <br />
         <br />
         <a href="stationo.php?lang=<?=$lang_idx?>">Old 02WS site ירושמיים הישן</a>
-	<a href="#" title="close" onclick="toggle('topmessage')"><div class='sprite stop1'></div></a></div></div></div>
-	<script type="text/javascript">
-	show('topmessage', 'main_table', 'main_table', 0, 0);
-	</script>
+	<a href="#" title="close" onclick="toggle('topmessage')"><div class='sprite stop1'></div></a>
+        </div>
         <![endif]-->
-        <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
-         <div class="navbar navbar-fixed-top">
+        <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container row">
-		    <div class="span7 nav">	
+		    <div class="nav">	
 			<ul id="top_links">
                             <? if (!(first_page())) {?>
                             <li id="tohomepage"><a href="<? echo BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?lang=".$lang_idx;?>" title="<?=$FAQ[$lang_idx]?>"><? echo $HOME_PAGE[$lang_idx];?></a></li>
                             <?}?>
                             <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'faq.php');?>" title="<?=$FAQ[$lang_idx]?>"><?=$FAQ[$lang_idx ]?></a></li>
-			    <li><a href="javascript:void(0)" ><? echo $WHAT_ELSE[$lang_idx];?>&nbsp;<? if (count($sig) > 2) echo "<span class=\"high big\">".(count($sig)-1)."</span>";?>&nbsp;<span class="arrow_down">&#9660;</span></a>
+                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tips.php');?>" title="<?=$TIPS[$lang_idx]?>"><?=$TIPS[$lang_idx ]?></a></li>
+			    <li><a href="javascript:void(0)" ><? echo $WHAT_ELSE[$lang_idx];?>&nbsp;<? if (count($sig) > 2) echo "<span class=\"invhigh\">&nbsp;".(count($sig)-1)."&nbsp;</span>";?>&nbsp;<span class="arrow_down">&#9660;</span></a>
                                     <ul style="<?echo get_s_align();?>: -2em;">
                                                         <? if ($boolbroken) {?>
                                                                         <li class="">
@@ -180,22 +187,10 @@ include_once "sigweathercalc.php";
                                                         <li >
                                                                 <a class="hlink" href="<? echo get_query_edited_url(get_url(), 'section', 'globalwarm.php');?>" onmouseover="toggle('globalwarmanomaly')" onmouseout="toggle('globalwarmanomaly')"><? echo $GLOBAL_WARMING[$lang_idx]; ?>:<span dir="ltr">
                                                                         <?	
-                                                                                if (!isset($_SESSION['gw'])){
-                                                                                        global $link;
-                                                                                        $result = db_init("SELECT avg(anomaly) FROM globalwarming");
-                                                                                        $row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
-                                                                                        $gw =  number_format($row['avg(anomaly)'], 2, '.', '');
-                                                                                        $_SESSION['gw'] = $gw;
-                                                                                        @mysqli_free_result($result);
-                                                                                        //Closing connection 
-                                                                                        @mysqli_close($link);
-
-                                                                                }
-                                                                                else
-                                                                                        $gw = $_SESSION['gw'];
-                                                                                $gw_plus_minus = $gw >= 0 ? "+" : "";
-                                                                                echo $gw_plus_minus.$gw;
-                                                                        ?><? echo $current->get_tempunit(); ?>
+                                                                           $gw =  number_format(apc_fetch('avganomaly'), 2, '.', '');
+                                                                           $gw_plus_minus = $gw >= 0 ? "+" : "";
+                                                                           echo $gw_plus_minus.$gw;
+                                                                           echo $current->get_tempunit(); ?>
                                                                         </span><?=get_arrow()?></a>
                                                                 </li>
 
@@ -217,7 +212,7 @@ include_once "sigweathercalc.php";
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'chooseMonthYear');?>" ><? echo $CHOOSE[$lang_idx]; ?><?=get_arrow()?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', '2weeks.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_WEEK[$lang_idx];?><?=get_arrow()?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'month.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_MONTH[$lang_idx];?><?=get_arrow()?></a></li>
-                                                        <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'allTimeRecords.php');?>" class="hlink" title="<?=$RECORDS[$lang_idx];?>"><? echo $RECORDS_LINK[$lang_idx];?><?=get_arrow()?></a></li>
+                                                        <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'allTimeRecords.php');?>" class="hlink" title="<?=$RECORDS_LINK[$lang_idx];?>"><? echo $RECORDS[$lang_idx];?><?=get_arrow()?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'RainSeasons.php');?>" class="hlink">150 <? echo $RAIN_SEASONS[$lang_idx];?><?=get_arrow()?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'browsedate.php');?>" class="hlink"><? echo $ARCHIVE[$lang_idx];?><?=get_arrow()?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'reports.php');?>" class="hlink"><? echo $REPORTS[$lang_idx];?><?=get_arrow()?></a></li>
@@ -235,7 +230,7 @@ include_once "sigweathercalc.php";
 						<li>
 							<div id="notloggedin" style="display:none">
 								<div><a href="javascript: void(0)" id="login" title="<?=$LOGIN[$lang_idx]?>" ><?=$LOGIN[$lang_idx]?></a></div>
-								<div><a href="javascript: void(0)" class="register" title="<?=$REGISTER[$lang_idx]?>"><?=$REGISTER[$lang_idx]?></a></div>
+								<div><a href="javascript: void(0)" class="register" id="register" title="<?=$REGISTER[$lang_idx]?>"><?=$REGISTER[$lang_idx]?></a></div>
 								<div><a href="javascript: void(0)" id="forgotpass" title="<?=$FORGOT_PASS[$lang_idx]?>"><?=$FORGOT_PASS[$lang_idx]?></a></div>
 							</div>
 							<div id="loggedin" style="display:none">
@@ -297,12 +292,14 @@ include_once "sigweathercalc.php";
                <span <? if (time() - filemtime($fulldatatotake) > 3600) echo "class=\"high afont\"";?>>
                <? if (isHeb()) echo $dateInHeb; else echo $date;?>
                </span>
+               <div id="addthis_icon" class="addthis_toolbox addthis_default_style"><a class="addthis_button_compact"></a></div>
             </div>
+            
 				<? if ((first_page())||($template_routing=="frommobile")) { ?>
             <div class="fixed_nav span2">
                  <div id="logo">
-					
-				 </div>
+                     			
+		 </div>
                  <ul class="main_nav">
                     <li>
 						<a class="now active" href="#now"><?=$CURRENT_SIG_WEATHER[$lang_idx]?></a>
@@ -320,7 +317,9 @@ include_once "sigweathercalc.php";
             </div>
 			<?} else {?>
 			<div class="not_fixed_nav span2">
-				<div id="logo"></div>
+				<div id="logo">
+                                    <a href="<? echo BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?lang=".$lang_idx;?>" >&nbsp;&nbsp;&nbsp;</a>
+                                </div>
 				<ul class="main_nav">
 					<li>
 						<a class="now active" href="javascript:void(0)" onclick="window.history.back();"><?=$BACK[$lang_idx]?></a>
@@ -332,74 +331,77 @@ include_once "sigweathercalc.php";
  <div class="container">
         <div class="cover_clouds">
                                
-         <? if (($current->is_light())&&(first_page())) { ?>
-		<img id="cover_clouds-1" src="img/cloud_cover1.png" alt="cloud"/>
-		<img id="cover_clouds-2" src="img/cloud_cover2.png" alt="cloud"/>
-		<img id="cover_clouds-3" src="img/cloud_cover1.png" alt="cloud"/>
-		<img id="cover_clouds-4" src="img/cloud_cover2.png" alt="cloud"/>
-                <?} else if(first_page())  { ?>
-        <img id="cover_clouds-1" src="img/cloud_cover1_night.png" alt="cloud"/>
-		<img id="cover_clouds-2" src="img/cloud_cover2_night.png" alt="cloud"/>
-		<img id="cover_clouds-3" src="img/cloud_cover1_night.png" alt="cloud"/>
-		<img id="cover_clouds-4" src="img/cloud_cover2_night.png" alt="cloud"/>
-                <?}?>
+         <? if (first_page()) { ?>
+                <div id="cover_clouds-1" class="cloud-big"><div class="cloud-big-more"></div></div>
+                <div id="cover_clouds-2" class="cloud-big"><div class="cloud-big-more"></div></div>
+                <div id="cover_clouds-3" class="cloud-big"><div class="cloud-big-more"></div></div>
+                <div id="cover_clouds-4" class="cloud-big"><div class="cloud-big-more"></div></div>
+		
+               <?}?>
 	    </div>
         <div id="content">
             <article id="now">
                <div class="row"> 
 		<div class="main_info span6 offset3">
 		    <ul class="info_btns">
+                            
 			    <li id="now_btn" onclick="change_circle('now_line', 'latestnow')"></li>
-			     <hr id="now_line" />
+			     
 			    <li id="temp_btn" onclick="change_circle('temp_line', 'latesttemp')" title="<? echo $TEMP[$lang_idx];?>"></li>
-			    <hr id="temp_line" />
+			    
 			    <li id="moist_btn" onclick="change_circle('moist_line', 'latesthumidity')" title="<? echo $HUMIDITY[$lang_idx];?>"></li>
-			    <hr id="moist_line" />
+			    
 			    <li id="air_btn" onclick="change_circle('air_line', 'latestpressure')" title="<? echo $BAR[$lang_idx];?>"></li>
-			    <hr id="air_line" />
+			    
 			    <li id="wind_btn" onclick="change_circle('wind_line', 'latestwind')" title="<? echo $WIND[$lang_idx];?>"></li>
-			    <hr id="wind_line" />
+			    
 			    <li id="rain_btn" onclick="change_circle('rain_line', 'latestrain')" title="<? echo $RAIN[$lang_idx];?>"></li>
-			    <hr id="rain_line" />
+			    
 			    <li id="rad_btn" onclick="change_circle('rad_line', 'latestradiation')" title="<? echo $RADIATION[$lang_idx];?>"></li>
-			    <hr id="rad_line" />
+			    
 			    <li id="uv_btn" onclick="change_circle('uv_line', 'latestuv')" title="<? echo $UV[$lang_idx];?>"></li>
-			    <hr id="uv_line" />
-                   <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title="<? echo $AIR_QUALITY[$lang_idx];?>"></li>
-			    <hr id="aq_line" />
+			    
+                            <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title="<? echo $AIR_QUALITY[$lang_idx];?>"></li>
+                            
 			</ul>
-		    
+                       <hr id="now_line" />
+                       <hr id="aq_line" />
+                            <hr id="temp_line" />
+                            <hr id="moist_line" />
+                            <hr id="air_line" />
+                            <hr id="wind_line" />
+                            <hr id="rain_line" />
+                            <hr id="rad_line" />
+                            <hr id="uv_line" />
 		    <div id="info_circle">
                         <div id="latestnow" class="inparamdiv">
+                             <?
+                                if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp() - 1) && $current->get_temp() < 20 ){ ?>
+                                        <div id="itfeels_windchill"> 
+                                         <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<? echo $_SERVER['SCRIPT_NAME']; ?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+                                                <? echo $IT_FEELS[$lang_idx]; ?>
+                                                <span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo min($current->get_windchill(), $current->get_thw())."&#176;"; ?></span>
+                                         </a>
+                                        </div>
+
+                                <? } 
+                                else if (max($current->get_HeatIdx(), $current->get_thw()) > ($current->get_temp())){ ?>
+                                        <div class="" id="itfeels_heatidx">
+                                         <a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+                                                <? echo $IT_FEELS[$lang_idx]; ?>
+                                                <span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo max($current->get_HeatIdx(), $current->get_thw())."&#176;";  ?></span>
+                                         </a> 
+                                        </div>
+                            <?}?>
                             <div id="tempdivvalue">
                                 <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>
                            </div>
                             <div id="status">
-				<? if (isRaining()) echo $ITS_RAINING[$lang_idx].", ";?><? echo getWindStatus();?>
+				<? if (isSnowing()) echo $ITS_SNOWING[$lang_idx].", "; else if (isRaining()) echo $ITS_RAINING[$lang_idx].", ";?><? echo getWindStatus();?>
 			<div  id="coldmeter">
 			<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx;?>"> <span id="current_feeling_link" title="<?=$HOTORCOLD_T[$lang_idx]?> - <?=$COLD_METER[$lang_idx]?>">...</span>
 			</a>
 			</div>
-			   <?
-					if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp() - 1) && $current->get_temp() < 20 ){ ?>
-						<div id="itfeels_windchill"> 
-						 <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<? echo $_SERVER['SCRIPT_NAME']; ?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-							<? echo $IT_FEELS[$lang_idx]; ?>
-							<span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo min($current->get_windchill(), $current->get_thw())."&#176;"; ?></span>
-						 </a>
-						</div>
-					
-					<? } 
-					else if ($current->get_HeatIdx() > ($current->get_temp())){ ?>
-						<div class="" id="itfeels_heatidx">
-						 <a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-							<? echo $IT_FEELS[$lang_idx]; ?>
-							<span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo max($current->get_HeatIdx(), $current->get_thw())."&#176;";  ?></span>
-						 </a> 
-						</div>
-					<?}?>
-		
-					
 			</div>		
 			</div>
                      
@@ -424,9 +426,9 @@ include_once "sigweathercalc.php";
                           <div class="trendstable"> 
                                <table>
                                         <tr class="trendstitles">
-                                                <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21"/></td>
-                                                <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21"/></td>
-                                                <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21"/></td>
+                                                <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+                                                <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour"/></td>
+                                                <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
                                         </tr>
                                         <tr class="trendsvalues"><td><div class="trendvalue"><div class="innertrendvalue"> <? echo get_param_tag($yestsametime->get_tempchange())."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($oneHour->get_tempchange())."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($min30->get_tempchange()); ?></div></div></td></tr>
                                 </table>
@@ -454,9 +456,9 @@ include_once "sigweathercalc.php";
                             <div class="trendstable">
                             <table>
                             <tr class="trendstitles">
-                                    <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21"/></td>
-                                    <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21"/></td>
-                                    <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21"/></td>
+                                    <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+                                    <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour"/></td>
+                                    <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
                             </tr>
                              <tr class="trendsvalues">
                                  <td><div class="trendvalue"><div class="innertrendvalue">
@@ -494,9 +496,9 @@ include_once "sigweathercalc.php";
                             <div class="trendstable">
                             <table>
                                 <tr class="trendstitles">
-                                        <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21"/></td>
-                                        <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21"/></td>
-                                        <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21"/></td>
+                                        <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+                                        <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+                                        <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                                 </tr>
                                 <? echo "<tr class=\"trendsvalues\"  ><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($oneHour->get_prschange())."</div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($min30->get_prschange())."</div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($min15->get_prschange())."</div></div></td></tr>"; ?>
                             </table>
@@ -521,7 +523,7 @@ include_once "sigweathercalc.php";
 				</div>
                                 <div  id="windspeed">
 					<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" >
-                                            <span class="<? if (isHeb()) echo "heb"; ?>"><? echo $current->get_windspd()." <span class=\"paramunit\">".$KNOTS[$lang_idx]."</span>";?></span>
+                                            <span class="<? if (isHeb()) echo "heb"; ?>"><? echo $min10->get_windspd()." <span class=\"paramunit\">".$KNOTS[$lang_idx]."</span>";?></span>
 					</a>
 				</div>
                           </div>
@@ -531,11 +533,11 @@ include_once "sigweathercalc.php";
 						<div class="trendstable">	
 					  <table>
 					   <tr class="trendstitles">
-							   <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21"/></td>
-							   <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21"/></td>
-							   <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21"/></td>
+							   <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour" /></td>
+							   <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+							   <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
 					   </tr>
-					   <? echo "<tr class=\"trendsvalues\" ><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($oneHour->get_windspdchange()).abs($oneHour->get_windspdchange())."</div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($min30->get_windspdchange()).abs($min30->get_windspdchange())."</strong></div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($min15->get_windspdchange()).abs($min15->get_windspdchange())."</div></div></td></tr>"; ?>
+					   <? echo "<tr class=\"trendsvalues\" ><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($oneHour->get_windspdchange()).abs($oneHour->get_windspdchange())."</div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($min30->get_windspdchange()).abs($min30->get_windspdchange())."</div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($min15->get_windspdchange()).abs($min15->get_windspdchange())."</div></div></td></tr>"; ?>
 						</table>
 						</div>
 						<div class="graphslink">
@@ -559,9 +561,9 @@ include_once "sigweathercalc.php";
                             <div class="trendstable">
                              <table id="rainrate15min">
                             <tr class="trendstitles">
-                                    <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21"/></td>
-                                    <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21"/></td>
-                                    <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21"/></td>
+                                    <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour"/></td>
+                                    <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+                                    <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                             </tr>
                             <tr class="trendsvalues">
                                     <td><div class="trendvalue"><div class="innertrendvalue">
@@ -592,12 +594,15 @@ include_once "sigweathercalc.php";
                                             <? echo $current->get_solarradiation()."<span class=\"paramunit\"> W/m2</span>";?>
                                     </a>
                             </div>
+                            <div class="highlows">
+                                <span><strong><? echo $today->get_highradiation(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highradiation_time()." "; ?></span>
+                            </div>
                             <div class="trendstable">
                             <table>
                             <tr class="trendstitles">
-                                    <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21"/></td>
-                                    <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21"/></td>
-                                    <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21"/></td>
+                                    <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+                                    <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+                                    <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                             </tr>
                             <tr class="trendsvalues" >
                                 <td><div class="trendvalue"><div class="innertrendvalue">
@@ -628,12 +633,15 @@ include_once "sigweathercalc.php";
                                    
                                     </a> 
                             </div>
+                            <div class="highlows">
+                                <span><strong><? echo $today->get_highuv(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highuv_time()." "; ?></span>
+                            </div>
                             <div class="trendstable">
                              <table>
                             <tr class="trendstitles">
-                                    <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21"/></td>
-                                    <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21"/></td>
-                                    <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21"/></td>
+                                    <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+                                    <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+                                    <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                             </tr>
                             <tr class="trendsvalues">
                                 <td><div class="trendvalue"><div class="innertrendvalue">
@@ -710,7 +718,7 @@ include_once "sigweathercalc.php";
 		    <ul class="seker_btns">
 			<li id="cold_btn" onclick="change_circle('cold_line', 'coldmetersurvey')" title="<?=$COLD_METER[$lang_idx]?>"><?=$HOTORCOLD_T[$lang_idx]?>                               
                         </li>
-			<hr id="cold_line" />
+			
 <!--			<li id="mood_btn" onclick="change_circle('-2200px', 'mood_line')">סקר מצב רוח</li>
 			<hr id="mood_line"></hr>-->
 			<li id="season_btn" >
@@ -718,8 +726,11 @@ include_once "sigweathercalc.php";
                             <?=$FSEASON_T[$lang_idx]?>
                             </a>
                         </li>
-			<hr id="season_line" />
+			
 		    </ul>
+                            
+                    <hr id="cold_line" />
+                    <hr id="season_line" />
 		</div>
                    <div id="now_stuff" class="span3">
 			<a href="<? echo $sig[0]['url'];?>" class="hlink" title="<?echo $MORE_INFO[$lang_idx];?>">
@@ -826,7 +837,7 @@ else {  ?>
 		echo "document.getElementById('iframe').location.href='http://www.wunderground.com/cgi-bin/findweather/getForecast?setunits=metric';";
 		echo "</script>";*/
 	}
-		 
+	echo "<footer class=\"footer footerinsection\">Designed by <a target=\"_blank\" href=\"http://www.behance.net/galizorea\">Gali Zorea</a></footer>";	 
         echo "</article>";	
 			
 } 
@@ -857,58 +868,60 @@ else {  ?>
 	<!-- Parallax  midground clouds -->
 	<div id="parallax-bg2">
                        
-						<div id="bg2-1" class="cloud-lg1"></div>
-                        <div id="bg2-2" class="cloud-lg2"></div>
-                        <div id="bg2-3" class="cloud-lg1"></div>
+						<div id="bg2-1" class="cloud3"><div class="cloud3-more"></div></div>
+                        <div id="bg2-2" class="cloud4"><div class="cloud4-more"></div></div>
+                        <div id="bg2-3" class="cloud2"><div class="cloud2-more"></div></div>
                         <? if ($current->get_cloudiness() > 2) {?>
-						<div id="bg2-4" class="cloud-lg2-big"></div>
-						<div id="bg2-5" class="cloud-lg1"></div>
-						 <div id="bg2-6" class="cloud-lg2-big"></div>
-                         <div id="bg2-7" class="cloud-lg2-big"></div>
+						<div id="bg2-4" class="cloud1"><div class="cloud1-more"></div></div>
+						<div id="bg2-5" class="cloud-big"><div class="cloud-big-more"></div></div>
+						 <div id="bg2-6" class="cloud4"><div class="cloud4-more"></div></div>
+                                                <div id="bg2-7" class="cloud2"><div class="cloud2-more"></div></div>
 						<?}?>
-						<? if ($current->get_cloudiness() > 6) {?>
-						<div id="bg2-8" class="cloud-lg2-big"></div>
-                        <div id="bg2-9" class="cloud-lg2-big"></div>
-						<div id="bg2-10" class="cloud-lg2-big"></div>
+						<? if ($current->get_cloudiness() > 5) {?>
+						<div id="bg2-8" class="cloud-big"><div class="cloud-big-more"></div></div>
+                                                <div id="bg2-9" class="cloud-big"><div class="cloud-big-more"></div></div>
+						<div id="bg2-10" class="cloud-big"><div class="cloud-big-more"></div></div>
 						<?}?>
                         
                         
 	</div>
-	
+	<? if (($current->is_light())&&($current->get_cloudiness() > 5)) {?>
+        <link rel="stylesheet" href="css/cloudy.css" type="text/css" media="screen">
+        <? }?>
 	<!-- Parallax  background clouds -->
 	<div id="parallax-bg1">
-						<div id="bg1-1" class="cloud-lg3"></div>
-                        <div id="bg1-2" class="cloud-lg2"></div>
+						<div id="bg1-1" class="cloud4"><div class="cloud4-more"></div></div>
+                        <div id="bg1-2" class="cloud3"><div class="cloud3-more"></div></div>
                         <? if ($current->get_cloudiness() > 2) {?>
-						<div id="bg1-3" class="cloud-lg3"></div>
-						<div id="bg1-4" class="cloud-lg4"></div>
-						<div id="bg1-5" class="cloud-lg3-big"></div>
-                        <div id="bg1-6" class="cloud-lg3-big"></div>
+						<div id="bg1-3" class="cloud4"><div class="cloud4-more"></div></div>
+						<div id="bg1-4" class="cloud-big"><div class="cloud-big-more"></div></div>
+						<div id="bg1-5" class="cloud3"><div class="cloud3-more"></div></div>
+                                                <div id="bg1-6" class="cloud2"><div class="cloud2-more"></div></div>
 						<?}?>
-						<? if ($current->get_cloudiness() > 6) {?>
-						<div id="bg1-7" class="cloud-lg4"></div>
-                        <div id="bg1-8" class="cloud-lg4"></div>
-						<div id="bg1-9" class="cloud-lg4"></div>
-						<div id="bg1-10" class="cloud-lg4"></div>
+						<? if ($current->get_cloudiness() > 5) {?>
+						<div id="bg1-7" class="cloud-big"><div class="cloud-big-more"></div></div>
+                                                <div id="bg1-8" class="cloud-big"><div class="cloud-big-more"></div></div>
+						<div id="bg1-9" class="cloud-big"><div class="cloud-big-more"></div></div>
+						<div id="bg1-10" class="cloud-big"><div class="cloud-big-more"></div></div>
 						<?}?>
                         
                    
                         
-	</div>    
+	</div>
         <input type="hidden" id="current_feeling" value="<?=$current_feeling?>"/>
         <input type="hidden" id="chosen_user_icon" value=""/>
         <div style="display:none">
-                        <div id="profileform" style="padding:1em" >
+                        <div id="profileform" style="padding:0.5em" >
                             <div class="float">
 
                             <table>
                             <tr><td><?=$EMAIL[$lang_idx]?>:</td><td><input type="text" name="email" value="" readonly="readonly" id="profileform_email" size="30"/></td></tr>
                             <tr><td><?=$PASSWORD[$lang_idx]?>:</td><td><input type="password" name="password" value="" id="profileform_password"/></td></tr>
                             <tr><td><?=$USER_ICON[$lang_idx]?>:</td><td><div><div class="user_icon_frame">
-                        <div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = getfilesFromdir("img/user_icon"); foreach ($user_icons as $user_icon)
+                        <div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir("img/user_icon")); foreach ($user_icons as $user_icon)
                                     { ?>
                             <div class="contentbox">
-                                    <div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>' style="width:36px;height:36px">&nbsp;</div>
+                                    <div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>'>&nbsp;</div>
 
                             </div>
                                 <? }?></div>
@@ -920,12 +933,12 @@ else {  ?>
                             <tr><td><?=$DISPLAY_NAME[$lang_idx]?>:</td><td><input type="text" name="user_display_name" value="" id="profileform_displayname"/></td></tr>
                             <tr><td><?=$NICE_NAME[$lang_idx]?>:</td><td><input type="text" name="user_nice_name" value="" id="profileform_nicename"/></td></tr>
                             </table>
-                            <input type="checkbox" name="priority" value="" id="profileform_priority"/><?=$GET_UPDATES[$lang_idx]?><br /><br />
+                            <input type="checkbox" name="priority" value="" id="profileform_priority"/><?=$GET_UPDATES[$lang_idx]?><br />
                             </div>
 
                             <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
                             <div id="profileform_result" class="float"></div>
-                            <input type="submit" value="<?=$UPDATE_PROFILE[$lang_idx]?>" onclick="updateprofile_to_server(<?=$lang_idx?>)" id="profileform_submit" class="invfloat clear"/>
+                            <input type="submit" value="<?=$UPDATE_PROFILE[$lang_idx]?>" onclick="updateprofile_to_server(<?=$lang_idx?>)" id="profileform_submit" class="invfloat clear inv_plain_3"/>
                             <input type="submit" value="OK" onclick="$('#cboxClose').click();window.location.reload()" id="profileform_OK" class="info invfloat" style="display:none"/>
 
 
@@ -942,22 +955,22 @@ else {  ?>
                                     </div>
                                     <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32"/></div>
                                     <div id="loginform_result" class="float"></div>
-                                            <input type="submit" value="<?=$LOGIN[$lang_idx]?>" class="invfloat clear" onclick="login_to_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="loginform_submit"/>
+                                            <input type="submit" value="<?=$LOGIN[$lang_idx]?>" class="invfloat clear inv_plain_3" onclick="login_to_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="loginform_submit"/>
                                     <input type="submit" value="Success!" onclick="$('#cboxClose').click();window.location.reload();" id="loginform_OK" class="info invfloat" style="display:none"/>
 
                             </div>
-                            <div id="registerform" style="padding:1em">
+                            <div id="registerform" style="padding:0.5em">
                                 <div id="registerinput" class="float">
                                 <table>
-                                <tr><td><?=$EMAIL[$lang_idx]?>:</td><td><input type="text" name="email" value="" id="registerform_email" size="30" tabindex="3" style="direction:ltr"/></td></tr>
+                                <tr><td style="width:28%"><?=$EMAIL[$lang_idx]?>:</td><td><input type="text" name="email" value="" id="registerform_email" size="30" tabindex="3" style="direction:ltr"/></td></tr>
                                 <tr><td><?=$PASSWORD[$lang_idx]?>:</td><td><input type="password" name="password" value="" id="registerform_password" tabindex="4"/></td></tr>
                                 <tr><td><?=$PASSWORD_VERIFICATION[$lang_idx]?>:</td><td><input type="password" name="password_verif" value="" id="registerform_password_verif" tabindex="5"/></td></tr>
-                                <tr><td><?=$USER_ID[$lang_idx]?>:</td><td><input type="text" name="username" value="" id="registerform_userid" tabindex="6"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;right:-100px"><?=$USER_ID_EXP[$lang_idx]?></span></a></td></tr>
+                                <tr><td><?=$USER_ID[$lang_idx]?>:</td><td><input type="text" name="username" value="" id="registerform_userid" tabindex="6"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$USER_ID_EXP[$lang_idx]?></span></a></td></tr>
                                 <tr><td><?=$USER_ICON[$lang_idx]?>:</td><td><div><div class="user_icon_frame">
-                                <div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = getfilesFromdir("img/user_icon"); foreach ($user_icons as $user_icon)
+                                <div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir("img/user_icon")); foreach ($user_icons as $user_icon)
                                             { ?>
                                     <div class="contentbox">
-                                            <div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>' style="width:36px;height:36px">&nbsp;</div>
+                                            <div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>'>&nbsp;</div>
 
                                     </div>
                                         <? }?></div>
@@ -966,26 +979,33 @@ else {  ?>
                                 <div class="icon_right" onclick="change_icon('right'); return false"></div>
                                             </div>
                                 </td></tr>
-                                <tr><td><?=$DISPLAY_NAME[$lang_idx]?>:</td><td><input type="text" name="user_display_name" value="" id="registerform_displayname" tabindex="7"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;right:-100px"><?=$DISPLAY_NAME_EXP[$lang_idx]?></span></a></td></tr>
-                                <tr><td><?=$NICE_NAME[$lang_idx]?>:</td><td><input type="text" name="user_nice_name" value="" id="registerform_nicename" tabindex="8"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;right:-100px"><?=$NICENAME_EXP[$lang_idx]?></span></a></td></tr>
+                                <tr><td><?=$DISPLAY_NAME[$lang_idx]?>:</td><td><input type="text" name="user_display_name" value="" id="registerform_displayname" tabindex="7"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$DISPLAY_NAME_EXP[$lang_idx]?></span></a></td></tr>
+                                <tr><td><?=$NICE_NAME[$lang_idx]?>:</td><td><input type="text" name="user_nice_name" value="" id="registerform_nicename" tabindex="8"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$NICENAME_EXP[$lang_idx]?></span></a></td></tr>
                                 </table>
                                 <input type="checkbox" name="priority" value="" id="registerform_priority"/><?=$GET_UPDATES[$lang_idx]?>
                                 </div>
                                 <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
                                 <div id="registerform_result" class="float">
                                 </div>
-                                <input type="submit" value="<?=$REGISTER[$lang_idx]?>" class="invfloat clear" onclick="register_to_server(<?=$lang_idx?>)" id="registerform_submit"/>
+                                <input type="submit" value="<?=$REGISTER[$lang_idx]?>" class="invfloat clear inv_plain_3" onclick="register_to_server(<?=$lang_idx?>)" id="registerform_submit"/>
                                 <input type="submit" value="Success!" onclick="$('#cboxClose').click();" id="registerform_OK" class="info invfloat" style="display:none"/>
 
                             </div>
 
                             <div id="passforgotform" style="padding:1em">
                                 <?=$EMAIL[$lang_idx]?>:<input type="text" name="email" value="" id="passforgotform_email" size="30" style="direction:ltr"/><br /><br />
-                                <input type="submit" value="<?=$FORGOT_PASS[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit"/>
-                                <input type="submit" value="Success!" onclick="$('#cboxClose').click();" id="passforgotform_OK" class="info invfloat" style="display:none"/>
-                                    <div id="passforgotform_result"></div>
+                                <div id="passforgotform_result"></div>
+                                <input type="submit" value="<?=$FORGOT_PASS[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit" class="info invfloat"/>
+                                <input type="submit" value="<?=$CLOSE[$lang_idx]?>" onclick="$('#cboxClose').click();" id="passforgotform_OK" class="info invfloat" style="display:none"/>
+                                    
                              </div>
                        </div>
+
+<? if (isRaining()) {?>
+<audio autoplay>
+        <source src="sound/rain/RAINFIBL.mp3"></source>
+</audio>
+<? }?>
 <!-- Start of StatCounter Code -->
 <script type="text/javascript">
 var sc_project=548696; 
@@ -1048,11 +1068,14 @@ if ($boolbroken)
 }
 /******** generating message to Email *********/
 	
-/*	$messageToSend = "{$messageAction}";
+	$messageToSend = "{$messageAction}";
 	
 	for ($i=0 ; $i < count($messageBrokenToSend) ; $i++)
 	{
-		$messageToSend .= $messageBrokenToSend[$i][$HEB];
+            for ($j=0 ; $j < count($messageBrokenToSend[$i]) ; $j++)
+            {
+		$messageToSend .= $messageBrokenToSend[$i][$j][$HEB];
+            }
 	}
 
 	if 	(count($EmailSubject) == 0)
@@ -1061,7 +1084,7 @@ if ($boolbroken)
 	if ($messageToSend !== "") 
 	{
 		$messageToSend = str_replace("\"", "'", $messageToSend);
-		send_Email($messageToSend, ALL, EMAIL_ADDRESS, $EmailSubject[$HEB], "");
+		//send_Email($messageToSend, ALL, EMAIL_ADDRESS, $EmailSubject[$HEB], "");
 		?>
 		
 		<!-- <script type="text/javascript" src="ajaxEmail.js"></script>
@@ -1072,10 +1095,10 @@ if ($boolbroken)
 			<? echo "startEmailService(escape(encodeURI('".EMAIL_ADDRESS."')) , escape(encodeURI('02ws Update Service')) , messageBody , 'ALL' , false, message_action);"; ?>
 		</script> -->
 		
-	<? } */
+	<? } 
 	
 /************************************************************************/
 ?>
 </body>
 </html>
-<? //if (($_GET['debug'] == '')||(!$error_update)) include "end_caching.php"; ?>
+<? if (($_GET['debug'] == '')||(!$error_update)) include "end_caching.php"; ?>

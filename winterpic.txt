@@ -1,0 +1,7 @@
+./images/console1_1.jpg
+./images/console2_1.jpg
+./images/winter/station6_1.jpg
+./images/winter/station-winter_1.jpg
+./images/winter/station+ane1_1.jpg
+./images/winter/ane-closeup2_1.jpg
+./images/winter/RainGauge_1.jpg

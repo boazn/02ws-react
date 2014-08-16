@@ -1,0 +1,2 @@
+./images/schnee.swf
+./images/snowtype.swf

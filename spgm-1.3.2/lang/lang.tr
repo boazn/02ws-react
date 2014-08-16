@@ -1,0 +1,42 @@
+<?php
+
+# link to SPGM
+$cfg['locale']['spgmLink'] = 'Bu galeri >SPGM_LINK< ile geliþtirilmiþtir.';
+
+# thumbnails navi bar
+$cfg['locale']['thumbnailNaviBar']  = 'Sayfa >CURRENT_PAGE< / >NB_PAGES<';
+
+# filter label
+$cfg['locale']['filter'] = 'filtre';
+
+# filter value for 'new pictures'
+$cfg['locale']['filterNew'] = 'yeni';
+
+# filter value for 'all pictures'
+$cfg['locale']['filterAll'] = 'tüm';
+
+# filter value for 'slideshow'
+$cfg['locale']['filterSlideshow'] = 'Slideshow';
+
+# pictures navi bar
+$cfg['locale']['pictureNaviBar'] = 'Resim >CURRENT_PIC< / >NB_PICS<';
+
+# picture label (as in '1 picture')
+$cfg['locale']['picture'] = 'resim';
+
+# pictures label (as in '2 pictures')
+$cfg['locale']['pictures'] = 'resimler';
+
+# new picture label (as in '1 new picture')
+$cfg['locale']['newPicture'] = 'yeni resim';
+
+# new pictures label (as in '2 new pictures')
+$cfg['locale']['newPictures'] = 'yeni resimler';
+
+# new gallery label
+$cfg['locale']['newGallery'] = 'yeni galeri';
+
+# main gallery label
+$cfg['locale']['rootGallery'] = 'Ana galeri';
+
+?>

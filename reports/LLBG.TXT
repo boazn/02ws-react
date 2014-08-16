@@ -1,0 +1,11 @@
+Ben-Gurion International Airport, Israel (LLBG) 32-00N 034-54E 49M
+Sep 18, 2003 - 03:50 PM EDT / 2003.09.18 1950 UTC
+Wind: from the W (280 degrees) at 6 MPH (5 KT):0
+Visibility: greater than 7 mile(s):0
+Sky conditions: mostly clear
+Temperature: 77 F (25 C)
+Dew Point: 62 F (17 C)
+Relative Humidity: 61%
+Pressure (altimeter): 29.94 in. Hg (1014 hPa)
+ob: LLBG 181950Z 28005KT 9999 FEW030 25/17 Q1014 NOSIG
+cycle: 20

@@ -1,0 +1,7 @@
+./images/spring/spring1_1.jpg
+./images/spring/spring2_1.jpg
+./images/spring/spring3_1.jpg
+./images/spring/spring4_1.jpg
+./images/spring/ane3-closeup_1.JPG
+./images/console1_1.jpg
+./images/console2_1.jpg

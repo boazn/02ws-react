@@ -93,9 +93,14 @@ function parallaxScroll(){
 		margin = 'margin-left';
 	}
 	var scrolled = $(window).scrollTop();
+        if (scrolled >= 105) {
 	$('#forcast_title').css(margin,(30-(scrolled))+'px');
 	$('#forcast_title').css('opacity',(1-(scrolled*0.005)));
-	
+        }
+        else{
+            $('#forcast_title').css(margin,30+'px');
+            $('#forcast_title').css('opacity',1);
+        }
 	
 	if (scrolled >= $('#more').offset().top) {
 		//alert("ss");

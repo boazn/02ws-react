@@ -88,6 +88,39 @@ a {
 	height:102;
 		
 }
+.cloud1, .cloud2, .cloud3, .cloud4, .cloud-big {
+    background-color: #5A7BA2;
+    background-image: -webkit-linear-gradient(top, #567799 10%, #4D698A);
+    background-image: -moz-linear-gradient(top, #5A7BA2, #4D698A);
+    background-image: -ms-linear-gradient(top, #5A7BA2, #4D698A);
+    background-image: -o-linear-gradient(top, #5A7BA2, #4D698A);
+}
+
+.cloud1:after, .cloud3:after, .cloud4:after, .cloud2:after, .cloud-big:after,
+.cloud1:before, .cloud2:before, .cloud3:before, .cloud4:before, .cloud-big:before {
+     background-color: #5A7BA2;
+    background-image: -webkit-linear-gradient(top, #5F82AC 10%, #4D698A);
+    background-image: -moz-linear-gradient(top, #5F82AC, #4D698A);
+    background-image: -ms-linear-gradient(top, #5F82AC, #4D698A);
+    background-image: -o-linear-gradient(top, #5F82AC, #4D698A);
+}
+
+.cloud1-more, .cloud2-more, .cloud3-more, .cloud4-more, .cloud-big-more, .cloud3-more:after, .cloud4-more:after {
+    background-color: #5A7BA2;
+    background-image: -webkit-linear-gradient(top, #668BB9 10%, #4D698A);
+    background-image: -moz-linear-gradient(top, #668BB9, #4D698A);
+    background-image: -ms-linear-gradient(top, #668BB9, #4D698A);
+    background-image: -o-linear-gradient(top, #668BB9, #4D698A);
+}
+
+.cloud1-more:before, .cloud2-more:before, .cloud2-more:after, .cloud3-more:before, .cloud4-more:before,
+.cloud-big-more:before, .cloud-big-more:after, .cloud1-more:after {
+    background-color: #5A7BA2;
+    background-image: -webkit-linear-gradient(top, #668BB9 10%, #506F8E);
+    background-image: -moz-linear-gradient(top, #668BB9, #506F8E);
+    background-image: -ms-linear-gradient(top, #668BB9, #506F8E);
+    background-image: -o-linear-gradient(top, #668BB9, #506F8E);
+}
 #sun_hours h3{
     color:#fff;
 }
@@ -273,8 +306,8 @@ h2 {
 .inparamdiv{
 	background: rgba(255, 255, 255, 0.6);
 }
-.inparamdiv a{
-	color:#fff;
+.inparamdiv a, #season_btn a, .trendsvalues{
+	color:#2C3A42;
 }
 #msgDetails{
 	color:#3C4F5D;
@@ -282,3 +315,9 @@ h2 {
 .seker_btns li{
 background: rgba(255, 255, 255, 0.4);
 }
+
+#forum_sidebar a
+{
+    color:#2C3A42
+}
+

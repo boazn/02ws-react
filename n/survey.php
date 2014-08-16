@@ -21,8 +21,8 @@ function get_title ($field_name)
 
 function validEntry()
 {
-	$query = "SELECT voting_interval FROM `survey` s WHERE s.survey_id={$_GET['survey_id']}";
-	$result = db_init($query);
+	$query = "SELECT voting_interval FROM `survey` s WHERE s.survey_id=?";
+	$result = db_init($query, $_GET['survey_id']);
 	global $link;
 	$row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
 	$v_interval = $row["voting_interval"];

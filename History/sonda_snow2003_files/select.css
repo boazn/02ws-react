@@ -1,0 +1,35 @@
+.select {
+  color: #7b0010;
+  font-family: Arial, Helvetica, "sans-serif";
+  font-size: 8pt;
+  text-decoration: none;
+  text-indent: 10pt;
+}
+.unselect {
+  color: #10007b;
+  font-family: Arial, Helvetica, "sans-serif";
+  font-size: 8pt;
+  text-decoration: none;
+  text-indent: 10pt;
+}
+.catselect {
+  color: #7b0010;
+  font-family: Arial, Helvetica, "sans-serif";
+  font-size: 10pt;
+  font-weight: bold;
+  text-decoration: none;
+}
+.catunselect {
+  color: #10007b;
+  font-family: Arial, Helvetica, "sans-serif";
+  font-size: 10pt;
+  font-weight: bold;
+  text-decoration: none;
+}
+.button {
+  color: #10007b;
+  font-family: Arial, Helvetica, "sans-serif";
+  font-size: 10pt;
+  text-decoration: none;
+  background: white;
+}

@@ -1,0 +1,17 @@
+<?php
+
+###########################################
+#       SPGM's default theme file
+#
+################# by Sylvain Pajot ########
+
+# the gallery icon (small size)
+$cfg['theme']['gallerySmallIcon'] = 'gal.gif';
+
+# the gallery icon (thumbnail size)
+$cfg['theme']['galleryBigIcon'] = 'gal.gif';
+
+# the image that highlights new pictures
+$cfg['theme']['newItemIcon'] = 'new.png';
+
+?>

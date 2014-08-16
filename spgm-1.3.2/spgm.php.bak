@@ -1,0 +1,1481 @@
+<?php
+
+#  SPGM (Simple Picture Gallery Manager), a basic and configurable PHP script
+#  to display picture galleries on the web
+#  Copyright (C) 2002, Sylvain Pajot <spajot@users.sourceforge.net>
+#  Official website: http://spgm.sourceforge.net
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+
+###### Toggles #############\
+$include_path=".:./images/spgm-1.3.2/:/home/Boaz/public_html/Weather/Station/images/spgm-1.3.2";
+ini_set("include_path",$include_path);
+define("MODE_TRACE", false); // toggles debug mode
+define("MODE_WARNING", true); // toggles warning mode
+define("REGISTER_GLOBALS", false); // toggle for register_globals mode
+                                  // must match the php.ini configuration
+define("URL_EXTRA_PARAMS", ""); // used when spgm is called from templates
+                                // will be removed as of 1.4
+                                // ex: "&amp;cat=pics&amp;lg=$lg"
+
+define("DIR_GAL", "gal/");  // galleries base directory (relative path from spgm.php or the file requiring it if there's one)
+define("DIR_LANG", "lang/"); // language packs (relative path from spgm.php or the file requiring it if there's one)
+define("DIR_THEMES", "flavors/"); // themes base directory (relative path from spgm.php or the file requiring it if there's one)
+define("FILE_GAL_CAPTION", "gallery.msg"); // default caption file for a gallery
+define("FILE_GAL_SORT", "gallery.sort");   // file for explicit gallery sort
+define("FILE_PIC_SORT", "picture.sort");   // file for explicit picture sort
+define("FILE_THEME", "spgm.thm");           // theme file
+define("FILE_CONF", "spgm.conf");           // config file
+define("FILE_LANG", "lang");                // language file short name (without extension)
+define("PREF_THUMB", "_thb_");              // prefix for thumbnail pictures
+define("EXT_PIC_CAPTION", ".cmt");          // file extension for pictures comment
+
+define("PARAM_NAME_GALID", "spgmGal");
+define("PARAM_NAME_PICID", "spgmPic");
+define("PARAM_NAME_PAGE", "spgmPage");
+define("PARAM_NAME_FILTER", "spgmFilters");
+define("PARAM_VALUE_FILTER_NEW", "n");
+define("PARAM_VALUE_FILTER_NOTHUMBS", "t");
+
+define("CLASS_TABLE_WRAPPER", "table-wrapper");
+define("CLASS_TABLE_MAIN_TITLE", "table-main-title");
+define("CLASS_TD_SPGM_LINK", "td-main-title-spgm-link");
+define("CLASS_A_SPGM_LINK", "a-spgm-link");
+define("CLASS_TABLE_GALLISTING_GRID", "table-gallisting-grid");
+define("CLASS_TD_GALLISTING_CELL", "td-gallisting-cell");
+define("CLASS_TABLE_GALITEM", "table-galitem");
+define("CLASS_TD_GALITEM_ICON", "td-galitem-icon");
+define("CLASS_TD_GALITEM_TITLE", "td-galitem-title");
+define("CLASS_TD_GALITEM_CAPTION", "td-galitem-caption");
+define("CLASS_TABLE_PICTURE", "table-picture");
+define("CLASS_TD_PICTURE_NAVI", "td-picture-navi");
+define("CLASS_TD_ZOOM_FACTORS", "td-zoom-factors");
+define("ID_PICTURE", "picture");
+define("CLASS_BUTTON_ZOOM_FACTORS", "button-zoom-factors");
+define("CLASS_TD_PICTURE_PIC", "td-picture-pic");
+define("ID_PICTURE_NAVI", "pic-navi");
+define("CLASS_TD_PICTURE_CAPTION", "td-picture-caption");
+define("CLASS_TABLE_THUMBNAILS", "table-thumbnails");
+define("CLASS_TD_THUMBNAILS_THUMB", "td-thumbnails-thumb");
+define("CLASS_TD_THUMBNAILS_THUMB_SELECTED", "td-thumbnails-thumb-selected");
+define("CLASS_TD_THUMBNAILS_NAVI", "td-thumbnails-navi");
+define("CLASS_DIV_THUMBNAILS_CAPTION", "div-thumbnails-caption");
+define("CLASS_SPAN_FILTERS", "span-filters");
+define("CLASS_IMG_PICTURE", "img-picture");
+define("CLASS_IMG_THUMBNAIL", "img-thumbnail");
+define("CLASS_IMG_THUMBNAIL_SELECTED", "img-thumbnail-selected");
+define("CLASS_IMG_FOLDER", "img-folder");
+define("CLASS_IMG_GALICON", "img-galicon");
+define("CLASS_IMG_PICTURE_PREV", "img-picture-prev");
+define("CLASS_IMG_PICTURE_NEXT", "img-picture-next");
+define("CLASS_IMG_THMBNAVI_PREV", "img-thmbnavi-prev");
+define("CLASS_IMG_THMBNAVI_NEXT", "img-thmbnavi-next");
+define("CLASS_IMG_NEW", "img-new");
+define("CLASS_DIV_GALHEADER", "div-galheader");
+    
+define("ERRMSG_UNKNOWN_GALLERY", "unknown gallery");
+define("ERRMSG_UNKNOWN_PICTURE", "unknown picture");
+define("ERRMSG_INVALID_NUMBER_OF_PICTURES", "invalid number of picture");
+define("ERRMSG_INVALID_VALUE", "invalid value");
+define("WARNMSG_FILE_INSUFFICIENT_PERMISSIONS", "insufficient permissions (644 required)");
+define("WARNMSG_THUMBNAIL_UNREADABLE", "no associated thumbnail or insufficient permissions");
+define("WARNMSG_DIR_INSUFFICIENT_PERMISSIONS", "insufficient permissions (755 required)");
+
+define("GALICON_NONE", 0);
+define("GALICON_RANDOM", 1);
+define("ORIGINAL_SIZE", 0);
+define("SORTTYPE_CREATION_DATE", 0);
+define("SORTTYPE_NAME", 1);
+define("SORT_ASCENDING", 0);
+define("SORT_DESCENDING", 1);
+define("RIGHT", 0);
+define("BOTTOM", 1);
+
+/* multi-language support... */
+define("PATTERN_SPGM_LINK", ">SPGM_LINK<");
+define("PATTERN_CURRENT_PAGE", ">CURRENT_PAGE<");
+define("PATTERN_NB_PAGES", ">NB_PAGES<");
+define("PATTERN_CURRENT_PIC", ">CURRENT_PIC<");
+define("PATTERN_NB_PICS", ">NB_PICS<");
+
+// Used for variable variables in main function
+$var_galid = PARAM_NAME_GALID;
+$var_picid = PARAM_NAME_PICID;
+$var_page = PARAM_NAME_PAGE;
+$var_filter = PARAM_NAME_FILTER;
+
+
+$cfg = array();
+$cfg['conf']['newStatusDuration']       = 30;
+$cfg['conf']['thumbnailsPerPage']       = 9;
+$cfg['conf']['thumbnailsPerRow']        = 3;
+$cfg['conf']['galleryListingCols']      = 2;
+$cfg['conf']['galleryCaptionPos']       = RIGHT;
+$cfg['conf']['subGalleryLevel']         = 1;
+$cfg['conf']['gallerySortType']         = SORTTYPE_NAME;
+$cfg['conf']['gallerySortOptions']      = SORT_ASCENDING;
+$cfg['conf']['pictureSortType']         = SORTTYPE_NAME;
+$cfg['conf']['pictureSortOptions']      = SORT_ASCENDING;
+$cfg['conf']['pictureInfoedThumbnails'] = false;
+$cfg['conf']['captionedThumbnails']     = false;
+$cfg['conf']['popupPictures']           = false;
+$cfg['conf']['popupWidth']              = 750;
+$cfg['conf']['popupHeight']             = 600;
+$cfg['conf']['filters']                 = '';
+$cfg['conf']['zoomFactors']             = array();
+$cfg['conf']['galleryIconType']         = GALICON_NONE;
+$cfg['conf']['galleryIconHeight']       = ORIGINAL_SIZE;
+$cfg['conf']['galleryIconWidth']        = ORIGINAL_SIZE;
+$cfg['conf']['theme']                   = 'default';
+$cfg['conf']['language']                = 'en';
+
+$cfg['locale']['spgmLink'] 
+  = 'a gallery generated by '.PATTERN_SPGM_LINK;
+$cfg['locale']['thumbnailNaviBar'] 
+  = 'Page '.PATTERN_CURRENT_PAGE.' of '.PATTERN_NB_PAGES;
+$cfg['locale']['filter']      = 'filter';
+$cfg['locale']['filterNew']   = 'new';
+$cfg['locale']['filterAll']   = 'all';
+$cfg['locale']['pictureNaviBar']
+   = 'Picture '.PATTERN_CURRENT_PIC.' of '.PATTERN_NB_PICS;
+$cfg['locale']['newPictures'] = 'new pictures';
+$cfg['locale']['newPicture']  = 'new picture';
+$cfg['locale']['newGallery']  = 'new gallery';
+$cfg['locale']['pictures']    = 'pictures';
+$cfg['locale']['picture']     = 'picture';
+$cfg['locale']['rootGallery'] = 'Main gallery';
+
+$cfg['theme']['gallerySmallIcon']    = '';
+$cfg['theme']['galleryBigIcon']      = '';
+$cfg['theme']['newItemIcon']         = '';
+$cfg['theme']['previousPictureIcon'] = '';
+$cfg['theme']['nextPictureIcon']     = '';
+$cfg['theme']['previousPageIcon']    = '';
+$cfg['theme']['nextPageIcon']        = '';
+
+$cfg['global']['supportedExtensions'] 
+  = array('.jpg', '.png', '.gif');    // supported picture file extensions
+$cfg['global']['propagateFilters'] = false; // used to propagate filters in URLs
+$cfg['global']['documentSelf'] = '';
+$cfg['global']['tmpPathToPics'] = ''; // hack to avoid comparisons of long 
+                                      // strings (only used by the spgm_CallbackCompareMTime 
+                                      // callback function)
+
+# A bit of logic to set a few of the variables above...
+if (REGISTER_GLOBALS) {
+  if (isset($$var_filter) ) $cfg['global']['propagateFilters'] = true;
+  $cfg['global']['documentSelf'] = basename($PHP_SELF);
+} else {
+  if (isset($HTTP_GET_VARS[PARAM_NAME_FILTER]) ) $cfg['global']['propagateFilters'] = true;
+  $cfg['global']['documentSelf'] = basename( $_SERVER['PHP_SELF'] );
+}
+
+
+
+
+
+
+###### REPORTING FUNCTIONS #############################################
+
+function spgm_Error($msg) {
+  print '<div style="color: #ff0000; font_family: helvetica, arial; font-size:12pt; font-weight: bold;">'.$msg.'</div>'."\n";
+}
+
+function spgm_Warning($msg) {
+  if (MODE_WARNING) {
+    print '<div style="color: #0000ff; font_family: helvetica, arial; font-size:12pt; font-weight: bold;">'.$msg.'</div>'."\n";
+  }
+}
+
+function spgm_Trace($msg) {
+  if (MODE_TRACE) {
+    print '<div style="color: #000000; font_family: verdana, helvetica, arial; font-size:12pt;">'.$msg.'</div>'."\n";
+  }
+}
+
+
+
+################## DISPLAY INFO FUNCTIONS #####################################
+
+function spgm_DispSPGMLink() {
+	
+  global $cfg;
+
+  spgm_Trace( '<p>function spgm_DispSPGMLink</p>'."\n" );
+  
+  // multi-language support
+  $cfg['locale']['spgmLink'] = ereg_replace(PATTERN_SPGM_LINK, '<a href="http://spgm.sourceforge.net" class="'.CLASS_A_SPGM_LINK.'">SPGM</a>', $cfg['locale']['spgmLink']);
+
+  print $cfg['locale']['spgmLink'];
+}
+
+################################################################################
+# Checks if a file or directory is "new" 
+function spgm_IsNew($filename) {
+	
+  global $cfg;
+
+  spgm_Trace(
+    '<p>function spgm_IsNew</p>'."\n"
+    .'filename: '.$filename.'<br />'."\n"
+  );
+
+  if (! file_exists($filename) || $cfg['conf']['newStatusDuration'] == 0) return false;
+  return (filemtime($filename) > (time()-$cfg['conf']['newStatusDuration']*24*3600));
+}
+
+################################################################################
+# Checks for permissions on either pictures, galleries, config files, etc... 
+
+function spgm_CheckPerms($filename) {
+	
+  spgm_Trace(
+    '<p>function spgm_CheckPerms</p>'."\n"
+    .'filename: '.$filename.'<br />'."\n"
+  );
+	
+  if (! file_exists($filename)) return false;
+	
+  $fileperms = fileperms($filename);
+  $isreadable = $fileperms & 4;
+  if ( is_file($filename) ) {
+    // pictures, thumbnails, config files and comments only need to be readable
+    if (! $isreadable) {
+       spgm_Warning(
+         $filename.': '.WARNMSG_DIR_INSUFFICIENT_PERMISSIONS.'<br />'
+       );
+    }
+    return $isreadable;	
+  }
+  else if ( is_dir($filename) ) {
+    // galleries need to be both readable and executable
+    $isexecutable = $fileperms & 1;
+    if (! $isreadable || ! $isexecutable)
+      spgm_Warning(
+        $filename.': '.WARNMSG_DIR_INSUFFICIENT_PERMISSIONS.'<br />'
+      );
+    return ( $isreadable && $isexecutable); // ($dirperms & 5) == 5 ?
+  }
+  
+  // default behavior: the filename does not exist
+  return false;
+}
+
+################################################################################
+# Checks if the filname exists, refers to a picture associated to a thumbnail 
+# and is granted the necessary access rigths
+
+function spgm_IsPicture($picture_filename, $galid) {
+
+  global $cfg;
+
+  $picture_path = DIR_GAL.$galid.'/'.$picture_filename;
+  $thumbnail_path = DIR_GAL.$galid.'/'.PREF_THUMB.$picture_filename;
+  
+  spgm_Trace(
+    '<p>function spgm_IsPicture</p>'."\n"
+    .'basename: '.$picture_filename.'<br />'."\n"
+    .'path: '.$galid.'<br />'."\n"
+    .'filename: '.$picture_path.'<br />'."\n"
+    .'thumbname: '.$thumbnail_path.'<br />'."\n"
+  );
+ 
+  // check filename patterns
+  if ( eregi('^'.PREF_THUMB.'*', $picture_filename) )
+    return false;
+  $validated = false;
+  $extnb = count($cfg['global']['supportedExtensions']);
+  for ($i=0; $i<$extnb; $i++) {
+    if ( eregi($cfg['global']['supportedExtensions'][$i].'$', $picture_filename) ) {
+      $validated = true;
+      break;
+    }
+  }
+  if (! $validated)
+    return false; 
+   
+  // does it exist, is it a regular file and does it have the expected permissions ?
+  if (! spgm_CheckPerms($picture_path) ) {
+    return false;
+  }
+  
+  // an associated thumbnail is required... same job again !
+  if (! spgm_CheckPerms($thumbnail_path) ) {
+    spgm_Warning( $picture_path.': '.WARNMSG_THUMBNAIL_UNREADABLE.'<br />' );
+    return false;
+  }
+  
+  return true;
+}
+
+##############################################################################
+# Checks if the directory corresponding the gallery is well-formed, exists 
+# and is granted the necessary access rights
+# $galid can be empty
+
+function spgm_IsGallery($galid) {
+	
+  $picspath = DIR_GAL.$galid;
+	
+  spgm_Trace(
+    '<p>function spgm_IsGallery</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+    .'picspath: '.$picspath.'<br />'."\n"
+  );
+
+  // searching for hazardous patterns
+  if ( ereg('^/', $galid) || ereg('\.\.', $galid) || ereg('/$', $galid) ) {
+    return false;
+  }
+
+  // does it exist, is it a directory and does it have the expected permissions ?
+  if (! is_dir($picspath))
+    return false;
+  if (! spgm_CheckPerms($picspath) ) {
+    spgm_Warning(
+      $picspath.': '.WARNMSG_FILE_INSUFFICIENT_PERMISSIONS.'<br />'
+    );
+    return false;
+  }
+  
+  return true;
+}
+
+
+################################################################################
+# Loads a theme
+function spgm_LoadFlavor($themeName) {
+
+  global $cfg;
+
+  spgm_Trace(
+    '<p>function spgm_LoadFlavor</p>'."\n"
+    .'theme: '.$themeName.'<br />'."\n"
+  );
+
+  if ( spgm_CheckPerms(DIR_THEMES.$themeName.'/'.FILE_THEME) ) {
+    include(DIR_THEMES.$themeName.'/'.FILE_THEME);
+  }
+  else 
+    spgm_Warning(
+      'unable to load '.DIR_THEMES.$themeName.'/'.FILE_THEME.': '
+      .WARNMSG_FILE_INSUFFICIENT_PERMISSIONS.'<br />'
+    );
+}
+
+################################################################################
+# Loads textual ressources from an SPGM language file.
+
+function spgm_LoadLanguage($countryCode) {
+
+  global $cfg;
+
+  spgm_Trace(
+    '<p>funtion spgm_LoadLanguage</p>'."\n"
+    .'country code: '.$countryCode.'<br />'."\n"
+  );
+
+  if ($countryCode != '') {
+    $filename_lang = DIR_LANG.FILE_LANG.'.'.$countryCode;
+    if (file_exists($filename_lang) ) {
+      if ( spgm_CheckPerms($filename_lang) ) {
+        include($filename_lang);
+      }
+    }
+    else
+      spgm_Warning(
+        'No support for lang. '.$countryCode.' &raquo; default: english<br />'
+      );
+  }
+}
+
+
+################################################################################
+function spgm_PostInitCheck() {
+
+  global $cfg;
+  
+  spgm_Trace( '<p>funtion spgm_PostInitCheck</p>'."\n" );
+ 
+  $_mix = $cfg['conf']['newStatusDuration'];
+  if (! is_int($_mix) || ($_mix < 0) )
+    spgm_Error('cfg[conf][newStatusDuration]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['thumbnailsPerPage'];
+  if (! is_int($_mix) || ($_mix < 1) )
+    spgm_Error('cfg[conf][thumbnailsPerPage]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['thumbnailsPerRow'];
+  if (! is_int($_mix) || ($_mix < 1) )
+    spgm_Error('cfg[conf][thumbnailsPerRow]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['galleryListingCols'];
+  if (! is_int($_mix) || ($_mix < 1) )
+    spgm_Error('cfg[conf][galleryListingCols]: '.ERRMSG_INVALID_VALUE); 
+
+  $_mix = $cfg['conf']['subGalleryLevel'];
+  if (! is_int($_mix) || ($_mix < 0) )
+    spgm_Error('cfg[conf][subGalleryLevel]: '.ERRMSG_INVALID_VALUE);
+  
+  $_mix = $cfg['conf']['galleryIconType'];
+  if ( ! is_int($_mix) || ($_mix != GALICON_NONE 
+       && $_mix != GALICON_RANDOM) )
+    spgm_Error('cfg[conf][galleryIconType]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['galleryIconHeight'];
+  if (! is_int($_mix) || ($_mix < ORIGINAL_SIZE) ) 
+    spgm_Error('cfg[conf][galleryIconHeight]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['galleryIconWidth'];
+  if (! is_int($_mix) || ($_mix < ORIGINAL_SIZE) )
+    spgm_Error('cfg[conf][galleryIconWidth]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['galleryCaptionPos'];
+  if ( ! is_int($_mix) || ($_mix != RIGHT && $_mix != BOTTOM) )
+    spgm_Error('cfg[conf][galleryCaptionPos]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['gallerySortType'];
+  if ( ! is_int($_mix) || ($_mix != SORTTYPE_CREATION_DATE
+       && $_mix != SORTTYPE_NAME) )
+    spgm_Error('cfg[conf][gallerySortType]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['gallerySortOptions'];
+  if ( ! is_int($_mix) || ($_mix != SORT_ASCENDING 
+       && $_mix != SORT_DESCENDING) )
+    spgm_Error('cfg[conf][gallerySortOptions]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['pictureSortType'];
+  if ( ! is_int($_mix) || ($_mix != SORTTYPE_CREATION_DATE
+      && $_mix != SORTTYPE_NAME) )
+    spgm_Error('cfg[conf][pictureSortType]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['pictureSortOptions'];
+  if ( ! is_int($_mix) || ($_mix != SORT_ASCENDING
+      && $_mix != SORT_DESCENDING) )
+    spgm_Error('cfg[conf][pictureSortOptions]: '.ERRMSG_INVALID_VALUE);
+
+  // is_bool is not available as of PHP 3
+  /*
+  if ( ! is_bool($cfg['conf']['pictureInfoedThumbnails']) )
+    spgm_Error('cfg[conf][pictureInfoedThumbnail]: '.ERRMSG_INVALID_VALUE);
+
+  if ( ! is_bool($cfg['conf']['captionedThumbnails']) )
+    spgm_Error('cfg[conf][captionedThumbnails]: '.ERRMSG_INVALID_VALUE);
+
+  if ( ! is_bool($cfg['conf']['popupPictures']) )
+    spgm_Error('cfg[conf][popupPictures]: '.ERRMSG_INVALID_VALUE);
+  */
+
+  $_mix = $cfg['conf']['popupWidth'];
+  if ( ! is_int($_mix) || $_mix < 1)
+    spgm_Error('cfg[conf][popupWidth]: '.ERRMSG_INVALID_VALUE);
+
+  $_mix = $cfg['conf']['popupHeight'];
+  if ( ! is_int($_mix) || $_mix < 1)
+    spgm_Error('cfg[conf][popupHeight]: '.ERRMSG_INVALID_VALUE);
+
+  if ( ! is_string($cfg['conf']['filters']) )
+    spgm_Error('cfg[conf][filters]: '.ERRMSG_INVALID_VALUE);
+
+  if ( ! is_array($cfg['conf']['zoomFactors']) )
+    spgm_Error('cfg[conf][zoomFactors]: '.ERRMSG_INVALID_VALUE);
+
+  if ( ! is_string($cfg['conf']['theme']) )
+    spgm_Error('cfg[conf][theme]: '.ERRMSG_INVALID_VALUE);
+
+  if ( ! is_string($cfg['conf']['language']) )
+    spgm_Error('cfg[conf][language]: '.ERRMSG_INVALID_VALUE);
+
+
+
+  # Link labels initialization
+
+  $arrIconInfo = array(
+    // key in $cfg | ALT value | CLASS value | alternative (if resource is N/A)
+    array('gallerySmallIcon', '', CLASS_IMG_FOLDER, ''),
+    array('galleryBigIcon', '', CLASS_IMG_FOLDER, '&raquo;'),
+    array('previousPageIcon', 'Previous thumbnail page', 
+          CLASS_IMG_THMBNAVI_PREV, '&laquo;'),
+    array('nextPageIcon', 'Next thumbnail page', CLASS_IMG_THMBNAVI_NEXT, 
+          '&raquo;'),
+    array('previousPictureIcon', 'Previous picture', CLASS_IMG_PICTURE_PREV,
+          '&laquo;'),
+    array('nextPictureIcon', 'Next picture', CLASS_IMG_PICTURE_NEXT, '&raquo;'),
+    array('newItemIcon', '', CLASS_IMG_NEW, '')
+  );
+
+  $dim = array();
+  $iconNumber = count($arrIconInfo);
+  $fnameIcon = '';
+  $_key = '';
+  $_lblAlt = '';
+  $_lblClass = '';
+  $_lblNa = '';
+
+  for ($i=0; $i<$iconNumber; $i++) {
+
+    $_key = $arrIconInfo[$i][0];
+    $_lblAlt = $arrIconInfo[$i][1];
+    $_lblClass = $arrIconInfo[$i][2];
+    $_lblNa = $arrIconInfo[$i][3];
+    $fnameIcon = DIR_THEMES.$cfg['conf']['theme'].'/'.$cfg['theme'][$_key];
+
+    if ( $cfg['theme'][$_key] != '' && spgm_CheckPerms($fnameIcon) ) {
+      $dim = getimagesize($fnameIcon);
+      $cfg['theme'][$_key] = '<img src="'.$fnameIcon.'"';
+      $cfg['theme'][$_key] .= ' alt="'.$_lblAlt.'"';
+      $cfg['theme'][$_key] .= ' class="'.$_lblClass.'"';
+      $cfg['theme'][$_key] .= ' width="'.$dim[0].'"';
+      $cfg['theme'][$_key] .= ' height="'.$dim[1].'" />';
+    } else {
+      if ($_lblNa != '')
+        $cfg['theme'][$_key] = $_lblNa;
+    }
+  }
+}
+
+
+
+################################################################################
+# Loads config files from the possible different locations.
+# To allow properties inheritance, it includes all the config file from the 
+# top level gallery to the gallery itself.
+# TODO: support for INI files (PHP4) ?
+
+function spgm_LoadConfig($galid) {
+	
+  global $cfg;
+	
+  spgm_Trace(
+    '<p>funtion spgm_LoadConfig</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+  );
+  	
+	
+  if ( spgm_IsGallery($galid) ) {
+  	
+  	// always load the default config file
+  	$filename_conf = DIR_GAL.FILE_CONF;
+  	
+  	if ( spgm_CheckPerms($filename_conf) ) {
+  	    include($filename_conf);
+  	}
+    
+  	// now, include all the possible config files
+  	if ( $galid != '' ) {
+      $array_path = explode('/', $galid);
+      $nb_levels = count($array_path);
+      $path = ''; // grows inside the follwing loop ("gal1" -> "gal1/gal2"...)
+      for ($i=0; $i<$nb_levels; $i++) { // use "foreach ($array_path as $dir_name) {" in PHP4
+        $path .= $array_path[$i].'/';
+        $filename_conf = DIR_GAL.$path.FILE_CONF;
+        if ( spgm_CheckPerms($filename_conf) ) {
+          include($filename_conf);
+        }
+      }
+    }
+  }
+
+  spgm_LoadLanguage($cfg['conf']['language']);
+  spgm_LoadFlavor($cfg['conf']['theme']); 
+  spgm_PostInitCheck();
+
+}
+
+
+
+
+
+################################################################################
+# returns an array containing various information for a given gallery and its 
+# provided pictures.
+# returned array:
+# $array[0] = total number of pictures 
+# $array[1] = number of new pictures
+# $array[2] = the thumbnail's filename to use for the gallery icon
+
+function spgm_GetGalleryInfo($galid, $pic_array) {
+
+  global $cfg;
+
+  $nbpics_total = 0;
+  $nbpics_new = 0;
+  $galdir = DIR_GAL.$galid;
+
+  spgm_Trace(
+    '<p>function spgm_GetGalleryInfo</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+    .'nbpics_total: '.$nbpics_total.'<br />'."\n"
+    .'galdir: '.$galdir.'<br />'."\n"
+  );
+
+  $nbpics_total = count($pic_array);
+  $nbpics_new = 0;
+  for ($i=0; $i<$nbpics_total; $i++)
+    if (spgm_IsNew($galdir.'/'.$pic_array[$i]) ) $nbpics_new++;
+
+  $gal_info[0] = $nbpics_total;
+  $gal_info[1] = $nbpics_new;
+  if ($cfg['conf']['galleryIconType'] == GALICON_RANDOM && $nbpics_total > 0) 
+    @$gal_info[2] = $pic_array[rand(0, $nbpics_total - 1)];
+  else $gal_info[2] = '';
+  return $gal_info;
+}
+
+
+
+###############################################################################
+# Callback function used to sort galleries/pictures against modification date
+# The two parameters are automatically passed by the usort() function
+
+function spgm_CallbackCompareMTime($file1, $file2) {
+
+  global $cfg;
+
+  if ( !strcmp($file1, $file2) ) return 0;
+  return
+    ( filemtime($cfg['global']['tmpPathToPics'].$file1) 
+    > filemtime($cfg['global']['tmpPathToPics'].$file2)
+    ) ? 1 : -1; 
+}
+
+
+
+################################################################################
+# Creates a sorted array containing first level sub-galleries of a given gallery
+# $galid - the gallery ID to introspect 
+# $display - boolean indicating that galleries will be rendered and that sort
+#            options consequently have to be turned on
+# returns: a sorted array containing the sub-gallery filenames for the given 
+#          gallery
+
+function spgm_CreateGalleryArray($galid, $display) {
+
+  global $cfg;
+
+  $galdir = DIR_GAL.$galid;
+
+  spgm_Trace(
+    '<p>function spgm_CreateGalleryArray</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+    .'galdir: '.$galdir.'<br />'."\n"
+    .'display: '.$display.'<br />'."\n"
+  );
+
+  if ( spgm_IsGallery($galid) ) $dir = @opendir($galdir);
+  else spgm_Error($galid.': '.ERRMSG_UNKNOWN_GALLERY);
+  if ($galid != '') $galid .= '/'; // little hack
+
+  if ($galdir == DIR_GAL) $sort_file = $galdir.FILE_GAL_SORT;
+  else $sort_file = $galdir.'/'.FILE_GAL_SORT;
+
+  $gals = array();
+  if ( spgm_CheckPerms($sort_file) ) {
+    $gal_filenames = file($sort_file);
+    $max = count($gal_filenames);
+    for ($i=0; $i<$max; $i++) {
+      $galname = trim($gal_filenames[$i]);
+      if (spgm_IsGallery($galid.$galname))
+        $gals[] = $galname;
+    }
+  } else {
+    while ($file = readdir($dir)) {
+      if ($file != '.' && $file != '..' && spgm_IsGallery($galid.$file))
+        $gals[] = $file;
+    }
+    closedir($dir);
+
+    // Apply sort options if needed
+    if ($display) {
+      if (count($gals) > 0) {
+        if ($cfg['conf']['gallerySortType'] == SORTTYPE_NAME) {
+          if ($cfg['conf']['gallerySortOptions'] == SORT_DESCENDING) rsort($gals);
+          else sort($gals);
+        } else if ($cfg['conf']['gallerySortType'] == SORTTYPE_CREATION_DATE) {
+          $cfg['global']['tmpPathToPics'] = DIR_GAL.$galid;
+          usort($gals, 'spgm_CallbackCompareMTime'); // TODO: omit it ?
+          if ($cfg['conf']['gallerySortOptions'] == SORT_DESCENDING)
+            $gals = array_reverse($gals);
+        }
+      }
+    }
+  }
+  return $gals;
+}
+
+
+################################################################################
+# Creates a sorted array of the pictures to diplay for a given gallery
+# $galid - the gallery ID (must be always valid)
+# $filter - the filter that defines the pictures to include in the list
+# $display - boolean indicating that thumbnails will be rendered and that sort
+#            options consequently have to be turned on
+# returns: a sorted array containing the thumbnails' basenames of the gallery
+
+function spgm_CreatePictureArray($galid, $filter, $display) {
+
+  global $cfg;
+
+  $galdir = DIR_GAL.$galid.'/';
+  $dir=opendir($galdir);
+
+  spgm_Trace(
+    '<p>function spgm_CreatePictureArray</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+    .'filter: '.$filter.'<br />'."\n"
+    .'galdir: '.$galdir.'<br />'."\n"
+    .'display: '.$display.'<br />'."\n"
+  );
+
+  $pics = array();
+  $sort_file = $galdir.FILE_PIC_SORT;
+  if ( spgm_CheckPerms($sort_file) ) {
+    $pic_filenames = file($sort_file);
+    $max = count($pic_filenames);
+    for ($i=0; $i<$max; $i++) {
+      $picname = trim($pic_filenames[$i]);
+      if ( spgm_IsPicture($picname, $galid) ) {
+        if ( strstr($filter, PARAM_VALUE_FILTER_NEW) ) {
+          if ( spgm_IsNew($galdir.$picname) )
+            $pics[] = $picname;
+        } else $pics[] = $picname;
+      }
+    }
+  }
+  else {
+    while ($file = readdir($dir)) {
+      if ( spgm_IsPicture($file, $galid) ) {
+        if ( strstr($filter, PARAM_VALUE_FILTER_NEW) ) {
+          if ( spgm_IsNew($galdir.$file) )
+            $pics[] = $file;
+        } else $pics[] = $file;
+      }
+    }
+    closedir($dir);
+  
+    // Apply sort optionsif needed
+    if ($display) { 
+      if (count($pics) > 0) {
+        if ($cfg['conf']['pictureSortType'] == SORTTYPE_NAME) {
+          if ($cfg['conf']['pictureSortOptions'] == SORT_DESCENDING) rsort($pics);
+          else sort($pics);
+        } else if ($cfg['conf']['pictureSortType'] == SORTTYPE_CREATION_DATE) {
+          $cfg['global']['tmpPathToPics'] = $galdir;
+          usort($pics, 'spgm_CallbackCompareMTime'); // TODO: omit it ?
+          if ($cfg['conf']['pictureSortOptions'] == SORT_DESCENDING)
+            $pics = array_reverse($pics);
+        }
+      }
+    }
+  }
+
+  return $pics;
+}
+
+
+################################################################################
+function spgm_DisplayThumbnailNavibar($currentpg, $nbpg, $galid, $filter) {
+
+  global $cfg;
+
+  spgm_Trace(
+    '<p>function spgm_DisplayThumbnailNavibar</p>'."\n"
+    .'currentpg: '.$currentpg.'<br />'."\n"
+    .'nbpg: '.$nbpg.'<br />'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+  );
+
+  // multi-language support
+  $cfg['locale']['thumbnailNaviBar'] = ereg_replace(PATTERN_CURRENT_PAGE, "$currentpg", $cfg['locale']['thumbnailNaviBar']);
+  $cfg['locale']['thumbnailNaviBar'] = ereg_replace(PATTERN_NB_PAGES, "$nbpg", $cfg['locale']['thumbnailNaviBar']);
+  print ' '.$cfg['locale']['thumbnailNaviBar'].' - ';
+  
+  // display the left arrow
+  if ($currentpg > 1) {
+    $previouspg = $currentpg - 1;
+    print '<a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$galid.'&amp;'.PARAM_NAME_PAGE.'='.$previouspg.'&amp;'.PARAM_NAME_FILTER.'='.$filter.URL_EXTRA_PARAMS.'">'.$cfg['theme']['previousPageIcon'].'</a> ';
+  }
+
+  // display the page numbers
+  for ($i = 1; $i <= $nbpg; $i++) {
+    if ($i != $currentpg)
+      print '<a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$galid.'&amp;'.PARAM_NAME_PAGE.'='.$i.'&amp;'.PARAM_NAME_FILTER.'='.$filter.URL_EXTRA_PARAMS.'" class="navi">'.$i.'</a> ';
+    else print $i.' '; // don't make it an anchor if this is the current page
+  }
+  
+  // display the right arrow
+  if ($currentpg < $nbpg) {
+    $nextpg = $currentpg + 1;
+    print '<a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$galid.'&amp;'.PARAM_NAME_PAGE.'='.$nextpg.'&amp;'.PARAM_NAME_FILTER.'='.$filter.URL_EXTRA_PARAMS.'">'.$cfg['theme']['nextPageIcon'].'</a> ';
+  }
+}
+
+################################################################################ 
+function spgm_DisplayFilterToggles($galid, $filter, $galInfo) {
+
+  global $cfg;
+	
+  spgm_Trace(
+    '<p>function spgm_DisplayFilterToggles</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+    .'filter: '.$filter.'<br />'."\n"
+  );
+
+  $togglelabel = '';
+  $bNewIsSet = strstr($filter, PARAM_VALUE_FILTER_NEW);
+  if (($galInfo[1] > 0 && $galInfo[0] != $galInfo[1]) || $bNewIsSet) {
+    if ( $bNewIsSet ) {
+      $togglelabel .= '<a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$galid.'&amp;'.PARAM_NAME_FILTER.'=';
+      $togglelabel .= str_replace(PARAM_VALUE_FILTER_NEW, '', $filter).URL_EXTRA_PARAMS.'">';
+      $togglelabel .= $cfg['locale']['filterAll'].'</a>';
+    }
+    else {
+      $togglelabel .= '<a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$galid.'&amp;'.PARAM_NAME_FILTER.'='.$filter;
+      $togglelabel .= PARAM_VALUE_FILTER_NEW.URL_EXTRA_PARAMS.'">'.$cfg['locale']['filterNew'].'</a>';
+    }
+    print ' <span class="'.CLASS_SPAN_FILTERS.'">['.$cfg['locale']['filter'].' &raquo; '.$togglelabel.']</span>'."\n";
+  }
+}
+
+
+################################################################################
+# Prerequisite: spgm_IsGallery($galid) == true
+
+function spgm_DisplayGalleryNavibar($galid, $filter, $picid = '') {
+	
+  global $cfg;
+
+  spgm_Trace(
+    '<p>function spgm_DisplayGalleryNavibar</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+    .'filter: '.$filter.'<br />'."\n"
+    .'picid: '.$picid.'<br />'."\n"
+  );
+  
+  $arraygal = explode('/', $galid);
+
+  // display main gallery link
+  print '    <div class="'.CLASS_DIV_GALHEADER.'">'."\n";
+  print '      <a href="'.$cfg['global']['documentSelf'].'?';
+  if ($cfg['global']['propagateFilters']) print PARAM_NAME_FILTER.'='.$filter;
+  print URL_EXTRA_PARAMS.'" class="'.CLASS_TD_GALITEM_TITLE.'">';
+  if ( $cfg['theme']['gallerySmallIcon'] != '' ) {
+    print $cfg['theme']['gallerySmallIcon'];
+  } else {
+    print $cfg['locale']['rootGallery'];
+  }
+  print '</a>';
+
+  // display each gallery of the hierarchy
+  $linkgal = $arraygal[0]; // to avoid the first '/' 
+  $max = count($arraygal)-1;
+
+  for ($i=0; $i<$max; $i++) {
+    $labelgal = ereg_replace('_', ' ', $arraygal[$i]);
+    print ' &raquo; ';
+    print '<a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$linkgal;
+    if ($cfg['global']['propagateFilters']) print '&amp;'.PARAM_NAME_FILTER.'='.$filter;
+    print URL_EXTRA_PARAMS.'" ';
+      print 'class="'.CLASS_DIV_GALHEADER.'">'.$labelgal.'</a>';
+    $linkgal .= '/'.$arraygal[$i+1];
+  }
+
+  print ' &raquo; ';
+  $labelgal = ereg_replace('_', ' ', $arraygal[$i]);
+  if ( ! strstr($filter, PARAM_VALUE_FILTER_NOTHUMBS) ) {
+    print $labelgal;
+  }
+  else {
+    if ($picid == '') {
+      print $labelgal;
+    } else {
+      $fromPage = ((int)($picid / $cfg['conf']['thumbnailsPerPage'])) + 1;
+      print '<a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$linkgal;
+      print '&amp;'.PARAM_NAME_PAGE.'='.$fromPage.'&amp;'.PARAM_NAME_FILTER.'='.$filter.URL_EXTRA_PARAMS.'"';
+      print ' class="'.CLASS_DIV_GALHEADER.'">'.$labelgal.'</a>';
+    }
+  }
+
+  // Notify if we are in "new picture mode"
+  if ( strstr($filter, PARAM_VALUE_FILTER_NEW) ) print ' ('.$cfg['locale']['newPictures'].')';
+  print "\n".'    </div>'."\n";
+}
+
+
+################################################################################
+# Recursive function to display all galleries as a hierarchy
+
+function spgm_DisplayGalleryHierarchy($galid, $from_level, $filters) {
+
+  global $cfg;
+
+  $galdir = DIR_GAL.$galid;
+
+  spgm_Trace(
+    '<p>function spgm_DisplayGalleryHierarchy</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+    .'from_level: '.$from_level.'<br />'."\n"
+    .'filters: '.$filters.'<br />'."\n"
+    .'galdir: '.$galdir.'<br />'."\n"
+  );
+ 
+  $offset = '';
+ 
+  // check for super gallery.
+  if ($galid == '') {
+    $super_gallery = '';
+  }
+  else {
+    $super_gallery = $galid.'/';
+    for ($i=0; $i < $from_level; $i++)
+      $offset .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+  }
+
+  # 'new' label tuning according to the actual new item
+  if ($cfg['theme']['newItemIcon'] != '') {
+    $string_new_gallery = $cfg['theme']['newItemIcon'];
+    $string_new_pictures = $cfg['theme']['newItemIcon'];
+    $string_new_picture = $cfg['theme']['newItemIcon'];
+  } else {
+    $lblSpan = '<span style="color: #ffd600">';
+    $string_new_gallery = $lblSpan.$cfg['locale']['newGallery'].'</span>'; 
+    $string_new_pictures = $lblSpan.$cfg['locale']['newPictures'].'</span>';
+    $string_new_picture = $lblSpan.$cfg['locale']['newPicture'].'</span>';
+  }
+
+  $gals = spgm_CreateGalleryArray($galid, true);
+  $max = count($gals);
+
+  if ($from_level == 1 && $max > 0) {
+    print '<table class="'.CLASS_TABLE_GALLISTING_GRID.'">'."\n";
+    print '<tr>'."\n";
+  }
+
+  for ($i=0; $i<$max; $i++) {
+    $file = $gals[$i]; //*
+    $sub_galid = $super_gallery.$file; //*
+    $subgal_thumb_basename = DIR_GAL.$super_gallery.PREF_THUMB.$file;
+    $gallery_name = ereg_replace('_', ' ', $file);
+    $temp_pics = spgm_CreatePictureArray($sub_galid, '', false); // no filter is provided to get all the pictures
+    $gal_info = spgm_GetGalleryInfo($sub_galid, $temp_pics);
+    $nb_pics = $gal_info[0];
+    $nb_new_pics = $gal_info[1];
+    $galicon_filename = $gal_info[2];
+    
+    // should never happen
+    if ($nb_pics < 0 || $nb_new_pics < 0)
+      spgm_Error('Error while generating gallery ' + ERRMSG_INVALID_NUMBER_OF_PICTURES);
+   
+    else {
+      if ($cfg['conf']['thumbnailsPerPage'] > 0) $page = '&amp;'.PARAM_NAME_PAGE.'=1';
+      if ($nb_pics == 0) $substr_nb_pictures = '';
+      else {
+        if ($nb_pics > 1) $substr_nb_pictures = '[ '.$nb_pics.' '.$cfg['locale']['pictures'];
+        else $substr_nb_pictures = '[ '.$nb_pics.' '.$cfg['locale']['picture'];
+        $allnew = ($nb_pics == $nb_new_pics);
+        if ($allnew)
+          $substr_nb_pictures = $string_new_gallery.' '.$substr_nb_pictures;
+        if ($nb_new_pics>0  && !$allnew) {
+          $substr_nb_pictures .= ' - '.$nb_new_pics.' <a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$sub_galid;
+          if ($cfg['global']['propagateFilters']) {
+            $substr_nb_pictures .= '&amp;'.PARAM_NAME_FILTER.'='.$filters;
+            if (! strstr($filters, PARAM_VALUE_FILTER_NEW) ) $substr_nb_pictures .= 'n';
+          }
+          $substr_nb_pictures .=  URL_EXTRA_PARAMS.'">';
+          if ($nb_new_pics == 1) $substr_nb_pictures .= $string_new_picture.'</a>';
+          else $substr_nb_pictures .= $string_new_pictures.'</a>';
+        }
+        $substr_nb_pictures .= ' ]';
+      }
+
+      if ($from_level <= 1) { 
+        if (
+            ($i % $cfg['conf']['galleryListingCols'] == 0) 
+            && ($i != 0) 
+        )
+        print '      </tr>'."\n".'      <tr>'."\n";
+        print '  <td class="'.CLASS_TD_GALLISTING_CELL.'">'."\n";
+      }
+
+      print '    <table class="'.CLASS_TABLE_GALITEM.'">'."\n";
+      print '      <tr>'."\n";
+        
+      // display the gallery icon
+      $rowspan = ($cfg['conf']['galleryCaptionPos'] == BOTTOM) ? 1 : 2;
+      print '        <td rowspan="'.$rowspan.'" valign="top" class="'.CLASS_TD_GALITEM_ICON.'">'."\n";
+      if ($offset != '') print '    '.$offset."\n";
+      print '          <a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$sub_galid;
+      if ($cfg['global']['propagateFilters']) print '&amp;'.PARAM_NAME_FILTER.'='.str_replace(PARAM_VALUE_FILTER_NEW, '', $filters);
+      print URL_EXTRA_PARAMS.'" class="'.CLASS_TD_GALITEM_TITLE.'">';
+      // no '\n' above to prevent trailing whitespaces within the link
+
+      // TODO: clean up the following part
+
+      $thumb_found = false;
+      $extnb = count($cfg['global']['supportedExtensions']);
+      for ($j=0; $j<$extnb; $j++) {
+        $thb_filename = $subgal_thumb_basename.$cfg['global']['supportedExtensions'][$j];
+        if ( spgm_CheckPerms($thb_filename) ) {
+          $array_size = getimagesize($thb_filename);
+          print '<img src="'.$thb_filename.'" width="'.$array_size[0].'"';
+          print ' height="'.$array_size[1].'"';
+          print ' alt="" class="'.CLASS_IMG_GALICON.'" />';
+          $thumb_found = true; 
+          break; 
+        } 
+      }
+
+      if (! $thumb_found) {
+        if ($galicon_filename != '') {
+          $thumbnail_filename = DIR_GAL.$sub_galid.'/'.PREF_THUMB.$galicon_filename;
+          $array_size = getimagesize($thumbnail_filename);
+          if ($cfg['conf']['galleryIconHeight'] != ORIGINAL_SIZE)
+            $string_height = 'height="'.$cfg['conf']['galleryIconHeight'].'"';
+          else {
+            if ($cfg['conf']['galleryIconWidth'] != ORIGINAL_SIZE) {
+              $new_height = (int)$array_size[1]*($cfg['conf']['galleryIconWidth']/$array_size[0]);
+              $string_height = 'height="'.$new_height.'"';
+            }
+            else $string_height = 'height="'.$array_size[1].'"';
+          }
+
+          if ($cfg['conf']['galleryIconWidth'] != ORIGINAL_SIZE)
+            $string_width = 'width="'.$cfg['conf']['galleryIconWidth'].'"';
+          else {
+            if ($cfg['conf']['galleryIconHeight'] != ORIGINAL_SIZE) {
+              $new_width = (int)$array_size[0]*($cfg['conf']['galleryIconHeight']/$array_size[1]);
+              $string_width = 'width="'.$new_width.'"';
+            }
+            else $string_width = 'width="'.$array_size[0].'"';
+          }
+
+          print '<img src="'.$thumbnail_filename.'" '.$string_height.' '.$string_width;
+          print ' alt="" class="'.CLASS_IMG_GALICON.'" />'; 
+        }
+        else {
+          if ($cfg['conf']['galleryIconType'] == GALICON_NONE) {
+            $fnameGalleryIcon = $cfg['theme']['gallerySmallIcon'];
+          } else {
+            $fnameGalleryIcon = $cfg['theme']['galleryBigIcon'];
+          }
+          
+          ($fnameGalleryIcon != '') ? print $fnameGalleryIcon : print '&raquo;';
+        }
+      }
+
+      print '</a>'."\n";
+      print '        </td>'."\n";
+
+      if ($cfg['conf']['galleryCaptionPos'] == BOTTOM)
+        print '      </tr>'."\n".'      <tr>'."\n";
+        
+      // display the gallery title
+      print '        <td class="'.CLASS_TD_GALITEM_TITLE.'">'."\n";       
+      print '          <a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$sub_galid;
+      if ($cfg['global']['propagateFilters']) print '&amp;'.PARAM_NAME_FILTER.'='.str_replace(PARAM_VALUE_FILTER_NEW, '', $filters);
+      print URL_EXTRA_PARAMS.'" class="'.CLASS_TD_GALITEM_TITLE.'">'.$gallery_name.'</a> '.$substr_nb_pictures.' '."\n";
+      print '        </td>'."\n";
+      print '      </tr>'."\n";
+        
+      // display the gallery caption
+      print '      <tr>'."\n";
+      print '        <td class="'.CLASS_TD_GALITEM_CAPTION.'">'."\n";
+      $msg_file = $galdir.'/'.$file.'/'.FILE_GAL_CAPTION;
+      if (spgm_CheckPerms($msg_file)) { // check perms
+        print '        ';
+        include($msg_file);
+      }
+      print '        </td>'."\n";
+      print '      </tr>'."\n";
+      print '    </table>'."\n";
+    }
+ 
+    // TODO check this: one test ?
+    if ($cfg['conf']['subGalleryLevel'] == 0) spgm_DisplayGalleryHierarchy($sub_galid, $from_level+1, $filters);
+    else if ($from_level < $cfg['conf']['subGalleryLevel'] - 1) spgm_DisplayGalleryHierarchy($sub_galid, $from_level+1, $filters);
+
+    if ($from_level <= 1)
+        print '  </td>'."\n";
+
+  } // endfor 
+
+  if ($from_level == 1 && $max > 0) {
+    print ' </tr>'."\n";
+    print '</table>'."\n";
+  }
+}
+
+################################################################################
+function spgm_DisplayPicture($galid, $pcid, $filter) {
+
+  global $cfg;
+ 
+  $pics = spgm_CreatePictureArray($galid, $filter, true);
+  $nb_pics = count($pics);
+  $picture_path = DIR_GAL.$galid.'/';
+  $picture_name = $pics[$pcid];
+  $picture_url = $picture_path.$picture_name;  
+  $caption_url = $picture_url.EXT_PIC_CAPTION;
+  $gallery_name = ereg_replace('_', ' ', $galid);
+  $gallery_name = ereg_replace('/', ' &raquo; ', $gallery_name);
+
+  if ($cfg['conf']['thumbnailsPerPage'] != 0) {
+    $nb_pages = $nb_pics / $cfg['conf']['thumbnailsPerPage'];
+    if ($nb_pages > (int)($nb_pics / $cfg['conf']['thumbnailsPerPage']))
+      $nb_pages = (int)++$nb_pages;
+  }
+  
+  spgm_Trace(
+    '<p>function spgm_DisplayPicture</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+    .'picture_name: '.$picture_name.'<br />'."\n"
+    .'picture_path: '.$picture_path.'<br />'."\n"
+    .'picture_url: '.$picture_url.'<br />'."\n"
+    .'caption_url: '.$caption_url.'<br />'."\n"
+  );
+  
+  
+  // TODO error handling: clarify this
+  if (($pcid < 0) || ($pcid > $nb_pics-1) || $pcid == '')
+    spgm_Error(ERRMSG_UNKNOWN_PICTURE);
+
+  if (! spgm_IsGallery($galid) )
+    spgm_Error(ERRMSG_UNKNOWN_GALLERY);
+
+
+  if ( spgm_IsPicture($picture_name, $galid) ) {
+    $dim = getimagesize($picture_url);
+    $previous = $pcid - 1;
+    $next = $pcid + 1;
+		
+    // always display the gallery header
+    spgm_DisplayGalleryNavibar($galid, $filter, $pcid);   
+
+    // thumbnails are only displayed if wanted
+    if ( ! strstr($filter, PARAM_VALUE_FILTER_NOTHUMBS) ) 
+      spgm_DisplayThumbnails($galid, $pics, $pcid, '', $filter);
+
+    // display the previous/next arrow section
+    if ( ! strstr($filter, PARAM_VALUE_FILTER_NOTHUMBS) )
+      print '<br /><br />'."\n"; // for visual improvement
+    print '<table cellspacing="0" class="'.CLASS_TABLE_PICTURE.'">'."\n";
+    print '<tr>'."\n";
+    print '  <td class="'.CLASS_TD_PICTURE_NAVI.'"><a name="pic" id="'.ID_PICTURE_NAVI.'"></a>'."\n";
+    if ($previous >= 0) print '  <a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$galid.'&amp;'.PARAM_NAME_PICID.'='.$previous.'&amp;'.PARAM_NAME_FILTER.'='.$filter.URL_EXTRA_PARAMS.'#pic">'.$cfg['theme']['previousPictureIcon'].'</a> ';
+   
+    //multi-language support
+    $cfg['locale']['pictureNaviBar'] = ereg_replace(PATTERN_CURRENT_PIC, "$next", $cfg['locale']['pictureNaviBar']);
+    $cfg['locale']['pictureNaviBar'] = ereg_replace(PATTERN_NB_PICS, "$nb_pics", $cfg['locale']['pictureNaviBar']);
+    print ' '.$cfg['locale']['pictureNaviBar'].' ';
+
+    if ($next < $nb_pics)print '<a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$galid.'&amp;'.PARAM_NAME_PICID.'='.$next.'&amp;'.PARAM_NAME_FILTER.'='.$filter.URL_EXTRA_PARAMS.'#pic">'.$cfg['theme']['nextPictureIcon'].'</a>'."\n";
+    print '  </td>'."\n";
+ 
+    // Client side zoom buttons 
+    if (count($cfg['conf']['zoomFactors']) > 0) { 
+      print '</tr>'."\n".'<tr>'."\n".'  <td class="'.CLASS_TD_ZOOM_FACTORS.'">'."\n";
+      for ($i=0; $i<count($cfg['conf']['zoomFactors']); $i++) {
+        $new_height = (int)($dim[1]*$cfg['conf']['zoomFactors'][$i]/100);
+        $new_width = (int)($dim[0]*$cfg['conf']['zoomFactors'][$i]/100);
+        print '<input type="button" class="'.CLASS_BUTTON_ZOOM_FACTORS.'" value=" '.$cfg['conf']['zoomFactors'][$i].'% " ';
+        print 'onClick="document.getElementById('."'".ID_PICTURE."'".').setAttribute('."'".'height'."'".', '.$new_height.'); ';
+        print 'document.getElementById('."'".ID_PICTURE."'".').setAttribute('."'".'width'."'".', '.$new_width.'); ';
+        print 'document.getElementById('."'".ID_PICTURE_NAVI."'".').scrollIntoView();">'."\n";
+      }
+      print "\n".'  </td>'."\n";
+    }
+
+    print '</tr>'."\n";
+	
+	
+    // Eventually display the picture
+    print '<tr>'."\n";
+    print '  <td class="'.CLASS_TD_PICTURE_PIC.'">'."\n";
+    if (! ($next < $nb_pics) ) $next = 0; // to link to the appropriate next pic
+    print '    <a href="'.$cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$galid.'&amp;';
+    print PARAM_NAME_PICID.'='.$next.'&amp;';
+    print PARAM_NAME_FILTER.'='.$filter.URL_EXTRA_PARAMS.'#pic">';
+    print '<img id="'.ID_PICTURE.'" src="'.$picture_url.'" width="'.$dim[0].'" height="'.$dim[1].'" alt="'.$picture_url;
+    print '" class="'.CLASS_IMG_PICTURE.'" />';
+    print '</a>'."\n";
+    print '  </td>'."\n";
+    print '</tr>'."\n";
+    
+    // display the caption
+    $is_captioned = spgm_CheckPerms($caption_url);
+    if ($is_captioned) {
+      print '<tr>'."\n";
+      print '  <td class="'.CLASS_TD_PICTURE_CAPTION.'">'."\n";
+      include($caption_url);
+      print '  </td>'."\n";
+      print '</tr>'."\n";
+    }
+    print '</table>'."\n";
+  }
+  else
+    spgm_Error(ERRMSG_UNKNOWN_PICTURE);
+
+}
+
+################################################################################
+function spgm_DisplayGallery($galid, $page, $filters) {
+
+  spgm_Trace(
+    '<p>function spgm_DisplayGallery</p>'."\n"
+    .'galid: '.$galid.'<br />'."\n"
+    .'page: '.$page.'<br />'."\n"
+    .'filters: '.$filters.'<br />'."\n"
+  );
+
+
+  if (! spgm_IsGallery($galid) )
+    spgm_Error(ERRMSG_UNKNOWN_GALLERY);
+  else {
+    if ($page == '') $page = 1;
+    spgm_DisplayGalleryNavibar($galid, $filters);
+    // display sub-galleries in a hierarchical manner
+    spgm_DisplayGalleryHierarchy($galid, 1, $filters);
+    $pics = spgm_CreatePictureArray($galid, $filters, true);
+    if (count($pics) > 0)
+      spgm_DisplayThumbnails($galid, $pics, '', $page, $filters);
+    // extra vertical padding before displaying the subgalleries
+    print '<br />'."\n\n";
+  }
+}
+
+
+################################################################################
+function spgm_DisplayThumbnails($galid, $pic_array, $picid, $page, $filter) {
+
+  global $cfg;
+
+  $picspath = DIR_GAL.$galid.'/';
+  $nbpics = count($pic_array);
+  $nbpg = $nbpics / $cfg['conf']['thumbnailsPerPage'];
+  if ($nbpg > (int)($nbpics / $cfg['conf']['thumbnailsPerPage'])) $nbpg = (int)++$nbpg;
+  if (! isset($page) ) {
+    $offset_start = 0;
+    $frompg = 1;
+  } else {
+    if (($page == '') || ($page < 1) || ($page > $nbpg)) $page = 1;
+  }
+  
+  if ($picid == '') $picid = -1; // so picture information are not highlighted
+  else $page = ((int)($picid / $cfg['conf']['thumbnailsPerPage'])) + 1;
+
+  $offset_start = ($page-1)*$cfg['conf']['thumbnailsPerPage'];
+  $offset_stop = $offset_start + $cfg['conf']['thumbnailsPerPage'];
+  if ($offset_stop > $nbpics) $offset_stop = $nbpics;
+  $frompg = $page;
+ 
+  spgm_Trace(
+    '<p>function spgm_DisplayThumbnails</p>'."\n"
+    .'picpath: '.$picspath.'<br />'."\n"
+    .'nbpics: '.$nbpics.'<br />'."\n"
+    .'picid: '.$picid.'<br />'."\n"
+    .'startpg: '.$offset_start.'<br />'."\n"
+    .'stoppg: '.$offset_stop.'<br />'."\n"
+    .'frompg: '.$frompg.'<br />'."\n"
+    .'nbpg: '.$nbpg.'<br />'."\n"
+    .'page: '.$page.'<br />'."\n"
+  );
+
+
+ 
+  print '<table cellpadding="0" cellspacing="0" class="'.CLASS_TABLE_THUMBNAILS.'">'."\n";
+  print '<tr>'."\n";
+  
+  $counter = 0;
+  
+  for ($i = $offset_start; $i < $offset_stop; $i++) {
+    $picture_name = $pic_array[$i];
+    $picurl = $picspath.$picture_name;
+    $thumbname = PREF_THUMB.$pic_array[$i];
+    $thumburl = $picspath.$thumbname;
+    $caption_url = $picurl.EXT_PIC_CAPTION;
+    $thumbdim = getimagesize($thumburl);
+    $picindex = $i + 1; // index that is displayed
+    $class_td_thumbnail_thumb = CLASS_TD_THUMBNAILS_THUMB;
+    $class_img_thumbnail = CLASS_IMG_THUMBNAIL;
+    if ($i == $picid) {
+      $class_td_thumbnail_thumb = CLASS_TD_THUMBNAILS_THUMB_SELECTED;
+      $class_img_thumbnail = CLASS_IMG_THUMBNAIL_SELECTED;
+    }
+
+
+    // new line
+    if ( ($counter++ % $cfg['conf']['thumbnailsPerRow']) == 0)
+      if ($counter > 1) print '</tr>'."\n".'<tr>'."\n"; // test for HTML 4.01 compatibility
+
+    // TD opening for XHTML compliance when MODE_TRACE is on
+    // TODO: valign=top does not work when new pictures reside amongst old ones 
+    print '  <td valign="top" class="'.$class_td_thumbnail_thumb.'">'."\n";
+    // ...
+
+    if ( spgm_IsNew($picurl) && ! strstr($filter, PARAM_VALUE_FILTER_NEW) ) {
+      if ($cfg['theme']['newItemIcon'] != '' ) {
+        $lblNew = $cfg['theme']['newItemIcon'].'<br />'."\n";
+      } else {
+        $lblNew = '<center><span style="color: #ffd600">'.$cfg['locale']['filterNew'];
+        $lblNew .= '</span></center>'."\n";
+      }
+    }
+    else $lblNew = '';
+
+    $is_captioned = spgm_CheckPerms($caption_url);
+
+    // ... 
+    print '  '.$lblNew;
+    if ($cfg['conf']['popupPictures']) {
+      if ( ! strstr($filter, PARAM_VALUE_FILTER_NOTHUMBS) ) {
+        $filter .= PARAM_VALUE_FILTER_NOTHUMBS;
+      }
+      print '  <a href="#?"';
+      print ' onclick="window.open(\'';
+      print $cfg['global']['documentSelf'].'?'.PARAM_NAME_GALID.'='.$galid;
+      print '&amp;'.PARAM_NAME_PICID.'='.$i.'&amp;';
+      print PARAM_NAME_FILTER.'='.$filter.URL_EXTRA_PARAMS.'#pic\', \'\', ';
+      print '\'width='.$cfg['conf']['popupWidth'].',';
+      print 'height='.$cfg['conf']['popupHeight'].',scrollbars=1,location=0,';
+      print 'menubar=0,resizable=1\'); return false;"';
+      print '>';
+
+    } else {
+      print '  <a href="'.$cfg['global']['documentSelf'].'?';
+      print PARAM_NAME_GALID.'='.$galid;
+      print '&amp;'.PARAM_NAME_PICID.'='.$i.'&amp;';
+      print PARAM_NAME_FILTER.'='.$filter.URL_EXTRA_PARAMS.'#pic">';
+    }
+
+    print '<img src="'.$thumburl.'" width="'.$thumbdim[0].'"';
+    print ' height="'.$thumbdim[1].'" alt="'.$thumburl;
+    print '" class="'.$class_img_thumbnail.'" /></a><br />'."\n";
+ 
+    // display picture extra information if wanted 
+    if ($cfg['conf']['pictureInfoedThumbnails'] == true) {
+      $picdim = getimagesize($picurl);
+      $picsize = (int) (filesize($picurl) / 1024);
+      print '  [ '.$picdim[0].'x'.$picdim[1].' - '.$picsize.' KB ]';
+   }
+
+    // display caption along with the thumbnail 
+    if ($cfg['conf']['captionedThumbnails'] == true) {
+      $is_captioned = spgm_CheckPerms($caption_url);
+      if ($is_captioned) {
+        print "\n".'  <div class="'.CLASS_DIV_THUMBNAILS_CAPTION.'">';
+        include($caption_url);
+        print '</div>'."\n";
+      }
+    }
+
+    print '  </td>'."\n";
+  }
+  
+  // navi bar generation
+  if ($nbpics > 0) {
+    print '</tr>'."\n";
+    print '<tr>'."\n";
+    print '  <td colspan="'.$cfg['conf']['thumbnailsPerRow'].'" class="'.CLASS_TD_THUMBNAILS_NAVI.'">';
+    // display "thumbnail navi" if all the thumbs are not displayed on the same page
+    spgm_DisplayThumbnailNavibar($page, $nbpg, $galid, $filter);
+
+    // toggles
+    $nbpics_info = spgm_GetGalleryInfo($galid, $pic_array);
+    spgm_DisplayFilterToggles($galid, $filter, $nbpics_info);
+  }
+  
+  // for HTML 4.01 compatibility ...
+  // if there are no thumbnails, then format the <td> markup correctly
+  if ($counter == 0) print '  <td>'."\n";
+  
+  print '  </td>'."\n";
+  print '</tr>'."\n";
+  print '</table>'."\n";
+  
+}
+
+
+
+#############
+# Main
+#############
+
+$param_galid = '';
+$param_picid = '';
+$param_page = '';
+$param_filter = '';
+
+if (REGISTER_GLOBALS) {
+  $param_galid = $$var_galid;
+  $param_picid = $$var_picid;
+  $param_page = $$var_page;
+  $param_filter = $$var_filter;
+}
+else {
+  if (isset($HTTP_GET_VARS[PARAM_NAME_GALID]))
+    $param_galid = $HTTP_GET_VARS[PARAM_NAME_GALID];
+  if (isset($HTTP_GET_VARS[PARAM_NAME_PICID]))
+    $param_picid = $HTTP_GET_VARS[PARAM_NAME_PICID];
+  if (isset($HTTP_GET_VARS[PARAM_NAME_PAGE]))
+    $param_page = $HTTP_GET_VARS[PARAM_NAME_PAGE];
+  if (isset($HTTP_GET_VARS[PARAM_NAME_FILTER]))
+    $param_filter = $HTTP_GET_VARS[PARAM_NAME_FILTER];
+}
+
+spgm_LoadConfig($param_galid);
+
+// User filter initialization
+if ($cfg['conf']['filters'] != '') {
+  if (! $cfg['global']['propagateFilters']) {
+    if ( strstr($cfg['conf']['filters'], PARAM_VALUE_FILTER_NOTHUMBS) 
+         && ! strstr($param_filter, PARAM_VALUE_FILTER_NOTHUMBS) )
+      $param_filter .= PARAM_VALUE_FILTER_NOTHUMBS;
+    if ( strstr($cfg['conf']['filters'], PARAM_VALUE_FILTER_NEW) 
+         && ! strstr($param_filter, PARAM_VALUE_FILTER_NEW) )
+      $param_filter .= PARAM_VALUE_FILTER_NEW;
+  }
+}
+
+
+print "\n\n".'<!-- begin table wrapper -->'."\n".'<table class="'.CLASS_TABLE_WRAPPER.'">'."\n".' <tr>'."\n";
+
+if ($param_galid == '') {
+  // the gallery is not specified -> generate the gallery "tree"
+  spgm_DisplayGalleryHierarchy('', 0, $param_filter);
+}
+else {
+  print '  <td>'."\n";
+  if ($param_picid == '') {
+    // we've got a gallery but no picture -> display thumbnails
+    spgm_DisplayGallery($param_galid, $param_page, $param_filter);
+  }
+  else {
+    spgm_DisplayPicture($param_galid, $param_picid, $param_filter);
+  }
+  print '    </td>'."\n";
+}
+
+print ' </tr>'."\n";
+
+// display the link to SPGM website
+print ' <tr>'."\n".'  <td colspan="'.$cfg['conf']['galleryListingCols'].'" class="'.CLASS_TD_SPGM_LINK.'">'."\n";
+spgm_DispSPGMLink();
+print '  </td>'."\n".' </tr>'."\n";
+
+
+print '</table>'."\n".'<!-- end table wrapper -->'."\n\n";
+
+?>
