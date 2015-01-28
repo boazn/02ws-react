@@ -1,952 +1,1113 @@
 <?
 include_once ("ini.php");
-	class FixedTime{
-			var $date;
-			var $time;
-			var $day;
-			var $temp;
-			var $tempunit;
-			var $intemp;
-			var $dew;
-			var $pressure;
-			var $hum;
-			var $thw;
-			var $thws;
-			var $rain; // rain in the interval
-			var $windspd;
-			var $winddir;
-			var $windchill;
-			var $solarradiation;
-			var $uv;
-                        var $pm10;
-			var $cloudiness;
-			var $heatidx;
-			var $rainrate;
-			var $rainratechange;
-			var $light = true;
-			var $tempchange;
-			var $humchange;
-			var $windspdchange;
-			var $prschange;
-			var $cloudbase;
-			var $cloudBaseChange;
-			var $uvchange;
-			var $solarradiationchange;
-		
-		/* function FixedTime(
-			    $ddate,
-			    $ttime,
-			    $dday,
-			    $ttemp,
-			    $ddew,
-			    $ppressure,
-			    $hhum,
-			    $wwindspd,
-			    $wwinddir,
-			    $r
-			    rate,
-			    $ttempchange,
-			    $hhumchange,
-			    $wwindspdchange,
-			    $pprschange)
-		{
-			$date = $ddate;
-			$time = $ttime;
-			$day  = $dday;
-			$temp = $ttemp;
-			$dew = $ddew;
-			$pressure = $ppressure;
-			$hum = $hhum;
-			$windspd = $wwindsp;
-			$winddir = $wwinddir;
-			$rainrate = $rrainrate;
-			$light = true;
-			$tempchange = $ttempchage;
-			$humchange = $hhumchange;
-			$windspdchange = $wwindspdchange;
-			$prschange = $pprschange;
-		}*/
-		 function set_tempchange($temp){
-			if ($temp == "miss")
-				$this->tempchange = "miss";
-			else
-				$this->tempchange = number_format($temp - $this->temp, 1, '.', '');
-		 }
-		 function set_humchange($hum){
-			if ($hum == "miss")
-				$this->humchange = "miss";
-			else
-				$this->humchange = $hum - $this->hum;		
-		 }
-		 function set_windspdchange($windspd){
-			$this->windspdchange = $windspd - $this->windspd; 		
-		 }	
-		 function set_rainratechange($rainrate){
-			$this->rainratechange = $rainrate - $this->rainrate; 		
-		 }
-		 function set_prschange($prs){
-			$this->prschange = number_format($prs - $this->pressure, 1, '.', '');		
-		 }
-		  function set_cloudBaseChange($cloudbase){
-			 if ($cloudbase == "miss")
-				$this->cloudBaseChange = "miss";
-			else
-				$this->cloudBaseChange = $cloudbase - $this->cloudbase;	
-		 }
-		 function set_uvchange($uv){
-			$this->uvchange = $uv - $this->uv; 		
-		 }
-		 function set_srchange($sr){
-			$this->solarradiationchange = $sr - $this->solarradiation; 		
-		 }
-		 function set_change($temp, $hum, $windspd, $prs, $cldbase, $rainrate, $solarradiation, $uv){
-						$this->set_tempchange($temp);
-						$this->set_humchange($hum);
-						$this->set_windspdchange($windspd);
-						$this->set_prschange($prs);
-						$this->set_cloudBaseChange($cldbase);
-						$this->set_rainratechange($rainrate);
-						$this->set_uvchange($uv);
-						$this->set_srchange($solarradiation);
-		 }
-		 function get_windspdchange(){
-					return $this->windspdchange;
-		 }
-		 function get_rainratechange(){
-					return $this->rainratechange;
-		 }
-		 function get_prschange(){
-						return $this->prschange;
-		 }
-		 function get_humchange(){
-						return $this->humchange;
-		 }
-		 function get_tempchange(){
-						return $this->tempchange;
-		 }
-		 function get_srchange(){
-						return $this->solarradiationchange;
-		 }
-		 function get_uvchange(){
-						return $this->uvchange;
-		 }
-		 function get_cloudbasechange(){
-						return $this->cloudBaseChange;
-		 }
-		 function get_cloudbase(){
-				return $this->cloudbase;
-		 }
-		 function set_time($time){
-				$this->time = $time;
-		 }
-		 function set_date($date){
-				$this->date = $date;
-		 }
-		 function set_day($day){
-				$this->day = $day;
-		 }
-		 function set_temp($temp){
-				$this->temp = c_or_f($temp);
-		 }
-		 function set_tempunit($tempunit){
-				$this->tempunit = $tempunit;
-		 }
-		 function set_intemp($temp){
-				$this->intemp = c_or_f($temp);
-		 }
-		 function set_dew($dew){
-				$this->dew = c_or_f($dew);
-		 }
-		 function set_hum($hum){
-				$this->hum = $hum;
-		 }
-                 function set_pm10($pm10){
-				$this->pm10 = $pm10;
-		 }
-		 function set_thw($thw){
-				$this->thw = c_or_f($thw);
-		 }
-		 function set_cloudiness($cloudiness){
-				$this->cloudiness = $cloudiness;
-		 }
-		 function set_thws($thws){
-				$this->thws = c_or_f($thws);
-		 }
-		 function set_windspd($wind){
-				$this->windspd = $wind;
-		 }
-		 function set_winddir($wind){
-				$this->winddir = $wind;
-		 }
-		 function set_windchill($temp){
-				$this->windchill = c_or_f($temp);
-		 }
-		 function set_heatidx($temp){
-				$this->heatidx = c_or_f($temp);
-		 }
-		 function set_rainrate($rrate){
-				$this->rainrate = $rrate;
-		 }
-		 function set_rain($rain){
-				$this->rain = $rain;
-		 }
-		 function set_solarradiation($sr){
-			 $this->solarradiation = $sr;
-		 }
-		 function set_uv($uv){
-			 $this->uv = $uv;
-		 }
-		 function set_pressure($bar){
-				$this->pressure = $bar;
-		 }
-		 function set_cloudbase($cloudbase){
-				 $this->cloudbase = $cloudbase;
-		 }
-		 function set_dark(){
-			$this->light = false;
-		 }
+class FixedTime {
 
-		 function set_light(){
-			$this->light = true;
-		 }
-		 function get_date(){
-				return $this->date;
-		 }
-		 function get_time(){
-				return $this->time;
-		 }
-		 function get_temp(){
-				return $this->temp;
-		 }
-		 function get_tempunit(){
-				return $this->tempunit;
-		 }
-		 function get_intemp(){
-				return $this->intemp;
-		 }
-		 function get_dew(){
-				return $this->dew;
-		 }
-		 function get_hum(){
-				return $this->hum;
-		 }
-                 function get_pm10(){
-				return $this->pm10;
-		 }
-		 function get_windspd(){
-				return $this->windspd;
-		 }
-		 function get_winddir(){
-				return $this->winddir;
-		 }
-		 function get_windchill(){
-				return $this->windchill;
-		 }
-		 function get_heatidx(){
-				return $this->heatidx;
-		 }
-		 function get_pressure(){
-				return number_format($this->pressure, 1, '.', '');  
-		 }
-		  function get_thw(){
-				return $this->thw;
-		 }
-		  function get_cloudiness(){
-				return $this->cloudiness;
-		 }
-		 
-		 function get_thws(){
-				return $this->thws;
-		 }
-		 function get_rainrate(){
-				return $this->rainrate;
-		 }
-		  function get_rain(){
-				return $this->rain;
-		 }
-		 function get_solarradiation(){
-			 return $this->solarradiation;
-		 }
-		 function get_uv(){
-			 return $this->uv;
-		 }
-		 function is_light(){
-			return $this->light;
-		 }
-                 function is_sunset(){
-                     if (abs(get_sunset_ut() - $this->get_current_time_ut()) < 2800)
-                         return true;
-                    else
-                        return false;
-                       
-                 }
-                 function is_sunrise(){
-                     if (abs(get_sunrise_ut() - $this->get_current_time_ut()) < 2800)
-                         return true;
-                     else
-                        return false;
-                 }
-                 function get_current_time_ut(){
-                     $time_a = explode(":",$this->time);
-                     $current_hh = $time_a[0];
-                     $current_mm = $time_a[1];
-                     $current_time_ut = mktime($current_hh, $current_mm);
-                     return $current_time_ut;
-                 }
-	}
-	class  Parameter {
-		var $_value;
-		var $_time;
-		function get_time() {
-			Return $this->_time;
-		}
-		function get_value() {
-			Return $this->_value;
-		}
-		function set_value($value) {
-			$this->_value = $value;
-		}
-		function set_time($time) {
-			$this->_time = $time;
-			
-		}
-		
-	}
-	class Period{
-		var $hightemp;
-		var $lowtemp;
-		var $highhum;
-		var $lowhum;
-		var $highbar;
-		var $lowbar;
-		var $highdew;
-		var $lowdew;
-		var $highwind;
-		var $highrainrate;
-		var $highheatindex;
-		var $lowwindchill;
-		var $highuv;
-		var $lowuv;
-		var $highradiation;
-		var $lowradiation;
-		/* function Period($hitemp, $lowtemp, $highhum, $lowhum, $highbar, $lowbar, $highwind, $highrainrate) {
-			$this->hightemp = $hitemp;
-			$this->lowtemp  = $lowtemp;
-			$this->highhum = $highhum;
-			$this->lowhum = $lowhum;
-			$this->highbar = $highbar;
-			$this->lowbar = $lowbar;
-			$this->highwind = $highwind;
-			$this->highrainrate = $highrainrate;
-		 	
-		 }*/
-		function Period() {
-			$this->hightemp  = new Parameter();
-			$this->lowtemp  = new Parameter();
-			$this->highhum = new Parameter();
-			$this->lowhum = new Parameter();
-			$this->highbar = new Parameter();
-			$this->lowbar = new Parameter();
-			$this->highdew = new Parameter();
-			$this->lowdew = new Parameter();
-			$this->highwind = new Parameter();
-			$this->highrainrate = new Parameter();
-			$this->lowwindchill = new Parameter();
-			$this->highheatindex = new Parameter();
-			$this->highuv = new Parameter();
-			$this->lowuv = new Parameter();
-			$this->highradiation = new Parameter();
-			$this->lowradiation = new Parameter();
-		 	
-		 }
-		 function get_hightemp(){
-				return $this->hightemp->get_value();
-		 }
-		 function get_highbar(){
-				return number_format($this->highbar->get_value(), 1);
-		 }
-		 function get_lowtemp(){
-				return $this->lowtemp->get_value();
-		 }
-		 function get_highhum(){
-				return $this->highhum->get_value();
-		 }
-		 function get_lowhum(){
-				return $this->lowhum->get_value();
-		 }
-		 function get_highwind(){
-				return $this->highwind->get_value();
-		 }
-                 function get_highuv(){
-				return $this->highuv->get_value();
-		 }
-                 function get_highuv_time(){
-				return $this->highuv->get_time();
-		 }
-                 function get_highradiation(){
-				return $this->highradiation->get_value();
-		 }
-                 function get_highradiation_time(){
-				return $this->highradiation->get_time();
-		 }
-		 function get_lowbar(){
-				return number_format($this->lowbar->get_value(), 1);
-		 }
-		  function get_highdew(){
-				return $this->highdew->get_value();
-		 }
-		  function get_lowdew(){
-				return $this->lowdew->get_value();
-		 }
-		 function get_highrainrate(){
-				return $this->highrainrate->get_value();
-		 }
-		 function get_highheatindex(){
-				return $this->highheatindex->get_value();
-		 }
-		 function get_lowwindchill(){
-				return $this->lowwindchill->get_value();
-		 }
-		 function get_hightemp_time(){
-				if (strlen($this->hightemp->get_time()) < 5)
-					return "0".$this->hightemp->get_time();
-				else
-					return $this->hightemp->get_time();
-		 }
-		 function get_highbar_time(){
-				return $this->highbar->get_time();
-		 }
-		 function get_lowtemp_time(){
-				if (strlen($this->lowtemp->get_time()) < 5)
-					return "0".$this->lowtemp->get_time();
-				else
-					return $this->lowtemp->get_time();
-		 }
-		 function get_highhum_time(){
-				return $this->highhum->get_time();
-		 }
-		 function get_lowhum_time(){
-				return $this->lowhum->get_time();
-		 }
-		  function get_lowwindchill_time(){
-				return $this->lowwindchill->get_time();
-		 }
-		 function get_highwind_time(){
-				return $this->highwind->get_time();
-		 }
-		 function get_lowbar_time(){
-				return $this->lowbar->get_time();
-		 }
-		 function get_highrainrate_time(){
-				return $this->highrainrate->get_time();
-		 }
-		  function get_highheatindex_time(){
-				return $this->highheatindex->get_time();
-		 }
-		 function set_hightemp($hightemp, $time){
-				$this->hightemp->set_value(c_or_f($hightemp));
-				$this->hightemp->set_time($time);
-		 }
-		 function set_lowtemp($lowtemp, $time){
-				$this->lowtemp->set_value(c_or_f($lowtemp));
-				$this->lowtemp->set_time($time);
-		 }	
-		 function set_highhum($highhum, $time){
-				$this->highhum->set_value($highhum);
-				$this->highhum->set_time($time);
-		 }	
-		 function set_lowhum($lowhum, $time){
-				$this->lowhum->set_value($lowhum);
-				$this->lowhum->set_time($time);
-		 }
-		 function set_lowbar($lowbar, $time){
-				$this->lowbar->set_value($lowbar);
-				$this->lowbar->set_time($time);
-		 }	
-		 function set_highbar($highbar, $time){
-				$this->highbar->set_value($highbar);
-				$this->highbar->set_time($time);
-		 }	
-		  function set_highdew($highdew, $time){
-				$this->highdew->set_value($highdew);
-				$this->highdew->set_time($time);
-		 }	
-		  function set_lowdew($lowdew, $time){
-				$this->lowdew->set_value($lowdew);
-				$this->lowdew->set_time($time);
-		 }	
-		function set_highwind($highwind, $time){
-				$this->highwind->set_value($highwind);
-				$this->highwind->set_time($time);
-		 }	
-		 function set_highrainrate($rainrate, $time){
-				$this->highrainrate->set_value($rainrate);
-				$this->highrainrate->set_time($time);
-		 }	
-		 function set_highheatindex($heatIdx, $time){
-				$this->highheatindex->set_value(c_or_f($heatIdx));
-				$this->highheatindex->set_time($time);
-		 }
-		 function set_lowwindchill($windchill, $time){
-				$this->lowwindchill->set_value(c_or_f($windchill));
-				$this->lowwindchill->set_time($time);
-		 }
-		 function set_highuv($uv, $time){
-				$this->highuv->set_value($uv);
-				$this->highuv->set_time($time);
-		 }
-		 function set_lowuv($uv, $time){
-				$this->lowuv->set_value($uv);
-				$this->lowuv->set_time($time);
-		 }
-		 function set_highradiation($sr, $time){
-				$this->highradiation->set_value($sr);
-				$this->highradiation->set_time($time);
-		 }
-		 function set_lowradiation($sr, $time){
-				$this->lowradiation->set_value($sr);
-				$this->lowradiation->set_time($time);
-		 }
+    var $date;
+    var $time;
+    var $day;
+    var $temp;
+    var $tempunit;
+    var $intemp;
+    var $dew;
+    var $pressure;
+    var $hum;
+    var $thw;
+    var $thws;
+    var $rain; // rain in the interval
+    var $windspd;
+    var $winddir;
+    var $windchill;
+    var $solarradiation;
+    var $uv;
+    var $pm10;
+    var $cloudiness;
+    var $heatidx;
+    var $rainrate;
+    var $rainratechange;
+    var $light = true;
+    var $tempchange;
+    var $humchange;
+    var $windspdchange;
+    var $prschange;
+    var $cloudbase;
+    var $cloudBaseChange;
+    var $uvchange;
+    var $solarradiationchange;
 
-		 function get_info($paramvalue, $loworhigh, $paramtime)
-		 {
-			 global $ON, $LOW, $HIGH;
-			 return ($LOW[$lang_idx].": ".$paramvalue." ".$ON[$lang_idx]." ".$paramtime);
-		 	
-		 }
-	}
-	class TimeRange extends Period {
-				var $et;
-				var $sunshinehours;
-				var $rain;
-				var $rainydays;
-				var $raindiffav;
-				var $rainperc;
-				var $rainydaysdiffav;
-				var $abslowtemp;
-				var $abshightemp;
-				var $absminrain;
-				var $absmaxrain;
-				function get_rainperc(){
-							return $this->rainperc;	 
-				}
-				function set_rainperc($rainperc){
-							$this->rainperc = $rainperc;	 
-				}
-				function set_rainydaysdiffav($raindays){
-							$this->rainydaysdiffav = $raindays;	 
-				}
-				function get_rainydaysdiffav(){
-							return $this->rainydaysdiffav;	 
-				}
-				function set_raindiffav($raindiffav){
-							$this->raindiffav = $raindiffav;	 
-				}
-				function get_raindiffav(){
-							return $this->raindiffav;	 
-				}
-				function set_rain($rain){
-							$this->rain = $rain;	 
-				}
-				function set_et($et){
-							$this->et = $et;	 
-				}
-				function set_sunshinehours($sunshinehours){
-							$this->sunshinehours = $sunshinehours;	 
-				}
-				function get_rain(){
-							return $this->rain;
-				}
-				function get_et(){
-							return $this->et;
-				}
-				function get_sunshinehours(){
-							return $this->sunshinehours;
-				}
-				function set_rainydays($rainydays){
-							$this->rainydays = $rainydays;
-				}
-				function get_rainydays(){
-							return $this->rainydays;
-				}
-				function get_abslowtemp(){
-					return $this->abslowtemp;
-				}
-				function get_abshightemp(){
-					return $this->abshightemp;
-				}
-				function get_absminrain(){
-					return $this->absminrain;
-				}
-				function get_absmaxrain(){
-					return $this->absmaxrain;
-				}
-				function set_abslowtemp($abslowtemp){
-					$this->abslowtemp = c_or_f($abslowtemp);
-				}
-				function set_abshightemp($abshightemp){
-					$this->abshightemp = c_or_f($abshightemp);
-				}
-				function set_absminrain($absminrain){
-					$this->absminrain = $absminrain;
-				}
-				function set_absmaxrain($absmaxrain){
-					$this->absmaxrain = $absmaxrain;
-				}
-				
-	}
-	
-	class ForecastDay extends TimeRange{
-		var $temp_morning;
-		var $temp_day;
-		var $temp_night;
-		function get_temp_morning(){
-							return $this->temp_morning;	 
-				}
-		function set_temp_morning($temp_morning){
-					$this->temp_morning = $temp_morning;	 
-		}
-		function get_temp_day(){
-							return $this->temp_day;	 
-		}
-		function set_temp_day($temp_day){
-					$this->temp_day = $temp_day;	 
-		}
-		function get_temp_night(){
-							return $this->temp_night;	 
-		}
-		function set_temp_night($temp_night){
-					$this->temp_night = $temp_night;	 
-		}
+    /* function FixedTime(
+      $ddate,
+      $ttime,
+      $dday,
+      $ttemp,
+      $ddew,
+      $ppressure,
+      $hhum,
+      $wwindspd,
+      $wwinddir,
+      $r
+      rate,
+      $ttempchange,
+      $hhumchange,
+      $wwindspdchange,
+      $pprschange)
+      {
+      $date = $ddate;
+      $time = $ttime;
+      $day  = $dday;
+      $temp = $ttemp;
+      $dew = $ddew;
+      $pressure = $ppressure;
+      $hum = $hhum;
+      $windspd = $wwindsp;
+      $winddir = $wwinddir;
+      $rainrate = $rrainrate;
+      $light = true;
+      $tempchange = $ttempchage;
+      $humchange = $hhumchange;
+      $windspdchange = $wwindspdchange;
+      $prschange = $pprschange;
+      } */
 
-	}
-        class ContentSection {
-            var $Description;
-            var $img_src;
-            var $href;
-            var $Title;
-            function get_description(){
-             return $this->Description;
-            }
-            function set_description($desc){
-                $this->Description = $desc;
-            }
-            
-            function get_img_src(){
-              return $this->img_src;
-            }
-            function set_img_src($img_src){
-                $this->img_src = $img_src;
-            }
-            function get_href(){
-             return $this->href;
-            }
-            function set_href($href){
-                $this->href = $href;
-            }
-            function get_Title(){
-             return $this->Title;
-            }
-            function set_Title($Title){
-                $this->Title = $Title;
-            }
-       
-            
+    function set_tempchange($temp) {
+        if ($temp == "miss")
+            $this->tempchange = "miss";
+        else
+            $this->tempchange = number_format($temp - $this->temp, 1, '.', '');
+    }
+
+    function set_humchange($hum) {
+        if ($hum == "miss")
+            $this->humchange = "miss";
+        else
+            $this->humchange = $hum - $this->hum;
+    }
+
+    function set_windspdchange($windspd) {
+        $this->windspdchange = $windspd - $this->windspd;
+    }
+
+    function set_rainratechange($rainrate) {
+        $this->rainratechange = $rainrate - $this->rainrate;
+    }
+
+    function set_prschange($prs) {
+        $this->prschange = number_format($prs - $this->pressure, 1, '.', '');
+    }
+
+    function set_cloudBaseChange($cloudbase) {
+        if ($cloudbase == "miss")
+            $this->cloudBaseChange = "miss";
+        else
+            $this->cloudBaseChange = $cloudbase - $this->cloudbase;
+    }
+
+    function set_uvchange($uv) {
+        $this->uvchange = $uv - $this->uv;
+    }
+
+    function set_srchange($sr) {
+        $this->solarradiationchange = $sr - $this->solarradiation;
+    }
+
+    function set_change($temp, $hum, $windspd, $prs, $cldbase, $rainrate, $solarradiation, $uv) {
+        $this->set_tempchange($temp);
+        $this->set_humchange($hum);
+        $this->set_windspdchange($windspd);
+        $this->set_prschange($prs);
+        $this->set_cloudBaseChange($cldbase);
+        $this->set_rainratechange($rainrate);
+        $this->set_uvchange($uv);
+        $this->set_srchange($solarradiation);
+    }
+
+    function get_windspdchange() {
+        return $this->windspdchange;
+    }
+
+    function get_rainratechange() {
+        return $this->rainratechange;
+    }
+
+    function get_prschange() {
+        return $this->prschange;
+    }
+
+    function get_humchange() {
+        return $this->humchange;
+    }
+
+    function get_tempchange() {
+        return $this->tempchange;
+    }
+
+    function get_srchange() {
+        return $this->solarradiationchange;
+    }
+
+    function get_uvchange() {
+        return $this->uvchange;
+    }
+
+    function get_cloudbasechange() {
+        return $this->cloudBaseChange;
+    }
+
+    function get_cloudbase() {
+        return $this->cloudbase;
+    }
+
+    function set_time($time) {
+        $this->time = $time;
+    }
+
+    function set_date($date) {
+        $this->date = $date;
+    }
+
+    function set_day($day) {
+        $this->day = $day;
+    }
+
+    function set_temp($temp) {
+        $this->temp = c_or_f($temp);
+    }
+
+    function set_tempunit($tempunit) {
+        $this->tempunit = $tempunit;
+    }
+
+    function set_intemp($temp) {
+        $this->intemp = c_or_f($temp);
+    }
+
+    function set_dew($dew) {
+        $this->dew = c_or_f($dew);
+    }
+
+    function set_hum($hum) {
+        $this->hum = $hum;
+    }
+
+    function set_pm10($pm10) {
+        $this->pm10 = $pm10;
+    }
+
+    function set_thw($thw) {
+        $this->thw = c_or_f($thw);
+    }
+
+    function set_cloudiness($cloudiness) {
+        $this->cloudiness = $cloudiness;
+    }
+
+    function set_thws($thws) {
+        $this->thws = c_or_f($thws);
+    }
+
+    function set_windspd($wind) {
+        $this->windspd = $wind;
+    }
+
+    function set_winddir($wind) {
+        $this->winddir = $wind;
+    }
+
+    function set_windchill($temp) {
+        $this->windchill = c_or_f($temp);
+    }
+
+    function set_heatidx($temp) {
+        $this->heatidx = c_or_f($temp);
+    }
+
+    function set_rainrate($rrate) {
+        $this->rainrate = $rrate;
+    }
+
+    function set_rain($rain) {
+        $this->rain = $rain;
+    }
+
+    function set_solarradiation($sr) {
+        $this->solarradiation = $sr;
+    }
+
+    function set_uv($uv) {
+        $this->uv = $uv;
+    }
+
+    function set_pressure($bar) {
+        $this->pressure = $bar;
+    }
+
+    function set_cloudbase($cloudbase) {
+        $this->cloudbase = $cloudbase;
+    }
+
+    function set_dark() {
+        $this->light = false;
+    }
+
+    function set_light() {
+        $this->light = true;
+    }
+
+    function get_date() {
+        return $this->date;
+    }
+
+    function get_time() {
+        return $this->time;
+    }
+
+    function get_temp() {
+        return $this->temp;
+    }
+
+    function get_tempunit() {
+        return $this->tempunit;
+    }
+
+    function get_intemp() {
+        return $this->intemp;
+    }
+
+    function get_dew() {
+        return $this->dew;
+    }
+
+    function get_hum() {
+        return $this->hum;
+    }
+
+    function get_pm10() {
+        return $this->pm10;
+    }
+
+    function get_windspd() {
+        return $this->windspd;
+    }
+
+    function get_winddir() {
+        return $this->winddir;
+    }
+
+    function get_windchill() {
+        return $this->windchill;
+    }
+
+    function get_heatidx() {
+        return $this->heatidx;
+    }
+
+    function get_pressure() {
+        return number_format($this->pressure, 1, '.', '');
+    }
+
+    function get_thw() {
+        return $this->thw;
+    }
+
+    function get_cloudiness() {
+        return $this->cloudiness;
+    }
+
+    function get_thws() {
+        return $this->thws;
+    }
+
+    function get_rainrate() {
+        return $this->rainrate;
+    }
+
+    function get_rain() {
+        return $this->rain;
+    }
+
+    function get_solarradiation() {
+        return $this->solarradiation;
+    }
+
+    function get_uv() {
+        return $this->uv;
+    }
+
+    function is_light() {
+        return $this->light;
+    }
+
+    function is_sunset() {
+        if (abs(get_sunset_ut() - $this->get_current_time_ut()) < 2900)
+            return true;
+        else
+            return false;
+    }
+
+    function is_sunrise() {
+        if (abs(get_sunrise_ut() - $this->get_current_time_ut()) < 2900)
+            return true;
+        else
+            return false;
+    }
+
+    function get_current_time_ut() {
+        $time_a = explode(":", $this->time);
+        $current_hh = $time_a[0];
+        $current_mm = $time_a[1];
+        $current_time_ut = mktime($current_hh, $current_mm);
+        return $current_time_ut;
+    }
+
+}
+
+class Parameter {
+
+    var $_value;
+    var $_time;
+
+    function get_time() {
+        Return $this->_time;
+    }
+
+    function get_value() {
+        Return $this->_value;
+    }
+
+    function set_value($value) {
+        $this->_value = $value;
+    }
+
+    function set_time($time) {
+        $this->_time = $time;
+    }
+
+}
+
+class Period {
+
+    var $hightemp;
+    var $lowtemp;
+    var $highhum;
+    var $lowhum;
+    var $highbar;
+    var $lowbar;
+    var $highdew;
+    var $lowdew;
+    var $highwind;
+    var $highrainrate;
+    var $highheatindex;
+    var $lowwindchill;
+    var $highuv;
+    var $lowuv;
+    var $highradiation;
+    var $lowradiation;
+
+    /* function Period($hitemp, $lowtemp, $highhum, $lowhum, $highbar, $lowbar, $highwind, $highrainrate) {
+      $this->hightemp = $hitemp;
+      $this->lowtemp  = $lowtemp;
+      $this->highhum = $highhum;
+      $this->lowhum = $lowhum;
+      $this->highbar = $highbar;
+      $this->lowbar = $lowbar;
+      $this->highwind = $highwind;
+      $this->highrainrate = $highrainrate;
+
+      } */
+
+    function Period() {
+        $this->hightemp = new Parameter();
+        $this->lowtemp = new Parameter();
+        $this->highhum = new Parameter();
+        $this->lowhum = new Parameter();
+        $this->highbar = new Parameter();
+        $this->lowbar = new Parameter();
+        $this->highdew = new Parameter();
+        $this->lowdew = new Parameter();
+        $this->highwind = new Parameter();
+        $this->highrainrate = new Parameter();
+        $this->lowwindchill = new Parameter();
+        $this->highheatindex = new Parameter();
+        $this->highuv = new Parameter();
+        $this->lowuv = new Parameter();
+        $this->highradiation = new Parameter();
+        $this->lowradiation = new Parameter();
+    }
+
+    function get_hightemp() {
+        return $this->hightemp->get_value();
+    }
+
+    function get_highbar() {
+        return number_format($this->highbar->get_value(), 1);
+    }
+
+    function get_lowtemp() {
+        return $this->lowtemp->get_value();
+    }
+
+    function get_highhum() {
+        return $this->highhum->get_value();
+    }
+
+    function get_lowhum() {
+        return $this->lowhum->get_value();
+    }
+
+    function get_highwind() {
+        return $this->highwind->get_value();
+    }
+
+    function get_highuv() {
+        return $this->highuv->get_value();
+    }
+
+    function get_highuv_time() {
+        return $this->highuv->get_time();
+    }
+
+    function get_highradiation() {
+        return $this->highradiation->get_value();
+    }
+
+    function get_highradiation_time() {
+        return $this->highradiation->get_time();
+    }
+
+    function get_lowbar() {
+        return number_format($this->lowbar->get_value(), 1);
+    }
+
+    function get_highdew() {
+        return $this->highdew->get_value();
+    }
+
+    function get_lowdew() {
+        return $this->lowdew->get_value();
+    }
+
+    function get_highrainrate() {
+        return $this->highrainrate->get_value();
+    }
+
+    function get_highheatindex() {
+        return $this->highheatindex->get_value();
+    }
+
+    function get_lowwindchill() {
+        return $this->lowwindchill->get_value();
+    }
+
+    function get_hightemp_time() {
+        if (strlen($this->hightemp->get_time()) < 5)
+            return "0" . $this->hightemp->get_time();
+        else
+            return $this->hightemp->get_time();
+    }
+
+    function get_highbar_time() {
+        return $this->highbar->get_time();
+    }
+
+    function get_lowtemp_time() {
+        if (strlen($this->lowtemp->get_time()) < 5)
+            return "0" . $this->lowtemp->get_time();
+        else
+            return $this->lowtemp->get_time();
+    }
+
+    function get_highhum_time() {
+        return $this->highhum->get_time();
+    }
+
+    function get_lowhum_time() {
+        return $this->lowhum->get_time();
+    }
+
+    function get_lowwindchill_time() {
+        return $this->lowwindchill->get_time();
+    }
+
+    function get_highwind_time() {
+        return $this->highwind->get_time();
+    }
+
+    function get_lowbar_time() {
+        return $this->lowbar->get_time();
+    }
+
+    function get_highrainrate_time() {
+        return $this->highrainrate->get_time();
+    }
+
+    function get_highheatindex_time() {
+        return $this->highheatindex->get_time();
+    }
+
+    function set_hightemp($hightemp, $time) {
+        $this->hightemp->set_value(c_or_f($hightemp));
+        $this->hightemp->set_time($time);
+    }
+
+    function set_lowtemp($lowtemp, $time) {
+        $this->lowtemp->set_value(c_or_f($lowtemp));
+        $this->lowtemp->set_time($time);
+    }
+
+    function set_highhum($highhum, $time) {
+        $this->highhum->set_value($highhum);
+        $this->highhum->set_time($time);
+    }
+
+    function set_lowhum($lowhum, $time) {
+        $this->lowhum->set_value($lowhum);
+        $this->lowhum->set_time($time);
+    }
+
+    function set_lowbar($lowbar, $time) {
+        $this->lowbar->set_value($lowbar);
+        $this->lowbar->set_time($time);
+    }
+
+    function set_highbar($highbar, $time) {
+        $this->highbar->set_value($highbar);
+        $this->highbar->set_time($time);
+    }
+
+    function set_highdew($highdew, $time) {
+        $this->highdew->set_value($highdew);
+        $this->highdew->set_time($time);
+    }
+
+    function set_lowdew($lowdew, $time) {
+        $this->lowdew->set_value($lowdew);
+        $this->lowdew->set_time($time);
+    }
+
+    function set_highwind($highwind, $time) {
+        $this->highwind->set_value($highwind);
+        $this->highwind->set_time($time);
+    }
+
+    function set_highrainrate($rainrate, $time) {
+        $this->highrainrate->set_value($rainrate);
+        $this->highrainrate->set_time($time);
+    }
+
+    function set_highheatindex($heatIdx, $time) {
+        $this->highheatindex->set_value(c_or_f($heatIdx));
+        $this->highheatindex->set_time($time);
+    }
+
+    function set_lowwindchill($windchill, $time) {
+        $this->lowwindchill->set_value(c_or_f($windchill));
+        $this->lowwindchill->set_time($time);
+    }
+
+    function set_highuv($uv, $time) {
+        $this->highuv->set_value($uv);
+        $this->highuv->set_time($time);
+    }
+
+    function set_lowuv($uv, $time) {
+        $this->lowuv->set_value($uv);
+        $this->lowuv->set_time($time);
+    }
+
+    function set_highradiation($sr, $time) {
+        $this->highradiation->set_value($sr);
+        $this->highradiation->set_time($time);
+    }
+
+    function set_lowradiation($sr, $time) {
+        $this->lowradiation->set_value($sr);
+        $this->lowradiation->set_time($time);
+    }
+
+    function get_info($paramvalue, $loworhigh, $paramtime) {
+        global $ON, $LOW, $HIGH;
+        return ($LOW[$lang_idx] . ": " . $paramvalue . " " . $ON[$lang_idx] . " " . $paramtime);
+    }
+
+}
+
+class TimeRange extends Period {
+
+    var $et;
+    var $sunshinehours;
+    var $rain;
+    var $rainydays;
+    var $raindiffav;
+    var $rainperc;
+    var $rainydaysdiffav;
+    var $abslowtemp;
+    var $abshightemp;
+    var $absminrain;
+    var $absmaxrain;
+
+    function get_rainperc() {
+        return $this->rainperc;
+    }
+
+    function set_rainperc($rainperc) {
+        $this->rainperc = $rainperc;
+    }
+
+    function set_rainydaysdiffav($raindays) {
+        $this->rainydaysdiffav = $raindays;
+    }
+
+    function get_rainydaysdiffav() {
+        return $this->rainydaysdiffav;
+    }
+
+    function set_raindiffav($raindiffav) {
+        $this->raindiffav = $raindiffav;
+    }
+
+    function get_raindiffav() {
+        return $this->raindiffav;
+    }
+
+    function set_rain($rain) {
+        $this->rain = $rain;
+    }
+
+    function set_et($et) {
+        $this->et = $et;
+    }
+
+    function set_sunshinehours($sunshinehours) {
+        $this->sunshinehours = $sunshinehours;
+    }
+
+    function get_rain() {
+        return $this->rain;
+    }
+
+    function get_et() {
+        return $this->et;
+    }
+
+    function get_sunshinehours() {
+        return $this->sunshinehours;
+    }
+
+    function set_rainydays($rainydays) {
+        $this->rainydays = $rainydays;
+    }
+
+    function get_rainydays() {
+        return $this->rainydays;
+    }
+
+    function get_abslowtemp() {
+        return $this->abslowtemp;
+    }
+
+    function get_abshightemp() {
+        return $this->abshightemp;
+    }
+
+    function get_absminrain() {
+        return $this->absminrain;
+    }
+
+    function get_absmaxrain() {
+        return $this->absmaxrain;
+    }
+
+    function set_abslowtemp($abslowtemp) {
+        $this->abslowtemp = c_or_f($abslowtemp);
+    }
+
+    function set_abshightemp($abshightemp) {
+        $this->abshightemp = c_or_f($abshightemp);
+    }
+
+    function set_absminrain($absminrain) {
+        $this->absminrain = $absminrain;
+    }
+
+    function set_absmaxrain($absmaxrain) {
+        $this->absmaxrain = $absmaxrain;
+    }
+
+}
+
+class ForecastDay extends TimeRange {
+
+    var $temp_morning;
+    var $temp_day;
+    var $temp_night;
+
+    function get_temp_morning() {
+        return $this->temp_morning;
+    }
+
+    function set_temp_morning($temp_morning) {
+        $this->temp_morning = $temp_morning;
+    }
+
+    function get_temp_day() {
+        return $this->temp_day;
+    }
+
+    function set_temp_day($temp_day) {
+        $this->temp_day = $temp_day;
+    }
+
+    function get_temp_night() {
+        return $this->temp_night;
+    }
+
+    function set_temp_night($temp_night) {
+        $this->temp_night = $temp_night;
+    }
+
+}
+
+class ContentSection {
+
+    var $Description;
+    var $img_src;
+    var $href;
+    var $Title;
+
+    function get_description() {
+        return $this->Description;
+    }
+
+    function set_description($desc) {
+        $this->Description = $desc;
+    }
+
+    function get_img_src() {
+        return $this->img_src;
+    }
+
+    function set_img_src($img_src) {
+        $this->img_src = $img_src;
+    }
+
+    function get_href() {
+        return $this->href;
+    }
+
+    function set_href($href) {
+        $this->href = $href;
+    }
+
+    function get_Title() {
+        return $this->Title;
+    }
+
+    function set_Title($Title) {
+        $this->Title = $Title;
+    }
+
+}
+
+function randomFile($file) {
+    $items = file($file);
+    $item = rand(0, sizeof($items) - 1);
+    return $items[$item];
+}
+
+function getLocalTime($time) {
+    return date(" D j/m/y H:i", strtotime(SERVER_CLOCK_DIFF, $time));
+}
+
+function getLocalDay($time) {
+    return date(" D j/m/y", strtotime(SERVER_CLOCK_DIFF, $time));
+}
+
+function getLocalHour($time) {
+    return date("H", strtotime(SERVER_CLOCK_DIFF, $time));
+}
+
+function searchNext(&$tok, $strTofind) {
+    if ($_GET['debug'] >= 4)
+        echo "<br>SearchingNext (" . $strTofind . ")<br>";
+    if ($tok === $strTofind)
+        $tok = strtok("  \n\t"); // It is meant for searching the next, not current
+    $firsttok = $tok;
+    $prevtok = "prv";
+
+    while ((!($tok === $strTofind)) && (!($tok === FALSE))) {
+        $prevtok = $tok;
+        $tok = strtok("  \n\t");
+        if ($_GET['debug'] >= 4)
+            echo ".'" . $tok . "'";
+    }
+
+    if ($tok) {
+        if ($_GET['debug'] >= 4)
+            echo " found<br>";
+        return true;
+    }
+    else {
+        if ($_GET['debug'] >= 4)
+            echo " not found<br>";
+        $tok = strtok($firsttok, " \n\t"); // need to get the previous token - change it
+        return false;
+    }
+}
+
+function searchNextLike(&$tok, $strTofind) {
+    if ($_GET['debug'] >= 4)
+        echo "<br>SearchingNext (" . $strTofind . ")<br>";
+    if ($tok === $strTofind)
+        $tok = strtok("  \n\t"); // It is meant for searching the next, not current
+    $firsttok = $tok;
+    $prevtok = "prv";
+
+    while ((!stristr($tok, $strTofind)) && (!($tok === FALSE))) {
+        $prevtok = $tok;
+        $tok = strtok("  \n\t");
+        if ($_GET['debug'] >= 4)
+            echo ".'" . $tok . "'";
+    }
+
+    if ($tok) {
+        if ($_GET['debug'] >= 4)
+            echo " found<br>";
+        return true;
+    }
+    else {
+        if ($_GET['debug'] >= 4)
+            echo " not found<br>";
+        $tok = strtok($firsttok, " \n\t"); // need to get the previous token - change it
+        return false;
+    }
+}
+
+function searchDoubleNext(&$tok, $strTofind, $str2Tofind) {
+    if ($_GET['debug'] >= 4)
+        echo "<br>SearchingNext (" . $strTofind . ")<br>";
+    if ($tok === $strTofind)
+        $tok = strtok("  \n\t"); // It is meant for searching the next, not current
+    $firsttok = $tok;
+    $prevtok = "prv";
+    while (($tok !== $strTofind) && ($tok !== $str2Tofind) && (!($tok === FALSE))) {
+        $prevtok = $tok;
+        $tok = strtok("  \n\t");
+        if ($_GET['debug'] >= 4)
+            echo ".";
+    }
+
+    if ($tok) {
+        if ($_GET['debug'] >= 4)
+            echo "found<br>";
+        return true;
+    }
+    else {
+        if ($_GET['debug'] >= 4)
+            echo "not found<br>";
+        $tok = strtok($firsttok, " \n\t"); // need to get the previous token - change it
+        return false;
+    }
+}
+
+function getTokFromFile($file) {
+    $fp = @fopen($file, "r");
+    $filecontents = @fread($fp, filesize($file));
+    @fclose($fp);
+    $tok = strtok($filecontents, " \n\t");
+    return $tok;
+}
+
+// end func ()
+
+function getNextWord(&$tok, $intNextWord) {
+
+    if ($_GET['debug'] >= 4)
+        echo "SearchingNextWord = " . $intNextWord . "<br>";
+
+    for ($i = 0; $i < $intNextWord; $i++) {
+        $tok = strtok("  \t");
+        if ($_GET['debug'] >= 4)
+            echo "tok = " . $tok . "<br>";
+
+        while ($tok === "") {//searching for next meaningfull tok
+            $tok = strtok("  \t");
+            if ($_GET['debug'] >= 4)
+                echo "tok = " . $tok . "<br>";
         }
-
-	function randomFile ($file){
-		$items = file($file);
-		$item = rand(0, sizeof($items)-1);
-		return $items[$item];				 
-	}
-
-	function getLocalTime ($time)
-	{
-		return date(" D j/m/y H:i", strtotime(SERVER_CLOCK_DIFF, $time));
-	}
-
-	function getLocalDay ($time)
-	{
-		return date(" D j/m/y", strtotime(SERVER_CLOCK_DIFF, $time));
-	}
-
-	function getLocalHour ($time)
-	{
-		return date("H", strtotime(SERVER_CLOCK_DIFF, $time));
-	}
-
-	function searchNext (&$tok, $strTofind){
-		if ($_GET['debug'] >= 4) 
-					echo "<br>SearchingNext (".$strTofind.")<br>";
-		if ($tok === $strTofind)
-				$tok = strtok("  \n\t"); // It is meant for searching the next, not current
-		$firsttok = $tok;
-		$prevtok = "prv";
-                
-		while ((!($tok=== $strTofind))&&(!($tok === FALSE))){
-			$prevtok = $tok;
-			$tok = strtok("  \n\t");
-				if ($_GET['debug'] >= 4)
-					echo ".'".$tok."'";
-		}
-		
-		if ($tok){
-			if ($_GET['debug']  >= 4)
-					echo " found<br>";
-			return true;
-		}
-		else{
-			if ($_GET['debug']  >= 4)
-					echo " not found<br>";
-			$tok = strtok($firsttok, " \n\t");// need to get the previous token - change it
-			return false;
-		}
-	}
-        
-        function searchNextLike (&$tok, $strTofind){
-		if ($_GET['debug'] >= 4) 
-					echo "<br>SearchingNext (".$strTofind.")<br>";
-		if ($tok === $strTofind)
-				$tok = strtok("  \n\t"); // It is meant for searching the next, not current
-		$firsttok = $tok;
-		$prevtok = "prv";
-                
-		while ((!stristr($tok,$strTofind))&&(!($tok === FALSE))){
-			$prevtok = $tok;
-			$tok = strtok("  \n\t");
-				if ($_GET['debug'] >= 4)
-					echo ".'".$tok."'";
-		}
-		
-		if ($tok){
-			if ($_GET['debug']  >= 4)
-					echo " found<br>";
-			return true;
-		}
-		else{
-			if ($_GET['debug']  >= 4)
-					echo " not found<br>";
-			$tok = strtok($firsttok, " \n\t");// need to get the previous token - change it
-			return false;
-		}
-	}
-        
-
-	function searchDoubleNext (&$tok, $strTofind, $str2Tofind){
-		if ($_GET['debug'] >= 4) 
-					echo "<br>SearchingNext (".$strTofind.")<br>";
-		if ($tok === $strTofind)
-				$tok = strtok("  \n\t"); // It is meant for searching the next, not current
-		$firsttok = $tok;
-		$prevtok = "prv";
-		while (($tok !== $strTofind)&&($tok !== $str2Tofind)&&(!($tok === FALSE))){
-			$prevtok = $tok;
-			$tok = strtok("  \n\t");
-				if ($_GET['debug'] >= 4)
-					echo ".";
-		}
-		
-		if ($tok){
-			if ($_GET['debug']  >= 4)
-					echo "found<br>";
-			return true;
-		}
-		else{
-			if ($_GET['debug']  >= 4)
-					echo "not found<br>";
-			$tok = strtok($firsttok, " \n\t");// need to get the previous token - change it
-			return false;
-		}
-	}
-
-	function getTokFromFile($file)
-	{
-		$fp = @fopen ($file , "r");
-		$filecontents = @fread ($fp, filesize ($file));
-		@fclose($fp);
-		$tok = strtok($filecontents, " \n\t");   
-		return $tok;
-	} // end func ()
-
-	function getNextWord(&$tok, $intNextWord){
-	 
-	  if ($_GET['debug']  >= 4) 
-					echo "SearchingNextWord = ".$intNextWord."<br>";
-	 
-	  for ( $i=0; $i<$intNextWord ;$i++ ) {
-		  $tok = strtok("  \t");
-		  if ($_GET['debug']  >= 4) 
-					echo "tok = ".$tok."<br>";
-		  
-		  while ($tok ==="") {//searching for next meaningfull tok
-				$tok = strtok("  \t");  
-				if ($_GET['debug'] >= 4) 
-					echo "tok = ".$tok."<br>";
-				
-		  }
-	  }
-	   if ($_GET['debug']  >= 4) 
-				echo "<b>tok found = ".$tok."</b><br>";
-	  return $tok;
-	} // end func	
-
-	function getNextWordWith(&$tok, $str){
-	
-	  if ($_GET['debug']  >= 4) 
-					echo "<br>SearchingNextWordWith = ".$str."<br>";
-	  
-	   $tok = strtok("  \n\t"); // It is meant for searching the next, not current
-	   if ($_GET['debug']  >= 4) 
-					echo "tok = ".$tok."<br>";
-	   
-	  while (!strstr($tok,$str)) {
-			$tok = strtok("  \t");
-			if ($_GET['debug']  >= 4) 
-				echo "tok = ".$tok."<br>";
-	  }
-	  if ($_GET['debug']  >= 4) 
-				echo "<b>found = ".$tok."</b><br>";
-	  return $tok;
-	} // end func
-	
-	// split a string into an array of space-delimited tokens, taking double-quoted strings into account
-	function tokenizeQuoted($string)
-	{
-		for($tokens=array(), $nextToken=strtok($string, ' '); $nextToken!==false; $nextToken=strtok(' '))
-		{
-			if($nextToken{0}=='"')
-				$nextToken = $nextToken{strlen($nextToken)-1}=='"' ?
-					substr($nextToken, 1, -1) : substr($nextToken, 1) . ' ' . strtok('"');
-			$tokens[] = $nextToken;
-		}
-		return $tokens;
-	}
-
-	function date_diff_hours($str_start, $str_end)
-	{
-
-		$str_start = strtotime($str_start); // The start date becomes a timestamp
-		$str_end = strtotime($str_end); // The end date becomes a timestamp
-
-		$nseconds = $str_end - $str_start; // Number of seconds between the two dates
-		$ndays = round($nseconds / 86400); // One day has 86400 seconds
-		$nseconds = $nseconds % 86400; // The remainder from the operation
-		$nhours = round($nseconds / 3600); // One hour has 3600 seconds
-		$nseconds = $nseconds % 3600;
-		$nminutes = round($nseconds / 60); // One minute has 60 seconds, duh!
-		$nseconds = $nseconds % 60;
-		/*
-		date_diff("1978-04-26", "2003-01-01");
-		date_diff("1984-10-24 15:32:25", "2003-01-01");
-		date_diff("2001-10-28 17:32:25", "2003-01-01 12:00:18"); 
-		*/
-		return $nhours;
-	}
-
-	function c_or_f ($temp)
-	{
-		
-		if ($_GET['tempunit'] == 'F')
-		{
-			
-			return ( round(((9 * $temp) / 5) + 32));
-		}
-		
-		return $temp;
-	}
-
-	function date_diff_sec($str_start, $str_end)
-	{
-
-		$str_start = strtotime($str_start); // The start date becomes a timestamp
-		$str_end = strtotime($str_end); // The end date becomes a timestamp
-
-		$nseconds = $str_end - $str_start; // Number of seconds between the two dates
-		return $nseconds;
-	}
-
-	function date_diff_days($str_start, $str_end)
-	{
-
-		$str_start = strtotime($str_start); // The start date becomes a timestamp
-		$str_end = strtotime($str_end); // The end date becomes a timestamp
-
-		$nseconds = $str_end - $str_start; // Number of seconds between the two dates
-		$ndays = round($nseconds / 86400); // One day has 86400 seconds
-		return $ndays;
-	}
-
-	function getLastUpdateMin()
-	{
-		global $offset;
-		return $offset + INTERVAL;
-	}
-	
-	/**
-	util function that get the minus hour time in string
-	*/
-	function getMinusHourTime($minusHour)
-	{
-		global $hour, $ymin;
-		return sprintf("%d:%02d", $hour < $minusHour ? $hour + (24 - $minusHour) : $hour - $minusHour, $ymin);
-	} // end func
-
-	function getMinusHourDate($minusHour)
-	{
-		global $day, $month, $year, $hour;
-		return date (DATE_FORMAT, mktime ($hour - $minusHour, 0, 0, $month, $day ,$year));
-	} // end func
-
-	function getMinusHourDay($minusHour)
-	{
-		global $day, $month, $year, $hour;
-		return date ("j", mktime ($hour - $minusHour, 0, 0, $month, $day ,$year));
-	} // end func
-
-	function getMinusHourMonth($minusHour)
-	{
-		global $day, $month, $year, $hour;
-		return date ("m", mktime ($hour - $minusHour, 0, 0, $month, $day ,$year));
-	} // end func
-
-	function getMinusMinTime($minusMin)
-	{
-		global $hour, $min, $offset;
-		if ($_GET['debug'] >= 3)
-			echo "<br>getMinusMinTime: hour=".$hour." min=".$min." minusMin=".$minusMin." offest=".$offset;
-		$ret_date = date("G:i", mktime ($hour, $min - $minusMin - $offset));
-		if ($ret_date == "0:00")
-			$ret_date = "00:00";
-		return $ret_date ;
-	} // end func
-	function getMinusMinDate($minusMin)
-	{
-		global $day, $month, $year, $hour, $min;
-		return @date (DATE_FORMAT, mktime ($hour, $min - $minusMin, 0, $month, $day ,$year));
-	} // end func*/
-     function getMinusDayDay($minusDay)
-	{
-		global $day, $month, $year, $hour, $min;
-		return date ("j", mktime (0, 0, 0, $month, $day - $minusDay ,$year));
-	} // end func*/
-    function getMinusDayMonth($minusDay)
-	{
-		global $day, $month, $year, $hour, $min;
-		return date ("m", mktime (0, 0, 0, $month, $day - $minusDay ,$year));
-	} // end func*/
-	
-	function enum() {
-	   $ArgC = func_num_args();
-	   $ArgV = func_get_args();
-
-	   for($Int = 0; $Int < $ArgC; $Int++) define($ArgV[$Int], $Int);
+    }
+    if ($_GET['debug'] >= 4)
+        echo "<b>tok found = " . $tok . "</b><br>";
+    return $tok;
 }
+
+// end func	
+
+function getNextWordWith(&$tok, $str) {
+
+    if ($_GET['debug'] >= 4)
+        echo "<br>SearchingNextWordWith = " . $str . "<br>";
+
+    $tok = strtok("  \n\t"); // It is meant for searching the next, not current
+    if ($_GET['debug'] >= 4)
+        echo "tok = " . $tok . "<br>";
+
+    while (!strstr($tok, $str)) {
+        $tok = strtok("  \t");
+        if ($_GET['debug'] >= 4)
+            echo "tok = " . $tok . "<br>";
+    }
+    if ($_GET['debug'] >= 4)
+        echo "<b>found = " . $tok . "</b><br>";
+    return $tok;
+}
+
+// end func
+// split a string into an array of space-delimited tokens, taking double-quoted strings into account
+function tokenizeQuoted($string) {
+    for ($tokens = array(), $nextToken = strtok($string, ' \n\t'); $nextToken !== false; $nextToken = strtok(' \n\t')) {
+        if ($nextToken{0} == '"')
+            $nextToken = $nextToken{strlen($nextToken) - 1} == '"' ?
+                    substr($nextToken, 1, -1) : substr($nextToken, 1) . ' ' . strtok('"');
+        $tokens[] = $nextToken;
+    }
+    return $tokens;
+}
+
+function date_diff_hours($str_start, $str_end) {
+
+    $str_start = strtotime($str_start); // The start date becomes a timestamp
+    $str_end = strtotime($str_end); // The end date becomes a timestamp
+
+    $nseconds = $str_end - $str_start; // Number of seconds between the two dates
+    $ndays = round($nseconds / 86400); // One day has 86400 seconds
+    $nseconds = $nseconds % 86400; // The remainder from the operation
+    $nhours = round($nseconds / 3600); // One hour has 3600 seconds
+    $nseconds = $nseconds % 3600;
+    $nminutes = round($nseconds / 60); // One minute has 60 seconds, duh!
+    $nseconds = $nseconds % 60;
+    /*
+      date_diff("1978-04-26", "2003-01-01");
+      date_diff("1984-10-24 15:32:25", "2003-01-01");
+      date_diff("2001-10-28 17:32:25", "2003-01-01 12:00:18");
+     */
+    return $nhours;
+}
+
+function c_or_f($temp) {
+
+    if ($_GET['tempunit'] == 'F') {
+
+        return ( round(((9 * $temp) / 5) + 32));
+    }
+
+    return $temp;
+}
+
+function date_diff_sec($str_start, $str_end) {
+
+    $str_start = strtotime($str_start); // The start date becomes a timestamp
+    $str_end = strtotime($str_end); // The end date becomes a timestamp
+
+    $nseconds = $str_end - $str_start; // Number of seconds between the two dates
+    return $nseconds;
+}
+
+function date_diff_days($str_start, $str_end) {
+
+    $str_start = strtotime($str_start); // The start date becomes a timestamp
+    $str_end = strtotime($str_end); // The end date becomes a timestamp
+
+    $nseconds = $str_end - $str_start; // Number of seconds between the two dates
+    $ndays = round($nseconds / 86400); // One day has 86400 seconds
+    return $ndays;
+}
+
+function getLastUpdateMin() {
+    global $offset;
+    return $offset + INTERVAL;
+}
+
+/**
+  util function that get the minus hour time in string
+ */
+function getMinusHourTime($minusHour) {
+    global $hour, $ymin;
+    return sprintf("%d:%02d", $hour < $minusHour ? $hour + (24 - $minusHour) : $hour - $minusHour, $ymin);
+}
+
+// end func
+
+function getMinusHourDate($minusHour) {
+    global $day, $month, $year, $hour;
+    return date(DATE_FORMAT, mktime($hour - $minusHour, 0, 0, $month, $day, $year));
+}
+
+// end func
+
+function getMinusHourDay($minusHour) {
+    global $day, $month, $year, $hour;
+    return date("j", mktime($hour - $minusHour, 0, 0, $month, $day, $year));
+}
+
+// end func
+
+function getMinusHourMonth($minusHour) {
+    global $day, $month, $year, $hour;
+    return date("m", mktime($hour - $minusHour, 0, 0, $month, $day, $year));
+}
+
+// end func
+
+function getMinusMinTime($minusMin) {
+    global $hour, $min, $offset;
+    if ($_GET['debug'] >= 3)
+        echo "<br>getMinusMinTime: hour=" . $hour . " min=" . $min . " minusMin=" . $minusMin . " offest=" . $offset;
+    $ret_date = date("G:i", mktime($hour, $min - $minusMin - $offset));
+    if ($ret_date == "0:00")
+        $ret_date = "00:00";
+    return $ret_date;
+}
+
+// end func
+
+function getMinusMinDate($minusMin) {
+    global $day, $month, $year, $hour, $min;
+    return @date(DATE_FORMAT, mktime($hour, $min - $minusMin, 0, $month, $day, $year));
+}
+
+// end func*/
+
+function getMinusDayDay($minusDay) {
+    global $day, $month, $year, $hour, $min;
+    return date("j", mktime(0, 0, 0, $month, $day - $minusDay, $year));
+}
+
+// end func*/
+
+function getMinusDayMonth($minusDay) {
+    global $day, $month, $year, $hour, $min;
+    return date("m", mktime(0, 0, 0, $month, $day - $minusDay, $year));
+}
+
+// end func*/
+
+function enum() {
+    $ArgC = func_num_args();
+    $ArgV = func_get_args();
+
+    for ($Int = 0; $Int < $ArgC; $Int++)
+        define($ArgV[$Int], $Int);
+}
+
 enum("ME", "ALL", "GroupA", "SPECIAL");
-class Chance  {
-const Low = 1;
-const Good = 2;
-const High = 3;
+
+class Chance {
+
+    const Low = 1;
+    const Good = 2;
+    const High = 3;
+
 }
+
 /********************************************************************/
 	// This function is called for every opening XML tag. We
 // need to keep track of our path in the XML file, so we
@@ -1084,7 +1245,7 @@ function getfilesFromdir($path){
 	   while (false !== ($file=readdir($handle)))
 	   {
 		  if (substr($file,0,1)!=".")
-			 $files[]=array(filemtime($path."/".$file),$path."/".$file);   #2-D array
+			 $files[]=array(filemtime($path."/".$file),$path."/".$file);   #2-D arraysend
 	   }
 	   @closedir($handle);
 	   if ($files)
@@ -1376,13 +1537,14 @@ function getPrevMonthRain()
 	getNextWord($tok, 8);// RAIN
 	return $tok;
 }
-/*******************************************************************************************/
+
 function send_SMS($number, $text)	
 {	}	
-function send_Email($messageBody, $target, $source, $sourcename, $attachment)	
+function send_Email($messageBody, $target, $source, $sourcename, $attachment, $subject)	
 {
 	global $header_pic;
-	
+	$lines = 0;
+        $result = "";
 	//$target=ME;
 	require("phpmailer/class.phpmailer.php");
 	$mail = new PHPMailer();
@@ -1396,7 +1558,8 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment)
 	if ((stristr ($source, "mymail-in.net"))||(stristr ($source, "list.ru"))||(stristr ($source, "trasteembable"))||(stristr ($source, "76up.com")))
 		return false;
 	global $MORE_INFO, $WEBSITE_TITLE, $EN, $HEB, $lang_idx, $forground_color, $base_color;
-	$EmailsToSend = array();		
+	$EmailsToSend = array();
+        $textToSend = array();
 	$headers  = "MIME-Version: 1.0\r\n";		
 	$headers .= "Content-type: text/html; charset=UTF-8\r\n";
 	//$headers .= "Content-Language: he\r\n";
@@ -1405,7 +1568,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment)
         $headers .= "Return-Path: {$source}\r\n"; 
         $headers .= "Organization: 02WS\r\n"; 
         $headers .= "Message-ID: <".md5(uniqid(time()))."@{$_SERVER['SERVER_NAME']}>";
-        $header .=  "X-MSmail-Priority: Normal";
+        $headers .=  "X-MSmail-Priority: Normal";
         $headers .= "X-Priority: 3\r\n";
         $headers .= "X-Mailer: PHP". phpversion() ."\r\n" ;
         $headers .= "X-Priority: 3\r\n";
@@ -1416,25 +1579,41 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment)
         //$headers .= "Subject: =?UTF-8?Q?".base64_encode($sourcename)."?=";
 
 	//echo("message body = ".$messageBody);
+        $multiLangBody = array();
         if (is_array($messageBody)){
             for ($i=0 ; $i < count($messageBody) ; $i++)
             {
-                $msg_extracted .= $messageBody[$i];
+                if (is_array($messageBody[$i]))
+                {
+                    for ($j=0 ; $j < count($messageBody[$i]) ; $j++)
+                    array_push($multiLangBody, $messageBody[$i][$j]);
+                }
+                else
+                {
+                    array_push($multiLangBody, $messageBody[$EN]);
+                    array_push($multiLangBody, $messageBody[$HEB]);
+                    // exit for
+                    $i = count($messageBody);
+                }
+                                
             }
-            $messageBody = $msg_extracted;
+             
         }
             
 	$messageBody = str_replace("\n", "<br />", $messageBody);
 	$messageBody = str_replace("display:none", "", $messageBody);
-	$textToSend = "<html";
+        
+	$genTxtToBuild = "<html";
 	if (($source !== EMAIL_ADDRESS)||(isHeb()))
-			$textToSend .= " dir=\"rtl\" ";
-	$textToSend .= "><head><link href=\"".BASE_URL."/main.php?lang=".$lang_idx."\" rel=\"stylesheet\" type=\"text/css\"> </head><body><div style=\"padding:1em\" class=\"topbase slogan float\"><img align=\"absmiddle\" src=\"".BASE_URL."/".$header_pic."\" />&nbsp;".$WEBSITE_TITLE[$lang_idx]."</div><div style=\"padding:1em\" class=\"clear float inv_plain_3 big\">".$messageBody."</div></div>";
+			$genTxtToBuild .= " dir=\"rtl\" ";
+	$genTxtToBuild .= "><head><link href=\"".BASE_URL."/main.php?lang=%d\" rel=\"stylesheet\" type=\"text/css\"> </head><body><div style=\"padding:1em\" class=\"topbase slogan float\"><img align=\"absmiddle\" src=\"".BASE_URL."/".$header_pic."\" />&nbsp;%s</div><div style=\"padding:1em\" class=\"clear float inv_plain_3 big\">%s</div></div>";
         if ($target!=ME)
-		$textToSend .= "\n<div style=\"clear:both;direction:rtl\" class=\"inv big\">".$MORE_INFO[$HEB]." - <a href=\"".BASE_URL."\">".BASE_URL."</a><br />אשמח להערות ותגובות<br />Do you have something to say? Want to get this in other language? reply to this Email</div>";
-	$textToSend .= "</body></html>";
+		$genTxtToBuild .= "\n<div style=\"clear:both;direction:rtl\" class=\"inv big\">".$MORE_INFO[$HEB]." - <a href=\"".BASE_URL."\">".BASE_URL."</a><br />אשמח להערות ותגובות<br />Do you have something to say? reply to this Email</div>";
+	$genTxtToBuild .= "</body></html>";
+        array_push($textToSend , sprintf($genTxtToBuild, $EN, $WEBSITE_TITLE[$EN],  is_array($messageBody) ? $multiLangBody[$EN] : $messageBody ));
+        array_push($textToSend , sprintf($genTxtToBuild, $HEB, $WEBSITE_TITLE[$HEB], is_array($messageBody) ? $multiLangBody[$HEB] : $messageBody));
 	//$textToSend = '=?UTF-8?B?'.base64_encode($textToSend).'?=';
-	$subject = $sourcename;	
+	if (!is_array($subject))
         $subject = "=?UTF-8?B?".base64_encode($subject)."?=";
    
 	
@@ -1445,57 +1624,59 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment)
 	else
 	{
 		global $link;
-		db_init("");
+		db_init("", "");
 
 	}
 
 	if ($target===SPECIAL) {
-		if (!$error_db)
-		{
-			$subject = "* Special Update from ".$WEBSITE_TITLE[$EN]." *";
-			$query = "SELECT * From users WHERE priority < '1'";
-			$result = mysqli_query($link, $query);
-			while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-				$lines++;
-				array_push ($EmailsToSend, $line["email"]);
-			}
-		}
-		
+	    $subject = "* Special Update from ".$WEBSITE_TITLE[$EN]." *";
+            $query = "SELECT * From users WHERE priority < '1'";
+            $res = mysqli_query($link, $query);
+            while ($line = mysqli_fetch_array($res, MYSQLI_ASSOC)) {
+                    $lines++;
+                    array_push ($EmailsToSend, array('email' => $line["email"], 'lang' => $line["lang"]));
+            }
 	}		
 	else if ($target==ALL) {
-		if (!$error_db)
-		{
-			$query = "SELECT * From users WHERE priority > '0'";
-			$result = mysqli_query($link, $query);
-			while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-				$lines++;
-				array_push ($EmailsToSend, $line["email"]);
-			} 
-		}
-		
+            $query = "SELECT * From users WHERE priority > '0'";
+            $res = mysqli_query($link, $query);
+            while ($line = mysqli_fetch_array($res, MYSQLI_ASSOC)) {
+                    $lines++;
+                    array_push ($EmailsToSend, array('email' => $line["email"], 'lang' => $line["lang"]));
+            } 
 	}
         else if ($target===ME){ 
-            array_push ($EmailsToSend, EMAIL_ADDRESS);
+            array_push ($EmailsToSend, array('email' => EMAIL_ADDRESS, 'lang' => $HEB));
+   
         }
         else {//target = email
-        	array_push ($EmailsToSend, $target);
+           array_push ($EmailsToSend, array('email' => $target, 'lang' => $HEB));
         }
-	logger("Sending mail: ".$sourcename." --> ".$target." - ".$subject.": ".$textToSend);	
+	logger("Sending mail: ".$sourcename." --> ".$target." - ".implode(" / ",$subject).": ".implode(" / ",$textToSend));	
 	foreach ($EmailsToSend as $email){			
 		//echo "sending to $email...<br/>body=$textToSend<br/>Subject=$subject<br/>from=$source";
-		$mail->Body    = $textToSend;
-		$mail->AltBody = $textToSend;
-		$mail->AddAddress($email, "");
-		$mail->Subject = $subject;
+                $mail->Body    = $textToSend[$email['lang']];
+		$mail->AltBody = $textToSend[$email['lang']];
+		$mail->AddAddress($email['email'], "");
+                $subjectToMail = "";
+                if (is_array($subject)){
+                    $mail->Subject = $subject[$email['lang']];
+                    $subjectToMail = $subject[$email['lang']];
+                }
+                else{ 
+                    $mail->Subject = $subject;
+                    $subjectToMail = $subject;
+                }
+                             
                 $mail->CharSet="UTF-8";
 		//$mail->AddStringAttachment("path/to/photo", "YourPhoto.jpg");
 		//$mail->AddAttachment("c:/temp/11-10-00.zip", "new_name.zip");  // optional name
 		//$mail->Send();
-		if(!mail($email, $subject, $textToSend, $headers))
+		if(!mail($email['email'], $subjectToMail, $textToSend[$email['lang']], $headers))
 		{
 			//ini_set("SMTP","mailgw.netvision.net.il");
-			mail("boazn1@gmail.com", "JWS mail failure", "failed sending to $email"  , $headers);
-			$result =  "<br />failed sending to $email. check your Email.";
+			mail("boazn1@gmail.com", "JWS mail failure", "failed sending to ".$email['email']  , $headers);
+			$result =  "<br />failed sending to ".$email['email']." check your Email.";
 		}
 
 		// Clear all addresses and attachments for next loop
@@ -1507,18 +1688,6 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment)
 }
 
 /**********************************************************************************************/
-function getUsersOnline(){
-        $count = 0;
-            $handle = opendir(session_save_path());
-        if ($handle == false)
-            return -1;
-        while (($file = readdir($handle)) != false) 
-            if (ereg("^sess", $file))
-                $count++;
-        closedir($handle);
-        return $count;
-    }
-
     function get_img_tag($change_in_param){
 		global $GOING_UP, $GOING_DOWN, $lang_idx;
 		if ($change_in_param>0)
@@ -1616,197 +1785,7 @@ function getUsersOnline(){
 		return	"\n<embed height={$heightFlash} width={$widthFlash} src=\"$flashFile\" play=true loop=true quality=high WMode=Transparent></embed>";
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	// radiosonde data
-	/////////////////////////////////////////////////////////////////////////////////////////////
-
-	function getRadioData()
-	{
-		global $t850, $t500, $t700, $inversionThickness, $baseInversionHeight, $inversionTemp, $FireIdx, $VerticalIdx, $CAPE, $CrossIdx, $Showalter, $KIdx, $LiftedIdx, $SWEATIdx, $TotalsIdx, $BulkRichNum;
-		// *********** radio sonde calculation ***********
-		if (!isset($_SESSION['radio_contents'])){
-			$radio_contents = get_file_string(getRadioSondeLink());
-			$_SESSION['radio_contents'] = $radio_contents;
-		}
-		else
-			$radio_contents = $_SESSION['radio_contents'];
-		if (strlen($radio_contents) < 3200){
-			//if (($_GET['section'] == "extended") || (strstr (get_url(), "radio")))
-			//echo "radiosonde: corrupted data";
-			return false;
-		}
-		$radio_contents_tok = strtok($radio_contents, " \n\t");
-		//echo $radio_contents;
-		/*while (!($radio_contents_tok === FALSE)) {
-		   echo "Word=$radio_contents_tok<br />";
-		   $radio_contents_tok = strtok(" \n\t");
-		}*/
-		// ********** inversion calculation *************
-
-		$found = searchDoubleNext ($radio_contents_tok, "1000.0", "999.0");//skipping ground inversion
-		if ($found)
-		{
-			$nextHeight = getNextWord($radio_contents_tok, 1);
-			$nextTemp = getNextWord($radio_contents_tok, 1);
-			$nextHum = getNextWord($radio_contents_tok, 2);
-			
-			do {
-				$baseHeight = $nextHeight;
-				$baseTemp = $nextTemp;
-				$baseHum = $nextHum;
-				$nextPres = getNextWord($radio_contents_tok, 7);//next level pres
-				$nextHeight = getNextWord($radio_contents_tok, 1);//next level height
-				$nextTemp = getNextWord($radio_contents_tok, 1);
-				$nextDP = getNextWord($radio_contents_tok, 1);
-				$nextHum = getNextWord($radio_contents_tok, 1);
-				if ($nextPres == "850.0"){ 
-					$t850 = $nextTemp;
-					$dp850 = $nextDP;
-				}
-				if ($nextPres == "700.0") 
-					$t700 = $nextTemp;
-				if ($nextPres == "500.0") 
-					$t500 = $nextTemp;
-			} while ((($nextTemp <= $baseTemp)||false)&&($nextHeight < 5000)||($baseHeight<150));// checking that next level is with more hum and less temp
-			$baseInversionHeight = $baseHeight;
-			$baseInversionTemp = $baseTemp;
-			$baseInversionHum = $baseHum;
-			//echo "base inversion : ".$baseHeight." ".$baseTemp." ".$baseHum;
-			do {
-				$baseHeight = $nextHeight;
-				$baseTemp = $nextTemp;
-				$baseHum = $nextHum;
-				$nextPres = getNextWord($radio_contents_tok, 7);//next level pres
-				$nextHeight = getNextWord($radio_contents_tok, 1);//next level height
-				$nextTemp = getNextWord($radio_contents_tok, 1);
-				$nextDP = getNextWord($radio_contents_tok, 1);
-				$nextHum = getNextWord($radio_contents_tok, 1);
-				if ($nextPres == "850.0"){ 
-					$t850 = $nextTemp;
-					$dp850 = $nextDP;
-				}
-				if ($nextPres == "700.0") 
-					$t700 = $nextTemp;
-				if ($nextPres == "500.0") 
-					$t500 = $nextTemp;
-			} while ((($nextTemp >= $baseTemp)||false)&&($nextHeight < 5000));// checking that next level is with less hum and more temp
-			//echo "top inversion : ".$baseHeight." ".$baseTemp." ".$baseHum;
-			$topInversionHeight = $baseHeight;
-			$topInversionTemp = $baseTemp;
-			$topInversionHum = $baseHum;
-			// if inversion is below 850mb level
-			if ($t850=="") 
-				if (searchNext ($radio_contents_tok, "850.0")) {
-					$t850 = getNextWord($radio_contents_tok, 2);
-					$dp850 = getNextWord($radio_contents_tok, 1);
-				}
-			if ($t700=="")
-				if (searchNext ($radio_contents_tok, "700.0")) 
-					$t700 = getNextWord($radio_contents_tok, 2);
-			if ($t500=="") 
-				if (searchNext ($radio_contents_tok, "500.0")) 
-					$t500 = getNextWord($radio_contents_tok, 2);
-
-			$inversionThickness = $topInversionHeight - $baseInversionHeight;
-			$inversionTemp =  $topInversionTemp - $baseInversionTemp;
-			if ($nextHeight>5000) {
-				$inversionThickness = "0";
-				$inversionTemp  = "0";
-				$baseInversionHeight = "5000(none)";
-
-			}
-
-			//echo $t850." 700: ".$t700." dp850: ".$dp850." <br />";
-			// fire index http://weather.jsums.edu/~coamps/fire_index.html
-			$FireIdx = getFireIdx($t850, $t700, $dp850);
-
-			// ************** index claculation ***************
-			//Showalter index
-			if (searchNext ($radio_contents_tok, "index:"))//Showalter index
-				$Showalter = getNextWord($radio_contents_tok, 1);
-			if (searchNext ($radio_contents_tok, "index:"))// Lifted index
-				$LiftedIdx = getNextWord($radio_contents_tok, 1);
-			if (searchNext ($radio_contents_tok, "index:"))//SWEAT index
-				$SWEATIdx = getNextWord($radio_contents_tok, 1);
-			if (searchNext ($radio_contents_tok, "index:"))//K index
-				$KIdx = getNextWord($radio_contents_tok, 1);
-			if (searchNext ($radio_contents_tok, "index:"))//Cross totals index
-				$CrossIdx = getNextWord($radio_contents_tok, 1);
-			if (searchNext ($radio_contents_tok, "index:"))//Vertical totals index
-				$VerticalIdx = getNextWord($radio_contents_tok, 1);
-			if (searchNext ($radio_contents_tok, "index:"))//Totals totals index
-				$TotalsIdx = getNextWord($radio_contents_tok, 1);
-			if (searchNext ($radio_contents_tok, "Energy:"))//CAPE
-				$CAPE = getNextWord($radio_contents_tok, 1);
-			if (searchNext ($radio_contents_tok, "Inhibition:"))//Convective Inhibition
-				$ConIn = getNextWord($radio_contents_tok, 1);
-			if (searchNext ($radio_contents_tok, "Number:"))//Bulk Richardson Number
-				$BulkRichNum = getNextWord($radio_contents_tok, 1);
-			
-			return true;
-		}
-		else
-			return false;
-
-		
-	}
-
-	function SortIndex ($paramName, $actualValue, $bar1, $bar2, $bar3, $Asc, $displayTitleInsteadOfValue)// Asc==true --> $bar1 < $bar2 < $bar3 
-	{
-		global $LOW, $HIGH, $EXTREME, $MEDIUM, $lang_idx;
-		if ($Asc){
-		   if ((float)$actualValue <  (float)$bar1)
-			{
-			   $index = "indexlow";
-			   $title = $LOW;
-			}
-		   else if ((float)$actualValue <  (float)$bar2)
-			{
-			   $index = "indexmedium";
-			    $title = $MEDIUM;
-
-			}
-		   else if ((float)$actualValue <  (float)$bar3)
-			{
-			   $index = "indexhigh";
-			    $title = $HIGH;
-			}
-		   else
-			{
-			   $index = "indexextreme";
-			    $title = $EXTREME;
-			}
-	   }
-	   else{//descending
-			
-			if ((float)$actualValue >  (float)$bar1)
-		   {
-			  $index = "indexlow";
-			   $title = $LOW;
-		   }
-		   else if ((float)$actualValue >  (float)$bar2)
-		   {
-			   $index = "indexmedium";
-			    $title = $MEDIUM;
-		   }
-		   else if ((float)$actualValue >  (float)$bar3)
-		   {
-			   $index = "indexhigh";
-			    $title = $HIGH;
-		   }
-		   else 
-		   {
-			   $index = "indexextreme";
-			    $title = $EXTREME;
-		   }
-	   }
-	   if ($displayTitleInsteadOfValue)
-		  $actualValue = $title[$lang_idx];
-		
-	   echo "<span class=\"small\">".$paramName."</span>&nbsp;<span class=\"".$index."\"><strong>".$actualValue."</strong></span>";
-
-	}
-
+	
 	function getFireIdx($t850, $t700, $dp850)
 	{
 			
@@ -1919,56 +1898,21 @@ function getUsersOnline(){
 	   return $url_query;
 	}
 
-	function redirectToSite($url){
-		global $mySite;
-		if ($mySite) {
-			if (!strstr($url, "localhost")){
-				$new_url = str_replace ( isUrlToReplace($url), BASE_URL, $url); 
-				if ($new_url != $url)
-				{
-					//echo "<br>redirected to new url = ".$new_url;
-					header("HTTP/1.0 301 Moved Permanently",1);
-					header("Location: ".$new_url);
-				}
-			}
-			
-		}
-
-	}
-
-	function isUrlToReplace($url)
+	/////////////////////////////////////////////////////////////////////////////////
+	function update_action ($action, $extrainfoS, $messageTitle)
 	{
-		//echo "url = ".$url;
-		$urlsToCheck = array();
-		array_push($urlsToCheck, "http://jm.maabarot.org.il");
-		array_push($urlsToCheck, "http://proxy.maabarot.org.il/~Boaz/Weather/Station");
-		array_push($urlsToCheck, "http://62.128.42.5/~Boaz/Weather/Station");
-		
-		for ($i=0 ; $i < count($urlsToCheck) ; $i++)
-		{
-				if (strstr($url, $urlsToCheck[$i]))
-				{	
-					//echo "<br>".$urlsToCheck[$i];
-					return $urlsToCheck[$i];
-				}
-		}
-		return "";
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////
-	function update_action ($action, $message, $messageTitle)
-	{
-		global $messageAction, $actionActive, $EmailSubject, $link;
-		
+		global $pic, $hour, $min, $CURRENT_SIG_WEATHER, $HEB, $EN, $messageAction, $actionActive, $EmailSubject, $link;
+		$message = array("<div class=\"float\">".$hour.":".$min."<br/>"."</div><div class=\"float loading\">"."&nbsp;$CURRENT_SIG_WEATHER[$EN]&nbsp; <strong>".$messageTitle[$EN]."</strong><div class=\"loading float big\">&nbsp;{$extrainfoS[$EN]}<img src=\"".BASE_URL."/images/$pic\" alt=\"$messageTitle[$EN]\" width=\"600px\" border=\"0\" /></div></div>",
+                                "<div class=\"float\">".$hour.":".$min."<br/>"."</div><div class=\"float loading\">"."&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp; <strong>".$messageTitle[$HEB]."</strong><div class=\"loading float big\">&nbsp;{$extrainfoS[$HEB]}<img src=\"".BASE_URL."/images/$pic\" alt=\"$messageTitle[$HEB]\" width=\"600px\" border=\"0\" /></div></div>");
 		if (!isActionAlreadyActivated($action))
 		{
                         $sent = 1;
 			$result = db_init("UPDATE sendmailsms SET Sent=$sent, lastSent=NOW() WHERE (Action='$action')");
 			//echo "affected rows: ".mysql_affected_rows();
-			$messageAction .= "<br/>".$message;
+			array_push($messageAction ,$message);
 			$actionActive = $action;
 			$EmailSubject = $messageTitle;
-			logger("update_action - ".$EmailSubject[$HEB].": ".$message);
+			logger("update_action - ".$EmailSubject[$HEB].": ".implode(" || ",$message));
              @mysqli_close($link);
 		}
 		else
@@ -2038,7 +1982,7 @@ function getUsersOnline(){
             $record_col = "old_{$highorlow}_record";
             $date_col = "old_{$highorlow}_date";
         }
-        $old_record = $row["$record_col"];
+        $old_record = round($row["$record_col"], 1);
         $old_date = $row["$date_col"];
         /**
         at the first entry to the table the old record is moved to the old_record/old_time columns
@@ -2054,7 +1998,7 @@ function getUsersOnline(){
         array_push ($messageBroken, array("<div style=\"display:none;text-align:left;paddign:0.3em\" class=\"grad\">$LAST_RECORD[$EN]: <strong>$old_record</strong> <br />$ON[$EN] $old_date</div>",
                 "<div style=\"display:none;text-align:right;padding:0.3em\" class=\"grad\">$LAST_RECORD[$HEB]: <strong>$old_record</strong> <br />$ON[$HEB] $old_date </div>"));
         if ($period != "yearly") {
-                        $yearly_record = $row["yearly_{$highorlow}"];
+                        $yearly_record = round($row["yearly_{$highorlow}"], 1);
                         $yearly_date = $row["yearly_{$highorlow}_date"];
                         array_push ($messageBroken, array("<div style=\"display:none;text-align:left;padding:0.3em\" class=\"grad\">$RECORD[$EN] $ON[$EN] $year: <strong><span dir=\"ltr\">$yearly_record</span></strong> <br />$ON[$EN] $yearly_date </div>", 
                                 "<div style=\"display:none;text-align:right;padding:0.3em\" class=\"grad\">$RECORD[$HEB] $ON[$HEB] $year: <strong><span dir=\"ltr\">$yearly_record</span></strong> <br />$ON[$HEB] $yearly_date </div>"));
@@ -2218,217 +2162,6 @@ function getMonthName ($month)
 	return $monthName[$lang_idx];
 		
 }
-function fix_forecast ($frcstTable)
-{
- global $lang_idx, $DRIZZLE, $PARTLY, $CLOUDY, $PARTLY_CLOUDY, $MOSTLY, $CLEAR, $HAZE, $LOCAL_RAIN, $LIGHT_RAIN, $RAIN, $VERY_HOT_HEAT_WAVE, $PROB, $AFTERNOON, $NIGHT, $DAY, $AND, $THE, $DURING, $CLOUDY, $WINDY, $AT_TIMES, $MORNING, $SNOW, $LIGHT_SNOW, $OR, $SLEET, $CHANCE_FOR, $GENERALLY, $STRONG_WINDS, $OCCASIONAL, $HAZE, $THUNDERSTORM, $VERY_DRY, $WARMER_THAN_AVERAGE, $TO, $CHANCE_OF, $HEAVY_RAIN, $FOG, $LATER, $AT_FIRST, $STORMY, $BECMG, $FROM, $EVENING, $VERY, $WARM_WIND, $DUST, $ISOLATED;
- $frcstTable = str_replace ( "width=\"45\" height=\"45\"", "", $frcstTable);
- //$frcstTable = str_replace ( "\"35\"", "\"25\"", $frcstTable);
- $frcstTable = str_replace ( "height=\"0\">", "/>", $frcstTable);
- $frcstTable = str_replace ( "width=\"70\"", "", $frcstTable);
- $frcstTable = str_replace ( "width=\"255\"", "", $frcstTable);
- $frcstTable = str_replace ( "<br>", "", $frcstTable);
- $frcstTable = str_replace ( "<b>", "", $frcstTable);
- $frcstTable = str_replace ( "</b>", "", $frcstTable);
- $frcstTable = str_replace ( "font", "span", $frcstTable);
- $frcstTable = str_replace ( "<td", "<td class=\"inv_plain_3_zebra\" style=\"padding:0 0.5em\" ", $frcstTable);
- $frcstTable = str_replace ( "height=\"25\">", "height=\"25\"/>", $frcstTable);
- $frcstTable = str_replace ( "(", "" , $frcstTable);
- $frcstTable = str_replace ( ")", "", $frcstTable);
- $frcstTable = str_replace ( "\"3\"", "\"0\"", $frcstTable);
- $frcstTable = str_replace ( "align=\"center\"", "dir=\"ltr\"", $frcstTable);
- $frcstTable = str_replace ( "align=\"left\"", "align=\"center\"", $frcstTable);
- $frcstTable = str_replace ( "#0000ff", "\"#0066CC\"", $frcstTable);
- $frcstTable = str_replace ( "#ff3300", "\"#FF0000\"", $frcstTable);
- $frcstTable = str_replace ( "color=\"#0066CC\"", "style=\"color:#0066CC;\"", $frcstTable);
- $frcstTable = str_replace ( "color=\"#FF0000\"", "style=\"color:#FF0000;\"", $frcstTable);
- $frcstTable = str_replace ( " Jan", "/01&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Feb", "/02&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Mar", "/03&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Apr", "/04&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " May", "/05&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Jun", "/06&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Jul", "/07&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Aug", "/08&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Sep", "/09&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Oct", "/10&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Nov", "/11&nbsp;&nbsp;", $frcstTable);
- $frcstTable = str_replace ( " Dec", "/12&nbsp;&nbsp;", $frcstTable);
- $frcstTable = replaceDays($frcstTable);
- //$frcstTable = strtolower($frcstTable);
- $frcstTable = str_replace ( "ISOLATED", $ISOLATED[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SUNNY", $CLEAR[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "WARMER THAN USUAL", $WARMER_THAN_AVERAGE[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "DRIZZLE", $DRIZZLE[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "PARTLY CLOUDY", $PARTLY_CLOUDY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "FAIR", "$MOSTLY[$lang_idx] $CLEAR[$lang_idx]", $frcstTable);
- $frcstTable = str_replace ( "HAZE", $HAZE[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LIGHT LOCAL RAIN", $LIGHT_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LOCAL RAIN", $LOCAL_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LOCAL SHOWERS", $LOCAL_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LOCAL SHOWER", $LOCAL_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LIGHT RAIN SHOWER", $LIGHT_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LIGHT RAIN", $LIGHT_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LIGHT SHOWER", $LIGHT_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SHOWERS", $RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SHOWER", $RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "RAINY", $RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "DUSTY", $DUST[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "RAIN", $RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "FOG", $FOG[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LIGHT SNOW", $LIGHT_SNOW[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "THUNDERSTORMS", $THUNDERSTORM[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "THUNDER", " ".$THUNDERSTORM[$lang_idx]." ", $frcstTable);
- $frcstTable = str_replace ( "STORM", " ", $frcstTable);
- $frcstTable = str_replace ( "SNOW", $SNOW[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SLEET", $SLEET[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "CLEAR", $CLEAR[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "STRONG WINDS", $STRONG_WINDS[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "HOT AND DRY", $VERY_HOT_HEAT_WAVE[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "HEAT WAVE", $VERY_HOT_HEAT_WAVE[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "HAZY", $HAZE[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "POSSIBILITY OF", $PROB[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "POSSIBLE", $PROB[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "AFTERNOON", $AFTERNOON[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "MORNING", $MORNING[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "FROM EVENING", $FROM[$lang_idx]." ".$EVENING[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "NIGHT", $NIGHT[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "DAY", $DAY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "AND", $AND[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "THE", "", $frcstTable);
- $frcstTable = str_replace ( "WARM", "", $frcstTable);
- $frcstTable = str_replace ( "DURING", $DURING[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "CLOUDY", $CLOUDY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "WINDY", $WINDY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "DRY", $VERY_DRY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "CHANCE FOR", $CHANCE_FOR[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "AT TIMES", $AT_TIMES[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "OCCASIONAL", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "GENERALLY", $GENERALLY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( " OR ", " ".$OR[$lang_idx]." ", $frcstTable);
- $frcstTable = str_replace ( "LOCAL", "", $frcstTable);
- $frcstTable = str_replace ( "WITH", "", $frcstTable);
- $frcstTable = str_replace ( " TO ", " ".$TO[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "A POSSIBILITY OF", $CHANCE_OF[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "CHANCE OF", $CHANCE_OF[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "PERIOD", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "INTERVALS", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "INTERVAL", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "HEAVY RAIN", $HEAVY_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "OVERCAST", $CLOUDY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "MOSTLY", $GENERALLY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SPELLS", $FOG[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "FEW", " ", $frcstTable);
- $frcstTable = str_replace ( " IN ", " ", $frcstTable);
- $frcstTable = str_replace ( "MAINLY", $GENERALLY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LATER", $LATER[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "AT FIRST", $AT_FIRST[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SCATTERED", " ", $frcstTable);
- $frcstTable = str_replace ( "FINE", $CLEAR[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "FLURRIES", $SNOW[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "BECOMING", $BECMG[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "FREQUENT", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "VERY", "" , $frcstTable);
- if (isHeb())
-	$frcstTable = str_replace ( "DESERT WIND", $WARM_WIND[$lang_idx] , $frcstTable);
- 
- return $frcstTable;
-}
-///////////////////////////////////////////////////////
-// models links
-///////////////////////////////////////////////////////
-function getModelLink($level, $model)
-{
-	global $hour, $year, $month, $day, $hoursForecast;
-	
-	if ($hour<=19)	
-			$iniHour = 0;  
-		else	
-			$iniHour = 12; 
-
-	
-	if (($level == '')||($level == 1000)) {
-		$model_link = sprintf ("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=europe&id=&zoom=.6&ge=640x480&mo=%s&le=500&va=hght&in=60&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=sfc&va=slp&in=5&pl=ln&ft=h%02d&cu=latest", $model,  $hoursForecast, $model,  $hoursForecast);
-		$model_link = sprintf("http://weather.uwyo.edu/cgi-bin/model?REGION=EUR&MODEL=ukmet&TIME=%d%02d%02d%02d&F1=pmsl&F2=none&C1=pmsl&C2=hght&VEC=brbk&LEVEL=500&FCST=%03d", $year, $month, $day, $iniHour, $hoursForecast);
-		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x775&mo=%s&le=500&va=hght&in=60&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=sfc&va=slp&in=5&pl=ln&ft=h%02d&cu=latest", $model, $hoursForecast, $model, $hoursForecast);
-		//if ((($hoursForecast % 12 == 6) || (($hoursForecast > 72)&&($hoursForecast % 24 == 12))) && ($model == "ukmet"))
-		//	$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/GH+T%03d_EUROPA_%d", $iniHour, $level , $hoursForecast);
-		if (($model == "ukmet") && ($hoursForecast > 72))
-			$model_link = sprintf("http://www.wetterzentrale.de/pics/Rukm%d1.gif", $hoursForecast);
-		if ($hoursForecast == 999)
-		{
-			if ($model == "ecmwf")
-				$model_link = "http://weather.unisys.com/ecmwf/restrict/ecmwf_500p_6panel_eur.gif";
-			else
-				$model_link = "http://weather.unisys.com/gfsx/9panel/gfsx_500p_9panel_eur.gif";
-		}
-
-	}
-	else if ($level == 'Prec')
-	{
-		
-		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grb-comp.cgi?re=meast&mo=%s&va=csfcpr&ft=h%02d&cu=latest&ge=800x630&ti=UTC&id=&zoom=.6", $model, $hoursForecast);
-		if ($model == "ukmet")
-		{
-			if (($hoursForecast > 72)||($hoursForecast == 66)||($hoursForecast == 54))
-				$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/prec6h_EUROPA_%d", $iniHour,  $hoursForecast);
-			else if($hoursForecast % 12 == 6)
-				$model_link = sprintf("http://www.wetterzentrale.de/pics/Rukm%d3.gif", $hoursForecast);
-		}
-		//else if ($model == "ecmwf")	
-		//	$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/ECMWORD_%02d/RH_COMP_PREC_MED_%d", $iniHour, $hoursForecast);			
-		//else if ($hoursForecast % 12 == 6) // GFS
-		//	$model_link = sprintf("http://91.121.93.17/pics/Rtavn%d4.png", $hoursForecast);
-	}
-	else if ($level == '850rh') 
-	{
-		if ((($hoursForecast > 72)||($hoursForecast == 66)||($hoursForecast == 54)) && ($model == "ukmet"))
-			$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/RH850_EUROPA_%d", $iniHour,  $hoursForecast);
-		else
-		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x1024&mo=%s&le=850&va=rhum&in=5&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=850&va=wbrb&in=5&pl=ln&ft=h%02d&cu=latest", $model,  $hoursForecast, $model,  $hoursForecast);
-	}
-	else if ($level == '500rh') 
-	{
-		if ((($hoursForecast > 72)||($hoursForecast = 66)||($hoursForecast == 54)) && ($model == "ukmet"))
-			$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/RH500_EUROPA_%d", $iniHour,  $hoursForecast);
-		else
-		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x1024&mo=%s&le=500&va=rhum&in=5&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=500&va=wbrb&in=5&pl=ln&ft=h%02d&cu=latest", $model, $hoursForecast, $model, $hoursForecast);
-	}
-	else if (($level == 850) || ($level == 200) || ($level == 300)) 
-	{   // temp + wind
-		$model_link = sprintf("http://weather.uwyo.edu/cgi-bin/model?REGION=EUR&MODEL=%s&TIME=%d%02d%02d%02d&F1=tmpc&F2=p06i&C1=tmpc&C2=relh&VEC=brbk&LEVEL=850&FCST=%03d", $model, $year, $month, $day, $iniHour, $hoursForecast);
-		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x1024&mo=%s&le=%d&va=temp&in=1&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=%d&va=wbrb&in=5&pl=ln&ft=h%02d&cu=latest", $model, $level, $hoursForecast, $model, $level, $hoursForecast);
-		if ((($hoursForecast > 72)||($hoursForecast == 66)||($hoursForecast == 54)) && ($model == "ukmet"))
-		{
-			$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/GH+T%03d_EUROPA_%d", $iniHour, $level , $hoursForecast);
-			if ($level == 300)
-				$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/W%03d_EUROPA_%d", $iniHour, $level , $hoursForecast);	
-		}
-			
-		if ($hoursForecast == 999)
-		{
-			
-			if ($model == "ecmwf")
-				$model_link = sprintf("http://weather.unisys.com/ecmwf/restrict/ecmwf_%d_6panel_eur.gif", $level);
-			else
-				$model_link = sprintf("http://weather.unisys.com/gfsx/9panel/gfsx_%d_9panel_eur.gif", $level);
-		}
-	}
-	else if ($level == "comp")
-	{
-		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grb-comp2.cgi?re=meast&mo=%s&va=c4pp&ft=h%02d&cu=latest&ge=1024x806&id=&zoom=.15", $model ,$hoursForecast);
-	}
-	else { // temp + humidity
-		if ((($hoursForecast == 66)||($hoursForecast == 54) || ($hoursForecast > 72)) && ($model == "ukmet"))
-			$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/GH+T%03d_EUROPA_%d", $iniHour, $level, $hoursForecast);
-		else
-		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x1024&mo=%s&le=%d&va=temp&in=1&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=%d&va=rhum&in=10&pl=ln&ft=h%02d&cu=latest", $model, $level, $hoursForecast, $model, $level, $hoursForecast);
-	}
-	
-	
-  return ($model_link);
-}
-
-
 function getUpdatedPic()
 {
 	$primary_pic = "images/webCameraB.jpg";
@@ -2502,79 +2235,6 @@ function getRadioSondeLink()
 	//echo $radiosonde_link;
 	return ($radiosonde_link);
 }
-
-/***********************************************************************/
-//image functions
-/***********************************************************************/
-
-function ImageRectangleWithRoundedCorners(&$im, $x1, $y1, $x2, $y2, $radius, $color) {
-	// draw rectangle without corners
-	imagefilledrectangle($im, $x1+$radius, $y1, $x2-$radius, $y2, $color);
-	imagefilledrectangle($im, $x1, $y1+$radius, $x2, $y2-$radius, $color);
-	// draw circled corners
-	imagefilledellipse($im, $x1+$radius, $y1+$radius, $radius*2, $radius*2, $color);
-	imagefilledellipse($im, $x2-$radius, $y1+$radius, $radius*2, $radius*2, $color);
-	imagefilledellipse($im, $x1+$radius, $y2-$radius, $radius*2, $radius*2, $color);
-	imagefilledellipse($im, $x2-$radius, $y2-$radius, $radius*2, $radius*2, $color);
-	
-}
-
-function ImageRectangleGradientRoundedCorners(&$im, $x1, $y1, $x2, $y2, $radius, $f_c,$s_c) {
-	imagecolorgradient($im,$x1, $y1, $x2, $y2 ,$f_c,$s_c);
-	//imagecolorgradient($im, $x1+$radius, $y1, $x2-$radius, $y2, $f_c, $s_c);
-	//imagecolorgradient($im, $x1, $y1+$radius, $x2, $y2-$radius, $f_c, $s_c);
-}
-
-function drawRating($rating) {
-   $image = imagecreate(102,10);
-   $back = ImageColorAllocate($image,255,255,255);
-   $border = ImageColorAllocate($image,0,0,0);
-   $red = ImageColorAllocate($image,255,60,75);
-   $fill = ImageColorAllocate($image,44,81,150);
-   ImageFilledRectangle($image,0,0,101,9,$back);
-   ImageFilledRectangle($image,1,1,$rating,9,$fill);
-   ImageRectangle($image,0,0,101,9,$border);
-   imagePNG($image);
-   imagedestroy($image);
-}
-
-function imagecolorgradient($img,$x1,$y1,$x2,$y2,$f_c,$s_c){
-
-   sscanf($f_c, "%2x%2x%2x", $red, $green, $blue);
-   $f_c = array($red,$green,$blue);
-  
-   sscanf($s_c, "%2x%2x%2x", $red, $green, $blue);
-   $s_c = array($red,$green,$blue);
-
-   if($y2>$y1) $y=$y2-$y1;
-   else $y=$y1-$y2;
-  
-   if($f_c[0]>$s_c[0]) $r_range=$f_c[0]-$s_c[0];
-   else $r_range=$s_c[0]-$f_c[0];
-   if($f_c[1]>$s_c[1]) $g_range=$f_c[1]-$s_c[1];
-   else $g_range=$s_c[1]-$f_c[1];
-   if($f_c[2]>$s_c[2]) $b_range=$f_c[2]-$s_c[2];
-   else $b_range=$s_c[2]-$f_c[2];
-   $r_px=$r_range/$y;
-   $g_px=$g_range/$y;
-   $b_px=$b_range/$y;
-   $r=$f_c[0];
-   $g=$f_c[1];
-   $b=$f_c[2];
-
-   for($i=0;$i<=$y;$i++){
-       $col=imagecolorallocate($img,round($r),round($g),round($b));
-       imageline($img,$x1,$y1+$i,$x2,$y1+$i,$col);
-       if($f_c[0]<$s_c[0]) $r+=$r_px;
-       else $r-=$r_px;
-       if($f_c[1]<$s_c[1]) $g+=$g_px;
-       else $g-=$g_px;
-       if($f_c[2]<$s_c[2]) $b+=$b_px;
-       else $b-=$b_px;
-   }
-   return $img;
-}
-
 function implode_r ($glue, $pieces){
  $out = "";
  foreach ($pieces as $piece)
@@ -2664,6 +2324,31 @@ function get_name ($field_name)
 		return $HOTORCOLD_Q[$lang_idx];
 }
 
+function getClothName($current_feeling){
+    global $lang_idx, $VVHOT, $LHOT, $LCOLD, $VVCOLD, $VHOT, $HOT, $NHOTNCOLD, $COLD, $VCOLD, $SPRING, $SUMMER, $AUTOMN, $WINTER, $HOTORCOLD_Q, $FSEASON;
+    $cloth_name = "";
+    if ($current_feeling == $VVHOT[$lang_idx])
+    {$cloth_name = "shorts_n2.png";}
+    else if ($current_feeling == $VHOT[$lang_idx])
+    {$cloth_name = "shorts_n2.png";}
+    else if ($current_feeling == $HOT[$lang_idx])
+    {$cloth_name = "shorts_n2.png";}
+    else if ($current_feeling == $LHOT[$lang_idx])
+    {$cloth_name = "tshirt_n2.png";}
+    else if ($current_feeling == $NHOTNCOLD[$lang_idx])
+    {$cloth_name = "longsleeves_n2.png";}
+    else if ($current_feeling == $LCOLD[$lang_idx])
+    {$cloth_name = "jacket_n2.png";}
+    else if ($current_feeling == $COLD[$lang_idx])
+    {$cloth_name = "coat_n2.png";}
+    else if ($current_feeling == $VCOLD[$lang_idx])
+    {$cloth_name = "coat_n2.png";}
+    else if ($current_feeling == $VVCOLD[$lang_idx])
+    {$cloth_name = "coat_n2.png";}
+    if (isRaining())
+        $cloth_name = "coatrain_n2.png";
+    return $cloth_name;
+}
 function getPageTitle()
 {
 	global $lang_idx, $HEB, $EN, $WEBSITE_TITLE;
@@ -2753,7 +2438,7 @@ function getPageTitle()
 
 function getClothTitle($imagename)
 {
-	global $lang_idx, $HEB, $EN, $TSHIRT, $JACKET, $COAT, $RAINCOAT, $UMBRELLA, $SWEATER, $SWEATSHIRT, $SHORTS, $LONGSLEEVES, $LIGHTJACKET, $LIGHTCOAT;
+	global $lang_idx, $HEB, $EN, $TSHIRT, $JACKET, $COAT, $RAINCOAT, $UMBRELLA, $SWEATER, $SWEATSHIRT, $SHORTS, $LONGSLEEVES, $LIGHTJACKET, $LIGHTCOAT, $LAYERS_BELOW2, $LAYERS_BELOW3, $current;
 	
 	if (stristr(strtolower($imagename), 'tshirt'))
 		$title = $TSHIRT[$lang_idx];
@@ -2763,10 +2448,20 @@ function getClothTitle($imagename)
 		$title = $JACKET[$lang_idx];
 	else if (stristr(strtolower($imagename), 'coatlight'))
 		$title = $LIGHTCOAT[$lang_idx];
-	else if (stristr(strtolower($imagename), 'coatrain'))
+	else if (stristr(strtolower($imagename), 'coatrain')){
 		$title = $RAINCOAT[$lang_idx];
-	else if (stristr(strtolower($imagename), 'coat'))
-		$title = $COAT[$lang_idx];	
+                 if ($current->get_temp() < 10)
+                    $title .= ", ".$LAYERS_BELOW3[$lang_idx];
+                else
+                    $title .= ", ".$LAYERS_BELOW2[$lang_idx];
+        }
+	else if (stristr(strtolower($imagename), 'coat')){
+		$title = $COAT[$lang_idx];
+                 if ($current->get_temp() < 10)
+                    $title .= ", ".$LAYERS_BELOW3[$lang_idx];
+                else
+                    $title .= ", ".$LAYERS_BELOW2[$lang_idx];
+        }        
 	else if (stristr(strtolower($imagename), 'umbrella'))
 		$title = $UMBRELLA[$lang_idx];
 	else if (stristr(strtolower($imagename), 'sweater'))
@@ -2777,795 +2472,336 @@ function getClothTitle($imagename)
 		$title = $SHORTS[$lang_idx];
 	else if (stristr(strtolower($imagename), 'longsleeves'))
 		$title = $LONGSLEEVES[$lang_idx];
+       
 	return $title;
 
 }
 
-function db_init($query, $param)
-{
-	global $link, $stmt, $error_db;
-	$link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-	if (mysqli_connect_errno()) {
-	   printf("Connect failed: %s\n", mysqli_connect_error());
-	   $error_db = true;
-	   exit();
-	}
-	//mysqli_query($link, "SET CHARACTER SET utf8;");
-	$link->query("SET NAMES utf8;");
-	
-	if ($query != "")
-        {
-               
-		$stmt = $link->stmt_init();
-                if(!$stmt->prepare($query))
-                {
-                    logger("query=".$query." param=".$param."; error in prepare: ".$stmt->error);
-                }
-                if ($param != "")
-                {
-                     $param = $link->real_escape_string ($param);
-                    if (is_float($param))
-                        $res = $stmt->bind_param('d' , $param);
-                    else if (is_numeric($param))
-                        $res = $stmt->bind_param('d' , $param);
-                    else
-                        $res = $stmt->bind_param('s' , $param);
-                    if (!$res)
-                        logger("query=".$query." param=".$param."; error in binding: ".$stmt->error);
-                 
-                }
-                $res = $stmt->execute();
-                if (!$res)
-                    logger("query=".$query." param=".$param."; error in execute: ".$stmt->error);
-               $result = $stmt->get_result();
+function db_init($query, $param) {
+    global $link, $stmt, $error_db;
+    $link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+    if (mysqli_connect_errno()) {
+        printf("Connect failed: %s\n", mysqli_connect_error());
+        $error_db = true;
+        exit();
+    }
+    //mysqli_query($link, "SET CHARACTER SET utf8;");
+    $link->query("SET NAMES utf8;");
+
+    if ($query != "") {
+
+        $stmt = $link->stmt_init();
+        if (!$stmt->prepare($query)) {
+            logger("query=" . $query . " param=" . $param . "; error in prepare: " . $stmt->error);
         }
-	return $result;
+        if ((!empty($param)) || (is_int($param))) {
+            $param = $link->real_escape_string($param);
+            if (is_float($param))
+                $res = $stmt->bind_param('d', $param);
+            else if (is_numeric($param))
+                $res = $stmt->bind_param('d', $param);
+            else
+                $res = $stmt->bind_param('s', $param);
+            if (!$res)
+                logger("query=" . $query . " param=" . $param . "; error in binding: " . $stmt->error);
+        }
+        $res = $stmt->execute();
+        if (!$res)
+            logger("query=" . $query . " param=" . $param . "; error in execute: " . $stmt->error);
+        $result = $stmt->get_result();
+        return $result;
+    }
+    return null;
 }
 
-function getMoodTitle($imagename)
-{
-	global $lang_idx, $HEB, $EN, $IMHOT, $KISS, $CONFUSE, $AMAZED, $IMCOLD, $ANGRY, $TIRE, $HAPPY, $EMBARRASED, $WINK, $SAD, $SATISFIED, $DOUBT, $COOL, $CURIOUS, $DIGGING, $PUDENCY, $HELL;
-	
-	if (stristr(strtolower($imagename), 'hot'))
-		$title = $IMHOT[$lang_idx];
-	else if (stristr(strtolower($imagename), 'kiss'))
-		$title = $KISS[$lang_idx];
-	else if (stristr(strtolower($imagename), 'confuse'))
-		$title = $CONFUSE[$lang_idx];
-	else if (stristr(strtolower($imagename), 'amazed'))
-		$title = $AMAZED[$lang_idx];
-	else if (stristr(strtolower($imagename), 'cold'))
-		$title = $IMCOLD[$lang_idx];
-	else if (stristr(strtolower($imagename), 'angry'))
-		$title = $ANGRY[$lang_idx];	
-	else if (stristr(strtolower($imagename), 'tire'))
-		$title = $TIRE[$lang_idx];
-	else if (stristr(strtolower($imagename), 'smiley'))
-		$title = $HAPPY[$lang_idx];
-	else if (stristr(strtolower($imagename), 'embarrassed'))
-		$title = $EMBARRASED[$lang_idx];
-	else if (stristr(strtolower($imagename), 'wink'))
-		$title = $WINK[$lang_idx];
-	else if (stristr(strtolower($imagename), 'sad'))
-		$title = $SAD[$lang_idx];
-	else if (stristr(strtolower($imagename), 'satisfied'))
-		$title = $SATISFIED[$lang_idx];
-	else if (stristr(strtolower($imagename), 'doubt'))
-		$title = $DOUBT[$lang_idx];
-	else if (stristr(strtolower($imagename), 'cool'))
-		$title = $COOL[$lang_idx];
-	else if (stristr(strtolower($imagename), 'curious'))
-		$title = $CURIOUS[$lang_idx];
-	else if (stristr(strtolower($imagename), 'digging'))
-		$title = $DIGGING[$lang_idx];
-	else if (stristr(strtolower($imagename), 'pudency'))
-		$title = $PUDENCY[$lang_idx];
-	else if (stristr(strtolower($imagename), 'hell'))
-		$title = $HELL[$lang_idx];
-	
-	return $title;
-}
-
-function replaceDays($str)
-{
-	global $lang_idx;
-	if (isHeb())
-	{
-		$str = str_replace ( "Sun ", " א ", $str);
-		$str = str_replace ( "Mon ", " ב ", $str);
-		$str = str_replace ( "Tue ", " ג ", $str);
-		$str = str_replace ( "Wed ", " ד ", $str);
-		$str = str_replace ( "Thu ", " ה ", $str);
-		$str = str_replace ( "Fri ", " ו ", $str);
-		$str = str_replace ( "Sat ", " ש ", $str);
-	}
-	return $str;
+function replaceDays($str) {
+    global $lang_idx;
+    if (isHeb()) {
+        $str = str_replace("Sun ", " א ", $str);
+        $str = str_replace("Mon ", " ב ", $str);
+        $str = str_replace("Tue ", " ג ", $str);
+        $str = str_replace("Wed ", " ד ", $str);
+        $str = str_replace("Thu ", " ה ", $str);
+        $str = str_replace("Fri ", " ו ", $str);
+        $str = str_replace("Sat ", " ש ", $str);
+    }
+    return $str;
 }
 
 function ieversion() {
-  $match=preg_match('/MSIE ([0-9]\.[0-9])/',$_SERVER['HTTP_USER_AGENT'],$reg);
-  if($match==0)
-    return -1;
-  else
-    return floatval($reg[1]);
+    $match = preg_match('/MSIE ([0-9]\.[0-9])/', $_SERVER['HTTP_USER_AGENT'], $reg);
+    if ($match == 0)
+        return -1;
+    else
+        return floatval($reg[1]);
 }
-function getSurvey($surveyid){
-    $query ="SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id and s.survey_id=?";
+
+function getSurvey($surveyid) {
+    $query = "SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id and s.survey_id=?";
     $result = db_init($query, $surveyid);
     return $result;
 }
-function getSpecificChat($idx)
-{
-	global $lang_idx, $HEB, $link;
-	
-	$result = db_init("SELECT * From chat where idx=".$idx);
-	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-		$lines++;
-		$linesInColumn++;
-		$col = 0;
-		$timestamp_date = strtotime($line["date_chat"]);
-   
-	   $totalText = $totalText + strlen($line["name"]) + strlen($line["body"]);
-		$dateInLineStart = date("D   H:i", strtotime("0 hours -0 minutes", $timestamp_date));
-						
-		print "\n\t<div class=\"chatthreadcell white_box2".$class."\" style=\"margin:0.3em\" ";
-		print ">";
-		print "<div class=\"filter_icon".$line["Category"]."\"></div>"; // category icon
-                print "<div class=\"pic_user\">";
-                print "<h3>".urldecode($line["name"])."</h3>";
-                print "<h4>"."</h4>";
-                print "</div>"; // user
-		print "\n\t\t<div class=\"chatmainbody\">\n\t\t\t".urldecode($line["body"])."\n\t\t</div>";
-		print "\n\t</div>\n";
-	}
+
+function getSpecificChat($idx) {
+    global $lang_idx, $HEB, $link;
+
+    $result = db_init("SELECT * From chat where idx=" . $idx);
+    while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $lines++;
+        $linesInColumn++;
+        $col = 0;
+        $timestamp_date = strtotime($line["date_chat"]);
+
+        $totalText = $totalText + strlen($line["name"]) + strlen($line["body"]);
+        $dateInLineStart = date("D   H:i", strtotime("0 hours -0 minutes", $timestamp_date));
+
+        print "\n\t<div class=\"chatthreadcell white_box2" . $class . "\" style=\"margin:0.3em\" ";
+        print ">";
+        print "<div class=\"filter_icon" . $line["Category"] . "\"></div>"; // category icon
+        print "<div class=\"pic_user\">";
+        print "<h3>" . urldecode($line["name"]) . "</h3>";
+        print "<h4>" . "</h4>";
+        print "</div>"; // user
+        print "\n\t\t<div class=\"chatmainbody\">\n\t\t\t" . urldecode($line["body"]) . "\n\t\t</div>";
+        print "\n\t</div>\n";
+    }
 
 
 // Free resultset 
-@mysql_free_result($result);
-@mysqli_close($link);
+    @mysql_free_result($result);
+    @mysqli_close($link);
 }
 
-function getCurrentChat($searchname, $filter_is_on, $startLine, $limitLines, $timestamp_from, $timestamp_to,  $category)
-{
+function getCurrentChat($searchname, $filter_is_on, $startLine, $limitLines, $timestamp_from, $timestamp_to, $category) {
 
-global $lang_idx, $HEB, $NEED_TO_REGISTER, $REPLY, $REPLY_EXP, $link;
+    global $lang_idx, $HEB, $NEED_TO_REGISTER, $REPLY, $REPLY_EXP, $link;
 
 //echo "limitlines:".$limitLines;
 
-if ($searchname != "")
-	$query = "SELECT * FROM  `chat` c WHERE  `name` LIKE  '%".$searchname."%' OR `body` LIKE  '%".$searchname."%' ";
-else
-	$query = "SELECT * FROM  `chat` c ";
+    if ($searchname != "")
+        $query = "SELECT * FROM  `chat` c WHERE  `name` LIKE  '%" . $searchname . "%' OR `body` LIKE  '%" . $searchname . "%' ";
+    else
+        $query = "SELECT * FROM  `chat` c ";
 
-if ($category != ""){
-	if ($searchname != "")
-		$query .= " and ";
-	else
-		$query .= " where ";
-    $query .= "  Category=".$category." ";
-}
+    if ($category != "") {
+        if ($searchname != "")
+            $query .= " and ";
+        else
+            $query .= " where ";
+        $query .= "  Category=" . $category . " ";
+    }
 
-$query .= " ORDER BY sticky Desc, last_date_chat Desc";
+    $query .= " ORDER BY sticky Desc, last_date_chat Desc";
 
-if ((!$filter_is_on)&&($startLine > 0))
-{
-	$query .= " LIMIT ".$startLine." , ".$limitLines;
-	echo ($startLine+1)." - ".($startLine+$limitLines)."<br />";
-}
- //echo $query ;
-$result = db_init($query);
+    if ((!$filter_is_on) && ($startLine > 0)) {
+        $query .= " LIMIT " . $startLine . " , " . $limitLines;
+        echo ($startLine + 1) . " - " . ($startLine + $limitLines) . "<br />";
+    }
+    //echo $query ;
+    $result = db_init($query);
 //if ($_SESSION['loggedin'] == "true")
 //	echo "<div class=\"indexlow\" style=\"width:100%;\"></div>";
-/* Printing results in HTML */
-while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-	$lines++;
-	$linesInColumn++;
-	$col = 0;
-	$timestamp_date = strtotime($line["date_chat"]);
-	
-   if ( $limitLines == -1 && (!$filter_is_on) || 
-		$limitLines == "" && (!$filter_is_on) || 
-	    (($lines <= $limitLines) && (!$filter_is_on)) ||
-	     ($timestamp_date > $timestamp_from) && ($timestamp_date < $timestamp_to) && ($filter_is_on))
-	{
-	   $totalText = $totalText + strlen($line["name"]) + strlen($line["body"]);
-		$dateInLineStart = date("D   H:i", strtotime("0 hours -0 minutes", $timestamp_date));
-		if (time() - $timestamp_date > 550000)
-			$dateInLineStart = date("D G:i j/m/y", strtotime("0 hours -0 minutes", $timestamp_date));
-		if ($lang_idx == $HEB)	
-			$dateInLineStart = replaceDays($dateInLineStart);
-		
-		
-		print "\n\t<div id=\"".$line["idx"]."\" class=\"white_box2\" style=\"text-align:".get_s_align()."\"";
-		$name = urldecode($line["name"]);
-		//$name = str_replace("<s", "", $name);
-		$old_body = urlencode($line["body"]);
-		print ">";
-		print "<div class=\"filter_icon".$line["Category"]."\"></div>"; // category icon
-                print "<div class=\"pic_user\">";
-                print "<div class=\"avatar ".$line["user_icon"]."\"></div>";
-                print "<h3>".$name."</h3>";
-                print "<h4>".$dateInLineStart."</h4>";
-                print "</div>"; // user
-		if ($_SESSION['loggedin'] == "false")
-			$onclickmain = "onclick='alert(\"".$NEED_TO_REGISTER[$lang_idx]."\")'";
-                else $onclickmain = "onclick='toggle(\"replydiv".($line["idx"])."\");$(\"#current_post_idx\").val(".$line["idx"].");moveDivInOut($(this).parent().children(\x22.chatmainbody\x22).get(0));$(\"#subject_icon\").addClass($(\"#current_forum_filter\").val());initTinyMCE(".$lang_idx.")'";
-		
-		print "\n\t\t<div class=\"chatmainbody\" >".urldecode($line["body"])."</div>";
-		print "\n\t\t<div class=\"chatdate\" >";
-		
-		if (($line["sticky"]) == 1)
-			print "<br />"."<img src=\"images/pin.png\" alt=\"sticky\" width=\"32\" height=\"32\" />";
-		if (($line["Locked"]) == 1)
-			print "<br />"."<img src=\"images/locked.png\" alt=\"locked\" width=\"32\" height=\"32\" />";
-		print "</div>";
-		if (($line["Locked"]) <> 1)
-                print "\n\t\t<div class=\"pivotpointer\" id=\"replydiv".$line["idx"]."\" title=\"".$REPLY_EXP[$lang_idx]."\" ".$onclickmain."><input class=\"comment_btn\" type='button' value=\"".$REPLY[$lang_idx]."\" style=\"cursor:pointer;\" /></div>";
-                print "\n\t</div>\n";
-		
-	}
-}
+    /* Printing results in HTML */
+    while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $lines++;
+        $linesInColumn++;
+        $col = 0;
+        $timestamp_date = strtotime($line["date_chat"]);
+
+        if ($limitLines == -1 && (!$filter_is_on) ||
+                $limitLines == "" && (!$filter_is_on) ||
+                (($lines <= $limitLines) && (!$filter_is_on)) ||
+                ($timestamp_date > $timestamp_from) && ($timestamp_date < $timestamp_to) && ($filter_is_on)) {
+            $totalText = $totalText + strlen($line["name"]) + strlen($line["body"]);
+            $dateInLineStart = date("D   H:i", strtotime("0 hours -0 minutes", $timestamp_date));
+            if (time() - $timestamp_date > 550000)
+                $dateInLineStart = date("D G:i j/m/y", strtotime("0 hours -0 minutes", $timestamp_date));
+            if ($lang_idx == $HEB)
+                $dateInLineStart = replaceDays($dateInLineStart);
+
+
+            print "\n\t<div id=\"" . $line["idx"] . "\" class=\"white_box2\" style=\"text-align:" . get_s_align() . "\"";
+            $name = urldecode($line["name"]);
+            //$name = str_replace("<s", "", $name);
+            $old_body = urlencode($line["body"]);
+            print ">";
+            print "<div class=\"filter_icon" . $line["Category"] . "\"></div>"; // category icon
+            print "<div class=\"pic_user\">";
+            print "<div class=\"avatar " . $line["user_icon"] . "\"></div>";
+            print "<h3>" . $name . "</h3>";
+            print "<h4>" . $dateInLineStart . "</h4>";
+            print "</div>"; // user
+            if ($_SESSION['loggedin'] == "false")
+                $onclickmain = "onclick='alert(\"" . $NEED_TO_REGISTER[$lang_idx] . "\")'";
+            else
+                $onclickmain = "onclick='toggle(\"replydiv" . ($line["idx"]) . "\");$(\"#current_post_idx\").val(" . $line["idx"] . ");moveDivInOut($(this).parent().children(\x22.chatmainbody\x22).get(0));$(\"#subject_icon\").addClass($(\"#current_forum_filter\").val());initTinyMCE(" . $lang_idx . ")'";
+
+            print "\n\t\t<div class=\"chatmainbody\" >" . urldecode($line["body"]) . "</div>";
+            print "\n\t\t<div class=\"chatdate\" >";
+
+            if (($line["sticky"]) == 1)
+                print "<br />" . "<img src=\"images/pin.png\" alt=\"sticky\" width=\"32\" height=\"32\" />";
+            if (($line["Locked"]) == 1)
+                print "<br />" . "<img src=\"images/locked.png\" alt=\"locked\" width=\"32\" height=\"32\" />";
+            print "</div>";
+            if (($line["Locked"]) <> 1)
+                print "\n\t\t<div class=\"pivotpointer\" id=\"replydiv" . $line["idx"] . "\" title=\"" . $REPLY_EXP[$lang_idx] . "\" " . $onclickmain . "><input class=\"comment_btn\" type='button' value=\"" . $REPLY[$lang_idx] . "\" style=\"cursor:pointer;\" /></div>";
+            print "\n\t</div>\n";
+        }
+    }
 
 // Free resultset 
-@mysqli_free_result($result);
-@mysqli_close($link);
+    @mysqli_free_result($result);
+    @mysqli_close($link);
 }
 
-function getWindStatus()
-{
-	global $current, $min10, $WITHOUT_WIND, $LIGHT_WIND, $MODERATE_WIND, $WINDY, $lang_idx;
-        
-	if (($current->get_windspd() == 0)&&($min10->get_windspd() == 0)) {
-                            $windtitle =  $WITHOUT_WIND[$lang_idx];
-                            $wind_class="light_wind";
-                            }
-			   else if ($min10->get_windspd() < 2.5) {
-                               $windtitle = $LIGHT_WIND[$lang_idx];
-                               $wind_class="light_wind";
-                           }
-			   else if ($min10->get_windspd() < 10) {
-                               $windtitle =  $MODERATE_WIND[$lang_idx];
-                               $wind_class="moderate_wind";
-                           }
-			   else {
-                               $windtitle = $WINDY[$lang_idx];
-                               $wind_class="high_wind";
-                           }
-         $div_wind_icon = "<div title=\"".$windtitle."\" class=\"wind_icon ".$wind_class." \"></div>";
-         $div_wind_title = "<div class=\"wind_title\" >".$windtitle."</div>";
-         return $div_wind_icon.$div_wind_title;
-   
+function getWindStatus() {
+    global $current, $min10, $WITHOUT_WIND, $LIGHT_WIND, $MODERATE_WIND, $WINDY, $lang_idx;
+
+    if (($current->get_windspd() == 0) && ($min10->get_windspd() == 0)) {
+        $windtitle = $WITHOUT_WIND[$lang_idx];
+        $wind_class = "light_wind";
+    } else if ($min10->get_windspd() < 2.5) {
+        $windtitle = $LIGHT_WIND[$lang_idx];
+        $wind_class = "light_wind";
+    } else if ($min10->get_windspd() < 10) {
+        $windtitle = $MODERATE_WIND[$lang_idx];
+        $wind_class = "moderate_wind";
+    } else {
+        $windtitle = $WINDY[$lang_idx];
+        $wind_class = "high_wind";
+    }
+    $div_wind_icon = "<div title=\"" . $windtitle . "\" class=\"wind_icon " . $wind_class . " \"></div>";
+    $div_wind_title = "<div class=\"wind_title\" >" . $windtitle . "</div>";
+    return $div_wind_icon . $div_wind_title;
 }
 
-function getNextMonth ($month)
-{
-	if ($month == 12)
-		return 1;
-	else
-		return ($month + 1);
+function getNextMonth($month) {
+    if ($month == 12)
+        return 1;
+    else
+        return ($month + 1);
 }
 
-
-function getNextMonthYear ($month, $year)
-{
-		if ($month == 12)
-		return  ($year + 1);
-		else
-		return $year;
-}
-function getPrevMonth ($month)
-{
-	if ($month == 1)
-		return 12;
-	else
-		return ($month - 1);
-}
-function getPrevMonthYear ($month, $year)
-{
-		if ($month == 1)
-		return  ($year - 1);
-		else
-		return $year;
-}
-$tablestobeSearched = array();
-$where_clause_archivemin = array();
-$where_clause_archive = array();
- function pushTables($min_year,$current_year, $monthMode)
- {
-	global $tablestobeSearched;
-	global $where_clause_archivemin; 
-	global $where_clause_archive;
-        global $tableToSearch;
-	$startingYearFromMyStation = 2005;
-	if (count($_POST['years']) > 0){
-		foreach ($_POST['years'] as $yearToSearch)
-		{
-			if (count($_POST['months']) > 0)
-			{
-				foreach ($_POST['months'] as $monthToSearch)
-				{
-					
-					if ($tableToSearch != "archive")
-					{
-						array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-						if (!in_array("archivemin", $tablestobeSearched)) 
-							array_push ($tablestobeSearched, "archivemin");
-					}
-					else 
-					{
-						array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-						if (!in_array("archive", $tablestobeSearched))
-						 array_push ($tablestobeSearched, "archive");
-					}
-				}
-			}
-			else //no month selected
-			{
-				
-				if ($tableToSearch != "archive")
-				{
-					if ($monthMode)
-					{
-						for ($monthToSearch = 1;$monthToSearch <= 12 ;$monthToSearch++) { 
-							array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-						}
-					}
-					else
-						array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
-					if (!in_array("archivemin", $tablestobeSearched))
-						array_push ($tablestobeSearched, "archivemin");
-				}
-				else
-				{
-					if ($monthMode)
-					{
-						for ($monthToSearch = 1;$monthToSearch <= 12 ;$monthToSearch++) { 
-							array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-						}
-					}
-					else
-						array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
-					//if (!in_array("archive", $tablestobeSearched))
-					//	 array_push ($tablestobeSearched, "archive");
-					
-				}
-			}
-		}
-	}
-	else // no year selected
-		foreach ($_POST['months'] as $monthToSearch)
-		{
-			
-			if (!in_array("archivemin", $tablestobeSearched))
-			{
-				array_push ($tablestobeSearched, "archivemin");
-			}
-
-			for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
-				array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-			}
-
-			if (!in_array("archive", $tablestobeSearched))
-			 array_push ($tablestobeSearched, "archive");
-			for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
-				array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-			}
-			
-		}
-
-	return $where_clause_archivemin;
-		
-} 
-
-function getReport($min_year,$current_year, $report)
-{
-	global $tablestobeSearched;
-	global $where_clause_archivemin; 
-	global $where_clause_archive;
-	
-	$monthMode = false;
-	if ($report == "minofmax")
-	{
-		$maxOrMin = "MAX";
-		$param = "HiTemp";
-		$AscOrDesc = "ASC";
-		$unit = "&#176;C";
-	}
-	else if ($report == "maxofmin")
-	{
-		$maxOrMin = "MIN";
-		$param = "LowTemp";
-		$AscOrDesc = "DESC";
-		$unit = "&#176;C";
-	}
-	else if ($report == "minofmin")
-	{
-		$maxOrMin = "MIN";
-		$param = "LowTemp";
-		$AscOrDesc = "ASC";
-		$unit = "&#176;C";
-	}
-	else if ($report == "maxofmax")
-	{
-		$maxOrMin = "MAX";
-		$param = "HiTemp";
-		$AscOrDesc = "DESC";
-		$unit = "&#176;C";
-	}
-	else if ($report == "maxhum")
-	{
-		$maxOrMin = "MAX";
-		$param = "Hum";
-		$AscOrDesc = "DESC";
-		$unit = "%";
-                $tableToSearch="archive";
-	}
-	else if ($report == "minhum")
-	{
-		$maxOrMin = "MIN";
-		$param = "Hum";
-		$AscOrDesc = "ASC";
-		$unit = "%";
-                $tableToSearch="archive";
-	}
-	else if ($report == "maxdew")
-	{
-		$maxOrMin = "MAX";
-		$param = "Dew";
-		$AscOrDesc = "Desc";
-		$unit = "&#176;C";
-                $tableToSearch="archive";
-	}
-	else if ($report == "maxrain")
-	{
-		$maxOrMin = "SUM";
-		$param = "Rain";
-		$AscOrDesc = "Desc";
-		$unit = "mm";
-	}
-	else if ($report == "maxrainmonth")
-	{
-			$monthMode = true;
-			$maxOrMin = "SUM";
-			$param = "Rain";
-			$AscOrDesc = "Desc";
-			$unit = "mm";
-	}
-	else if ($report == "minrainmonth")
-	{
-			$monthMode = true;
-			$maxOrMin = "SUM";
-			$param = "Rain";
-			$AscOrDesc = "Asc";
-			$unit = "mm";
-	}
-        /*
-         * SELECT AVG( LowTemp+HiTemp)/2 AVGLowTemp , DATE_FORMAT(`Date`, '%Y-%m') month FROM `archivemin` where `LowTemp` IS NOT NULL AND ( ( DATEDIFF( `Date` , DATE( '2002-07-01' ) ) >=0 AND DATEDIFF( `Date` , DATE( '2002-08-01' ) ) <0) )
-         */
-        else if ($report == "maxtempmonth")
-	{
-			$monthMode = true;
-			$complex = "(LowTemp+HiTemp)/2";
-			$maxOrMin = "AVG";
-			$param = "HiTemp";
-			$AscOrDesc = "Asc";
-			$unit = "&#176;C";
-	}
-        else if ($report == "mintempmonth")
-	{
-			$monthMode = true;
-			$complex = "(LowTemp+HiTemp)/2";
-			$maxOrMin = "AVG";
-			$param = "LowTemp";
-			$AscOrDesc = "Desc";
-			$unit = "&#176;C";
-	}
-
-	pushTables($min_year,$current_year, $monthMode);
-
-	global $link;
-	db_init("");
-	if ($complex == "") 
-            { $complex = $param;};
-	if ($monthMode)
-	{
-			$query_total = "SELECT ".$maxOrMin.$param." ,  month FROM (";
-		
-		for ($i = 0;$tablestobeSearched[$i]!=null ;$i++) {
-			$table = $tablestobeSearched[$i];
-			
-			if ($table == "archivemin")
-			{
-				
-				for ($j = 0;$where_clause_archivemin[$j]!=null ;$j++) {
-					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month FROM  `".$table."` where `".$param."` IS NOT NULL  ";
-					$query_total .= " AND ( ";
-					$query_total .= $where_clause_archivemin[$j];
-					$query_total .= " ) ";
-					if ($j < count($where_clause_archivemin) - 1)
-						$query_total .= " UNION ALL ";
-				}
-				
-			}
-			else
-			{	
-				for ($j = 0;$where_clause_archive[$j]!=null ;$j++) {
-					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month FROM  `".$table."` where `".$param."` IS NOT NULL  ";
-					$query_total .= " AND ( ";
-					$query_total .= $where_clause_archive[$j];
-					$query_total .= " ) ";
-					if ($j < count($where_clause_archive) - 1)
-						$query_total .= " UNION ALL ";
-				}
-				
-			}
-			if ($i < count($tablestobeSearched) - 1)
-				$query_total .= " UNION ALL ";
-		}
-		
-		$query_total .= ") ar where month is not null ";
-		$query_total .= "  ORDER BY ".$maxOrMin.$param." ".$AscOrDesc." LIMIT 0 , 15";
-	}
-	else
-	{
-		$query_total = "SELECT ".$maxOrMin."(  ".$param." ) ,  `Date` FROM (";
-		
-		for ($i = 0;$tablestobeSearched[$i]!=null ;$i++) {
-			$table = $tablestobeSearched[$i];
-			//echo " <br/>".$table." <br/>";
-			$query_total .= "SELECT  ".$param." ,  `Date` FROM  `".$table."` where ".$param." IS NOT NULL  ";
-			if ($table == "archivemin")
-			{
-				$query_total .= " AND ( ";
-				for ($j = 0;$where_clause_archivemin[$j]!=null ;$j++) {
-					$query_total .= $where_clause_archivemin[$j];
-					if ($j < count($where_clause_archivemin) - 1)
-						$query_total .= " OR ";
-				}
-				$query_total .= " ) ";
-			}
-			else
-			{
-				$query_total .= " AND ( ";
-				for ($j = 0;$where_clause_archive[$j]!=null ;$j++) {
-					$query_total .= $where_clause_archive[$j];
-					if ($j < count($where_clause_archive) - 1)
-						$query_total .= " OR ";
-				}
-				$query_total .= " ) ";
-			}
-			if ($i < count($tablestobeSearched) - 1)
-				$query_total .= " UNION ALL ";
-		}
-		
-		$query_total .= ") ar ";
-		$query_total .= "  GROUP BY  `Date` ORDER BY ".$maxOrMin."(  ".$param." ) ".$AscOrDesc." LIMIT 0 , 15";
-		}
-	//echo $query_total;
-	
-	$result = mysqli_query($link, $query_total);
-	echo "<table align=\"center\">";
-	echo "<tr class=\"base\"><td style=\"text-align:center\">".$unit."</td><td style=\"text-align:center\">yyyy-mm-dd</td></tr>";
-	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-		$lines++;
-		$col = 0;
-		print "\t<tr align=\"center\" class=\"base\">\n";
-		foreach ($line as $col_value) {
-			print "\t\t<td";
-			if ($col < 2)
-					print " class=\"topbase\"";
-			print " title=\"\"";
-			if ($col == 0)
-				print ">".round($col_value, 1)."</td>\n";
-			else
-			{
-				print " >";
-				print "<form method=\"post\" action=\"".get_query_edited_url($url_cur, 'section', 'browsedate.php')."\">";
-                                print "<input type=\"submit\" value=\"$col_value\" name=\"submitdate\" style=\"cursor:pointer;width:120px\" />";
-                                if  (stristr($col_value, "/"))
-                                {
-                                      $current_date = explode('/', $col_value, 3);//dd/mm/yy
-                                       $current_year = 2000 + $current_date[2];
-                                       print "<input type=\"hidden\" name=\"browseyear\" 	value=\"$current_year\">";
-				       print "<input type=\"hidden\" name=\"browsemonth\" 	value=\"$current_date[1]\">";
-				       print "<input type=\"hidden\" name=\"browseday\" 	value=\"$current_date[0]\">";
-                                }
-                                else
-                                      
-                                
-                                {
-				   $current_date = explode('-', $col_value, 3);//yyyy-mm-dd
-                                   print "<input type=\"hidden\" name=\"browseyear\" 	value=\"$current_date[0]\">";
-				   print "<input type=\"hidden\" name=\"browsemonth\" 	value=\"$current_date[1]\">";
-				   print "<input type=\"hidden\" name=\"browseday\" 	value=\"$current_date[2]\">";
-                                }
-                                
-				
-
-				print "</form>";
-				print "</td>\n";
-			}
-			$col++;
-		}
-		print "\t</tr>\n";
-	}
-	echo "</table>";
-	@mysqli_free_result($result);
-        @mysqli_close($link);
+function getNextMonthYear($month, $year) {
+    if ($month == 12)
+        return ($year + 1);
+    else
+        return $year;
 }
 
+function getPrevMonth($month) {
+    if ($month == 1)
+        return 12;
+    else
+        return ($month - 1);
+}
 
-function isStyleSubmited($value_style){
-	global $_REQUEST;
-	if (!isset($_REQUEST['style']))
-		$_REQUEST['style'] = "";
-	if ($_REQUEST['style']=== $value_style)
-			return true;
-	return false;
+function getPrevMonthYear($month, $year) {
+    if ($month == 1)
+        return ($year - 1);
+    else
+        return $year;
 }
 
 //
 //         moon calculator
 //
+//Returns an array with all the phases of the moon for a whole year
+function CalculateMoonPhases($Y) {
+    //Converted from Basic by Roger W. Sinnot, Sky & Telescope, March 1985.
+    //Converted from javascript by Are Pedersen 2002
+    //Javascript found at http://www.stellafane.com/moon_phase/moon_phase.htm
 
-
-
- //Returns an array with all the phases of the moon for a whole year
-function CalculateMoonPhases( $Y ) {
-  //Converted from Basic by Roger W. Sinnot, Sky & Telescope, March 1985.
-  //Converted from javascript by Are Pedersen 2002
-  //Javascript found at http://www.stellafane.com/moon_phase/moon_phase.htm
-  
-  $R1 = 3.14159265 / 180;
-  $U = false;
-  $s = ""; // Formatted Output String
-  $K0 = intval(($Y-1900)*12.3685);
-  $T = ($Y-1899.5) / 100;
-  $T2 = $T*$T; $T3 = $T*$T*$T;
-  $J0 = 2415020 + 29*$K0;
-  $F0 = 0.0001178*$T2 - 0.000000155*$T3;
-  $F0 += (0.75933 + 0.53058868*$K0);
-  $F0 -= (0.000837*$T + 0.000335*$T2);
-  //X In the Line Below, F is not yet initialized, and J is not used before it set in the FOR loop.
-  //X J += intval(F); F -= INT(F);
-  //X Ken Slater, 2002-Feb-19 on advice of Pete Moore of Houston, TX
-  $M0 = $K0*0.08084821133;
-  $M0 = 360*($M0 - intval($M0)) + 359.2242;
-  $M0 -= 0.0000333*T2;
-  $M0 -= 0.00000347*T3;
-  $M1 = $K0*0.07171366128;
-  $M1 = 360*($M1 - intval($M1)) + 306.0253;
-  $M1 += 0.0107306*$T2;
-  $M1 += 0.00001236*$T3;
-  $B1 = $K0*0.08519585128;
-  $B1 = 360*($B1 - intval($B1)) + 21.2964;
-  $B1 -= 0.0016528*$T2;
-  $B1 -= 0.00000239*$T3;
-  for ( $K9=0; $K9 <= 28; $K9=$K9+0.5 ) {
-	$J = $J0 + 14*$K9; $F = $F0 + 0.765294*$K9;
-	$K = $K9/2;
-	$M5 = ($M0 + $K*29.10535608)*$R1;
-	$M6 = ($M1 + $K*385.81691806)*$R1;
-	$B6 = ($B1 + $K*390.67050646)*$R1;
-	$F -= 0.4068*sin($M6);
-	$F += (0.1734 - 0.000393*$T)*sin($M5);
-	$F += 0.0161*sin(2*$M6);
-	$F += 0.0104*sin(2*$B6);
-	$F -= 0.0074*sin($M5 - $M6);
-	$F -= 0.0051*sin($M5 + $M6);
-	$F += 0.0021*sin(2*$M5);
-	$F += 0.0010*sin(2*$B6-$M6);
-	$F += 0.5 / 1440; //Adds 1/2 minute for proper rounding to minutes per Sky & Tel article
-	$J += intval($F); $F -= intval($F);
-	//Convert from JD to Calendar Date
-	$julian=$J+round($F);
-	$s = jdtogregorian ($julian);
-	//half K
-	if (($K9-floor($K9))>0){
-		if (!$U){
-			//New half
-			$phases[$s]="ny2";
-		}else{
-			//Full half
-			$phases[$s]="ne2";
-		}
-		
-	}else{
-		//full K
-		if ( !$U ){
-			$phases[$s]="ny";
-		}else{
-			$phases[$s]="ne";
-		}
-		$U = !$U;
-	}
-  } // Next
-  return $phases;
-} //End MoonPhase
-
-function GetMoonPhase($timestamp){
-	
-	static $moon_phases;
-	if (count($moon_phases)==0) $moon_phases=CalculateMoonPhases(date("Y",$timestamp));
-	$day=date("n/j/Y",$timestamp);
-	return $moon_phases[$day];
+    $R1 = 3.14159265 / 180;
+    $U = false;
+    $s = ""; // Formatted Output String
+    $K0 = intval(($Y - 1900) * 12.3685);
+    $T = ($Y - 1899.5) / 100;
+    $T2 = $T * $T;
+    $T3 = $T * $T * $T;
+    $J0 = 2415020 + 29 * $K0;
+    $F0 = 0.0001178 * $T2 - 0.000000155 * $T3;
+    $F0 += (0.75933 + 0.53058868 * $K0);
+    $F0 -= (0.000837 * $T + 0.000335 * $T2);
+    //X In the Line Below, F is not yet initialized, and J is not used before it set in the FOR loop.
+    //X J += intval(F); F -= INT(F);
+    //X Ken Slater, 2002-Feb-19 on advice of Pete Moore of Houston, TX
+    $M0 = $K0 * 0.08084821133;
+    $M0 = 360 * ($M0 - intval($M0)) + 359.2242;
+    $M0 -= 0.0000333 * T2;
+    $M0 -= 0.00000347 * T3;
+    $M1 = $K0 * 0.07171366128;
+    $M1 = 360 * ($M1 - intval($M1)) + 306.0253;
+    $M1 += 0.0107306 * $T2;
+    $M1 += 0.00001236 * $T3;
+    $B1 = $K0 * 0.08519585128;
+    $B1 = 360 * ($B1 - intval($B1)) + 21.2964;
+    $B1 -= 0.0016528 * $T2;
+    $B1 -= 0.00000239 * $T3;
+    for ($K9 = 0; $K9 <= 28; $K9 = $K9 + 0.5) {
+        $J = $J0 + 14 * $K9;
+        $F = $F0 + 0.765294 * $K9;
+        $K = $K9 / 2;
+        $M5 = ($M0 + $K * 29.10535608) * $R1;
+        $M6 = ($M1 + $K * 385.81691806) * $R1;
+        $B6 = ($B1 + $K * 390.67050646) * $R1;
+        $F -= 0.4068 * sin($M6);
+        $F += (0.1734 - 0.000393 * $T) * sin($M5);
+        $F += 0.0161 * sin(2 * $M6);
+        $F += 0.0104 * sin(2 * $B6);
+        $F -= 0.0074 * sin($M5 - $M6);
+        $F -= 0.0051 * sin($M5 + $M6);
+        $F += 0.0021 * sin(2 * $M5);
+        $F += 0.0010 * sin(2 * $B6 - $M6);
+        $F += 0.5 / 1440; //Adds 1/2 minute for proper rounding to minutes per Sky & Tel article
+        $J += intval($F);
+        $F -= intval($F);
+        //Convert from JD to Calendar Date
+        $julian = $J + round($F);
+        $s = jdtogregorian($julian);
+        //half K
+        if (($K9 - floor($K9)) > 0) {
+            if (!$U) {
+                //New half
+                $phases[$s] = "ny2";
+            } else {
+                //Full half
+                $phases[$s] = "ne2";
+            }
+        } else {
+            //full K
+            if (!$U) {
+                $phases[$s] = "ny";
+            } else {
+                $phases[$s] = "ne";
+            }
+            $U = !$U;
+        }
+    } // Next
+    return $phases;
 }
 
+//End MoonPhase
 
+function GetMoonPhase($timestamp) {
 
+    static $moon_phases;
+    if (count($moon_phases) == 0)
+        $moon_phases = CalculateMoonPhases(date("Y", $timestamp));
+    $day = date("n/j/Y", $timestamp);
+    return $moon_phases[$day];
+}
 
-
-
-///// read XML
-
-/*
-function Read_XML ($file_url, $locate) {
-
-                $xml_array = file ($file_url);
- 
-                $xml = implode (" ", $xml_array);
-                $p = xml_parser_create();
-                xml_parse_into_struct($p, $xml, $vals, $index);
-                xml_parser_free($p);
- 
-                $tags = explode ("/", $locate);
-                $findingtag = $tags [0];
-                $i = 0;
-                $found = false;
- 
-                foreach ($vals as $key=>$value) {
-                        // if the tag is one we're currently looking for ... 
-                        if ($value ["tag"] == strtoupper ($findingtag)) {
-                                if ($value ["type"] == "close") {
-                                        // we've hit another dead end //
-                                        break;
-                                }
- 
-                                // we're at the end of our search 
-                                if ($i == count ($tags) - 1) {
-                                        // we're at the last one, we need to check it's a 'complete' tag 
-                                        if ($value ["type"] == "complete") {
-                                                $found = true;
-                                        }
-                                        break;
-                                }
- 
-                                // we've not found it yet, but it's complete so break (dead end) 
-                                if ($value ["type"] == "complete") {
-                                        break;
-                                }
- 
-                                // loook for next tag 
-                                $i++;
-                                $findingtag = $tags [$i];
-                        }
- 
-                        // finished with this tag, look at the next one (in the XML)
-                }
- 
-                if ($found) {
-                        return $value ["value"];
-                }
-        }
-
-		$cambs_url = "http://xml.weather.com/weather/local/
-	UKXX0028?cc=*&unit=m&prod=xoap&par=1005561467
-	&key=a388d0d4a8a3f714";
-		echo Read_XML ($cambs_url, "weather/cc/bar/d");
-*/
-
-
+$lang_idx = @$_GET['lang'];
 $EN = 0;
 $HEB = 1;
-if ($_GET['lang'] == "") 	
-{
-	/*if (stristr(get_url(), 'lang')){
-		$new_url = str_replace ( "&amp;", "&", get_url());
-		header("Location: ".$new_url);
-	}*/
-	$lang_idx = $HEB;
-}
-else
-	$lang_idx = @$_GET['lang'];
-
+if ($_GET['lang'] == "") {
+    /* if (stristr(get_url(), 'lang')){
+      $new_url = str_replace ( "&amp;", "&", get_url());
+      header("Location: ".$new_url);
+      } */
+    $lang_idx = $HEB;
+} else
+    $lang_idx = @$_GET['lang'];
 ?>
