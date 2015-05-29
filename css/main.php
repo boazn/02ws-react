@@ -1,9 +1,9 @@
 <?  
     ini_set("display_errors","On");
     header("Content-type: text/css");
-    
- 
+include ('ini.php');
 $lang_idx = @$_GET['lang'];
+$css_comp = explode (",",$_GET['type']);
 function isHeb()
 {
 	global $lang_idx;
@@ -31,9 +31,7 @@ function get_deg ($deg)
 				   FONTS
    ========================================================================== */
 
-@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
-
-
+<!--@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);-->
 @font-face {
     font-family: 'Alef';
     src: url('fonts/Alef-Bold.eot');
@@ -45,10 +43,6 @@ function get_deg ($deg)
     font-style: normal;
 
 }
-
-
-
-
 @font-face {
     font-family: 'Alef';
     src: url('fonts/Alef-Regular.eot');
@@ -60,8 +54,6 @@ function get_deg ($deg)
     font-style: normal;
 
 }
-
-
 @font-face {
     font-family: 'nextexitfotlight';
     src: url('fonts/nextexitfot-light-webfont.eot');
@@ -72,7 +64,6 @@ function get_deg ($deg)
     font-style: normal;
 
 }
-
 @font-face {
     font-family: 'nextexitfot_regularregular';
     src: url('fonts/nextexitfot-regular-webfont.eot');
@@ -83,7 +74,6 @@ function get_deg ($deg)
     font-style: normal;
 
 }
-
 @font-face {
     font-family: 'ezerblock_oelight';
     src: url('fonts/ezerblock_oelight-webfont.eot');
@@ -94,7 +84,6 @@ function get_deg ($deg)
     font-style: normal;
 
 }
-
 @font-face {
     font-family: 'ezerblock_oe_regularregular';
     src: url('fonts/ezerblock_oeregular.eot');
@@ -105,14 +94,13 @@ function get_deg ($deg)
     font-style: normal;
 
 }
-
-
 /* ==========================================================================
 				    GENERAL
    ========================================================================== */
-
 body {
+     background-color:#7DC1DF;
      background-image:url("../img/bg_blue.png");
+     background-repeat: repeat;
      background-attachment:fixed;
      font-family:Alef;
      overflow-y: scroll;
@@ -752,7 +740,7 @@ background-color:#BFA8C6;
 }
 
 #forcast_icons {
-    margin-<?=get_s_align()?>:<? if (isHeb()) echo "130px"; else echo "99px";?>;
+    margin-<?=get_s_align()?>:<? if (isHeb()) echo "105px"; else echo "99px";?>;
     margin-bottom:0px;
     text-align:<?=get_s_align()?>;
     <? if (isHeb()) echo "direction:rtl"; ?>
@@ -838,6 +826,8 @@ background-color:#BFA8C6;
     text-align:center;
     list-style:none;
     display:inline-block;
+    font-family: nextexitfot_regularregular;
+    font-size: 1.3em;
 }
 
 
@@ -850,7 +840,7 @@ background-color:#BFA8C6;
 }
 
 #forcast_hours .forcast_date {
-    letter-spacing:2px;
+    letter-spacing:1px;
     margin-left:5px;
 }
 
@@ -921,15 +911,16 @@ vertical-align:middle;
     margin-right:0px;
     width:25px;
 }
-
+.forecast_ad{
+margin-<?=get_s_align()?>:10px
+}
 .forcast_date {
-    letter-spacing:5px;
-    margin-right:10px;
-    width:45px;
+    letter-spacing:1px;
+    width:40px;
 }
 
 .forcast_morning {
-    margin-right:10px;width:40px;direction:ltr;
+    margin-right:3px;width:40px;direction:ltr;
 }
 .forcast_noon, .forcast_night
 {
@@ -949,7 +940,9 @@ vertical-align:middle;
 	width:200px;
 	text-align:<?=get_s_align()?> !important;
 }
-
+.extra .forcast_date {
+    width:20px;
+}
 .tashkif .forcast_day {
     color:#648395;
 }
@@ -1041,10 +1034,13 @@ z-index:9999;
 #addthis_icon
 {
 display:inline-block;
+vertical-align: bottom;
+margin-<?=get_s_align()?>:0.5em
 }
 #mainadsense {
-   margin-top:80px;
-   float:<?=get_inv_s_align()?>
+   margin-top:50px;
+   float:<?=get_inv_s_align()?>;
+   width:300px;
 }
 #now_stuff {
     margin-top:100px;
@@ -1138,13 +1134,13 @@ display:inline-block;
 
 .now_messages {
     margin-top:70px;
+    line-height:1.2em
 }
 
 .white_box {
     background:rgba(255, 255, 255, 0.7);
     <? if (isHeb()) echo "direction:rtl;"; ?>
     padding-bottom:20px;
-    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     position:relative;
@@ -1242,14 +1238,10 @@ a:visited h2{
     padding-bottom:5px;
 }
 #about {
-	margin-top:60px;
-	margin-<?=get_s_align()?>:60px;
-	width:100px;
-	float:<?=get_s_align()?>
 }
 
 #qrcode{
-margin-<?=get_s_align()?>:<? if (isHeb()) echo "400px"; else echo "470px"; ?>;
+width:250px
 }
 #newsletter {
     position:absolute;
@@ -1296,17 +1288,16 @@ margin-<?=get_s_align()?>:<? if (isHeb()) echo "400px"; else echo "470px"; ?>;
      line-height:18px;
 }
 
-#did_you_know a{
+#did_you_know a, #about{
     text-decoration:underline;
 }
 
-
+#alerts{
+text-align:center
+}
 #outside_links {
-    margin-top:-80px;
-    float:<?=get_inv_s_align()?>;
-    width:140px;
+    width:130px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
-    
 }
 
 #outside_links a{
@@ -1321,7 +1312,7 @@ margin-<?=get_s_align()?>:<? if (isHeb()) echo "400px"; else echo "470px"; ?>;
 
 .more_icons {
    margin-<?=get_s_align()?>: 240px;
-    margin-top: 40px;
+    margin-top: 10px;
     position: absolute;
 }
 
@@ -1374,26 +1365,29 @@ margin-<?=get_s_align()?>:<? if (isHeb()) echo "400px"; else echo "470px"; ?>;
     background-image:url("../img/snow_poems.png");
     width:85px;
 }
-
-#share_icons {
+#fb_like{
+margin-top:10px
+}
+#ftr_icons {
     text-align:center;
-    margin-<?=get_s_align()?>:-40px;
+    margin-<?=get_s_align()?>:10px;
 }
-
-#share_mixed{
-   margin-top:178px;
-}
-#share_mixed li{
+#ftr_icons li{
 	display:inline-block;
 	list-style: none outside none;
-	margin:0em 5em;
+	margin:0em ;
 	line-height:22px;
 }
 
-#share_icons a {
+#ftr_icons a {
     margin-right:2px;
     margin-left:2px;
     width:42px;
+    height:42px;
+    float:<?=get_inv_s_align()?>;
+}
+#ftr_icons a:hover{
+background-position:right;
 }
 .addthis_default_style .at300m{
 padding:2px;
@@ -1608,7 +1602,6 @@ padding:2px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
     padding-bottom:20px;
     position:relative;
-    -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     padding-bottom:10px;
@@ -1683,7 +1676,7 @@ padding:2px;
 {
     width:36px;
     overflow: hidden;
-    margin-<?=get_s_align()?>:20px;
+    margin-<?=get_s_align()?>:40px;
 }
 #user_icon_contentbox
 {
@@ -1712,12 +1705,14 @@ padding:2px;
 
 .icon_left {
     background-image:url("../img/pic_left.png");
-    <?if (isHeb()){?>margin-right:56px;<?}?>
+    <?if (isHeb()){?>margin-right:76px;<?}?>;
+    padding-left: 10px;
 }
 
 .icon_right {
+    padding-right: 10px;
     background-image:url("../img/pic_right.png");
-     <?if (!isHeb()){?>margin-left:56px;<?}?>
+     <?if (!isHeb()){?>margin-left:76px;<?}?>
 }
 
 #icon_left:hover {
@@ -1879,13 +1874,13 @@ margin-<?=get_s_align()?>:96px;
 }
 
 #pic_thumb1 {
-    top:540px;
-    left:580px;
+    top: 400px;
+    left: 520px;
 }
 
 #pic_thumb2 {
-    top:510px;
-    left:560px;
+    top: 550px;
+    left: 610px;
 }
 
 #pic_thumb3 {
@@ -1923,7 +1918,7 @@ margin-<?=get_s_align()?>:96px;
 }
 #msgDetails .white_box2, #msgDetails .chosenreply{
    
-    width: 48%;
+    width: 49.4%;
    
 }
 .chatdate
@@ -1942,11 +1937,7 @@ margin-<?=get_s_align()?>:96px;
  position: absolute;
  right: -1px;
 }
-.chatfirstbody
-{
- margin:0 0.1em;
- max-width: 89%;
-} 
+
 .chatreply
 {
 	margin:0.4em;text-align:<?echo get_s_align();?>;float:<?echo get_s_align();?>;width:10%
@@ -1955,11 +1946,14 @@ margin-<?=get_s_align()?>:96px;
 {
 opacity: 0.5;
 margin-<?echo get_s_align();?>:8px;
-float:<?echo get_s_align();?>
+
 }
 .pic_user .msgcount
 {
 margin-top:0.2em
+}
+.pic_user .datestart{
+ font-weight:normal
 }
 .chataftersepreply
 {
@@ -1983,10 +1977,7 @@ margin-top:0.2em
 {
     <?echo get_s_align();?>:-12px;
 }
-.firstreplyline
-{
-width:auto
-}
+
 .firstreplyline .chatdatereply{
 	position:relative;
 	left:0;
@@ -2012,7 +2003,7 @@ position:relative;
 }
 #middleadsense{
 height:100px;
-margin-top:70px;
+margin-top:50px;
 width:730px;
 float:left;
 background-color:#fff;
@@ -2027,7 +2018,7 @@ border-color:#829CAA;
 #plane{
 	float:left;
 	width:150px;
-	margin-top: 70px;
+	margin-top: 50px;
 }
 #new_post_btn {
     background-image:url("../img/new_post.png");
@@ -2123,7 +2114,7 @@ border-color:#829CAA;
      background-repeat:no-repeat;
      width:37px;
      margin-<?=get_inv_s_align()?>:50px;
-     margin-top:10px;
+     margin-top:5px;
 }
 
 #subject_left, #subject_right {
@@ -2142,18 +2133,20 @@ border-color:#829CAA;
      background-image:url("../img/subject_left.png");
     float: <?=get_inv_s_align()?>;
     margin-<?=get_inv_s_align()?>: -55px;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 #subject_right {
      background-image:url("../img/subject_right.png");
      margin-<?=get_s_align()?>:52px;
-    margin-top: 25px;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
 #new_post_private{
-margin-top:5px;
+margin:2px 10px 0 10px;
+float: <?=get_s_align()?>;width:120%
+
 }
 #new_post_okay, #new_post_cancel {
     background-color:#C0CE61;
@@ -2161,8 +2154,9 @@ margin-top:5px;
     width:60px;
     border-radius:5px;
     display:inline-block;
-    margin-top:15px;
-    padding:5px
+    margin-top:5px;
+    padding:5px 8px;
+    float:<?=get_s_align()?>;
 }
 
 #new_post_okay:hover, #new_post_cancel:hover {
@@ -2225,7 +2219,7 @@ margin-top:5px;
 
 .postusername
 {
-font-weight:bold;margin-<?echo get_s_align();?>:8px;
+font-weight:bold;margin: 0 8px;float:<?echo get_s_align();?>;width: auto;
 }
 .footer {
 color: #fff;
@@ -2256,6 +2250,7 @@ color: #fff;
 
 #posts img{
    max-width: 320px;
+   height: auto;
    margin-right:8px;
 }
 #forum_grass {
@@ -2421,7 +2416,10 @@ color: #fff;
     margin-top:0px;
 }
 
-
+.alerttime{
+ font-weight: bold;
+ padding:0 1em
+}
 .comment_btn {
     color:#648395;
     text-decoration:underline;
@@ -2531,6 +2529,7 @@ color: #fff;
 	position:fixed;
 	background-repeat:no-repeat;
 	z-index:1000;
+        margin-<?echo get_s_align();?>:10px;
 }
 #logo a{
         width:100%;
@@ -2570,8 +2569,7 @@ color: #fff;
     font-family:ezerblock_oe_regularregular;
     font-size:16px;
     color:#2C3A42;
-    padding: 2px;
-    width:92px;
+    padding: 2px 10px;
     display:inline-block;
     
 }
@@ -2678,7 +2676,7 @@ color: #fff;
 
 #cover_clouds-2 {
     position:absolute;
-   top: 860px;
+   top: 910px;
     left: 170px;
     z-index:101;
 }
@@ -2943,17 +2941,17 @@ color: #fff;
 	#bg2-1 {
 		position: absolute;
 		top: 82px;
-		left: 1200px;
+		left: 1340px;
 		}
 	#bg2-2 {
 		position: absolute;
 		top: 300px;
-		left: 1150px;
+		left: 1280px;
 		}
 	#bg2-3 {
 		position: absolute;
-		top: 243px;
-		left: -35px;
+		top: 246px;
+                left: 182px;
 		}
 	#bg2-4 {
 		position: absolute;
@@ -3040,7 +3038,7 @@ color: #fff;
 		}
 	#bg1-8 {
 		position: absolute;
-		top: 135px;
+		top: 160px;
 		left: 440px;
 		}
 	#bg1-9 {
@@ -3085,7 +3083,7 @@ margin-bottom:10px;
 }
 #user_info {
     display:inline-block;
-    float:left;
+    float:<?=get_inv_s_align()?>;
     <? if (isHeb()) echo "direction:rtl"; ?>
 }
 #login, #forgotpass, #register{
@@ -3116,7 +3114,7 @@ right:10px;
     padding-left:5px;
     margin-bottom:0px;
     color:#3D718E;
-    margin-right:10px;
+    padding-right:10px;
     float: <?=get_s_align()?>; 
 }
 
@@ -3152,6 +3150,7 @@ right:10px;
 }
 #top_links li ul li{
 	border:none;
+        line-height:16px;
 }
 #top_links li a {
     padding-bottom:7px;
@@ -3347,7 +3346,7 @@ margin:0
     top:1600px;
     left:150px;
     height:100%;
-    background: url("../img/bg_map.png") no-repeat center top;
+    background: url("../img/bg_map<? if (SNOW_ON_THE_GROUND == 1) echo "_snow";?>.png") no-repeat center top;
     width: 100%;
     z-index:7;
 }
@@ -3434,8 +3433,7 @@ a.info:hover span.info
     font-family: nextexitfotlight;
     background:rgba(255, 255, 255, 0.6);
     text-align:center;
-   -webkit-border-radius: 999px;
-    -moz-border-radius: 999px;
+   -moz-border-radius: 999px;
     border-radius: 999px;
     behavior: url(PIE.htc);
     width: 215px;
@@ -3494,6 +3492,8 @@ a.info:hover span.info
 {
    font-size: 1em;
     padding-top: 6px;
+    margin:0 auto;
+    width:100px;
 }
 #paramsdiv
 {
@@ -3509,8 +3509,8 @@ a.info:hover span.info
 {
 	border:none;
 }
-#latesttemp
-{
+#latesttemp{
+
 	
  text-align:center;border-bottom:none;
  
@@ -3530,18 +3530,34 @@ a.info:hover span.info
 
 #tempdivvalue
 {
-	font-family:nextexitfotlight;
 	font-weight: normal;
 	margin-left: 11px;
 	color: #2C3A42;
-	padding-top: 0px;
+	padding-top: 20px;
 	font-size: 5.4em;
+        direction:ltr
 	
+}
+#valleytemp
+{
+    font-size: 0.35em;
+}
+#windy
+{
+          margin: 0 auto;position: absolute;font-size:0.95em;width: 100%;z-index: 0;top:1.15em
+}
+#windy .wind_title
+{
+margin:0 auto
+}
+#windy .wind_icon
+{
+margin:0 auto
 }
 #status
 {
     position: absolute;
-    top: 105px;
+    top: 125px;
     width: 100%;
     color: #2C3A42;
     font-family: nextexitfotlight;
@@ -3567,11 +3583,11 @@ margin:0 auto
 #itfeels_windchill, #itfeels_heatidx
 {
     <? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr";?>;
-	font-family: Alef;
-	font-size: 14px;
+	font-size: 15px;
         position: absolute;
         width: 100%;
-        top: 2.2em;
+        top: 2.8em;
+        font-size: 1em;
         
 }
 #latestpressure
@@ -3585,6 +3601,7 @@ margin:0 auto
     top:10px;
     width:100%;
     font-family:nextexitfotlight;
+    direction:ltr
 }
 
 .paramunit
@@ -3743,11 +3760,15 @@ border-top:none; margin:0; padding:0;
 }
 #genderchoose
 {
-position:absolute;top:100px;width:300px;z-index:500;width: 330px;
+position:absolute;top:-20px;width:430px;z-index:500;
 }
 #graphmain
 {
     float:<?=get_s_align()?>
+}
+#gp_icon{
+text-align:center;
+margin-<?=get_s_align()?>: 200px;
 }
 #section h1, #section h2, #section h3
 {
@@ -3789,7 +3810,6 @@ padding:10px 4px;
     background: #5D7FA9;
     background-repeat: repeat-x;
     border-radius: 5px;
-    -webkit-border-radius: 5px;
     border-radius: 5px;
 }
 .inv_plain{
@@ -3825,7 +3845,6 @@ background:rgba(255,255,255,0.7);
 color:#2C3A42;
 padding: 2px;
 margin: 0em;
--webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 box-shadow: 0 1px 5px rgba(0,0,0,0.2);
  
@@ -3839,7 +3858,6 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     color: #ccc;
     padding: 12px;
     margin: 0em;
-    -webkit-border-radius: 8px;
     border-radius: 8px; 
 }
 .border_3
@@ -3851,7 +3869,6 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 {
 	border: none;
 	background: rgba(255, 255, 255, 0.8);
-	-webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 	-moz-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 	box-shadow: 0 1px 5px rgba(0,0,0,0.2);
    	color: #2C3A42;
@@ -3885,7 +3902,6 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 	border: #71979D 1px solid;
     text-align: center;
 	margin: 0px;
-	-webkit-border-radius: 5px;
 	border-radius: 5px;
  
 }
@@ -3924,6 +3940,7 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 .high
 {
 	color: #ff0000;
+        display:inline-block
 }
 .invhigh
 {
@@ -3931,22 +3948,15 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     background-color: #ff0000;
     font-weight:bold;
 }
-div.high
-{
-    color: #ffffff;
-	background-color: #ff0000;
-}
+
 .low
 {
 	color:#0066cc;
         direction:ltr;
+        display:inline-block;
+        font-weight:bold;
 }
-div.low
-{
-    color: #ffffff;
-    background-color:#0066cc;
-    direction:ltr;
-}
+
 div.less
 {
     color: #9f9b00
@@ -3987,6 +3997,7 @@ div.more
 {
 position:relative
 }
+
 
 .sprite { background: url('images/sprite.png') no-repeat top left;  } 
 .sprite.good { background-position: 0px 0px; width: 24px; height: 24px;  } 
@@ -4077,17 +4088,16 @@ text-decoration:none;
    font-size: 14px;
 	display: none;
 	position: absolute;
-	top:  1.3em;
+	top:  1.25em;
    <?echo get_s_align();?>: -50px;
 	border-radius: 8px 0 8px 8px;
-	-webkit-border-radius: 8px 0 8px 8px;
 	z-index: 500;
 }
 .nav li ul li
 {
 	float:none;
-	padding:0.6em 0.2em;
-        margin-top:0.05em;
+	padding:0.1em 0.2em;
+        margin-top:0em;
 	width: 270px;
 	display:block;
    	border-right: none;
@@ -4100,7 +4110,8 @@ text-decoration:none;
 {
 	text-decoration:none;
 	display:block;
-	padding:0 0.5em;
+	height:100%;
+        padding:0.8em 0.5em;
     
 }
 .nav a:hover
@@ -4134,6 +4145,10 @@ text-decoration:none;
 .nav .inv_plain_3_zebra{
     border-radius:0px;
  
+}
+.nav .forecasttemp
+{
+direction:ltr important!
 }
 
 /*
@@ -4171,7 +4186,7 @@ text-decoration:none;
         #cboxPrevious.hover{background-position:-78px -25px;}
         #cboxNext{background-position:-50px 0px; <?echo get_inv_s_align();?>:4.2em;}
         #cboxNext.hover{background-position:-50px -25px;}
-        #cboxClose{background-image: url("../img/close.png");height: 32px;width: 32px; <?=get_inv_s_align()?>:5px;}
+        #cboxClose{background-image: url("../img/close.png");border:none;height: 32px;width: 32px; <?=get_inv_s_align()?>:5px;}
         #cboxClose.hover{}
         .cboxSlideshow_on #cboxPrevious, .cboxSlideshow_off #cboxPrevious{right:66px;}
         .cboxSlideshow_on #cboxSlideshow{background-position:-75px -25px; right:44px;}
@@ -4182,8 +4197,8 @@ text-decoration:none;
 		#cboxContent input[type="checkbox"]{width:auto}
 		#colorbox{border-radius:5px}
                  a.colorbox {position:relative;}
-                .colorbox span{display:none; background-image:url(../images/enlarge_64.png); background-repeat:no-repeat; width:64px; height:64px; position:absolute; left:5px;}
-                 a.colorbox:hover span{display:block;}
+                .colorbox span, .enlarge span{display:none; background-image:url(../images/enlarge_64.png); background-repeat:no-repeat; width:64px; height:64px; position:absolute; left:5px;}
+                 a.colorbox:hover span, a.enlarge:hover span{display:block;}
 		
 body.mce-content-body { 
    background:#E0E7B0;
@@ -4196,8 +4211,7 @@ body.mce-content-body {
 background:#FFFFFF;
 opacity: 0.9;
  text-align:center;
- -webkit-border-radius: 999px;
-    -moz-border-radius: 999px;
+     -moz-border-radius: 999px;
     border-radius: 999px;
     behavior: url(PIE.htc);
 	border: 1px solid;
@@ -4227,6 +4241,7 @@ border:0 none;
 {
 	padding:0.1em 0.3em
 }
+
 .forecasttimebox
 {
 width:90%;clear:both;padding-<?=get_s_align()?>:70px
@@ -4239,3 +4254,66 @@ width:90%;clear:both;padding-<?=get_s_align()?>:70px
 {
 width:100%;height:470px;
 }
+#waiting
+{
+position:absolute
+}
+pre
+{
+word-wrap: normal;
+white-space:pre;
+line-height: 10px;
+font-size: 11px;
+}
+
+#alert_image{
+   padding:0.2em;
+   max-width: 315px;
+   height: auto;
+}
+<? if (in_array("sunset", $css_comp)) { ?>
+<!-- sunset -->
+<?  include_once 'sunset.css';?>
+<!-- / sunset -->
+<? } ?>
+<? if (in_array("sunrise", $css_comp)) { ?>
+<!--  sunrise -->
+<?  include_once 'sunrise.css';?>
+<!-- / sunrise -->
+<? } ?>
+<? if (in_array("cloudy", $css_comp)) { ?>
+<!--  cloudy -->
+<?  include_once 'cloudy.css';?>
+<!-- / cloudy -->
+<? } ?>
+<? if (in_array("dust", $css_comp)) { ?>
+<!--  dust -->
+<?  include_once 'dust.css';?>
+<!--  /night -->
+<? } //night?>
+<? if (in_array("dust-night", $css_comp)) { ?>
+<!--  dust-night -->
+<?  include_once 'dust-night.css';?>
+<!--  /dust-night -->
+<? } //dust-night?>
+<? if (in_array("rain", $css_comp)) { ?>
+<!--  rain -->
+<?  include_once 'rain.css';?>
+<!--  /rain -->
+<? }//rain ?>
+<? if (in_array("snow", $css_comp)) { ?>
+<!--  snow -->
+<?  include_once 'snow.css';?>
+<!--  /snow -->
+<? }//snow ?>
+<? if (in_array("snow_night", $css_comp)) { ?>
+<!--  snow_night -->
+<?  include_once 'snow_night.css';?>
+<!--  /snow_night -->
+<? }//snow_night ?>
+<? if (in_array("mobile", $css_comp)) { ?>
+<!--  mobile -->
+<?  include_once 'mobile.php'."?lang=".$lang_idx;?>
+<!--  /mobile -->
+<? }//mobile ?>
+

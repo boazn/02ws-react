@@ -1,5 +1,6 @@
 body{
     background-image:url("../img/bg_cloudy2.png");
+    color:#000;
 }
 .cloud1, .cloud2, .cloud3, .cloud4, .cloud-big
 {
@@ -34,4 +35,24 @@ body{
     background-image: -moz-linear-gradient(top, #B4CCDB, #90B4C4);
     background-image: -ms-linear-gradient(top, #B4CCDB, #90B4C4);
     background-image: -o-linear-gradient(top, #B4CCDB, #90B4C4);
+}
+a {
+	color:#3D718E;
+}
+h2 {
+    color:#fff;
+}
+.white_box h2{
+    color:#000;
+}
+.more_icons a{
+     color:#C3D0D6;
+}
+
+.more_icons a:hover{
+     color:#fff;
+}
+
+#outside_links a {
+     color:#000;
 }

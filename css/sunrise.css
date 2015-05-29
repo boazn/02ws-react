@@ -1,5 +1,6 @@
 
 body {
+    background-color: #BFDDE0;
     background-image:url("../img/bg_sunrise.png");
     background-repeat:repeat;
     color:#000;
@@ -38,4 +39,9 @@ cloud1:after, .cloud3:after, .cloud4:after, .cloud2:after, .cloud-big:after,
     background-image: -moz-linear-gradient(top, #FFFCED, #C8E1DF);
     background-image: -ms-linear-gradient(top, #FFFCED, #C8E1DF);
     background-image: -o-linear-gradient(top, #FFFCED, #C8E1DF);
+}
+ins, mark{
+    background: #E7E6C2;
+    text-decoration: none;
+color: #000;
 }

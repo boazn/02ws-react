@@ -1,15 +1,19 @@
 
 body {
+    background-color:#648AA5;
     background-image:url("../img/bg_rain.png");
     background-repeat:repeat;
-    color:#fff;
+    color:#000;
+}
+a {
+	color:#000;
 }
 #logo{
 	background-image:url("../img/logo_rain.png");
         width: 130px;
 }
 .clothes_text {
-    color:#fff;
+    color:#000;
 }
 
 #clothes_line {
@@ -228,11 +232,11 @@ body {
 }
 
 h2 {
-    color:#fff;
+    color:#000;
 }
 
 .more_icons a{
-     color:#C3D0D6;
+     color:#fff;
 }
 
 .more_icons a:hover{
@@ -257,7 +261,7 @@ h2 {
 }
 
 .main_nav a{
-    color:#fff;
+    color:#000;
 }
 
 .main_nav a:hover{

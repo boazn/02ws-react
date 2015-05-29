@@ -2,7 +2,7 @@
 body {
     background-image:url("../img/bg_night.png");
     background-repeat:repeat;
-    color:#fff;
+    color:#B3C0CC;
 }
 #logo{
 	background-image:url("../img/logo_snow_white.png");
@@ -90,36 +90,36 @@ h2 {
 .cloud1, .cloud2, .cloud3, .cloud4, .cloud-big
 {
     background-color: #EBFBFD;
-    background-image: -webkit-linear-gradient(top, #EBFBFD, #D3E8EB);
-    background-image: -moz-linear-gradient(top, #EBFBFD, #CDF5FA);
-    background-image: -ms-linear-gradient(top, #EBFBFD, #CDF5FA);
-    background-image: -o-linear-gradient(top, #EBFBFD, #CDF5FA);
+    background-image: -webkit-linear-gradient(top, #D7E7E9, #D3E8EB);
+    background-image: -moz-linear-gradient(top, #D7E7E9, #CDF5FA);
+    background-image: -ms-linear-gradient(top, #D7E7E9, #CDF5FA);
+    background-image: -o-linear-gradient(top, #D7E7E9, #CDF5FA);
 }
 
 .cloud1:after, .cloud3:after, .cloud4:after,.cloud2:after, .cloud-big:after  {
      background-color: #EBFBFD;
     background-image: -webkit-linear-gradient(top, #F6FAFB, #DBECEF);
-    background-image: -moz-linear-gradient(top, #EBFBFD, #D7F7FB);
-    background-image: -ms-linear-gradient(top, #EBFBFD, #D7F7FB);
-    background-image: -o-linear-gradient(top, #EBFBFD, #D7F7FB);
+    background-image: -moz-linear-gradient(top, #D7E7E9, #D7F7FB);
+    background-image: -ms-linear-gradient(top, #D7E7E9, #D7F7FB);
+    background-image: -o-linear-gradient(top, #D7E7E9, #D7F7FB);
 }
 
 .cloud1:before, .cloud2:before, .cloud3:before, .cloud4:before, .cloud-big:before,
 .cloud1-more, .cloud2-more, .cloud3-more, .cloud4-more, .cloud-big-more,
 .cloud1-more:after, .cloud2-more:after, .cloud3-more:after, .cloud4-more:after, .cloud-big-more:after {
     background-color: #EBFBFD;
-    background-image: -webkit-linear-gradient(top, #fff, #DBECEF);
-    background-image: -moz-linear-gradient(top, #fff, #D7F7FB);
-    background-image: -ms-linear-gradient(top, #fff, #D7F7FB);
-    background-image: -o-linear-gradient(top, #fff, #D7F7FB);
+    background-image: -webkit-linear-gradient(top, #D7E7E9, #DBECEF);
+    background-image: -moz-linear-gradient(top, #D7E7E9, #D7F7FB);
+    background-image: -ms-linear-gradient(top, #D7E7E9, #D7F7FB);
+    background-image: -o-linear-gradient(top, #D7E7E9, #D7F7FB);
 }
 
 .cloud1-more:before, .cloud2-more:before, .cloud3-more:before, .cloud4-more:before, .cloud-big-more:before {
     background-color: #EBFBFD;
-    background-image: -webkit-linear-gradient(top, #fff, #E9F3F5);
-    background-image: -moz-linear-gradient(top, #fff, #E1F9FC);
-    background-image: -ms-linear-gradient(top, #fff, #E1F9FC);
-    background-image: -o-linear-gradient(top, #fff, #E1F9FC);
+    background-image: -webkit-linear-gradient(top, #D7E7E9, #E9F3F5);
+    background-image: -moz-linear-gradient(top, #D7E7E9, #E1F9FC);
+    background-image: -ms-linear-gradient(top, #D7E7E9, #E1F9FC);
+    background-image: -o-linear-gradient(top, #D7E7E9, #E1F9FC);
 }
 .cloud-lg1{
 	background-image:url("../img/cloud-lg1.png");

@@ -1,5 +1,6 @@
 
 body {
+    background-color:#44566A;
     background-image:url("../img/bg_night.png");
     background-repeat:repeat;
     color:#fff;
@@ -142,15 +143,12 @@ a {
 .now_messages a .white_box {
      background:rgba(255, 255, 255, 0.7);
 }
-#about a {
-    color:#C3D0D6;
-}
 
 .email_form .search-query{
      background:rgba(255, 255, 255, 0.7);
 }
 
-#did_you_know a {
+#did_you_know a, #about{
     color:#C3D0D6;
 }
 
@@ -319,5 +317,8 @@ background: rgba(255, 255, 255, 0.4);
 #forum_sidebar a
 {
     color:#2C3A42
+}
+ins, mark{
+    background: #616F9B;
 }
 
