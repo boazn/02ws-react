@@ -78,7 +78,7 @@ if (isset($_POST['SendButton'])) {
 				$msgSpecial .= "<br/>"."<b>coldmeter</b> --> ".$_POST['coldmeter'];
 			$msgSpecial = str_replace("\"", "''", $msgSpecial);
 			$msgSpecial = $msgSpecial."<br /><br />".$_POST['message'];
-			$result = send_Email($msgSpecial, ME, $email, 'feedback from 02ws', "");
+			$result = send_Email($msgSpecial, ME, $email, $email, "", array('feedback to 02ws', 'משוב על ירושמיים'));
 		if ($result == ""){
 			echo "<fieldset class=\"topbase slogan afont\" style=\"height:200px\"><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></fieldset>";
 			$sent = true;
@@ -269,20 +269,10 @@ Email:
 </div>
 <div class="float">
 	<? if (!$sent) {?>
-	<input type="submit" name="SendButton" value="<? if (isHeb()) echo "שלח"; else echo "Send";?>" style="width:300px;font-size: 1.5m;margin:0 1em;padding:0.3em 1.2em;cursor:pointer" class="base big inv"/>
+	<input type="submit" name="SendButton" value="<? if (isHeb()) echo "שליחת הודעה"; else echo "Send";?>" style="width:300px;font-size: 1.5m;margin:0 1em;padding:0.3em 1.2em;cursor:pointer" class="base big inv"/>
 	<?} ?>
 </div>
 </form>
-<div style="clear:both"></div>
-<div <? if (isHeb()) echo "dir=\"rtl\""; ?> <? echo get_align(); ?> style="font-size: 1.5m;padding:1em;margin:1em" class="inv">
-
-<a href="<? echo get_query_edited_url($url_cur, 'section', 'SendEmailForm.php');?>" title="<? echo $CONTACT_ME[$lang_idx];?>" class="hlink">
-	<? if (isHeb()) echo "אם יש לכם משהו אחר לומר כנסו לכאן -"; else echo "If you have something else to say - click here";?>
-</a>
-</div>
-<br />
-<br />
-
 <? 
 if ($emailnotvalid)
 {

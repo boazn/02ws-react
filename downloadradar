@@ -1,3 +1,3 @@
 #!/bin/bash
 # wget -d -O /home/boazn/public/02ws.com/public/images/radar/imsradar`date +%y%m%d%H%M`.jpg 'http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=' 
-curl --connect-timeout 120 --retry 2 -m 120 -o  /home/boazn/public/02ws.com/public/images/radar/imsradar`date +%y%m%d%H%M`.jpg 'http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=' 
+curl -vs --location -c /home/boazn/public/02ws.com/public/cookies.txt -b /home/boazn/public/02ws.com/public/cookies.txt --max-redirs 50 --connect-timeout 120 --retry 2 --max-time 120  -o  /home/boazn/public/02ws.com/public/images/radar/imsradar`date +%y%m%d%H%M`.jpg 'http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=' 2>>/var/log/cron.log

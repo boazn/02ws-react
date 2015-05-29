@@ -5,5 +5,16 @@
         <data xmlns="http://www.netbeans.org/ns/php-project/1">
             <name>Station</name>
         </data>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>btn</word>
+            <word>btns</word>
+            <word>datestart</word>
+            <word>forecasttemp</word>
+            <word>paramtrend</word>
+            <word>paramvalue</word>
+            <word>timefh</word>
+            <word>trendstable</word>
+            <word>valleytemp</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>

@@ -23,7 +23,7 @@ function insertNewMessage ($survey_id, $value)
 	//}
 }
 
-if (isset($_POST['SendButton'])) {
+if (isset($_POST['SendSurveyButton'])) {
 
 		$msgSent = true;
 		$result = insertNewMessage($_POST['survey_id'], $_POST['value_chosen']);
@@ -44,7 +44,7 @@ if (isset($_POST['SendButton'])) {
 	  echo("page came from...".$_SERVER['HTTP_REFERER']."");
 	}
 
-}
+
 $query = "SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id";
 $result = db_init($query);
 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -68,11 +68,16 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 
 
-<? if (!$msgSent) {?>
+<? if (!$msgSent) {?>
+
 <div class="inv_plain_3" style="clear:both;text-align:center;padding:1em">
-	<input type="submit" name="SendButton" value="Vote"/>
+	<input type="submit" name="SendSurveyButton" value="Vote"/>
 	<?=get_arrow()?><?=get_arrow()?>
-</div>
-<? } ?>
+
 </div>
-</form>
+
+<? } ?>
+
+</div>
+</form>
+

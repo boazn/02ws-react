@@ -74,6 +74,8 @@ var newDiv=document.createElement("div");
 var prevDiv;
 newDiv.id="replyInputsDiv";
 newDiv.className = "white_box span3";
+$("#new_post_alert").toggle();
+$("#new_post_private").toggle();
 $("#new_post_container").removeClass("span7").addClass("span3");
 $("#subject_container").hide();
 newDiv.innerHTML=topDiv.innerHTML;
@@ -154,10 +156,10 @@ $(".href").colorbox({width:"35%", inline:true, href:"#href_dialog"});
 $(".imghref").colorbox({width:"35%", inline:true, href:"#href_img_dialog"});
 $(".mood").colorbox({width:"35%", inline:true, href:"#moods_dialog"});
 $(".user_icon").colorbox({width:"35%", inline:true, href:"#user_icon_dialog"});
-$("#login").colorbox({width:"255px", height:"270px", inline:true, top:"40px", href:"#loginform"});
-$(".register").colorbox({width:"255px", height:"410px", inline:true, top:"40px", fixed:true,href:"#registerform"});
-$("#forgotpass").colorbox({width:"255px", height:"200px", inline:true, top:"40px", fixed:true, href:"#passforgotform",onOpen:function(){}});
-$("#updateprofile").colorbox({width:"255px", inline:true, top:"40px",fixed:true, href:"#profileform"});
+$("#login").colorbox({width:"260px", height:"290px", inline:true, top:"40px", href:"#loginform"});
+$(".register").colorbox({width:"260px", height:"400px", inline:true, top:"40px", fixed:true,href:"#registerform"});
+$("#forgotpass").colorbox({width:"260px", height:"200px", inline:true, top:"40px", fixed:true, href:"#passforgotform",onOpen:function(){}});
+$("#updateprofile").colorbox({width:"260px", inline:true, top:"40px",fixed:true, href:"#profileform"});
 $(".icon_forecast").colorbox({width:"35%", inline:true, href:"#icons_dialog"});
 $(".temphigh").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
 $(".tempnight").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
@@ -474,27 +476,30 @@ function closeNewPost() {
     document.getElementById("forum_hr").style.marginTop = "10px";
 }
 
- function change_icon(whichSide) {
-    var rightVal = document.getElementById("user_icon_contentbox").style.right;
+ function change_icon(whichSide, arrowdiv) {
+    var user_icon_contentbox = $(arrowdiv).parent().find("#user_icon_contentbox");
+    var rightVal = user_icon_contentbox.css("right");
+    
     var x;
     if (rightVal == "")
         x=0;
     else
-        x = parseInt(document.getElementById("user_icon_contentbox").style.right);
-    var w = document.getElementById("user_icon_contentbox").offsetWidth;
+        x = parseInt(rightVal);
+    var w = user_icon_contentbox.width();
     var started_icon = $("#chosen_user_icon").val();
     var startedNode = $("#user_icon_contentbox").find("." + started_icon);
     if ((whichSide == "left") && (x<0)) {
-        $("#user_icon_contentbox").animate({"right": (x+36) + "px"}, 200, "swing");
-        // movestartedNode down
-        var newclass = $(startedNode).parent().prev("div").children().first().attr("class")
+        //user_icon_contentbox.animate({"right": (x+36) + "px"}, "fast");
+        user_icon_contentbox.css("right", (x+36) + "px");
+         var newclass = $(startedNode).parent().prev("div").children().first().attr("class");
          $("#chosen_user_icon").val(newclass);
-    } else if ( (whichSide == "right") && (x>(50-w)) ) {;
-        $("#user_icon_contentbox").animate({"right": (x-36) + "px"}, 200, "swing");
-         // movestartedNode down
-        var newclass = $(startedNode).parent().next("div").children().first().attr("class")
-         $("#chosen_user_icon").val(newclass);
+    } else if ( (whichSide == "right") && (x>(50-w)) ) {
+        //user_icon_contentbox.animate({"right": (x-36) + "px"}, "fast");
+        user_icon_contentbox.css("right", (x-36) + "px");
+        var newclass = $(startedNode).parent().next("div").children().first().attr("class");
+        $("#chosen_user_icon").val(newclass);
     }
+    return newclass;
 }
 function change_icon_to(rightValue) {
 $("#user_icon_contentbox").animate({"right": rightValue}, 400, "swing");
@@ -564,11 +569,6 @@ function closeLinktoMessage()
 {
         $("#cboxClose").click();
 }
-function addMoodToMessage(mood)
-{
-        $("#new_post_emoticon").html("<a class=\"mood\" title=\"אייקון שמתאים למצב רוחך\" href=\"javascript:void(0)\">" + "<div class='" + mood.className + "' id=\"mood_img\" title=\"" + getMoodTitle(mood.className) + "\" />" + "</a>");
-        $("#cboxClose").click();
-}
 function attachEnter(){
 		   $("#loginform_password").keyup(function(event){
 		   if(event.keyCode == 13){
@@ -593,15 +593,18 @@ function attachEnter(){
                  $("#name").html(jsonT.user.display);
                  $("#user_name").html(jsonT.user.display);
                  $("#user_icon").addClass(jsonT.user.icon);
-                 if (jsonT.user.icon != "")
-                    $("#chosen_user_icon").val(jsonT.user.icon);
-                else
-                    $("#chosen_user_icon").val($("#user_icon_contentbox").children().first().children().first().attr('class'));
+                 // chosen_user_icon should be the first - change_icon will update this to the DB value
+                 $("#chosen_user_icon").val($("#user_icon_contentbox").children().first().children().first().attr('class'));
                  $("#profileform_user_icon").addClass(jsonT.user.icon);
                  $("#profileform_displayname").val(jsonT.user.display);
                  $("#current_display_name").val(jsonT.user.display);
                  $("#profileform_nicename").val(jsonT.user.nicename);
                  $("#profileform_priority").prop("checked", jsonT.user.priority);
+                 var nextClass = $("#profileform #user_icon_contentbox").children().first().children().first().attr('class');
+                 if ((jsonT.user.icon != "" )&& (jsonT.user.icon != "admin_avatar"))
+                    while (jsonT.user.icon != nextClass){
+                       nextClass = change_icon('right', $("#profileform .icon_right"));
+                    }
         }
         function signout_from_server(lang, limit, update)
         {
@@ -641,6 +644,7 @@ function attachEnter(){
 		var body = $('#new_post_ta').val();
                 var mood_elm = "";
                 var private = 0;
+                var alert_to_sender = 0;
 		var mood_img = document.getElementById('mood_img');
 		if ((mood_img != null)&&(mood_img != 'undfined')) 
 		{
@@ -663,6 +667,9 @@ function attachEnter(){
                 if ($('#check_private_msg').is(':checked')){
                     private = 1;
                     };
+                 if ($('#check_alert_msg').is(':checked')){
+                    alert_to_sender = 1;
+                    };
 		
 		var idx = $('#current_post_idx').val();
                 var msgDetails = document.getElementById('msgDetails');
@@ -679,7 +686,7 @@ function attachEnter(){
 		
 		restoreTopDiv();
 		
-		var postData = "lang=" + lang + "&from=" + limit + "&to=" + to + "&private=" + private +"&startLine=" + start + "&category=" + category + "&idx=" + idx + "&name=" + escape(encodeURI(name)) + "&searchname=" + escape(encodeURI(searchname)) + "&body=" + escape(encodeURI(body)) + "&mood=" + escape(encodeURI(mood_elm))  + "&update=" + update;
+		var postData = "lang=" + lang + "&from=" + limit + "&to=" + to + "&alert=" + alert_to_sender + "&private=" + private +"&startLine=" + start + "&category=" + category + "&idx=" + idx + "&name=" + escape(encodeURI(name)) + "&searchname=" + escape(encodeURI(searchname)) + "&body=" + escape(encodeURI(body)) + "&mood=" + escape(encodeURI(mood_elm))  + "&update=" + update;
 		if ($('#current_forum_update_display').val() == 'R')
                     fillMessage('<img src="img/loading.gif" alt="loading" width="50" height="50"/>');
 		$('input[name="SendButton"]').attr("disabled", "disabled");
@@ -1040,7 +1047,7 @@ function startup(lang, from, update)
                  }
                 });
                 attachEnter();
- 
+                 
      }
      function tinyExecCommand(editor_id, elm, command, user_interface, value) {
         var editor = tinyMCE.get(editor_id);
@@ -1077,3 +1084,7 @@ trMouseOver();
       //  top.location.href="stationo.php?lang="+<?=$lang_idx?>;
     }
 }(jQuery));
+/*if (isMobile){
+    var loc = document.URL;
+    top.location.href="small.php?size=l&lang="+<?=$lang_idx?>;
+}*/

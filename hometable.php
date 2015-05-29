@@ -162,7 +162,26 @@ mainCol
 									 echo "<li class=\"timefh\" style=\"text-align:center;width:8%\">".$hour_f['time']."</li>";
 									 echo "<li class=\"forecasttemp\" style=\"text-align:center;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
 									 echo "<li class=\"\" style=\"text-align:center;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"30\" width=\"45\" alt=\"".$hour_f['icon']."\" /></li>";
-									 echo "<li class=\"\" style=\"\">".$hour_f['wind'].",</li>";
+                                                                         if ($hour_f['wind'] > 30){
+                                                                                    $windtitle=$EXTREME_WINDS[$lang_idx];
+                                                                                    $wind_class="high_wind";
+                                                                           }
+
+                                                                          else if ($hour_f['wind'] > 20){
+                                                                                    $windtitle=$STRONG_WINDS[$lang_idx];
+                                                                                    $wind_class="high_wind";
+                                                                           }
+
+                                                                          else if ($hour_f['wind'] > 10){
+                                                                                    $windtitle=$MODERATE_WINDS[$lang_idx];
+                                                                                    $wind_class="moderate_wind";
+                                                                           }
+
+                                                                          else{
+                                                                                    $windtitle=$WEAK_WINDS[$lang_idx];
+                                                                                    $wind_class="light_wind";
+                                                                           }
+									 echo "<li style=\"margin-top:0;\"><div title=\"".$windtitle."\" class=\"wind_icon ".$wind_class." \"></div></li>";
 									 echo "<li class=\"\" style=\"width:55%\">".$hour_f['title']."</li>";
 									 echo "</ul>";
 									 }

@@ -61,8 +61,8 @@ theImages = new Array();      //holds the images
 imageNum = new Array();       //keeps track of which images to omit from loop
 
 //********* SET UP THESE VARIABLES - MUST BE CORRECT!!!*********************
-
-var numOfPics = 20;
+<? if ($_GET['pics'] == "") $numOfPics = 10 ; else $numOfPics = $_GET['pics'];  ?>
+var numOfPics = <?=$numOfPics?>;
 
 modImages = new Array();
 
@@ -76,7 +76,7 @@ for (i = 0; i < numOfPics ; i++)
 }
 <?
 	
-	$radarpics = getLastFilesFromDir("images/radar", 20);
+/*	$radarpics = getLastFilesFromDir("images/radar", $numOfPics);
 	$radarpics = array_reverse($radarpics);
 	$archradar = 0;
 	foreach ($radarpics as $rpic)
@@ -87,7 +87,7 @@ for (i = 0; i < numOfPics ; i++)
 		echo "modImages[".$archradar."] = imagepath;";
 		$archradar = $archradar + 1;
 	}
-	
+*/	
 ?>
 
 first_image = 1;
@@ -647,7 +647,20 @@ function animation()
   count = first_image;
 
 }
-
+function changeNumOfPics (pics)
+{
+	//alert (inprofile);
+	toggle('waiting');
+	document.getElementById('hiddenPics').value=pics;
+	var loc = "<? echo get_url();?>";
+	loc = loc.replace(/pics=\d+/g, "pics=" + pics);
+        if (loc.indexOf("pics") < 0)
+            loc = loc + "&pics=" + pics;
+	top.location.href=loc;
+	//document.profileChanger.action=loc;
+	//document.profileChanger.submit();
+	
+}
 
 
 function startup()
@@ -684,7 +697,7 @@ function startup()
 
 		 newDiv.id = "dwnStatus" + (i);
 
-		 newDiv.style.width = "100px";
+		 newDiv.style.width = "50px";
 
 		 newDiv.style.height = "18px";
 
@@ -794,10 +807,10 @@ function startup()
 <? if (isHeb()) echo "טוען..."; else echo "Loading...";?>&nbsp;
 <img src="images/loading.gif" alt="loading" width="32" height="32"/>
 </div>
-<div style="clear:both;width:140px;float:<?echo get_s_align();?>" <? if (isHeb()) echo "dir=\"rtl\""; ?>>                        
-<br/>
+<div style="clear:both;width:100px;float:<?echo get_s_align();?>;position:absolute;<?echo get_s_align();?>:0" <? if (isHeb()) echo "dir=\"rtl\""; ?>>                        
+<br/><br/><br/>
 <a href="javascript: func()" onclick="launch();toggle('play')">
-	<img id="play" width="100" height="100" src="images/play.png" alt="start התחל"/>
+	<img id="play" width="80" height="80" src="images/play.png" alt="start התחל"/>
 </a>
 <br/>
 <a href="javascript: func()" onclick="incrementimage(++current_image)">
@@ -822,38 +835,45 @@ function startup()
 	<? if (isHeb()) echo "הרצה"; else echo "Play"; ?>
 </a><?=get_arrow()?><?=get_arrow()?>
 </div>
-<div style="margin:0 0.5em" class="inv_plain_3_zebra">
+<div style="margin:0 0.5em;padding: 2em 0.5em;" class="inv_plain_3_zebra">
 <a href="javascript: func()" onclick="change_speed(delay_step)">
 	<? if (isHeb()) echo "לאט יותר"; else echo "slower"; ?>
 </a><?=get_arrow()?>
 </div>
-<div style="margin:0 0.5em" class="inv_plain_3_zebra">
-<a href="javascript: func()" onclick="change_speed(-delay_step)">
+<div style="margin:0 0.5em;padding: 2em 0.5em;" class="inv_plain_3_zebra">
+<a href="javascript: func()" onclick="change_speed(-delay_step)" >
 	<? if (isHeb()) echo "מהר יותר"; else echo "faster"; ?>
 </a><?=get_arrow()?>
 </div>
-<div style="width:140px;float:<?echo get_s_align();?>;padding:0.2em 0 0 0;z-index:50">
+<div style="width:100px;float:<?echo get_s_align();?>;padding:0.2em 0 0 0;z-index:50">
 
 </div>
 <div style="clear:both;<? if (isHeb()) echo "direction:rtl"; ?>"><span id="speedinterval"></span><? if (isHeb()) echo " פריים לשנייה "; else echo " frame per sec"; ?></div>
 <br/>
+<form method="post" name="profileChanger" action="" style="background:transparent;" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
+				<? echo "# ".$PICS[$lang_idx];?>
+				<select size="1" id="profile" name="profile" class="inv_plain_2" onchange="changeNumOfPics(this.options[this.selectedIndex].value)" <? if (isHeb()) echo "dir=\"rtl\""; ?>> 
+						<option	<? if ($_REQUEST['pics'] == "10") echo " selected ";?> value="10">10</option>
+						<option	<? if ($_REQUEST['pics'] == "15") echo " selected ";?> value="15">15</option>
+						<option	<? if ($_REQUEST['pics'] == "20") echo " selected ";?> value="20">20</option>
+						
+				</select>
+    <input type="hidden" name="myPHPvar" id="hiddenPics" value="" />
+    </form>
 </div>
-<div style="margin:0.5em;width:120px;float:<?echo get_s_align();?>;z-index:2;" id="downloadStatus">
+<div style="margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:90px;top:50px;position:absolute" id="downloadStatus">
 
 </div>
-<div style="width:520px;float:<?echo get_s_align();?>;z-index:0" id="radarimg" >
+<div style="width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:50px;" id="radarimg" >
 
  <img name="animation" id="noBaseGraph" src="http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=&time=<?=$year.$month.$day.$hour.$min?>" width="512px" height="512px" alt="IMS radar" style="z-index:0"/>
 
- <div id="locdiv" style="position:relative;margin:0;padding:0;top:-235px;left:292px;width:8px;height:8px;z-index:100;background-color:red" >
-
- </div>
  <div style="margin:0.5em">
 	<img src="images/radar_scale_eng.jpg" alt="scale of rain rate" /><br />
 	<? echo $SOURCE[$lang_idx].": ".$IMS[$lang_idx];?>
 </div>
 </div>
-<div style="float:<?echo get_s_align();?>;z-index:0" id="radarad">
+<div style="float:<?echo get_s_align();?>;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
 <script type="text/javascript"><!--
 google_ad_client = "pub-2706630587106567";
 /* 160x600, created 9/24/10 */
@@ -874,7 +894,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
 </div>
 </div>
-<div style="width:120px;left:480px;top:100px;position:absolute;z-index:2">
+<div style="width:120px;left:370px;top:520px;position:absolute;z-index:2">
 
 	
 
@@ -901,7 +921,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		$archradar = 0;
 		foreach ($latestRadarDays as $lradar)
 		{
-            if (stristr($lradar[1], "o")) 
+            if (stristr($lradar[1], "dailyradar")) 
 			{$archradar = $archradar + 1;
 			?>
 			

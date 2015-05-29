@@ -90,7 +90,7 @@ if (searchNext ($tok, "Rain:"))//rainy days
 if ($_GET["debug"] >= 1)
 	echo "<b>Stared DBTasks.....";
 
-db_init("");
+db_init("", "");
 
 if ($error_db) {
 	 $seasonTillNow->set_raindiffav("MIS"); 
@@ -182,19 +182,73 @@ $detailedforecast = "";
 $forecastlevel = "";
 $taf_contents = "";
 $detailedforecast = apc_fetch('descriptionforecast'.$lang_idx);
+if ($detailedforecast)
+    $_SESSION['detailedforecast'] = $detailedforecast;
+else
+{
+    $result = db_init("SELECT * FROM  `content_sections` WHERE TYPE =  'forecast' and lang=?", $lang_idx);
+    while ($line = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+        $detailedforecast = $line["Description"];
+        apc_store('descriptionforecast'.$line["lang"], $line["Description"]);
+        apc_store('descriptionforecasttime'.$line["lang"], $line["updatedTime"]);
+    }
+}
 $detailedforecast = str_replace("\"", "'", $detailedforecast);
 $detailedforecast = replaceDays(getLocalTime(strtotime(apc_fetch('descriptionforecasttime'.$lang_idx))))."<br/>".$detailedforecast;
-$_SESSION['detailedforecast'] = $detailedforecast;
+
+
+
 
 if (apc_fetch('taf'))
    $taf_contents = apc_fetch('taf');
-$_SESSION['taf_contents'] = $taf_contents;
+if ($taf_contents)
+    $_SESSION['taf_contents'] = $taf_contents;
+else
+{
+    $results = db_init("SELECT * FROM content_sections WHERE TYPE =  'taf' and lang=?", 0);
+    while ($line = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+        if ($line["active"] == 1){
+           $taf_contents = $line["Description"];
+           apc_store('taf', $taf_contents);
+        }
+    }
+}
 
 $MainStory = apc_fetch('mainstory'.$lang_idx);
-$_SESSION['current_story'] = $MainStory->get_description();
+if ($MainStory)
+    $_SESSION['current_story'] = $MainStory->get_description();
+else {
+    $query = "call GetCurrentStory";
+    $result = mysqli_query($link, $query) or die("Error mysqli_query: ".mysqli_error($link));
+    while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        if ($line["lang"] == $lang_idx){
+        $_SESSION['current_story'] = $line["Description"];
+        $MainStory = new ContentSection();
+        $MainStory->set_description($line["Description"]);
+        $MainStory->set_img_src($line["img_src"]);
+        $MainStory->set_href($line["href"]);
+        $MainStory->set_Title($line["Title"]);
+        }
+    }
+    
+    apc_store('mainstory'.$lang_idx, $MainStory);
+}
 
 
 $forecastDaysDB = apc_fetch('forecastDaysDB');
+if (!$forecastDaysDB)
+{
+    $results = db_init("SELECT * From forecast_days ORDER BY day", "");
+    $forecastDaysDB = array();
+    while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
+          
+            if ($line["active"] == "1")
+             {
+                array_push($forecastDaysDB, array('lang0' => urlencode($line["lang0"]), 'lang1' => urlencode($line["lang1"]),  'TempLow' => $line["TempLow"], 'TempHigh' => $line["TempHigh"], 'date' => $line["date"], 'day_name' => $line["day_name"], 'icon' => $line["icon"], 'TempNight' => $line["TempNight"], 'TempNightCloth' => $line["TempNightCloth"], 'TempHighCloth' => $line["TempHighCloth"]));
+             }
+    }
+}
+apc_store('forecastDaysDB',$forecastDaysDB); 
 $day_idx = 1;
  for ($i = 0; $i < count($forecastDaysDB) ; $i++) {
      // $todayForecast_date is the previous day from temp forecast
@@ -207,8 +261,8 @@ $day_idx = 1;
            $todayForecast->set_temp_day($line["TempHigh"], null);
            $todayForecast->set_temp_night($line["TempNight"], null);
            $todayForecastShortDate = $line["date"];
-           list($fday_l, $fmonth_l) = split('[/.-]', $line["date"]);
-            list($fday, $fmonth, $fyear) = split('[/.-]', $todayForecast_date); 
+           list($fday_l, $fmonth_l) = preg_split('[/.-]', $line["date"]);
+            list($fday, $fmonth, $fyear) = preg_split('[/.-]', $todayForecast_date); 
 
     }
     else if ($day_idx == 2)
@@ -265,7 +319,6 @@ $averageTillNow->set_rain($currentDecadeRain + $precDelta);
 $_SESSION['averageTillNow'] = $averageTillNow;
 
 $monthAverge = apc_fetch('monthAverage');
-$_SESSION['monthAverge'] = $monthAverge; 
 
 $seasonTillNow->set_rainydays(apc_fetch('totalRainyDays'));
 $_SESSION['seasonTillNow'] = $seasonTillNow;
@@ -275,9 +328,9 @@ if ($_GET['debug'] >= 4){
 }
 
  $seasonTillNow->set_raindiffav($seasonTillNow->get_rain() - $averageTillNow->get_rain());
- @$seasonTillNow->set_rainperc (round($seasonTillNow->get_rain()/$averageTillNow->get_rain()*100));
+ $seasonTillNow->set_rainperc (round($seasonTillNow->get_rain()/$averageTillNow->get_rain()*100));
  $thisMonth->set_raindiffav($thisMonth->get_rain() - $monthAverge->get_rain());
- @$thisMonth->set_rainperc(round($thisMonth->get_rain()/$monthAverge->get_rain()*100));
+ $thisMonth->set_rainperc(round($thisMonth->get_rain()/$monthAverge->get_rain()*100));
  $thisMonth->set_rainydaysdiffav($thisMonth->get_rainydays() - $monthAverge->get_rainydays());
  $wholeSeason->set_raindiffav($seasonTillNow->get_rain() -  $wholeSeason->get_rain());
  $wholeSeason->set_rainydaysdiffav($seasonTillNow->get_rainydays() - $wholeSeason->get_rainydays());

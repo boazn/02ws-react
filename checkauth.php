@@ -178,9 +178,7 @@ function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_dis
     
     $key = base64_encode(mcrypt_create_iv(20,MCRYPT_DEV_URANDOM)); // 
     $link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-    
-    //echo $query;
-    $result = db_init($query);
+    $link->query("SET NAMES utf8;");
     $email = $link->real_escape_string ($email);
     $user = $link->real_escape_string ($user);
     $pass = $link->real_escape_string ($pass);
@@ -194,7 +192,7 @@ function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_dis
       // now send_email with activation code
         $key = urlencode($key);
         $href="http://www.02ws.co.il/regConfirm.php?k=$key&email=$email&user=$user&lang=$lang_idx";
-        send_Email("<a href=\"$href\" >".$CLICK_TO_CONFIRM[$lang_idx]."</a>.<br /><br /><br />", $email, EMAIL_ADDRESS, $REGISTRATION_TO_02WS[$lang_idx], "");
+        send_Email("<a href=\"$href\" >".$CLICK_TO_CONFIRM[$lang_idx]."</a>.<br /><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array($REGISTRATION_TO_02WS[$lang_idx],$REGISTRATION_TO_02WS[$lang_idx]));
         echo "0";
     }
     else
@@ -204,20 +202,21 @@ function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_dis
 function user_wants_to_update_profile($email, $pass, $user_nice_name, $user_display_name, $user_icon, $priority){
     $email = strtolower($email);
     $link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+    $link->query("SET NAMES utf8;");
     $email = $link->real_escape_string ($email);
     $user_nice_name = $link->real_escape_string ($user_nice_name);
     $user_display_name = $link->real_escape_string ($user_display_name);
-    $query = "update users set u_pswd=?, user_nicename=?, display_name=?, user_icon=?, priority=? where lower(email)=?";
+    $query = "update users set u_pswd=?, user_nicename=?, display_name=?, user_icon=?, priority=? where LOWER(email)=?";
     //echo $query;
      $stmt = $link->stmt_init();
-     $stmt->bind_param('ssssis' , $pass, $user_nice_name, $user_display_name, $user_icon, $priority, $email);
+     $stmt->prepare($query);
+     $stmt->bind_param('ssssds' , $pass, $user_nice_name, $user_display_name, $user_icon, $priority, $email);
     $stmt->execute();
-    $stmt->close();
-       
-    if(mysqli_affected_rows($link)==1)
+          
+    if($stmt->affected_rows==1)
     {
     	echo "0";
-      
+        logger("user_wants_to_update_profile: succeed ".$email." ".$user_nice_name." ".$user_display_name." ".$user_icon);
     }
     else
     {
@@ -225,7 +224,9 @@ function user_wants_to_update_profile($email, $pass, $user_nice_name, $user_disp
         echo "0";
         else
         echo "error: ".mysqli_errno ($link).", ".mysqli_error ($link); 
+        logger("user_wants_to_update_profile mysqli_affected_rows=0: ".mysqli_errno ($link)." ".mysqli_error ($link).$email." ".$user_nice_name." ".$user_display_name." ".$user_icon);
     }
+    $stmt->close();
 }
 function forgot_password($email)
 {
@@ -240,7 +241,7 @@ function forgot_password($email)
       else
       {
           $href="http://www.02ws.co.il/regConfirm.php?email=$email&lang=$lang_idx";
-          send_Email("<a href=\"$href\" >".$CLICK_TO_RESET[$lang_idx]."</a>.<br /><br />", $email, EMAIL_ADDRESS, "02ws ".$FORGOT_PASS[$lang_idx], "");
+          send_Email("<a href=\"$href\" >".$CLICK_TO_RESET[$lang_idx]."</a>.<br /><br />", $email, EMAIL_ADDRESS, ""  , "", array("02ws ".$FORGOT_PASS[$lang_idx],"02ws ".$FORGOT_PASS[$lang_idx]));
           echo $CHECK_EMAIL_RESET_PASS[$lang_idx];
       }
 }
@@ -292,10 +293,10 @@ function user_login($user_id){
     */
    function confirmUserPass($email, $password, $isrememberme){
       /* Add slashes if necessary (for query) */
-     global $PROBLEM_USER_PASSWORD, $lang_idx, $link, $stmt;
+     global $PROBLEM_USER_PASSWORD, $lang_idx, $link, $stmt, $NO_USER_EXIST, $CHECK_EMAIL;
       $email = strtolower($email);
            
-        $query = "SELECT u_pswd, email, display_name, user_icon, user_rememberme, user_nicename, priority, locked, admin, MsgCount, MsgStart, classification FROM users WHERE lower(email) = ? and user_status=1 ";
+        $query = "SELECT u_pswd, email, display_name, user_icon, user_rememberme, user_status, user_nicename, priority, locked, admin, MsgCount, MsgStart, classification FROM users WHERE lower(email) = ? and user_status=1 ";
         $result = db_init($query, $email);
      $dbarray = $result->fetch_array(MYSQL_ASSOC);
           
@@ -307,7 +308,7 @@ function user_login($user_id){
 	   
 	    $userJSON .= "\"loggedin\":false";
 	    $userJSON .= ",";
-	    $userJSON .= "\"display\":"."\"".$PROBLEM_USER_PASSWORD[$lang_idx]."\"";
+	    $userJSON .= "\"display\":"."\"".$NO_USER_EXIST[$lang_idx]." ".$email." \"";
 	    $userJSON .= ",";
             $userJSON .= "\"isrememberme\":".$isrememberme;
 	    
@@ -315,10 +316,27 @@ function user_login($user_id){
 	    $userJSON .= "}";
             return $userJSON;
       }
+      else if ($dbarray['user_status'] == 0)
+      {
+           logger("email found=".$email. " user status = 0");
+         $userJSON = "{\"user\":";
+	    $userJSON .= "{";
+	   
+	    $userJSON .= "\"loggedin\":false";
+	    $userJSON .= ",";
+	    $userJSON .= "\"display\":"."\"".$CHECK_EMAIL[$lang_idx]."\"";
+	    $userJSON .= ",";
+            $userJSON .= "\"isrememberme\":".$isrememberme;
+	    
+	    $userJSON .= "}";
+	    $userJSON .= "}";
+            return $userJSON;
+      }
+          
 
       /* Retrieve password from result, strip slashes */
       
-      
+      //logger("ConfirmingUserPass: email=".$email." password=".$password." u_pswd=".$dbarray['u_pswd']);
       $dbarray['u_pswd'] = stripslashes($dbarray['u_pswd']);
       $password = stripslashes($password);
       //echo $email."<br/>".$password."<br/>".$dbarray['u_pswd']."<br/>";

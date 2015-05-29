@@ -29,7 +29,7 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 	if ($style < 2) $style = "";
 
 ?> 
-<link title="Default Colors" href="basestyle.php<?echo "?lang=".$lang_idx."&amp;forground_color=".$forground_color."&amp;base_color=".$base_color;?>" rel="stylesheet" type="text/css" media="screen" />
+<link title="Default Colors" href="basestyle.php<?echo "?lang=".$lang_idx."&amp;forground_color=".$forground_color."&amp;base_color=".$base_color;?>" rel="stylesheet" type="text/css"  />
 <? if ($mySite) { ?>
 <script type="text/javascript">
 
@@ -167,9 +167,8 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 			<? echo getWindStatus();?>
 			</div>
 			<div  id="coldmeter">
-			<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx;?>">, <span id="current_feeling_link" title="<?=$HOTORCOLD_T[$lang_idx]?> - <?=$COLD_METER[$lang_idx]?>">...</span>
-			</a>
-			</div>
+			, <span id="current_feeling_link" title="<?=$HOTORCOLD_T[$lang_idx]?> - <?=$COLD_METER[$lang_idx]?>">...</span>
+			</a>			</div>
 			   <?
 					if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp() - 1) && $current->get_temp() < 20 ){ ?>
 						<div id="itfeels_windchill"> 
@@ -284,7 +283,7 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 
 				</li>
 				<? 
-					if (($lowtemp_diffFromAv > 3) && ($hightemp_diffFromAv > 3) && (!isRaining()))
+					/*if (($lowtemp_diffFromAv > 3) && ($hightemp_diffFromAv > 3) && (!isRaining()))
 					{											
 						$res = getRadioData();
 						if ($res)
@@ -297,7 +296,7 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 
 						</li>
 						<? }
-					}
+					}*/
 					?>
                <li>
 				<a class="hlink" href="<? echo get_query_edited_url($url_cur, 'section', 'openclosewindow.php');?>" title="<? echo $INSIDE[$lang_idx].": ".$current->get_intemp()." ; ".$OUTSIDE[$lang_idx].": ".$current->get_temp();?>">
@@ -947,20 +946,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			<li >
 				<a href="javascript: void(0)" class="register" title="<?=$REGISTER[$lang_idx]?>"><? echo $GET_UPDATES[$lang_idx]; ?></a>
 			</li>
-			<li id="change_style"> 
-			<select size="1" id="styleSwithcer"  onchange="changeStyle(this.options[this.selectedIndex].value)">  
-				<option     value="" <?if (isStyleSubmited("")) echo "selected=\"selected\"";?>><? echo $CHANGE_STYLE[$lang_idx];?></option>
-				<option     value="" >רגיל</option>
-				<option     value="2" <?if (isStyleSubmited("2")) echo "selected=\"selected\"";?>>bright 2</option>
-				<option     value="3" <?if (isStyleSubmited("3")) echo "selected=\"selected\"";?>>dark 3</option>
-				<option     value="4" <?if (isStyleSubmited("4")) echo "selected=\"selected\"";?>>bright 4</option>
-				<option     value="5" <?if (isStyleSubmited("5")) echo "selected=\"selected\"";?>>green 5</option>
-				<option     value="6" <?if (isStyleSubmited("6")) echo "selected=\"selected\"";?>>red 6</option>
-				<option     value="7" <?if (isStyleSubmited("7")) echo "selected=\"selected\"";?>>blue 7</option>
-				<option     value="8" <?if (isStyleSubmited("8")) echo "selected=\"selected\"";?>>pastel 8</option>
-				<option     value="9" <?if (isStyleSubmited("9")) echo "selected=\"selected\"";?>>ground 9</option>
-			</select>        
-			</li>
+			
 			<li >
 					<img src="http://www.manwithoutfear.com/rss.png" alt="RSS" height="14" width="36"/>
 					<ul>
@@ -1090,6 +1076,7 @@ client scripting
 <script src="jquery.colorbox.js"  type="text/javascript"></script>
 <script src="js/tinymce/tinymce.min.js"></script>
 <script src="footerScripts.min.js"  type="text/javascript"></script>
+<script src="footerScripts.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=boazn"></script>
 <script type="text/javascript">

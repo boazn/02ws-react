@@ -4,7 +4,7 @@
 </head>
 <body onload=trMouseOver()>
 <?php
-$current_year = 2014;
+$current_year = 2015;
 $min_year = 1909;
 function isDaySubmited($value_day){
 	global $_POST;
@@ -539,8 +539,9 @@ function getColumnName($columnNumber)
 </table>
 
 <?
-	if (($_POST['browseyear'] > 2003) && ($_POST['browsemonth']!== "") && ($_POST['browseday']!== ""))
-					echo "<p align=center><img src=\"http://www.wunderground.com/cgi-bin/wxStationGraphAll?day=".$_POST['browseday']."&year=".$_POST['browseyear']."&month=".$_POST['browsemonth']."&ID=IJERUSAL1&type=3\" width=600></p>" ;
+	if (($_POST['browseyear'] > 2008) && ($_POST['browsemonth']!== "") && ($_POST['browseday']!== ""))
+                                            
+					echo "<iframe src=\"http://www.wunderground.com/personal-weather-station/dashboard?ID=IJERUSAL1#history/s".$_POST['browseyear'].$_POST['browsemonth'].$_POST['browseday']."/e".$_POST['browseyear'].$_POST['browsemonth'].$_POST['browseday']."/mdaily\" width=1050 height=1500 seamless></iframe>" ;
 ?>
 </body>
 </html>

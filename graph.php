@@ -240,7 +240,7 @@ if ((strstr(strtolower($_GET['graph']), 'temp'))||
 	echo "<li".getBorder("temp.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'temp.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$TEMP[$lang_idx].": <span dir=\"ltr\" >".$current->get_temp()."&#176;"."</span>"."</a></li>";
 	echo "  <li".getBorder("tempwchill.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'tempwchill.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$WIND_CHILL[$lang_idx].": <span dir=\"ltr\" >".$current->get_windchill()."&#176;"."</span>"."</a></li>";
 	echo "  <li".getBorder("tempheat.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'tempheat.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$HEAT_IDX[$lang_idx].": <span dir=\"ltr\" >".$current->get_HeatIdx()."&#176;"."</span>"."</a></li>";
-	echo "  <li".getBorder("THWHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'THWHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$THW[$lang_idx].": <span dir=\"ltr\" >".$current->get_thw()."&#176;"."</span>"."</a></li>";
+	echo "  <li id=\"thwtab\" ".getBorder("THWHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'THWHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$THW[$lang_idx].": <span dir=\"ltr\" >".$current->get_thw()."&#176;"."</span>"."</a></li>";
 	echo "  <li".getBorder("dewpt.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'dewpt.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$DEW[$lang_idx].": <span dir=\"ltr\" >".$current->get_dew()."&#176;"."</span>"."</a></li>";
 	echo "  <li".getBorder("AirDensityHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'AirDensityHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$AIR_DENSITY[$lang_idx]."</a></li>";
 	echo "</ul>";
@@ -304,7 +304,8 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
 		<? if (($profile <=3)|| ((strstr(strtolower($_GET['graph']), 'uv'))||
 	(strstr(strtolower($_GET['graph']), 'solar'))||
 	(strstr(strtolower($_GET['graph']), 'eth')))) {?>
-                <a href="images/profile<? echo $_REQUEST['profile']."/".$_GET['graph'];?>?level=<?=($_REQUEST['profile'])?>&amp;freq=2<?=$datasource?>&amp;w=1600" target="_blank" title="click to enlarge">
+                <a class="enlarge" href="images/profile<? echo $_REQUEST['profile']."/".$_GET['graph'];?>?level=<?=($_REQUEST['profile'])?>&amp;freq=2<?=$datasource?>&amp;w=1600" target="_blank" title="click to enlarge">
+                <span></span>
 		<img name="baseGraph" id="baseGraph" src="./images/profile<? echo $_REQUEST['profile']."/".$_GET['graph'];?>?level=<?=($_REQUEST['profile'])?>&amp;freq=2<?=$datasource?>" width="550" alt="<? echo getPageTitle()?>" <? if (strstr($_GET['graph'], 'Hum')) echo "class=\"inv_plain\"";?> style="padding:0;margin:0"/>
                 </a>
 		<?} else{?>

@@ -1,5 +1,6 @@
 <option	dir="ltr" class="tbl" value="http://www.worldweather.org/013/c00044.htm">Tel-aviv תל-אביב</option>
 <option	dir="ltr" class="tbl" value="http://www.worldweather.org/013/c01931.htm">Haifa חיפה</option>
+<option	dir="ltr" class="tbl" value="http://www.worldweather.org/013/c01930.htm">Beer-Sheva באר-שבע</option>
 <option	dir="ltr" class="tbl" value="http://www.worldweather.org/013/c00045.htm">Tiberias טבריה</option>
 <option	dir="ltr" class="tbl" value="http://www.worldweather.org/013/c00046.htm">Eilat אילת</option>
 <option	dir="ltr" class="tbl" value="http://www.worldweather.org/013/c01929.htm">Afula עפולה</option>

@@ -1,4 +1,5 @@
 <option   value="http://www.worldweather.org/010/c00033.htm">אדינבורו, סקוטלנד Edinburgh </option>
+<option   value="http://www.worldweather.org/037/c00143.htm">אמסטרדם Amsterdam</option>
 <option   value="http://www.worldweather.org/014/c00051.htm">אנטליה Antalya</option>
 <option   value="http://www.worldweather.org/014/c00047.htm">איסטנבול Istanbul</option>
 <option   value="http://www.worldweather.org/093/c00801.htm">אורלנדו Orlando</option>

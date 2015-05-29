@@ -24,9 +24,9 @@
 			<div class="contentbox-wrapper">
 			    <div id="forcast_days" class="contentbox">
 				<ul id="forcast_icons">
-				    <li id="morning_icon"></li>
-				    <li id="noon_icon"></li>
-				    <li id="night_icon"></li>
+				    <li id="morning_icon" title="<? echo $EARLY_MORNING[$lang_idx];?>"></li>
+				    <li id="noon_icon" title="<? echo $NOON[$lang_idx];?>"></li>
+				    <li id="night_icon" title="<?=$NIGHT_TEMP_EXP[$lang_idx]?>"></li>
 				</ul>
 				<ul id="forcast_table">
 					<? if  (count($forecastDaysDB) == 0) 
@@ -85,14 +85,18 @@
                                             <?
 							for ($i = 0; $i < count($forecastDaysDB); $i++) 
 							{
+                                                           $arTempHighCloth =  explode('_', $forecastDaysDB[$i]['TempHighCloth']);
+                                                           $prefTempHighCloth = $arTempHighCloth[0];
+                                                           $arTempNightCloth =  explode('_', $forecastDaysDB[$i]['TempNightCloth']);
+                                                           $prefTempNightCloth = $arTempNightCloth[0];
 							
-					 ?>
+					 ?>             
 							<li class="forcast_each <?if ($i >= 5) echo "tashkif";?>" id="<?=$i?>">
 							<ul>
                                                                 <li class="forcast_off_day">
                                                                     <?if ($i == 0) {?>
                                                                     <a hrf="javascript:void(0)" onclick="toggle('yesterday_line');">
-                                                                        <img src="images/undo.png" width="32" height="32" title="<?=$LAST_DAY[$lang_idx]?>" />
+                                                                        <img src="images/yesterday.png" width="14" height="14" title="<?=$LAST_DAY[$lang_idx]?>" />
                                                                     </a>
                                                                     <?}?>
                                                                 </li>
@@ -106,12 +110,12 @@
 								<?=c_or_f($forecastDaysDB[$i]['TempLow'])?>
 								</li>
 								<li class="forcast_noon">
-								<?=c_or_f($forecastDaysDB[$i]['TempHigh'])?>&nbsp;<img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempHighCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" />
+								<?=c_or_f($forecastDaysDB[$i]['TempHigh'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" ><img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempHighCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" /></a>
 								</li>
 								<li class="forcast_night">
-								<?=c_or_f($forecastDaysDB[$i]['TempNight'])?>&nbsp;<img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempNightCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" />
+								<?=c_or_f($forecastDaysDB[$i]['TempNight'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempNightCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" /></a>
 								</li>
-								 <li><img src="<? echo "images/icons/day/".$forecastDaysDB[$i]['icon']; ?>" width="40" height="40" alt="<?=$forecastDaysDB[$i]['date']?>" /></li>
+                                                                <li><a href="legend.php" rel="external" ><img src="<? echo "images/icons/day/".$forecastDaysDB[$i]['icon']; ?>" width="40" height="40" alt="<?=$forecastDaysDB[$i]['date']?>" /></a></li>
 								 <li class="forcast_text">
 									<? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastDaysDB[$i][$dscpIdx]);?>
 								</li>
@@ -129,55 +133,37 @@
 					    <li style="border-top:1px dashed">
 							<a href="<? echo get_query_edited_url($url_cur, 'section', 'averages.php');?>" title="<? echo $monthInWord." ".$AVERAGE[$lang_idx]; ?>">
 									<? echo $AVERAGE[$lang_idx];?>
-								</a>
-					    </li>
-					    <li class="forcast_date">
-							
-					    </li>
-					    <li class="forcast_morning">
-							<? echo $monthAverge->get_lowtemp(); ?>
-					    </li>
-					    <li class="forcast_noon" style="text-align:<?=get_s_align()?>">
-							<? echo $monthAverge->get_hightemp(); ?>
-					    </li>
-					    <li class="forcast_night">
-						
-					    </li>
-					     <li ></li>
-					     <li class="forcast_text">
-						
-					    </li>
-					</ul>
-				    </li>
-				    
-				    <li class="forcast_each extra" >
-					<ul>
-                                            <li class="forcast_off_day">
-                                                
-                                            </li>
-					    <li style="padding:0.2em 0">
-							<a href="<? echo get_query_edited_url($url_cur, 'section', 'reports.php');?>" title="<? echo $monthInWord." ".$RECORDS[$lang_idx]; ?>">
+								</a><br /><br />
+                                                        <a href="<? echo get_query_edited_url($url_cur, 'section', 'reports.php');?>" title="<? echo $monthInWord." ".$RECORDS[$lang_idx]; ?>">
 									<? echo $RECORDS[$lang_idx];?>
 								</a>
 					    </li>
 					    <li class="forcast_date">
 							
 					    </li>
-					    <li class="forcast_morning" >
-							<? echo $monthAverge->get_abslowtemp(); ?>
+					    <li class="forcast_morning">
+							<? echo $monthAverge->get_lowtemp(); ?><br /><br />
+                                                        <? echo $monthAverge->get_abslowtemp(); ?>
 					    </li>
-					    <li class="forcast_noon" style="text-align:<?=get_s_align()?>">
-							<? echo $monthAverge->get_abshightemp(); ?>
+					    <li class="forcast_noon">
+							<? echo $monthAverge->get_hightemp(); ?><br /><br />
+                                                        <? echo $monthAverge->get_abshightemp(); ?>
 					    </li>
-					    <li class="forcast_night">
-						
-					    </li>
-					     <li ></li>
-					     <li class="forcast_text">
-						
-					    </li>
+                                            <li class="forcast_night">
+                                                
+                                            </li>
+                                            <? if (isHeb()) {?>
+                                           <li>
+                                               <img src="images/midrag.png" width="55" height="50" alt="מדרג"/>
+                                            </li>
+                                            <li class="forcast_text" style="text-decoration:underline">
+                                                 <a href="<? echo get_query_edited_url($url_cur, 'section', 'midrag.php');?>">בעלי מקצוע לפי עונה</a>
+                                            </li>
+                                            <?}?> 
+					     
 					</ul>
 				    </li>
+				    				    
 			    
 				</ul>
 					
@@ -186,20 +172,22 @@
 			     <div id="forcast_hours" class="contentbox">
 				 <? echo($GIVEN[$lang_idx]." ".$AT[$lang_idx]." ".$timetaf.":00 ".$dayF."/".$monthF."/".$yearF);?>
 				 <div id="for24_literal">
-										<?=$forcastTicker?>
 					<span id="tempForecastDiv" style="display:none">
 					</span>
 				</div>
 				<ul id="for24_hours">
 				 <? 
 				 foreach ($forecastHour as $hour_f){
-				 if ($hour_f['time'] % 3 == 0)
+				 if (($hour_f['time'] % 3 == 0) || ($hour_f['plusminus'] > 0))
 				 {
 				 echo "<li class=\"nav forecasttimebox forcast_each\" ><ul>";
 				 echo "<li class=\"tsfh\" style=\"text-align:center;width:0%;display:none\">".$hour_f['currentDateTime']."</li>";
                                  echo "<li class=\"tsfh\" style=\"text-align:center;width:10%\">".date("j/m", $hour_f['currentDateTime'])."</li>";
-				 echo "<li class=\"timefh forcast_date\" style=\"text-align:center;width:8%\">".$hour_f['time']."</li>";
-				 echo "<li class=\"forecasttemp forcast_morning\" style=\"text-align:center;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
+				 echo "<li class=\"timefh forcast_date\" style=\"direction:ltr;text-align:right;width:12%\"><span>".$hour_f['time'].":00";
+                                    if ($hour_f['plusminus'] > 0)
+                                        echo "&nbsp;&nbsp;&plusmn;".$hour_f['plusminus']."";
+                                 echo "</span></li>";
+				 echo "<li class=\"forecasttemp forcast_morning\" style=\"text-align:center;direction:ltr;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
 				 echo "<li style=\"margin-top:0;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></li>";
 				
 				 if ($hour_f['wind'] > 30){
@@ -243,17 +231,29 @@
 			</div><!-- contentbox-wrapper -->
 			
 		    </div> <!-- forcast_main -->
-			<? if (($current->is_light())&&(!isRaining())) 
-					{$adsense_color = "#4B6371";
-					if ($current->is_sunset()) $adsense_background = "#F1C3A2";
-					elseif ($current->get_pm10() > 250) $adsense_background = "#C9CEB8";
-                                        elseif ($current->get_cloudiness() > 5) $adsense_background = "#B8D2DC";
-					else $adsense_background = "#A4D2E7";}
-                                 elseif (isSnowing()) {$adsense_color = "#000000";$adsense_background = "#D7E7E9";}
-				 elseif (isRaining()) {$adsense_color = "#FFFFFF";$adsense_background = "#6288A4";} 
-				 else {$adsense_color = "#FFFFFF"; if ($current->get_pm10() > 250) $adsense_background = "#4F5352"; else $adsense_background = "#5B6A92";};
-			?>
-		    <div id="mainadsense" style="line-height: 0;box-shadow:3px 3px 15px 15px <?=$adsense_background?>">
+                     <? if (($current->is_light())&&(!isRaining())) 
+                                    {$adsense_color = "#4B6371";
+                                    if ($current->get_pm10() > 250) $adsense_background = "#C9CEB8";
+                                    elseif ($current->get_cloudiness() == 8) $adsense_background = "#B8D2DC";
+                                    elseif ($current->is_sunset()) $adsense_background = "#F1C3A2";
+                                    elseif ($current->is_sunrise()) $adsense_background = "#E5E6C4";
+                                    else $adsense_background = "#A4D2E7";}
+                             elseif (($current->is_light())&&(isSnowing())) {$adsense_color = "#000000";$adsense_background = "#DAE9EA";}//D7E7E9
+                             elseif (isRaining()) {$adsense_color = "#FFFFFF";$adsense_background = "#6288A4";} 
+                             else {$adsense_color = "#FFFFFF"; if ($current->get_pm10() > 250) $adsense_background = "#4F5352"; else $adsense_background = "#5F6D94";};
+                    ?>
+                    <? if (($current->is_light())&&(!isRaining())) 
+                                        {$slot = "6097239892";//day
+                                        if ($current->get_pm10() > 250) $slot = "6097239892";//day
+                                        elseif ($current->get_cloudiness() == 8) $slot = "1527439498";//cloudy
+                                         elseif ($current->is_sunset()) $slot = "7573973091";//sunset
+                                        elseif ($current->is_sunrise()) $slot = "9050706299";//sunrise
+                                        else $slot = "6097239892";}
+                                 elseif (($current->is_light())&&(isSnowing())) {$slot = "3004172697";}
+                                 elseif (isRaining()) {$slot = "4480905893";} 
+                                 else {if ($current->get_pm10() > 250) $slot = "3498857099"; else $slot = "3498857099";};//night
+                        ?>
+		    <div id="mainadsense" style="background:<?=$adsense_background?>; line-height: 0;box-shadow:3px 3px 15px 15px <?=$adsense_background?>">
 			    <script type="text/javascript"><!--
 				google_ad_client = "pub-2706630587106567";
 				/* 300x250, created 10/20/10 */
@@ -270,12 +270,21 @@
 				<script type="text/javascript"
 				src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				</script>
-				</div>
+                                <!-- Below forecast table -->
+                                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                <!-- Below forecast table -->
+                                <ins class="adsbygoogle"
+                                     style="display:inline-block;width:234px;height:60px;"
+                                     data-ad-client="ca-pub-2706630587106567"
+                                     data-ad-slot="<?=$slot?>"></ins>
+                                <script>
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                </script>          
+			</div>
+                   
+                         
                    </div>
-		    
-                    
-		    
-		<!-- row -->
+              <!-- row -->
 		
             </article>
             
@@ -285,7 +294,7 @@
 	    
 		<div class="now_messages">
 		    <div class="row">
-		    <div class="span5 offset4 white_box">
+		    <div id="alerts" class="span5 offset4 white_box">
 			<h2><? echo $MESSAGES[$lang_idx];?></h2>
                         <p class="box_text">
 			<? echo $detailedforecast;?>
@@ -333,14 +342,21 @@
 		    <br>
 			
 		    <div class="row">
-		    <a href="<? echo "station.php?section=mainstory.php&amp;lang=".$lang_idx;?>">
+		    
 		    <div class="span5 offset4 white_box">
 			<h2><? echo $MainStory->get_title();?></h2>
 			<p class="box_text">
+                            <a href="<? echo "station.php?section=mainstory.php&amp;lang=".$lang_idx;?>">
 			 <? echo mb_substr($MainStory->get_description(), 0, 68, "UTF-8");?>...<?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
+                            </a>
 			</p>
 		    </div>
-		    </a>
+                        
+                    <div id="adexternal" class="span2">
+
+                    </div>
+                         
+		    
 		    </div>
 		    
 		    <div class="row more_stuff">
@@ -351,66 +367,80 @@
 				 <input type="submit" value="שליחה" />
 			    </form>
 			</div>-->
-			<h2 id="about"><a href="<? echo get_query_edited_url($url_cur, 'section', 'contact.php');?>"><?=$CONTACT_INFO[$lang_idx ]?></a></h2>
-			
-			
+			<div id="did_you_know" class="span3">
+			    <h2><?=$DID_YOU_KNOW[$lang_idx]?></h2>
+			    <p><?=$DID_YOU_KNOW_EX1[$lang_idx]?></p>
+			    <a href="<? echo get_query_edited_url($url_cur, 'section', 'allTimeRecords.php');?>"><?=$RECORDS[$lang_idx];?></a>
+			</div>
 			<div class="span7 offset1 more_icons">
 			    <ul>
 				<li><a id="weather_israel" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a></li>
 				<li><a id="weather_hul" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a></li>
 				<li><a id="weather_movies" href="<? echo get_query_edited_url($url_cur, 'section', 'weatherclips.php');?>" title="<? echo $WEATHER_CLIPS[$lang_idx];?>" class="hlink"><? echo $WEATHER_CLIPS[$lang_idx];?></a></li>
-                <li><a id="weather_songs" href="<? echo get_query_edited_url($url_cur, 'section', 'songs.php');?>"><?=$SONGS[$lang_idx]?></a></li>
+                                <li><a id="weather_songs" href="<? echo get_query_edited_url($url_cur, 'section', 'songs.php');?>"><?=$SONGS[$lang_idx]?></a></li>
 				<li><a id="snow_poems" href="<? echo get_query_edited_url($url_cur, 'section', 'snow.php');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a></li>
 			    </ul>
-			    
-                <ul id="share_icons">
-				<li><a href="rss_forecast.php<?echo "?lang=".$lang_idx;?>" id="rss"></a></li>
-				<li><a href="https://twitter.com/YERU02WS" target="_blank" id="twitter"></a></li>
-				<li><a href="https://www.facebook.com/pages/02ws-ירושמיים-מזג-האוויר-בזמן-אמת/118726368187010" target="_blank" id="facebook"></a></li>
-			    </ul>
-                            
 			</div>
-			<div id="did_you_know" class="span3 offset11">
-			    <h2><?=$DID_YOU_KNOW[$lang_idx]?></h2>
-			    <p><?=$DID_YOU_KNOW_EX1[$lang_idx]?></p>
-			    <a href="<? echo get_query_edited_url($url_cur, 'section', 'allTimeRecords.php');?>"><?=$RECORDS[$lang_idx];?></a>
-			</div>
+			
+                   </div>
+                    <div class="row">
+                        &nbsp;
+                    </div>  
+                    <div class="row">
+                        &nbsp;
+                    </div>
+                     <div class="row">
+                        &nbsp;
+                    </div>
+                     <div class="row">
+                        &nbsp;
+                    </div>
+                    <div class="row">
+                        &nbsp;
+                    </div>
+                     <div class="row">
+                        &nbsp;
+                    </div>
+                     <div class="row">
+                        &nbsp;
+                    </div>
+                    <div class="row">
+                        &nbsp;
+                    </div>
+                     <div class="row">
+                        &nbsp;
+                    </div>
+             
+                    <div class="row"> 
+                           <div id="gp_icon" class="span8">
+                                <a href="https://play.google.com/store/apps/details?id=il.co.jws.app" target="_blank">
+                                    <img src="images/getitongp.svg" alt="Google play App" width="150" height="60"/>
+                                </a>
+                               <a href="https://apksfull.com/%D7%99%D7%A8%D7%95%D7%A9%D7%9E%D7%99%D7%99%D7%9D-il-co-jws-app/" target="_blank">
+                               APK
+                               </a>
+                               <a href="https://itunes.apple.com/us/app/yrwsmyym/id925504632?ls=1&mt=8" target="_blank">
+                                    <img src="images/Available_on_the_App_Store.svg" alt="App Store App" width="150" height="60"/>
+                                </a>
+                               <div id="qrcode" class="span4"> 
+                                <a href="small.php<?echo "?lang=".$lang_idx;?>" title="<? echo $MOBILE_FRIENDLY[$lang_idx];?>"><img src="images/qrcode.png" width="68" height="68" alt="qrcode" /></a>
+                                </div>
+                            </div>
+                            <?if (isHeb()) {?>
+                            <ul id="outside_links">
+                               <li><a href="http://www.open02.com" title='open02' target="_blank">פתוח בשבת</a></li>
+                               <li><a href="https://www.boxiplus.com" title='boxiplus' target="_blank">boxiplus</a></li>        
+                               <li><a href="http://www.weather2day.co.il" title='Weather2day' target="_blank">מזג האוויר - Weather2day</a></li>
+                               <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tracks.php');?>">טיולים בירושלים</a></li>
+                               <li><a href="http://hair2.co.il" title="מרכז האפילציה" rel='external'>הסרת שיער לצמיתות</a></li>
+                               <li><a href="http://www.seotop.co.il" title="קידום אתרים" rel='external'>קידום אתרים</a></li>
+                           </ul>
+                           <?}?>
+                    </div>
+                    <div class="row"> 
+                        
 
-		    </div>
-            <div class="row">
-            <ul id="share_mixed" class="offset3 span4">
-            	<li >
-            	
-                <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FJerusalem-Israel%2F02ws-yrwsmyym-mzg-hwwyr-bzmn-mt%2F118726368187010&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" style="border:none; overflow:hidden; width:100px; height:21px;allowTransparency:true"></iframe>
-                
-                </li>
-                <li>
-
-                </li>
-            </ul> 
-            </div>      
-             <div class="row">  
-                 <div id="qrcode" class="span2"> 
-                         <a href="small.php<?echo "?lang=".$lang_idx;?>" title="<? echo $IPHONE[$lang_idx];?>"><img src="images/qrcode.png" width="68" height="68" alt="qrcode" /></a>
-                 </div>
-				
-            </div>
-			<div class="row"> 
-				 <?if (isHeb()) {?>
-				 <ul id="outside_links">
-                              
-                             
-                            <li><a href="http://www.jlm.israel.net/home/" title='מה יש היום בירושלים' rel='external'>מה יש היום בירושלים</a></li>
-                            <li><a href="http://www.open02.com" title='open02' target="_blank">פתוח בשבת</a></li>
-                            <li><a href="https://play.google.com/store/apps/details?id=com.upsoft.burningspace.app" title='משחק לאנדרואיד' target="_blank">משחק לאנדרואיד</a></li>        
-                            <li><a href="http://www.weather2day.co.il" title='Weather2day' target="_blank">מזג האוויר - Weather2day</a></li>
-                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tracks.php');?>">טיולים בירושלים</a></li>
-                            <li><a href="http://hair2.co.il" title="מרכז האפילציה" rel='external'>הסרת שיער לצמיתות</a></li>
-                            <li><a href="http://www.seotop.co.il" title="קידום אתרים" rel='external'>קידום אתרים</a></li>
-                            <li><a href="http://israelweather.co.il" title="Israel Weather" rel='external'>Israel Weather</a></li>
-				</ul>
-				<?}?>
-			</div>
+                    </div>
 
 	</div>
 					
@@ -422,22 +452,15 @@
 					<div class="row">
 					<div id="middleadsense_container" class="span11" >
 					<div id="middleadsense">
-                        <script type="text/javascript"><!--
-                        google_ad_client = "ca-pub-2706630587106567";
-                        /* 728x90, created 3/31/10 */
-                        google_ad_slot = "4039563889";
-                        google_ad_width = 728;
-                        google_ad_height = 90;
-                        google_color_border = ["#D4F3F7"];
-                        google_color_bg = ["#D4F3F7"];
-                        google_color_link = ["#000000"];
-                        google_color_url = ["#000000"];
-                        google_color_text = ["#000000"];
-                        //-->
-                        </script>
-                        <script type="text/javascript"
-                        src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-                        </script>
+                                         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                         <!-- 728x90, created 3/31/10 -->
+                                         <ins class="adsbygoogle"
+                                              style="display:inline-block;width:728px;height:90px"
+                                              data-ad-client="ca-pub-2706630587106567"
+                                              data-ad-slot="4039563889"></ins>
+                                         <script>
+                                         (adsbygoogle = window.adsbygoogle || []).push({});
+                                         </script>
                     </div>
 					 <div id="plane">
 						<img src="img/plane.png" width="101" height="114" alt="plane"/>
@@ -476,8 +499,6 @@
 					<a href="<? echo "station.php?section=webCamera.jpg&amp;lang=".$lang_idx;?>"><p><? echo $PIC_DESC[$lang_idx];?><?=get_arrow()?></p>
 					<img title="שידור חי  - מצלמה 2" src="phpThumb.php?src=<?=getUpdatedPic()?>&amp;sx=200&amp;sy=150&amp;sw=350&amp;sh=350&amp;fltr%5B%5D=gam%7C0.8" alt="live pic" />
 					</a>
-					
-					
 					
 				    </div>
 			
@@ -561,28 +582,16 @@
 				<div id="subject_left" onclick="change_subject('left')"></div>
 				<div id="subject_right" onclick="change_subject('right')"></div>
                                 </div>
-                                <div id="new_post_private"><input type="checkbox" id="check_private_msg" /><?=$PRIVATE_MSG[$lang_idx]?></div>
+                                <div id="new_post_alert"><input type="checkbox" id="check_alert_msg" /><?=$ALERT_MSG_TO_SENDER[$lang_idx]?></div>
+                                <div id="new_post_private" style="display:none"><input type="checkbox" id="check_private_msg" /><?=$PRIVATE_MSG_TO_SENDER[$lang_idx]?></div>
     				<div id="new_post_cancel" onclick="closeNewPost();restoreTopDiv();"><?=$CANCEL[$lang_idx]?></div>
-				<div id="new_post_okay" onclick="getMessageService(<?=$limitLines?>, '', 0, 1, <?=$lang_idx?>, $('#current_forum_filter').attr('data-key'));closeNewPost()"><?=$SEND[$lang_idx]?></div>
+				<div id="new_post_okay" onclick="closeNewPost();getMessageService(<?=$limitLines?>, '', 0, 1, <?=$lang_idx?>, $('#current_forum_filter').attr('data-key'));"><?=$SEND[$lang_idx]?></div>
 			    </div>
 			</div>
 		    </div>
 		    
 		    <hr id="forum_hr" />
-		    <div class="row">
-		    <div class="span9 offset3">
-			<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <!-- forum -->
-                        <ins class="adsbygoogle"
-                             style="display:inline-block;width:728px;height:90px"
-                             data-ad-client="ca-pub-2706630587106567"
-                             data-ad-slot="4125506694"></ins>
-                        <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                    </div>
-		    </div>
-		    <div class="row" id="posts">
+		     <div class="row" id="posts">
 			<a id="chat" ></a>	
                         <input type="hidden" value="" name="current_new_msg_idx" id="current_new_msg_idx" />
                         <input type="hidden" value="" id="current_display_name" />

@@ -362,7 +362,7 @@ include_once "sigweathercalc.php";
 			</a>
 			</div>
 			   <?
-					if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp() - 1) && $current->get_temp() < 20 ){ ?>
+					if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp()) && $current->get_temp() < 23 ){ ?>
 						<div id="itfeels_windchill"> 
 						 <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<? echo $_SERVER['SCRIPT_NAME']; ?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
 							<? echo $IT_FEELS[$lang_idx]; ?>
@@ -389,9 +389,9 @@ include_once "sigweathercalc.php";
                                     <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $TEMP[$lang_idx];?></a>
                                 </div>
                                <div class="paramvalue">
-                                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>">
-                                        <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>
-                                    </a>
+                                    
+                                        <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>&nbsp;<span id="valleytemp" title="<?=$VALLEY[$lang_idx]?>">(<? echo $current->get_temp2();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>)</span>
+                                    
                                 </div>
                                 <div class="highlows">
                                         <span class="high"><strong><? echo toLeft($today->get_hightemp()); ?></strong></span>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_hightemp_time()." "; ?>

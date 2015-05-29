@@ -83,6 +83,12 @@ Function getLyrics($location, $song)
  <div class="float" style="padding:0.5em">
     <iframe width="560" height="315" src="//www.youtube.com/embed/FscIgtDJFXg" frameborder="0" allowfullscreen></iframe>
 </div>
+<div class="float" style="padding:0.5em">
+<iframe width="420" height="315" src="//www.youtube.com/embed/znaQ9BHBcgM" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class="float" style="padding:0.5em">
+<iframe width="420" height="315" src="//www.youtube.com/embed/wxFgUZpRtVA" frameborder="0" allowfullscreen></iframe>
+</div>
 <script>
 	function fillSong(str)
 	{

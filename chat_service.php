@@ -24,24 +24,6 @@ function isValidIP ($currnet_ip)
 	return true;
 }
 
-function isValidName ()
-{
-	$names = array();
-	
-	//array_push($names, 'רומן');
-	//array_push($names, 'יוני');
-	//array_push($names, 'ניקיטה');
-	//array_push($names, 'Yonatan');
-	//array_push($names, 'Yoni');
-
-	for ($i = 0 ;$i < count($names); $i++)
-	{
-		if (stristr(urldecode($_POST['name']),$names[$i]))
-			return false;
-	}
-	return true;
-}
-
 function checkSpam()
 {
     global $isAdmin;
@@ -57,7 +39,7 @@ function checkSpam()
 	$_SESSION['CHAT_IP_ADDRESS'] = $_SERVER['REMOTE_ADDR'];
 	$_SESSION['CHAT_LAST_REQUEST'] = time();
 }
-function insertNewMessage ($name, $icon, $body, $category)
+function insertNewMessage ($name, $icon, $body, $category, $p_alert)
 {
     if (empty($_SESSION['loggedin'])||($_SESSION['loggedin']=="false"))
             return false;
@@ -65,9 +47,13 @@ function insertNewMessage ($name, $icon, $body, $category)
     //$now = getLocalTime(time());
     $body = nl2br($body);
     $p_email = $_SESSION['email'];
+    if ($_SESSION['isAdmin'] == 1)
+	        $name = "<span class=\"high\">".$name."</span>";
     $msg_total_count = $_SESSION['MsgCount'] + $_SESSION['MsgStart'];
     $name .= "<div class=\"msgcount\">#".$msg_total_count."</div>";
-    $query = "call InsertNewMsg ('$name','$icon', '$body', '$now', $category, '$p_email')";
+    if ($category == "")
+        $category = 0;
+    $query = "call InsertNewMsg ('$name','$icon', '$body', '$now', $category, '$p_email', '$p_alert')";
     $result = db_init($query);
     $_SESSION['MsgStart'] = $_SESSION['MsgStart'] + 1;
     // Free resultset 
@@ -92,30 +78,31 @@ function updateMessage ($idx, $body)
         global $link;
         mysqli_close($link);
 }
-function getMsgBody($idx, $withName)
+function getMsg($idx, $withName)
 {
-	$query = "select IP, name, body, date_chat  from chat WHERE (idx=?)";
+	$query = "select IP, name, body, date_chat, user_email, alert  from chat WHERE (idx=?)";
 	//echo $query;
 	$result = db_init( $query, $idx);
-	$line = mysqli_fetch_row($result);
+	$line = mysqli_fetch_array($result);
 	@mysqli_free_result($result);
 	//echo $idx." prev_body=".$line[0];
-	$dateInLineStart = date("D   H:i", strtotime("0 hours -0 minutes",strtotime($line[3])));
+	$dateInLineStart = date("D   H:i", strtotime("0 hours -0 minutes",strtotime($line['date_chat'])));
 	$dateInLineStart = replaceDays($dateInLineStart);
 	global $link;
 	mysqli_close($link);
-	if ($withName == true)
-		return "<div class=\"float chatnamereply\">".$dateInLineStart." <strong><span title=\"".$line[0]."\">".$line[1]."</span></strong>: "."</div>".$line[2];
-	else
-		return $line[2];
+        if ($withName == true)
+            $line['body'] = "<div class=\"float chatnamereply\">".$dateInLineStart." <strong><span title=\"".$line['IP']."\">".$line['name']."</span></strong>: "."</div>".$line['body'];
+	return $line;
 }
 function AddToMessage($name, $user_icon, $body, $idx, $mood)
 {
 	//logger("in AddToMEssage");
+        $orig_name = $name;
         $msg_total_count = $_SESSION['MsgCount'] + $_SESSION['MsgStart'];
 	if ($name != "")
 		$body = nl2br($body);
-	$prev_body = getMsgBody($idx, false);
+        $line = getMsg($idx, false);
+	$prev_body = $line['body'];
 	if ((strlen($prev_body) + (strlen($body)) > 230))
 	{
 		$clearboth = "<div style=\"clear:both\"></div>";
@@ -126,9 +113,22 @@ function AddToMessage($name, $user_icon, $body, $idx, $mood)
 		$clearboth = "";
 		$firstreplyline = "firstreplyline";
 	}
-	$body = $prev_body." ".$clearboth.HIDDENSEPERATOR." <div class=\"float chataftersepreply ".$firstreplyline." \"><div class=\"float chatbodyreply ".$firstreplyline."\">".SEPERATOR."<div class=\"avatar ".$user_icon."\"></div>".$name."<div class=\"msgcount\">#".$msg_total_count."</div>"."<div class=\"chatdatereply\">".replaceDays(date('D H:i', strtotime(SERVER_CLOCK_DIFF, time())))."</div>&nbsp;".$body."</div></div>";
+        
+        if ($_SESSION['isAdmin'] == 1)
+	        $name = "<span class=\"high\">".$name."</span>";
+	$body = $prev_body." ".$clearboth.HIDDENSEPERATOR." <div class=\"float chataftersepreply ".$firstreplyline." \"><div class=\"float chatbodyreply ".$firstreplyline."\">".SEPERATOR."<div class=\"avatar ".$user_icon."\"></div><div class=\"postusername\">".$name."</div><div class=\"msgcount\">#".$msg_total_count."</div>"."<div class=\"chatdatereply\">".replaceDays(date('D H:i', strtotime(SERVER_CLOCK_DIFF, time())))."</div>&nbsp;".$body."</div></div>";
 	checkSpam();
-	updateMessage ($idx, $body);
+        if ($_POST['private'] == "1")
+        {
+            send_Email($body, $line['user_email'], $_SESSION['email'], $orig_name, "", array("Private Message from 02WS forum"." - ".$orig_name, "הודעה פרטית מפורום ירושמיים"." - ".$orig_name));
+        }
+        else{
+            updateMessage ($idx, $body);
+        }
+        if ($line['alert'] == "1")
+        {
+            send_Email($body, $line['user_email'], $_SESSION['email'], $orig_name, "", array("New reply for your message in 02WS forum from ".$orig_name, "תגובה חדשה להודעה שלך בפורום ירושמיים"." - ".$orig_name));
+        }
 }
 function SaveAppendtoSession($idx)
 {
@@ -138,10 +138,14 @@ function DeletePartialMessage($idx, $nodeNumberToDelete)
 {
 	//print_r( "nodeToDelete:".$nodeNumberToDelete."<br /> ");
 	if ($nodeNumberToDelete == 0)
-		$prev_msg = getMsgBody($idx, true);
+        {
+            $line = getMsg($idx, true);
+	}
 	else
-		$prev_msg = getMsgBody($idx, false);
-
+        {
+	    $line = getMsg($idx, false);
+        }
+        $prev_msg = $line['body'];
 	//print_r($prev_msg);
 	$nodes = explode (HIDDENSEPERATOR, $prev_msg);
 	$new_body = "";
@@ -284,23 +288,13 @@ if (empty($_SESSION['loggedin'])||$_SESSION['loggedin']=="false"||$name==$NAME[$
 }
 else if((stristr($_SERVER['HTTP_REFERER'], "02ws.co") > -1 )||(stristr($_SERVER['HTTP_REFERER'], "small.php") > -1 )){
 	$orig_name = $name;
-	if ($orig_name == MANAGER_NAME) //<div class=\"spriteB star float\">
-		$name = "<span class=\"high\">".$MANAGER[$lang_idx]."</span>";
-	else if ($orig_name == VICE_MANAGER)
-		$name = "<span class=\"high\">".$V_MANAGER[$lang_idx]."</span>";
-	else if ($_SESSION['isAdmin'] == 1)
-	        $name = "<span class=\"high\">".$name."</span>";
-        
-        $name = "<div class=\"postusername\">".$name."</div>";
-      	//only change messages when not searching
+	
+        //only change messages when not searching
 	if ($searchname == "")
 	{
             	
-                if ($_POST['private'] == "1")
-                {
-                    send_Email($body, ME, $_SESSION['email'], $name, "");
-                }
-                else if ($_POST['idx'] != "")
+                
+                if ($_POST['idx'] != "")
 		{
 			if ($_SESSION['isAdmin'] == 1)
 				msgManagement($name, $body, $mood);
@@ -312,8 +306,12 @@ else if((stristr($_SERVER['HTTP_REFERER'], "02ws.co") > -1 )||(stristr($_SERVER[
 		else if ($_SESSION['loggedin'] == "true")
 		{
 			checkSpam();
-                                         
-			insertNewMessage($mood.$name, $_SESSION['user_icon'], "<div class=\"float chatfirstbody\">".$body."</div>", $_REQUEST['category']);
+                        if ($_POST['private'] == "1")
+                        {
+                            send_Email($body, ME, $_SESSION['email'], $name, "", array("Private Message from 02WS forum from ".$name, "הודעה פרטית מפורום ירושמיים של ".$name));
+                        }   
+                        else
+			insertNewMessage($mood.$name, $_SESSION['user_icon'], "<div class=\"float chatfirstbody\">".$body."</div>", $_REQUEST['category'], $_REQUEST['alert']);
 		}
                 else
                 {

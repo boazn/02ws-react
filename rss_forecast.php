@@ -3,6 +3,7 @@ $is_xml = true;
 include "begin_caching.php";
 include "start.php";
 include_once ("requiredDBTasks.php");
+//logger("rss_forecast read");
 ?>
 <? header("Content-type: text/xml"); ?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">

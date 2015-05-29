@@ -2,7 +2,7 @@
 $is_xml = true;
 include "begin_caching.php";
 include "start.php";
-getRadioData();
+//getRadioData();
 ?>
 <? header("Content-type: text/xml"); ?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
@@ -23,6 +23,27 @@ getRadioData();
 	<title>Jerusalem Live Pic</title>
 	<link><? echo BASE_URL; ?>/station.php?section=webCamera.jpg</link>
 	</image>
+        <item>
+		<title>windy</title>
+		<link><? echo BASE_URL; ?></link>
+                <description><? echo getWindStatus();?></description>
+		<author><? echo EMAIL_ADDRESS;?></author>
+		<guid><? echo BASE_URL; ?>/station.php#webCamera</guid>
+	</item>
+        <item>
+		<title>it feels like</title>
+		<link><? echo BASE_URL; ?></link>
+                <description><? if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp() - 1) && $current->get_temp() < 20 ) echo min($current->get_windchill(), $current->get_thw())."&#176;"; else if (max($current->get_HeatIdx(), $current->get_thw()) > ($current->get_temp())) echo max($current->get_HeatIdx(), $current->get_thw())."&#176;"; ?></description>
+		<author><? echo EMAIL_ADDRESS;?></author>
+		<guid><? echo BASE_URL; ?>/station.php#webCamera</guid>
+	</item>
+        <item>
+		<title>what_is_h</title>
+		<link><? echo BASE_URL; ?></link>
+                <description><? if (count($sig) > 1) echo "{$sig[0]['sig'][$lang_idx]}"; ?></description>
+		<author><? echo EMAIL_ADDRESS;?></author>
+		<guid><? echo BASE_URL; ?>/station.php#webCamera</guid>
+	</item>
 	<item>
 		<title><? echo $date;?> <? echo $TEMP[$EN];?></title>
 		<link><? echo BASE_URL; ?></link>

@@ -1,4 +1,216 @@
 <?
+/////////////////////////////////////////////////////////////////////////////////////////////
+	// radiosonde data
+	/////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+// radiosonde link
+///////////////////////////////////////////////////////
+function getRadioSondeLink()
+{
+	global $hour, $year,  $month, $day, $hoursonde; 
+
+	if ($hour<=14)	
+		$hoursonde = 00;  
+	else	
+		$hoursonde = 12; 
+	$day_radio = $day; 
+	$month_radio = $month;  
+	if ($hour<=3){	
+		$hoursonde = 12;    
+		$day_radio = getMinusDayDay(1);    
+		$month_radio = getMinusDayMonth (1);   
+	}  
+	$stnNum = 40179;//first station 40179 bet dagan//2nd station: 40265 OJMF Mafraq //3rd station : 62337 ElArish  
+	$radiosonde_link = sprintf ("http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%02sALIST&YEAR=%d&MONTH=%02d&FROM=%02d%02d&TO=%02d%02d&STNM=%d","%3", $year, $month_radio, $day_radio, $hoursonde, $day_radio, $hoursonde, $stnNum);
+	//echo $radiosonde_link;
+	return ($radiosonde_link);
+}
+	function getRadioData()
+	{
+		global $t850, $t500, $t700, $inversionThickness, $baseInversionHeight, $inversionTemp, $FireIdx, $VerticalIdx, $CAPE, $CrossIdx, $Showalter, $KIdx, $LiftedIdx, $SWEATIdx, $TotalsIdx, $BulkRichNum;
+		// *********** radio sonde calculation ***********
+		if (!isset($_SESSION['radio_contents'])){
+			$radio_contents = get_file_string(getRadioSondeLink());
+			$_SESSION['radio_contents'] = $radio_contents;
+		}
+		else
+			$radio_contents = $_SESSION['radio_contents'];
+		if (strlen($radio_contents) < 3200){
+			//if (($_GET['section'] == "extended") || (strstr (get_url(), "radio")))
+			//echo "radiosonde: corrupted data";
+			return false;
+		}
+		$radio_contents_tok = strtok($radio_contents, " \n\t");
+		//echo $radio_contents;
+		/*while (!($radio_contents_tok === FALSE)) {
+		   echo "Word=$radio_contents_tok<br />";
+		   $radio_contents_tok = strtok(" \n\t");
+		}*/
+		// ********** inversion calculation *************
+
+		$found = searchDoubleNext ($radio_contents_tok, "1000.0", "999.0");//skipping ground inversion
+		if ($found)
+		{
+			$nextHeight = getNextWord($radio_contents_tok, 1);
+			$nextTemp = getNextWord($radio_contents_tok, 1);
+			$nextHum = getNextWord($radio_contents_tok, 2);
+			
+			do {
+				$baseHeight = $nextHeight;
+				$baseTemp = $nextTemp;
+				$baseHum = $nextHum;
+				$nextPres = getNextWord($radio_contents_tok, 7);//next level pres
+				$nextHeight = getNextWord($radio_contents_tok, 1);//next level height
+				$nextTemp = getNextWord($radio_contents_tok, 1);
+				$nextDP = getNextWord($radio_contents_tok, 1);
+				$nextHum = getNextWord($radio_contents_tok, 1);
+				if ($nextPres == "850.0"){ 
+					$t850 = $nextTemp;
+					$dp850 = $nextDP;
+				}
+				if ($nextPres == "700.0") 
+					$t700 = $nextTemp;
+				if ($nextPres == "500.0") 
+					$t500 = $nextTemp;
+			} while ((($nextTemp <= $baseTemp)||false)&&($nextHeight < 5000)||($baseHeight<150));// checking that next level is with more hum and less temp
+			$baseInversionHeight = $baseHeight;
+			$baseInversionTemp = $baseTemp;
+			$baseInversionHum = $baseHum;
+			//echo "base inversion : ".$baseHeight." ".$baseTemp." ".$baseHum;
+			do {
+				$baseHeight = $nextHeight;
+				$baseTemp = $nextTemp;
+				$baseHum = $nextHum;
+				$nextPres = getNextWord($radio_contents_tok, 7);//next level pres
+				$nextHeight = getNextWord($radio_contents_tok, 1);//next level height
+				$nextTemp = getNextWord($radio_contents_tok, 1);
+				$nextDP = getNextWord($radio_contents_tok, 1);
+				$nextHum = getNextWord($radio_contents_tok, 1);
+				if ($nextPres == "850.0"){ 
+					$t850 = $nextTemp;
+					$dp850 = $nextDP;
+				}
+				if ($nextPres == "700.0") 
+					$t700 = $nextTemp;
+				if ($nextPres == "500.0") 
+					$t500 = $nextTemp;
+			} while ((($nextTemp >= $baseTemp)||false)&&($nextHeight < 5000));// checking that next level is with less hum and more temp
+			//echo "top inversion : ".$baseHeight." ".$baseTemp." ".$baseHum;
+			$topInversionHeight = $baseHeight;
+			$topInversionTemp = $baseTemp;
+			$topInversionHum = $baseHum;
+			// if inversion is below 850mb level
+			if ($t850=="") 
+				if (searchNext ($radio_contents_tok, "850.0")) {
+					$t850 = getNextWord($radio_contents_tok, 2);
+					$dp850 = getNextWord($radio_contents_tok, 1);
+				}
+			if ($t700=="")
+				if (searchNext ($radio_contents_tok, "700.0")) 
+					$t700 = getNextWord($radio_contents_tok, 2);
+			if ($t500=="") 
+				if (searchNext ($radio_contents_tok, "500.0")) 
+					$t500 = getNextWord($radio_contents_tok, 2);
+
+			$inversionThickness = $topInversionHeight - $baseInversionHeight;
+			$inversionTemp =  $topInversionTemp - $baseInversionTemp;
+			if ($nextHeight>5000) {
+				$inversionThickness = "0";
+				$inversionTemp  = "0";
+				$baseInversionHeight = "5000(none)";
+
+			}
+
+			//echo $t850." 700: ".$t700." dp850: ".$dp850." <br />";
+			// fire index http://weather.jsums.edu/~coamps/fire_index.html
+			$FireIdx = getFireIdx($t850, $t700, $dp850);
+
+			// ************** index claculation ***************
+			//Showalter index
+			if (searchNext ($radio_contents_tok, "index:"))//Showalter index
+				$Showalter = getNextWord($radio_contents_tok, 1);
+			if (searchNext ($radio_contents_tok, "index:"))// Lifted index
+				$LiftedIdx = getNextWord($radio_contents_tok, 1);
+			if (searchNext ($radio_contents_tok, "index:"))//SWEAT index
+				$SWEATIdx = getNextWord($radio_contents_tok, 1);
+			if (searchNext ($radio_contents_tok, "index:"))//K index
+				$KIdx = getNextWord($radio_contents_tok, 1);
+			if (searchNext ($radio_contents_tok, "index:"))//Cross totals index
+				$CrossIdx = getNextWord($radio_contents_tok, 1);
+			if (searchNext ($radio_contents_tok, "index:"))//Vertical totals index
+				$VerticalIdx = getNextWord($radio_contents_tok, 1);
+			if (searchNext ($radio_contents_tok, "index:"))//Totals totals index
+				$TotalsIdx = getNextWord($radio_contents_tok, 1);
+			if (searchNext ($radio_contents_tok, "Energy:"))//CAPE
+				$CAPE = getNextWord($radio_contents_tok, 1);
+			if (searchNext ($radio_contents_tok, "Inhibition:"))//Convective Inhibition
+				$ConIn = getNextWord($radio_contents_tok, 1);
+			if (searchNext ($radio_contents_tok, "Number:"))//Bulk Richardson Number
+				$BulkRichNum = getNextWord($radio_contents_tok, 1);
+			
+			return true;
+		}
+		else
+			return false;
+
+		
+	}
+
+	function SortIndex ($paramName, $actualValue, $bar1, $bar2, $bar3, $Asc, $displayTitleInsteadOfValue)// Asc==true --> $bar1 < $bar2 < $bar3 
+	{
+		global $LOW, $HIGH, $EXTREME, $MEDIUM, $lang_idx;
+		if ($Asc){
+		   if ((float)$actualValue <  (float)$bar1)
+			{
+			   $index = "indexlow";
+			   $title = $LOW;
+			}
+		   else if ((float)$actualValue <  (float)$bar2)
+			{
+			   $index = "indexmedium";
+			    $title = $MEDIUM;
+
+			}
+		   else if ((float)$actualValue <  (float)$bar3)
+			{
+			   $index = "indexhigh";
+			    $title = $HIGH;
+			}
+		   else
+			{
+			   $index = "indexextreme";
+			    $title = $EXTREME;
+			}
+	   }
+	   else{//descending
+			
+			if ((float)$actualValue >  (float)$bar1)
+		   {
+			  $index = "indexlow";
+			   $title = $LOW;
+		   }
+		   else if ((float)$actualValue >  (float)$bar2)
+		   {
+			   $index = "indexmedium";
+			    $title = $MEDIUM;
+		   }
+		   else if ((float)$actualValue >  (float)$bar3)
+		   {
+			   $index = "indexhigh";
+			    $title = $HIGH;
+		   }
+		   else 
+		   {
+			   $index = "indexextreme";
+			    $title = $EXTREME;
+		   }
+	   }
+	   if ($displayTitleInsteadOfValue)
+		  $actualValue = $title[$lang_idx];
+		
+	   echo "<span class=\"small\">".$paramName."</span>&nbsp;<span class=\"".$index."\"><strong>".$actualValue."</strong></span>";
+
+	}
 
 $res = getRadioData();
 

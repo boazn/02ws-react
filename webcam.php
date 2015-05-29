@@ -192,11 +192,11 @@ if (stristr($imagefile, "Z"))
 		{
                         
 						
-			if (((stristr($lpic[1], "webcamB")&& ($archwebcam < 30)&&((getLocalHour($lpic[0])>4)&&(getLocalHour($lpic[0])<20))))) 
+			if (((($archwebcam < 100)&&((getLocalHour($lpic[0])>4)&&(getLocalHour($lpic[0])<20))))) 
 			{$archwebcam = $archwebcam + 1;
 			?>
 			
-			<div style="float:<?echo get_s_align();?>;padding:2px">
+			<div style="float:<?echo get_s_align();?>;padding:3px">
 				<a href="<?=$lpic[1]?>" title="<?echo getLocalTime($lpic[0]);?>" class="colorbox">
 					<img src="phpThumb.php?src=<? echo $lpic[1]; ?>&amp;w=70" width="70px" title="<?echo getLocalTime($lpic[0]);?>" />
 					
@@ -207,24 +207,8 @@ if (stristr($imagefile, "Z"))
 		</div>
 		<div style="clear:both">&nbsp;</div>
 		<div style="width:100%;height:160px">
-		<?$archwebcam = 0;
-		foreach ($latestPics as $lpic)
-		{
-                       
-			//echo $lpic[1]." ".getLocalHour($lpic[0])." ".$archwebcam." ";			
-			if (((!stristr($lpic[1], "webcamB"))&& ($archwebcam < 30)&&((getLocalHour($lpic[0])>4)&&(getLocalHour($lpic[0])<20)))) 
-			{$archwebcam = $archwebcam + 1; 
-			?>
-			
-			<div style="float:<?echo get_s_align();?>;padding:2px">
-				<a href="<?=$lpic[1]?>" title="<?echo getLocalTime($lpic[0]);?>" class="colorbox">
-					<img src="phpThumb.php?src=<? echo $lpic[1]; ?>&amp;w=70" width="70px" title="<?echo getLocalTime($lpic[0]);?>" />
-					
-				</a>
-			</div>
-			<? }
-		}
-	?>	
+		
+		
 	</div>
 	
 

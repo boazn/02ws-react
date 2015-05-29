@@ -129,24 +129,50 @@ $floated = false;
 							<span id="tempForecastDiv" style="display:none">
 							</span>
 						</div>
-						<div id="forecasthours" style="clear:both;width:100%;padding:0.5em 0.5em 0;height: 300px;">
-						 <? 
-						 foreach ($forecastHour as $hour_f){
-						 if ($hour_f['time'] % 3 == 0)
-						 {
-						  echo "<ul class=\"nav forecasttimebox inv_plain_3_zebra\" >";
-						 echo "<li class=\"tsfh\" style=\"text-align:center;width:3%;display:none\">".$hour_f['currentDateTime']."</li>";
-                                                 echo "<li class=\"tsfh\" style=\"text-align:center;width:10%\">".date("j/m", $hour_f['currentDateTime'])."</li>";
-						 echo "<li class=\"timefh\" style=\"text-align:center;width:8%\">".$hour_f['time']."</li>";
-						 echo "<li class=\"forecasttemp\" style=\"text-align:center;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
-						 echo "<li class=\"\" style=\"text-align:center;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"30\" width=\"45\" alt=\"".$hour_f['icon']."\" /></li>";
-						 echo "<li class=\"\" style=\"\">".$hour_f['wind'].",</li>";
-						 echo "<li class=\"\" style=\"\">".$hour_f['title']."</li>";
-						 echo "</ul>";
-						 }
-						 }
-						 ?>
-				</div>
+                                                <div id="forcast_hours" >
+						<ul id="for24_hours">
+				 <? 
+				 foreach ($forecastHour as $hour_f){
+				 if (($hour_f['time'] % 3 == 0) || ($hour_f['plusminus'] > 0))
+				 {
+				 echo "<li class=\"nav forecasttimebox forcast_each\" ><ul>";
+				 echo "<li class=\"tsfh\" style=\"text-align:center;width:0%;display:none\">".$hour_f['currentDateTime']."</li>";
+                                 echo "<li class=\"tsfh\" style=\"text-align:center;width:10%\">".date("j/m", $hour_f['currentDateTime'])."</li>";
+				 echo "<li class=\"timefh forcast_date\" style=\"direction:ltr;text-align:right;width:12%\"><span>".$hour_f['time'].":00";
+                                    if ($hour_f['plusminus'] > 0)
+                                        echo "&nbsp;&nbsp;&plusmn;".$hour_f['plusminus']."";
+                                 echo "</span></li>";
+				 echo "<li class=\"forecasttemp forcast_morning\" style=\"text-align:center;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
+				 echo "<li style=\"margin-top:0;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></li>";
+				
+				 if ($hour_f['wind'] > 30){
+					  $windtitle=$EXTREME_WINDS[$lang_idx];
+					  $wind_class="high_wind";
+				 }
+					
+				else if ($hour_f['wind'] > 20){
+					  $windtitle=$STRONG_WINDS[$lang_idx];
+					  $wind_class="high_wind";
+				 }
+					
+				else if ($hour_f['wind'] > 10){
+					  $windtitle=$MODERATE_WINDS[$lang_idx];
+					  $wind_class="moderate_wind";
+				 }
+					
+				else{
+					  $windtitle=$WEAK_WINDS[$lang_idx];
+					  $wind_class="light_wind";
+				 }
+					
+				 echo "<li style=\"margin-top:0;\"><div title=\"".$windtitle."\" class=\"wind_icon ".$wind_class." \"></div></li>";
+				 echo "<li>".$hour_f['title']."</li>";
+				 echo "</ul></li>";
+				 }
+				 }
+				 ?>
+				</ul>
+                               </div>
 				
 			</div>
 		</div>

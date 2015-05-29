@@ -12,9 +12,7 @@ body
 	position: relative;
 	margin: 0;
 	padding: 0;
-	/*background:#<?= $forground->bg['+8'] ?> center top fixed;*/
-	background-image: url(buttongradient.php?bg2=<?= $forground->bg['+10'] ?>&bg=<?= $forground->bg['+3'] ?>&width=1&height=2300);
-	background-repeat: repeat-x;
+	
 	color: #<?= $forground->bg['-7'] ?>;
     font-family: Alef, verdana, arial, serif
 }
@@ -485,7 +483,7 @@ direction:ltr
 div.high
 {
     color: #ffffff;
-	background-color: #ff0000;
+    background-color: #ff0000;
 }
 .low
 {
@@ -924,7 +922,27 @@ ul.squized li
 {
 	width:145px;border-bottom:none;
 }
-
+.wind_icon
+{
+ background: url('../img/wind_icons2.png') no-repeat top left;
+ width:40px;height:14px;
+}
+.no_wind
+{
+background-position: -120px 0px;
+}
+.light_wind
+{
+background-position: -80px 0px;
+}
+.moderate_wind
+{
+background-position: -40px 0px;
+}
+.high_wind
+{
+background-position: 0px 0px;
+}
 #windvalue
 {
 	float:left;padding:0 0.5em;margin: 0 auto;width:90%;direction:ltr
@@ -2249,3 +2267,6 @@ clear:both
 text-align:right
 }
 
+#coldmeter a{
+display:inline-block
+}

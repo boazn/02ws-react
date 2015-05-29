@@ -15,6 +15,7 @@ define("IMAGE_TYPE","gif");
 define("FILE_XML_FULLDATA","fulldatacumulus.xml");
 define("FILE_XML_FULLDATA2","fulldata.xml");
 define("EMAIL_ADDRESS","02ws.yerushamaim@gmail.com");
+define("GOOGLE_API_KEY", "AIzaSyA6nyCsWgrwXuh2tbsisPopkdgVRjQcTeQ");
 define("MYSQL_DB","02ws");
 define("MYSQL_IP","localhost");	
 define("MYSQL_USER","boazn");	

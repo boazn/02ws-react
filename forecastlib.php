@@ -14,6 +14,7 @@ $startTime = "";
 $endTime = "";
 $startDateTime = "";
 $endDateTime = "";
+$plusminus = 0;
 
 function rainExistsInTaf ($forecast_title, $priority)
 	{
@@ -68,44 +69,76 @@ function rainExistsInTaf ($forecast_title, $priority)
 		$startTime = ($startTime >= 24 ? $startTime - 24 : $startTime);
 		return $startTime;
 	}
- 
-	function getStartDateTime ($timerange)
+        function getPlusMinus ($starthour, $endhour)
+        {
+            $avTime = getAverageTime ($starthour, $endhour);
+            if ($_GET['debug'] > 3)
+           echo "avtime=".$avTime." start=".$starthour." end=".$endhour;
+            if ($avTime < $starthour)
+             return ($avTime + 24) - $starthour;
+            else
+             return $avTime - $starthour;
+        }
+        function getAverageTime ($starthour, $endhour)
+        {
+            if ($endhour < $starthour){
+                $average = round((($endhour + 24) + $starthour) / 2);
+                if ($average > 24)
+                    return $average - 24;
+                 else
+                     return $average;
+                
+            }
+            else {
+                return round(($endhour + $starthour)/2) ;
+            }
+        }
+	function getStartDateTime ($timerange, $plusminus)
 	{
-		if (strlen($timerange) < 2)
-			return null;
-		global $yearF, $monthF, $shift_forecast_time;
-		// daylight saving = + 2; regular = + 1
-		if (strlen($timerange) == 4)
-			$startpos = 0;
-		else
-			$startpos = 2;
-		$startHour = substr($timerange, $startpos, 2) + 2 + $shift_forecast_time;
-		$startday = substr($timerange, 0, 2);
-		if ($startHour >= 24)
-		{
-			$startHour = $startHour - 24;
-			$startday = $startday + 1;
-		} 
-		
-		return mktime ($startHour, 0, 0, $monthF, $startday , $yearF);
+            global $yearF, $monthF, $shift_forecast_time;
+            if (strlen($timerange) < 2)
+                    return null;
+
+            // daylight saving = + 2; regular = + 1
+            if (strlen($timerange) == 4)
+                    $startpos = 0;
+            else
+                    $startpos = 2;
+            $startHour = substr($timerange, $startpos, 2) + 2 + $shift_forecast_time;
+            $startday = substr($timerange, 0, 2);
+            if ($startHour >= 24)
+            {
+                    $startHour = $startHour - 24;
+                    $startday = $startday + 1;
+            }
+            $endHour = getEndTime($timerange);
+            if ($plusminus)
+            {
+                 $startHourAv = getAverageTime($startHour, $endHour);
+                 if ($startHourAv < $startHour)
+                     $startday = $startday + 1;
+                 $startHour = $startHourAv;
+            }
+            
+            return mktime ($startHour, 0, 0, $monthF, $startday , $yearF);
 	}
 	function getEndDateTime ($timerange)
 	{
-		global $yearF, $monthF, $shift_forecast_time;
-		// daylight saving = + 2; regular = + 1
-		if (strlen($timerange) == 4)
-			$endpos = 2;
-		else
-			$endpos = 7;
-		$endHour = substr($timerange, $endpos, 2) + 2 + $shift_forecast_time;
-		$endday = substr($timerange, 5, 2);
-		if ($endHour >= 24)
-		{
-			$endHour = $endHour - 24;
-			$endday = $endday + 1;
-		}
-		
-		return  mktime ($endHour, 0, 0, $monthF, $endday , $yearF);
+            global $yearF, $monthF, $shift_forecast_time;
+            // daylight saving = + 2; regular = + 1
+            if (strlen($timerange) == 4)
+                    $endpos = 2;
+            else
+                    $endpos = 7;
+            $endHour = substr($timerange, $endpos, 2) + 2 + $shift_forecast_time;
+            $endday = substr($timerange, 5, 2);
+            if ($endHour >= 24)
+            {
+                    $endHour = $endHour - 24;
+                    $endday = $endday + 1;
+            }
+
+            return  mktime ($endHour, 0, 0, $monthF, $endday , $yearF);
 	}
 	function getEndTime ($timerange)
 	{
@@ -131,12 +164,13 @@ function rainExistsInTaf ($forecast_title, $priority)
 	function isLastTokenIsProb()
 	{
 		global $lang_idx, $forecast_title, $GOOD_CHANCE_FOR, $LOW_CHANCE_FOR;
-		
+		//if ($_GET["debug"] >= 3)
+                //    echo "<br />LastToken:".trim($forecast_title[count($forecast_title)-2]);
 	    return (trim($forecast_title[count($forecast_title)-2])==trim($LOW_CHANCE_FOR[$lang_idx])||trim($forecast_title[count($forecast_title)-2])==trim($GOOD_CHANCE_FOR[$lang_idx]));
 	}
  
         function updateForecastHour($currentPri, $title, $icon){
-            global $forecastHour, $startDateTime, $endDateTime, $new_line, $same_sigment, $year, $priority, $forecast_title, $isProb;
+            global $forecastHour, $startDateTime, $plusminus, $endDateTime, $new_line, $same_sigment, $year, $priority, $forecast_title, $isProb;
  
 			if ($_GET["debug"] >= 3)
 				{
@@ -152,14 +186,15 @@ function rainExistsInTaf ($forecast_title, $priority)
 	   
             foreach ($forecastHour as &$hour_f){
 				$currentDateTime = $hour_f['currentDateTime'];
-				
+		if (($currentDateTime == $startDateTime) && $plusminus > 0)	
+                    $hour_f['plusminus'] = $plusminus;
                 if ((($currentDateTime >= $startDateTime) &&
                     ($currentDateTime <= $endDateTime))||
 					(($currentDateTime >= $startDateTime) &&
                     ($endDateTime==""))||
                     (($startDateTime=="")&&($endDateTime==""))){
                     if ($_GET["debug"] >= 3)
-                    echo "<br />newline=".$new_line." forecast_title=".count($forecast_title)." p=".$hour_f['priority']." icon=".$icon." in ".date("H d/m/y", $hour_f['currentDateTime'])." (".$hour_f['time']."): ";
+                    echo "<br />newline=".$new_line." forecast_title=".count($forecast_title)." p=".$hour_f['priority']." icon=".$icon." plusminus=".$hour_f['plusminus']." in ".date("H d/m/y", $hour_f['currentDateTime'])." (".$hour_f['time']."): ";
                     /*if (($icon != "")&&($new_line))
 					{
                         $hour_f['icon'] = $icon;
@@ -187,13 +222,14 @@ function rainExistsInTaf ($forecast_title, $priority)
 					 echo " p into ".$hour_f['priority'];
 					 }
 			}
+                        
 			 if ((($last_priority <= 35)&&(!$isProb))||(($new_line)&&(!isLastTokenIsProb())))
 			 {
 			 	$hour_f['title'] = $title;
 				if ($_GET["debug"] >= 3)
 				 echo	" + title ".$title." truncated"; 
 			 }
-			else if (($currentPri > $hour_f['priority'] )||(isLastTokenIsProb()))
+                         else if (($currentPri > $hour_f['priority'] )||(isLastTokenIsProb()))
 			{   
 				$comatoappend = " ";
 				if ((!isLastTokenIsProb())&&($hour_f['title']!=="")) $comatoappend = ", ";
@@ -201,6 +237,7 @@ function rainExistsInTaf ($forecast_title, $priority)
 				if ($_GET["debug"] >= 3)
 				 echo	" + title ".$title." appended"; 
 			 }
+			
 			 $hour_f['priority'] = $currentPri;
 			
                     if ((((!$new_line)||($same_sigment))&&($currentPri > 40))||(($currentPri > $hour_f['priority'])&&($hour_f['priority']>50)))
@@ -249,7 +286,7 @@ function rainExistsInTaf ($forecast_title, $priority)
 		 $last_priority = $priority;
 		 if ($_GET["debug"] >= 3)
 		{
-			echo "<br/>inUpdateForecast--> currentPri=".$currentPri." last_priority=".$last_priority." priority=".$priority." taf_pic=".$taf_pic." count=".count($forecast_title)."  new_line=".$new_line."  isProb=".$isProb."<br/>";
+			echo "<br/>inUpdateForecast--> title=".$title." currentPri=".$currentPri." last_priority=".$last_priority." priority=".$priority." taf_pic=".$taf_pic." count=".count($forecast_title)."  new_line=".$new_line."  isProb=".$isProb."<br/>";
 		}
 		if (count($forecast_title) == 1){
 			if ($currentPri<=20)
@@ -265,8 +302,18 @@ function rainExistsInTaf ($forecast_title, $priority)
 			else
 				$current->set_cloudiness(8);
 		}
-                if ($hour > 8 && $hour < 17 && $current->get_solarradiation() < 400)
-                    $current->set_cloudiness(8);
+                
+                if ($hour > 9 &&  ((get_sunset_ut() - $current->get_current_time_ut()) > 4000) && $current->get_solarradiation() < 400)
+                    $current->set_cloudiness(6);
+                 if ($hour > 9 && ((get_sunset_ut() - $current->get_current_time_ut()) > 4000) && $current->get_solarradiation() < 200)
+                 {
+                     $current->set_cloudiness(8);
+                 }
+                  if ($_GET["debug"] >= 3)
+		{
+                      echo "<br/>cloudiness=".$current->get_cloudiness()." ".get_sunset_ut() - $current->get_current_time_ut()." ";
+                }
+                    
                 
 		 if ($pic == "wind")
 		  {
@@ -276,32 +323,32 @@ function rainExistsInTaf ($forecast_title, $priority)
 		  if ($isProb)
 		  {
                     $same_sigment = false;
-			  //if ((stristr ($forecast_title[count($forecast_title) - 1], $TO[$lang_idx]))&&
-				//(stristr ($forecast_title[count($forecast_title) - 1], $FROM[$lang_idx])))
-				//{
-                                    
-                                if ($prob_mag == Chance::Low)
-                                    $prob_to_put = $LOW_CHANCE_FOR[$lang_idx];
-                                else if ($prob_mag == Chance::Good)
-                                    $prob_to_put = $GOOD_CHANCE_FOR[$lang_idx];
-                                else
-                                    $prob_to_put = $LOW_CHANCE_FOR[$lang_idx];
-                                array_push($forecast_title, "$prob_to_put");
-                                updateForecastHour($currentPri, "$prob_to_put", "");
-                                if ($_GET["debug"] >= 3)
-                                        echo "<br/>added ".$prob_to_put."<br/>";
-                                $isProb = false;
+                //if ((stristr ($forecast_title[count($forecast_title) - 1], $TO[$lang_idx]))&&
+                      //(stristr ($forecast_title[count($forecast_title) - 1], $FROM[$lang_idx])))
+                      //{
+
+                      if ($prob_mag == Chance::Low)
+                          $prob_to_put = $LOW_CHANCE_FOR[$lang_idx];
+                      else if ($prob_mag == Chance::Good)
+                          $prob_to_put = $GOOD_CHANCE_FOR[$lang_idx];
+                      else
+                          $prob_to_put = $LOW_CHANCE_FOR[$lang_idx];
+                      array_push($forecast_title, "$prob_to_put");
+                      updateForecastHour($currentPri, "$prob_to_put", "");
+                      if ($_GET["debug"] >= 3)
+                              echo "<br/>added ".$prob_to_put."<br/>";
+                      $isProb = false;
                     $same_sigment = true;
 				//}
  
 		 }
-		 if ($currentPri > $priority)
+		 if ($currentPri >= $priority)
 		 {
 			 if (($priority == 0)||($priority >= 50) || ($currentPri >= 35))
 			 {
 				 array_push($forecast_title, $title);
 				  if ($_GET["debug"] >= 3)
-					echo "added ".$title."<br/>";
+					echo "currentPri >= priority --> added ".$title."<br/>";
 			 }
 			 else if (!$new_line)
 			 {
@@ -313,20 +360,20 @@ function rainExistsInTaf ($forecast_title, $priority)
 				 } 
 				 array_push($forecast_title, $title);
 				  if ($_GET["debug"] >= 3)
-					echo "added ".$title."<br/>";
+					echo "not new line: added ".$title."<br/>";
 			 }
 
-             updateForecastHour($currentPri, $title, $pic);
-			 $taf_pic = $pic;
-			 $title_pic = $title;
-			 $priority = $currentPri;
+                    updateForecastHour($currentPri, $title, $pic);
+                                $taf_pic = $pic;
+                                $title_pic = $title;
+                                $priority = $currentPri;
 			 
 		 }
 		 else if (($new_line)&&($currentPri != $priority))
 		 {
 				array_push($forecast_title, $title);
 				if ($_GET["debug"] >= 3)
-				   echo "added ".$title."<br/>";
+				   echo "new_line + currentPri != priority --> added ".$title."<br/>";
 				updateForecastHour($currentPri, $title, $pic);
 		 }
 		 else if (!$same_sigment)
@@ -408,14 +455,14 @@ function rainExistsInTaf ($forecast_title, $priority)
 				 
 				  if ($t % 24 == 0)
 				 {
-					  $time = "00:00";
+					  $time = "00";
 				 }
 				  else 
-					  $time = sprintf("%d:00", $h);
+					  $time = sprintf("%d", $h);
 				 if ($t % 24 == 0)
 					 $dayC = $dayC + 1;
 				 $currentDateTime =  mktime ($h, 0, 0, $monthF, $dayC , $yearF);
-				 array_push($forecastHour, array('id' => $hourindex, 'time' => $time, 'currentDateTime' => $currentDateTime, 'temp' => "", 'wind' => 0, 'icon' => "", 'title' => "", 'cloth' => "", 'priority' => 0));
+				 array_push($forecastHour, array('id' => $hourindex, 'time' => $time, 'currentDateTime' => $currentDateTime, 'plusminus' => 0, 'change' => 0, 'temp' => "", 'wind' => 0, 'icon' => "", 'title' => "", 'cloth' => "", 'priority' => 0));
 				 $hourindex += 1;
 				 
 			 }
@@ -449,7 +496,7 @@ function rainExistsInTaf ($forecast_title, $priority)
  
 		}
 		else if (stristr ($taf_tokens[$i], "SN"))     {
-			updateForecast(100, $SNOW[$lang_idx], "snowshow2.png");
+			updateForecast(100, $SNOW[$lang_idx], "snow.gif");
  
 		}
 		if ((stristr ($taf_tokens[$i], "GR"))||
@@ -479,7 +526,7 @@ function rainExistsInTaf ($forecast_title, $priority)
  
 		}
 		if (stristr ($taf_tokens[$i], "CB"))   {
-			updateForecast(62, $SEVERE_CLOUDS[$lang_idx], "cloudym2.png");
+			updateForecast(62, $SEVERE_CLOUDS[$lang_idx], "mostlycloudy.png");
  
 		}
 		if ((stristr ($taf_tokens[$i], "FG")))     {
@@ -495,7 +542,7 @@ function rainExistsInTaf ($forecast_title, $priority)
  
 		}
 		if (stristr ($taf_tokens[$i], "TCU"))   {
-			updateForecast(48, $SEVERE_CLOUDS[$lang_idx], "cloudym2.png");
+			updateForecast(48, $SEVERE_CLOUDS[$lang_idx], "mostlycloudy.png");
  
 		}
 		if (stristr ($taf_tokens[$i], "BKN"))   {
@@ -511,7 +558,7 @@ function rainExistsInTaf ($forecast_title, $priority)
 					if ($_GET["debug"] >= 3)
 						echo "<br/>need to delete less important PC lines: removed ".$removed."<br/>";
 				}
- 				updateForecast(40, "$MOSTLY[$lang_idx] $CLOUDY[$lang_idx]", "cloudym2.png");
+ 				updateForecast(40, "$MOSTLY[$lang_idx] $CLOUDY[$lang_idx]", "mostlycloudy.png");
 				
 				if ($priority < $currentPri)
 				{
@@ -594,7 +641,8 @@ function rainExistsInTaf ($forecast_title, $priority)
 				$timerange = $taf_tokens[$i+1];
 				$startTime = getStartTime($timerange);
 				$endTime = getEndTime($timerange);
-				$startDateTime = getStartDateTime($timerange);
+				$startDateTime = getStartDateTime($timerange, true);
+                                
 				$endDateTime = getEndDateTime($timerange);
 				if ($_GET["debug"] >= 3)
 					echo "<br/>examining <strong>".$timerange."</strong>";
@@ -647,8 +695,9 @@ function rainExistsInTaf ($forecast_title, $priority)
 			$timerange = $taf_tokens[$i+1];
 			$startTime = getStartTime($timerange);
 			$endTime = getEndTime($timerange);
-			$startDateTime = getStartDateTime($timerange);
-		    $endDateTime = "";
+			$startDateTime = getStartDateTime($timerange, true);
+                        $plusminus = getPlusMinus($startTime, $endTime);
+                        $endDateTime = "";
 			$new_line = true;
 			if ($_GET["debug"] >= 3)
 					echo "<br/>examining <strong>".$timerange."</strong>";

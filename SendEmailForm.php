@@ -73,17 +73,16 @@ if (isset($_POST['SendButton'])) {
 		echo("<fieldset><div class=\"logo\"><div class=\"high\">Email is not valid אימייל לא חוקי</div></div></fieldset>");
 	}
 
-	else if(stristr($_SERVER['HTTP_REFERER'], "station.php") > -1 ){
+	else if((stristr($_SERVER['HTTP_REFERER'], "station.php") > -1 )||(stristr($_SERVER['HTTP_REFERER'], "small.php") > -1 )){
 
 		$msgSent = true;
 		$insert_msgdate = date('Y-m-d G:i:s', strtotime(SERVER_CLOCK_DIFF, time()));
 		
-		$name = "<div class=\"float slogan\">".$name.":</div>";
 		$message = str_replace("\"", "''", $message);
 		$message = "<div class=\"float\">".$message."</div>";
-		$msgBody = "{$insert_msgdate}\n{$name}{$message}";
+		$msgBody = "{$insert_msgdate}\n"."<div class=\"float slogan\">".$name."</div>{$message}";
 		
-		$result = send_Email($msgBody, ME, $email, $name, "");
+		$result = send_Email($msgBody, ME, $email, $name, "", array("New contact to 02WS", "הודעה חדשה לצרו קשר של ירושמיים"));
 		if ($result == "")
 			echo "<fieldset class=\"topbase slogan afont\" style=\"height:200px\"><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></fieldset>";
 		else
@@ -108,32 +107,28 @@ if (isset($_POST['SendButton'])) {
 
 <form method="post">
 
-<div class="inv_plain_3" style="padding:2em;float:<?echo get_s_align();?>;">
+<div class="inv_plain_3" style="padding:1em 0;margin:auto;width:85%">
 	<div style="padding:0.5em">
-		<strong>Name</strong>&nbsp;&nbsp;<strong>&nbsp;שם</strong><br />
-
-		<input name="name" size="30" maxlength="50" value="<? echo $name;?>" style="width:300px;text-align:<?if (isHeb()) echo "right"; else "left";?>" />
+		<input name="name" size="30" maxlength="50" placeholder="<? if (isHeb()) echo "שם"; else echo "Name";?>" value="<? echo $name;?>" style="width:55%;text-align:<?if (isHeb()) echo "right"; else "left";?>" />
 	</div>
 
 	<div style="padding:0.5em">
-		<strong>Email</strong><br />
-		<input name="email" size="30" maxlength="50" style="width:300px;text-align:left" value="<? echo $email;?>" />
-
+		<input name="email" size="30" maxlength="50" placeholder="Email" style="width:55%;text-align:left" value="<? echo $email;?>" />
 	</div>
 </div>
 
-<div class="inv_plain_3" style="clear:both;padding:1em 0;float:<?echo get_s_align();?>;text-align:center;width:100%;height:300px">
+<div class="inv_plain_3" style="clear:both;padding:1em 0;text-align:center;width:85%;margin:auto" <?if (isHeb()) echo " dir=\"rtl\"";?>>
 
-	<strong>Your message כאן כתוב את הודעתך</strong><br/>
+	<strong><? if (isHeb()) echo "בא לי להגיד ש..."; else echo "I wanted to say:";?></strong><br/>
 
-	<textarea name="message" cols="80" rows="12" <?if (isHeb()) echo " dir=\"rtl\"";?>  value="<? echo $message; ?>" style="width:800px;font-size: 1.2em;"><? echo $message; ?></textarea>
+	<textarea name="message" rows="6"  value="<? echo $message; ?>" style="width:85%;font-size: 1.1em;"><? echo $message; ?></textarea>
 
 </div>
 
 
     
-<div class="inv_plain_3" style="clear:both;text-align:center;padding:1em 0;width:100%;">
-		<input type="submit" name="SendButton" style="width:700px;font-size: 1.2em;" class="inv_plain_3" value="Send Message שלח הודעה"/>
+<div style="clear:both;text-align:center;padding:1em 0;width:85%;margin:0.1em auto">
+		<input type="submit" name="SendButton" style="width:85%;font-size: 1.2em;" class="inv_plain_3_zebra" value="<? if (isHeb()) echo "שליחת הודעה"; else echo "Send Message";?>"/>
 </div>
 
 </form>

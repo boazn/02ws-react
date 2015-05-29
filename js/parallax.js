@@ -108,14 +108,14 @@ function parallaxScroll(){
 		$('#newsletter').css('opacity',(1-((scrolled-$('#more').offset().top)*0.005)));
 		$('#about').css(margin,(60-(scrolled-$('#more').offset().top))+'px');
 		$('#about').css('opacity',(1-((scrolled-$('#more').offset().top)*0.005)));
-		$('#did_you_know').css(margin,(900+(scrolled-$('#more').offset().top))+'px');
+		$('#did_you_know').css(margin,(60-(scrolled-$('#more').offset().top))+'px');
 		$('#did_you_know').css('opacity',(1-((scrolled-$('#more').offset().top)*0.005)));
 	} else {
 		$('#newsletter').css(margin,30 +"px");
 		$('#newsletter').css('opacity',1);
 		$('#about').css(margin,60 +"px");
 		$('#about').css('opacity',1);
-		$('#did_you_know').css(margin,900+'px');
+		$('#did_you_know').css(margin,60+'px');
 		$('#did_you_know').css('opacity',1);
 	}
 	

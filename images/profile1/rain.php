@@ -261,7 +261,7 @@ if ($lang_idx == "")
 $monthly = $lang_idx == 1 ? utf8_strrev($MONTHLY[$lang_idx]) : $MONTHLY[$lang_idx];
 $txtaa=new Text($chrs . $monthly);
 $txtaa->SetFont(FF_ARIAL, FS_BOLD,10);
-$txtaa->SetPos($width - 26,$height - 255,'center');
+$txtaa->SetPos($width - 66,$height - 275,'center');
 $txtaa->SetColor("lightblue");
 $graph->AddText($txtaa);
 
@@ -269,7 +269,7 @@ $graph->AddText($txtaa);
 $daily = $lang_idx == 1 ? utf8_strrev($DAILY_RAIN[$lang_idx]) : $DAILY_RAIN[$lang_idx];
 $txtab=new Text($chrs . $daily);
 $txtab->SetFont(FF_ARIAL, FS_BOLD,9);
-$txtab->SetPos(40,$height - 250,'center');
+$txtab->SetPos(100,$height - 240,'center');
 $txtab->SetColor("blue");
 $graph->AddText($txtab);
 

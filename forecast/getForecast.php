@@ -14,7 +14,7 @@ $locations = isset($_REQUEST['locations']) ? $_REQUEST['locations'] : "";
     }
     
     #wrapperforecast{
-        float:right;text-align:center;padding:0 1em
+        float:right;text-align:center;padding:0 1em;margin-bottom: 1em;
     }
     #wrapperclimate{
         clear:both;padding:0.8em
@@ -22,6 +22,8 @@ $locations = isset($_REQUEST['locations']) ? $_REQUEST['locations'] : "";
     #wrapperclimate td{
         box-shadow:0 1px 5px rgba(0,0,0,0.2)
     }
+    
+    
         
 </style>
 <SCRIPT type="text/javascript" language="Javascript" SRC="ajax.js">

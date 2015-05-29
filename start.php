@@ -79,9 +79,12 @@ $ary_parsed_file = getXMLInArray($fulldatatotake);
 //////////////////////////////////////////////
 $current->set_date($ary_parsed_file['STATIONDATE']);    
 $current->set_time($ary_parsed_file['STATIONTIME']);      
-$current->set_temp($ary_parsed_file['OUTSIDETEMP']);   
+$current->set_temp($ary_parsed_file['OUTSIDETEMP']);
+$current->set_temp2($ary_parsed_file['OUTSIDETEMP2']);
 $today->set_hightemp($ary_parsed_file['HIOUTSIDETEMP'],$ary_parsed_file['HIOUTSIDETEMPTIME']);    
-$today->set_lowtemp($ary_parsed_file['LOWOUTSIDETEMP'],$ary_parsed_file['LOWOUTSIDETEMPTIME']);    
+$today->set_lowtemp($ary_parsed_file['LOWOUTSIDETEMP'],$ary_parsed_file['LOWOUTSIDETEMPTIME']);
+$today->set_hightemp2($ary_parsed_file['HIOUTSIDETEMP2'],$ary_parsed_file['HIOUTSIDETEMP2TIME']);    
+$today->set_lowtemp2($ary_parsed_file['LOWOUTSIDETEMP2'],$ary_parsed_file['LOWOUTSIDETEMP2TIME']); 
 $thisMonth->set_hightemp($ary_parsed_file['HIMONTHLYOUTSIDETEMP'],"");    
 $thisMonth->set_lowtemp($ary_parsed_file['LOWMONTHLYOUTSIDETEMP'],"");    
 $thisYear->set_hightemp($ary_parsed_file['HIYEARLYOUTSIDETEMP'],"");    

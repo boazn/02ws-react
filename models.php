@@ -14,6 +14,100 @@ function changeModel (inmodel)
 <center>
 <div id="modelbar" class="tbl" style="width:<?= $site_width ?>;height:28px;">
 <?
+   ///////////////////////////////////////////////////////
+// models links
+///////////////////////////////////////////////////////
+function getModelLink($level, $model)
+{
+	global $hour, $year, $month, $day, $hoursForecast;
+	
+	if ($hour<=19)	
+			$iniHour = 0;  
+		else	
+			$iniHour = 12; 
+
+	
+	if (($level == '')||($level == 1000)) {
+		$model_link = sprintf ("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=europe&id=&zoom=.6&ge=640x480&mo=%s&le=500&va=hght&in=60&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=sfc&va=slp&in=5&pl=ln&ft=h%02d&cu=latest", $model,  $hoursForecast, $model,  $hoursForecast);
+		$model_link = sprintf("http://weather.uwyo.edu/cgi-bin/model?REGION=EUR&MODEL=ukmet&TIME=%d%02d%02d%02d&F1=pmsl&F2=none&C1=pmsl&C2=hght&VEC=brbk&LEVEL=500&FCST=%03d", $year, $month, $day, $iniHour, $hoursForecast);
+		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x775&mo=%s&le=500&va=hght&in=60&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=sfc&va=slp&in=5&pl=ln&ft=h%02d&cu=latest", $model, $hoursForecast, $model, $hoursForecast);
+		//if ((($hoursForecast % 12 == 6) || (($hoursForecast > 72)&&($hoursForecast % 24 == 12))) && ($model == "ukmet"))
+		//	$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/GH+T%03d_EUROPA_%d", $iniHour, $level , $hoursForecast);
+		if (($model == "ukmet") && ($hoursForecast > 72))
+			$model_link = sprintf("http://www.wetterzentrale.de/pics/Rukm%d1.gif", $hoursForecast);
+		if ($hoursForecast == 999)
+		{
+			if ($model == "ecmwf")
+				$model_link = "http://weather.unisys.com/ecmwf/restrict/ecmwf_500p_6panel_eur.gif";
+			else
+				$model_link = "http://weather.unisys.com/gfsx/9panel/gfsx_500p_9panel_eur.gif";
+		}
+
+	}
+	else if ($level == 'Prec')
+	{
+		
+		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grb-comp.cgi?re=meast&mo=%s&va=csfcpr&ft=h%02d&cu=latest&ge=800x630&ti=UTC&id=&zoom=.6", $model, $hoursForecast);
+		if ($model == "ukmet")
+		{
+			if (($hoursForecast > 72)||($hoursForecast == 66)||($hoursForecast == 54))
+				$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/prec6h_EUROPA_%d", $iniHour,  $hoursForecast);
+			else if($hoursForecast % 12 == 6)
+				$model_link = sprintf("http://www.wetterzentrale.de/pics/Rukm%d3.gif", $hoursForecast);
+		}
+		//else if ($model == "ecmwf")	
+		//	$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/ECMWORD_%02d/RH_COMP_PREC_MED_%d", $iniHour, $hoursForecast);			
+		//else if ($hoursForecast % 12 == 6) // GFS
+		//	$model_link = sprintf("http://91.121.93.17/pics/Rtavn%d4.png", $hoursForecast);
+	}
+	else if ($level == '850rh') 
+	{
+		if ((($hoursForecast > 72)||($hoursForecast == 66)||($hoursForecast == 54)) && ($model == "ukmet"))
+			$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/RH850_EUROPA_%d", $iniHour,  $hoursForecast);
+		else
+		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x1024&mo=%s&le=850&va=rhum&in=5&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=850&va=wbrb&in=5&pl=ln&ft=h%02d&cu=latest", $model,  $hoursForecast, $model,  $hoursForecast);
+	}
+	else if ($level == '500rh') 
+	{
+		if ((($hoursForecast > 72)||($hoursForecast = 66)||($hoursForecast == 54)) && ($model == "ukmet"))
+			$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/RH500_EUROPA_%d", $iniHour,  $hoursForecast);
+		else
+		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x1024&mo=%s&le=500&va=rhum&in=5&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=500&va=wbrb&in=5&pl=ln&ft=h%02d&cu=latest", $model, $hoursForecast, $model, $hoursForecast);
+	}
+	else if (($level == 850) || ($level == 200) || ($level == 300)) 
+	{   // temp + wind
+		$model_link = sprintf("http://weather.uwyo.edu/cgi-bin/model?REGION=EUR&MODEL=%s&TIME=%d%02d%02d%02d&F1=tmpc&F2=p06i&C1=tmpc&C2=relh&VEC=brbk&LEVEL=850&FCST=%03d", $model, $year, $month, $day, $iniHour, $hoursForecast);
+		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x1024&mo=%s&le=%d&va=temp&in=1&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=%d&va=wbrb&in=5&pl=ln&ft=h%02d&cu=latest", $model, $level, $hoursForecast, $model, $level, $hoursForecast);
+		if ((($hoursForecast > 72)||($hoursForecast == 66)||($hoursForecast == 54)) && ($model == "ukmet"))
+		{
+			$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/GH+T%03d_EUROPA_%d", $iniHour, $level , $hoursForecast);
+			if ($level == 300)
+				$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/W%03d_EUROPA_%d", $iniHour, $level , $hoursForecast);	
+		}
+			
+		if ($hoursForecast == 999)
+		{
+			
+			if ($model == "ecmwf")
+				$model_link = sprintf("http://weather.unisys.com/ecmwf/restrict/ecmwf_%d_6panel_eur.gif", $level);
+			else
+				$model_link = sprintf("http://weather.unisys.com/gfsx/9panel/gfsx_%d_9panel_eur.gif", $level);
+		}
+	}
+	else if ($level == "comp")
+	{
+		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grb-comp2.cgi?re=meast&mo=%s&va=c4pp&ft=h%02d&cu=latest&ge=1024x806&id=&zoom=.15", $model ,$hoursForecast);
+	}
+	else { // temp + humidity
+		if ((($hoursForecast == 66)||($hoursForecast == 54) || ($hoursForecast > 72)) && ($model == "ukmet"))
+			$model_link = sprintf("http://www.3bmeteo.com/mappe_gif/UKMWORD_%02d/GH+T%03d_EUROPA_%d", $iniHour, $level, $hoursForecast);
+		else
+		$model_link = sprintf("http://vortex.plymouth.edu/cgi-bin/gen_grbcalc.cgi?re=meast&id=&zoom=.15&ti=0&ge=1280x1024&mo=%s&le=%d&va=temp&in=1&pl=cf&ft=h%02d&cu=latest&overlay=yes&mo=%s&le=%d&va=rhum&in=10&pl=ln&ft=h%02d&cu=latest", $model, $level, $hoursForecast, $model, $level, $hoursForecast);
+	}
+	
+	
+  return ($model_link);
+}
    $model = $_GET['model'];
 	if ($model == "")
 		$model = "ukmet";

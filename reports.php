@@ -1,4 +1,331 @@
+                                <?
+$tablestobeSearched = array();
+$where_clause_archivemin = array();
+$where_clause_archive = array();
+ function pushTables($min_year,$current_year, $monthMode)
+ {
+	global $tablestobeSearched;
+	global $where_clause_archivemin; 
+	global $where_clause_archive;
+        global $tableToSearch;
+	$startingYearFromMyStation = 2005;
+	if (count($_POST['years']) > 0){
+		foreach ($_POST['years'] as $yearToSearch)
+		{
+			if (count($_POST['months']) > 0)
+			{
+				foreach ($_POST['months'] as $monthToSearch)
+				{
+					
+					if ($tableToSearch != "archive")
+					{
+						array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+						if (!in_array("archivemin", $tablestobeSearched)) 
+							array_push ($tablestobeSearched, "archivemin");
+					}
+					else 
+					{
+						array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+						if (!in_array("archive", $tablestobeSearched))
+						 array_push ($tablestobeSearched, "archive");
+					}
+				}
+			}
+			else //no month selected
+			{
+				
+				if ($tableToSearch != "archive")
+				{
+					if ($monthMode)
+					{
+						for ($monthToSearch = 1;$monthToSearch <= 12 ;$monthToSearch++) { 
+							array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+						}
+					}
+					else
+						array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
+					if (!in_array("archivemin", $tablestobeSearched))
+						array_push ($tablestobeSearched, "archivemin");
+				}
+				else
+				{
+					if ($monthMode)
+					{
+						for ($monthToSearch = 1;$monthToSearch <= 12 ;$monthToSearch++) { 
+							array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+						}
+					}
+					else
+						array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
+					//if (!in_array("archive", $tablestobeSearched))
+					//	 array_push ($tablestobeSearched, "archive");
+					
+				}
+			}
+		}
+	}
+	else // no year selected
+		foreach ($_POST['months'] as $monthToSearch)
+		{
 			
+			if (!in_array("archivemin", $tablestobeSearched))
+			{
+				array_push ($tablestobeSearched, "archivemin");
+			}
+
+			for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
+				array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+			}
+
+			if (!in_array("archive", $tablestobeSearched))
+			 array_push ($tablestobeSearched, "archive");
+			for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
+				array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+			}
+			
+		}
+
+	return $where_clause_archivemin;
+		
+} 
+
+function getReport($min_year,$current_year, $report)
+{
+	global $tablestobeSearched;
+	global $where_clause_archivemin; 
+	global $where_clause_archive;
+	
+	$monthMode = false;
+	if ($report == "minofmax")
+	{
+		$maxOrMin = "MAX";
+		$param = "HiTemp";
+		$AscOrDesc = "ASC";
+		$unit = "&#176;C";
+	}
+	else if ($report == "maxofmin")
+	{
+		$maxOrMin = "MIN";
+		$param = "LowTemp";
+		$AscOrDesc = "DESC";
+		$unit = "&#176;C";
+	}
+	else if ($report == "minofmin")
+	{
+		$maxOrMin = "MIN";
+		$param = "LowTemp";
+		$AscOrDesc = "ASC";
+		$unit = "&#176;C";
+	}
+	else if ($report == "maxofmax")
+	{
+		$maxOrMin = "MAX";
+		$param = "HiTemp";
+		$AscOrDesc = "DESC";
+		$unit = "&#176;C";
+	}
+	else if ($report == "maxhum")
+	{
+		$maxOrMin = "MAX";
+		$param = "Hum";
+		$AscOrDesc = "DESC";
+		$unit = "%";
+                $tableToSearch="archive";
+	}
+	else if ($report == "minhum")
+	{
+		$maxOrMin = "MIN";
+		$param = "Hum";
+		$AscOrDesc = "ASC";
+		$unit = "%";
+                $tableToSearch="archive";
+	}
+	else if ($report == "maxdew")
+	{
+		$maxOrMin = "MAX";
+		$param = "Dew";
+		$AscOrDesc = "Desc";
+		$unit = "&#176;C";
+                $tableToSearch="archive";
+	}
+	else if ($report == "maxrain")
+	{
+		$maxOrMin = "SUM";
+		$param = "Rain";
+		$AscOrDesc = "Desc";
+		$unit = "mm";
+	}
+	else if ($report == "maxrainmonth")
+	{
+			$monthMode = true;
+			$maxOrMin = "SUM";
+			$param = "Rain";
+			$AscOrDesc = "Desc";
+			$unit = "mm";
+	}
+	else if ($report == "minrainmonth")
+	{
+			$monthMode = true;
+			$maxOrMin = "SUM";
+			$param = "Rain";
+			$AscOrDesc = "Asc";
+			$unit = "mm";
+	}
+        /*
+         * SELECT AVG( LowTemp+HiTemp)/2 AVGLowTemp , DATE_FORMAT(`Date`, '%Y-%m') month FROM `archivemin` where `LowTemp` IS NOT NULL AND ( ( DATEDIFF( `Date` , DATE( '2002-07-01' ) ) >=0 AND DATEDIFF( `Date` , DATE( '2002-08-01' ) ) <0) )
+         */
+        else if ($report == "maxtempmonth")
+	{
+			$monthMode = true;
+			$complex = "(LowTemp+HiTemp)/2";
+			$maxOrMin = "AVG";
+			$param = "HiTemp";
+			$AscOrDesc = "Asc";
+			$unit = "&#176;C";
+	}
+        else if ($report == "mintempmonth")
+	{
+			$monthMode = true;
+			$complex = "(LowTemp+HiTemp)/2";
+			$maxOrMin = "AVG";
+			$param = "LowTemp";
+			$AscOrDesc = "Desc";
+			$unit = "&#176;C";
+	}
+
+	pushTables($min_year,$current_year, $monthMode);
+
+	global $link;
+	db_init("", "");
+	if ($complex == "") 
+            { $complex = $param;};
+	if ($monthMode)
+	{
+			$query_total = "SELECT ".$maxOrMin.$param." ,  month FROM (";
+		
+		for ($i = 0;$tablestobeSearched[$i]!=null ;$i++) {
+			$table = $tablestobeSearched[$i];
+			
+			if ($table == "archivemin")
+			{
+				
+				for ($j = 0;$where_clause_archivemin[$j]!=null ;$j++) {
+					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month FROM  `".$table."` where `".$param."` IS NOT NULL  ";
+					$query_total .= " AND ( ";
+					$query_total .= $where_clause_archivemin[$j];
+					$query_total .= " ) ";
+					if ($j < count($where_clause_archivemin) - 1)
+						$query_total .= " UNION ALL ";
+				}
+				
+			}
+			else
+			{	
+				for ($j = 0;$where_clause_archive[$j]!=null ;$j++) {
+					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month FROM  `".$table."` where `".$param."` IS NOT NULL  ";
+					$query_total .= " AND ( ";
+					$query_total .= $where_clause_archive[$j];
+					$query_total .= " ) ";
+					if ($j < count($where_clause_archive) - 1)
+						$query_total .= " UNION ALL ";
+				}
+				
+			}
+			if ($i < count($tablestobeSearched) - 1)
+				$query_total .= " UNION ALL ";
+		}
+		
+		$query_total .= ") ar where month is not null ";
+		$query_total .= "  ORDER BY ".$maxOrMin.$param." ".$AscOrDesc." LIMIT 0 , 15";
+	}
+	else
+	{
+		$query_total = "SELECT ".$maxOrMin."(  ".$param." ) ,  `Date` FROM (";
+		
+		for ($i = 0;$tablestobeSearched[$i]!=null ;$i++) {
+			$table = $tablestobeSearched[$i];
+			//echo " <br/>".$table." <br/>";
+			$query_total .= "SELECT  ".$param." ,  `Date` FROM  `".$table."` where ".$param." IS NOT NULL  ";
+			if ($table == "archivemin")
+			{
+				$query_total .= " AND ( ";
+				for ($j = 0;$where_clause_archivemin[$j]!=null ;$j++) {
+					$query_total .= $where_clause_archivemin[$j];
+					if ($j < count($where_clause_archivemin) - 1)
+						$query_total .= " OR ";
+				}
+				$query_total .= " ) ";
+			}
+			else
+			{
+				$query_total .= " AND ( ";
+				for ($j = 0;$where_clause_archive[$j]!=null ;$j++) {
+					$query_total .= $where_clause_archive[$j];
+					if ($j < count($where_clause_archive) - 1)
+						$query_total .= " OR ";
+				}
+				$query_total .= " ) ";
+			}
+			if ($i < count($tablestobeSearched) - 1)
+				$query_total .= " UNION ALL ";
+		}
+		
+		$query_total .= ") ar ";
+		$query_total .= "  GROUP BY  `Date` ORDER BY ".$maxOrMin."(  ".$param." ) ".$AscOrDesc." LIMIT 0 , 15";
+		}
+	//echo $query_total;
+	
+	$result = mysqli_query($link, $query_total);
+	echo "<table align=\"center\">";
+	echo "<tr class=\"base\"><td style=\"text-align:center\">".$unit."</td><td style=\"text-align:center\">yyyy-mm-dd</td></tr>";
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+		$lines++;
+		$col = 0;
+		print "\t<tr align=\"center\" class=\"base\">\n";
+		foreach ($line as $col_value) {
+			print "\t\t<td";
+			if ($col < 2)
+					print " class=\"topbase\"";
+			print " title=\"\"";
+			if ($col == 0)
+				print ">".round($col_value, 1)."</td>\n";
+			else
+			{
+				print " >";
+				print "<form method=\"post\" action=\"".get_query_edited_url($url_cur, 'section', 'browsedate.php')."\">";
+                                print "<input type=\"submit\" value=\"$col_value\" name=\"submitdate\" style=\"cursor:pointer;width:120px\" />";
+                                if  (stristr($col_value, "/"))
+                                {
+                                      $current_date = explode('/', $col_value, 3);//dd/mm/yy
+                                       $current_year = 2000 + $current_date[2];
+                                       print "<input type=\"hidden\" name=\"browseyear\" 	value=\"$current_year\">";
+				       print "<input type=\"hidden\" name=\"browsemonth\" 	value=\"$current_date[1]\">";
+				       print "<input type=\"hidden\" name=\"browseday\" 	value=\"$current_date[0]\">";
+                                }
+                                else
+                                      
+                                
+                                {
+				   $current_date = explode('-', $col_value, 3);//yyyy-mm-dd
+                                   print "<input type=\"hidden\" name=\"browseyear\" 	value=\"$current_date[0]\">";
+				   print "<input type=\"hidden\" name=\"browsemonth\" 	value=\"$current_date[1]\">";
+				   print "<input type=\"hidden\" name=\"browseday\" 	value=\"$current_date[2]\">";
+                                }
+                                
+				
+
+				print "</form>";
+				print "</td>\n";
+			}
+			$col++;
+		}
+		print "\t</tr>\n";
+	}
+	echo "</table>";
+	@mysqli_free_result($result);
+        @mysqli_close($link);
+}
+                                ?>
 				<?
 				$MINOFMAX = array("The minimum of Max Temp", "טמפרטורת המקסימום הכי נמוכה");
 				$MAXOFMIN = array("The maximum of Min Temp", "טמפרטורת המינימום הכי גבוהה");

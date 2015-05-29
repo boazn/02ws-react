@@ -16,11 +16,12 @@ function post_to_bufferApp($messageBody, $picture_url)
 
     $data['text'] = $messageBody;
 
-    //$data['media'] = array('picture' => 'http://www.02ws.co.il/02ws_short.png');
     $data['media'] = array('link' => 'http://www.02ws.co.il');
-    if (!empty($picture_url)){
-        $data['media'] = array('picture' => $picture_url, 'thumbnail' => $picture_url);
+    if (empty($picture_url)){
+        $picture_url = 'http://www.02ws.co.il/images/webCameraB.jpg';
+        $picture_url = 'http://www.02ws.co.il/02ws_short.png';
     }
+    $data['media'] = array('link' => 'http://www.02ws.co.il', 'picture' => $picture_url);
     $data['client_id']='53f8f11aa9dc830067715093';
     $data['client_secret']= '228199ac982c39a26378a58a998d2f08';
     $data['redirect_uri']= "www.02ws.co.il";
@@ -93,8 +94,8 @@ $result = db_init("select * FROM apn_users where active=1", "");
           }
     }
  $result = "";
- $result = sendAPNToRegIDs($registrationIDs0, $messageBody[0]." - ".$title[0], $picture_url, $embedded_url);
- $result .= sendAPNToRegIDs($registrationIDs1, $messageBody[1]." - ".$title[1], $picture_url, $embedded_url);
+ $result = sendAPNToRegIDs($registrationIDs0, $title[0]." - ".$messageBody[0], $picture_url, $embedded_url);
+ $result .= sendAPNToRegIDs($registrationIDs1, $title[1]." - ".$messageBody[1], $picture_url, $embedded_url);
  return $result;
 
 }
@@ -347,7 +348,7 @@ if (empty($empty)) {
        $result .= " exception send_Email:".$ex->getMessage();
     }
     try{
-        $result .= post_to_bufferApp($msgSpecial[1]." - ".$title[1]." ".$picture_url, $picture_url); 
+        $result .= post_to_bufferApp($title[1]." - ".$msgSpecial[1]." ".$picture_url, $picture_url); 
     } catch (Exception $ex) {
         $result .= " exception post_to_bufferApp:".$ex->getMessage();
     }

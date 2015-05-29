@@ -50,9 +50,9 @@ function getNextPage($addToPage)
 					  <ul style="<?echo get_s_align();?>: -2em;">
 						<li>
 							<div id="notloggedin" style="display:none">
-								<div class="clear"><a href="javascript: void(0)" id="login" title="<?=$LOGIN[$lang_idx]?>" ><?=$LOGIN[$lang_idx]?></a></div>
-								<div class="clear"><a href="javascript: void(0)" class="register" id="register" title="<?=$REGISTER[$lang_idx]?>"><?=$REGISTER[$lang_idx]?></a></div>
-								<div class="clear"><a href="javascript: void(0)" id="forgotpass" title="<?=$FORGOT_PASS[$lang_idx]?>"><?=$FORGOT_PASS[$lang_idx]?></a></div>
+								<div class="clear"><a href="javascript: void(0)" class="button" id="login" title="<?=$LOGIN[$lang_idx]?>" ><?=$LOGIN[$lang_idx]?></a></div>
+								<div class="clear"><a href="javascript: void(0)" class="button register" id="register" title="<?=$REGISTER[$lang_idx]?>"><?=$REGISTER[$lang_idx]?></a></div>
+								
 							</div>
 							<div id="loggedin" style="display:none">
 								<input id="updateprofile" class="button" title="<?=$UPDATE_PROFILE[$lang_idx]?>" value="<?=$UPDATE_PROFILE[$lang_idx]?>" /><br />
@@ -69,6 +69,7 @@ function getNextPage($addToPage)
 	<input type="hidden" value="" id="current_forum_filter" />
 	<input type="hidden" value="R" id="current_forum_update_display" />
 	<input type="hidden" value="" id="current_post_idx" />
+        <input type="hidden" id="chosen_user_icon" value=""/>
 	<div  class="small" id="inputFieldsDiv">
 	    <div id="new_post_btn" onclick="openNewPost(<?=$lang_idx?>)">
 				<?=$CREATE_NEW_MSG[$lang_idx]?>
@@ -76,7 +77,8 @@ function getNextPage($addToPage)
 		<div class="span4 white_box" id="new_post">
 				<div id="new_post_user"></div>                               
 				<textarea id="new_post_ta"></textarea>
-                                <div id="new_post_private"><input type="checkbox" id="check_private_msg" /><?=$PRIVATE_MSG[$lang_idx]?></div>
+                                <div id="new_post_alert"><input type="checkbox" id="check_alert_msg" /><?=$ALERT_MSG_TO_SENDER[$lang_idx]?></div>
+                                <div id="new_post_private" style="display:none"><input type="checkbox" id="check_private_msg" /><?=$PRIVATE_MSG_TO_SENDER[$lang_idx]?></div>
                                 <div id="new_post_cancel" onclick="closeNewPost();restoreTopDiv();"><?=$CANCEL[$lang_idx]?></div>
 				<div id="new_post_okay" onclick="getMessageService(<?=$limitLines?>, '', 0, 1, <?=$lang_idx?>, $('#current_forum_filter').attr('key'));closeNewPost()"><?=$SEND[$lang_idx]?></div>               
 		</div>
@@ -85,10 +87,7 @@ function getNextPage($addToPage)
 			<div>   
 			
 			<a href="<? echo get_query_edited_url($url_cur, 'section', 'SendEmailForm.php');?>" title="<?=$MANAGER[$lang_idx]?>">
-				<?=$PRIVATE_MSG[$lang_idx]?><?=get_arrow()?>
-			</a>&nbsp;&nbsp;
-			<a href="javascript:void(0)" onclick="window.open('http://pub11.bravenet.com/guestmap/show.php?usernum=893988804&amp;lightmap=0&amp;icons=0&amp;&amp;entrylist=0&amp;zoom=0&amp;welcome=1','bnetguestmap','toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=0,resizable=0,width=720,height=470,top=110,left=110')">
-					<? echo $GUESTBOOK[$lang_idx];?><?=get_arrow()?> 
+				<?=$CONTACT_ME[$lang_idx]." - ".$PRIVATE_MSG[$lang_idx]?><?=get_arrow()?>
 			</a>&nbsp;&nbsp;
 			<a href="<? echo get_query_edited_url($url_cur, 'section', 'faq.php');?>"  title="<?=$FAQ[$lang_idx]?>"><? echo $FAQ[$lang_idx];?><?=get_arrow()?>
 			</a>
@@ -108,7 +107,9 @@ function getNextPage($addToPage)
 	<div class="" id="msgDetails">
 				
 	</div>
-	
+	<div class="big" style="padding:2em">
+            <a href='javascript:void(0)' onclick="getNextPage(<?=$lang_idx?>, <?=$limitLines?>)">עוד הודעות</a>
+       </div>
 	
 	<!-- This contains the hidden content for inline calls -->
 	<div style='display:none'>
@@ -133,518 +134,102 @@ function getNextPage($addToPage)
         </div>
 		</div>
 	</div>
-	<div style='display:none'>
-	<div id='moods_dialog' >
-	<? $moods = array(); $moods = getfilesFromdir("images/icons/mood"); foreach ($moods as $mood)
-		{ ?>
-	<div class="float moodbox">
-                <div class='float sprite <? $mood_name =explode(".", end(explode("/",$mood[1]))); echo $mood_name[0];?>' style="cursor:pointer;" onclick="addMoodToMessage(this)"></div>
-                <div class="float">&nbsp;<?=getMoodTitle("<?=$mood[1]?>")?></div>
-	</div>
-	<? }?>
-	</div>
-	</div>
-
+	
 </div>
 </div>
 </div>
 <div style="display:none">
-<div id="profileform" style="padding:1em" >
-    <div class="float">
-    <table>
-    <tr><td><?=$EMAIL[$lang_idx]?>:</td><td><input type="text" name="email" value="" readonly="readonly" id="profileform_email" size="30"/></td></tr>
-    <tr><td><?=$PASSWORD[$lang_idx]?>:</td><td><input type="password" name="password" value="" id="profileform_password"/></td></tr>
-    <tr><td><?=$DISPLAY_NAME[$lang_idx]?>:</td><td><input type="text" name="user_display_name" value="" id="profileform_displayname"/></td></tr>
-    <tr><td><?=$NICE_NAME[$lang_idx]?>:</td><td><input type="text" name="user_nice_name" value="" id="profileform_nicename"/></td></tr>
-    </table>
-    <input type="checkbox" name="priority" value="" id="profileform_priority"/><?=$GET_UPDATES[$lang_idx]?><br /><br />
-    </div>
-    <div style="display:none" class="float loading"><img src="images/loading.gif" alt="loading" width="32" height="32" /></div>
-    <div id="profileform_result" class="float"></div>
-    <input type="submit" value="<?=$UPDATE_PROFILE[$lang_idx]?>" onclick="updateprofile_to_server()" id="profileform_submit" class="invfloat clear"/>
-	<input type="submit" value="OK" onclick="$('#cboxClose').click();window.location.reload()" id="profileform_OK" class="info invfloat" style="display:none"/>
-	
- </div>
+<div id="profileform" style="padding:0.5em" >
+                            <div class="float">
+
+                            <table>
+                            <tr><td><?=$EMAIL[$lang_idx]?>:</td><td><input type="text" name="email" value="" readonly="readonly" id="profileform_email" size="30"/></td></tr>
+                            <tr><td><?=$PASSWORD[$lang_idx]?>:</td><td><input type="password" name="password" value="" id="profileform_password"/></td></tr>
+                            <tr><td><?=$USER_ICON[$lang_idx]?>:</td><td><div><div class="user_icon_frame">
+                        <div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir("img/user_icon")); foreach ($user_icons as $user_icon)
+                                    { ?>
+                            <div class="contentbox">
+                                    <div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>'>&nbsp;</div>
+
+                            </div>
+                                <? }?></div>
+                         </div>
+                         <div class="icon_left" onclick="change_icon('left', this); return false"></div>
+                        <div class="icon_right" onclick="change_icon('right', this); return false"></div>
+                                    </div>
+                        </td></tr>
+                            <tr><td><?=$DISPLAY_NAME[$lang_idx]?>:</td><td><input type="text" name="user_display_name" value="" id="profileform_displayname"/></td></tr>
+                            <tr><td><?=$NICE_NAME[$lang_idx]?>:</td><td><input type="text" name="user_nice_name" value="" id="profileform_nicename"/></td></tr>
+                            </table>
+                            <input type="checkbox" name="priority" value="" id="profileform_priority"/><?=$GET_UPDATES[$lang_idx]?><br />
+                            </div>
+
+                            <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
+                            <div id="profileform_result" class="float"></div>
+                            <input type="submit" value="<?=$UPDATE_PROFILE[$lang_idx]?>" onclick="updateprofile_to_server(<?=$lang_idx?>)" id="profileform_submit" class="invfloat clear inv_plain_3"/>
+                            <input type="submit" value="<?=$DONE[$lang_idx]?>" onclick="$('#cboxClose').click();window.location.reload()" id="profileform_OK" class="info invfloat inv_plain_3" style="display:none"/>
+
+
+   </div>
 </div>
 
  <div style="display:none">
       
 <div id="loginform" style="padding:1em">
 	<div class="float">
-        <?=$EMAIL[$lang_idx]?>:<input type="text" name="email" value="" id="loginform_email" size="30" tabindex="1" style="direction:ltr"/><br /><br />
-        <?=$PASSWORD[$lang_idx]?>:<input type="password" name="password" value="" id="loginform_password" tabindex="2" size="15"/>&nbsp;&nbsp;
-        <input type="checkbox" name="rememberme" value="" id="loginform_rememberme"/><?=$REMEMBER_ME[$lang_idx]?>
+        <input type="text" name="email" value="" placeholder="<?=$EMAIL[$lang_idx]?>" id="loginform_email" size="30" tabindex="1" style="direction:ltr"/><br /><br />
+        <input type="password" name="password" placeholder="<?=$PASSWORD[$lang_idx]?>" value="" id="loginform_password" tabindex="2" size="15"/><br /><br />
         </div>
+        <div class="clear float big" style="padding:1em 0">
+        <input type="checkbox" name="rememberme" value="" id="loginform_rememberme"/><?=$REMEMBER_ME[$lang_idx]?>
+        </div>  
 	<div style="display:none" class="float loading"><img src="images/loading.gif" alt="loading" width="32" height="32"/></div>
         <div id="loginform_result" class="float"></div>
-		<input type="submit" value="<?=$LOGIN[$lang_idx]?>" class="invfloat clear" onclick="login_to_server()" id="loginform_submit"/>
+	<input type="submit" value="<?=$LOGIN[$lang_idx]?>" class="invfloat clear inv_plain_3 big" onclick="login_to_server(<?=$lang_idx?>)" id="loginform_submit"/>
         <input type="submit" value="Success!" onclick="$('#cboxClose').click();window.location.reload();" id="loginform_OK" class="info invfloat" style="display:none"/>
+        <div class="clear float big" style="margin-top:0.8em"><a href="javascript: void(0)" id="forgotpass" title="<?=$FORGOT_PASS[$lang_idx]?>"><?=$FORGOT_PASS[$lang_idx]?></a></div>
  	
 </div>
-<div id="registerform" style="padding:1em">
-    <div class="float">
-    <table>
-    <tr><td><?=$EMAIL[$lang_idx]?>:</td><td><input type="text" name="email" value="" id="registerform_email" size="30" tabindex="3" style="direction:ltr"/></td></tr>
-    <tr><td><?=$PASSWORD[$lang_idx]?>:</td><td><input type="password" name="password" value="" id="registerform_password" tabindex="4"/></td></tr>
-    <tr><td><?=$PASSWORD_VERIFICATION[$lang_idx]?>:</td><td><input type="password" name="password_verif" value="" id="registerform_password_verif" tabindex="5"/></td></tr>
-    <tr><td><?=$USER_ID[$lang_idx]?>:</td><td><input type="text" name="username" value="" id="registerform_userid" tabindex="6"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;right:-100px"><?=$USER_ID_EXP[$lang_idx]?></span></a></td></tr>
-    <tr><td><?=$DISPLAY_NAME[$lang_idx]?>:</td><td><input type="text" name="user_display_name" value="" id="registerform_displayname" tabindex="7"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;right:-100px"><?=$DISPLAY_NAME_EXP[$lang_idx]?></span></a></td></tr>
-    <tr><td><?=$NICE_NAME[$lang_idx]?>:</td><td><input type="text" name="user_nice_name" value="" id="registerform_nicename" tabindex="8"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;right:-100px"><?=$NICENAME_EXP[$lang_idx]?></span></a></td></tr>
-    </table>
-    <input type="checkbox" name="priority" value="" id="registerform_priority"/><?=$GET_UPDATES[$lang_idx]?>
+<div id="registerform" style="padding:0.5em">
+<div id="registerinput" class="float">
+<table>
+<tr><td></td><td><input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="registerform_email" size="30" tabindex="3" style="direction:ltr"/></td></tr>
+<tr><td></td><td><input type="password" placeholder="<?=$PASSWORD[$lang_idx]?>" name="password" value="" id="registerform_password" tabindex="4"/></td></tr>
+<tr><td></td><td><input type="password" placeholder="<?=$PASSWORD_VERIFICATION[$lang_idx]?>" name="password_verif" value="" id="registerform_password_verif" tabindex="5"/></td></tr>
+<tr><td></td><td><input type="text" name="username" placeholder="<?=$USER_ID[$lang_idx]?>" value="" id="registerform_userid" tabindex="6"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$USER_ID_EXP[$lang_idx]?></span></a></td></tr>
+<tr><td></td><td><?=$USER_ICON[$lang_idx]?>:<div style="display:inline-block"><div class="user_icon_frame">
+<div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir("img/user_icon")); foreach ($user_icons as $user_icon)
+            { ?>
+    <div class="contentbox">
+            <div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>'>&nbsp;</div>
+
     </div>
-    <div style="display:none" class="float loading"><img src="images/loading.gif" alt="loading" width="32" height="32" /></div>
-    <div id="registerform_result" class="float">
-    </div>
-    <input type="submit" value="<?=$REGISTER[$lang_idx]?>" class="invfloat clear" onclick="register_to_server()" id="registerform_submit"/>
-    <input type="submit" value="Success!" onclick="$('#cboxClose').click();" id="registerform_OK" class="info invfloat" style="display:none"/>
-    
+        <? }?></div>
  </div>
+ <div class="icon_left" onclick="change_icon('left', this); return false"></div>
+<div class="icon_right" onclick="change_icon('right', this); return false"></div>
+            </div>
+</td></tr>
+<tr><td></td><td><input type="text" placeholder="<?=$DISPLAY_NAME[$lang_idx]?>" name="user_display_name" value="" id="registerform_displayname" tabindex="7"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$DISPLAY_NAME_EXP[$lang_idx]?></span></a></td></tr>
+<tr><td></td><td><input type="text" placeholder="<?=$NICE_NAME[$lang_idx]?>" name="user_nice_name" value="" id="registerform_nicename" tabindex="8"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$NICENAME_EXP[$lang_idx]?></span></a></td></tr>
+</table>
+<input type="checkbox" name="priority" value="" id="registerform_priority"/><?=$GET_UPDATES[$lang_idx]?>
+</div>
+<div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
+<div id="registerform_result" class="float">
+</div>
+<input type="submit" value="<?=$REGISTER[$lang_idx]?>" class="invfloat clear inv_plain_3" onclick="register_to_server(<?=$lang_idx?>)" id="registerform_submit"/>
+<input type="submit" value="Success!" onclick="$('#cboxClose').click();" id="registerform_OK" class="info invfloat" style="display:none"/>
+
+</div>
 
 <div id="passforgotform" style="padding:1em">
-    <?=$EMAIL[$lang_idx]?>:<input type="text" name="email" value="" id="passforgotform_email" size="30" style="direction:ltr"/><br /><br />
-    <input type="submit" value="<?=$FORGOT_PASS[$lang_idx]?>" onclick="passforgot_to_server()" id="passforgotform_submit"/>
-    <input type="submit" value="Success!" onclick="$('#cboxClose').click();" id="passforgotform_OK" class="info invfloat" style="display:none"/>
- 	<div id="passforgotform_result"></div>
+                                <?=$EMAIL[$lang_idx]?>:<input type="text" name="email" value="" id="passforgotform_email" size="30" style="direction:ltr"/><br /><br />
+                                <div id="passforgotform_result"></div>
+                                <input type="submit" value="<?=$FORGOT_PASS[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit" class="info invfloat"/>
+                                <input type="submit" value="<?=$CLOSE[$lang_idx]?>" onclick="$('#cboxClose').click();" id="passforgotform_OK" class="info invfloat" style="display:none"/>
+                                    
  </div>
  </div>
-<script type="text/javascript">
-<!--
-       function attachEnter(){
-		   $("#loginform_password").keyup(function(event){
-		   if(event.keyCode == 13){
-			  $("#loginform_submit").click();
-		   }
-		   });
-		   $("#passforgotform_email").keyup(function(event){
-		   if(event.keyCode == 13){
-			  $("#passforgotform_submit").click();
-		   }
-		   });
-			$("#registerform_nicename").keyup(function(event){
-		   if(event.keyCode == 13){
-			  $("#registerform_submit").click();
-		   }
-		   });
-       }	
-        function fillUserDetails (jsonstr )
-        {
-        	var jsonT = JSON.parse( jsonstr  );
-        	 $("#profileform_email").val(jsonT.user.email);
-                 $("#name").html(jsonT.user.display);
-                 $("#nice_name").html("<?=$HELLO[$lang_idx]?>" + ", " + jsonT.user.nicename + ":");
-                 $("#profileform_displayname").val(jsonT.user.display);
-                 $("#current_display_name").val(jsonT.user.display);
-                 $("#profileform_nicename").val(jsonT.user.nicename);
-                 $("#profileform_priority").prop("checked", jsonT.user.priority);
-        }
-        function login_to_server()
-        {
-        	$("#loginform_result").html("");
-                if ($("#loginform_email").val().length == 0){
-                	alert('<?=$EMAIL[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                	$("#loginform_email").focus();
-                	return false;
-                }
-                   
-                 if ($("#loginform_password").val().length == 0){
-                 	alert('<?=$PASSWORD[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#loginform_password").focus();
-                 	return false;
-                 }
-                   
-        	$.ajax({
-		  type: "POST",
-		  url: "checkauth.php?action=login&lang=<?=$lang_idx?>",
-		  data: { email: $("#loginform_email").val(), password: $("#loginform_password").val(), isrememberme:$("#loginform_rememberme").is(':checked') ? 1 : 0 },
-                  beforeSend: function(){$(".loading").show();}
-		}).done(function( jsonstr  ) {
-		  try{
-                     $(".loading").hide();
-                     var jsonT = JSON.parse( jsonstr  );
-                     if (!jsonT.user.loggedin)
-                         {
-                             if (jsonT.user.locked)
-                                alert('<?=$USER_LOCKED[$lang_idx]?>');
-                         }
-                       else {
-                         $("#cboxClose").click();
-                         fillUserDetails (jsonstr );
-                         toggle('loggedin');
-                         toggle('notloggedin');
-                                                 
-                         fillMessage('<img src="images/loading.gif" alt="loading" width="32" height="32"/>');
-			var ajax = new Ajax();
-			ajax.method = 'POST';
-			ajax.setMimeType('text/html');
-			ajax.setHandlerBoth(fillMessage);
-			ajax.postData = "lang=" + "<?=$lang_idx?>" + "&limit=" + "<?=$limitLines?>" + "&update=<?=$_GET['update']?>";
-			ajax.url = 'chat_service.php';
-			ajax.doReq();  
-                       }
-                                                         
-                 }
-                 catch (e) {
-                     $("#loginform_result").html("<div class=\"high\">" + jsonstr + "</div>"  );
-                     
-                  }
-		    
-		});
-        }
-		function signout_from_server()
-		{
-			$.ajax({
-		  type: "POST",
-		  url: "checkauth.php?action=signout",
-		  data: { },
-          beforeSend: function(){$(".loading").show();}
-		}).done(function( result  ) {
-		 
-                     $(".loading").hide();
-                    
-                     if (result == 0)
-                     {
-                                               
-                         toggle('loggedin');
-                         toggle('notloggedin');
-                                                
-                         fillMessage('<img src="images/loading.gif" alt="loading" width="32" height="32"/>');
-						var ajax = new Ajax();
-						ajax.method = 'POST';
-						ajax.setMimeType('text/html');
-						ajax.setHandlerBoth(fillMessage);
-						ajax.postData = "lang=" + "<?=$lang_idx?>" + "&limit=" + "<?=$limitLines?>" + "&update=<?=$_GET['update']?>";
-						ajax.url = 'chat_service.php';
-						ajax.doReq();  
-                    }
-                                                         
-                
-		    
-		});
-		}
-        function updateprofile_to_server()
-        {
-                 $("#profileform_result").html("");                  
-                 if ($("#profileform_password").val().length == 0){
-                 	alert('<?=$PASSWORD[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#profileform_password").focus();
-                 	return false;
-                 }
-                 
-                  if ($("#profileform_displayname").val().length == 0){
-                 	alert('<?=$DISPLAY_NAME[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#profileform_displayname").focus();
-                 	return false;
-                 }
-                 
-                  if ($("#profileform_nicename").val().length == 0){
-                 	alert('<?=$NICE_NAME[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#profileform_nicename").focus();
-                 	return false;
-                 }
-                   
-        	$.ajax({
-		  type: "POST",
-		  url: "checkauth.php?action=updateprofile&lang=<?=$lang_idx?>",
-		  data: { email: $("#profileform_email").val(), 
-		          password: $("#profileform_password").val(), 
-		          user_display_name: $("#profileform_displayname").val(), 
-		          user_nice_name:$("#profileform_nicename").val(), 
-		          priority:$("#profileform_priority").is(':checked') ? 1 : 0 }
-		}).done(function( msg ) {
-		   if (msg.indexOf("uniq_name") > 0){
-		  	$("#profileform_result").html("<div class=\"high\"><?=$DISPLAY_NAME[$lang_idx]." ".$IS_TAKEN[$lang_idx]?></div>");
-		  	$("#profileform_displayname").focus();
-		   }
-		   else if (msg==0)
-		   {
-		      toggle('profileform_submit');
-		      toggle('profileform_OK');
-		      $("#profileform_OK").addClass("success");
-		      
-		   }
-		  else
-		     $("#profileform_result").html( msg );
-		});
-        }
-        function register_to_server()
-        {
-        	$("#registerform_result").html("");
-                 if ($("#registerform_userid").val().length == 0){
-                 	alert('<?=$USER_ID[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#registerform_userid").focus();
-                 	return false;
-                 }
-                 if ($("#registerform_email").val().length == 0){
-                 	alert('<?=$EMAIL[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#registerform_email").focus();
-                 	return false;
-                 }               
-                 if ($("#registerform_password").val().length == 0){
-                 	alert('<?=$PASSWORD[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#registerform_password").focus();
-                 	return false;
-                 }
-                 if ($("#registerform_password_verif").val().length == 0){
-                 	alert('<?=$PASSWORD_VERIFICATION[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#registerform_password_verif").focus();
-                 	return false;
-                 }
-                 
-                 
-                  if ($("#registerform_displayname").val().length == 0){
-                 	alert('<?=$DISPLAY_NAME[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#registerform_displayname").focus();
-                 	return false;
-                 }
-                 
-                  if ($("#registerform_nicename").val().length == 0){
-                 	alert('<?=$NICE_NAME[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                 	$("#registerform_nicename").focus();
-                 	return false;
-                 }
-                 
-                 if ($("#registerform_password").val() != $("#registerform_password_verif").val()){
-                 	alert('Passwords do not match');
-                 	$("#registerform_password_verif").focus();
-                 	return false;
-                 }
-                   
-        	$.ajax({
-		  type: "POST",
-		  url: "checkauth.php?action=register&lang=<?=$lang_idx?>",
-                  beforeSend: function(){$(".loading").show();},
-		  data: { username:$("#registerform_userid").val(),
-		  	  email: $("#registerform_email").val(), 
-		          password: $("#registerform_password").val(), 
-		          user_display_name: $("#registerform_displayname").val(), 
-		          user_nice_name:$("#registerform_nicename").val(), 
-		          priority:$("#registerform_priority").is(':checked') ? 1 : 0 }
-		}).done(function( msg ) {
-                  $(".loading").hide();
-		  if (msg.indexOf("User_login_Uniq") > 0){
-		        $("#registerform_result").html("<div class=\"high\"><?=$USER_ID[$lang_idx]." ".$IS_TAKEN[$lang_idx]?></div>");
-		  	$("#registerform_userid").focus();
-		  }
-		   else if (msg.indexOf("uniq_name") > 0){
-		  	$("#registerform_result").html("<div class=\"high\"><?=$DISPLAY_NAME[$lang_idx]." ".$IS_TAKEN[$lang_idx]?></div>");
-		  	$("#registerform_displayname").focus();
-		  }
-		  else if (msg==0){
-		  	 toggle('registerform_submit');
-		  	 toggle('registerform_OK');
-		  	 $("#registerform_OK").val("<?=$CHECK_EMAIL[$lang_idx]?>");
-		  	 $("#registerform_OK").addClass("success");
-		  }
-		  else
-		      $("#registerform_result").html( msg );
-		    
-		  
-		     
-		});
-        }
-        function passforgot_to_server()
-        {
-                if ($("#passforgotform_email").val().length == 0){
-                	alert('<?=$EMAIL[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
-                	$("#passforgotform_email").focus();
-                	return false;
-                }
-                $("#passforgotform_result").html("");
-                 
-                   
-        	$.ajax({
-		  type: "POST",
-		  url: "checkauth.php?action=forgotpass&lang=<?=$lang_idx?>",
-		  data: { email: $("#passforgotform_email").val() }
-		}).done(function( msg ) {
-		    toggle('passforgotform_OK');
-		    toggle('passforgotform_submit');
-		    $("#passforgotform_OK").val(msg );
-		    $("#passforgotform_OK").addClass("success");
-		});
-        }
-	function addlinkToMessage()
-	{
-		var target;
-		if (($("#linkhref").val().indexOf("youtu") > 0)||
-			($("#linkhref").val().indexOf("facebook") > 0))
-		{
-			target = "\" target=\"_blank\">";
-		}
-		else
-			 target = "\" rel=\"external\">";
 
-		$("#body").val($("#body").val() + " <a href=\"" + $("#linkhref").val() + target + $("#linktitle").val() + "</a> ");
-		$("#cboxClose").click();
-		$("#body").focus();
-		
-	}
-	function closeLinktoMessage()
-	{
-				
-		$("#cboxClose").click();
-					
-	}
-
-	function addMoodToMessage(mood)
-	{
-		
-		//$("#chat_mood").html("<input type=\"hidden\" value=\"" + img.src + "\" name=\"mood_img\" />");
-		$("#chat_mood").html("<a class=\"mood\" title=\"אייקון שמתאים למצב רוחך\" href=\"javascript:void(0)\">" + "<div class='" + mood.className + "' id=\"mood_img\" title=\"" + getMoodTitle(mood.className) + "\" />" + "</a>");
-		$("#cboxClose").click();
-	
-	}
-
-	function getMoodTitle(imagename)
-{
-	
-	var title = "";
-	if (imagename.indexOf('hot') > 0)
-		title = "<?=$IMHOT[$lang_idx]?>";
-	else if (imagename.indexOf('kiss')> 0)
-		title = "<?=$KISS[$lang_idx]?>";
-	else if (imagename.indexOf('confuse')> 0)
-		title = "<?=$CONFUSE[$lang_idx]?>";
-	else if (imagename.indexOf('amazed')> 0)
-		title = "<?=$AMAZED[$lang_idx]?>";
-	else if (imagename.indexOf('cold')> 0)
-		title = "<?=$IMCOLD[$lang_idx]?>";
-	else if (imagename.indexOf('angry')> 0)
-		title = "<?=$ANGRY[$lang_idx]?>";	
-	else if (imagename.indexOf('tire')> 0)
-		title = "<?=$TIRE[$lang_idx]?>";
-	else if (imagename.indexOf('smiley')> 0)
-		title = "<?=$HAPPY[$lang_idx]?>";
-	else if (imagename.indexOf('embarrassed')> 0)
-		title = "<?=$EMBARRASED[$lang_idx]?>";
-	else if (imagename.indexOf('wink')> 0)
-		title = "<?=$WINK[$lang_idx]?>";
-	else if (imagename.indexOf('sad')> 0)
-		title = "<?=$SAD[$lang_idx]?>";
-	else if (imagename.indexOf('satisfied')> 0)
-		title = "<?=$SATISFIED[$lang_idx]?>";
-	else if (imagename.indexOf('doubt')> 0)
-		title = "<?=$DOUBT[$lang_idx]?>";
-	else if (imagename.indexOf('cool')> 0)
-		title = "<?=$COOL[$lang_idx]?>";
-	else if (imagename.indexOf('curious')> 0)
-		title = "<?=$CURIOUS[$lang_idx]?>";
-	else if (imagename.indexOf('digging')> 0)
-		title = "<?=$DIGGING[$lang_idx]?>";
-	else if (imagename.indexOf('pudency')> 0)
-		title = "<?=$PUDENCY[$lang_idx]?>";
-	else if (imagename.indexOf('hell')> 0)
-		title = "<?=$HELL[$lang_idx]?>";
-	return title;
-}
- function getMessageService(filter, start, update)
-	{	
-		
-		var name = document.getElementById('name').innerHTML;
-		var body = document.getElementById('body').value;
-                var category = 0;
-		var mood_img = document.getElementById('mood_img');
-		var mood_elm = "";
-		if ((mood_img != null)&&(mood_img != 'undfined')) 
-		{
-			mood_elm = "<div class=\"" + mood_img.className + "\" title=\"" + mood_img.title + "\" ></div>";
-		}
-		
-		var searchname = document.getElementById('searchname');
-		if (searchname != null)
-			searchname = searchname.value;
-			else
-				 searchname = '';
-		
-		if ((filter == '') && 
-			((searchname == '') || (searchname == null)) && 
-			((name == '' ||  body == '' || body == '<?=$BODY[$lang_idx]?>' || name == '<?=$NAME[$lang_idx]?>')))
-		{
-			return false;
-		}
-		
-		var idx = "";
-                var msgDetails = document.getElementById('msgDetails');
-		var idxs = msgDetails.getElementsByTagName("input"); 
-		for (var i = 0; i < idxs.length; i++) { 
-			if (idxs[i].type=="checkbox")  
-				if (idxs[i].checked) { 
-					idx = idxs[i].value; 
-				}
-		}
-		var limit = "<?=$limitLines?>";
-		if ((filter != "") && (filter != "undefined"))
-			limit = filter;
-		if (update == 0)
-		{
-			body = '';
-			name = '';
-		}
-		
-		restoreTopDiv();
-		
-		var postData = "lang=" + "<?=$lang_idx?>" + "&limit=" + limit + "&startLine=" + start + "&category=" + category + "&idx=" + idx + "&name=" + escape(encodeURI(name)) + "&searchname=" + escape(encodeURI(searchname)) + "&body=" + escape(encodeURI(body)) + "&mood=" + escape(encodeURI(mood_elm))  + "&update=<?=$_GET['update']?>";
-		fillMessage('<img src="images/loading.gif" alt="loading" />');
-		$('input[name="SendButton"]').attr("disabled", "disabled");
-		var ajax = new Ajax();
-		ajax.method = 'POST';
-		ajax.setMimeType('text/html');
-		ajax.postData = postData;
-		ajax.setHandlerBoth(fillMessage);
-		ajax.url = 'chat_service.php';
-		ajax.doReq();
-		
-	}
- function startup(page)
-        {
-        	if (document.getElementById('chatWrapper'))
-		{
-                        $.ajax({
-			  type: "GET",
-			  url: "checkauth.php?action=getuser&lang=<?=$lang_idx?>"
-			}).done(function( jsonstr ) {
-			  try{
-	                     
-	                     var jsonT = JSON.parse( jsonstr  );
-	                     if (!jsonT.user.loggedin)
-	                         {
-	                            toggle('notloggedin');
-	                            if (jsonT.user.locked)
-	                                alert('<?=$USER_LOCKED[$lang_idx]?>');
-	                         }
-	                       else {
-	                         toggle('loggedin'); 
-	                         fillUserDetails (jsonstr );
-	                       }
-	                       if (page > 0)
-				{
-					getMessageService(<?=$limitLines?>, <?echo ($p*$numberofPages*$limitLines);?>, 0);
-				}
-				else
-				{
-	                                fillMessage('<img src="images/loading.gif" alt="loading" />');
-					var ajax = new Ajax();
-					ajax.method = 'POST';
-					ajax.setMimeType('text/html');
-					ajax.setHandlerBoth(fillMessage);
-					ajax.postData = "lang=" + "<?=$lang_idx?>" + "&limit=" + "<?=$limitLines?>" + "&update=<?=$_GET['update']?>";
-					ajax.url = 'chat_service.php';
-					ajax.doReq();
-				}
-		                                                           
-		                 }
-		                 catch (e) {
-		                     alert("error:" + e);
-		                     
-		                  }
-			});
-			attachEnter();
-			
-		}
-           
-            
-        }
-//-->
-</script>
  

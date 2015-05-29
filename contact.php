@@ -21,6 +21,7 @@ $ABOUT_ME = array("I have built this site from my own interest in weather and in
 				<a href="http://www.nrg.co.il/online/1/ART2/048/868.html" target="_blank"><? if ($lang_idx == $EN) {?><?} else {?> מן העתונות<?}?></a><?=get_arrow()?><br />
 				<a href="http://www.haaretz.co.il/news/weather/1.1642873" target="_blank"><? if ($lang_idx == $EN) {?><?} else {?>מן העתונות 2<?}?></a><?=get_arrow()?><br />
                                 <a href="http://issuu.com/pi-haaton/docs/186issuu" target="_blank"><? if ($lang_idx == $EN) {?><?} else {?>מן העתונות 3<?}?></a><?=get_arrow()?><br />
+                                <a href="http://www.nrg.co.il/online/55/ART2/663/767.html?hp=55&cat=323&loc=7" target="_blank"><? if ($lang_idx == $EN) {?><?} else {?>מן העתונות 4<?}?></a><?=get_arrow()?><br />
                                 <a href="<? echo get_query_edited_url($url_cur, 'section', 'faq.php');?>"  title="<?=$FAQ[$lang_idx]?>"><? echo $FAQ[$lang_idx];?></a><?=get_arrow()?>
 				</div>
 			</td>
