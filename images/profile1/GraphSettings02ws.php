@@ -103,8 +103,7 @@ $SITE['info']           = 1;        # Adjustable via info
 #---------------------------------------------------------------------------
 // Current field names (matches tag fields) used
 $SITE['cvalues'] = array(
-	"date","time","temp","hitemp","lowtemp","hum","dew","wspeed","winddir","windrun","wgust","hdir","wchill","heatindex","thws", "thw","press","rfall","rrate","heatDD","coolDD","intemp","inhum","indew","inheat","inEMC",
-	"adensity","windsamp","windtx","reception", "interval");
+	"date","time","temp","hitemp","lowtemp","hum","dew","wspeed","winddir","windrun","wgust","hdir","wchill","heatindex","thw", "thws","press","rfall","rrate","solarrad", "solarenergy", "hisolarrad", "uv", "uvdose", "hiuv", "heatDD","coolDD","intemp","inhum","indew","inheat","inEMC","temp2", "hum2", "et", "windsamp","windtx","reception", "interval");
 $SITE['humidexval'] = array(
 	"0" => array("0","29","Little or no discomfort"),
 	"1" => array("30","34","Noticeable discomfort"),
