@@ -5,6 +5,7 @@
 <option   value="http://www.worldweather.org/093/c00801.htm">אורלנדו Orlando</option>
 <option   value="http://www.worldweather.org/008/c00021.htm">אוסלו Oslo</option>
 <option   value="http://www.worldweather.org/063/c00177.htm">אתונה Athens</option>
+<option   value="http://www.worldweather.org/183/c00200.htm">בוקרשט Bucharest</option>
 <option   value="http://www.worldweather.org/017/c00060.htm">בודפשט Budapest</option>
 <option   value="http://www.worldweather.org/014/c00049.htm">בודרום Bodrum</option>
 <option	  value="http://www.worldweather.org/001/c00237.htm">בייג'ין Beijin</option>

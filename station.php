@@ -18,7 +18,7 @@ include_once("forecastlib.php");
         <meta name="description" content="<? if (isHeb()) {?>מתעדכן כל דקה מתחנה פיזית על הגג. תחזית ל-24 שעות, לימים הבאים , ארכיון וכל מה שרצית לדעת<?} else {?>What is the weather in Jerusalem, Israel? Here you have 6 days forecast, current significant conditions, live pictures, weather graphs,  detailed archive and much more. This is online weather station which updates every minute. <?} ?>"/>
         <meta name="keywords" content="climate, forecast, weather, jerusalem תחזית מזג אויר , אקלים, שלג, ממוצע, ארכיון"/>
         <meta name="author" content="Boaz" />
-	<meta property="og:image" content="http://www.02ws.co.il/02ws_shor.tpng?r=<?=time()?>" />
+	<meta property="og:image" content="http://www.02ws.co.il/02ws_short.png?r=<?=time()?>" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="628" />
         <meta property="og:description" content="<? echo "{$sig[0]['sig'][$lang_idx]}"; ?>" /> 
@@ -421,7 +421,7 @@ include_once("forecastlib.php");
                                 </div>
                                <div class="paramvalue">
                                     
-                                        <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>&nbsp;<span id="valleytemp" title="<?=$MOUNTAIN[$lang_idx]?>"><? echo $current->get_temp2()."&nbsp;".$MOUNTAIN[$lang_idx];?></span>
+                                        <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>&nbsp;<a href="javascript:void" onclick="change_circle('temp_line', 'latesttemp2')"><span id="valleytemp" class="small" title="<?=$MOUNTAIN[$lang_idx]?>"><? echo $current->get_temp2()."&nbsp;".$MOUNTAIN[$lang_idx];?></span></a>
                                     
                                 </div>
                                 <div class="highlows">
@@ -445,6 +445,38 @@ include_once("forecastlib.php");
                            </div>
 						   <div class="graphslink">
 								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
+						   </div>
+			</div>
+                        <div id="latesttemp2" class="inparamdiv">
+                               <div class="paramtitle slogan">
+                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $TEMP[$lang_idx];?></a>
+                                </div>
+                               <div class="paramvalue">
+                                    
+                                   <a href="javascript:void" onclick="change_circle('temp_line', 'latesttemp')"><span class="small"><? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span></span></a>&nbsp;<span id="valleytemp" title="<?=$MOUNTAIN[$lang_idx]?>"><? echo $current->get_temp2()."&nbsp;".$MOUNTAIN[$lang_idx];?></span>
+                                    
+                                </div>
+                                <div class="highlows">
+                                        <div class="high"><strong><? echo toLeft($today->get_hightemp2()); ?></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_hightemp2_time()." "; ?>
+                                        <div class="low"><strong><? echo toLeft($today->get_lowtemp2()); ?></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_lowtemp2_time()." "; ?>
+                                </div> 
+                                <div class="paramtrend relative">
+                                    <div class="innertrendvalue">
+                                       <? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_temp2change()).$current->get_tempunit(); ?>
+                                    </div>
+                                </div>  
+                          <div class="trendstable"> 
+                               <table>
+                                        <tr class="trendstitles">
+                                                <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+                                                <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour"/></td>
+                                                <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+                                        </tr>
+                                        <tr class="trendsvalues"><td><div class="trendvalue"><div class="innertrendvalue"> <? echo get_param_tag($yestsametime->get_temp2change())."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($oneHour->get_temp2change())."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($min30->get_temp2change()); ?></div></div></td></tr>
+                                </table>
+                           </div>
+						   <div class="graphslink">
+								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp2.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
 						   </div>
 			</div>
                         <div id="latesthumidity" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?>>

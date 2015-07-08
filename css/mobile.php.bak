@@ -314,7 +314,7 @@ text-align:center;
 }
 #windy
 {
-width:33%;left:9em;top:3.8em
+width:33%;left:7em;top:3.8em
 }
 #coldmeter
 {

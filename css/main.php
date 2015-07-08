@@ -1016,6 +1016,9 @@ margin-<?=get_s_align()?>:10px
      padding-right:2px;
     margin-left:-2px;
 }
+.small{
+font-size:0.35em
+}
 .smalllogo{
 	background-image:url("../img/sun_toolbar.png");
 	background-repeat:no-repeat;
@@ -3538,13 +3541,10 @@ a.info:hover span.info
         direction:ltr
 	
 }
-#valleytemp
-{
-    font-size: 0.35em;
-}
+
 #windy
 {
-          margin: 0 auto;position: absolute;font-size:0.95em;width: 100%;z-index: 0;top:1.15em
+          margin: 0 auto;position: absolute;font-size:0.95em;width: 30%;z-index: 100;top:4.15em;left:8.4em
 }
 #windy .wind_title
 {
@@ -3632,7 +3632,7 @@ margin:0 auto
     line-height: 1;
     margin: 0 auto;
 }
-#latestwind, #latesttemp, #latesthumidity, #coldmetersurvey, #latestrain, #latestuv, #latestradiation, #latestairq
+#latestwind, #latesttemp, #latesttemp2, #latesthumidity, #coldmetersurvey, #latestrain, #latestuv, #latestradiation, #latestairq
 {
     display:none;
 }

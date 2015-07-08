@@ -135,6 +135,15 @@ else
 }
 
 closeNewPost();
+//var $container = $('#msgDetails');
+//    $container.imagesLoaded( function() {
+//        $container.masonry({isOriginLeft: false, gutter: 4, itemSelector: '.white_box2'
+//        });
+//    });
+
+
+
+
  var container = document.querySelector('#msgDetails');
 var msnry = new Masonry( container, {
 // options
@@ -142,7 +151,7 @@ itemSelector: '.white_box2',
 isOriginLeft: false,
 gutter: 8
 });$('#container').imagesLoaded( function() {
-  msnry.layout();
+msnry.layout();
 });
 }
 catch (e){
@@ -230,11 +239,11 @@ document.layers[object].visibility='hidden';}
 function toggle(id)
 {if(document.getElementById(id))
 {if(document.getElementById(id).style.display=='none')
-{$('#'+id).show("fast");}
+{$('#'+id).show("slow");}
 else
-$('#'+ id).hide("fast");}}
-function show(id){$('#'+id).show("fast");}
-function hide(id){$('#'+id).hide("fast");}
+$('#'+ id).hide("slow");}}
+function show(id){$('#'+id).show("slow");}
+function hide(id){$('#'+id).hide("slow");}
 function IncludeJavaScript(jsFile)
 {document.write('<script language="javascript" type="text/javascript" src="'
 +jsFile+'"></script>');}
@@ -354,6 +363,7 @@ else
  function change_circle(line_id, info_id) {
      document.getElementById("latestnow").style.display = "none";
      document.getElementById("latesttemp").style.display = "none";
+     document.getElementById("latesttemp2").style.display = "none";
      document.getElementById("latestpressure").style.display = "none";
      document.getElementById("latesthumidity").style.display = "none";
      document.getElementById("latestuv").style.display = "none";
@@ -459,7 +469,7 @@ function changeBg(id, color) {
 
 function openNewPost(lang) {
     document.getElementById("new_post").style.visibility = "visible";
-    document.getElementById("forum_hr").style.marginTop = "210px";
+    document.getElementById("forum_hr").style.marginTop = "270px";
     document.getElementById("new_post_ta").value = "";
     $('#new_post_user').addClass($('#user_icon').attr('class'));
     $('#subject_icon').addClass($('#current_forum_filter').val());

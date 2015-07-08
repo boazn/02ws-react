@@ -87,9 +87,9 @@ function fillForecastTime (&$pastTime, $found){
 					case ($time_at_day > 3 && $time_at_day < 7):
 						$tempHour = $forcastday->get_temp_morning();
 						break;
-                                        case ($time_at_day >= 7 && $time_at_day <= 12):
+                                        case ($time_at_day >= 7 && $time_at_day <= $MAX_TIME):
 							$diff = $forcastday->get_temp_day() - $forcastday->get_temp_morning();
-							$tempHour = round($forcastday->get_temp_morning() + (($time_at_day - 5)/7)*$diff);
+							$tempHour = round($forcastday->get_temp_morning() + (($time_at_day - ($MAX_TIME - 7))/7)*$diff);
 						break;
                                         case ($time_at_day >= ($MAX_TIME - 2) && $time_at_day <= $MAX_TIME):
 						$tempHour = $forcastday->get_temp_day();

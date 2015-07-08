@@ -4,6 +4,7 @@
 include_once("lang.php");
 include_once("include.php"); 
 include_once("csscolor.php");
+session_start();
 $template_routing = @$_GET['section'];    
 $profile = @$_GET['profile'];
 $hoursForecast = @$_GET['hours'];
@@ -83,8 +84,27 @@ $current->set_temp($ary_parsed_file['OUTSIDETEMP']);
 $current->set_temp2($ary_parsed_file['OUTSIDETEMP2']);
 $today->set_hightemp($ary_parsed_file['HIOUTSIDETEMP'],$ary_parsed_file['HIOUTSIDETEMPTIME']);    
 $today->set_lowtemp($ary_parsed_file['LOWOUTSIDETEMP'],$ary_parsed_file['LOWOUTSIDETEMPTIME']);
-$today->set_hightemp2($ary_parsed_file['HIOUTSIDETEMP2'],$ary_parsed_file['HIOUTSIDETEMP2TIME']);    
-$today->set_lowtemp2($ary_parsed_file['LOWOUTSIDETEMP2'],$ary_parsed_file['LOWOUTSIDETEMP2TIME']); 
+if ($fulldatatotake === FILE_XML_FULLDATA2){
+    $today->set_hightemp2($ary_parsed_file['HIOUTSIDETEMP2'],$ary_parsed_file['HIOUTSIDETEMP2TIME']);
+    $today->set_lowtemp2($ary_parsed_file['LOWOUTSIDETEMP2'],$ary_parsed_file['LOWOUTSIDETEMP2TIME']);
+    if (apc_fetch('temp2stored') != 1){
+        apc_delete('hightemp2');apc_delete('hightemp2_time');apc_delete('lowtemp2');apc_delete('lowtemp2_time');
+        apc_store('hightemp2', $ary_parsed_file['HIOUTSIDETEMP2'], 0);
+        apc_store('hightemp2_time', $ary_parsed_file['HIOUTSIDETEMP2TIME'], 0);
+        apc_store('lowtemp2', $ary_parsed_file['LOWOUTSIDETEMP2'], 0);
+        apc_store('lowtemp2_time', $ary_parsed_file['LOWOUTSIDETEMP2TIME'], 0);
+        apc_store('temp2stored', 1);
+        //logger('apc_store hightemp2:'.$ary_parsed_file['HIOUTSIDETEMP2']);
+    }
+}
+else
+{
+   if (apc_fetch('temp2stored') == 1)
+         apc_store('temp2stored', 0);
+   $today->set_hightemp2(apc_fetch('hightemp2'), apc_fetch('hightemp2_time'));
+   $today->set_lowtemp2(apc_fetch('lowtemp2'), apc_fetch('lowtemp2_time'));
+   
+}
 $thisMonth->set_hightemp($ary_parsed_file['HIMONTHLYOUTSIDETEMP'],"");    
 $thisMonth->set_lowtemp($ary_parsed_file['LOWMONTHLYOUTSIDETEMP'],"");    
 $thisYear->set_hightemp($ary_parsed_file['HIYEARLYOUTSIDETEMP'],"");    
