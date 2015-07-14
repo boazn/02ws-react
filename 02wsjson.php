@@ -10,10 +10,11 @@ include_once("forecastlib.php");
 $output_json_file_path = "/home/boazn/public/02ws.com/public/02wsjson.txt";
 $JSON = "{\"jws\":";
 
-
 $JSON .= "{\"current\":";
 $JSON .= "{";
-$JSON .= "\"date\":"."\"".$current->get_date()."\"";
+$JSON .= "\"date0\":"."\"".$date."\"";
+$JSON .= ",";
+$JSON .= "\"date1\":"."\"".$dateInHeb."\"";
 $JSON .= ",";
 $JSON .= "\"time\":"."\"".$current->get_time()."\"";
 $JSON .= ",";
@@ -50,6 +51,10 @@ $JSON .= ",";
 $JSON .= "\"tempunit\":"."\"".$current->get_tempunit()."\"";
 $JSON .= ",";
 $JSON .= "\"islight\":"."\"".$current->is_light()."\"";
+$JSON .= ",";
+$JSON .= "\"issunset\":"."\"".$current->is_sunset()."\"";
+$JSON .= ",";
+$JSON .= "\"issunrise\":"."\"".$current->is_sunrise()."\"";
 $JSON .= "}";
 
 $JSON .= ",\"min15\":";
@@ -57,6 +62,8 @@ $JSON .= "{";
 $JSON .= "\"date\":"."\"".$min15->get_date()."\"";
 $JSON .= ",";
 $JSON .= "\"time\":"."\"".$min15->get_time()."\"";
+$JSON .= ",";
+$JSON .= "\"minutes\":"."\"".getLastUpdateMin()."\"";
 $JSON .= ",";
 $JSON .= "\"temp\":"."\"".$min15->get_temp()."\"";
 $JSON .= ",";
@@ -78,7 +85,9 @@ $JSON .= "\"heatidx\":"."\"".$min15->get_heatidx()."\"";
 $JSON .= ",";
 $JSON .= "\"thw\":"."\"".$min15->get_thw()."\"";
 $JSON .= ",";
-$JSON .= "\"intemp\":"."\"".$min15->get_intemp()."\"";
+$JSON .= "\"tempchange\":"."\"".$min15->get_tempchange().",".str_replace('"', '\"',get_img_tag($min15->get_tempchange())).",".str_replace('"', '\"',get_param_tag($min15->get_tempchange()))."\"";
+$JSON .= ",";
+$JSON .= "\"humchange\":"."\"".$min15->get_humchange().",".str_replace('"', '\"',get_img_tag($min15->get_humchange())).",".str_replace('"', '\"',get_param_tag($min15->get_humchange()))."\"";
 $JSON .= ",";
 $JSON .= "\"tempunit\":"."\"".$min15->get_tempunit()."\"";
 $JSON .= ",";
@@ -115,7 +124,9 @@ $JSON .= "\"heatidx\":"."\"".$min30->get_heatidx()."\"";
 $JSON .= ",";
 $JSON .= "\"thw\":"."\"".$min30->get_thw()."\"";
 $JSON .= ",";
-$JSON .= "\"intemp\":"."\"".$min30->get_intemp()."\"";
+$JSON .= "\"tempchange\":"."\"".$min30->get_tempchange().",".str_replace('"', '\"',get_img_tag($min30->get_tempchange())).",".str_replace('"', '\"',get_param_tag($min30->get_tempchange()))."\"";
+$JSON .= ",";
+$JSON .= "\"humchange\":"."\"".$min30->get_humchange().",".str_replace('"', '\"',get_img_tag($min30->get_humchange()).",".str_replace('"', '\"',get_param_tag($min30->get_humchange())))."\"";
 $JSON .= ",";
 $JSON .= "\"tempunit\":"."\"".$min30->get_tempunit()."\"";
 $JSON .= ",";
@@ -152,7 +163,9 @@ $JSON .= "\"heatidx\":"."\"".$oneHour->get_heatidx()."\"";
 $JSON .= ",";
 $JSON .= "\"thw\":"."\"".$oneHour->get_thw()."\"";
 $JSON .= ",";
-$JSON .= "\"intemp\":"."\"".$oneHour->get_intemp()."\"";
+$JSON .= "\"tempchange\":"."\"".$oneHour->get_tempchange().",".str_replace('"', '\"',get_img_tag($oneHour->get_tempchange())).",".str_replace('"', '\"',get_param_tag($oneHour->get_tempchange()))."\"";
+$JSON .= ",";
+$JSON .= "\"humchange\":"."\"".$oneHour->get_humchange().",".str_replace('"', '\"',get_img_tag($oneHour->get_humchange())).",".str_replace('"', '\"',get_param_tag($oneHour->get_humchange()))."\"";
 $JSON .= ",";
 $JSON .= "\"tempunit\":"."\"".$oneHour->get_tempunit()."\"";
 $JSON .= ",";
@@ -226,7 +239,9 @@ $JSON .= "\"heatidx\":"."\"".$yestsametime->get_heatidx()."\"";
 $JSON .= ",";
 $JSON .= "\"thw\":"."\"".$yestsametime->get_thw()."\"";
 $JSON .= ",";
-$JSON .= "\"intemp\":"."\"".$yestsametime->get_intemp()."\"";
+$JSON .= "\"tempchange\":"."\"".$yestsametime->get_tempchange().",".str_replace('"', '\"', get_img_tag($yestsametime->get_tempchange())).",".str_replace('"', '\"', get_param_tag($yestsametime->get_tempchange()))."\"";
+$JSON .= ",";
+$JSON .= "\"humchange\":"."\"".$yestsametime->get_humchange().",".get_img_tag($yestsametime->get_humchange()).",".get_param_tag($yestsametime->get_humchange())."\"";
 $JSON .= ",";
 $JSON .= "\"tempunit\":"."\"".$yestsametime->get_tempunit()."\"";
 $JSON .= ",";
@@ -346,11 +361,19 @@ $JSON .= ",\"today\":";
 $JSON .= "{";
 $JSON .= "\"hightemp\":"."\"".$today->get_hightemp()."\"";
 $JSON .= ",";
+$JSON .= "\"hightemp_time\":"."\"".$today->get_hightemp_time()."\"";
+$JSON .= ",";
 $JSON .= "\"lowtemp\":"."\"".$today->get_lowtemp()."\"";
+$JSON .= ",";
+$JSON .= "\"lowtemp_time\":"."\"".$today->get_lowtemp_time()."\"";
 $JSON .= ",";
 $JSON .= "\"highhum\":"."\"".$today->get_highhum()."\"";
 $JSON .= ",";
+$JSON .= "\"highhum_time\":"."\"".$today->get_highhum_time()."\"";
+$JSON .= ",";
 $JSON .= "\"lowhum\":"."\"".$today->get_lowhum()."\"";
+$JSON .= ",";
+$JSON .= "\"lowhum_time\":"."\"".$today->get_lowhum_time()."\"";
 $JSON .= ",";
 $JSON .= "\"highdew\":"."\"".$today->get_highdew()."\"";
 $JSON .= ",";
@@ -362,9 +385,15 @@ $JSON .= "\"lowbar\":"."\"".$today->get_lowbar()."\"";
 $JSON .= ",";
 $JSON .= "\"highwind\":"."\"".$today->get_highwind()."\"";
 $JSON .= ",";
+$JSON .= "\"highwind_time\":"."\"".$today->get_highwind_time()."\"";
+$JSON .= ",";
 $JSON .= "\"lowwindchill\":"."\"".$today->get_lowwindchill()."\"";
 $JSON .= ",";
 $JSON .= "\"highheatindex\":"."\"".$today->get_highheatindex()."\"";
+$JSON .= ",";
+$JSON .= "\"highrainrate\":"."\"".$today->get_highrainrate()."\"";
+$JSON .= ",";
+$JSON .= "\"highrainrate_time\":"."\"".$today->get_highrainrate_time()."\"";
 $JSON .= ",";
 $JSON .= "\"rain\":"."\"".$today->get_rain()."\"";
 $JSON .= ",";
@@ -594,20 +623,23 @@ $JSON .= ",";
 if ($hour_f['wind'] > 30){
         
         $wind_class="high_wind";
+        $windtitle=$EXTREME_WINDS[$lang_idx];
 }
 else if ($hour_f['wind'] > 20){
-        
+        $windtitle=$STRONG_WINDS[$lang_idx];
         $wind_class="high_wind";
 }
 else if ($hour_f['wind'] > 10){
-        
+        $windtitle=$MODERATE_WINDS[$lang_idx];
         $wind_class="moderate_wind";
 }
 else{
-        
+        $windtitle=$WEAK_WINDS[$lang_idx];
         $wind_class="light_wind";
 }
 $JSON .= "\"wind_class\":"."\"".$wind_class."\"";
+$JSON .= ",";
+$JSON .= "\"wind_title\":"."\"".$windtitle."\"";
 $JSON .= ",";
 $JSON .= "\"icon\":"."\"".$hour_f['icon']."\"";
 $JSON .= ",";
@@ -620,7 +652,10 @@ $JSON .= "]";
 $JSON .= ",\"forecastDays\":[";
 foreach ($forecastDaysDB as $day_f){
     $JSON .= "{";
-    $JSON .= "\"day_name\":"."\"".$day_f['day_name']."\"";
+    $JSON .= "\"day_name0\":"."\"".$day_f['day_name']."\"";
+    $JSON .= ",";
+    $lang_idx = 1;
+    $JSON .= "\"day_name1\":"."\"".replaceDays($day_f['day_name']." ")."\"";
     $JSON .= ",";
     $JSON .= "\"date\":"."\"".$day_f['date']."\"";
     $JSON .= ",";
@@ -628,9 +663,15 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= ",";
     $JSON .= "\"TempHigh\":"."\"".$day_f['TempHigh']."\"";
     $JSON .= ",";
+    $JSON .= "\"TempNight\":"."\"".$day_f['TempNight']."\"";
+    $JSON .= ",";
     $JSON .= "\"TempHighCloth\":"."\""."images/clothes/".$day_f['TempHighCloth']."\"";
     $JSON .= ",";
     $JSON .= "\"TempHighClothTitle\":"."\"".getClothTitle($day_f['TempHighCloth'])."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempNightCloth\":"."\""."images/clothes/".$day_f['TempNightCloth']."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempNightClothTitle\":"."\"".getClothTitle($day_f['TempNightCloth'])."\"";
     $JSON .= ",";
     $JSON .= "\"icon\":"."\""."images/icons/day/".$day_f['icon']."\"";
     $JSON .= ",";
@@ -655,6 +696,15 @@ $JSON .= "\"lang0\":"."\"".$windstatus."\"";
 $JSON .= ",";
 $windstatus = str_replace('"', "'", getWindStatus(1));
 $JSON .= "\"lang1\":"."\"".$windstatus."\"";
+$JSON .= "}";
+
+$itfeels = array();
+$itfeels = $current->get_itfeels();
+$JSON .= ",\"feelslike\":";
+$JSON .= "{";
+$JSON .= "\"state\":"."\"".$itfeels[0]."\"";
+$JSON .= ",";
+$JSON .= "\"value\":"."\"".$itfeels[1]."\"";
 $JSON .= "}";
 
 $JSON .= ",\"states\":";
@@ -698,6 +748,12 @@ $JSON .= ",";
 $JSON .= "\"adsense_background\":"."\"".$adsense_background."\"";
 $JSON .= "}";
 
+$JSON .= ",\"logo\":";
+$JSON .= "{";
+$JSON .= "\"logo0\":"."\"".$LOGO[0]."\"";
+$JSON .= ",";
+$JSON .= "\"logo1\":"."\"".$LOGO[1]."\"";
+$JSON .= "}";
 
 $JSON .= "}";
 $JSON .= "}";

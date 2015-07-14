@@ -37,6 +37,7 @@ class FixedTime {
     var $cloudBaseChange;
     var $uvchange;
     var $solarradiationchange;
+    
 
     /* function FixedTime(
       $ddate,
@@ -355,7 +356,19 @@ class FixedTime {
     function get_thws() {
         return $this->thws;
     }
-
+    
+    function get_itfeels(){
+        if (min($this->windchill, $this->thw) < ($this->temp) && $this->temp < 23 ){
+            $itfeels_state = "windchill";
+            $itfeels = min($this->windchill, $this->thw);
+        }
+        else if (max($this->HeatIdx, $this->thw) > ($this->temp)){
+            $itfeels_state = "heatindex";
+            $itfeels = max($this->HeatIdx, $this->thw);
+        }
+        return array($itfeels_state, $itfeels);
+    }
+    
     function get_rainrate() {
         return $this->rainrate;
     }
@@ -1768,9 +1781,9 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
 function get_img_tag($change_in_param) {
     global $GOING_UP, $GOING_DOWN, $lang_idx;
     if ($change_in_param > 0)
-        return "<div class='spriteB up invfloat' title=\"" . $GOING_UP[$lang_idx] . "\"></div>&nbsp;";
+        return "<div class='spriteB up invfloat' title='" . $GOING_UP[$lang_idx] . "'></div>&nbsp;";
     else if ($change_in_param < 0)
-        return "<div class='spriteB down invfloat' title=\"" . $GOING_DOWN[$lang_idx] . "\"></div>&nbsp;";
+        return "<div class='spriteB down invfloat' title='" . $GOING_DOWN[$lang_idx] . "'></div>&nbsp;";
 }
 
 function get_color_tag($change_in_param) {

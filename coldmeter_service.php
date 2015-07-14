@@ -154,11 +154,11 @@ if ($coldmeter_size =="")
 if ($current->get_temp() == "")
     exit;
 $temp_to_cold_meter = $current->get_temp();
-if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp()) && $current->get_temp() < 23 )
-        $temp_to_cold_meter = min($current->get_windchill(), $current->get_thw());
- else if (max($current->get_HeatIdx(), $current->get_thw()) > ($current->get_temp()))
-          $temp_to_cold_meter = max($current->get_HeatIdx(), $current->get_thw());
-            
+$itfeels = array();
+$itfeels = $current->get_itfeels();
+if (!empty($itfeels[0]))
+	$temp_to_cold_meter = $itfeels[1];
+       
 $temp_from = $temp_to_cold_meter - 0.5;
 $temp_to = $temp_to_cold_meter + 0.5;
 $query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, '{$pgender}');";
