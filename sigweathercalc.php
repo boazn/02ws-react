@@ -196,7 +196,7 @@ if (($today->get_highrainrate() !== "0.0") &&
 		array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
 }
 
-if (($current->get_temp() < 2)&&($current->get_temp() != ""))
+if (($current->get_temp('&#176;c') < 2)&&($current->get_temp() != ""))
 {
 	updateSigWeather(
 		"cold.gif", 
@@ -206,18 +206,74 @@ if (($current->get_temp() < 2)&&($current->get_temp() != ""))
                    array("<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$EN]\" width=\"150px\" border=\"0\"></div><div class=\"loading float\">&nbsp;$CURRENT_SIG_WEATHER[$EN]&nbsp;<strong>".$ALT[$EN]."</strong><div class=\"loading float big\">&nbsp;{$extrainfo[$EN]}</div></div>", "<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$HEB]\" width=\"150px\" border=\"0\"></div><div class=\"loading float\">&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<strong>".$ALT[$HEB]."</strong><div class=\"loading float big\">&nbsp;{$extrainfo[$HEB]}</div></div>"),
                            $ALT);
 }
-if ($current->get_pm10() > 100)
+if ($current->get_pm10() > 100 || $current->get_pm25() > 50)
 {
     updateSigWeather(
 		"dust.gif", 
 		$HIGH_DUST, 
 		array($DUST[$EN].": ".$current->get_pm10()." µg/m3", $DUST[$HEB].": ".$current->get_pm10()." µg/m3"), get_query_edited_url(get_url(), 'section', 'dust.html'));
 }
-if ($current->get_uv() > 10)
+if ($current->get_uv() > 8)
 {
 	updateSigWeather("hot.gif" , $HIGH_UV,
 	array($UV[$EN].": ".$current->get_uv(), $UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>"), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=UVHistory.gif&amp;profile=2&amp;lang=$lang_idx");
     update_action ("UV", $extrainfo, $ALT);
+}
+
+if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') < 10)&&($min10->get_windspd() > 3))
+{
+  updateSigWeather(
+    "cold.gif", 
+    $COLD_SUN, 
+    array("",""), 
+    "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
+
+}
+if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') < 14)&&($current->get_temp('&#176;c') > 10)&&($min10->get_windspd() > 3))
+{
+  updateSigWeather(
+    "cold.gif", 
+    $HALF_COLD_SUN, 
+    array("",""), 
+    "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
+
+}
+if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') > 11)&&($current->get_temp('&#176;c') <= 15)&&($min10->get_windspd() < 0.8))
+{
+  updateSigWeather(
+    "nowind.jpg", 
+    $SUN_SHADE, 
+    array("",""), 
+    "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
+
+}
+if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') > 15)&&($current->get_temp('&#176;c') < 19)&&($min10->get_windspd() < 4)&&($current->get_hum() > 40))
+{
+  updateSigWeather(
+    "nowind.jpg", 
+    $SUN_SHADE, 
+    array("",""), 
+    "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
+
+}
+if ((($current->get_temp('&#176;c') > 12)&&($current->get_temp('&#176;c') < 25)&&($min10->get_windspd() < 1))||
+        (($current->get_temp('&#176;c') > 24)&&($current->get_temp('&#176;c') < 28)&&($min10->get_windspd() > 3)))
+{
+  updateSigWeather(
+    "nowind.jpg", 
+    $GOOD_TIME, 
+    array("",""), 
+    "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
+
+}
+if (($current->get_hum() < 40)&&($min10->get_windspd() > 3)&&($current->get_pm10() < 100 && $current->get_pm25() < 50))
+{
+  updateSigWeather(
+    "wind1.jpg", 
+    $GOOD_LAUNDRY, 
+    array("",""), 
+    "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=hum.php&amp;profile=1&amp;lang=$lang_idx");
+
 }
 
 if	((($min15->get_prschange() < -0.3)||
@@ -445,11 +501,12 @@ if (((($min15->get_humchange() < -15)&& ($hour > 9) && ($hour < 7))||
 		"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=1&amp;lang=$lang_idx");
 	update_action ("HumDrop", $extrainfo, $ALT);
 }
-if ((($current->get_temp() > 27)&&
+//logger("get_temp: ".$current->get_temp('&#176;c'));
+if ((($current->get_temp('&#176;c') > 27)&&
 		  ($hightemp_diffFromAv >= 5))||
 		  ((!$current->is_light())&&
 		   ($lowtemp_diffFromAv >= 5)&&
-		   ($today->get_lowtemp() > 19)))
+		   ($today->get_lowtemp('&#176;c') > 19)))
 {
 	$isHeatWave = true;
 	if ($hour > 6)
@@ -577,6 +634,28 @@ else if (($current->get_windspd() == 0)&&($min10->get_windspd() == 0))
 		//if ($hour > 6)
 		//	update_action ("NoWind", $extrainfo, $ALT);
 }
+if ($today->get_et() > 5.6)
+{
+   updateSigWeather(
+	"dry.gif", 
+	array ($HIGH_ET[$EN], $HIGH_ET[$HEB]), 
+	 array (
+			$ET[$EN]." ".$TILL_NOW[$EN]." ".$today->get_et()." mm", 
+			$ET[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_et()."מ'מ"), 
+	"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=ETHistory.gif&amp;profile=1&amp;lang=$lang_idx"); 
+        update_action ("HighET", $extrainfo, $ALT);
+}
+if ($hour > 16 && $today->get_sunshinehours() < 2 && $today->get_sunshinehours() != "")
+{
+   updateSigWeather(
+	"cold.gif", 
+	array ($LOW_RAD[$EN], $LOW_RAD[$HEB]), 
+	 array (
+			$SUNSHINEHOURS[$EN]." ".$TILL_NOW[$EN]." ".$today->get_sunshinehours(), 
+			$SUNSHINEHOURS[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_sunshinehours()), 
+	"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rad.php&amp;profile=1&amp;lang=$lang_idx"); 
+        update_action ("LowRad", $extrainfo, $ALT);
+}
 if (($lowtemp_diffFromAv > 2) 
 	&& ($hightemp_diffFromAv > 3) 
 	&& (!$isHeatWave) 
@@ -587,8 +666,8 @@ if (($lowtemp_diffFromAv > 2)
 	"hot.gif", 
 	array ($WARMER_THAN_AVERAGE[$EN]." ".$TODAY[$EN], $WARMER_THAN_AVERAGE[$HEB]." ".$TODAY[$HEB]), 
 	 array (
-			$TODAY[$EN]." ".$MAX[$EN]." ".$today->get_hightemp().$current->get_tempunit(), 
-			$TODAY[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp().$current->get_tempunit()), 
+			$TILL_NOW[$EN]." ".$MAX[$EN]." ".$today->get_hightemp().$current->get_tempunit(), 
+			$TILL_NOW[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp().$current->get_tempunit()), 
 	"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=2&amp;lang=$lang_idx");
 		//update_action ("Warmer", $extrainfo, $ALT);
 }
@@ -621,13 +700,4 @@ if (true)
 
     $sub = $_GET['sub'];
    
-	 if (isRaining()) {
-		if ($current->get_temp() > 2)
-			 $flash = get_fileFromdir('images/randomrain');
-		  else
-			 $flash = get_fileFromdir('images/randomsnow');
-	}
-
-
- 
 ?>

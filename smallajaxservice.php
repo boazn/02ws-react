@@ -15,7 +15,7 @@ else if ($size == 'm')
 	$width = "230px";
 else if ($size == 'l')
 	$width = "320px";
-else if (($_REQUEST['section'] != "")&&($_REQUEST['section'] != "SendEmailForm.php")&&($_REQUEST['section'] != "alerts.php"))
+else if (($_REQUEST['section'] != "")&&($_REQUEST['section'] != "SendEmailForm.php")&&($_REQUEST['section'] != "alerts.php")&&($_REQUEST['section'] != "chat.php"))
     $width = "570px";
 else
     $width = "320px";

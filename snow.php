@@ -1,14 +1,14 @@
 <?
 $SNOW_EXP = array ("<em>Snow</em> is a type of precipitation that generated around ice nucleus, aggregates and resulting with original full ice droplet. Than, consisting of a multitude of snowflakes", " <em>:שלג</em> צורות התעבות מוצקות יכולות להופיע באויר עולה הן כתוצאה מהקיפאון של חלקיקים נוזליים והן ע''י התעבות ישירה של אדי המים למצב מוצק. פתית שלג הוא מיצבור של גבישי קרח שהושטחו יחד כתוצאה משכבה דקיקה של מים על הגבישים הבודדים. שלג כבד מופיע בד''כ בטמפרטורות לא מאד נמוכות, מאחר ואוויר קר מאד מכיל מעט מאד לחות. ");
 $SLEET_EXP = array ("<em>Sleet</em> is freezing rain and it shows as paricles of ice. Sleet is usually tiny clear ice pellets that bounce when they hit the ground.", "<em> הסליט </em> הוא גשם קפוא או קפוא למחצה והופעתו היא בצורת חלקיקים של קרח צלול. בד''כ מקפץ על הקרקע.<br /> תהליך מעורב של גשם גראופל ושלג העוברים בשכבה מתחת לקפאון מחוץ לענן וקופאים בדרך");
-$GRAUPEL_EXP = array ("<em>Grapuel</em> is hail particles as millimeter-scale cones of low-density ice. This is because the air is trapped between the constituent ice grains of the particles", "<em>הגראופל</em> הוא חלקיק קרח אשר מכיל מעט אוויר בתוכו.נמרח על השמשה. <br/ > קפיאה של טיפונות מים מקוררות ביתר על גבי גביש קרח<br /> תלכיד של קרח הנוצר כתוצאה מהתנגשות בין גבישי קרח לטיפונות מים מקוררים ביתר הקופאות על הגבישים.");
+$GRAUPEL_EXP = array ("<em>Grapuel</em> is hail particles as millimeter-scale cones of low-density ice. This is because the air is trapped between the constituent ice grains of the particles", "<em>הגראופל</em>  .במילים אחרות חלקיק קרח אשר מכיל מעט אוויר בתוכו.  נמרח על השמשה. <br/ >  תלכיד של קרח הנוצר כתוצאה מהתנגשות בין גבישי קרח לטיפונות מים מקוררים ביתר.");
 $SNOW_ARCHIVE = array ("<h2>Snow Archive</h2>From the archive of newspapers from 19th century till today.", "<h2>ארכיון נתונים על שלג</h2>נאסף ע''י ציטוטים בארכיון של עיתונות יהודית מהמאה ה-19 ועד היום<br/>נאסף ע''י יאיר פרידמן");
 ?>
 <h1>
 	<? echo $SNOW_JER[$lang_idx]; ?>
 </h1>
 
-<div class="float" style="padding:0.5em 1em 0 4em;height:100%;width:48%" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
+<div class="float" style="padding:0.5em 1em 0 4em;height:100%;width:44%" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
 	<div class="inv_plain_3 float" style="text-align:<?echo get_s_align();?>;width:100%;height:135px" class="inv_plain_2">
 		<div style="float:<?echo get_s_align();?>;width:120px;padding:0.5em">
 			<a href="/images/SnowFlake.jpg" class="colorbox" title="real snow flake">

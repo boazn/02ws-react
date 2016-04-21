@@ -59,8 +59,29 @@ else
 
 <title><? echo $LOGO[$lang_idx];?></title>
 <style>
+    
+#main_cellphone_container::before{
+    content:' ';
+     
+    overflow-y: hidden;
+    overflow-x: hidden;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.4;
+    display: block;
+    position: absolute;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+     background-size: cover;
+    
+}
  body, .inparamdiv{   
-     font-size:32px
+     font-size:34px
  }
  .inparamdiv{
      width:500px;
@@ -68,33 +89,47 @@ else
  }
  #latestnow
  {
-     padding: 2.5em 0em 0em 0em;
+     padding: 2.5em 0.2em 1em 0.2em;
+     margin: 0 auto;
+    
  }
- #itfeels_windchill, #itfeels_heatidx{
-     font-size:34px;width:100%
+ #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
+     font-size:58px;width:100%;top:2em
  }
  #statusline{
-     font-size: 1.7em;margin-top:-0.9em;
+     font-size: 1.9em;margin-top:-0.8em;
  }
  .smalllogo
  {
-     height:50px;margin-top: 0.6em
+     height:50px;margin-top: 0.6em;
+     <? if (!$current->is_light()||isRaining()) { ?>
+    color:#ffffff
+    <?}?>
  }
  #logo
  {
-     width:65%;position:relative;
+     
+    height: 112px;
+    background-size: 112px;
+    margin-<?echo get_s_align();?>:10px;
+     width:85%;
+     position:relative;
+     text-align: center;
+     display: inline-block;
+     font-family: nextexitfotlight;
+     font-size: 1.5em;
  }
  #currentinfo_container
  {
      margin-top: -1.5em
  }
  #what_is_h{
-     font-size: 1.1em;
+     font-size: 1.4em;
      line-height: 1.2em;
-     margin-right:450px;
-     top: -30px;
+     margin-<?=get_s_align()?>:-380px;
+     top: 165px;
      position: absolute;
-    <? if (!$current->is_light()) { ?>
+    <? if (!$current->is_light()||isRaining()) { ?>
     color:#ffffff
     <?}?>
      
@@ -108,6 +143,34 @@ else
 {
     font-weight: normal;
     font-family: nextexitfotlight;
+    font-size:6.5em
+}
+#windy
+{
+    width: 10%;
+    left: 6.5em;
+    top: 2.8em;
+}   
+#shortforecast
+{
+    width: 30%;
+    position:absolute;
+    font-family:nextexitfotlight;
+    font-size: 1.3em;
+    <?=get_inv_s_align()?>:<? if (isHeb()) echo "-";?>100px;
+    margin-top: -480px;
+    <? if (!$current->is_light()||isRaining()) { ?>
+    color:#ffffff
+    <?}?>
+}
+#shortforecast .nav li{
+    width: auto;
+    padding:0.1em;
+    margin: 0.8em 1em;
+}
+.nav
+{
+    font-size:1.2em
 }
 </style>
 </head>
@@ -118,10 +181,7 @@ else
 <div style="width:<?=$width?>" <? if (isheb()) echo "dir=\"rtl\""; ?> id="main_cellphone_container">
 
 <div class="smalllogo" id="logo">
-&nbsp;&nbsp;&nbsp;
 <? if (isHeb()) echo $dateInHeb; else echo $date;?>
-
-
 </div>
 <? if ($_GET['section'] != "") { ?>
 <div id="tohome" class="invfloat topbase"><a href="<? echo BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?lang=".$lang_idx;?>"  title="<? echo $HOME_PAGE[$lang_idx];?>" class="hlink">
@@ -132,8 +192,9 @@ else
 else {?>
 <div id="currentinfo_container">
 <div id="latestnow" class="inparamdiv">
- <?
-    if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp() - 1) && $current->get_temp() < 23 ){ ?>
+ <?$itfeels = array();
+   $itfeels = $current->get_itfeels();
+    if ($itfeels[0] == "windchill" ){ ?>
             <div id="itfeels_windchill"> 
             <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
                     <? echo $IT_FEELS[$lang_idx]; ?>
@@ -142,29 +203,34 @@ else {?>
             </div>
 
     <? } 
-    else if (max($current->get_HeatIdx(), $current->get_thw()) > ($current->get_temp())){ ?>
+    else if ($itfeels[0] == "heatindex"){  ?>
             <div class="" id="itfeels_heatidx">
             <a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
                     <? echo $IT_FEELS[$lang_idx]; ?>
                     <span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo max($current->get_HeatIdx(), $current->get_thw())."&#176;";  ?></span>
              </a> 
             </div>
-    <?}?>
+    <?} else if ($itfeels[0] == "thsw"){?>
+                                        <div class="" id="itfeels_thsw">
+                                         <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+                                                <? echo $IT_FEELS[$lang_idx]; ?>
+                                                <span dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1]."&#176;";  ?></span>
+                                                <? echo " ".$IN_THE_SUN[$lang_idx]; ?>
+                                         </a> 
+                                        </div>
+                            <?}?>
 <div id="tempdivvalue">
 <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"><? echo $current->get_temp()."<span class=\"paramunit\">&#176;c"; ?></span></a>
 </div>
 
 <div id="statusline">
-			<div  id="windy">
-			<? echo getWindStatus();?>
-			</div>
-			<div  id="coldmeter">
-			<a href="<?=$_SERVER['SCRIPT_NAME']?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx;?>"><span id="current_feeling_link" title="<?=$HOTORCOLD_T[$lang_idx]?> - <?=$COLD_METER[$lang_idx]?>">...</span>
-			</a> 
-			</div>
-			  
-			
-
+        <div  id="windy">
+        <? echo getWindStatus($lang_idx);?>
+        </div>
+        <div  id="coldmeter">
+        <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx;?>"><span id="current_feeling_link" title="<?=$HOTORCOLD_T[$lang_idx]?> - <?=$COLD_METER[$lang_idx]?>">...</span>
+        </a> 
+        </div>
 </div>
 <? if (count($sig) > 1) { ?>
 <div id="what_is_h"><? echo "{$sig[0]['sig'][$lang_idx]}"; ?><br /><? echo $sig[0]['extrainfo'][$lang_idx];?></div>
@@ -175,55 +241,47 @@ else {?>
 </a>
 </div>-->
 </div>
-<div style="clear:both;height:5px">&nbsp;</div>
 <div id="shortforecast">
     <ul class="nav">
         <li style="border:none">
-            <?echo "".replaceDays($forecastDaysDB[0]['day_name']." ")."&nbsp;&nbsp;".$forecastDaysDB[0]['date'];?><br/>
-            <img src="<? echo "images/icons/day/".$forecastDaysDB[0]['icon']; ?>" width="60" height="60" alt="<? echo "images/icons/day/".$forecastDaysDB[0]['icon']; ?>" /><br/>
-            <?=c_or_f($forecastDaysDB[0]['TempLow'])?>-<?=c_or_f($forecastDaysDB[0]['TempHigh'])?><br/>
+            <?echo "".replaceDays($forecastDaysDB[0]['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$forecastDaysDB[0]['date'];?><br/><br/><br/>
+            <img src="<? echo "images/icons/day/".$forecastDaysDB[0]['icon']; ?>" width="80" height="80" alt="<? echo "images/icons/day/".$forecastDaysDB[0]['icon']; ?>" /><br/><br/><br/>
+            <?=c_or_f($forecastDaysDB[0]['TempLow'])?>&nbsp;-&nbsp;<?=c_or_f($forecastDaysDB[0]['TempHigh'])?>
         </li>
         <li>
-            <?echo "".replaceDays($forecastDaysDB[1]['day_name']." ")."&nbsp;&nbsp;".$forecastDaysDB[1]['date'];?><br/>
-            <img src="<? echo "images/icons/day/".$forecastDaysDB[1]['icon']; ?>" width="60" height="60" alt="<? echo "images/icons/day/".$forecastDaysDB[1]['icon']; ?>" /><br/>
-            <?=c_or_f($forecastDaysDB[1]['TempLow'])?>-<?=c_or_f($forecastDaysDB[1]['TempHigh'])?><br/>
+            <?echo "".replaceDays($forecastDaysDB[1]['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$forecastDaysDB[1]['date'];?><br/><br/><br/>
+            <img src="<? echo "images/icons/day/".$forecastDaysDB[1]['icon']; ?>" width="80" height="80" alt="<? echo "images/icons/day/".$forecastDaysDB[1]['icon']; ?>" /><br/><br/><br/>
+            <?=c_or_f($forecastDaysDB[1]['TempLow'])?>&nbsp;-&nbsp;<?=c_or_f($forecastDaysDB[1]['TempHigh'])?>
         </li>
-        <li>
-            <?echo "".replaceDays($forecastDaysDB[2]['day_name']." ")."&nbsp;&nbsp;".$forecastDaysDB[2]['date'];?><br/>
-            <img src="<? echo "images/icons/day/".$forecastDaysDB[2]['icon']; ?>" width="60" height="60" alt="<? echo "images/icons/day/".$forecastDaysDB[2]['icon']; ?>" /><br/>
-            <?=c_or_f($forecastDaysDB[2]['TempLow'])?>-<?=c_or_f($forecastDaysDB[2]['TempHigh'])?><br/>
-        </li>
-        <li>
-            <?echo "".replaceDays($forecastDaysDB[3]['day_name']." ")."&nbsp;&nbsp;".$forecastDaysDB[3]['date'];?><br/>
-            <img src="<? echo "images/icons/day/".$forecastDaysDB[3]['icon']; ?>" width="60" height="60" alt="<? echo "images/icons/day/".$forecastDaysDB[3]['icon']; ?>" /><br/>
-            <?=c_or_f($forecastDaysDB[3]['TempLow'])?>-<?=c_or_f($forecastDaysDB[3]['TempHigh'])?><br/>
-        </li>
+        
     </ul>
 </div>
 </div>
+<div id="spacer" style="line-hight:4em;clear:both">&nbsp;</div>    
+    
 <!-- Parallax  midground clouds -->
 	<!-- Parallax  midground clouds -->
 	<div id="parallax-bg2">
                        
-						<div id="bg2-1" class="cloud3"><div class="cloud3-more"></div></div>
-                        
-                        
-                        <? if ($current->get_cloudiness() > 2) {?>
-                                                <div id="bg2-3" class="cloud2"><div class="cloud2-more"></div></div>
-                                                <div id="bg2-2" class="cloud4"><div class="cloud4-more"></div></div>
-						<div id="bg2-4" class="cloud1"><div class="cloud1-more"></div></div>
-						<div id="bg2-5" class="cloud-big"><div class="cloud-big-more"></div></div>
-						 <div id="bg2-6" class="cloud4"><div class="cloud4-more"></div></div>
-                                                
-						<?}?>
-						<? if ($current->get_cloudiness() > 5) {?>
-                                                <div id="bg2-7" class="cloud2"><div class="cloud2-more"></div></div>
-						<div id="bg2-8" class="cloud-big"><div class="cloud-big-more"></div></div>
-                                                <?}?>
-                                                <? if ($current->get_cloudiness() > 6) {?>
-                                                <div id="bg2-9" class="cloud-big"><div class="cloud-big-more"></div></div>
-						<div id="bg2-10" class="cloud-big"><div class="cloud-big-more"></div></div>
-						<?}?>
+                    <div id="bg2-1" class="cloud3"><div class="cloud3-more"></div></div>
+
+
+<? if ($current->get_cloudiness() > 2) {?>
+                    <div id="bg2-3" class="cloud2"><div class="cloud2-more"></div></div>
+                    <div id="bg2-2" class="cloud4"><div class="cloud4-more"></div></div>
+                    <div id="bg2-4" class="cloud1"><div class="cloud1-more"></div></div>
+                    <div id="bg2-5" class="cloud-big"><div class="cloud-big-more"></div></div>
+                     <div id="bg2-6" class="cloud4"><div class="cloud4-more"></div></div>
+
+                    <?}?>
+                    <? if ($current->get_cloudiness() > 5) {?>
+                    <div id="bg2-7" class="cloud2"><div class="cloud2-more"></div></div>
+                    <div id="bg2-8" class="cloud-big"><div class="cloud-big-more"></div></div>
+                    <?}?>
+                    <? if ($current->get_cloudiness() > 6) {?>
+                    <div id="bg2-9" class="cloud-big"><div class="cloud-big-more"></div></div>
+                    <div id="bg2-10" class="cloud-big"><div class="cloud-big-more"></div></div>
+                    <?}?>
                         
                         
 	</div>
@@ -232,23 +290,23 @@ else {?>
         <? }?>
 	<!-- Parallax  background clouds -->
 	<div id="parallax-bg1">
-						<div id="bg1-1" class="cloud4"><div class="cloud4-more"></div></div>
-                        
-                        <? if ($current->get_cloudiness() > 2) {?>
-                                                <div id="bg1-2" class="cloud3"><div class="cloud3-more"></div></div>
-						<div id="bg1-3" class="cloud4"><div class="cloud4-more"></div></div>
-						<div id="bg1-4" class="cloud-big"><div class="cloud-big-more"></div></div>
-						<div id="bg1-5" class="cloud3"><div class="cloud3-more"></div></div>
-                                                <div id="bg1-6" class="cloud2"><div class="cloud2-more"></div></div>
-						<?}?>
-						<? if ($current->get_cloudiness() > 5) {?>
-						<div id="bg1-7" class="cloud-big"><div class="cloud-big-more"></div></div>
-                                                <div id="bg1-8" class="cloud-big"><div class="cloud-big-more"></div></div>
-                                                <?}?>
-                                                <? if ($current->get_cloudiness() > 6) {?>
-						<div id="bg1-9" class="cloud-big"><div class="cloud-big-more"></div></div>
-						<div id="bg1-10" class="cloud-big"><div class="cloud-big-more"></div></div>
-                                                <?}?>
+                        <div id="bg1-1" class="cloud4"><div class="cloud4-more"></div></div>
+
+<? if ($current->get_cloudiness() > 2) {?>
+                        <div id="bg1-2" class="cloud3"><div class="cloud3-more"></div></div>
+                        <div id="bg1-3" class="cloud4"><div class="cloud4-more"></div></div>
+                        <div id="bg1-4" class="cloud-big"><div class="cloud-big-more"></div></div>
+                        <div id="bg1-5" class="cloud3"><div class="cloud3-more"></div></div>
+                        <div id="bg1-6" class="cloud2"><div class="cloud2-more"></div></div>
+                        <?}?>
+                        <? if ($current->get_cloudiness() > 5) {?>
+                        <div id="bg1-7" class="cloud-big"><div class="cloud-big-more"></div></div>
+                        <div id="bg1-8" class="cloud-big"><div class="cloud-big-more"></div></div>
+                        <?}?>
+                        <? if ($current->get_cloudiness() > 6) {?>
+                        <div id="bg1-9" class="cloud-big"><div class="cloud-big-more"></div></div>
+                        <div id="bg1-10" class="cloud-big"><div class="cloud-big-more"></div></div>
+                        <?}?>
 						
                         
                    
