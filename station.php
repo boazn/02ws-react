@@ -8,8 +8,10 @@ include_once("include.php");
 include_once("start.php");
 include_once("requiredDBTasks.php");
 include_once "sigweathercalc.php";
-include_once("forecastlib.php");
-
+if (empty($forecastHour)){
+    include_once("forecastlib.php");
+    apc_store("forecasthour", $forecastHour);
+}
 ?>
  <!DOCTYPE html>
     <head>
@@ -45,8 +47,8 @@ include_once("forecastlib.php");
         <? if ($current->get_pm10() > 250) { ?>
         <link rel="stylesheet" href="css/dust.min.css" type="text/css">
         <? }?>
-        <? if (!$current->is_light()) { ?>
-        <link rel="stylesheet" href="css/night.min.css" type="text/css">
+        <? if (!$current->is_light()){  ?>       
+            <link rel="stylesheet" href="css/night<?=$lang_idx?>.min.css" type="text/css">
             <? if ($current->get_pm10() > 250) { ?>
             <link rel="stylesheet" href="css/dust-night.min.css" type="text/css">
             <? }?>
@@ -54,7 +56,7 @@ include_once("forecastlib.php");
         <? if (isRaining()){ ?>
 	<link rel="stylesheet" href="css/rain.min.css" type="text/css">
         <? }?>
-        <? if (((isRaining())&&($current->get_temp() < 2))||(stristr($template_routing, 'snow'))||(IS_SNOWING == 1)) { ?>
+        <? if (isSnowing()) { ?>
         <? if ($current->is_light()){?>
         <link rel="stylesheet" href="css/snow.min.css" type="text/css">
         <? } else {?>
@@ -91,30 +93,15 @@ include_once("forecastlib.php");
 			<ul id="top_links">
                             <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'faq.php');?>" title="<?=$FAQ[$lang_idx]?>"><?=$FAQ[$lang_idx ]?></a></li>
                             <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tips.php');?>" title="<?=$TIPS[$lang_idx]?>"><?=$TIPS[$lang_idx ]?></a></li>
-			    <li><a href="javascript:void(0)" ><? echo $WHAT_ELSE[$lang_idx];?>&nbsp;<? if (count($sig) > 2) echo "<span class=\"invhigh\">&nbsp;".(count($sig)-1)."&nbsp;</span>";?>&nbsp;<span class="arrow_down">&#9660;</span></a>
+			    <li><a href="javascript:void(0)" ><? echo $WHAT_ELSE[$lang_idx];?>&nbsp;<span class="arrow_down">&#9660;</span></a>
                                     <ul style="<?echo get_s_align();?>: -2em;">
-                                                        <? if ($boolbroken) {?>
-                                                                        <li class="">
-                                                                                <div id="brokenlatesttemp"></div>
-                                                                                <div id="brokenlatesthumidity"></div>
-                                                                                <div id="brokenlatestpressure"></div>
-                                                                                <div id="brokenlatestwind"></div>
-                                                                                <div id="brokenlatestrainrate" ></div>
-                                                                        </li>
-                                                        <? } ?>
-                                                        <?
-                                                                for ($i = 0; $i < count($sig); $i++) {
-
-                                                                echo "<li>";
-                                                                echo "<a class=\"hlink\" style=\"font-weight:normal\" title=\"\" href=\"{$sig[$i]['url']}\" >{$sig[$i]['sig'][$lang_idx]} "." - ".$sig[$i]['extrainfo'][$lang_idx].get_arrow()."</a></li>\n";          
-                                                        } ?>
                                                         <li>
                                                                 <a href="<? echo get_query_edited_url($url_cur, 'section', 'radar.php');?>">
                                                                         <? echo $RAIN_RADAR[$lang_idx].get_arrow();?>
                                                                 </a>
                                                         </li>
                                                         <li>
-                                                                <a href="http://www.sat24.com/en/is?ir=true" title="<? echo  $SATELLITE[$lang_idx];?>" rel="external">		
+                                                                <a href="http://en.sat24.com/en/is" title="<? echo  $SATELLITE[$lang_idx];?>" rel="external">		
                                                                         <? echo  $SATELLITE[$lang_idx].get_arrow();?>
                                                                 </a>
                                                         </li>
@@ -191,6 +178,7 @@ include_once("forecastlib.php");
                                                                 </li>
 
                                                         <!-- End Global Warming -->
+                                                        <li><a href="runningtreks.php?lang=<? echo $lang_idx;?>" class="hlink"><? echo $RUNNING_TREKS[$lang_idx];?><?=get_arrow()?></a></li>
                                                         <li><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=models.php&amp;model=&amp;hours=24&amp;lang=<? echo $lang_idx;?>" class="hlink"><? echo $MODELS[$lang_idx];?><?=get_arrow()?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'lightning.php');?>" class="hlink"><? echo $LIGHTS[$lang_idx];?><?=get_arrow()?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'radiosonde.php');?>" class="hlink"><? echo $RADIOSONDE[$lang_idx];?><?=get_arrow()?></a></li>
@@ -232,7 +220,8 @@ include_once("forecastlib.php");
 							</div>
 							<div id="loggedin" style="display:none">
 								<input id="updateprofile" class="button inv_plain_3_zebra" title="<?=$UPDATE_PROFILE[$lang_idx]?>" value="<?=$UPDATE_PROFILE[$lang_idx]?>" /><br />
-								<input value="<?=$SIGN_OUT[$lang_idx]?>" onclick="signout_from_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="signout" class="button inv_plain_3_zebra"/>
+                                                                <input id="myvotes" class="button inv_plain_3_zebra" title="<?=$MY_VOTES[$lang_idx]?>" value="<?=$MY_VOTES[$lang_idx]?>" onclick="redirect('<? echo substr(get_query_edited_url($url_cur, 'section', 'myVotes.php'), 1);?>')" /><br />
+                                                                <input value="<?=$SIGN_OUT[$lang_idx]?>" onclick="signout_from_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="signout" class="button inv_plain_3_zebra"/>
 							</div>
 						</li>
 					  </ul>
@@ -369,6 +358,7 @@ include_once("forecastlib.php");
 			    <li id="uv_btn" onclick="change_circle('uv_line', 'latestuv')" title="<? echo $UV[$lang_idx];?>"></li>
 			    
                             <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title="<? echo $AIR_QUALITY[$lang_idx];?>"></li>
+                            <li id="all_btn" onclick="showAllCircles()" title="<? echo $FULL[$lang_idx];?>"></li>
                             
 			</ul>
                        <hr id="now_line" />
@@ -385,21 +375,31 @@ include_once("forecastlib.php");
                             <div  id="windy">
                             <? echo getWindStatus($lang_idx);?>
                             </div>
-                             <?
-                                if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp()) && $current->get_temp() < 23 ){ ?>
+                             <?$itfeels = array();
+                               $itfeels = $current->get_itfeels();
+                               
+                                if ($itfeels[0] == "windchill" ){ ?>
                                         <div id="itfeels_windchill"> 
                                          <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<? echo $_SERVER['SCRIPT_NAME']; ?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
                                                 <? echo $IT_FEELS[$lang_idx]; ?>
-                                                <span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo min($current->get_windchill(), $current->get_thw())."&#176;"; ?></span>
+                                                <span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo $itfeels[1]."&#176;"; ?></span>
                                          </a>
                                         </div>
 
                                 <? } 
-                                else if (max($current->get_HeatIdx(), $current->get_thw()) > ($current->get_temp())){ ?>
+                                else if ($itfeels[0] == "heatindex"){ ?>
                                         <div class="" id="itfeels_heatidx">
                                          <a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
                                                 <? echo $IT_FEELS[$lang_idx]; ?>
-                                                <span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo max($current->get_HeatIdx(), $current->get_thw())."&#176;";  ?></span>
+                                                <span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1]."&#176;";  ?></span>
+                                         </a> 
+                                        </div>
+                            <?} else if ($itfeels[0] == "thsw"){?>
+                                        <div class="" id="itfeels_thsw">
+                                         <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+                                                <? echo $IT_FEELS[$lang_idx]; ?>
+                                                <span dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1]."&#176;";  ?></span>
+                                                <? echo " ".$IN_THE_SUN[$lang_idx]; ?>
                                          </a> 
                                         </div>
                             <?}?>
@@ -417,11 +417,11 @@ include_once("forecastlib.php");
                      
                       <div id="latesttemp" class="inparamdiv">
                                <div class="paramtitle slogan">
-                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $TEMP[$lang_idx];?></a>
+                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp<?if ($PRIMARY_TEMP == 2) echo "Latest";?>.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $TEMP[$lang_idx];?></a>
                                 </div>
                                <div class="paramvalue">
                                     
-                                        <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>&nbsp;<a href="javascript:void" onclick="change_circle('temp_line', 'latesttemp2')"><span id="valleytemp" class="small" title="<?=$MOUNTAIN[$lang_idx]?>"><? echo $current->get_temp2()."&nbsp;".$MOUNTAIN[$lang_idx];?></span></a>
+                                        <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>&nbsp;<a href="javascript:void(0)" onclick="change_circle('temp_line', 'latesttemp2')"><span id="valleytemp" class="small valleytemp" title="<?=$VALLEY[$lang_idx]?>"><? echo $current->get_temp2(); if ($PRIMARY_TEMP == 1) echo " $MOUNTAIN[$lang_idx]"; else echo " $VALLEY[$lang_idx]";?></span></a>
                                     
                                 </div>
                                 <div class="highlows">
@@ -444,16 +444,16 @@ include_once("forecastlib.php");
                                 </table>
                            </div>
 						   <div class="graphslink">
-								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
+								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp<?if ($PRIMARY_TEMP == 2) echo "Latest";?>.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
 						   </div>
 			</div>
                         <div id="latesttemp2" class="inparamdiv">
                                <div class="paramtitle slogan">
-                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $TEMP[$lang_idx];?></a>
+                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp<?if ($PRIMARY_TEMP == 1) echo "Latest";?>.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $TEMP[$lang_idx];?></a>
                                 </div>
                                <div class="paramvalue">
                                     
-                                   <a href="javascript:void" onclick="change_circle('temp_line', 'latesttemp')"><span class="small"><? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span></span></a>&nbsp;<span id="valleytemp" title="<?=$MOUNTAIN[$lang_idx]?>"><? echo $current->get_temp2()."&nbsp;".$MOUNTAIN[$lang_idx];?></span>
+                                   <a href="javascript:void(0)" onclick="change_circle('temp_line', 'latesttemp')"><span class="small"><? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span></span></a>&nbsp;<span id="valleytemp2" class="valleytemp" title="<?=$VALLEY[$lang_idx]?>"><? echo $current->get_temp2();if ($PRIMARY_TEMP == 1) echo " $MOUNTAIN[$lang_idx]"; else echo " $VALLEY[$lang_idx]";?></span>
                                     
                                 </div>
                                 <div class="highlows">
@@ -472,11 +472,11 @@ include_once("forecastlib.php");
                                                 <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour"/></td>
                                                 <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
                                         </tr>
-                                        <tr class="trendsvalues"><td><div class="trendvalue"><div class="innertrendvalue"> <? echo get_param_tag($yestsametime->get_temp2change())."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($oneHour->get_temp2change())."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($min30->get_temp2change()); ?></div></div></td></tr>
+                                        <tr class="trendsvalues"><td><div class="trendvalue"><div class="innertrendvalue"><? echo get_param_tag($yestsametime->get_temp2change())."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($oneHour->get_temp2change())."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($min30->get_temp2change()); ?></div></div></td></tr>
                                 </table>
                            </div>
 						   <div class="graphslink">
-								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp2.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
+								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp<?if ($PRIMARY_TEMP == 1) echo "Latest";?>.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
 						   </div>
 			</div>
                         <div id="latesthumidity" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?>>
@@ -565,27 +565,32 @@ include_once("forecastlib.php");
 				</div>
                                 <div  id="windspeed">
 					<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" >
-                                            <span class="<? if (isHeb()) echo "heb"; ?>"><? echo $min10->get_windspd()." <span class=\"paramunit\">".$KNOTS[$lang_idx]."</span>";?></span>
+                                            <span class="<? if (isHeb()) echo "heb"; ?>"><? echo $current->get_windspd()." <span class=\"paramunit\">".$KNOTS[$lang_idx]."</span>";?></span>
 					</a>
 				</div>
                           </div>
-					<div class="highlows">
-						<span><strong><? echo $today->get_highwind(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highwind_time()." "; ?></span>
-					</div>
-						<div class="trendstable">	
-					  <table>
-					   <tr class="trendstitles">
-							   <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour" /></td>
-							   <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
-							   <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
-					   </tr>
-					   <? echo "<tr class=\"trendsvalues\" ><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($oneHour->get_windspdchange()).abs($oneHour->get_windspdchange())."</div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($min30->get_windspdchange()).abs($min30->get_windspdchange())."</div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($min15->get_windspdchange()).abs($min15->get_windspdchange())."</div></div></td></tr>"; ?>
-						</table>
-						</div>
-						<div class="graphslink">
-								<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" ><img src="img/graph_icon.png" alt="to graphs"/></a>
-						</div>
-				</div>
+                            <div class="highlows">
+                                    <span><strong><? echo $today->get_highwind(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highwind_time()." "; ?></span>
+                            </div>
+                            <div class="paramtrend relative">
+                                    <div class="">  
+                                      <? echo " 10 ".$MINTS[$lang_idx]." ".$AVERAGE[$lang_idx].": <strong>".$min10->get_windspd()."</strong> ".$KNOTS[$lang_idx];?>
+                                    </div>
+                            </div>
+                                <div class="trendstable">	
+                          <table>
+                           <tr class="trendstitles">
+                                           <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour" /></td>
+                                           <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+                                           <td class="box" title="<? echo getLastUpdateMin().($MINTS[$lang_idx]);?>"><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
+                           </tr>
+                           <? echo "<tr class=\"trendsvalues\" ><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($oneHour->get_windspdchange()).abs($oneHour->get_windspdchange())."</div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($min30->get_windspdchange()).abs($min30->get_windspdchange())."</div></div></td><td><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_img_tag($min15->get_windspdchange()).abs($min15->get_windspdchange())."</div></div></td></tr>"; ?>
+                                </table>
+                                </div>
+                            <div class="graphslink">
+                                            <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" ><img src="img/graph_icon.png" alt="to graphs"/></a>
+                            </div>
+                        </div>
                         <div id="latestrain" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> title="<? echo $RAIN_RATE[$lang_idx]; ?>">
                             <div class="paramtitle slogan">
                                     <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=RainRateHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
@@ -600,6 +605,7 @@ include_once("forecastlib.php");
                             <div class="highlows">
                                 <span><strong><? echo $today->get_highrainrate(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highrainrate_time()." "; ?></span>
                             </div>
+                            
                             <div class="trendstable">
                              <table id="rainrate15min">
                             <tr class="trendstitles">
@@ -617,22 +623,25 @@ include_once("forecastlib.php");
                                     <td ><div class="trendvalue"><div class="innertrendvalue">
                                             <? echo get_img_tag($min15->get_rainratechange()).abs(round($min15->get_rainratechange())); ?>
 
-                                    </div></div></td>
+                                    </div></div>
+                                        
+                                    </td>
                             </tr>
                             </table>
                             </div>
-							<div class="graphslink">
-								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=RainRateHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
-							</div>
+                                                        
+                            <div class="graphslink">
+                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=RainRateHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
+                            </div>
                         </div>
                         <div id="latestradiation" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> title="<? echo $SUN[$lang_idx]; ?>">
                             <div class="paramtitle slogan">
-                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=SolarRadHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
+                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rad.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
                                             <? echo $RADIATION[$lang_idx];?>
                                     </a>
                             </div>
                             <div id="sunvalues" class="paramvalue">
-                                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=SolarRadHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
+                                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rad.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
                                             <? echo $current->get_solarradiation()."<span class=\"paramunit\"> W/m2</span>";?>
                                     </a>
                             </div>
@@ -660,7 +669,7 @@ include_once("forecastlib.php");
                             </table>
                             </div>
                             <div class="graphslink">
-                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=SolarRadHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
+                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rad.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
                             </div>
                         </div>
                         <div id="latestuv" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> title="<? echo $SUN[$lang_idx]; ?>">
@@ -708,7 +717,8 @@ include_once("forecastlib.php");
                             <?=$DUST[$lang_idx]?>
                         </div>
                         <div class="paramvalue">
-                             <? echo $current->get_pm10()." <span class=\"paramunit\">µg/m3</span>";?>
+                             <? echo $current->get_pm10()."<span class=\"paramunit\">&plusmn;{$current->get_pm10sd()}&nbsp;µg/m3&nbsp;(PM10)</span>";?><br />
+                             <? echo $current->get_pm25()."<span class=\"paramunit\">&plusmn;{$current->get_pm25sd()}&nbsp;µg/m3&nbsp;(PM2.5)</span>";?>
                         
                         </div>
                         <div class="highlows">
@@ -727,7 +737,7 @@ include_once("forecastlib.php");
                             <div class="colmetercontainer">
                                 <?
                                 $result = getSurvey(2);
-                                while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                                while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
                                     print "\n\t\t<input name=\"survey\" onclick=\"toggle('genderchoose');$('#votechosen').val(".$line["field_id"].");\" class=\"coldmeterline color".($line["field_id"])."\" value=\"".get_name($line["field_name"])."\"";
                                     echo " />";
                                  
@@ -742,7 +752,7 @@ include_once("forecastlib.php");
                     		<form method="post" action="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx;?>">
                                 <div class="inv_plain_3_zebra float" style="margin:0em;width:140px;padding:1em;text-align:<? echo get_s_align(); ?>">
                                     <? if (isHeb()) echo "עוד משהו רציתי להגיד"; else echo "one more thing";?><br />
-                                    <textarea name="comments" rows="6" <?if (isHeb()) echo " dir=\"rtl\"";?>  value="" style="width:130px;"></textarea>
+                                    <textarea name="comments" rows="6" <?if (isHeb()) echo " dir=\"rtl\"";?>  style="width:130px;"></textarea>
                                 </div>
                     		<div class="inv_plain_3_zebra float" style="padding: 1em;text-align:<? echo get_s_align(); ?>" <? if (isHeb()) echo "dir=\"rtl\""; ?>><?=$GENDER[$lang_idx];?>: 
                                 <input type="radio" value="m" name="gender" checked /><?=$MALE[$lang_idx];?>
@@ -775,13 +785,34 @@ include_once("forecastlib.php");
                     <hr id="cold_line" />
                     <hr id="season_line" />
 		</div>
-                   <div id="now_stuff" class="span3">
+                   <ul  id="now_stuff" class="nav span3">
+                       <li>
 			<a href="<? echo $sig[0]['url'];?>" class="hlink" title="<?echo $WHAT_ELSE[$lang_idx];?>">
 			 	<h2><? echo "{$sig[0]['sig'][$lang_idx]}"; ?></h2>
-				<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx]; if ($sig[0]['extrainfo'][$lang_idx] != "") echo ", ";?><?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></div>
+				<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx]; if ($sig[0]['extrainfo'][$lang_idx] != "") echo ", ";?>&nbsp;<?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>&nbsp;<? if (count($sig) > 1) echo " <span class=\"invhigh\">&nbsp;".(count($sig)-1)."&nbsp;</span>";?></div>
 			</a>
+                           <ul style="top:-4.5em;<?echo get_s_align();?>: 8.2em;" class="inv_plain_3_zebra">
+                              <? if ($boolbroken) {?>
+                                        <li class="">
+                                                <div id="brokenlatesttemp"></div>
+                                                <div id="brokenlatesthumidity"></div>
+                                                <div id="brokenlatestpressure"></div>
+                                                <div id="brokenlatestwind"></div>
+                                                <div id="brokenlatestrainrate" ></div>
+                                        </li>
+                                <? } ?>
+                                <?
+                                if (count($sig) > 1)
+                                        for ($i = 0; $i < count($sig); $i++) {
+
+                                        echo "<li>";
+                                        echo "<a class=\"hlink\" style=\"font-weight:normal\" title=\"\" href=\"{$sig[$i]['url']}\" >{$sig[$i]['sig'][$lang_idx]} "." - ".$sig[$i]['extrainfo'][$lang_idx].get_arrow()."</a></li>\n";          
+                                } ?> 
+                           </ul>
+                        </li>
+                       
         
-		    </div>
+		    </ul>
     </div>
                  </article>
 	       
@@ -1050,9 +1081,9 @@ else {  ?>
                        </div>
 
 <? if (isRaining()) {?>
-<!--<audio autoplay>
+<audio autoplay>
         <source src="sound/rain/RAINFIBL.mp3"></source>
-</audio>-->
+</audio>
 <? }?>
 <!-- Start of StatCounter Code -->
 <script type="text/javascript">
@@ -1079,12 +1110,12 @@ var lang=<?=$lang_idx?>;
  <? if (isRaining()&&(!isSnowing())){ ?>
 <script src="js/rain.js"></script>
 <? }?>
-<? if (isSnowing()||(stristr($template_routing, 'snow'))) { ?>
+<? if (isSnowing()) { ?>
 <script src="js/snow.js"></script>
 <? }?>
-<script src="js/tinymce/tinymce.min.js"></script>
-<script src="footerScripts.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
+<script src="js/tinymce/tinymce.min.110216.js"></script>
 <script src="js/modernizr.custom.37797.js"></script> 
+<script src="footerScripts.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=boazn"></script>
 <script type="text/javascript">

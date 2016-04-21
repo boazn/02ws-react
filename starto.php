@@ -3,11 +3,11 @@
 //ini_set("display_errors","On");	
 include_once("lang.php");
 include_once("include.php"); 
+include_once("csscolor.php");
 session_start();
-
 function retrieveTemp2()
 {
-    global $current, $min15, $min30;
+    global $current, $min15;
     $path_to_file = 'temp2.csv';
     if (stristr($_SERVER['SCRIPT_NAME'], 'getAllTempForecast'))
             $path_to_file = "../".$path_to_file;
@@ -353,7 +353,8 @@ $isRemoteFile = substr($sat_link,0,7)=="http://";
  $for_link = $for_path;
   
  $forecast_full_page = get_file_string($for_path);
-
+$forground_color = 'C5D4E9';//CBD8E6//ACC6D5//BCC7CD//B9C4CA//A3B1BA//A4CADD																				dec-216222226
+$base_color = '5171B7';//FEFEFE//3A5A70//BBC2BB//88938D//0E52A5//16435D//F2F7F5//B9D0D2
  ////////////////////////////////////
 ///// generating links  ////////////
 ////////////////////////////////////

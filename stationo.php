@@ -3,7 +3,7 @@ header('Content-type: text/html; charset=utf-8');
 if ($_GET['debug'] == '')
     include "begin_caching.php";
 include_once("include.php"); 
-include_once("start.php");
+include_once("starto.php");
 include_once("requiredDBTasks.php");
 include_once "sigweathercalc.php";
 ini_set("display_errors","On");
@@ -323,7 +323,7 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 							if (!isset($_SESSION['gw'])){
 								global $link;
 								$result = db_init("SELECT avg(anomaly) FROM globalwarming");
-								$row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
+								$row = @mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
 								$gw =  number_format($row['avg(anomaly)'], 2, '.', '');
 								$_SESSION['gw'] = $gw;
 								@mysqli_free_result($result);
@@ -1145,30 +1145,27 @@ if ($_GET['section'] == "") {
 		
 	function fillForecastTemp(jsonstr)
 	{
-		var foreacastTempDetails = document.getElementById('tempForecastDiv');
-		 if (foreacastTempDetails.firstChild) {
-		   foreacastTempDetails.removeChild(foreacastTempDetails.firstChild);
-		 }
-                 try{
-                     
-                     var jsonT = JSON.parse( jsonstr  );
-                     $(".tsfh").each(function(index) {
-                           // alert(index + ': ' + $(this).text());
-                             for (i = 0 ; i < jsonT.forecasthours.length; i++)
-                             {
-                                 //alert("from json: " + jsonT.forecasthours[i].time);
-                                  if (jsonT.forecasthours[i].ts ==  $(this).text())
-                                      $(this).next().next().html(jsonT.forecasthours[i].temp);
-                                     
-                             }
-                      });
-                     
-                 }
-                 catch (e) {
-                     //alert(e);
-                     foreacastTempDetails.innerHTML = jsonstr;
-                  }
-                 
+		 var foreacastTempDetails = document.getElementById('tempForecastDiv');
+             if (foreacastTempDetails.firstChild) {
+               foreacastTempDetails.removeChild(foreacastTempDetails.firstChild);
+             }
+             try{
+
+                 var jsonT = JSON.parse( jsonstr  );
+                 $(".tsfh").each(function(index) {
+                       // alert(index + ': ' + $(this).text());
+                         for (i = 0 ; i < jsonT.forecasthours.length; i++)
+                         {
+                             //alert("from json: " + jsonT.forecasthours[i].time);
+                              if (jsonT.forecasthours[i].ts ==  $(this).text())
+                                  $(this).next().next().next().html('<span>' + jsonT.forecasthours[i].temp + '</span>');
+                         }
+                  });
+             }
+             catch (e) {
+                 //alert(e);
+                 foreacastTempDetails.innerHTML = jsonstr;
+              }
 		 
 	}
 	function getTempForecast(time, datet, div_id)
@@ -1278,7 +1275,7 @@ if ($_GET['section'] == "") {
 			ajax.url = 'coldmeter_service.php?lang=<?=$lang_idx?>';
 			ajax.doReq();
 		}
-		 startup(page);
+		 startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
 		
 	}
 	function fillcoldmeter(str)
