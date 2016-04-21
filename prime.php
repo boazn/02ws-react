@@ -7,7 +7,7 @@
         $current_story_img_src = "phpThumb.php?src=".$current_story_img_src."&amp;w=200&amp;h=200&amp;zc=C";//&amp;fltr[]=cont|50 ;
         /////////////////////////////////////////
         $floated = false;
-
+        
         ////////////////////////////////////////
                 $overlook_d = "<a href=\"javascript:void(0)\" class=\"info\">".$OVERLOOK[$lang_idx]."<span class=\"info\">".$OVERLOOK_EXP[$lang_idx]."</span></a>";
         ?>
@@ -40,15 +40,17 @@
                                                     $date_a = explode("/", $forecastDaysDB[0]['date']);
                                                       if ($date_a[0] == $day)//passed midnight
                                                       {
-                                                          $hightemp_value = $yest->get_hightemp();
-                                                          $lowtemp_value = $yest->get_lowtemp();
+                                                          $hightemp_value = $yest->get_temp_day();
+                                                          $lowtemp_value = $yest->get_temp_morning();
+                                                          $nighttemp_value = $yest->get_temp_night();
                                                           $day_value = replaceDays(date("D ",  mktime ($hour, $min, 0, $month, $day-1 ,$year)));
                                                           $date_value = date("j/n",  mktime ($hour, $min, 0, $month, $day-1 ,$year));
                                                       }
                                                       else
                                                       {
-                                                          $hightemp_value = $today->get_hightemp();
-                                                          $lowtemp_value = $today->get_lowtemp();
+                                                          $hightemp_value = $today->get_temp_day();
+                                                          $lowtemp_value = $today->get_temp_morning();
+                                                          $nighttemp_value = $current->get_temp();
                                                           $day_value = replaceDays(date("D ",  mktime ($hour, $min, 0, $month, $day ,$year)));
                                                           $date_value = date("j/n",  mktime ($hour, $min, 0, $month, $day ,$year));
                                                       }
@@ -72,7 +74,7 @@
 								<?=c_or_f($hightemp_value)?>
 								</li>
 								<li class="forcast_night">
-								
+								<?=c_or_f($nighttemp_value)?>
 								</li>
 								 <li>
                                                                      
@@ -110,10 +112,10 @@
 								<?=c_or_f($forecastDaysDB[$i]['TempLow'])?>
 								</li>
 								<li class="forcast_noon">
-								<?=c_or_f($forecastDaysDB[$i]['TempHigh'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" ><img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempHighCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" /></a>
+								<?=c_or_f($forecastDaysDB[$i]['TempHigh'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" ><img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempHighCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'], $forecastDaysDB[$i]['TempHigh'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'], $forecastDaysDB[$i]['TempHigh'])?>" /></a>
 								</li>
 								<li class="forcast_night">
-								<?=c_or_f($forecastDaysDB[$i]['TempNight'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempNightCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" /></a>
+								<?=c_or_f($forecastDaysDB[$i]['TempNight'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempNightCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'], $forecastDaysDB[$i]['TempNight'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'], $forecastDaysDB[$i]['TempNight'])?>" /></a>
 								</li>
                                                                 <li><a href="legend.php" rel="external" ><img src="<? echo "images/icons/day/".$forecastDaysDB[$i]['icon']; ?>" width="40" height="40" alt="<?=$forecastDaysDB[$i]['date']?>" /></a></li>
 								 <li class="forcast_text">
@@ -154,7 +156,7 @@
                                             </li>
                                             <? if (isHeb()) {?>
                                            <li>
-                                               <img src="images/midrag.png" width="55" height="50" alt="מדרג"/>
+                                               <img src="images/midrag.png" width="40" height="45" alt="מדרג"/>
                                             </li>
                                             <li class="forcast_text" style="text-decoration:underline">
                                                  <a href="<? echo get_query_edited_url($url_cur, 'section', 'midrag.php');?>">בעלי מקצוע לפי עונה</a>
@@ -177,6 +179,7 @@
 				</div>
 				<ul id="for24_hours">
 				 <? 
+                                 $forecastHour = apc_fetch("forecasthour");
 				 foreach ($forecastHour as $hour_f){
 				 if (($hour_f['time'] % 3 == 0) || ($hour_f['plusminus'] > 0))
 				 {
@@ -185,10 +188,11 @@
                                  echo "<li class=\"tsfh\" style=\"text-align:center;width:10%\">".date("j/m", $hour_f['currentDateTime'])."</li>";
 				 echo "<li class=\"timefh forcast_date\" style=\"direction:ltr;text-align:right;width:12%\"><span>".$hour_f['time'].":00";
                                     if ($hour_f['plusminus'] > 0)
-                                        echo "&nbsp;&nbsp;&plusmn;".$hour_f['plusminus']."";
+                                        echo "&nbsp;&plusmn;".$hour_f['plusminus']."";
                                  echo "</span></li>";
 				 echo "<li class=\"forecasttemp forcast_morning\" style=\"text-align:center;direction:ltr;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
-				 echo "<li style=\"margin-top:0;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></li>";
+				 echo "<li>&nbsp;<img style=\"vertical-align: middle\"  src=\"images/clothes/".$hour_f['cloth']."\" width=\"24.3\" height=\"20\" /></li>";
+                                 echo "<li style=\"margin-top:0;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></li>";
 				
 				 if ($hour_f['wind'] > 30){
 					  $windtitle=$EXTREME_WINDS[$lang_idx];
@@ -211,7 +215,7 @@
 				 }
 					
 				 echo "<li style=\"margin-top:0;\"><div title=\"".$windtitle."\" class=\"wind_icon ".$wind_class." \"></div></li>";
-				 echo "<li>".$hour_f['title']."</li>";
+				 echo "<li>".$hour_f['title'][$lang_idx]."</li>";
 				 echo "</ul></li>";
 				 }
 				 }
@@ -242,44 +246,28 @@
                              elseif (isRaining()) {$adsense_color = "#FFFFFF";$adsense_background = "#6288A4";} 
                              else {$adsense_color = "#FFFFFF"; if ($current->get_pm10() > 250) $adsense_background = "#4F5352"; else $adsense_background = "#5F6D94";};
                     ?>
-                    <? if (($current->is_light())&&(!isRaining())) 
-                                        {$slot = "6097239892";//day
-                                        if ($current->get_pm10() > 250) $slot = "6097239892";//day
-                                        elseif ($current->get_cloudiness() == 8) $slot = "1527439498";//cloudy
-                                         elseif ($current->is_sunset()) $slot = "7573973091";//sunset
-                                        elseif ($current->is_sunrise()) $slot = "9050706299";//sunrise
-                                        else $slot = "6097239892";}
-                                 elseif (($current->is_light())&&(isSnowing())) {$slot = "3004172697";}
-                                 elseif (isRaining()) {$slot = "4480905893";} 
-                                 else {if ($current->get_pm10() > 250) $slot = "3498857099"; else $slot = "3498857099";};//night
+                     <? if (($current->is_light())&&(!isRaining())) 
+                                        {$slot = "6243829498";//day
+                                        if ($current->get_pm10() > 250) $slot = "9197295893";//dust
+                                        elseif ($current->get_cloudiness() == 8) $slot = "4627495496";//cloudy
+                                         elseif ($current->is_sunset()) $slot = "3150762292";//sunset
+                                        elseif ($current->is_sunrise()) $slot = "1674029096";//sunrise
+                                        else $slot = "6243829498";}//day
+                                 elseif (($current->is_light())&&(isSnowing())) {$slot = "7580961891";}//snow
+                                 elseif (isRaining()) {$slot = "6104228694";}//rain 
+                                 else {if ($current->get_pm10() > 250) $slot = "7720562695"; else $slot = "7720562695";};//night
                         ?>
 		    <div id="mainadsense" style="background:<?=$adsense_background?>; line-height: 0;box-shadow:3px 3px 15px 15px <?=$adsense_background?>">
-			    <script type="text/javascript"><!--
-				google_ad_client = "pub-2706630587106567";
-				/* 300x250, created 10/20/10 */
-				google_ad_slot = "2164253176";
-				google_ad_width = 300;
-				google_ad_height = 250;
-				google_color_border = ["<?=$adsense_background?>"];
-				google_color_bg = ["<?=$adsense_background?>"];
-				google_color_link = ["<?=$adsense_color?>"];
-				google_color_url = ["<?=$adsense_color?>"];
-				google_color_text = ["<?=$adsense_color?>"];
-				//-->
-				</script>
-				<script type="text/javascript"
-				src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-				</script>
-                                <!-- Below forecast table -->
-                                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                <!-- Below forecast table -->
+			        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                <!-- responsive main - cloudy -->
                                 <ins class="adsbygoogle"
-                                     style="display:inline-block;width:234px;height:60px;"
+                                     style="display:block;height:450px"
                                      data-ad-client="ca-pub-2706630587106567"
-                                     data-ad-slot="<?=$slot?>"></ins>
+                                     data-ad-slot="<?=$slot?>"
+                                     data-ad-format="auto"></ins>
                                 <script>
                                 (adsbygoogle = window.adsbygoogle || []).push({});
-                                </script>          
+                                </script>
 			</div>
                    
                          
@@ -341,19 +329,19 @@
 		    </div>
 		    <br>
 			
-		    <div class="row">
+		    <div class="row" style="margin-bottom: 0.2em">
 		    
 		    <div class="span5 offset4 white_box">
-			<h2><? echo $MainStory->get_title();?></h2>
+			<!--<h2><? echo $MainStory->get_title();?></h2>
 			<p class="box_text">
                             <a href="<? echo "station.php?section=mainstory.php&amp;lang=".$lang_idx;?>">
 			 <? echo mb_substr($MainStory->get_description(), 0, 68, "UTF-8");?>...<?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
                             </a>
-			</p>
+			</p>-->
 		    </div>
                         
                     <div id="adexternal" class="span2">
-
+                       
                     </div>
                          
 		    
@@ -368,20 +356,21 @@
 			    </form>
 			</div>-->
 			<div id="did_you_know" class="span3">
-			    <h2><?=$DID_YOU_KNOW[$lang_idx]?></h2>
+                            <h2><?=$DID_YOU_KNOW[$lang_idx]?></h2>
 			    <p><?=$DID_YOU_KNOW_EX1[$lang_idx]?></p>
 			    <a href="<? echo get_query_edited_url($url_cur, 'section', 'allTimeRecords.php');?>"><?=$RECORDS[$lang_idx];?></a>
 			</div>
 			<div class="span7 offset1 more_icons">
+                            
 			    <ul>
-				<li><a id="weather_israel" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a></li>
-				<li><a id="weather_hul" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a></li>
+				<!--<li><a id="weather_israel" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a></li>-->
+				<!--<li><a id="weather_hul" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a></li>-->
 				<li><a id="weather_movies" href="<? echo get_query_edited_url($url_cur, 'section', 'weatherclips.php');?>" title="<? echo $WEATHER_CLIPS[$lang_idx];?>" class="hlink"><? echo $WEATHER_CLIPS[$lang_idx];?></a></li>
                                 <li><a id="weather_songs" href="<? echo get_query_edited_url($url_cur, 'section', 'songs.php');?>"><?=$SONGS[$lang_idx]?></a></li>
 				<li><a id="snow_poems" href="<? echo get_query_edited_url($url_cur, 'section', 'snow.php');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a></li>
 			    </ul>
 			</div>
-			
+                       			
                    </div>
                     <div class="row">
                         &nbsp;
@@ -410,6 +399,12 @@
                      <div class="row">
                         &nbsp;
                     </div>
+                    <div class="row">
+                        &nbsp;
+                    </div>
+                     <div class="row">
+                        &nbsp;
+                    </div>
              
                     <div class="row"> 
                            <div id="gp_icon" class="span8">
@@ -427,9 +422,9 @@
                                 </div>
                             </div>
                             <?if (isHeb()) {?>
+                            
                             <ul id="outside_links">
                                <li><a href="http://www.open02.com" title='open02' target="_blank">פתוח בשבת</a></li>
-                               <li><a href="https://www.boxiplus.com" title='boxiplus' target="_blank">boxiplus</a></li>        
                                <li><a href="http://www.weather2day.co.il" title='Weather2day' target="_blank">מזג האוויר - Weather2day</a></li>
                                <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tracks.php');?>">טיולים בירושלים</a></li>
                                <li><a href="http://hair2.co.il" title="מרכז האפילציה" rel='external'>הסרת שיער לצמיתות</a></li>
@@ -544,8 +539,19 @@
                             <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-1, date("y"))); ?>', '', 0, 0, <?=$lang_idx?>)"><?=$LAST_DAY[$lang_idx]?></li>
                             <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-3, date("y"))); ?>', '', 0, 0, <?=$lang_idx?>)">3 <?=$DAYS[$lang_idx]?></li>
                             <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, date("m"), date("d")-7, date("y"))); ?>', '', 0, 0, <?=$lang_idx?>)">7 <?=$DAYS[$lang_idx]?></li>
-			    <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, $month, 1, $year)); ?>', '', 0, 0,  <?=$lang_idx?>)"><? echo $monthInWord." ".$year; ?></li>
-			    <li onclick="$('#current_forum_update_display').val('R');$(this).parent().children('.selected').removeClass('selected');$(this).addClass('selected');getMessageService('<? echo date("dmY", mktime(0, 0, 0, getPrevMonth($month), 1, getPrevMonthYear($month, $year))); ?>','<? echo date("dmY", mktime(0, 0, 0, $month, 1, $year)); ?>', 0, 0,  <?=$lang_idx?>)"><? echo $prevMonthInWord." ".getPrevMonthYear($month, $year); ?></li>
+			    <select size="1" OnChange="forummonth_goto_byselect(this)" name="chooseMonth" style="width: 120px;">
+                                <option selected><? echo $MONTH[$lang_idx];?></option>
+                                <?
+                                for ($y = $year; $y >= 2010; $y--)
+                                {
+                                    for ($m = 12; $m >= 1; $m--)
+                                    {
+                                        if ((($y == $year) && ($m <= $month)) || ($y < $year))
+                                            echo sprintf ("<option value=\"%02d/%02d\">%s %d</option>",$m, $y , getMonthName(date("n",  mktime (0, 0, 0, $m, 1 ,$year))), $y);  
+                                    }
+                                }
+                                ?>	
+                            </select>
                             <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'snowpoetry.php');?>" title="חמשירים" class="hlink">חמשירי שלג ועוד</a></li>
                             <li><a href="http://madeinjlm.org/" target="_blank"><img src="images/madeinjlm.png" width="146" height="144" alt="Made in Jerusalem" /></a></li>
 			    
