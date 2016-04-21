@@ -5,6 +5,8 @@
  
 $lang_idx = @$_GET['lang'];
 $width = @$_GET['width'];
+$fullt = @$_GET['fullt'];
+$cloth = @$_GET['c'];
 function isHeb()
 {
 	global $lang_idx;
@@ -28,6 +30,10 @@ text-align:center;
 margin:0;
 font-size: 13.1px;
 overflow-x: hidden;
+}
+#date{
+display: inline-block;
+margin-top: 0.65em;
 }
 .inparamdiv
 {
@@ -70,10 +76,7 @@ overflow-x: hidden;
 	margin:0.6em 1em;
 	float:<?echo get_s_align();?>
 }
-.forecasttimebox
-{
-width:90%;clear:both;
-}
+
 .forecasttimebox li
 {
 	height:25px;color:#<?= $forground->bg['-8'] ?>;text-align:<?echo get_s_align();?>;border-top:#<?= $forground->bg['0'] ?> 1px solid;border-<?echo get_s_align();?>:none;
@@ -98,13 +101,21 @@ width:90%;clear:both;
 	border-top:0 none;
 	<? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr";?>
 }
+.loading{
+width: 75%;
+position: fixed;
+left: 51%;
+margin-left: -37.5%;
+margin-top:130px;
+z-index:2000;
+}
 .forecasttemp
 {
-	text-align:center;direction:ltr;font-weight:bold;
+	text-align:center;direction:ltr;font-weight:normal;
 }
 #nextdays
 {
-       
+        margin-bottom:0.5em;
 	<? if (isHeb()) echo "direction:rtl"; ?>
 }
 
@@ -136,7 +147,7 @@ width:90%;clear:both;
 #login, .register{
     font-size: 2em;width:100%
 }
-#updateprofile, #signout
+#updateprofile, #signout, #myvotes
 {
   padding:0.5em;margin:0.5em 0em;cursor:pointer;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>; width: 110px;
 }
@@ -178,7 +189,7 @@ top:0;
 
 .chatbodyreply
 {
-	width: 92%;
+	width: 86%;
 	word-wrap: break-word;
 	white-space:normal;
 	white-space:-moz-pre-wrap;
@@ -189,14 +200,14 @@ width:auto
 }
 #chat_entire_div
 {
-	border-top:1px dashed;clear:both;margin:0 auto;width:100%;
+	clear:both;margin:0 auto;width:100%;
 	<? if (isHeb()) echo "direction:rtl"; ?>;
 }
 #chat_title
 {
 	text-align:<?echo get_s_align();?>;
 	clear:both;
-	margin:0.2em 0.6em;
+	margin:0.2em 1em;
 	padding:0.6em 0.4em;
 	float:<?echo get_s_align();?>
 }
@@ -248,6 +259,14 @@ width:100%;
 #livepic_box{
 clear:both
 }
+#livepic_box h3{
+margin-top:0
+}
+.play {
+    position: absolute;
+    top: 240px;
+    left:15px
+}
 #msgDetails .white_box2{
    clear: both;
     width: 100%;
@@ -269,9 +288,10 @@ clear:both
 }
 #chat_links
 {
-	float:<?echo get_s_align();?>;
-	text-align:<?echo get_s_align();?>;
-        margin-<?echo get_s_align();?>:3.5em
+	float:<?echo get_inv_s_align();?>;
+	text-align:<?echo get_inv_s_align();?>;
+        width:60%
+        
  
  
 }
@@ -314,7 +334,7 @@ text-align:center;
 }
 #windy
 {
-width:33%;left:9em;top:3.8em
+width:33%;left:9em;top:4em
 }
 #coldmeter
 {
@@ -329,7 +349,7 @@ width:33%;left:9em;top:3.8em
 	
 }
 .white_box{
-
+border-radius: 0px;
 }
 
 #statusline
@@ -339,7 +359,8 @@ width:33%;left:9em;top:3.8em
         padding:0;
 	font-weight:normal;
 	font-size:1.4em;
-        margin-top:-1.5em
+        margin-top:-1.2em;
+        line-height: 1em;
 }
 #what_is_h
 {
@@ -408,8 +429,25 @@ letter-spacing: 0px;
 #mobilelogo, #mobileslogan
 {
     text-align: center;
-    width: 85%;
+    width: 68%;
     margin-top:0.8em
+}
+#logo{
+    text-align: <?=get_s_align()?>;
+    width: <? if (isHeb()) echo "52%"; else echo "74%";?>;
+    position: relative;
+    height:38px;
+    background-size: 38px;
+    margin: auto;
+    background-position: <?=get_s_align()?> 2px top;
+    direction:<? if (isHeb()) echo "rtl"; else echo "ltr";?>;
+    margin-top:0.8em
+}
+.logo_secondary{
+    background-position: <?=get_s_align()?> 27px top !important;
+}
+#logo a{
+display:inline
 }
 #forum hr {
 width:100%;
@@ -429,8 +467,8 @@ padding:0.5em
 #tempdivvalue
 {
     float:none;
-    font-size: 6em;
-    margin-top: 8px;
+    font-size: 5.5em;
+    margin-top: 14px;
     font-family:nextexitfot_regularregular;
 }
 #latestnow
@@ -450,16 +488,22 @@ padding:0.5em
 {
 margin:auto;
 }
-#itfeels_windchill, #itfeels_heatidx{
-float:none;margin: 0 auto;width: 220px;top:2em;
+#itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
+float:none;margin: 0 auto;width: 220px;top:2.6em;
 }
 .graphslink
 {
-position:relative;right:0;top:0
+position:relative;<?=get_s_align()?>:0;top:0
 }
 #tohome
 {
-    padding:0.8em
+    position: relative;
+    z-index: 3000;
+    
+}
+#tohome a{
+    display:inline-block;
+    padding:0.8em;
 }
 #replyInputsDiv
 {
@@ -473,20 +517,26 @@ z-index: -10;
 height: 220px;
 width:100%
 }
-
-#forcast_icons{
-margin-<?=get_s_align()?>:<? if (isHeb()) echo "40px"; else echo "18px";?>;
-padding:0
-}
-#forcast_icons li{
-width:20px;margin-left: 15px
-
-}
 #forecastnextdays .tsfh, #shortforecast .tsfh{
 font-size:1.3em
 }
-#radar{
+#rainradar_box h2, #forum_box h2, #contact_box h2{
+margin:0;
+text-align: <?=get_s_align()?>;
+width: 100%;
+}
+#rainradar_box a.info:hover span.info, #forum_box a.info:hover span.info, #contact_box a.info:hover span.info{
+box-shadow:none;background:none;
+}
+#rainradar_box a, #forum_box a, #contact_box a{
+width: 100%;display:inline-block;padding:0.5em 0em;
+direction:<? if (isHeb()) echo "rtl"; else echo "ltr";?>;
+}
+#radar,#forum_title{
 color:#000000;
+}
+#adunit1, #adunit2, #adunit3{
+line-height:0
 }
 #forecasthours ul li
 {
@@ -504,6 +554,10 @@ vertical-align:-8px;
 #shortforecast .nav li
 {
 padding:0.4em 0.3em
+}
+.text a.info:hover span.info
+{
+<?echo get_s_align();?>: -15em;
 }
 #for24_given
 {
@@ -667,6 +721,9 @@ td
 {
     font-size: 0.8em
 }
+#latestwind .small{
+    font-size: 0.4em
+}
 .big
 {
     font-weight: bold;
@@ -704,15 +761,18 @@ input:focus::-webkit-input-placeholder
 {
 direction: rtl;
 float: none;
-margin: auto auto -10px;
+margin: auto auto -40px;
 top: 100px;
 width: 320px;
 padding-right: 0;
+z-index:1000;
 }
 .forecasttimebox
 {
   padding-<?=get_s_align()?>:0px;
   width: 100%;
+  height:2.7em;
+  clear:both;
 }
 .forecasttimebox .forcast_date{
 text-align:center;width:6%
@@ -728,7 +788,7 @@ padding:0.1em 0.5em
 }
 .forecasttimebox .forecasttemp{
     text-align:center;
-    width:8%;
+    width:11%;
     font-family: nextexitfot_regularregular;
     font-size: 1.3em;
 }
@@ -736,7 +796,7 @@ padding:0.1em 0.5em
     text-align:center;width:8%
 }
 .forecasttimebox .forcast_title{
-    width:35%
+    width:32%
 }
 #temp_btn{
 margin-right: 40px;
@@ -750,8 +810,18 @@ margin-top: -3px;
     margin-right: 5px;
     margin-top: 0;
 }
-#latesttemp, #latestrain, #latesthumidity {
+#wind_btn{
+    margin-right: 2px;
+    margin-top: 2px;
+}
+#latesttemp, #latestrain, #latesthumidity,#latestwind  {
 margin:auto
+}
+#valleytemp{
+font-size:0.5em;
+}
+#winddir{
+margin-top:0.75em
 }
 .paramvalue{
 position:relative;
@@ -785,7 +855,7 @@ opacity: 0;
 margin: 0 auto;
 margin-bottom: -30px;
 width: 100px;
-z-index:200;
+z-index:1200;
 position:relative;
 padding-left: 0px;
 <? if (!isHeb()) echo "direction:ltr"; ?>;
@@ -793,6 +863,13 @@ padding-left: 0px;
 }
 .seker_btns li{
 width:80px;
+}
+.info_btns li{
+-webkit-user-select: none; 
+-moz-user-select: -moz-none; 
+-ms-user-select: none; 
+user-select: none; 
+-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 #rain_line{

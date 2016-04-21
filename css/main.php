@@ -1,7 +1,7 @@
 <?  
     ini_set("display_errors","On");
     header("Content-type: text/css");
-include ('ini.php');
+include ('../ini.php');
 $lang_idx = @$_GET['lang'];
 $css_comp = explode (",",$_GET['type']);
 function isHeb()
@@ -98,7 +98,6 @@ function get_deg ($deg)
 				    GENERAL
    ========================================================================== */
 body {
-     background-color:#7DC1DF;
      background-image:url("../img/bg_blue.png");
      background-repeat: repeat;
      background-attachment:fixed;
@@ -171,7 +170,126 @@ margin-left: 5px;
 .container {
 padding-top:8px;
 }
+.nav li { /* all list items */
+     margin-top:0.4em;
+     position: relative;
+     line-height:11px;
+	 float:<?=get_s_align()?>;
+	 text-align:center;
+	 border:none;
+	 <? if (isHeb()) echo "direction:rtl"; ?>
+ 
+}
 
+.param li
+{
+	padding:0;border:none;
+}
+.param li a
+{
+	display:inline
+}
+#brokenhightemp, #brokenlowtemp
+{
+    padding-bottom:0.6em;
+}
+.brokendatatitle
+{
+    padding:0.8em 0.3em;
+}
+.top
+{
+vertical-align: top;
+}
+.nav .il_first
+{
+	border-<?=get_s_align()?>: 0px;
+}
+.nav li:hover 
+{
+	
+}
+.nav ul li:hover 
+{
+text-decoration:none;
+}
+.nav ul li{ border-width:1px 1px 0 0;}
+ 
+.nav ul ul li{ border-width:1px 1px 0 1px;}
+ 
+.nav ul ul li:last-child{border-bottom:1px solid #ccc;} 
+ 
+.nav li ul { /* second-level lists */
+   background: rgba(255, 255, 255, 0.7);
+   font-family: ezerblock_oe_regularregular;
+   font-size: 14px;
+	display: none;
+	position: absolute;
+	top:  1.25em;
+   <?echo get_s_align();?>: -50px;
+	border-radius: 8px 0 8px 8px;
+	z-index: 500;
+}
+.nav li ul li
+{
+	float:none;
+	padding:0.1em 0.2em;
+        margin-top:0em;
+	width: 270px;
+	display:block;
+   	border-right: none;
+	border-left: none;
+    text-align: <?=get_s_align()?>;
+    background: rgba(255, 255, 255, 0.7);
+ 
+}
+#user_info li ul li {
+width:125px;
+}
+.nav li ul li a
+{
+	text-decoration:none;
+	display:block;
+	height:100%;
+        padding:0.8em 0.5em;
+    
+}
+.nav a:hover
+{
+	text-decoration:none;
+}
+
+/* non-ie browsers see this */
+.nav ul li>ul, .nav ul ul li>ul{
+ 
+}
+ 
+.nav li:hover ul ul, 
+.nav li:hover ul ul ul, 
+.nav li:hover ul ul ul ul, 
+.nav li:hover ul ul ul ul ul{
+     display:none;
+}
+ 
+.nav li:hover ul, 
+.nav ul li:hover ul, 
+.nav ul ul li:hover ul, 
+.nav ul ul ul li:hover ul, 
+.nav ul ul ul ul li:hover ul{
+     display:block;
+}
+ 
+.nav li>ul {
+ 
+}
+.nav .inv_plain_3_zebra{
+    border-radius:0px;
+ 
+}
+.nav .forecasttemp
+{
+direction:ltr important!
+}
 
 
 /* ==========================================================================
@@ -213,7 +331,12 @@ padding-top:8px;
     background-position:right;
     cursor:pointer;
 }
-
+#all_btn{
+margin-<?=get_inv_s_align()?>: -90px;
+margin-top: -42px;
+border-radius: 999px;
+background:white
+}
 #now_btn {
     background-image:url("../img/now_icon.png");   
     
@@ -335,10 +458,10 @@ padding-top:8px;
 
 #moist_line {
     position:absolute;
-   width:15px;
+   width:16px;
    opacity:0.7;
    margin-top:82px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "369"; else echo "344"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "370"; else echo "344"; ?>px;
     -ms-transform:rotate(145deg); 
     -moz-transform:rotate(145deg); 
     -webkit-transform:rotate(145deg);
@@ -617,7 +740,7 @@ margin-top: 2px;
     position: absolute;
     <?=get_s_align()?>:10px;
     width: 100px;
-    margin-top:73px;
+    margin-top:60px;
     border-<?=get_inv_s_align()?>:solid;
     border-color:#829CAA;
     border-width:1px;
@@ -740,7 +863,7 @@ background-color:#BFA8C6;
 }
 
 #forcast_icons {
-    margin-<?=get_s_align()?>:<? if (isHeb()) echo "105px"; else echo "99px";?>;
+    margin-<?=get_s_align()?>:<? if (isHeb()) echo "110px"; else echo "105px";?>;
     margin-bottom:0px;
     text-align:<?=get_s_align()?>;
     <? if (isHeb()) echo "direction:rtl"; ?>
@@ -753,25 +876,32 @@ background-color:#BFA8C6;
    vertical-align:middle;
    background-position:center;
    background-repeat:no-repeat;
-   margin-left:20px;
+   margin-<?=get_inv_s_align()?>:13px;
    margin-bottom:5px;
 }
 
 #morning_icon {
     background-image:url("../img/morning_icon.png");
     vertical-align:middle;
+    background-repeat:no-repeat;
+    background-position:center;
 }
 
 #noon_icon {
     background-image:url("../img/noon_icon.png");
+    margin-<?=get_inv_s_align()?>:25px !important;
+    background-repeat:no-repeat;
+    background-position:center;
 }
 
 #night_icon {
     background-image:url("../img/night_icon.png");
+    background-repeat:no-repeat;
+    background-position:center;
 }
 
 #forcast_main {
-    margin-top:30px;
+    margin-top:15px;
     width:580px;
     <?=get_s_align()?>:145px;
     position:absolute;
@@ -990,7 +1120,7 @@ margin-<?=get_s_align()?>:10px
     height:30px;
 }
 
-.forcast_sunCloud {
+.forcast_sunCloud {#winddir
     background-image:url("../img/sunCloud.png");
 }
 
@@ -1037,28 +1167,40 @@ z-index:9999;
 #addthis_icon
 {
 display:inline-block;
-vertical-align: bottom;
+vertical-align: top;
 margin-<?=get_s_align()?>:0.5em
 }
 #mainadsense {
-   margin-top:50px;
+   margin-top:35px;
    float:<?=get_inv_s_align()?>;
    width:300px;
+   height:450px;
 }
 #now_stuff {
     margin-top:100px;
     height:160px;
     position:absolute;
     text-align:<?=get_s_align()?>;
-    <?=get_inv_s_align()?>:10px;
+    <?=get_inv_s_align()?>:20px;
     font-size:14px;
     <? if (isHeb()) echo "direction:rtl"; ?>
 }
-
+#now_stuff li{
+text-align:<?=get_s_align()?>;
+width:95%;
+}
 #now_stuff h2 {
     margin-bottom:3px;
 }
-
+#now_stuff li ul li a {
+    color:#000
+}
+#now_stuff li ul li{
+width:300px
+}
+#now_stuff liabilities{
+text-align:<?=get_s_align()?>;
+}
 
 .now_stuff_btns {
     border-top-left-radius:15px;
@@ -1241,6 +1383,7 @@ a:visited h2{
     padding-bottom:5px;
 }
 #about {
+float:<?=get_inv_s_align()?>;margin-top: 0.5em;
 }
 
 #qrcode{
@@ -1287,7 +1430,7 @@ width:250px
      position:absolute;
     width:140px;
     
-     margin-top:50px;
+     margin-top:140px;
      line-height:18px;
 }
 
@@ -1614,6 +1757,7 @@ padding:2px;
 .white_box2 a {
     text-decoration:underline;
     color:#3D718E;
+    word-break: break-word;
 }
 
 
@@ -1748,9 +1892,9 @@ padding:2px;
      position:absolute;
     height:36px;
     width:36px;
-    margin-right:10px;
+    margin-<?=get_s_align()?>:10px;
     margin-top:15px;
-	background-repeat:no-repeat;
+    background-repeat:no-repeat;
 }
 
 .picoftheday_avatar {
@@ -1934,6 +2078,9 @@ margin-<?=get_s_align()?>:96px;
 {
 	margin:0.4em;width:96%;float:<?echo get_s_align();?>;line-height:18px;
 }
+.alternatebody{
+line-height:1em;
+}
 .chatseperator
 {
  margin:0 0.2em;
@@ -1996,6 +2143,14 @@ margin-top:0.2em
 {
 position:relative;
 }
+
+a#expandclick, a#contractclick {
+    margin-<?echo get_s_align();?>: 10em;
+    font-size: 1.3em;
+    font-weight: bold;
+    padding:0.8em;
+}
+
 #reportcontrols select
 {
 	width:100px
@@ -2023,6 +2178,9 @@ border-color:#829CAA;
 	width:150px;
 	margin-top: 50px;
 }
+#adexternal{
+margin-<?echo get_s_align();?>:150px
+}
 #new_post_btn {
     background-image:url("../img/new_post.png");
     background-position:left bottom;
@@ -2035,7 +2193,7 @@ border-color:#829CAA;
     color:#fff;
     padding-bottom:50px;
     text-align:center;
-    margin-right:20px;
+    margin-<?=get_s_align()?>:20px;
 }
 
 #new_post_btn:hover {
@@ -2358,8 +2516,8 @@ color: #fff;
     background-image:url("../img/filter_icons.png");
     height:37px;
     width:37px;
-    float:left;
-    margin-left:7px;
+    float:<?=get_inv_s_align()?>;
+    margin-<?=get_inv_s_align()?>:7px;
 }
 
 .filter_icon1 {
@@ -2402,6 +2560,7 @@ color: #fff;
     padding-right:10px;
     padding-left:10px;
     margin-bottom:5px;
+    word-break: break-word;
 }
 #forum .white_box2 div.chataftersepreply, #forum .chosenreply div.chataftersepreply{
     padding-right:15px;
@@ -2441,7 +2600,7 @@ color: #fff;
     color:#DD6B96;
     cursor:pointer;
 }
-.pivotpointer{clear:both;}
+.pivotpointer{clear:both;width:30%}
 .post_icon1, .post_icon2, .post_icon3, .post_icon4 {
      height:51px;
     width:51px;
@@ -2629,7 +2788,7 @@ color: #fff;
 			}
         #forecast {
 			position: absolute;
-			top: 280px;
+			top: 295px;
 			width:1020px;
 			float:right;
 			z-index: 200;
@@ -2660,7 +2819,7 @@ color: #fff;
 			 background-color: #C0CE61;
 			
 			width:2000px;
-			left:-500px;
+			left:-475px;
 			z-index:16;
 			<? if (isHeb()) echo "direction:rtl"; ?>
 			}
@@ -3089,6 +3248,7 @@ margin-bottom:10px;
     float:<?=get_inv_s_align()?>;
     <? if (isHeb()) echo "direction:rtl"; ?>
 }
+
 #login, #forgotpass, #register{
     padding:0.9em;
 }
@@ -3405,8 +3565,8 @@ a.info
 }
 a.info:hover
 {
-    background: #FFFFFF;
-   	z-index: 100;
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 100;
 }
 a.info span.info
 {
@@ -3415,20 +3575,20 @@ a.info span.info
 }
 a.info:hover span.info
 {
-    border: 1px dashed;
     display: block;
     font-size: 0.8em;
-    <?echo get_s_align();?>: 6em;
+    <?echo get_s_align();?>: 2em;
     width: 10em;
     position: absolute;
-    top: +50px;
+    top: -5px;
     text-align: center;
-    padding: 0.5em;
+    padding: 0.7em;
     text-decoration: none;
-	background: #FFFFFF;
-	color:#000000;
-	
- 
+    background: rgba(255, 255, 255, 0.9);
+    -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    color: #2C3A42;
+
 }
 
 .inparamdiv
@@ -3478,6 +3638,10 @@ a.info:hover span.info
     border-color: #829CAA;
     width: 90%;
     margin-<?=get_s_align()?>: 13px;
+}
+#latestairq .highlows{
+line-height: 1em;
+font-size: 0.9em;
 }
 .highlows img
 {
@@ -3580,7 +3744,7 @@ margin:0 auto
 {
 	font-size:100%
 }
-#itfeels_windchill, #itfeels_heatidx
+#itfeels_windchill, #itfeels_heatidx, #itfeels_thsw
 {
     <? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr";?>;
 	font-size: 15px;
@@ -3606,7 +3770,7 @@ margin:0 auto
 
 .paramunit
 {
-    font-size:0.5em;
+    font-size:0.4em;
     font-weight:normal
 }
 .paramtrend
@@ -3632,6 +3796,12 @@ margin:0 auto
     line-height: 1;
     margin: 0 auto;
 }
+#latestairq .paramvalue
+{
+font-size: 1.9em;
+line-height: 0.6em;
+top: 36px;
+}
 #latestwind, #latesttemp, #latesttemp2, #latesthumidity, #coldmetersurvey, #latestrain, #latestuv, #latestradiation, #latestairq
 {
     display:none;
@@ -3647,7 +3817,7 @@ margin:0 auto
 }
 #windspeed
 {
-    float:<?=get_s_align()?>;width:60%;
+    float:<?=get_s_align()?>;width:50%;<? if (isHeb()) echo "direction:rtl";?>
 }
 #windtrend
 {
@@ -3655,7 +3825,7 @@ margin:0 auto
 }
 #winddir
 {
-	float:<?=get_s_align()?>;width:10%;margin-top: 1.25em;margin-<?=get_s_align()?>:15%
+	float:<?=get_s_align()?>;width:2%;margin-top: 1.55em;margin-<?=get_s_align()?>:24%
 }
 .wind_icon
 {
@@ -3691,22 +3861,20 @@ border-top:none; margin:0; padding:0;
     width:65%;
     float:right;
     position:absolute;
-    top:50px;
-	line-height: 18px;
-	font-size: 18px;
-    right:-10px;    
-    transform: rotate(50deg);
-    -ms-transform: rotate(50deg); /* IE 9 */
-    -webkit-transform: rotate(50deg); /* Safari and Chrome */ 
+    top:90px;
+    line-height: 18px;
+    font-size: 18px;
+    right:-30px;    
+    transform: rotate(90deg);
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Safari and Chrome */ 
    
 }
 .colmetercontainer{
-    top:45px;
-    right:60px;    
+    top:0px;
+    right:70px;    
     position:absolute;
-    transform: rotate(-40deg);
-    -ms-transform: rotate(-40deg); /* IE 9 */
-    -webkit-transform: rotate(-40deg); /* Safari and Chrome */ 
+    
     
 }
 .inparamdiv .coldmeterline{
@@ -3715,7 +3883,7 @@ border-top:none; margin:0; padding:0;
    margin:0;
    display:block;
    border:none;
-    height: 24px;
+    height: 21.5px;
     color:#FFFFFF;
     cursor:pointer;
     text-align:right
@@ -3750,6 +3918,9 @@ border-top:none; margin:0; padding:0;
 .colmetercontainer .color8{
     background-color:#E6666A;
 }
+.colmetercontainer .color9{
+    background-color:#FF0000;
+}
 #pm10value
 {
     height: 1200px;
@@ -3765,6 +3936,12 @@ position:absolute;top:-20px;width:430px;z-index:500;
 #graphmain
 {
     float:<?=get_s_align()?>
+}
+#mouseover{
+text-align:center;
+}
+#mouseover .high, #mouseover .low{
+display: table-cell;
 }
 #gp_icon{
 text-align:center;
@@ -3824,7 +4001,7 @@ padding:10px 4px;
  
 	background: rgba(242, 251, 252,0.8);
 	color: #6A826D;
-	padding: 12px;
+	padding: 8px;
 	margin: 0em;
  
 }
@@ -3942,6 +4119,8 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 	color: #ff0000;
         display:inline-block
 }
+.highparam, .lowparam 
+{display:inline-block}
 .invhigh
 {
     color: #ffffff;
@@ -4034,122 +4213,7 @@ position:relative
 .spriteB.eng { background-position: 0px -163px; width: 28px; height: 17px;  } 
 .spriteB.israelflag { background-position: 0px -190px; width: 19px; height: 14px;  }
 .arrow_down{color: #829CAA;font-size: 11px;}
-.nav li { /* all list items */
-     margin-top:0.4em;
-     position: relative;
-     line-height:11px;
-	 float:<?=get_s_align()?>;
-	 text-align:center;
-	 border:none;
-	 <? if (isHeb()) echo "direction:rtl"; ?>
- 
-}
-.param li
-{
-	padding:0;border:none;
-}
-.param li a
-{
-	display:inline
-}
-#brokenhightemp, #brokenlowtemp
-{
-    padding-bottom:0.6em;
-}
-.brokendatatitle
-{
-    padding:0.8em 0.3em;
-}
-.top
-{
-vertical-align: top;
-}
-.nav .il_first
-{
-	border-<?=get_s_align()?>: 0px;
-}
-.nav li:hover 
-{
-	
-}
-.nav ul li:hover 
-{
-text-decoration:none;
-}
-.nav ul li{ border-width:1px 1px 0 0;}
- 
-.nav ul ul li{ border-width:1px 1px 0 1px;}
- 
-.nav ul ul li:last-child{border-bottom:1px solid #ccc;} 
- 
-.nav li ul { /* second-level lists */
-   background: rgba(255, 255, 255, 0.7);
-   font-family: ezerblock_oe_regularregular;
-   font-size: 14px;
-	display: none;
-	position: absolute;
-	top:  1.25em;
-   <?echo get_s_align();?>: -50px;
-	border-radius: 8px 0 8px 8px;
-	z-index: 500;
-}
-.nav li ul li
-{
-	float:none;
-	padding:0.1em 0.2em;
-        margin-top:0em;
-	width: 270px;
-	display:block;
-   	border-right: none;
-	border-left: none;
-    text-align: <?=get_s_align()?>;
-    background: rgba(255, 255, 255, 0.7);
- 
-}
-.nav li ul li a
-{
-	text-decoration:none;
-	display:block;
-	height:100%;
-        padding:0.8em 0.5em;
-    
-}
-.nav a:hover
-{
-	text-decoration:none;
-}
 
-/* non-ie browsers see this */
-.nav ul li>ul, .nav ul ul li>ul{
- 
-}
- 
-.nav li:hover ul ul, 
-.nav li:hover ul ul ul, 
-.nav li:hover ul ul ul ul, 
-.nav li:hover ul ul ul ul ul{
-     display:none;
-}
- 
-.nav li:hover ul, 
-.nav ul li:hover ul, 
-.nav ul ul li:hover ul, 
-.nav ul ul ul li:hover ul, 
-.nav ul ul ul ul li:hover ul{
-     display:block;
-}
- 
-.nav li>ul {
- 
-}
-.nav .inv_plain_3_zebra{
-    border-radius:0px;
- 
-}
-.nav .forecasttemp
-{
-direction:ltr important!
-}
 
 /*
     ColorBox Core Style
