@@ -29,6 +29,8 @@ function check_email_address($email) {
 }
 $sent = false;
 $emailnotvalid = false;
+if (!empty($_SESSION['email']))
+    $email = $_SESSION['email'];
 ?>
 <html>
 
@@ -173,7 +175,7 @@ if (isset($_POST['SendButton'])) {
 
 <tr  >
 	<td align="<? if (isHeb()) echo "left"; else echo "right";?>">
-		<? if (isHeb()) echo "החלק של ההיסטוריה והדוחות"; else echo "The history and reoprts section";?>
+		<? if (isHeb()) echo "החלק של ההיסטוריה והדוחות"; else echo "The history and archive reports section";?>
 	</td>
 	<td  dir="ltr" <? echo get_align(); ?>>
 	

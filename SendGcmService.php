@@ -260,15 +260,19 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         elseif ($line["lang"] == 1)
             array_push ($registrationIDs1, $line["gcm_regid"]);
     }
-    //test boazn1@gmail.com
-    //array_push ($registrationIDs1, "APA91bHHez1UYSILvwWWx4h_7XsTG1kelsktfEfIHcXaUuCQrxo8Q4k6eOfEz8VWZjm3XCY_sU_RITpvpt3Nle4VAaJ2pkuiscER8UKHoS1gnN0SvhkJsqU");
+    
     logger(" short_range=".$short_range." long_range=".$long_range);
     logger("sendingGCMMessage: En:".count($registrationIDs0)." Heb:".count($registrationIDs1));
      
-    // test
+    /* test */
+   
+      $registrationIDs = array();
+		$registrationIDs0 = array();
+		$registrationIDs1 = array();
+	 //test boazn1@gmail.com
+	 //array_push ($registrationIDs1, "APA91bGOI8596BiHih3UzKUhDIJzVcDtXAoPiqmEVLVGkWe__Kw9hQQ4ce6kyD2k3xWoIvcV-gihzkIMDsOG3eU6yDZiAyqLIJeNP7_IsgHXJhx54EvJZBU");
+	 array_push ($registrationIDs1, "APA91bEHvXbLDDYCJn08npaqMAaWT-dNFsTMJYtPsQljBCG8zwCqMLYPnuWRoONQY0jWW9NQJOQ4emIg5nrCnqGj8-s6l4mPLLxp0GJIzgsGnHUfehzJgvg");
     
-    //  $registrationIDs = array();
-    //  array_push ($registrationIDs, "APA91bHGxDH7bmB4SqvbeYc-EcEL0ngC6pzS-PVcMsMkPAgeEWkia2KrrSd2YQFqjQqZtWbHGo8WM5CHSff5xWR5IneyfyaE4NvlivCuFaLfPoUiVW7zwImYerGNNCOWkp08yBhOFnUN_u0XORAsmws8h8x3yutlsg");
      //
      $result = "";
      $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
@@ -409,21 +413,21 @@ if (empty($empty)) {
         $img_tag = " <img src=\"".$picture_url."\" id=\"alert_image\" alt=\"alert image\" />";
     
     try{
-     updateMessageFromMessages ($title[0]." - ".$message[0]."<br />".$img_tag, 1, 'forecast', 0 ,'' ,'','');
-     updateMessageFromMessages ($title[1]." - ".$message[1]."<br />".$img_tag, 1, 'forecast', 1 ,'' ,'','');
+ //   updateMessageFromMessages ($title[0]." - ".$message[0]."<br />".$img_tag, 1, 'forecast', 0 ,'' ,'','');
+ //    updateMessageFromMessages ($title[1]." - ".$message[1]."<br />".$img_tag, 1, 'forecast', 1 ,'' ,'','');
     } 
     catch (Exception $ex) {
         $result .= " exception updateMessageFromMessages:".$ex->getMessage();
     }
     
     try{
-        $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);   
+         $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);   
     } catch (Exception $ex) {
         $result .= " exception sendGCMMessage:".$ex->getMessage();
     }
     
     try{
-        $result .= sendAPNMessage($msgSpecial, $title, $picture_url, "alerts.php", $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);
+//        $result .= sendAPNMessage($msgSpecial, $title, $picture_url, "alerts.php", $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);
     } 
     catch (Exception $ex) {
         $result .= " exception sendAPNMessage:".$ex->getMessage();
@@ -435,14 +439,14 @@ if (empty($empty)) {
         else {
         $EmailSubject = array($title[0], $title[1]);
         }
-        $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
+//        $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
     } 
     catch (Exception $ex) {
        $result .= " exception send_Email:".$ex->getMessage();
     }
     
     try {
-	 $result .= post_to_bufferApp($title[1]." - ".$msgSpecial[1]." ".$picture_url, $picture_url); 
+//	 $result .= post_to_bufferApp($title[1]." - ".$msgSpecial[1]." ".$picture_url, $picture_url); 
     } 
     catch (Exception $ex) {
         $result .= " exception post_to_bufferApp:".$ex->getMessage();

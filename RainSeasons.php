@@ -9,18 +9,19 @@
 <td>
 <form method="post" action="#rainSeasons">
 	<select NAME="seasons[]" size="23" multiple>
+        <option selected value="2015-2016">2015-2016</option>
         <option selected value="2014-2015">2014-2015</option>
         <option          value="2013-2014">2013-2014</option>
 	<option          value="2012-2013">2012-2013</option>
-	<option			 value="2011-2012">2011-2012</option>
-	<option			 value="2010-2011">2010-2011</option>
-	<option			 value="2009-2010">2009-2010</option>
+	<option          value="2011-2012">2011-2012</option>
+	<option		 value="2010-2011">2010-2011</option>
+	<option		 value="2009-2010">2009-2010</option>
 	<option          value="2008-2009">2008-2009</option>
-	<option			 value="2007-2008">2007-2008</option>
-	<option			 value="2006-2007">2006-2007</option>
-	<option			 value="2005-2006">2005-2006</option>
-	<option			 value="2004-2005">2004-2005</option>
-	<option			 value="2003-2004">2003-2004</option>
+	<option		 value="2007-2008">2007-2008</option>
+	<option		 value="2006-2007">2006-2007</option>
+	<option		 value="2005-2006">2005-2006</option>
+	<option		 value="2004-2005">2004-2005</option>
+	<option		 value="2003-2004">2003-2004</option>
 	<option          value="2002-2003">2002-2003</option>
 	<option          value="2001-2002">2001-2002</option>
 	<option          value="2000-2001">2000-2001</option>
@@ -31,9 +32,9 @@
 	<option          value="1995-1996">1995-1996</option>
 	<option          value="1994-1995">1994-1995</option>
 	<option selected value="1980-2010">1980-2010</option>
-	<option			 value="1970-2000">1970-2000</option>  
-	<option			 value="1950-2001">1950-2001</option> 
-	<option			 value="1950-1965">1950-1965</option>	
+	<option		 value="1970-2000">1970-2000</option>  
+	<option		 value="1950-2001">1950-2001</option> 
+	<option		 value="1950-1965">1950-1965</option>	
 	</select> 
 	<input type="submit" name="submit" value="<? echo $SHOW[$lang_idx];?>" class="topbase big"> 	
 </form>
@@ -44,11 +45,11 @@
 		בחר כמה עונות בעזרת מקש ctrl כדי להשוות.
 		</div>&nbsp;&nbsp;&nbsp;&nbsp;
 		<div style="width:300px;padding:1em;float:<?echo get_s_align();?>" <? if (isHeb()) echo "dir=\"rtl\""; ?>><?=$LEGEND[$lang_idx]?>:
-			<div class="inv_plain_2" style="width:100px;display:inline;padding:1em"><?=$RAIN_UNIT[$lang_idx]?></div>&nbsp;<div class="border1" style="width:100px;display:inline;margin:2em"><? echo($RAINY_DAYS[$lang_idx]);?></div></div>
+			<div class="inv_plain_2" style="width:100px;display:inline;padding:1em"><?=$RAIN_UNIT[$lang_idx]?></div><div class="inv_plain_3_zebra" style="width:100px;display:inline;padding:1em"><? echo($RAINY_DAYS[$lang_idx]);?></div></div>
 		</div>
 	</div>
 	
-	<table summary="" align="center" <? if (isHeb()) echo "dir=\"rtl\""; ?> id="mouseover" style="clear:both"> 
+	<table summary="" align="center" <? if (isHeb()) echo "dir=\"rtl\""; ?> id="mouseover" style="clear:both;border:1px solid"> 
 	<!--<tr bgcolor="#808080" style="color: #deb887;" align="center" ><td>Season</td><td><? echo $TOTAL[$lang_idx];?></td></tr>-->
 	<?php
 	if ($error_db)
@@ -101,10 +102,10 @@
 		$days = $line["RainyDays"];
 		$raintotal += $rain;
 		$daystotal += $days;
-		 print "\t\t<td><table><tr><td class=\"inv_plain_2\">$rain</td><td class=\"border1\" align=\"center\">$days</td></tr></table></td>\n";
+		 print "\t\t<td style=\"border: solid 1px\"><table style=\"width:100%\"><tr><td class=\"inv_plain_2\">$rain</td><td class=\"inv_plain_3_zebra\" align=\"center\">$days</td></tr></table></td>\n";
 		
 	}
-	 print "\t\t<td><table><tr align=\"center\" ><td class=\"inv_plain_2\">$raintotal</td><td align=\"center \" class=\"border1\">$daystotal</td></tr></table></td>\n\t</tr>\n";
+	 print "\t\t<td><table style=\"width:100%\"><tr align=\"center\" ><td class=\"inv_plain_2\">$raintotal</td><td align=\"center \" class=\"inv_plain_3_zebra\">$daystotal</td></tr></table></td>\n\t</tr>\n";
 	/*********************************************/
 	}
 	/* Free resultset */

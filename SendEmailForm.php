@@ -49,7 +49,8 @@ function check_email_address($email) {
   return true;
 }
 $msgSent = false;
-
+if (!empty($_SESSION['email']))
+    $email = $_SESSION['email'];
 
 if (isset($_POST['SendButton'])) {
 
@@ -107,7 +108,7 @@ if (isset($_POST['SendButton'])) {
 
 <form method="post">
 
-<div class="inv_plain_3" style="padding:1em 0;margin:auto;width:85%">
+<div class="inv_plain_3" style="padding:4em 0 1em;margin:auto;width:85%">
 	<div style="padding:0.5em">
 		<input name="name" size="30" maxlength="50" placeholder="<? if (isHeb()) echo "שם"; else echo "Name";?>" value="<? echo $name;?>" style="width:55%;text-align:<?if (isHeb()) echo "right"; else "left";?>" />
 	</div>
