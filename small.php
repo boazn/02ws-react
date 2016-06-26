@@ -101,6 +101,13 @@ function isFastPage(){
     ga('send', 'pageview');
 
 </script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2706630587106567",
+    enable_page_level_ads: true
+  });
+</script>
 </head>
 <body >
 <!-- SNOW EFFECT-->
@@ -138,7 +145,7 @@ function isFastPage(){
 </div>
 <? if ($_GET['section'] != "") { ?>
 <div id="tohome" class="invfloat inv_plain_3">
-<a href="<? echo BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?lang=".$lang_idx;?>"  title="<? echo $HOME_PAGE[$lang_idx];?>" class="hlink">
+<a href="<? echo BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?lang=".$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>"  title="<? echo $HOME_PAGE[$lang_idx];?>" class="hlink">
 <? echo $HOME_PAGE[$lang_idx];?>
 </a>
 </div>
@@ -153,7 +160,7 @@ else {?>
 </ul>
 <ul class="seker_btns" style="display:none">
 <li id="cold_btn">
-    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx;?>" onclick="showLoading()">
+    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" onclick="showLoading()">
     <?=$HOTORCOLD_T[$lang_idx]?>
     </a>
 </li>
@@ -164,7 +171,7 @@ else {?>
  </div>
     
 <div id="itfeels_windchill" style="display:none;"> 
-<a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>" onclick="showLoading()"> 
+<a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" onclick="showLoading()"> 
         <? echo $IT_FEELS[$lang_idx]; ?>
         <span dir="ltr" class="low value" title="<?=$WIND_CHILL[$lang_idx]?>">&#176;</span>
  </a> 
@@ -172,13 +179,13 @@ else {?>
 
 
 <div class="" id="itfeels_heatidx" style="display:none;">
-<a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>" onclick="showLoading()"> 
+<a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" onclick="showLoading()"> 
         <? echo $IT_FEELS[$lang_idx]; ?>
         <span dir="ltr" class="high value" title="<?=$HEAT_IDX[$lang_idx]?>">&#176;</span>
  </a> 
 </div>
 <div class="" id="itfeels_thsw" style="display:none;">
-    <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+    <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>"> 
            <? echo $IT_FEELS[$lang_idx]; ?>
            <span dir="ltr" class="high value" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1]."&#176;";  ?></span>
            <? echo " ".$IN_THE_SUN[$lang_idx];; ?>
@@ -196,7 +203,7 @@ else {?>
 </div>
 <div id="latesttemp" class="inparamdiv" style="display:none;">
         <div class="paramtitle slogan">
-             <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatest.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title="" onclick="showLoading()"><? echo $TEMP[$lang_idx];?></a>
+             <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatest.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><? echo $TEMP[$lang_idx];?></a>
          </div>
         <div class="paramvalue">
              
@@ -225,7 +232,7 @@ else {?>
          </table>
     </div>
     <div class="graphslink">
-                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatest.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatest.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
     </div>
  </div>
 <div id="latesttemp2" class="inparamdiv" style="display:none;">
@@ -419,20 +426,20 @@ else {?>
     <div class="avatar live_avatar"></div>
     
     <h3>&nbsp;&nbsp;</h3>
-    <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=smallwebcam.php&amp;lang=<?=$lang_idx;?>" title="<? echo($LIVE_PICTURE[$lang_idx]);?>" onclick="showLoading()"><div class="play"><img src="images/splay.png" width="30" height="30" alt="play" /></div><img src="phpThumb.php?src=images/webCameraB.jpg&amp;w=400" width="300" height="225" alt="<? echo($LIVE_PICTURE[$lang_idx]);?>" /></a>
+    <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=smallwebcam.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" title="<? echo($LIVE_PICTURE[$lang_idx]);?>" onclick="showLoading()"><div class="play"><img src="images/splay.png" width="30" height="30" alt="play" /></div><img src="phpThumb.php?src=images/webCameraB.jpg&amp;w=400" width="300" height="225" alt="<? echo($LIVE_PICTURE[$lang_idx]);?>" /></a>
 </div>
 <div id="rainradar_box" class="inv_plain_3_zebra half_zebra" style="display:none">
-    <h2><a id="radar" href="<?=$_SERVER['SCRIPT_NAME']?>?section=radar.php&amp;lang=<?=$lang_idx;?>" class="info">
+    <h2><a id="radar" href="<?=$_SERVER['SCRIPT_NAME']?>?section=radar.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" class="info">
 				<? echo $RAIN_RADAR[$lang_idx];?><?=get_arrow()?><span class="info"><img src="img/loading.gif" alt="loading" width="32" height="32" /></span></a>
     </h2>
 </div>
 <div id="forum_box" class="inv_plain_3_zebra" style="display:none">
-    <h2><a id="forum_title" href="<?=$_SERVER['SCRIPT_NAME']?>?section=chat.php&amp;lang=<?=$lang_idx;?>" class="info"> 
+    <h2><a id="forum_title" href="<?=$_SERVER['SCRIPT_NAME']?>?section=chat.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" class="info"> 
 				<? echo $CHAT_TITLE[$lang_idx];?><?=get_arrow()?><span class="info"><img src="img/loading.gif" alt="loading" width="32" height="32" /></span></a>
     </h2>
 </div>
 <div id="contact_box" class="inv_plain_3_zebra  half_zebra" style="display:none">
-    <h2><a id="contact" href="<?=$_SERVER['SCRIPT_NAME']?>?section=SendEmailForm.php&amp;lang=<?=$lang_idx;?>" class="info">
+    <h2><a id="contact" href="<?=$_SERVER['SCRIPT_NAME']?>?section=SendEmailForm.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" class="info">
 				<?=$CONTACT_ME[$lang_idx]?><?=get_arrow()?>
                                 <span class="info"><img src="img/loading.gif" alt="loading" width="32" height="32" /></span>    
         </a>
@@ -795,7 +802,7 @@ Licensed MIT
             forecastDays += "<td class=\"text\" style=\"width:" + textforecastwidth + ";padding:0 0.2em 0 0.2em\">" + textforecast +"</td>";
             forecastDays += "</tr>";
        }
-       forecastDays += "<tr><td></td><td class=\"tsfh\">" + json.jws.thisMonth.lowtemp_av + "</td><td class=\"tsfh\">" + json.jws.thisMonth.hightemp_av + "</td><td></td><td></td><td></td></tr>";
+       forecastDays += "<tr><td style=\"text-align:center\"><?=$AVERAGE[$lang_idx]?></td><td class=\"tsfh\" style=\"text-align:center\">" + json.jws.thisMonth.lowtemp_av + "</td><td class=\"tsfh\" style=\"text-align:center\">" + json.jws.thisMonth.hightemp_av + "</td><td></td><td></td><td></td></tr>";
        forecastDays += "</table>";
        $('#forecastnextdays_table').html(forecastDays);
 
