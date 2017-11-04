@@ -194,7 +194,7 @@ $forecastDaysDB = array();
 	$result = mysqli_query($link, $query) ;
 	//      or print($php_errormsg);
         $day_idx = 1;
-	 while ($line = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+	 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		 if ($line["active"] == "1")
 		 {
 			array_push($forecastDaysDB, array('lang0' => urlencode($line["lang0"]), 'lang1' => urlencode($line["lang1"]),  'TempLow' => $line["TempLow"], 'TempHigh' => $line["TempHigh"], 'date' => $line["date"], 'day_name' => $line["day_name"], 'icon' => $line["icon"], 'TempNight' => $line["TempNight"], 'TempNightCloth' => $line["TempNightCloth"], 'TempHighCloth' => $line["TempHighCloth"]));

@@ -27,13 +27,18 @@ function getNextPage($addToPage)
 
    
 ?>
+<style>
+    #logo {
+        float:<? echo get_s_align();?>
+    }
+</style>
 <a id="chat" ></a>
 <div id="forum">
 <div id="chat_entire_div">
 <div id="chatWrapper">
 	<div id="chat_title" class="big slogan">
-	  <a href="<? echo get_query_edited_url(get_url(), 'section', 'chat.php');?>&amp;limit=15" >
-		<?=$CHAT_TITLE[$lang_idx]?>
+	  <a href="javascript:void" onclick="startup(<?=$lang_idx?>, <?=$limitLines?>, '')">
+		<?=$CHAT_TITLE[$lang_idx]?>&nbsp;
 	   </a>
 	</div>
 	<? if (stristr($_SERVER["PHP_SELF"], "station.php")){?>
@@ -56,6 +61,7 @@ function getNextPage($addToPage)
 							</div>
 							<div id="loggedin" style="display:none">
 								<input id="updateprofile" class="button" title="<?=$UPDATE_PROFILE[$lang_idx]?>" value="<?=$UPDATE_PROFILE[$lang_idx]?>" /><br />
+                                                                <input id="myvotes" class="button" title="<?=$MY_VOTES[$lang_idx]?>" value="<?=$MY_VOTES[$lang_idx]?>" onclick="redirect('<? echo substr(get_query_edited_url($url_cur, 'section', 'myVotes.php'), 1);?>')" /><br />
 								<input value="<?=$SIGN_OUT[$lang_idx]?>" onclick="signout_from_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="signout" class="button"/>
 							</div>
 						</li>
@@ -97,8 +103,8 @@ function getNextPage($addToPage)
 	                {
 			?>
 			<div id="chat_search">
-	                <input id="searchname" name="searchname" size="10" maxlength="50" value="" style="text-align:<?if (isHeb()) echo "right"; else "left";?>" />&nbsp;&nbsp;
-	                <input type="button" name="SearchSendButton" value="<?=$SEARCH_IN[$lang_idx]?>" onclick="getMessageService('', 0, 1)"/>
+	                <input id="searchname" name="searchname" size="8" maxlength="50" value="" style="text-align:<?if (isHeb()) echo "right"; else "left";?>" />&nbsp;&nbsp;
+	                <input type="button" name="SearchSendButton" value="<?=$SEARCH_IN[$lang_idx]?>" onclick="getMessageService(<?=$limitLines?>, '', 0, 1, <?=$lang_idx?>)"/>
 	            
 	        </div>
 			<?} ?>
@@ -161,7 +167,8 @@ function getNextPage($addToPage)
                             <tr><td><?=$DISPLAY_NAME[$lang_idx]?>:</td><td><input type="text" name="user_display_name" value="" id="profileform_displayname"/></td></tr>
                             <tr><td><?=$NICE_NAME[$lang_idx]?>:</td><td><input type="text" name="user_nice_name" value="" id="profileform_nicename"/></td></tr>
                             </table>
-                            <input type="checkbox" name="priority" value="" id="profileform_priority"/><?=$GET_UPDATES[$lang_idx]?><br />
+                            <input type="checkbox" name="priority" value="" id="profileform_priority" /><?=$GET_UPDATES[$lang_idx]?><br />
+                            <input type="checkbox" name="personal_coldmeter" value="" id="profileform_personal_coldmeter" /><?=$PERSONAL_COLD_METER[$lang_idx]?><br />
                             </div>
 
                             <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
@@ -213,7 +220,8 @@ function getNextPage($addToPage)
 <tr><td></td><td><input type="text" placeholder="<?=$DISPLAY_NAME[$lang_idx]?>" name="user_display_name" value="" id="registerform_displayname" tabindex="7"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$DISPLAY_NAME_EXP[$lang_idx]?></span></a></td></tr>
 <tr><td></td><td><input type="text" placeholder="<?=$NICE_NAME[$lang_idx]?>" name="user_nice_name" value="" id="registerform_nicename" tabindex="8"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$NICENAME_EXP[$lang_idx]?></span></a></td></tr>
 </table>
-<input type="checkbox" name="priority" value="" id="registerform_priority"/><?=$GET_UPDATES[$lang_idx]?>
+<input type="checkbox" name="priority" value="" id="registerform_priority"/><?=$GET_UPDATES[$lang_idx]?><br />
+<input type="checkbox" name="personal_coldmeter" value="" id="registerform_personal_coldmeter" disabled/><?=$PERSONAL_COLD_METER[$lang_idx]?><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$PERSONAL_COLD_METER_EXP[$lang_idx]?></span></a>
 </div>
 <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
 <div id="registerform_result" class="float">
@@ -224,11 +232,11 @@ function getNextPage($addToPage)
 </div>
 
 <div id="passforgotform" style="padding:1em">
-                                <?=$EMAIL[$lang_idx]?>:<input type="text" name="email" value="" id="passforgotform_email" size="30" style="direction:ltr"/><br /><br />
-                                <div id="passforgotform_result"></div>
-                                <input type="submit" value="<?=$FORGOT_PASS[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit" class="info invfloat"/>
-                                <input type="submit" value="<?=$CLOSE[$lang_idx]?>" onclick="$('#cboxClose').click();" id="passforgotform_OK" class="info invfloat" style="display:none"/>
-                                    
+    <?=$EMAIL[$lang_idx]?>:<input type="text" name="email" value="" id="passforgotform_email" size="30" style="direction:ltr"/><br /><br />
+    <div id="passforgotform_result"></div>
+    <input type="submit" value="<?=$FORGOT_PASS[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit" class="info invfloat"/>
+    <input type="submit" value="<?=$CLOSE[$lang_idx]?>" onclick="$('#cboxClose').click();" id="passforgotform_OK" class="info invfloat" style="display:none"/>
+
  </div>
  </div>
 

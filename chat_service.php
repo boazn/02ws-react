@@ -7,8 +7,7 @@ include_once("include.php");
 include_once("lang.php");
 define("MANAGER_NAME","bn19");
 define("VICE_MANAGER","vmvm");
-define("SEPERATOR", "");
-define("HIDDENSEPERATOR", "<!---->");
+
 //ini_set("display_errors","On");
 
 function isValidIP ($currnet_ip)
@@ -41,8 +40,12 @@ function checkSpam()
 }
 function insertNewMessage ($name, $icon, $body, $category, $p_alert)
 {
-    if (empty($_SESSION['loggedin'])||($_SESSION['loggedin']=="false"))
-            return false;
+    if (empty($_SESSION['loggedin'])||($_SESSION['loggedin']=="false")){
+        echo "צריך להתחבר";
+        logger("empty loggedin");
+        return false;
+    }
+            
     $now = date('Y-m-d G:i:s', strtotime(SERVER_CLOCK_DIFF, time()));
     //$now = getLocalTime(time());
     $body = nl2br($body);
@@ -54,21 +57,27 @@ function insertNewMessage ($name, $icon, $body, $category, $p_alert)
     if ($category == "")
         $category = 0;
     $query = "call InsertNewMsg ('$name','$icon', '$body', '$now', $category, '$p_email', '$p_alert')";
+    logger($query);
     $result = db_init($query);
     $_SESSION['MsgStart'] = $_SESSION['MsgStart'] + 1;
     // Free resultset 
-    @mysqli_free_result($result);
+    @mysqli_free_result($result["result"]);
     global $link;
     mysqli_close($link);
 		
 	
 }
 
-function updateMessage ($idx, $body)
+function updateMessage ($idx, $body, $isPartialDelete)
 {
         $now = date('Y-m-d G:i:s', strtotime(SERVER_CLOCK_DIFF, time()));
-        $query = "UPDATE chat SET body='{$body}',last_date_chat='{$now}' WHERE (idx=$idx)";
         $p_email = $_SESSION['email'];
+        logger("last positions:".substr ($body, strlen($body)-strlen("</div>")));
+        if (substr ($body, strlen($body)-strlen("</div>")) != "</div>")
+        {
+            logger("missing </div>: ".substr ($body, strlen($body)-strlen("</div>"))." ".strlen($body)." ".strlen("</div>")." ".$body);
+            //$body = $body."</div></div>";
+        }
         $query = "call UpdateMessage ($idx,'$body', '$now','$p_email')";
         //echo $query;
         $result = db_init($query);
@@ -83,8 +92,8 @@ function getMsg($idx, $withName)
 	$query = "select IP, name, body, date_chat, user_email, alert  from chat WHERE (idx=?)";
 	//echo $query;
 	$result = db_init( $query, $idx);
-	$line = mysqli_fetch_array($result);
-	@mysqli_free_result($result);
+	$line = mysqli_fetch_array($result["result"]);
+	@mysqli_free_result($result["result"]);
 	//echo $idx." prev_body=".$line[0];
 	$dateInLineStart = date("D   H:i", strtotime("0 hours -0 minutes",strtotime($line['date_chat'])));
 	$dateInLineStart = replaceDays($dateInLineStart);
@@ -123,7 +132,7 @@ function AddToMessage($name, $user_icon, $body, $idx, $mood)
             send_Email($body, $line['user_email'], $_SESSION['email'], $orig_name, "", array("Private Message from 02WS forum"." - ".$orig_name, "הודעה פרטית מפורום ירושמיים"." - ".$orig_name));
         }
         else{
-            updateMessage ($idx, $body);
+            updateMessage ($idx, $body, false);
         }
         if ($line['alert'] == "1")
         {
@@ -163,7 +172,7 @@ function DeletePartialMessage($idx, $nodeNumberToDelete)
 		//var_dump($new_body);
 	}
 		
-	updateMessage ($idx, $new_body);
+	updateMessage ($idx, $new_body, true);
 	return $res;
 }
 
@@ -185,7 +194,7 @@ function stickUnstickMessage ($idx, $stickValue)
 		//echo $query;
 		$result = db_init($query);
 		// Free resultset 
-		@mysqli_free_result($result);
+		@mysqli_free_result($result["result"]);
 		global $link;
 		mysqli_close($link);
 	}
@@ -198,7 +207,7 @@ function lockUnlockMessage ($idx, $lockValue)
 		$result = db_init($query);
 		
 		// Free resultset 
-		@mysqli_free_result($result);
+		@mysqli_free_result($$result["result"]);
 		global $link;
 		mysqli_close($link);
 }
@@ -210,7 +219,7 @@ function deleteMessage ($idx)
 		//echo $query;
 		$result = db_init($query, $idx);
 		// Free resultset 
-		@mysqli_free_result($result);
+		@mysqli_free_result($result["result"]);
 		global $link;
 		mysqli_close($link);
 		
@@ -281,7 +290,7 @@ $body = preg_replace('@ (https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@',
 if (empty($_SESSION['loggedin'])||$_SESSION['loggedin']=="false"||$name==$NAME[$HEB] || $body==$BODY[$HEB] || $name==$NAME[$EN] || $body==$BODY[$EN] || $name=="" || $body=="")
 
 {
-	 // nothing to do
+	//logger("chat_service: nothing to do");
 	 // only display recent messages
 	 if (empty($_SESSION['loggedin'])||($_SESSION['loggedin']=="false"))
 	     echo "<div class=\"high\" style=\"width:100;height:2px\"></div>";

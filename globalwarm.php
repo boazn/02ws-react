@@ -6,8 +6,8 @@
 
 <?
 
-	$result = db_init("SELECT * FROM globalwarming ORDER BY year ASC");
-	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+	$result = db_init("SELECT * FROM globalwarming ORDER BY year ASC", "");
+	while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 		print "\t<tr align=\"center\">\n";
 		if ($line['year'] !== $year)
 			print "\t\t<td><a href=\"".$_SERVER['SCRIPT_NAME']."?section=reports/{$line['year']}.txt\">";

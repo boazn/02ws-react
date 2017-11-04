@@ -93,7 +93,7 @@ function parallaxScroll(){
 		margin = 'margin-left';
 	}
 	var scrolled = $(window).scrollTop();
-        if (scrolled >= 105) {
+        if (scrolled >= 135) {
 	$('#forcast_title').css(margin,(30-(scrolled))+'px');
 	$('#forcast_title').css('opacity',(1-(scrolled*0.005)));
         }
@@ -102,19 +102,15 @@ function parallaxScroll(){
             $('#forcast_title').css('opacity',1);
         }
 	
-	if (scrolled >= $('#more').offset().top) {
+	if (scrolled >= $('#more').offset().top + 150) {
 		//alert("ss");
-		$('#newsletter').css(margin,(30-(scrolled-$('#more').offset().top))+'px');
-		$('#newsletter').css('opacity',(1-((scrolled-$('#more').offset().top)*0.005)));
-		$('#about').css(margin,(60-(scrolled-$('#more').offset().top))+'px');
-		$('#about').css('opacity',(1-((scrolled-$('#more').offset().top)*0.005)));
+		$('#rightbanner').css(margin,(80-(scrolled-$('#more').offset().top))+'px');
+		$('#rightbanner').css('opacity',(1-((scrolled-$('#more').offset().top)*0.005)));
 		$('#did_you_know').css(margin,(60-(scrolled-$('#more').offset().top))+'px');
 		$('#did_you_know').css('opacity',(1-((scrolled-$('#more').offset().top)*0.005)));
 	} else {
-		$('#newsletter').css(margin,30 +"px");
-		$('#newsletter').css('opacity',1);
-		$('#about').css(margin,60 +"px");
-		$('#about').css('opacity',1);
+		$('#rightbanner').css(margin,80 +"px");
+		$('#rightbanner').css('opacity',1);
 		$('#did_you_know').css(margin,60+'px');
 		$('#did_you_know').css('opacity',1);
 	}
@@ -138,11 +134,22 @@ function parallaxScroll(){
 	//$('#forum').css('top',(4050-(scrolled*1))+'px');
 	$('#tree').css('top',(2920-(scrolled*1.5))+'px');
 	$('#crow').css('top',(2920-(scrolled*1.5))+'px');
+        $('#train').css('top',(1330-(scrolled*0.6))+'px');
+        $('#train2').css('top',(1250-(scrolled*0.6))+'px');
+        $('#pic_thumb2').css('top',(1540-(scrolled*0.6))+'px');
+        $('#pic_thumb1').css('top',(1370-(scrolled*0.6))+'px');
 	
 	$('#cover_clouds-1').css('left',(100-(scrolled*2))+'px');
-	$('#cover_clouds-2').css('left',(300-(scrolled*1.5))+'px');
-	$('#cover_clouds-3').css('right',(150-(scrolled*1.5))+'px');
-	$('#cover_clouds-4').css('right',(100-(scrolled*2))+'px');
+	$('#cover_clouds-2').css('left',(300-(scrolled*0.8))+'px');
+        $('#weather_movies').css('left',(560-(scrolled*0.8))+'px');
+        $('#weather_songs').css('left',(470-(scrolled*0.8))+'px');
+        $('#snow_poems').css('left',(370-(scrolled*0.8))+'px');
+        $('#myths').css('left',(270-(scrolled*0.8))+'px');
+	$('#cover_clouds-3').css('right',(100-(scrolled*0.8))+'px');
+        $('#weather_israel').css('right',(290-(scrolled*0.8))+'px');
+        $('#weather_hul').css('right',(190-(scrolled*0.8))+'px');
+        $('#likeddislikedforecasts').css('right',(380-(scrolled*0.8))+'px');
+	$('#cover_clouds-4').css('right',(150-(scrolled*2))+'px');
 	
 }
 

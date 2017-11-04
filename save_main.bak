@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /home/boazn/public/02ws.com/public
+phantomjs save_main.js
+phantomjs save_smallheader_eng.js

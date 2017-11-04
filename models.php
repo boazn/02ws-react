@@ -1,3 +1,12 @@
+<style>
+    .nav li {
+        margin-left:0.5em;
+        padding-bottom: 0.5em;
+    }
+    .nav li ul li a{
+        color:#000000
+    }
+</style>
 <script language="JavaScript" type="text/javascript">
 function changeModel (inmodel)
 {
@@ -117,7 +126,7 @@ function getModelLink($level, $model)
 ?>
 <ul class="nav" id="modelsnav" style="z-index: 0;width:100%">
 	<? $model_c = sprintf($model_l, 12); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==12) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">12</a>
+	<li <?if ($hoursForecast==12) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">12</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -130,7 +139,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 18); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==18) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">18</a>
+	<li <?if ($hoursForecast==18) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">18</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -143,7 +152,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 24); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==24) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">24</a>
+	<li <?if ($hoursForecast==24) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">24</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -156,7 +165,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 30); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==30) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">30</a>
+	<li <?if ($hoursForecast==30) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">30</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -169,7 +178,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 36); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==36) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">36</a>
+	<li <?if ($hoursForecast==36) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">36</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -182,7 +191,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 42); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==42) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">42</a>
+	<li <?if ($hoursForecast==42) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">42</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -195,7 +204,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 48); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==48) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">48</a>
+	<li <?if ($hoursForecast==48) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">48</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -208,7 +217,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 54); $model_c = str_replace (" ", "", $model_c);?>
-	 <li <?if ($hoursForecast==54) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">54</a>
+	 <li <?if ($hoursForecast==54) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">54</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -221,7 +230,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li> 
 	<? $model_c = sprintf($model_l, 60); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==60) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">60</a>
+	<li <?if ($hoursForecast==60) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">60</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -234,7 +243,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 66); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==66) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">66</a>
+	<li <?if ($hoursForecast==66) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">66</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -247,7 +256,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li> 
 	<? $model_c = sprintf($model_l, 72); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==72) echo" class=\"inv_plain_3\"";?>><a href="<? echo sprintf ($model_l, 72);?>">72</a>
+	<li <?if ($hoursForecast==72) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo sprintf ($model_l, 72);?>">72</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -260,7 +269,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 84); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==84) echo" class=\"inv_plain_3\"";?>><a href="<? echo sprintf ($model_l, 84);?>">84</a>
+	<li <?if ($hoursForecast==84) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo sprintf ($model_l, 84);?>">84</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -272,7 +281,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 96); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==96) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">96</a>
+	<li <?if ($hoursForecast==96) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">96</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -285,7 +294,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 108); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==108) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">108</a>
+	<li <?if ($hoursForecast==108) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">108</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -298,7 +307,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 120); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==120) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">120</a>
+	<li <?if ($hoursForecast==120) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">120</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -311,7 +320,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 132); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==132) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">132</a>
+	<li <?if ($hoursForecast==132) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">132</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -323,7 +332,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 144); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==144) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">144</a>
+	<li <?if ($hoursForecast==144) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">144</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -335,7 +344,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 156); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==156) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">156</a>
+	<li <?if ($hoursForecast==156) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">156</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>
@@ -346,7 +355,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 168); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==168) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">168</a>
+	<li <?if ($hoursForecast==168) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">168</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=700";?>">700mb</a></li>
@@ -356,7 +365,7 @@ function getModelLink($level, $model)
 		</ul>
 	</li>
 	<? $model_c = sprintf($model_l, 999); $model_c = str_replace (" ", "", $model_c);?>
-	<li <?if ($hoursForecast==999) echo" class=\"inv_plain_3\"";?>><a href="<? echo $model_c;?>">Panel</a>
+	<li <?if ($hoursForecast==999) echo" class=\"inv_plain_3_zebra\"";?>><a href="<? echo $model_c;?>">Panel</a>
 		<ul>
 			<li><a href="<? echo $model_c."&amp;level=850";?>">850mb</a></li>
 			<li><a href="<? echo $model_c."&amp;level=850rh";?>">850mb RH</a></li>

@@ -2,7 +2,7 @@
     ini_set("display_errors","On");
     header("Content-type: text/css");
     
- 
+if ($_GET['debug'] == '') include "../begin_caching.php";
 $lang_idx = @$_GET['lang'];
 $width = @$_GET['width'];
 $fullt = @$_GET['fullt'];
@@ -24,7 +24,9 @@ function get_inv_s_align(){
         else
                 return "right";
 }
+
 ?>
+
 body{
 text-align:center;
 margin:0;
@@ -33,7 +35,14 @@ overflow-x: hidden;
 }
 #date{
 display: inline-block;
-margin-top: 0.65em;
+margin-top: 0.48em;
+font-family:nextexitfotlight;
+font-size:1.3em
+
+}
+h1{
+margin-<?=get_inv_s_align()?>:194px;
+margin-bottom:0px;
 }
 .inparamdiv
 {
@@ -71,12 +80,6 @@ margin-top: 0.65em;
 	text-align:<?echo get_s_align();?>;
 	float:<?echo get_s_align();?>
 }
-#for24_given
-{
-	margin:0.6em 1em;
-	float:<?echo get_s_align();?>
-}
-
 .forecasttimebox li
 {
 	height:25px;color:#<?= $forground->bg['-8'] ?>;text-align:<?echo get_s_align();?>;border-top:#<?= $forground->bg['0'] ?> 1px solid;border-<?echo get_s_align();?>:none;
@@ -101,6 +104,15 @@ margin-top: 0.65em;
 	border-top:0 none;
 	<? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr";?>
 }
+
+#forecastnextdays table a
+{
+    text-decoration:underline;
+}
+#forecastnextdays table a.info
+{
+    text-decoration:none;
+}
 .loading{
 width: 75%;
 position: fixed;
@@ -115,8 +127,9 @@ z-index:2000;
 }
 #nextdays
 {
-        margin-bottom:0.5em;
-	<? if (isHeb()) echo "direction:rtl"; ?>
+        margin-top:0.3em;
+        float:<?echo get_s_align();?>;
+        <? if (isHeb()) echo "direction:rtl"; ?>
 }
 
 #coldmeter
@@ -257,15 +270,15 @@ text-align:<?echo get_s_align();?>;
 width:100%;
 }
 #livepic_box{
-clear:both
+margin:0 8px
 }
 #livepic_box h3{
 margin-top:0
 }
 .play {
     position: absolute;
-    top: 240px;
-    left:15px
+    top: 180px;
+    <?echo get_inv_s_align();?>: 10px;
 }
 #msgDetails .white_box2{
    clear: both;
@@ -294,6 +307,10 @@ margin-top:0
         
  
  
+}
+.avatar{
+     margin-<?=get_s_align()?>:-10px;
+    margin-top:-15px;
 }
 #chat_links div
 {	
@@ -327,18 +344,36 @@ display:block
 {
 text-align:center;
 -webkit-overflow-scrolling: touch;
+margin: 0 auto;
+width:320px;
+
 }
 #statusline a
 {
 	font-weight:normal;
 }
+#laundryidx{
+    left: 10.2em;
+    top: 8.7em;
+ }
+ 
 #windy
 {
-width:33%;left:9em;top:4em
+width:33%;left:9.1em;top:5em
 }
 #coldmeter
 {
 	float:none
+}
+#current_feeling_link a.info:hover span.info
+{
+    <?echo get_s_align();?>: -8em;
+    top: 1.5em;
+}
+#laundryidx a.info:hover span.info
+{
+  <?  if (!isHeb()) echo "left:-10em"; else echo "right:3em"; ?>
+ 
 }
 #coldmeter a
 {
@@ -346,7 +381,7 @@ width:33%;left:9em;top:4em
 }
 #currentinfo_container
 {
-	
+	float:<?echo get_s_align();?>
 }
 .white_box{
 border-radius: 0px;
@@ -356,18 +391,18 @@ border-radius: 0px;
 {
     <? if (count($sig) > 1){?> <?}?>
     
-        padding:0;
-	font-weight:normal;
-	font-size:1.4em;
-        margin-top:-1.2em;
-        line-height: 1em;
+    font-size: 1.2em;
+    font-weight: normal;
+    line-height: 1em;
+    margin-top: -4.9em;
+    padding: 0;
 }
 #what_is_h
 {
 	font-size:0.95em;
 	margin-top:0.2em;
         width: 70%;
-        margin: 0 auto;
+        margin: 4.5em auto 0;
         line-height:16px;
 }
 #msgDetails .white_box2
@@ -392,25 +427,37 @@ border-radius: 0px;
 {
     width:21%;direction:ltr
 }
+
+.forcast_title
+{
+width:95px;
+text-align:<?=get_s_align()?>;
+}
 .forcast_title_btns
 {
 	display:inline-block;
-        font-size:25px;
+        font-size:20px;
+        margin-bottom:0px;
 }
 .forcast_title_btns:hover
 {
 	
 }
+a.cboxElement {
+text-decoration: underline;
+}
+
+.forcast_title_btns a
+{
+    display:inline-block;
+}
 .timefh, .tsfh{
 font-family:nextexitfot_regularregular;
 letter-spacing: 0px;
 }
-#fornextdays_title, #for24h_title
+#fornextdays_title, #for24h_title, #expand, #now_title
 {
-	border-radius:0;
-	border-top-<?=get_inv_s_align()?>-radius:15px;
-	border-bottom-<?=get_inv_s_align()?>-radius:15px;
-	margin-<?=get_s_align()?>:0;
+	margin-<?=get_s_align()?>:0.3em;
         padding-<?=get_s_align()?>:0.4em;
 	
 }
@@ -424,7 +471,7 @@ letter-spacing: 0px;
 }
 #tempunitconversion
 {
-	float:none
+	float:right
 }
 #mobilelogo, #mobileslogan
 {
@@ -433,15 +480,16 @@ letter-spacing: 0px;
     margin-top:0.8em
 }
 #logo{
-    text-align: <?=get_s_align()?>;
-    width: <? if (isHeb()) echo "52%"; else echo "74%";?>;
+    width: <? if (isHeb()) echo "65%"; else echo "87%";?>;
     position: relative;
-    height:38px;
-    background-size: 38px;
-    margin: auto;
-    background-position: <?=get_s_align()?> 2px top;
+    float:<?echo get_s_align();?>;
+    height:36px;
+    background-size: 36px;
+    margin: auto <? if (isHeb()) echo "4em";?>;
+    background-position: right 25px top;
     direction:<? if (isHeb()) echo "rtl"; else echo "ltr";?>;
-    margin-top:0.8em
+    margin-top: 10px;
+    
 }
 .logo_secondary{
     background-position: <?=get_s_align()?> 27px top !important;
@@ -457,7 +505,12 @@ clear:both
 
 #user_info{
 color:#3D718E;
-padding:0.5em
+padding:0.5em;
+position: absolute;
+z-index: 1000;
+top: 1.5em;
+width: 160px;
+<?=get_inv_s_align()?>: 0.8em;
 }
 
 .inparamdiv
@@ -468,7 +521,8 @@ padding:0.5em
 {
     float:none;
     font-size: 5.5em;
-    margin-top: 14px;
+    margin-top: 20px;
+    z-index:99999;
     font-family:nextexitfot_regularregular;
 }
 #latestnow
@@ -489,7 +543,10 @@ padding:0.5em
 margin:auto;
 }
 #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
-float:none;margin: 0 auto;width: 220px;top:2.6em;
+float:none;margin: 0 auto;width: 220px;top:2.3em;
+}
+#heatindex{
+margin-top:-56px;
 }
 .graphslink
 {
@@ -511,7 +568,7 @@ position:absolute;
 bottom:-200px;
 
 }
-canvas{
+#canvas{
 margin-top: 50px;
 z-index: -10;
 height: 220px;
@@ -520,7 +577,7 @@ width:100%
 #forecastnextdays .tsfh, #shortforecast .tsfh{
 font-size:1.3em
 }
-#rainradar_box h2, #forum_box h2, #contact_box h2{
+#rainradar_box h2, #forum_box h2, #contact_box h2, #picday_box h2, #userpic_box h2{
 margin:0;
 text-align: <?=get_s_align()?>;
 width: 100%;
@@ -528,15 +585,17 @@ width: 100%;
 #rainradar_box a.info:hover span.info, #forum_box a.info:hover span.info, #contact_box a.info:hover span.info{
 box-shadow:none;background:none;
 }
-#rainradar_box a, #forum_box a, #contact_box a{
+#rainradar_box a, #forum_box a, #contact_box a, #picday_box a, #userpic_box a{
 width: 100%;display:inline-block;padding:0.5em 0em;
 direction:<? if (isHeb()) echo "rtl"; else echo "ltr";?>;
 }
-#radar,#forum_title{
+#radar, #forum_title, #contact{
 color:#000000;
 }
 #adunit1, #adunit2, #adunit3{
-line-height:0
+line-height:0;
+clear:both;
+text-align:center
 }
 #forecasthours ul li
 {
@@ -555,13 +614,17 @@ vertical-align:-8px;
 {
 padding:0.4em 0.3em
 }
+#for24_hours .nav li
+{
+padding:0.4em 0.25em;line-height: 0.9em;
+}
+#for24_hours .nav li .wind_icon
+{
+margin-top:0.5em
+}
 .text a.info:hover span.info
 {
 <?echo get_s_align();?>: -15em;
-}
-#for24_given
-{
-margin:0.6em 0.3em
 }
 .inparamdiv .highlows
 {
@@ -620,7 +683,7 @@ color:#000;display:block;z-index: 100;
 .nav li { /* all list items */
 	 margin:0;
      position: relative;
-	 padding:0.4em;
+	 padding:0.3em;
      float:<?=get_s_align()?>;
 	 border-<?=get_s_align()?>: #<?= $forground->bg['-2'] ?> 2px solid;
 	 text-align:center;
@@ -653,7 +716,7 @@ color:#000;display:block;z-index: 100;
  
 	display: none;
 	position: absolute;
-	top:  3.3em;
+	top:  2.1em;
 	<?echo get_s_align();?>: 0;
 	background-color:#<?= $base->bg['-1'] ?>;
 	color:#<?= $base->bg['+9'] ?>;
@@ -743,12 +806,12 @@ td
 width:88%
 }
 #user_icon{
-margin-top:0;
+
 }
 #user_name{
-float:none;
-font-size:1.1em;
+font-size:1em;
 font-weight:bold;
+margin-top: 0.1em;
 }
 input:focus::-webkit-input-placeholder 
 {
@@ -762,10 +825,10 @@ input:focus::-webkit-input-placeholder
 direction: rtl;
 float: none;
 margin: auto auto -40px;
-top: 100px;
+top: 140px;
 width: 320px;
 padding-right: 0;
-z-index:1000;
+z-index:10;
 }
 .forecasttimebox
 {
@@ -778,43 +841,48 @@ z-index:1000;
 text-align:center;width:6%
 }
 .forecasttimebox .forcast_time{
-    width:13%;
+    width:17%;
     direction:ltr;
-    text-align:right;
+    text-align:<?=get_inv_s_align()?>;
     
+}
+#forcast_hours liabilities{
+padding:0.3em
 }
 #forecasthours ul li.forcast_time{
 padding:0.1em 0.5em
 }
 .forecasttimebox .forecasttemp{
     text-align:center;
-    width:11%;
+    width:13%;
     font-family: nextexitfot_regularregular;
     font-size: 1.3em;
 }
 .forecasttimebox .forcast_icon{
-    text-align:center;width:8%
-}
-.forecasttimebox .forcast_title{
-    width:32%
+    text-align:center;width:7%
 }
 #temp_btn{
-margin-right: 40px;
-margin-top: -90px;
+    margin-right: 40px;
+    margin-top: -150px;
+    
+}
+#temp2_btn{
+    margin-right: 18px;
+    margin-top: -3px;
 }
 #moist_btn{
-margin-right: 18px;
-margin-top: -3px;
-}
-#rain_btn{
     margin-right: 5px;
     margin-top: 0;
 }
-#wind_btn{
+#rain_btn{
     margin-right: 2px;
     margin-top: 2px;
 }
-#latesttemp, #latestrain, #latesthumidity,#latestwind  {
+#wind_btn{
+    margin-right: 10px;
+    margin-top: 2px;
+}
+#latesttemp, #latestrain, #latesthumidity,#latestwind, #latesttemp2  {
 margin:auto
 }
 #valleytemp{
@@ -894,3 +962,32 @@ left:10px;
 #now_line{
 left:10px;visibility:hidden
 }
+#forcast_hours
+{
+margin: 0 auto;
+clear:both
+}
+.forcast_each .spriteB.up, .forcast_each .spriteB.down {
+margin:11px
+}
+#graph_forcast{
+        height:270px;
+        width:540px;
+        margin:0 auto;
+    }
+#graphForcastContainer
+{
+    position:relative
+}
+#graph_forcastWrapper
+{
+    margin: 0 auto;
+    width:320px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+<? if ($_GET['debug'] == '') include "../end_caching.php"; ?>

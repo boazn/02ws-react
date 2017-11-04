@@ -70,7 +70,7 @@ for (i = 0; i < numOfPics ; i++)
 
 {
 
-	var imagepath = sprintf("http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%02d&TotalImages=%02d&LangID=1&Location=", i, numOfPics);
+	var imagepath = sprintf("http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%02d&TotalImages=%02d&LangID=1&Location=&time=<?=$year.$month.$day.$hour.$min?>", i, numOfPics);
 	modImages[i] = imagepath;
 
 }
@@ -791,7 +791,13 @@ function startup()
 	  displayCurrentIdx();
 
  }
-
+function imgError(image) {
+    image.onerror = "";
+    image.src = "http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=&time=<?=$min.$hour.$day.$month.$year?>";
+    var img = new Image();
+    img.src = image.src;
+    return true;
+}
 // -->
 
 </script>
@@ -807,7 +813,7 @@ function startup()
 <? if (isHeb()) echo "טוען..."; else echo "Loading...";?>&nbsp;
 <img src="images/loading.gif" alt="loading" width="32" height="32"/>
 </div>
-<div style="clear:both;width:100px;float:<?echo get_s_align();?>;position:absolute;<?echo get_s_align();?>:0" <? if (isHeb()) echo "dir=\"rtl\""; ?>>                        
+<div style="clear:both;width:100px;float:<?echo get_s_align();?>;position:absolute;<?echo get_s_align();?>:15px" <? if (isHeb()) echo "dir=\"rtl\""; ?>>                        
 <br/><br/><br/>
 <a href="javascript: func()" onclick="launch();toggle('play')">
 	<img id="play" width="80" height="80" src="images/play.png" alt="start התחל"/>
@@ -861,12 +867,12 @@ function startup()
     <input type="hidden" name="myPHPvar" id="hiddenPics" value="" />
     </form>
 </div>
-<div style="margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:90px;top:50px;position:absolute" id="downloadStatus">
+<div style="margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:90px;top:80px;position:absolute" id="downloadStatus">
 
 </div>
-<div style="width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:50px;" id="radarimg" >
+<div style="width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:-70px;" id="radarimg" >
 
- <img name="animation" id="noBaseGraph" src="http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=&time=<?=$year.$month.$day.$hour.$min?>" width="512px" height="512px" alt="IMS radar" style="z-index:0"/>
+ <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=&time=<?=$year.$month.$day.$hour.$min?>" width="512px" height="512px" alt="IMS radar" style="z-index:0"/>
 
  <div style="margin:0.5em">
 	<img src="images/radar_scale_eng.jpg" alt="scale of rain rate" /><br />
@@ -947,7 +953,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	var disableLoopHeader = true;
 
 	//show('locdiv', 'noBaseGraph', 'radarimg',+182, +105);
-
+        
+        
 </script>
 
 </html>

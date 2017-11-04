@@ -28,7 +28,17 @@ echo '
 			   chart: {
 			      renderTo: 'container',
 			      defaultSeriesType: '<?php echo $spline ?>',
-			      zoomType: 'x'
+			      zoomType: 'x',
+                              spacingLeft: 0,
+                              marginRight: 0,
+                              spacingBottom:0,
+                              legend:{
+                                  padding:1,
+                                  width:50,
+                                  lineHeight: 8,
+                                  floating: true,
+                                  symbolPadding: 2
+                              }
 			   },
 <?php 
 echo $hchExport;
@@ -40,6 +50,7 @@ echo '			   title: {
 			      text: "'.$credits.'",
 			      href: "'.$creditsURL.'"
 			   },
+                           
 			   subtitle: {
 			      text: "'.$gSubtitle.'"
 			   },
@@ -54,7 +65,7 @@ echo '			   title: {
 
 			   yAxis: {
 			      title: {
-			         text: '<?php echo $TempTran.' ( '.$TtempUnits.' )' ;?>'
+			         text: null
 			      },
             labels: { formatter: function() { return this.value +'<?php echo $TtempUnits; ?>' } }
 			      			   },
@@ -70,14 +81,14 @@ echo '			   title: {
 
 			   plotOptions: {
 			      <?php echo $spline ?>: {
-			         lineWidth: 3,
+			         lineWidth: 1,
 			         marker: {
 			           enabled: false,
   			         states: {
   			            hover: {
   	                  enabled: true,
   	                  symbol: 'circle',
-  	                  radius: 5,
+  	                  radius: 2,
   	                  lineWidth: 1
   			            }
   			         }

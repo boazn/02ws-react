@@ -6,10 +6,17 @@
             <name>Station</name>
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>adexternal</word>
+            <word>alternatebody</word>
             <word>btn</word>
             <word>btns</word>
             <word>datestart</word>
             <word>forecasttemp</word>
+            <word>heatindex</word>
+            <word>highhum</word>
+            <word>highlows</word>
+            <word>laundryidx</word>
+            <word>mouseover</word>
             <word>paramtrend</word>
             <word>paramvalue</word>
             <word>timefh</word>

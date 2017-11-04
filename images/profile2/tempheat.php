@@ -207,7 +207,7 @@ $graph->xaxis->SetColor($SITE['txtcolor']);
 $graph->xaxis->SetLabelFormatCallback('time_callback');
 $graph->xaxis->scale->SetTimeAlign(HOURADJ_1);
 $graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,7);
-$graph->xaxis->scale->ticks->Set(180*60, 60*60);
+$graph->xaxis->scale->ticks->Set(60*60, 60*60);
 $graph->xgrid->Show();
 
 //y-axis

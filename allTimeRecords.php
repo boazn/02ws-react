@@ -139,20 +139,15 @@
 </table>
 <?
 	error_reporting(E_ERROR);
-	$link = mysql_connect(MYSQL_IP, MYSQL_USER, MYSQL_PASS) or $error_db = true;
-	mysql_select_db(MYSQL_DB) or $error_db = true;
+	
 	$virgin_condition = true;
 	$condition="";
 	$table="";
 	$tables = array();
-	$result = mysql_list_tables(MYSQL_DB);
-		
-	for ($i = 0; $i < mysql_num_rows($result); $i++){
-		$curr_table = mysql_tablename($result, $i);
-		//printf ("Table: %s<br>", $curr_table);
-		if (strstr($curr_table,"ar"))
-		 array_push ($tables,$curr_table);
-	}
+        db_init("", "");
+        array_push ($tables,"archivemin");
+        array_push ($tables,"archive");
+        
 ?>
 
 <table summary="" align="center" border="3" id="mouseover">
@@ -226,32 +221,43 @@
 	{
 		global $tables;
 		$desc = "Desc";
+                $minus = "";
 		if ($MaxOrMin == "max")
 			$ThreshParam = 0;
 		else
 		{
 			$ThreshParam = 1500;
 			$desc = "";
+                        $minus = "-";
+                        
 		}
 		$extremeParam = $ThreshParam;
-   
+                
 		for ($i = 0;$tables[$i]!=null ;$i++) {
 			$table = $tables[$i];
 			//$condition = "Temp = (SELECT MAX(Temp) FROM $table)";
 			//$query = "SELECT Date,Time,Temp,HiTemp,LowTemp,Hum,Dew,WindSpd,WindDir,HiSpeed,HiDir,WindChill,HeatIdx,THW,Bar,Rain,RainRate FROM $table WHERE $condition";
-			$query = "SELECT  Date,Time,Temp,HiTemp,LowTemp,Hum,Dew,WindSpd,WindDir,HiSpeed,HiDir,WindChill,HeatIdx,THW,Bar,Rain,RainRate FROM $table ORDER BY $param $desc LIMIT 1";
-			$query2 = "SELECT  Date,Temp,Temp,HiTemp,LowTemp,Hum,Rain FROM $table ORDER BY $param $desc LIMIT 1";
+			
+			if (strstr($table, "min")){
+                            $query = "SELECT  Date,Temp,HiTemp,LowTemp,Hum,Rain FROM $table ORDER BY $minus$param DESC LIMIT 1";
+                        }
+                        else{
+                            $query = "SELECT  Date,Time,Temp,HiTemp,LowTemp,Hum,Dew,WindSpd,WindDir,HiSpeed,HiDir,WindChill,HeatIdx,THW,Bar,Rain,RainRate FROM $table ORDER BY $param $desc LIMIT 1";
+                        }
 			//echo "<br>$query<br>";
-			$result = mysql_query($query) or $result = mysql_query($query2);
-			$line = mysql_fetch_array($result, MYSQL_ASSOC) or $error_db = true;
+                        if ((strstr($table, "min"))&&(($param == "Bar")||($param == "HeatIdx")||($param == "WindChill")||($param == "Dew")))
+                                return ;
+                        
+			$result = db_init($query, "");
+			$line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
 			$param_ret = $line[$param];
 
 			/// debug /////
-			/*echo " ".$param_ret;
+			//echo " ".$param_ret;
 			foreach ($line as $col_value) {
 							print "\t\t<td>$col_value</td>\n";
 					}
-			print "\t</tr>\n";*/
+			print "\t</tr>\n";
 			//////////////
 
 			if ($MaxOrMin == "max")
@@ -308,10 +314,10 @@
 
 //////////////////////////////////////////////////////////////
     /* Free resultset */
-    mysql_free_result($result);
+    mysqli_free_result($result);
 
     /* Closing connection */
-    mysql_close($link);
+    mysqli_close($link);
 ?>
 </table>
 <table style="text-align: center">
@@ -325,7 +331,7 @@
 						</tr>
 						<tr class="inv_plain_3">
 							<td>Jerusalem centeral (Generali)</td>
-							<td>1950-2001</td>
+							<td>1950-2016</td>
 						</tr>
 						<tr class="inv_plain_3">
 							<td>Jerusalem - old city</td>

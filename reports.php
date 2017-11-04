@@ -2,13 +2,18 @@
 $tablestobeSearched = array();
 $where_clause_archivemin = array();
 $where_clause_archive = array();
- function pushTables($min_year,$current_year, $monthMode)
+ function pushTables($min_year,$current_year, $monthMode, $param)
  {
 	global $tablestobeSearched;
 	global $where_clause_archivemin; 
 	global $where_clause_archive;
         global $tableToSearch;
-	$startingYearFromMyStation = 2005;
+        $params_in_my_station = array("Hum", "Dew");
+        if (in_array($param, $params_in_my_station))
+            $startingYearFromMyStation = 2002;
+        else
+            $startingYearFromMyStation = $current_year;
+        
 	if (count($_POST['years']) > 0){
 		foreach ($_POST['years'] as $yearToSearch)
 		{
@@ -65,26 +70,51 @@ $where_clause_archive = array();
 		}
 	}
 	else // no year selected
-		foreach ($_POST['months'] as $monthToSearch)
-		{
-			
-			if (!in_array("archivemin", $tablestobeSearched))
+        {
+                if ((!in_array("archivemin", $tablestobeSearched))&&((!in_array($param, $params_in_my_station))))
+                {
+                        array_push ($tablestobeSearched, "archivemin");
+                }
+                if ((!in_array("archive", $tablestobeSearched))&&((in_array($param, $params_in_my_station))))
+                      array_push ($tablestobeSearched, "archive");
+                if (count($_POST['months']) > 0)
+                 {
+                    foreach ($_POST['months'] as $monthToSearch)
+                    {
+                            for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
+                                    array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+                            }
+
+                             for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
+                                    array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+                            }
+
+                    }
+                }
+                else {// no year selected and no month selected
+            
+                    if ($monthMode)
 			{
-				array_push ($tablestobeSearched, "archivemin");
-			}
+                            for ($monthToSearch = 1;$monthToSearch <= 12 ;$monthToSearch++) { 
+                                for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
+                                               array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+                                 }
 
-			for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
-				array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-			}
-
-			if (!in_array("archive", $tablestobeSearched))
-			 array_push ($tablestobeSearched, "archive");
-			for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
-				array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-			}
-			
-		}
-
+                               for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
+                                      array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+                               }
+                            }
+                       }   
+                    else {
+                        for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
+                         array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
+                        }
+                        for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
+                         array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
+                        }
+                    }
+                }
+        }
 	return $where_clause_archivemin;
 		
 } 
@@ -193,7 +223,7 @@ function getReport($min_year,$current_year, $report)
 			$unit = "&#176;C";
 	}
 
-	pushTables($min_year,$current_year, $monthMode);
+	pushTables($min_year,$current_year, $monthMode, $param);
 
 	global $link;
 	db_init("", "");
@@ -211,9 +241,11 @@ function getReport($min_year,$current_year, $report)
 				
 				for ($j = 0;$where_clause_archivemin[$j]!=null ;$j++) {
 					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month FROM  `".$table."` where `".$param."` IS NOT NULL  ";
-					$query_total .= " AND ( ";
-					$query_total .= $where_clause_archivemin[$j];
-					$query_total .= " ) ";
+					if (trim($where_clause_archivemin[$j]) != ""){
+                                            $query_total .= " AND ( ";
+                                            $query_total .= $where_clause_archivemin[$j];
+                                            $query_total .= " ) ";
+                                        }
 					if ($j < count($where_clause_archivemin) - 1)
 						$query_total .= " UNION ALL ";
 				}
@@ -248,6 +280,7 @@ function getReport($min_year,$current_year, $report)
 			$query_total .= "SELECT  ".$param." ,  `Date` FROM  `".$table."` where ".$param." IS NOT NULL  ";
 			if ($table == "archivemin")
 			{
+                            if (count($where_clause_archivemin) > 0){
 				$query_total .= " AND ( ";
 				for ($j = 0;$where_clause_archivemin[$j]!=null ;$j++) {
 					$query_total .= $where_clause_archivemin[$j];
@@ -255,6 +288,7 @@ function getReport($min_year,$current_year, $report)
 						$query_total .= " OR ";
 				}
 				$query_total .= " ) ";
+                            }
 			}
 			else
 			{
@@ -340,7 +374,7 @@ function getReport($min_year,$current_year, $report)
                                 $MINTEMPMONTH = array("The most hot month", "החודש החם ביותר");
                                 $MAXTEMPMONTH = array("The most cold month", "החודש הקר ביותר");
 				$CTRL  = array("to choose multiple years or/and months use the ctrl key", "לבחירת כמה שנים או כמה חודשים יש להשתמש ב-מקש קונטרול  . אם לא תבחר שנה - יחושב עבור כל השנים. אם לא יבחר חודש - יחושב עבור כל החודשים");
-				$current_year = 2013;
+				$current_year = 2017;
 				$min_year = 1909;
 				
 
@@ -402,12 +436,12 @@ function getReport($min_year,$current_year, $report)
 				<div style="float:<?echo get_s_align();?>;width:59%">
 									
 					<div class="inv_plain_3" style="clear:both;padding:1em;text-align:<?echo get_s_align();?>" <? if (isHeb()) echo "dir=\"rtl\""; ?>> 
-						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minofmax" name="report" <? if ((!isset($_POST['SendButton'])) || ($_POST['report'] == "minofmax")) echo "checked";?> /><?=$MINOFMAX[$lang_idx]?> (1952+)<br />
-						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxofmax" name="report" <? if ($_POST['report'] == "maxofmax") echo "checked"; ?>/><?=$MAXOFMAX[$lang_idx]?> (1952+)<br />
-						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxofmin" name="report" <? if ($_POST['report'] == "maxofmin") echo "checked"; ?>/><?=$MAXOFMIN[$lang_idx]?> (1952+)<br />
-						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minofmin" name="report" <? if ($_POST['report'] == "minofmin") echo "checked"; ?>/><?=$MINOFMIN[$lang_idx]?> (1952+)<br />
-                                                <input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxtempmonth" name="report" <? if ($_POST['report'] == "maxtempmonth") echo "checked"; ?>/><?=$MAXTEMPMONTH[$lang_idx]?> (1952+)<br />
-                                                <input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="mintempmonth" name="report" <? if ($_POST['report'] == "mintempmonth") echo "checked"; ?>/><?=$MINTEMPMONTH[$lang_idx]?> (1952+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minofmax" name="report" <? if ((!isset($_POST['SendButton'])) || ($_POST['report'] == "minofmax")) echo "checked";?> /><?=$MINOFMAX[$lang_idx]?> (1950+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxofmax" name="report" <? if ($_POST['report'] == "maxofmax") echo "checked"; ?>/><?=$MAXOFMAX[$lang_idx]?> (1950+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxofmin" name="report" <? if ($_POST['report'] == "maxofmin") echo "checked"; ?>/><?=$MAXOFMIN[$lang_idx]?> (1950+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minofmin" name="report" <? if ($_POST['report'] == "minofmin") echo "checked"; ?>/><?=$MINOFMIN[$lang_idx]?> (1950+)<br />
+                                                <input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxtempmonth" name="report" <? if ($_POST['report'] == "maxtempmonth") echo "checked"; ?>/><?=$MAXTEMPMONTH[$lang_idx]?> (1950+)<br />
+                                                <input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="mintempmonth" name="report" <? if ($_POST['report'] == "mintempmonth") echo "checked"; ?>/><?=$MINTEMPMONTH[$lang_idx]?> (1950+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxhum" name="report" <? if ($_POST['report'] == "maxhum") echo "checked"; ?>/><?=$MAXHUM[$lang_idx]?> (2002+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minhum" name="report" <? if ($_POST['report'] == "minhum") echo "checked"; ?>/><?=$MINHUM[$lang_idx]?> (2002+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxdew" name="report" <? if ($_POST['report'] == "maxdew") echo "checked"; ?>/><?=$MAXDEW[$lang_idx]?> (2002+)<br />
@@ -432,7 +466,7 @@ function getReport($min_year,$current_year, $report)
 						</tr>
 						<tr class="inv_plain_3">
 							<td>Jerusalem centeral (Generali)</td>
-							<td>1950-2004</td>
+							<td>1950-2016</td>
 							<td>yyyy-mm-dd</td>
 						</tr>
 						<tr class="inv_plain_3">

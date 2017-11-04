@@ -29,7 +29,7 @@
 	  $query = "SELECT AccRain FROM RainDailyAverage where ((month=$month) and (decade=$decade))";
 	  $result = @mysql_query($query) ;
 	  //	  or print($php_errormsg);
-	  $row = @mysql_fetch_array($result, MYSQL_ASSOC);
+	  $row = @mysql_fetch_array($result, MYSQLI_ASSOC);
 	  $average_rainTillNow = $row["AccRain"];
 	    
 	  // reading this month's average 
@@ -37,7 +37,7 @@
 	  $query = "SELECT * FROM average where (month=$month) ";
 	  $result = @mysql_query($query) ;
 		//   or print($php_errormsg);
-	  $row = @mysql_fetch_array($result, MYSQL_ASSOC) or $error = true;
+	  $row = @mysql_fetch_array($result, MYSQLI_ASSOC) or $error = true;
 	  
 		$monthAverge = new TimeRange();
 		
@@ -53,7 +53,7 @@
 	  $query = "SELECT SUM(RainyDays) FROM RainSeason where (season='$current_season') ";
 	   $result = @mysql_query($query) ;
 	   //   or print($php_errormsg);
-	   $row = @mysql_fetch_array($result, MYSQL_ASSOC) or $error = true;
+	   $row = @mysql_fetch_array($result, MYSQLI_ASSOC) or $error = true;
 		 //need to know if today is rainy and the hour is before 23 --> add 1 to the sum
 	   $seasonTillNow->set_rainydays($row["SUM(RainyDays)"]);
 	 

@@ -1,5 +1,9 @@
 <?
+define("SEPERATOR", "");
+define("HIDDENSEPERATOR", "<!---->");
+define("PERSONAL_COLD_METER", "PersonalColdMeter");
 include_once ("ini.php");
+ini_set("display_errors","Off");
 class FixedTime {
 
     var $date;
@@ -14,7 +18,7 @@ class FixedTime {
     var $hum;
     var $hum2;
     var $thw;
-    var $thws;
+    var $thsw;
     var $rain; // rain in the interval
     var $windspd;
     var $winddir;
@@ -22,6 +26,9 @@ class FixedTime {
     var $solarradiation;
     var $uv;
     var $pm10;
+    var $pm10sd;
+    var $pm25;
+    var $pm25sd;
     var $cloudiness;
     var $heatidx;
     var $rainrate;
@@ -29,6 +36,7 @@ class FixedTime {
     var $light = true;
     var $tempchange;
     var $temp2change;
+    var $dewchange;
     var $humchange;
     var $hum2change;
     var $windspdchange;
@@ -74,6 +82,8 @@ class FixedTime {
       } */
 
     function set_tempchange($temp) {
+        if ($_GET["debug"] >= 4)
+            echo "<br > set_tempchange $temp -".$this->temp.": ".number_format($temp - $this->temp, 1, '.', '');
         if ($temp == "miss")
             $this->tempchange = "miss";
         else
@@ -81,12 +91,21 @@ class FixedTime {
     }
     
     function set_temp2change($temp) {
+         if ($_GET["debug"] >= 4)
+            echo "<br > set_temp2change $temp - ".$this->temp2.": ".number_format($temp - $this->temp2, 1, '.', '');;
         if ($temp == "miss")
             $this->temp2change = "miss";
         else
             $this->temp2change = number_format($temp - $this->temp2, 1, '.', '');
     }
 
+     function set_dewchange($dew) {
+        if ($hum == "miss")
+            $this->dewchange = "miss";
+        else
+            $this->dewchange = $dew - $this->dew;
+    }
+    
     function set_humchange($hum) {
         if ($hum == "miss")
             $this->humchange = "miss";
@@ -128,9 +147,10 @@ class FixedTime {
         $this->solarradiationchange = $sr - $this->solarradiation;
     }
 
-    function set_change($temp, $hum, $windspd, $prs, $cldbase, $rainrate, $solarradiation, $uv, $temp2) {
+    function set_change($temp, $hum, $dew, $windspd, $prs, $cldbase, $rainrate, $solarradiation, $uv, $temp2) {
         $this->set_tempchange($temp);
         $this->set_temp2change($temp2);
+        $this->set_dewchange($dew);
         $this->set_humchange($hum);
         $this->set_windspdchange($windspd);
         $this->set_prschange($prs);
@@ -152,17 +172,29 @@ class FixedTime {
     function get_prschange() {
         return $this->prschange;
     }
+    
+    function get_dewchange() {
+        return $this->dewchange;
+    }
 
     function get_humchange() {
         return $this->humchange;
     }
 
     function get_tempchange() {
-        return $this->tempchange;
+        global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1)
+            return $this->tempchange;
+        else
+            return $this->temp2change;  
     }
     
     function get_temp2change() {
-        return $this->tempchange2;
+        global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1)
+            return $this->temp2change;
+        else
+            return $this->tempchange;
     }
 
     function get_srchange() {
@@ -224,6 +256,18 @@ class FixedTime {
     function set_pm10($pm10) {
         $this->pm10 = $pm10;
     }
+    
+    function set_pm25($pm25) {
+        $this->pm25 = $pm25;
+    }
+    
+    function set_pm10sd($pm10sd) {
+        $this->pm10sd = $pm10sd;
+    }
+    
+    function set_pm25sd($pm25sd) {
+        $this->pm25sd = $pm25sd;
+    }
 
     function set_thw($thw) {
         $this->thw = c_or_f($thw);
@@ -233,8 +277,8 @@ class FixedTime {
         $this->cloudiness = $cloudiness;
     }
 
-    function set_thws($thws) {
-        $this->thws = c_or_f($thws);
+    function set_thsw($thsw) {
+        $this->thsw = c_or_f($thsw);
     }
 
     function set_windspd($wind) {
@@ -292,17 +336,45 @@ class FixedTime {
     function get_time() {
         return $this->time;
     }
-
-    function get_temp() {
-        return $this->temp;
+    function get_temp_to_coldmeter(){
+        $temp_to_cold_meter = $this->get_temp();
+        $itfeels = array();
+        $itfeels = $this->get_itfeels();
+        if (!empty($itfeels[0]))
+            $temp_to_cold_meter = $itfeels[1];
+        return $temp_to_cold_meter;
     }
-
+    function get_temp($temp_unit = "") {
+         global $PRIMARY_TEMP, $current;
+          if ($this->temp2 > 1000)
+              $PRIMARY_TEMP = 1;
+          if ($PRIMARY_TEMP == 1)
+               $temp = $this->temp;
+            else
+               $temp = $this->temp2;
+         if (!empty($temp_unit)&&($current->get_tempunit()!=$temp_unit))
+         {
+             if (strpos($temp_unit, 'F') !== false){
+               $temp =  round(((9 * $temp) / 5) + 32);
+               //logger("get_temp: ".$temp_unit." ".$temp);
+             }
+            else{
+               $temp = ($temp - 32)*5/9;
+               //logger("get_temp: ".$temp_unit." ".$temp);
+             }
+         }
+        return floatval($temp);
+    }
     function get_tempunit() {
         return $this->tempunit;
     }
 
     function get_temp2() {
-        return $this->temp2;
+        global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1)
+            return $this->temp2;
+        else
+            return $this->temp;
     }
     
     function get_hum2() {
@@ -314,7 +386,11 @@ class FixedTime {
     }
 
     function get_dew() {
-        return $this->dew;
+        global $last2, $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1)
+            return $this->dew;
+        else
+            return $last2['dewpoint2'];
     }
 
     function get_hum() {
@@ -323,6 +399,18 @@ class FixedTime {
 
     function get_pm10() {
         return $this->pm10;
+    }
+    
+    function get_pm25() {
+        return $this->pm25;
+    }
+    
+    function get_pm10sd() {
+        return $this->pm10sd;
+    }
+    
+    function get_pm25sd() {
+        return $this->pm25sd;
     }
 
     function get_windspd() {
@@ -338,7 +426,11 @@ class FixedTime {
     }
 
     function get_heatidx() {
-        return $this->heatidx;
+        global $last2, $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1)
+            return $this->heatidx;
+        else
+            return $last2['heatindex2'];
     }
 
     function get_pressure() {
@@ -353,18 +445,31 @@ class FixedTime {
         return $this->cloudiness;
     }
 
-    function get_thws() {
-        return $this->thws;
+    function get_thsw() {
+        return $this->thsw;
     }
     
     function get_itfeels(){
-        if (min($this->windchill, $this->thw) < ($this->temp) && $this->temp < 23 ){
+        global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1)
+           $temp_to_mompare_to = $this->temp;
+        else
+           $temp_to_mompare_to = $this->temp2;
+        if (max($this->HeatIdx, $this->thw) > ($temp_to_mompare_to)&&($this->solarradiation > 200)){
+            $itfeels_state = "heatindex";
+            $itfeels = max($this->HeatIdx, $this->thw);
+        }
+        else if (($this->solarradiation > 200)&&($this->thsw > $temp_to_mompare_to)){
+            $itfeels_state = "thsw";
+            $itfeels = $temp_to_mompare_to + number_format(0.4*($this->thsw - $temp_to_mompare_to), 1, '.', '');
+        }
+        else if (min($this->windchill, $this->thw) < ($temp_to_mompare_to) && ($temp_to_mompare_to < 20 ) && ($this->thw != 0) && ($this->windchill != 0)){
             $itfeels_state = "windchill";
             $itfeels = min($this->windchill, $this->thw);
         }
-        else if (max($this->HeatIdx, $this->thw) > ($this->temp)){
-            $itfeels_state = "heatindex";
-            $itfeels = max($this->HeatIdx, $this->thw);
+        else{
+            $itfeels_state = "neutral";
+            $itfeels = $temp_to_mompare_to;
         }
         return array($itfeels_state, $itfeels);
     }
@@ -491,26 +596,52 @@ class Period {
     }
 
     function get_hightemp() {
-        return $this->hightemp->get_value();
+        global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1)
+            return $this->hightemp->get_value();
+        else 
+            return $this->hightemp2->get_value();
+        
     }
     
      function get_hightemp2() {
-         
-        return apc_fetch('hightemp2');
-        return $this->hightemp2->get_value();
+         global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1) 
+            return $this->hightemp2->get_value();
+        else
+            return $this->hightemp->get_value();
     }
 
     function get_highbar() {
         return number_format($this->highbar->get_value(), 1);
     }
 
-    function get_lowtemp() {
-        return $this->lowtemp->get_value();
-    }
+    function get_lowtemp($temp_unit = "") {
+        global $PRIMARY_TEMP, $current;
+        if ($PRIMARY_TEMP == 1)
+            $temp =  $this->lowtemp->get_value();
+        else
+             $temp = $this->lowtemp2->get_value();
+        if (!empty($temp_unit)&&($current->get_tempunit()!=$temp_unit))
+         {
+             if ($temp_unit == '&#176;F'){
+               $temp =  round(((9 * $temp) / 5) + 32);
+               //logger("get_temp: ".$temp_unit." ".$temp);
+             }
+            else{
+               $temp = ($temp - 32)*5/9;
+               //logger("get_temp: ".$temp_unit." ".$temp);
+             }
+         }
+        return $temp;
+     }
     
      function get_lowtemp2() {
-        return apc_fetch('lowtemp2');
-        return $this->lowtemp2->get_value();
+         global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1)
+            return $this->lowtemp2->get_value();
+        else
+             return $this->lowtemp->get_value();
     }
 
     function get_highhum() {
@@ -566,18 +697,32 @@ class Period {
     }
 
     function get_hightemp_time() {
-        if (strlen($this->hightemp->get_time()) < 5)
-            return "0" . $this->hightemp->get_time();
-        else
+        global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1){
+            if (strlen($this->hightemp->get_time()) < 5)
+                return "0" . $this->hightemp->get_time();
             return $this->hightemp->get_time();
-    }
+        }
+        else{
+            if (strlen($this->hightemp2->get_time()) < 5)
+                return "0".$this->hightemp2->get_time();
+            return $this->hightemp2->get_time();
+        }
+     }
     
     function get_hightemp2_time() {
-        return apc_fetch('hightemp2_time');
-        if (strlen($this->hightemp2->get_time()) < 5)
-            return "0" . $this->hightemp->get_time();
-        else
+        global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1){
+            if (strlen($this->hightemp2->get_time()) < 5)
+                return "0".$this->hightemp2->get_time();
             return $this->hightemp2->get_time();
+        }
+        else{
+            if (strlen($this->hightemp->get_time()) < 5)
+                return "0".$this->hightemp->get_time();
+            return $this->hightemp->get_time();
+        }
+            
     }
 
     function get_highbar_time() {
@@ -585,28 +730,49 @@ class Period {
     }
 
     function get_lowtemp_time() {
-        if (strlen($this->lowtemp->get_time()) < 5)
-            return "0" . $this->lowtemp->get_time();
-        else
+        global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1){
+            if (strlen($this->lowtemp->get_time()) < 5)
+                return "0" . $this->lowtemp->get_time();
             return $this->lowtemp->get_time();
+        }
+        else{
+            if (strlen($this->lowtemp2->get_time()) < 5)
+                return "0" . $this->lowtemp2->get_time();
+            return $this->lowtemp2->get_time();
+        }
+        
     }
     
     function get_lowtemp2_time() {
-        return apc_fetch('lowtemp2_time');
-        if (strlen($this->lowtemp2->get_time()) < 5)
-            return "0" . $this->lowtemp2->get_time();
-        else
+        global $PRIMARY_TEMP;
+        if ($PRIMARY_TEMP == 1){
+            if (strlen($this->lowtemp2->get_time()) < 5)
+                return "0" . $this->lowtemp2->get_time();
             return $this->lowtemp2->get_time();
+        }
+        else {
+            if (strlen($this->lowtemp->get_time()) < 5)
+                return "0" . $this->lowtemp->get_time();
+            return $this->lowtemp->get_time();
+        }
+        
     }
 
     function get_highhum_time() {
         return $this->highhum->get_time();
     }
+    
+    function get_highdew_time() {
+        return $this->highdew->get_time();
+    }
 
     function get_lowhum_time() {
         return $this->lowhum->get_time();
     }
-
+    function get_lowdew_time() {
+        return $this->lowdew->get_time();
+    }
     function get_lowwindchill_time() {
         return $this->lowwindchill->get_time();
     }
@@ -846,7 +1012,9 @@ class ForecastDay extends TimeRange {
     var $temp_morning;
     var $temp_day;
     var $temp_night;
-
+    var $hum_morning;
+    var $hum_day;
+    var $hum_night;
     function get_temp_morning() {
         return $this->temp_morning;
     }
@@ -869,6 +1037,30 @@ class ForecastDay extends TimeRange {
 
     function set_temp_night($temp_night) {
         $this->temp_night = $temp_night;
+    }
+    
+    function get_hum_morning() {
+        return $this->hum_morning;
+    }
+
+    function set_hum_morning($hum_morning) {
+        $this->hum_morning = $hum_morning;
+    }
+
+    function get_hum_day() {
+        return $this->hum_day;
+    }
+
+    function set_hum_day($hum_day) {
+        $this->hum_day = $hum_day;
+    }
+
+    function get_hum_night() {
+        return $this->hum_night;
+    }
+
+    function set_hum_night($hum_night) {
+        $this->hum_night = $hum_night;
     }
 
 }
@@ -1025,7 +1217,7 @@ function getTokFromFile($file) {
 
 // end func ()
 
-function getNextWord(&$tok, $intNextWord) {
+function getNextWord(&$tok, $intNextWord, $title) {
 
     if ($_GET['debug'] >= 4)
         echo "SearchingNextWord = " . $intNextWord . "<br>";
@@ -1042,7 +1234,7 @@ function getNextWord(&$tok, $intNextWord) {
         }
     }
     if ($_GET['debug'] >= 4)
-        echo "<b>tok found = " . $tok . "</b><br>";
+        echo "<b>$title tok found = " . $tok . "</b><br>";
     return $tok;
 }
 
@@ -1091,11 +1283,6 @@ function date_diff_hours($str_start, $str_end) {
     $nseconds = $nseconds % 3600;
     $nminutes = round($nseconds / 60); // One minute has 60 seconds, duh!
     $nseconds = $nseconds % 60;
-    /*
-      date_diff("1978-04-26", "2003-01-01");
-      date_diff("1984-10-24 15:32:25", "2003-01-01");
-      date_diff("2001-10-28 17:32:25", "2003-01-01 12:00:18");
-     */
     return $nhours;
 }
 
@@ -1317,15 +1504,18 @@ function isRaining()
         if (SNOW_IS_MELTING == 1)
             return false;
 	if (($current->get_rainrate() !== "0.0")&& ($current->get_rainrate() !== "")&& ($current->get_rainrate() > 0))
+        {
+                apc_store('lastSentRainStarted', date('Y-m-d'));
 		return true;
+        }
 	if (($now->get_rain() != "0.00")&& ($now->get_rain() != "")&& ($now->get_rain() > 0) && ($current->get_windspd() > 0))	return true;
 	return false;
 }
 
 function isSnowing()
 {
-	global $current;
-	return ((isRaining()&&($current->get_temp() < 2))||(IS_SNOWING == 1));
+	global $current, $template_routing;
+	return (((isRaining())&&($current->get_temp('&#176;c') < 1.5))||(stristr($template_routing, 'snow'))||(IS_SNOWING == 1));
 }
 
 
@@ -1392,27 +1582,32 @@ function get_file_string($full_search_url){
 }  
 
  function fillPastTime (&$pastTime, $found){
-                global $tok, $current;
+                global $tok, $current, $PRIMARY_TEMP;
 				if ($_GET['debug']  >= 2) {
 					echo "<br>**** fillingPastTime ".$pastTime->get_time()." ****<br>";
 				}
                 if ($found) {
-                    $pastTime->set_temp(getNextWord($tok, 1));
-                    $pastTime->set_hum(getNextWord($tok, 3));
-                    $pastTime->set_dew(getNextWord($tok, 1));
-                    $pastTime->set_windspd(getNextWord($tok, 1));
-                    $pastTime->set_winddir(getNextWord($tok, 1));
-                    $pastTime->set_pressure(getNextWord($tok, 8));
+                    $pastTime->set_temp(getNextWord($tok, 1, "temp"));
+                    $pastTime->set_hum(getNextWord($tok, 3, "hum"));
+                    $pastTime->set_dew(getNextWord($tok, 1, "dew"));
+                    $pastTime->set_windspd(getNextWord($tok, 1, "windspd"));
+                    $pastTime->set_winddir(getNextWord($tok, 1, "winddir"));
+                    $pastTime->set_windchill(getNextWord($tok, 4, "windchill"));
+                    $pastTime->set_heatidx(getNextWord($tok, 1, "heatidx"));
+                    $pastTime->set_thw(getNextWord($tok, 1, "thw"));
+                    $pastTime->set_thsw(getNextWord($tok, 1, "thsw"));
+                    $pastTime->set_pressure(getNextWord($tok, 1, "pressure"));
                     $pastTime->set_cloudbase((($pastTime->get_temp()-$pastTime->get_dew()) * 125) + ELEVATION);
-                    $pastTime->set_rain(getNextWord($tok, 1));
-                    $pastTime->set_rainrate(getNextWord($tok, 1));
-                    $pastTime->set_solarradiation(getNextWord($tok, 1));
-                    $pastTime->set_uv(getNextWord($tok, 3));
-                    $pastTime->set_temp2(getNextWord($tok, 11));
-                    $pastTime->set_hum2(getNextWord($tok, 1));
-
-                    $pastTime->set_change($current->get_temp(), 
+                    $pastTime->set_rain(getNextWord($tok, 1, "rain"));
+                    $pastTime->set_rainrate(getNextWord($tok, 1, "rainrate"));
+                    $pastTime->set_solarradiation(getNextWord($tok, 1, "solarradiation"));
+                    $pastTime->set_uv(getNextWord($tok, 3, "uv"));
+                    $pastTime->set_temp2(getNextWord($tok, 11, "temp2"));
+                    $pastTime->set_hum2(getNextWord($tok, 1, "hum2"));
+                    if ($PRIMARY_TEMP == 1)
+                        $pastTime->set_change($current->get_temp(), 
                                             $current->get_hum(), 
+                                            $current->get_dew(), 
                                             $current->get_windspd(), 
                                             $current->get_pressure(),
                                             $current->get_cloudbase(),
@@ -1420,6 +1615,17 @@ function get_file_string($full_search_url){
                                             $current->get_solarradiation(),
                                             $current->get_uv(),
                                             $current->get_temp2());
+                    else if ($PRIMARY_TEMP == 2)
+                        $pastTime->set_change($current->get_temp2(), 
+                                            $current->get_hum(),
+                                            $current->get_dew(), 
+                                            $current->get_windspd(), 
+                                            $current->get_pressure(),
+                                            $current->get_cloudbase(),
+                                            $current->get_rainrate(),
+                                            $current->get_solarradiation(),
+                                            $current->get_uv(),
+                                            $current->get_temp());
                 }
                 else{
                     $pastTime->set_temp(null);
@@ -1427,8 +1633,8 @@ function get_file_string($full_search_url){
                     $pastTime->set_windspd(null);
                     $pastTime->set_winddir(null);
                     $pastTime->set_pressure(null);
-					$pastTime->set_rainrate(null);
-                    $pastTime->set_change(null, null, null, null, null, null, null, null);
+		    $pastTime->set_rainrate(null);
+                    $pastTime->set_change(null, null, null, null, null, null, null, null, null);
                 }
  }
 
@@ -1446,12 +1652,12 @@ function getRainAcc($thedate, $fromTime, $toTime) {
 
             for ($rainTime = $fromTime, $rainAcc = 0, $rainDate = $thedate; (($rainTime != $toTime) ) || ((ltrim($rainDate) != $datenotime) && ($rainTime == $toTime)); $rainDate = getNextWordWith($tok, "/"), $rainTime = getNextWordWith($tok, ":")) {
 
-                $rainAcc = $rainAcc + getNextWord($tok, 16);
+                $rainAcc = $rainAcc + getNextWord($tok, 16, "rainAcc");
                 array_push($rainaccA, array('date' => $rainDate, 'time' => $rainTime, 'rainacc' => $rainAcc));
                 if ($_GET['debug'] >= 2)
                     echo "<br>'" . $rainDate . "' " . $rainTime . " : " . $rainAcc;
             }
-            $rainAcc = $rainAcc + getNextWord($tok, 16); // the last line of accumulation
+            $rainAcc = $rainAcc + getNextWord($tok, 16, "rainAcc"); // the last line of accumulation
             array_push($rainaccA, array('date' => $rainDate, 'time' => $rainTime, 'rainacc' => $rainAcc));
             if ($_GET['debug'] >= 2) {
                 //echo "<br>".$rainTime."<>".$toTime." ".$rainDate."<>".$datenotime;
@@ -1615,10 +1821,10 @@ function getDepFromNorm($month) {
     else
         $tok = getTokFromFile(FILE_THIS_YEAR);
     getNextWordWith($tok, "---");
-    getNextWord($tok, 6); // Dep.From NORM OF January
+    getNextWord($tok, 6, "Dep.From NORM"); // Dep.From NORM OF January
     $dep = $tok;
     for ($i = 1; $i < $month; $i++) {
-        $dep = getNextWord($tok, 16); // Next Dep.From NORM OF January
+        $dep = getNextWord($tok, 16, "Dep.From NORM"); // Next Dep.From NORM OF January
     }
     return $dep;
 }
@@ -1628,11 +1834,34 @@ function getPrevMonthRain() {
         echo "<br> searching getPrevMonthRain for Rain <br>";
     $tok = getTokFromFile(FILE_PREV_YEAR);
     getNextWordWith($tok, "---");
-    getNextWord($tok, 2);
+    getNextWord($tok, 2, "MonthRain");
     getNextWordWith($tok, "---");
-    getNextWord($tok, 8); // RAIN
+    getNextWord($tok, 8, "MonthRain"); // RAIN
     return $tok;
 }
+function getWindInfo($windspeed, $lang_idx){
+     global $WEAK_WINDS, $MODERATE_WINDS, $STRONG_WINDS, $EXTREME_WINDS;
+     if ($windspeed > 30){
+                $windtitle=$EXTREME_WINDS[$lang_idx];
+                $wind_class="high_wind";
+       }
+
+      else if ($windspeed > 20){
+                $windtitle=$STRONG_WINDS[$lang_idx];
+                $wind_class="high_wind";
+       }
+
+      else if ($windspeed > 10){
+                $windtitle=$MODERATE_WINDS[$lang_idx];
+                $wind_class="moderate_wind";
+       }
+
+      else{
+                $windtitle=$WEAK_WINDS[$lang_idx];
+                $wind_class="light_wind";
+       }
+       return array('windtitle' => $windtitle, 'wind_class' => $wind_class);
+ }
 
 function send_SMS($number, $text) {
     
@@ -1699,9 +1928,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     if (($source !== EMAIL_ADDRESS) || (isHeb()))
         $genTxtToBuild .= " dir=\"rtl\" ";
     $genTxtToBuild .= "><head><link href=\"" . BASE_URL . "/main.php?lang=%d\" rel=\"stylesheet\" type=\"text/css\"> </head><body><div style=\"padding:1em\" class=\"topbase slogan float\"><img align=\"absmiddle\" src=\"" . BASE_URL . "/" . $header_pic . "\" />&nbsp;%s</div><br /><p><div style=\"padding:1em\" class=\"clear float inv_plain_3 big\">%s</div></p>";
-    if ($target != ME)
-        $genTxtToBuild .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$HEB] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a></footer></div>";
-    $genTxtToBuild .= "</body></html>";
+    
     array_push($textToSend, sprintf($genTxtToBuild, $EN, $WEBSITE_TITLE[$EN], is_array($messageBody) ? $multiLangBody[$EN] : $messageBody ));
     array_push($textToSend, sprintf($genTxtToBuild, $HEB, $WEBSITE_TITLE[$HEB], is_array($messageBody) ? $multiLangBody[$HEB] : $messageBody));
     //$textToSend = '=?UTF-8?B?'.base64_encode($textToSend).'?=';
@@ -1743,7 +1970,9 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     logger("Sending mail: " . $source."(".$sourcename.")"." --> " . $target . " - " . implode(" / ", $subject));
     foreach ($EmailsToSend as $email) {
         //echo "sending to $email...<br/>body=$textToSend<br/>Subject=$subject<br/>from=$source";
-        $mail->Body = $textToSend[$email['lang']];
+        $body = $textToSend[$email['lang']];
+        $body .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$email['lang']] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>.  <a href=\"" . BASE_URL . "/unsubscribe.php?email=".$email."\">Unsubscribe</a> </footer></div></body></html>";
+        $mail->Body = $body;
         $mail->AltBody = strip_tags($textToSend[$email['lang']]);
         $mail->AddAddress($email['email'], "");
         $subjectToMail = "";
@@ -1778,15 +2007,19 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
 }
 
 /**********************************************************************************************/
-function get_img_tag($change_in_param) {
+function get_img_tag($change_in_param, $html = true) {
     global $GOING_UP, $GOING_DOWN, $lang_idx;
+    if (!$html)
+        return "";
     if ($change_in_param > 0)
-        return "<div class='spriteB up invfloat' title='" . $GOING_UP[$lang_idx] . "'></div>&nbsp;";
+        return "<div class='spriteB up invfloat' title='" . $GOING_UP[$lang_idx] . "'></div>";
     else if ($change_in_param < 0)
-        return "<div class='spriteB down invfloat' title='" . $GOING_DOWN[$lang_idx] . "'></div>&nbsp;";
+        return "<div class='spriteB down invfloat' title='" . $GOING_DOWN[$lang_idx] . "'></div>";
 }
 
-function get_color_tag($change_in_param) {
+function get_color_tag($change_in_param, $html = true) {
+    if (!$html)
+        return number_format(abs(($change_in_param)), 1, '.', '');
     if ($change_in_param > 0)
         return "<span>" . number_format(abs(($change_in_param)), 1, '.', '') . "</span>";
     else if ($change_in_param < 0)
@@ -1796,7 +2029,9 @@ function get_color_tag($change_in_param) {
     //echo number_format($change_in_param,1, '.', ''),$current->get_tempunit(),"</font>";
 }
 
-function get_font_tag($change_in_param) {
+function get_font_tag($change_in_param, $html = true) {
+    if (!$html)
+        return abs(($change_in_param));
     if ($change_in_param > 0)
         return "<font class=\"high\">" . abs(($change_in_param)) . "</font>";
     else if ($change_in_param < 0)
@@ -1805,8 +2040,11 @@ function get_font_tag($change_in_param) {
         return ($change_in_param);
 }
 
-function get_param_tag($change_in_param) {
-    return (get_img_tag($change_in_param) . "<strong>" . get_color_tag($change_in_param) . "</strong>");
+function get_param_tag($change_in_param, $html = true, $fulldisplay = true) {
+    if ($fulldisplay)
+        return (get_img_tag($change_in_param, $html).get_color_tag($change_in_param, $html));
+    else
+        return get_img_tag($change_in_param, $html);
 }
 
 function get_align() {
@@ -1900,7 +2138,29 @@ function getFireIdx($t850, $t700, $dp850) {
     //echo "A=".$A."B=".$B;
     return ($A + $B);
 }
+       ///////////////////////////////////////////////////////
+// radiosonde link
+///////////////////////////////////////////////////////
+function getRadioSondeLink()
+{
+	global $hour, $year,  $month, $day, $hoursonde; 
 
+	if ($hour<=14)	
+		$hoursonde = 00;  
+	else	
+		$hoursonde = 12; 
+	$day_radio = $day; 
+	$month_radio = $month;  
+	if ($hour<=3){	
+		$hoursonde = 12;    
+		$day_radio = getMinusDayDay(1);    
+		$month_radio = getMinusDayMonth (1);   
+	}  
+	$stnNum = 40179;//first station 40179 bet dagan//2nd station: 40265 OJMF Mafraq //3rd station : 62337 ElArish  
+	$radiosonde_link = sprintf ("http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%02sALIST&YEAR=%d&MONTH=%02d&FROM=%02d%02d&TO=%02d%02d&STNM=%d","%3", $year, $month_radio, $day_radio, $hoursonde, $day_radio, $hoursonde, $stnNum);
+	//echo $radiosonde_link;
+	return ($radiosonde_link);
+}
 /////////////////////////////////////////////////////////////////////////////////////////////
 // URL handling
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -1983,8 +2243,8 @@ function http_implode($arrayInput) {
 /////////////////////////////////////////////////////////////////////////////////
 function update_action($action, $extrainfoS, $messageTitle) {
     global $pic, $hour, $min, $CURRENT_SIG_WEATHER, $HEB, $EN, $messageAction, $actionActive, $EmailSubject, $link;
-    $message = array("<div class=\"float\">" . $hour . ":" . $min . "<br/>" . "</div><div class=\"float loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$EN]&nbsp; <strong>" . $messageTitle[$EN] . "</strong><div class=\"loading float big\">&nbsp;{$extrainfoS[$EN]}<img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$EN]\" width=\"600px\" border=\"0\" /></div></div>",
-        "<div class=\"float\">" . $hour . ":" . $min . "<br/>" . "</div><div class=\"float loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp; <strong>" . $messageTitle[$HEB] . "</strong><div class=\"loading float big\">&nbsp;{$extrainfoS[$HEB]}<img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$HEB]\" width=\"600px\" border=\"0\" /></div></div>");
+    $message = array("<div class=\"big\">" .$date . "<br/>" . "</div><div class=\"big loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$EN]&nbsp;<br/> <strong>" . $messageTitle[$EN] . "</strong><div class=\"loading  big\">&nbsp;{$extrainfoS[$EN][0]}<br/><br/><img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$EN]\" width=\"600px\" border=\"0\" /></div></div>",
+        "<div class=\" big\">" . $dateInHeb . "<br/>" . "</div><div class=\" big loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<br/> <strong>" . $messageTitle[$HEB] . "</strong><div class=\"loading  big\">&nbsp;{$extrainfoS[$HEB][0]}<br/><br/><img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$HEB]\" width=\"600px\" border=\"0\" /></div></div>");
     if (!isActionAlreadyActivated($action)) {
         $sent = 1;
         $result = db_init("UPDATE sendmailsms SET Sent=$sent, lastSent=NOW() WHERE (Action='$action')");
@@ -2003,7 +2263,7 @@ function isActionAlreadyActivated($action) {
     global $messageAction, $link;
 
     $result = db_init("SELECT * FROM sendmailsms WHERE (Action=?)", $action);
-    $row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $row = @mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
     $sent = $row["Sent"];
     @mysqli_close($link);
     if ($sent == 0)
@@ -2016,7 +2276,8 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
 
     if (($param == "temp") && ($_GET['tempunit'] == 'F'))
         $extdata = number_format(($extdata - 32) * (5 / 9), 1, '.', '');
-
+    if ($month == 0 || $year == 0)
+        return false;
     $boolbroken = true;
 
     if ($highorlow == "high") {
@@ -2045,9 +2306,13 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
 
     $record_col = "{$period}_{$highorlow}";
     $date_col = "{$record_col}_date";
-    $result = db_init("SELECT * FROM extremes where (param=?)", $param);
-    $row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
-    global $link;
+	$row = apc_fetch("extreme_".$param);
+	if (!$row){
+		$result = db_init("SELECT * FROM extremes where (param=?)", $param);
+		$row = @mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
+		apc_store("extreme_".$param, $row);
+		global $link;
+	}
     $old_date = $row["$date_col"];
     if ($old_date != $datenotime) //already updated --> take from old_record & old_date columns
         $updateMessage = true;
@@ -2061,9 +2326,11 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
       at the first entry to the table the old record is moved to the old_record/old_time columns
      */
     if ($updateMessage) {
-        $query = "UPDATE extremes SET $record_col='$extdata', $date_col='$datenotime', old_{$highorlow}_date='$old_date', old_{$highorlow}_record=$old_record WHERE (param='$param')";
-        if (!mysqli_query($link, $query))
-            logger(sprintf("Error in setBrokenData: %s\n", mysqli_error($link)));
+		$new_extreme = array($record_col => $extdata, $date_col=>$datenotime, 'old_'.$highorlow => $old_date, 'old_'.$highorlow.'_record'=>$old_record);
+		apc_store("extreme_".$param, $new_extreme);
+                $query = "UPDATE extremes SET $record_col='$extdata', $date_col='$datenotime', old_{$highorlow}_date='$old_date', old_{$highorlow}_record=$old_record WHERE (param='$param')";
+                if (!mysqli_query($link, $query))	
+                    logger(sprintf("Error updating in setBrokenData: %s ".$query, mysqli_error($link)));
     }
     array_push($messageBroken, array("<div style=\"display:none;text-align:left;paddign:0.3em\" class=\"grad\">$LAST_RECORD[$EN]: <strong>$old_record</strong> <br />$ON[$EN] $old_date</div>",
         "<div style=\"display:none;text-align:right;padding:0.3em\" class=\"grad\">$LAST_RECORD[$HEB]: <strong>$old_record</strong> <br />$ON[$HEB] $old_date </div>"));
@@ -2098,6 +2365,7 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
 			determine if extreme should be sent
     ******************/
  function ShouldSendMsg($highorlow, $param, $period) {
+    return false;
     global $month, $day, $messageBroken;
     //echo "<br>count($messageBroken) = ".count($messageBroken);
     // do not send yearly records in January
@@ -2261,7 +2529,7 @@ function getXMLInArray($xmlpath){
 	// loop through the file and parse baby!    
 	while ($data = fread($fp, 4096)) {       
 		if (!($data = utf8_encode($data))) {           
-			echo 'ERROR'."\n";      
+			logger('ERROR in getXMLInArray'."\n");      
 		}       
 		if (!xml_parse($xml_parser, $data, feof($fp))) {           
 		logger(sprintf( "XML error: %s at line %d\n\n",           
@@ -2331,7 +2599,7 @@ function get_arrow(){
 }
 function get_name ($field_name)
 {
-	global $lang_idx, $VVHOT, $LHOT, $LCOLD, $VVCOLD, $VHOT, $HOT, $NHOTNCOLD, $COLD, $VCOLD, $SPRING, $SUMMER, $AUTOMN, $WINTER, $HOTORCOLD_Q, $FSEASON;
+	global $lang_idx, $VVHOT, $LHOT, $LCOLD, $VVCOLD, $VHOT, $HOT, $COLDISH, $NHOTNCOLD, $COLD, $VCOLD, $SPRING, $SUMMER, $AUTOMN, $WINTER, $HOTORCOLD_Q, $FSEASON;
 	if ($field_name == "VHot")
 		return $VHOT[$lang_idx];
 	else if ($field_name == "VVHot")
@@ -2346,6 +2614,8 @@ function get_name ($field_name)
 		return $HOT[$lang_idx];
 	else if ($field_name == "Average")
 		return $NHOTNCOLD[$lang_idx];
+        else if ($field_name == "Cool")
+		return $COLDISH[$lang_idx];
 	else if ($field_name == "Cold")
 		return $COLD[$lang_idx];
 	else if ($field_name == "VCold")
@@ -2365,7 +2635,7 @@ function get_name ($field_name)
 }
 
 function getClothName($current_feeling){
-    global $lang_idx, $VVHOT, $LHOT, $LCOLD, $VVCOLD, $VHOT, $HOT, $NHOTNCOLD, $COLD, $VCOLD, $SPRING, $SUMMER, $AUTOMN, $WINTER, $HOTORCOLD_Q, $FSEASON;
+    global $lang_idx, $VVHOT, $LHOT, $LCOLD, $VVCOLD, $VHOT, $COLDISH, $HOT, $NHOTNCOLD, $COLD, $VCOLD, $SPRING, $SUMMER, $AUTOMN, $WINTER, $HOTORCOLD_Q, $FSEASON;
     $cloth_name = "";
     if ($current_feeling == $VVHOT[$lang_idx])
     {$cloth_name = "shorts_n2.png";}
@@ -2375,6 +2645,8 @@ function getClothName($current_feeling){
     {$cloth_name = "shorts_n2.png";}
     else if ($current_feeling == $LHOT[$lang_idx])
     {$cloth_name = "tshirt_n2.png";}
+    else if ($current_feeling == $COLDISH[$lang_idx])
+    {$cloth_name = "jacketlight_n2.png";}
     else if ($current_feeling == $NHOTNCOLD[$lang_idx])
     {$cloth_name = "longsleeves_n2.png";}
     else if ($current_feeling == $LCOLD[$lang_idx])
@@ -2476,31 +2748,40 @@ function getPageTitle()
 
 }
 
-function getClothTitle($imagename)
+function getClothTitle($imagename, $temp)
 {
-	global $lang_idx, $HEB, $EN, $TSHIRT, $JACKET, $COAT, $RAINCOAT, $UMBRELLA, $SWEATER, $SWEATSHIRT, $SHORTS, $LONGSLEEVES, $LIGHTJACKET, $LIGHTCOAT, $LAYERS_BELOW2, $LAYERS_BELOW3, $current;
+	global $lang_idx, $HEB, $EN, $TSHIRT, $JACKET, $COAT, $RAINCOAT, $UMBRELLA, $SWEATER, $SWEATSHIRT, $SHORTS, $LONGSLEEVES, $LIGHTJACKET, $LIGHTCOAT,$LAYERS_BELOW, $LAYERS_BELOW2, $LAYERS_BELOW3, $current;
 	
 	if (stristr(strtolower($imagename), 'tshirt'))
 		$title = $TSHIRT[$lang_idx];
 	else if (stristr(strtolower($imagename), 'jacketlight'))
 		$title = $LIGHTJACKET[$lang_idx];
-	else if (stristr(strtolower($imagename), 'jacket'))
+	else if (stristr(strtolower($imagename), 'jacket')){
 		$title = $JACKET[$lang_idx];
+                if ($temp < 16)
+                    $title .= ", ".$LAYERS_BELOW2[$lang_idx];
+                 else if ($temp < 20)
+                    $title .= ", ".$LAYERS_BELOW[$lang_idx];
+        }
 	else if (stristr(strtolower($imagename), 'coatlight'))
 		$title = $LIGHTCOAT[$lang_idx];
 	else if (stristr(strtolower($imagename), 'coatrain')){
 		$title = $RAINCOAT[$lang_idx];
-                 if ($current->get_temp() < 10)
+                 if ($temp < 10)
                     $title .= ", ".$LAYERS_BELOW3[$lang_idx];
-                else
+                else if ($temp < 20)
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
+                else
+                    $title .= ", ".$LAYERS_BELOW[$lang_idx];
         }
 	else if (stristr(strtolower($imagename), 'coat')){
 		$title = $COAT[$lang_idx];
-                 if ($current->get_temp() < 10)
+                 if ($temp < 10)
                     $title .= ", ".$LAYERS_BELOW3[$lang_idx];
-                else
+                else if ($temp < 20)
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
+                else
+                    $title .= ", ".$LAYERS_BELOW[$lang_idx];
         }        
 	else if (stristr(strtolower($imagename), 'umbrella'))
 		$title = $UMBRELLA[$lang_idx];
@@ -2519,6 +2800,7 @@ function getClothTitle($imagename)
 
 function db_init($query, $param) {
     global $link, $stmt, $error_db;
+    $result = array();
     $link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
     if (mysqli_connect_errno()) {
         printf("Connect failed: %s\n", mysqli_connect_error());
@@ -2534,8 +2816,9 @@ function db_init($query, $param) {
         if (!$stmt->prepare($query)) {
             logger("query=" . $query . " param=" . $param . "; error in prepare: " . $stmt->error);
         }
-        if ((!empty($param)) || (is_int($param))) {
+        if ((!empty($param)) || (is_int($param)) || ($param === "0")) {
             $param = $link->real_escape_string($param);
+			//logger("in db_init:". $query." ".$param);
             if (is_float($param))
                 $res = $stmt->bind_param('d', $param);
             else if (is_numeric($param))
@@ -2549,7 +2832,7 @@ function db_init($query, $param) {
         if (!$res)
             logger("query=" . $query . " param=" . $param . "; error in execute: " . $stmt->error);
         $result = $stmt->get_result();
-        return $result;
+        return array("result" =>$result, "error" =>$stmt->error, "query" =>$query, "affectedrows" => $link->affected_rows);
     }
     return null;
 }
@@ -2577,16 +2860,25 @@ function ieversion() {
 }
 
 function getSurvey($surveyid) {
-    $query = "SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id and s.survey_id=?";
-    $result = db_init($query, $surveyid);
-    return $result;
+    
+    $survey = apc_fetch("survey".$surveyid);
+    if (!$survey){
+        $query = "SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id and s.survey_id=? order by field_id DESC";
+        $result = db_init($query, $surveyid);
+        $survey = Array();
+        while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
+            array_push($survey, array('field_id' => $line["field_id"], 'name' => $line["name"], 'field_name' => $line["field_name"]));
+        }
+        apc_store("survey".$surveyid, $survey, 86400);
+    }
+    return $survey;
 }
 
 function getSpecificChat($idx) {
     global $lang_idx, $HEB, $link;
 
-    $result = db_init("SELECT * From chat where idx=" . $idx);
-    while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    $result = db_init("SELECT * From chat where idx=?", $idx);
+    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
         $lines++;
         $linesInColumn++;
         $col = 0;
@@ -2608,13 +2900,13 @@ function getSpecificChat($idx) {
 
 
 // Free resultset 
-    @mysql_free_result($result);
+    @mysqli_free_result($result);
     @mysqli_close($link);
 }
 
 function getCurrentChat($searchname, $filter_is_on, $startLine, $limitLines, $timestamp_from, $timestamp_to, $category) {
 
-    global $lang_idx, $HEB, $NEED_TO_REGISTER, $REPLY, $REPLY_EXP, $link;
+    global $lang_idx, $HEB, $NEED_TO_REGISTER, $REPLY, $REPLY_EXP, $link, $REPLYES;
 
 //echo "limitlines:".$limitLines;
 
@@ -2638,11 +2930,11 @@ function getCurrentChat($searchname, $filter_is_on, $startLine, $limitLines, $ti
         echo ($startLine + 1) . " - " . ($startLine + $limitLines) . "<br />";
     }
     //echo $query ;
-    $result = db_init($query);
+    $result = db_init($query, "");
 //if ($_SESSION['loggedin'] == "true")
 //	echo "<div class=\"indexlow\" style=\"width:100%;\"></div>";
     /* Printing results in HTML */
-    while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
         $lines++;
         $linesInColumn++;
         $col = 0;
@@ -2668,14 +2960,20 @@ function getCurrentChat($searchname, $filter_is_on, $startLine, $limitLines, $ti
             print "<div class=\"filter_icon" . $line["Category"] . "\"></div>"; // category icon
             print "<div class=\"pic_user\">";
             print "<div class=\"avatar " . $line["user_icon"] . "\"></div>";
-            print "<h3><div class=\"postusername\">" . $name . "</div><div class=\"datestart\">".$dateInLineStart."</div></h3>";
+            print "<h3><div class=\"postusername\">" . $name . "</div><div class=\"datestart\">".$dateInLineStart."</div><div class=\"replyesnumber\">".$REPLYES[$lang_idx]." #" . ($line["count"]-1) . "</div></h3>";
             print "</div>"; // user
             if ($_SESSION['loggedin'] == "false")
                 $onclickmain = "onclick='alert(\"" . $NEED_TO_REGISTER[$lang_idx] . "\")'";
             else
                 $onclickmain = "onclick='toggle(\"replydiv" . ($line["idx"]) . "\");$(\"#current_post_idx\").val(" . $line["idx"] . ");moveDivInOut($(this).parent().children(\x22.chatmainbody\x22).get(0));$(\"#subject_icon\").addClass($(\"#current_forum_filter\").val());initTinyMCE(" . $lang_idx . ")'";
-
-            print "\n\t\t<div class=\"chatmainbody\" >" . urldecode($line["body"]) . "</div>";
+            $fullbody = urldecode($line["body"]);
+            if ($line["length"] > 3000){
+                $nodes = explode (HIDDENSEPERATOR, $fullbody);
+                $shortbody = $nodes[0]."...<a id=\"expandclick\" href=\"javascript:void()\" onclick=\"expand({$line["idx"]})\">המשך".get_arrow()."</a>";
+                print "\n\t\t<div style=\"display:none\" class=\"alternatebody\" >" . $fullbody . " <a id=\"contractclick\" href=\"javascript:void()\" onclick=\"contract({$line["idx"]})\"\">סגור</a></div>";
+                $fullbody = $shortbody;
+            }
+            print "\n\t\t<div class=\"chatmainbody\" >" . $fullbody . "</div>";
             print "\n\t\t<div class=\"chatdate\" >";
 
             if (($line["sticky"]) == 1)
@@ -2700,10 +2998,10 @@ function getWindStatus($lang_idx) {
     if (($current->get_windspd() == 0) && ($min10->get_windspd() == 0)) {
         $windtitle = $WITHOUT_WIND[$lang_idx];
         $wind_class = "light_wind";
-    } else if ($min10->get_windspd() < 2.5) {
+    } else if ($min10->get_windspd() < 5) {
         $windtitle = $LIGHT_WIND[$lang_idx];
         $wind_class = "light_wind";
-    } else if ($min10->get_windspd() < 10) {
+    } else if ($min10->get_windspd() < 15) {
         $windtitle = $MODERATE_WIND[$lang_idx];
         $wind_class = "moderate_wind";
     } else {
@@ -2742,7 +3040,37 @@ function getPrevMonthYear($month, $year) {
     else
         return $year;
 }
-
+function check_email_address($email) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        return false;
+    else
+        return true;
+    // First, we check that there's one @ symbol, and that the lengths are right
+  if (!preg_match("[^@]{1,64}@[^@]{1,255}", $email)) {
+    // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
+    return false;
+  }
+  // Split it into sections to make life easier
+  $email_array = explode("@", $email);
+  $local_array = explode(".", $email_array[0]);
+  for ($i = 0; $i < sizeof($local_array); $i++) {
+     if (!preg_match ("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
+      return false;
+    }
+  }  
+  if (!preg_match("^\[?[0-9\.]+\]?$", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
+    $domain_array = explode(".", $email_array[1]);
+    if (sizeof($domain_array) < 2) {
+        return false; // Not enough parts to domain
+    }
+    for ($i = 0; $i < sizeof($domain_array); $i++) {
+      if (!preg_match ("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$", $domain_array[$i])) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
 //
 //         moon calculator
 //
@@ -2831,6 +3159,27 @@ function GetMoonPhase($timestamp) {
     $day = date("n/j/Y", $timestamp);
     return $moon_phases[$day];
 }
+function windSignificant($index)
+{
+     global $forecastHour;
+     if ($index == 0)
+        return true;
+     if ($forecastHour[$index]['wind'] != $forecastHour[$index - 1]['wind'])
+         return true;
+     return false;
+ }
+function enoughSignificant($index)
+ {
+     global $forecastHour;
+     if ($index == 0)
+        return true;
+     if (($forecastHour[$index]['title'] != $forecastHour[$index - 1]['title']))
+         return true;
+     if (($forecastHour[$index]['title'] == $forecastHour[$index - 1]['title']) &&
+          ($forecastHour[$index]['wind'] != $forecastHour[$index - 1]['wind']))
+         return false;
+     return false;
+ }
 
 $lang_idx = @$_GET['lang'];
 $EN = 0;
@@ -2843,4 +3192,9 @@ if ($_GET['lang'] == "") {
     $lang_idx = $HEB;
 } else
     $lang_idx = @$_GET['lang'];
+if (($lang_idx != '0')&&($lang_idx != '1'))
+{
+    //logger("redirected to Heb:".$lang_idx);
+    $lang_idx = $HEB;
+}
 ?>

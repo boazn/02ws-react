@@ -53,12 +53,12 @@ include_once("include.php");
 <ul class="nav" id="history_menu">
 		<li class="inv_plain_3 il_first">
 		<a href="#"><? echo $TEMP[$lang_idx]." & ".$RAIN[$lang_idx]." & ".$HUMIDITY[$lang_idx]." ".$FOR[$lang_idx];?></a>&nbsp;
-		<select size="1" OnChange="namosw_goto_byselect(this, 'reportdiv')" name="chooseMonth">
+		<select size="1" OnChange="namosw_goto_byselect(this, 'reportdiv')" name="chooseMonth" style="width: 120px;">
 		<option selected><? echo $MONTH[$lang_idx];?></option>
 		<?
-		for ($y = 2002; $y <= $year; $y++)
+		for ($y = $year; $y >= 2002; $y--)
 		{
-			for ($m = 1; $m <= 12; $m++)
+			for ($m = 12; $m >= 1; $m--)
 			{
 				if (($y == $year)&&($m == $month))
 					echo sprintf ("<option value=\"reports/NOAAMO.TXT\">%s %d</option>", getMonthName(date("n",  mktime ($hour, $min, 0, $m, $day ,$year))), $y); 
@@ -70,10 +70,10 @@ include_once("include.php");
 		}
 		?>	
 		</select>
-		<select size="1" OnChange="namosw_goto_byselect(this, 'reportdiv')" name="chooseMonth" >
+		<select size="1" OnChange="namosw_goto_byselect(this, 'reportdiv')" name="chooseMonth" style="width: 80px;">
 		<option selected><? echo $YEAR[$lang_idx];?></option>
 		<?
-		for ($y = 2002; $y <= $year; $y++)
+		for ($y = $year; $y >= 2002; $y--)
 			{
 				if ($y != $year)  
 					echo sprintf ("<option value=\"reports/%d.txt\">%d</option>",$y, $y);  
@@ -95,7 +95,7 @@ include_once("include.php");
 		<li class="<?=getCurrentClass("snow")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'snow.php');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a></li>
 		<li class="<?=getCurrentClass("reports")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'reports.php');?>" class="hlink"><? echo $REPORTS[$lang_idx];?>...</a></li>
 		<li class="<?=getCurrentClass("climate")?>"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'climate.php');?>" title="<? echo $CLIMATE_TITLE[$lang_idx];?>" class="hlink"><? echo $CLIMATE[$lang_idx];?></a></li>
-		<li class="<?=getCurrentClass()?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'browsedate.php');?>" class="hlink"><? echo $ARCHIVE[$lang_idx];?>...</a></li>
+		<li class="<?=getCurrentClass("browsedate")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'browsedate.php');?>" class="hlink"><? echo $ARCHIVE[$lang_idx];?>...</a></li>
 		<li class="<?=getCurrentClass("<?=FILE_THIS_MONTH?>")?> il_first" style="width:10%"><a OnClick="namosw_goto_byclick('<?=FILE_THIS_MONTH?>', 'reportdiv')" href="javascript:void(0)" ><? echo $monthInWord." ".$year; ?></a></li>
 		<li class="<?=getCurrentClass("<?=FILE_PREV_MONTH?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=FILE_PREV_MONTH?>', 'reportdiv')" href="javascript:void(0)" ><? echo $prevMonthInWord." ".getPrevMonthYear($month, $year);?></a></li>
 		<li class="<?=getCurrentClass("<?=FILE_THIS_YEAR?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=FILE_THIS_YEAR?>', 'reportdiv')" href="javascript:void(0)" ><? echo $year; ?></a></li>    

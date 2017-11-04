@@ -4,7 +4,7 @@
 </head>
 <body onload=trMouseOver()>
 <?php
-$current_year = 2015;
+$current_year = 2017;
 $min_year = 1909;
 function isDaySubmited($value_day){
 	global $_POST;

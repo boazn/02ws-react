@@ -21,9 +21,6 @@
 <h2>Balloon to the edge of space South Australia </h2>
 <iframe width="560" height="315" src="http://www.youtube.com/embed/AHl6iQSDjqA" frameborder="0" allowfullscreen></iframe>
 <div class="clear"><br /></div>
-<h2>Near Space Photography over Colorado</h2>
-<iframe width="560" height="315" src="http://www.youtube.com/embed/nojl3aiYBOw" frameborder="0" allowfullscreen></iframe>
-<div class="clear"><br /></div>
 <h2>How to film the Earth from space </h2>
 <iframe width="420" height="315" src="http://www.youtube.com/embed/gfgOYsWnisk" frameborder="0" allowfullscreen></iframe>
 <div class="clear"><br /></div>
@@ -32,4 +29,6 @@
 <div class="clear"><br /></div>
 <h2>Lightning captured at 7,207 images per second</h2>
 <iframe src="http://player.vimeo.com/video/28457062?color=ffffff" width="800" height="661" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
+<h2>Understanding Clouds</h2>
+<iframe src="https://player.vimeo.com/video/203291784" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<p><a href="https://vimeo.com/203291784">WMO- Understanding Clouds</a> from <a href="https://vimeo.com/user44638407">Jack Miller</a> on <a href="https://vimeo.com">Vimeo</a>.</p>

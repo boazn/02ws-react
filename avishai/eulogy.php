@@ -7,7 +7,7 @@
         display: block;
         padding: 9.5px;
         margin: 0 0 10px;
-        font-size: 13px;
+        font-size: 14px;
         line-height: 20px;
         word-break: break-all;
         word-wrap: break-word;
@@ -16,3 +16,6 @@
 <h2>הספדים</h2>
 
 <iframe src="http://docs.google.com/gview?url=http://02ws.co.il/avishai/images/familly.pdf&embedded=true" style="width:990px; height:700px;" frameborder="0"></iframe>
+<iframe src="http://docs.google.com/gview?url=http://02ws.co.il/avishai/images/History compartment .pdf&embedded=true" style="width:990px; height:700px;" frameborder="0"></iframe>
+<iframe src="http://docs.google.com/gview?url=http://02ws.co.il/avishai/images/הספד.pdf&embedded=true" style="width:990px; height:700px;" frameborder="0"></iframe>
+<iframe src="http://docs.google.com/gview?url=http://02ws.co.il/avishai/images/2013.pdf&embedded=true" style="width:990px; height:700px;" frameborder="0"></iframe>

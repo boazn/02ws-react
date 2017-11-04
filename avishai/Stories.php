@@ -9,13 +9,14 @@
         margin: 0 0 10px;
         font-size: 13px;
         line-height: 20px;
-        word-break: break-all;
         word-wrap: break-word;
+        font-family: 'Arial';
+        white-space: pre-wrap;
     }
 </style>
 <h2>סיפורים</h2>
 <div>
-<div style="margin:0 auto;width:990px">
+<div style="margin:0 auto;width:990px;border:1px solid #cccccc">
 <pre>
 הגעתי במקרה (או שלא) לאתר הזה, רק כדי לראות שחבר הילדות שלי כבר אינו בחיים מזה למעלה מחמש שנים. 
 הכרתי את אבישי מהגן ועד כיתה ו'. היינו חברים טובים ודרכינו נפרדו כשעברתי דירה. 

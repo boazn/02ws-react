@@ -25,6 +25,9 @@ mainCol
 			<?
 			//error_reporting(E_ERROR | E_PARSE);
 			//ini_set("error_reporting", E_ALL);
+                        // fetch once again because it is cut otherwise
+                        $forecastDaysDB = apc_fetch('forecastDaysDB');
+                        $forecastlib_origin = "hometable.php";
 			include_once("forecastlib.php");
 			$sig_url = $sig[0]['url'];
 			$sig_title = $sig[0]['sig'][$lang_idx];
@@ -81,8 +84,8 @@ mainCol
 								{
 									//print_r($forecastDaysDB);
 			 
-									for ($i = 0; $i < count($forecastDaysDB); $i++) 
-									{
+									 foreach ($forecastDaysDB as $key => &$forecastday) 
+                                                                        {
 									if ($i % 2 == 1)
 										$class =  " class=\"\" ";
 									else
@@ -93,12 +96,12 @@ mainCol
 									<td class="forecastdate"><?if ($i == 5){
 										
 										echo "&nbsp;&nbsp;".$overlook_d."";
-									}?>&nbsp;<strong><?echo "<span class=\"big\">".replaceDays($forecastDaysDB[$i]['day_name']." ")."</span> ".$forecastDaysDB[$i]['date'];?></strong></td>
-									<td class="forecasttemp"><?=c_or_f($forecastDaysDB[$i]['TempLow'])?></td>
-									<td class="forecasttemp"><?=c_or_f($forecastDaysDB[$i]['TempHigh'])?>&nbsp;<img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempHighCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" /></td>
-									<td class="forecasttemp"><?=c_or_f($forecastDaysDB[$i]['TempNight'])?>&nbsp;<img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempNightCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" /></td>
-									<td style="text-align:center"><img src="<? echo "images/icons/day/".$forecastDaysDB[$i]['icon']; ?>" width="43" height="43" alt="<?=$forecastDaysDB[$i]['date']?>" /></td>
-									<td class="forecastdesc"><? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastDaysDB[$i][$dscpIdx]);?></td>
+									}?>&nbsp;<strong><?echo "<span class=\"big\">".replaceDays($forecastday['day_name']." ")."</span> ".$forecastday['date'];?></strong></td>
+									<td class="forecasttemp"><?=c_or_f($forecastday['TempLow'])?></td>
+									<td class="forecasttemp"><?=c_or_f($forecastday['TempHigh'])?>&nbsp;<img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastday['TempHighCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" alt="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['Temphigh'])?>" /></td>
+									<td class="forecasttemp"><?=c_or_f($forecastday['TempNight'])?>&nbsp;<img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" alt="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" /></td>
+									<td style="text-align:center"><img src="<? echo "images/icons/day/".$forecastday['icon']; ?>" width="43" height="43" alt="<?=$forecastday['date']?>" /></td>
+									<td class="forecastdesc"><? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);?></td>
 									</tr>
 									<? }
 								}
@@ -144,53 +147,57 @@ mainCol
 							</table> 
 						</div>
 						<div id="forecast24h" style="display:none">
-									<div id="for24_given">
-										<? echo($GIVEN[$lang_idx]." ".$AT[$lang_idx]." ".$timetaf.":00 ".$dayF."/".$monthF."/".$yearF);?>
-									</div>
-									<div id="for24_details">
-										<?=$forcastTicker?>
-										<span id="tempForecastDiv" style="display:none">
-										</span>
-									</div>
-									<div id="forecasthours" style="clear:both;width:100%;padding:0.5em 0.5em 0;height: 300px;">
-									 <? 
-									 foreach ($forecastHour as $hour_f){
-									 if ($hour_f['time'] % 3 == 0)
-									 {
-									 echo "<ul class=\"nav forecasttimebox\" >";
-									 echo "<li class=\"tsfh\" style=\"text-align:center;width:3%;display:none\">".$hour_f['currentDateTime']."</li>";
-									 echo "<li class=\"timefh\" style=\"text-align:center;width:8%\">".$hour_f['time']."</li>";
-									 echo "<li class=\"forecasttemp\" style=\"text-align:center;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
-									 echo "<li class=\"\" style=\"text-align:center;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"30\" width=\"45\" alt=\"".$hour_f['icon']."\" /></li>";
-                                                                         if ($hour_f['wind'] > 30){
-                                                                                    $windtitle=$EXTREME_WINDS[$lang_idx];
-                                                                                    $wind_class="high_wind";
-                                                                           }
+                                                            <div id="for24_given">
+                                                                    <? echo($GIVEN[$lang_idx]." ".$AT[$lang_idx]." ".$timetaf.":00 ".$dayF."/".$monthF."/".$yearF);?>
+                                                            </div>
+                                                            <div id="for24_details">
+                                                                    <?=$forcastTicker?>
+                                                                    <span id="tempForecastDiv" style="display:none">
+                                                                    </span>
+                                                            </div>
+                                                            <div id="forecasthours" style="clear:both;width:100%;padding:0.5em 0.5em 0;height: 300px;">
+                                                             <? 
+                                                             foreach ($forecastHour as $hour_f){
+                                                             if (($hour_f['time'] % 3 == 0)|| ($hour_f['plusminus'] > 0))
+                                                             {
+                                                             echo "<li class=\"nav forecasttimebox forcast_each\" ><ul>";
+                                                             echo "<li class=\"tsfh\" style=\"text-align:center;width:0%;display:none\">".$hour_f['currentDateTime']."</li>";
+                                                            echo "<li class=\"tsfh\" style=\"text-align:center;width:10%\">".date("j/m", $hour_f['currentDateTime'])."</li>";
+                                                            echo "<li class=\"timefh forcast_date\" style=\"direction:ltr;text-align:right;width:12%\"><span>".$hour_f['time'].":00";
+                                                               if ($hour_f['plusminus'] > 0)
+                                                                   echo "&nbsp;&nbsp;&plusmn;".$hour_f['plusminus']."";
+                                                            echo "</span></li>";
+                                                            echo "<li class=\"forecasttemp forcast_morning\" style=\"text-align:center;direction:ltr;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
+                                                            echo "<li style=\"margin-top:0;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></li>";
+                                                           if ($hour_f['wind'] > 30){
+                                                                        $windtitle=$EXTREME_WINDS[$lang_idx];
+                                                                        $wind_class="high_wind";
+                                                               }
 
-                                                                          else if ($hour_f['wind'] > 20){
-                                                                                    $windtitle=$STRONG_WINDS[$lang_idx];
-                                                                                    $wind_class="high_wind";
-                                                                           }
+                                                              else if ($hour_f['wind'] > 20){
+                                                                        $windtitle=$STRONG_WINDS[$lang_idx];
+                                                                        $wind_class="high_wind";
+                                                               }
 
-                                                                          else if ($hour_f['wind'] > 10){
-                                                                                    $windtitle=$MODERATE_WINDS[$lang_idx];
-                                                                                    $wind_class="moderate_wind";
-                                                                           }
+                                                              else if ($hour_f['wind'] > 10){
+                                                                        $windtitle=$MODERATE_WINDS[$lang_idx];
+                                                                        $wind_class="moderate_wind";
+                                                               }
 
-                                                                          else{
-                                                                                    $windtitle=$WEAK_WINDS[$lang_idx];
-                                                                                    $wind_class="light_wind";
-                                                                           }
-									 echo "<li style=\"margin-top:0;\"><div title=\"".$windtitle."\" class=\"wind_icon ".$wind_class." \"></div></li>";
-									 echo "<li class=\"\" style=\"width:55%\">".$hour_f['title']."</li>";
-									 echo "</ul>";
-									 }
-									 }
-									 ?>
-									 <div style="clear:both">&nbsp;</div>
-									 <div class="invfloat">
-										<a href="legend.php" class="colorbox" title="<?=$LEGEND[$lang_idx]?>"><?=$LEGEND[$lang_idx]?><?=get_arrow()?></a>&nbsp;&nbsp;
-									</div>
+                                                              else{
+                                                                        $windtitle=$WEAK_WINDS[$lang_idx];
+                                                                        $wind_class="light_wind";
+                                                               }
+                                                             echo "<li style=\"margin-top:0;\"><div title=\"".$windtitle."\" class=\"wind_icon ".$wind_class." \"></div></li>";
+                                                             echo "<li class=\"\" style=\"width:45%\">".$hour_f['title'][$lang_idx]."</li>";
+                                                             echo "</ul>";
+                                                             }
+                                                             }
+                                                             ?>
+                                                             <div style="clear:both">&nbsp;</div>
+                                                             <div class="invfloat">
+                                                                    <a href="legend.php" class="colorbox" title="<?=$LEGEND[$lang_idx]?>"><?=$LEGEND[$lang_idx]?><?=get_arrow()?></a>&nbsp;&nbsp;
+                                                            </div>
 							</div>
 							
 						</div>
@@ -262,7 +269,7 @@ mainCol
 											<a href="<? echo $sig[0]['url'];?>" class="hlink" title="<?echo $MORE_INFO[$lang_idx];?>">
 			 
 													<? echo "{$sig[0]['sig'][$lang_idx]}"; ?>
-													<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx]; if ($sig[0]['extrainfo'][$lang_idx] != "") echo " - ";?><?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></div>
+													<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx][0]; if ($sig[0]['extrainfo'][$lang_idx][0] != "") echo " - ";?><?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></div>
 											</a>
 										</div>
 										

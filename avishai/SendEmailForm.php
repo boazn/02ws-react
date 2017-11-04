@@ -86,30 +86,10 @@ function send_Email($messageBody, $source, $sourcename)
 }
 function check_email_address($email) {
   // First, we check that there's one @ symbol, and that the lengths are right
-  if (!ereg("[^@]{1,64}@[^@]{1,255}", $email)) {
-    // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
-    return false;
-  }
-  // Split it into sections to make life easier
-  $email_array = explode("@", $email);
-  $local_array = explode(".", $email_array[0]);
-  for ($i = 0; $i < sizeof($local_array); $i++) {
-     if (!ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
-      return false;
-    }
-  }  
-  if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
-    $domain_array = explode(".", $email_array[1]);
-    if (sizeof($domain_array) < 2) {
-        return false; // Not enough parts to domain
-    }
-    for ($i = 0; $i < sizeof($domain_array); $i++) {
-      if (!ereg("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$", $domain_array[$i])) {
+   if (!filter_var($email, FILTER_VALIDATE_EMAIL))
         return false;
-      }
-    }
-  }
-  return true;
+    else
+        return true;
 }
 $msgSent = false;
 
@@ -181,25 +161,37 @@ if (isset($_POST['SendButton'])) {
 
 <div class="inv_plain_3_zebra" style="padding:1em 0.8em 1em 0.8em;float:right;width:90%;height:100px">
 	<div style="padding:1em 0 1em 0">
-		<b>Name</b>&nbsp;&nbsp;<b>&nbsp;שם</b><br />
+		<b>Name</b>&nbsp;&nbsp;<b>&nbsp;שם</b><br />
+
 		<input name="name" size="30" maxlength="50" value="<? echo $name;?>" style="text-align:right" />
-	</div>
+	</div>
+
 	<div style="padding:1em">
 		<b>Email</b><br />
-		<input name="email" size="30" maxlength="50" style="text-align:left" value="<? echo $email;?>" />
+		<input name="email" size="30" maxlength="50" style="text-align:left" value="<? echo $email;?>" />
+
 	</div>
-</div>
-<div class="inv_plain_3_minus" style="clear:both;padding:1em;float:right;width:90%;height:200px">
-	<b>Your message כאן כתוב את הודעתך</b><br/>
-	<textarea name="message" cols="80" rows="10"  dir="rtl" <? echo $message; ?>><? echo $message; ?></textarea>
 </div>
 
-<? if (!$msgSent) {?>
+<div class="inv_plain_3_minus" style="clear:both;padding:1em;float:right;width:90%;height:200px">
+
+	<b>Your message כאן כתוב את הודעתך</b><br/>
+
+	<textarea name="message" cols="80" rows="10"  dir="rtl" <? echo $message; ?>><? echo $message; ?></textarea>
+
+</div>
+
+<? if (!$msgSent) {?>
+
 <div class="inv_plain_3" style="clear:both;text-align:center;padding:1em">
 	
 	<input type="submit" name="SendButton" value="Send Message שלח הודעה"/>
 	
-</div>
-<? } ?>
+
 </div>
-</form>
+
+<? } ?>
+
+</div>
+</form>
+

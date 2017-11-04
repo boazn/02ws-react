@@ -210,10 +210,10 @@ $graph->AddY2($lineplot2);
 $lineplot2->SetWeight(2);
 
 // titles
-$graph->title->SetFont(FF_ARIAL,FS_BOLD,8);
+$graph->title->SetFont(FF_ARIAL,FS_BOLD,12);
 $graph->title->Set($SITE['sitename']);
 $graph->title->SetColor("azure4");
-$graph->title->SetPos(0.003,0.54,"left","top");
+$graph->title->SetPos(0.003,0.54,"right","top");
 
 //x-axis
 
@@ -280,7 +280,7 @@ $graph->AddText($txt3);
 $hum = $lang_idx == 1 ? utf8_strrev($HUMIDITY[$lang_idx]) : $HUMIDITY[$lang_idx];
 $txtaa=new Text($chrs . $hum);
 $txtaa->SetFont(FF_ARIAL, FS_BOLD,9);
-$txtaa->SetPos($width - 56,$height - 210,'center');
+$txtaa->SetPos($width - 56,$height - 130,'center');
 $txtaa->SetColor("blue");
 $graph->AddText($txtaa);
 

@@ -30,7 +30,7 @@
     
          function SendSpecial()
         {
-            $("#SendButton").hide();
+            //$("#SendButton").hide();
                 $.ajax({
           type: "POST",
           url: "SendGcmService.php",
@@ -42,7 +42,7 @@
              $(".loading").hide();
 
              $("#SendSpecialResult").text(result);
-             $("#SendButton").hide();
+             //$("#SendButton").hide();
 
 
         });

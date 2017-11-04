@@ -3,6 +3,11 @@ ini_set("display_errors","On");
 include ("include.php");
 include ("lang.php");
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+class CloudMessageType {
+
+    const Gcm = 1;
+    const Fcm = 2;
+}
 /*******************************************************************************************/
 function post_to_bufferApp($messageBody, $picture_url)
 {
@@ -35,12 +40,12 @@ function post_to_bufferApp($messageBody, $picture_url)
 }
 function sendAPNToRegIDs($registrationIDs, $message, $picture_url, $embedded_url){
     logger("sendingAPNMessage : ".count($registrationIDs)." ".$message);
-    $payload['aps'] = array('alert' => $message, 'badge' => 1, 'sound' => 'default','EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
+    $payload['aps'] = array('alert' => $message, 'badge' => 1, 'sound' => 'lighttrainshort.wav', 'content-available' => 1, 'category' => "share", 'EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
     $payload = json_encode($payload);
 
     $apnsHost = 'gateway.push.apple.com';
     $apnsPort = 2195;
-    $apnsCert = 'apns-prod-1216.pem';//old= certPushProd.pem;new=apns-prod-1216.pem
+    $apnsCert = 'CertPushProd291116.pem';//old= certPushProd.pem;new=apns-prod-1216.pem
     // Keep push alive (waiting for delivery) for 1 hour
     $apple_expiry = time() + (60 * 60);
     $streamContext = stream_context_create();
@@ -53,9 +58,10 @@ function sendAPNToRegIDs($registrationIDs, $message, $picture_url, $embedded_url
             //$apnsMessage = chr(0) . chr(0) . chr(32) . pack('H*', str_replace(' ', '', $regIDs['apn_regid'])) . chr(0) . chr(strlen($payload)) . $payload;
             $apnsMessage = pack("C", 1) . pack("N", $regIDs['id']) . pack("N", $apple_expiry) . pack("n", 32) . pack('H*', str_replace(' ', '', $regIDs['apn_regid'])) . pack("n", strlen($payload)) . $payload; 
 
-            while(!fwrite($apns, $apnsMessage, strlen ($apnsMessage))){
+            if(!fwrite($apns, $apnsMessage, strlen ($apnsMessage))){
                     $resultAPNs .= checkAppleErrorResponse($apns);
-                    logger("fwrite failed: ".$regIDs['id']." ".$regIDs['apn_regid']." ".$resultAPNs);
+                    $query = "update apn_users set ResponseMessage='{$resultAPNs}' where apn_regid='".$regIDs['apn_regid']."';";
+                    //logger($query);
                     $streamContext = stream_context_create();
                     stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
                     stream_context_set_option($streamContext, 'ssl', 'passphrase', "boaz1972");
@@ -140,13 +146,22 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
    
     //$reg_id = "6d5c6ca8d3d36348ea4c52f6e0813e6713ef9b823a3da66a3714228e67146a10"; //d057506a9d09770900a09fbeb25c9e404829937bc1b3da0d34216f9cc57608e5//6d5c6ca8d3d36348ea4c52f6e0813e6713ef9b823a3da66a3714228e67146a10 
     //array_push ($registrationIDs1,array('apn_regid' => $reg_id, 'id' => '8025'));
-    //if (($long_range)&&($short_range))
-    //        $result = db_init("select * FROM apn_users where active=1 or active_rain_etc=1", "");
-    //    else if ($long_range)
-    //        $result = db_init("select * FROM apn_users where active=1", "");
-    //    else if ($short_range)
-        $result = db_init("select * FROM apn_users where active=1", "");
-
+   $query_extension = "";
+        
+    if ((boolval($long_range))&&(boolval($short_range))){
+        $query = "select * FROM apn_users where active=1 or active_rain_etc=1".$query_extension;
+    }
+    else if (boolval($long_range)){
+        $query = "select * FROM apn_users where active=1".$query_extension;
+    }
+    else if (boolval($short_range)){
+        $query = "select * FROM apn_users where active_rain_etc=1".$query_extension;
+    }
+    else if (boolval($tip)){
+        $query = "select * FROM apn_users where active_tips=1".$query_extension;
+    }
+     logger($query);
+     $result = db_init($query, "");   
     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 	  if ($line["apn_regid"] != "")
           {
@@ -157,8 +172,12 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
           }
     }
  $result = "";
- $result = sendAPNToRegIDs($registrationIDs1, date('H:i')." ".$title[1]." - ".$messageBody[1], $picture_url, $embedded_url);
- $result .= sendAPNToRegIDs($registrationIDs0, date('H:i')." ".$title[0]." - ".$messageBody[0], $picture_url, $embedded_url);
+ if (strlen($title[1]) > 0){
+    $messageBody[0] = $title[0].": ".$messageBody[0];
+    $messageBody[1] = $title[1].": ".$messageBody[1];
+ }
+ $result = sendAPNToRegIDs($registrationIDs1, date('H:i')." ".$messageBody[1], $picture_url, $embedded_url);
+ $result .= sendAPNToRegIDs($registrationIDs0, date('H:i')." ".$messageBody[0], $picture_url, $embedded_url);
  return $result;
 
 }
@@ -214,23 +233,23 @@ if ($apple_error_response) {
     $error_response['status_code'] = $error_response['status_code'].'-Not listed';
 
     }
-
+    
     $result =  '<br><b>+ + + + + + ERROR</b> Response Command:<b>' . $error_response['command'] . '</b>&nbsp;&nbsp;&nbsp;Identifier:<b>' . $error_response['identifier'] . '</b>&nbsp;&nbsp;&nbsp;Status:<b>' . $error_response['status_code'] . '</b><br>';
 
     $result .= 'Identifier is the rowID (index) in the database that caused the problem, and Apple will disconnect you from server. To continue sending Push Notifications, just start at the next rowID after this Identifier.<br>';
 
-    return $result;
+    return $error_response['command']." ".$error_response['identifier']." ".$error_response['status_code'];
 }
-
-return "";
+    return "";
 }
-function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip)
+function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip, $CloudMessageType)
 {
     global $TIP;
-    
+    $key = "";
     $registrationIDs0 = array();
     $registrationIDs1 = array();
     $lines = 0;
+    $query = "";
     $short_range = ($short_range === 'true');
     $long_range = ($long_range === 'true');
     $tip = ($tip === 'true');
@@ -240,18 +259,29 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     }
     $messageBody[0] = date('H:i')." ".$messageBody[0];
     $messageBody[1] = date('H:i')." ".$messageBody[1];
+    if ($CloudMessageType == CloudMessageType::Fcm)
+    {
+        $key = FCM_API_KEY;
+        $query_extension = " and fcm=1";
+    }
+    else
+    {
+        $key = GOOGLE_API_KEY;
+        $query_extension = " and fcm<>1";
+    }
     if ((boolval($long_range))&&(boolval($short_range))){
-        $result = db_init("select * FROM gcm_users where active=1 or active_rain_etc=1", "");
+        $query = "select * FROM gcm_users where active=1 or active_rain_etc=1".$query_extension;
     }
     else if (boolval($long_range)){
-        $result = db_init("select * FROM gcm_users where active=1", "");
+        $query = "select * FROM gcm_users where active=1".$query_extension;
     }
     else if (boolval($short_range)){
-        $result = db_init("select * FROM gcm_users where active_rain_etc=1", "");
+        $query = "select * FROM gcm_users where active_rain_etc=1".$query_extension;
     }
     else if (boolval($tip)){
-        $result = db_init("select * FROM gcm_users where active_tips=1", "");
+        $query = "select * FROM gcm_users where active_tips=1".$query_extension;
     }
+    $result = db_init($query, "");
     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 	$lines++;
         //echo "<br />".$line["gcm_regid"]."<br />";
@@ -260,34 +290,79 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         elseif ($line["lang"] == 1)
             array_push ($registrationIDs1, $line["gcm_regid"]);
     }
-    //test boazn1@gmail.com
-    //array_push ($registrationIDs1, "APA91bHHez1UYSILvwWWx4h_7XsTG1kelsktfEfIHcXaUuCQrxo8Q4k6eOfEz8VWZjm3XCY_sU_RITpvpt3Nle4VAaJ2pkuiscER8UKHoS1gnN0SvhkJsqU");
-    logger(" short_range=".$short_range." long_range=".$long_range);
-    logger("sendingGCMMessage: En:".count($registrationIDs0)." Heb:".count($registrationIDs1));
-     
-    // test
     
-    //  $registrationIDs = array();
-    //  array_push ($registrationIDs, "APA91bHGxDH7bmB4SqvbeYc-EcEL0ngC6pzS-PVcMsMkPAgeEWkia2KrrSd2YQFqjQqZtWbHGo8WM5CHSff5xWR5IneyfyaE4NvlivCuFaLfPoUiVW7zwImYerGNNCOWkp08yBhOFnUN_u0XORAsmws8h8x3yutlsg");
+    logger($query);
+    logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1));
+     
+    /* test
+   
+        $registrationIDs = array();
+        $registrationIDs0 = array();
+        $registrationIDs1 = array();
+    
+	 //test boazn1@gmail.com
+	 // test efrat
+         if ($CloudMessageType == CloudMessageType::Fcm)
+            array_push ($registrationIDs1, "cPzSkq79gR8:APA91bEGTjUIg8wceFjU9h0dK-GpooqUbH2qbjPiFZMVsmmyvdGLvcDxBHbdEaFr4WJYWfqyWauoxupi3cbV2rTecW3EqlxoNuR42IX0X94pdUmqRJSl8CFN25WI3GkTn1Hst7obPIkJ");
+         else
+            array_push ($registrationIDs1, "APA91bHeuwNkpfuhTy5IUUseUL-BOPwnhmY8nJNS_uuV_ZpcYnRDVjQfcaiiQnEI0MxH2W1dDyViJDF22It_ZYawz8UkxDcXgIaZxOMnM1GZBSTz-TPvzfmRCo38KTZLLKZnmqoe1SgICq88Ymy92_cBHWuam8nINA");
+       */   
      //
      $result = "";
+     $resultCall = array();
      $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
      foreach ($arrOfRegID0 as $regIDs){
-        logger("sendingGCMMessage EN: ".count($regIDs)." ".$messageBody[0]." ".$title[0]);
-        $result .= " ".callGCMSender ($regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
-     }
+        
+        $resultCall = callGCMSender ($key, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
+        if ($CloudMessageType == CloudMessageType::Fcm){
+            logger($resultCall[1]);
+        }
+        handleInvalidTokens($resultCall[1], $regIDs, $key);
+      }
     
      $arrOfRegID1 = array_chunk($registrationIDs1, 1000);
      foreach ($arrOfRegID1 as $regIDs){
-        logger("sendingGCMMessage Heb: ".count($regIDs)." ".$messageBody[1]." ".$title[1]);
-        $result .= " ".callGCMSender ($regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url);
+        
+        $resultCall = callGCMSender ($key, $regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url);
+        //logger($resultCall[1]);
+        handleInvalidTokens($resultCall[1], $regIDs, $key);
      }
+    
+     
+     
      //logger($result);
     return "";        
 }
-function callGCMSender($registrationIDs, $messageBody, $title, $picture_url, $embedded_url){
+function handleInvalidTokens($jsonArray, $registration_ids, $header_key){
+    $remove_ids = array();
+    $errorMessage = array();
+    logger("handleInvalidTokens: header_key(SenderID)=".$header_key." success:".$jsonArray["success"]." + failure:".$jsonArray["failure"]." = ".count($jsonArray["results"]));
+     for($i=0; $i<count($jsonArray["results"]);$i++){
+        if(isset($jsonArray["results"][$i]["error"])){
+            if($jsonArray["results"][$i]["error"] == "NotRegistered"){
+                $remove_ids[$i] = $registration_ids[$i];
+            }else{
+                $errorMessage[$i] = array('id' => $registration_ids[$i], 'desc' => $jsonArray["results"][$i]["error"], 'idx' => $i);
+            }
+        }
+    }
+     global $link;
+    foreach ($remove_ids as $id){
+         //print_r($regIDs);
+         $query = "update gcm_users set ResponseCode='9', ResponseMessage='NotRegistered' where gcm_regid='".$id."'";
+         $resultUpdate = mysqli_query($link, $query);
+         //logger($query);
+     }
+     foreach ($errorMessage as $err){
+         //print_r($regIDs);
+         $query = "update gcm_users set ResponseCode='5', ResponseMessage=".$err['desc']." where gcm_regid='".$err['id']."'";
+         $resultUpdate = mysqli_query($link, $query);
+         logger($err['idx'].". ".$query);
+     }
+}
+function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_url, $embedded_url){
      
-
+    logger("callGCMSender: header_key(SenderID)=".$key."  count=".count($registrationIDs)." ".$messageBody." ".$title." ".$picture_url." ".$embedded_url);
     // Set POST variables
     $url = 'https://android.googleapis.com/gcm/send';
 
@@ -295,15 +370,16 @@ function callGCMSender($registrationIDs, $messageBody, $title, $picture_url, $em
         'registration_ids' => $registrationIDs,
         'data' => array( "message" => $messageBody, "title" => $title, "picture_url" => $picture_url, "embedded_url" => $embedded_url),
     );
-    // Replace with the real server API key from Google APIs
+        
     $headers = array(
-        'Authorization: key=' . GOOGLE_API_KEY,
+        'Authorization: key=' . $key, 
         'Content-Type: application/json'
     );
 
     // Open connection
     $ch = curl_init();
-
+    //print_r($headers);
+    //print_r($registrationIDs);
     // Set the URL, number of POST vars, POST data
     curl_setopt( $ch, CURLOPT_URL, $url);
     curl_setopt( $ch, CURLOPT_POST, true);
@@ -325,11 +401,11 @@ function callGCMSender($registrationIDs, $messageBody, $title, $picture_url, $em
                 break;
 
             case "400":
-                throw new Exception('Malformed request. '.$result, Exception::MALFORMED_REQUEST);
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result);
                 break;
 
             case "401":
-                throw new Exception('Authentication Error. '.$result);
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result);
                 break;
 
             default:
@@ -337,7 +413,7 @@ function callGCMSender($registrationIDs, $messageBody, $title, $picture_url, $em
                 logger("curl_getinfo GCM: ".$resultHttpCode." ".$result);
                 break;
         }
-    return $result;
+    return array($resultHttpCode, json_decode($result, true));
 }
 function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title)
 {
@@ -352,8 +428,8 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         {
 
             $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'forecast') and (lang=?)", $lang);
-            while ($line = mysqli_fetch_array($res["result"], MYSQL_ASSOC) ){
-                $description = $line["Description"]."<div class=\"alerttime\">".$now."</div>".$description;
+            while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
+                $description = "<div class=\"alerttime\">".$now."</div>".$description."</br>".$line["Description"];
             }
         }
 
@@ -409,15 +485,24 @@ if (empty($empty)) {
         $img_tag = " <img src=\"".$picture_url."\" id=\"alert_image\" alt=\"alert image\" />";
     
     try{
-     updateMessageFromMessages ($title[0]." - ".$message[0]."<br />".$img_tag, 1, 'forecast', 0 ,'' ,'','');
-     updateMessageFromMessages ($title[1]." - ".$message[1]."<br />".$img_tag, 1, 'forecast', 1 ,'' ,'','');
+        $msgToAlertSection = array($message[0]."<br />".$img_tag, $message[1]."<br />".$img_tag);
+        if (strlen($title[0]) > 0){
+            $msgToAlertSection[0] = $title[0].": ".$msgToAlertSection[0];
+            $msgToAlertSection[1] = $title[1].": ".$msgToAlertSection[1];
+        }
+        
+        updateMessageFromMessages ($msgToAlertSection[0], 1, 'forecast', 0 ,'' ,'','');
+        updateMessageFromMessages ($msgToAlertSection[1], 1, 'forecast', 1 ,'' ,'','');
     } 
     catch (Exception $ex) {
         $result .= " exception updateMessageFromMessages:".$ex->getMessage();
     }
     
     try{
-        $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);   
+        //$result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);   
+        $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], CloudMessageType::Gcm);
+        $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], CloudMessageType::Fcm);
+    
     } catch (Exception $ex) {
         $result .= " exception sendGCMMessage:".$ex->getMessage();
     }
@@ -442,7 +527,10 @@ if (empty($empty)) {
     }
     
     try {
-	 $result .= post_to_bufferApp($title[1]." - ".$msgSpecial[1]." ".$picture_url, $picture_url); 
+        
+         $msgToBuffer = $msgSpecial[1]." ".$picture_url;
+         if (strlen($title[1]) > 0) {$msgToBuffer = $title[1].": ".$msgToBuffer;}
+	 //$result .= post_to_bufferApp($msgToBuffer, $picture_url); 
     } 
     catch (Exception $ex) {
         $result .= " exception post_to_bufferApp:".$ex->getMessage();

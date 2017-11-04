@@ -197,10 +197,10 @@ $graph->Add($lineplot2);
 $lineplot2->SetWeight(2);
 
 // titles
-$graph->title->SetFont(FF_ARIAL,FS_BOLD,8);
+$graph->title->SetFont(FF_ARIAL,FS_BOLD,12);
 $graph->title->Set($SITE['sitename']);
 $graph->title->SetColor("azure4");
-$graph->title->SetPos(0.003,0.54,"left","top");
+$graph->title->SetPos(0.003,0.54,"center","top");
 
 //x-axis
 $graph->xaxis->SetColor($SITE['txtcolor']);

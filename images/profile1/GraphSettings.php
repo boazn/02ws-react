@@ -102,7 +102,7 @@ $SITE['cvalues'] = array(
 	"temptrendval","tempTH","TtempTH","tempTL","TtempTL",
 	"windTM","TwindTM","wgustTM","TwgustTM",
 	"pressTH","TpressTH","pressTL","TpressTL",
-	"version","build","rmaxgust","heatindex","humidex");
+	"version","build","rmaxgust","heatindex","humidex", "uv", "et", "solarrad", "10minwinddir", "rainlasthour", "fnumber", "isdaylight", "sensorcontactlost", "avwdir", "cloudbase", "cloudbaseunits", "atemp", "sunshinehours", "maxsloar", "issunny");
 $SITE['humidexval'] = array(
 	"0" => array("0","29","Little or no discomfort"),
 	"1" => array("30","34","Noticeable discomfort"),

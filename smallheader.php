@@ -6,7 +6,7 @@ include_once("include.php");
 include "start.php";
 include_once ("requiredDBTasks.php");
 include "sigweathercalc.php";
-include_once("forecastlib.php");
+
 $size = $_REQUEST['size'];
 if ($size == 's')
 	$width = "150px";
@@ -94,10 +94,18 @@ else
     
  }
  #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
-     font-size:58px;width:100%;top:2em
+     font-size:1.55em;width:100%;top:1.4em
  }
  #statusline{
-     font-size: 1.9em;margin-top:-0.8em;
+     font-size: 1.55em;margin-top:-4.5em;
+ }
+ #laundryidx{
+     position:absolute;
+    left: 9.2em;
+    top: 8.9em;
+ }
+ #laundryidx img{
+     width:120px;height:120px
  }
  .smalllogo
  {
@@ -111,13 +119,16 @@ else
      
     height: 112px;
     background-size: 112px;
-    margin-<?echo get_s_align();?>:10px;
-     width:85%;
+    margin-<?echo get_s_align();?>: 380px;
+    margin-top: 0.4em;
+     width:45%;
      position:relative;
      text-align: center;
      display: inline-block;
      font-family: nextexitfotlight;
      font-size: 1.5em;
+    
+      background-position: <?echo get_s_align();?> 5px top;
  }
  #currentinfo_container
  {
@@ -127,7 +138,7 @@ else
      font-size: 1.4em;
      line-height: 1.2em;
      margin-<?=get_s_align()?>:-380px;
-     top: 165px;
+     top: -80px;
      position: absolute;
     <? if (!$current->is_light()||isRaining()) { ?>
     color:#ffffff
@@ -145,20 +156,24 @@ else
     font-family: nextexitfotlight;
     font-size:6.5em
 }
+#heatindex
+{
+    margin-top:140px;
+}
 #windy
 {
     width: 10%;
-    left: 6.5em;
-    top: 2.8em;
+    left: 7.2em;
+    top: 3.6em;
 }   
 #shortforecast
 {
     width: 30%;
     position:absolute;
     font-family:nextexitfotlight;
-    font-size: 1.3em;
-    <?=get_inv_s_align()?>:<? if (isHeb()) echo "-";?>100px;
-    margin-top: -480px;
+    font-size: 1.1em;
+    <?=get_inv_s_align()?>:-30px;
+    margin-top: -410px;
     <? if (!$current->is_light()||isRaining()) { ?>
     color:#ffffff
     <?}?>
@@ -171,6 +186,10 @@ else
 .nav
 {
     font-size:1.2em
+}
+#currentinfo_container
+{
+    margin: auto 10em;
 }
 </style>
 </head>
@@ -233,7 +252,7 @@ else {?>
         </div>
 </div>
 <? if (count($sig) > 1) { ?>
-<div id="what_is_h"><? echo "{$sig[0]['sig'][$lang_idx]}"; ?><br /><? echo $sig[0]['extrainfo'][$lang_idx];?></div>
+<div id="what_is_h"><? echo "{$sig[0]['sig'][$lang_idx]}"; ?><br /><? echo $sig[0]['extrainfo'][$lang_idx][0];?></div>
 <?}?>
 <!--<div id="more_info_btn">	
 <a href="javascript:void(0)" title="<? echo $HUMIDITY[$lang_idx];?>&nbsp;<? echo $WIND[$lang_idx];?>&nbsp;<? echo $RAIN[$lang_idx];?>" onclick="toggle('latestnow');toggle('extendedInfo');">
@@ -244,15 +263,16 @@ else {?>
 <div id="shortforecast">
     <ul class="nav">
         <li style="border:none">
-            <?echo "".replaceDays($forecastDaysDB[0]['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$forecastDaysDB[0]['date'];?><br/><br/><br/>
-            <img src="<? echo "images/icons/day/".$forecastDaysDB[0]['icon']; ?>" width="80" height="80" alt="<? echo "images/icons/day/".$forecastDaysDB[0]['icon']; ?>" /><br/><br/><br/>
-            <?=c_or_f($forecastDaysDB[0]['TempLow'])?>&nbsp;-&nbsp;<?=c_or_f($forecastDaysDB[0]['TempHigh'])?>
+            <? $firstDay = reset($forecastDaysDB);$secondDay = array_slice($forecastDaysDB, 1, 1)[0];?>
+            <?echo "".replaceDays($firstDay['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$firstDay['date'];?><br/><br/><br/>
+            <img src="<? echo "images/icons/day/".$firstDay['icon']; ?>" width="80" height="80" alt="<? echo "images/icons/day/".$firstDay['icon']; ?>" /><br/><br/><br/>
+            <?=c_or_f($firstDay['TempLow'])?>&nbsp;-&nbsp;<?=c_or_f($firstDay['TempHigh'])?>
         </li>
-        <li>
-            <?echo "".replaceDays($forecastDaysDB[1]['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$forecastDaysDB[1]['date'];?><br/><br/><br/>
-            <img src="<? echo "images/icons/day/".$forecastDaysDB[1]['icon']; ?>" width="80" height="80" alt="<? echo "images/icons/day/".$forecastDaysDB[1]['icon']; ?>" /><br/><br/><br/>
-            <?=c_or_f($forecastDaysDB[1]['TempLow'])?>&nbsp;-&nbsp;<?=c_or_f($forecastDaysDB[1]['TempHigh'])?>
-        </li>
+        <!--<li>
+            <?echo "".replaceDays($secondDay['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$secondDay['date'];?><br/><br/><br/>
+            <img src="<? echo "images/icons/day/".$secondDay['icon']; ?>" width="80" height="80" alt="<? echo "images/icons/day/".$secondDay['icon']; ?>" /><br/><br/><br/>
+            <?=c_or_f($secondDay['TempLow'])?>&nbsp;-&nbsp;<?=c_or_f($secondDay['TempHigh'])?>
+        </li>-->
         
     </ul>
 </div>
@@ -290,7 +310,7 @@ else {?>
         <? }?>
 	<!-- Parallax  background clouds -->
 	<div id="parallax-bg1">
-                        <div id="bg1-1" class="cloud4"><div class="cloud4-more"></div></div>
+                        
 
 <? if ($current->get_cloudiness() > 2) {?>
                         <div id="bg1-2" class="cloud3"><div class="cloud3-more"></div></div>
@@ -300,6 +320,7 @@ else {?>
                         <div id="bg1-6" class="cloud2"><div class="cloud2-more"></div></div>
                         <?}?>
                         <? if ($current->get_cloudiness() > 5) {?>
+                        <div id="bg1-1" class="cloud4"><div class="cloud4-more"></div></div>
                         <div id="bg1-7" class="cloud-big"><div class="cloud-big-more"></div></div>
                         <div id="bg1-8" class="cloud-big"><div class="cloud-big-more"></div></div>
                         <?}?>

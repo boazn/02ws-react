@@ -9,38 +9,12 @@ $PROBLEM_USER_PASSWORD =  array("Problem with user or password", "סיסמא ל�
 $NO_USER_EXIST = array("No user exists with", "אין משתמש עם");
 
 session_start();
-function check_email_address($email) {
-  // First, we check that there's one @ symbol, and that the lengths are right
-  if (!ereg("[^@]{1,64}@[^@]{1,255}", $email)) {
-    // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
-    return false;
-  }
-  // Split it into sections to make life easier
-  $email_array = explode("@", $email);
-  $local_array = explode(".", $email_array[0]);
-  for ($i = 0; $i < sizeof($local_array); $i++) {
-     if (!ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
-      return false;
-    }
-  }  
-  if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
-    $domain_array = explode(".", $email_array[1]);
-    if (sizeof($domain_array) < 2) {
-        return false; // Not enough parts to domain
-    }
-    for ($i = 0; $i < sizeof($domain_array); $i++) {
-      if (!ereg("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$", $domain_array[$i])) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
+
 
 function get_user_from_email($email){
     $query = "select user_login, user_pass, display_name, user_nicename, user_icon, priority, locked, admin  from users where email='$email'";
     $result = db_init($query);
-    $line = mysqli_fetch_array($result);
+    $line = mysqli_fetch_array($result["result"]);
     $_SESSION['isAdmin'] = $line['admin'];
     @mysqli_free_result($result);
     return $line;
@@ -142,7 +116,7 @@ function is_valid_email($email){
 }
 function get_user_from_key($key){
     $result = db_init("select user_status, user_pass, display_name, user_nicename, user_icon, priority, locked, admin, email from users where user_rememberme='$key'");
-    $line = mysqli_fetch_array($result);
+    $line = mysqli_fetch_array($result["result"]);
     @mysqli_free_result($result);
     global $link;
     mysqli_close($link);
@@ -214,7 +188,7 @@ function forgot_password($email)
       else
       {
           /* Retrieve password from result, strip slashes */
-         $dbarray = mysqli_fetch_array($result, MYSQLI_ASSOC);
+         $dbarray = mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
          $href="http://www.02ws.co.il/regConfirm.php?email=$email&lang=$lang_idx";
           send_Email("<a href=\"$href\" >".$CLICK_TO_RESET[$lang_idx]."</a>.<br /><br />", $email, EMAIL_ADDRESS, "02ws ".$FORGOT_PASS[$lang_idx], "");
           echo $CHECK_EMAIL_RESET_PASS[$lang_idx];
@@ -275,7 +249,7 @@ function user_login($user_id){
 
       /* Retrieve password from result, strip slashes */
       
-      $dbarray = mysqli_fetch_array($result, MYSQLI_ASSOC);
+      $dbarray = mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
       $dbarray['user_pass'] = stripslashes($dbarray['user_pass']);
       $password = stripslashes($password);
       //echo $email."<br/>".$password."<br/>".$dbarray['user_pass']."<br/>";
@@ -348,7 +322,7 @@ function user_login($user_id){
       }
 
       /* Retrieve userid from result, strip slashes */
-      $dbarray = mysqli_fetch_array($result, MYSQLI_ASSOC);
+      $dbarray = mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
       $dbarray['user_login'] = stripslashes($dbarray['user_login']);
       $userid = stripslashes($userid);
 

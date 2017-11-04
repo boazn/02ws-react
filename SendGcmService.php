@@ -3,6 +3,11 @@ ini_set("display_errors","On");
 include ("include.php");
 include ("lang.php");
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+class CloudMessageType {
+
+    const Gcm = 1;
+    const Fcm = 2;
+}
 /*******************************************************************************************/
 function post_to_bufferApp($messageBody, $picture_url)
 {
@@ -224,7 +229,7 @@ if ($apple_error_response) {
 
 return "";
 }
-function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip)
+function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip, $CloudMessageType)
 {
     global $TIP;
     
@@ -240,17 +245,27 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     }
     $messageBody[0] = date('H:i')." ".$messageBody[0];
     $messageBody[1] = date('H:i')." ".$messageBody[1];
+    if ($CloudMessageType == CloudMessageType::Fcm)
+    {
+        $key = FCM_API_KEY;
+        $query_extension = " and fcm=1";
+    }
+    else
+    {
+        $key = GOOGLE_API_KEY;
+        $query_extension = " and fcm<>1";
+    }
     if ((boolval($long_range))&&(boolval($short_range))){
-        $result = db_init("select * FROM gcm_users where active=1 or active_rain_etc=1", "");
+        $result = db_init("select * FROM gcm_users where active=1 or active_rain_etc=1".$query_extension, "");
     }
     else if (boolval($long_range)){
-        $result = db_init("select * FROM gcm_users where active=1", "");
+        $result = db_init("select * FROM gcm_users where active=1".$query_extension, "");
     }
     else if (boolval($short_range)){
-        $result = db_init("select * FROM gcm_users where active_rain_etc=1", "");
+        $result = db_init("select * FROM gcm_users where active_rain_etc=1".$query_extension, "");
     }
     else if (boolval($tip)){
-        $result = db_init("select * FROM gcm_users where active_tips=1", "");
+        $result = db_init("select * FROM gcm_users where active_tips=1".$query_extension, "");
     }
     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 	$lines++;
@@ -262,36 +277,78 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     }
     
     logger(" short_range=".$short_range." long_range=".$long_range);
-    logger("sendingGCMMessage: En:".count($registrationIDs0)." Heb:".count($registrationIDs1));
+    
      
     /* test */
    
-      $registrationIDs = array();
-		$registrationIDs0 = array();
-		$registrationIDs1 = array();
-	 //test boazn1@gmail.com
-	 //array_push ($registrationIDs1, "APA91bGOI8596BiHih3UzKUhDIJzVcDtXAoPiqmEVLVGkWe__Kw9hQQ4ce6kyD2k3xWoIvcV-gihzkIMDsOG3eU6yDZiAyqLIJeNP7_IsgHXJhx54EvJZBU");
-	 array_push ($registrationIDs1, "APA91bEHvXbLDDYCJn08npaqMAaWT-dNFsTMJYtPsQljBCG8zwCqMLYPnuWRoONQY0jWW9NQJOQ4emIg5nrCnqGj8-s6l4mPLLxp0GJIzgsGnHUfehzJgvg");
+    $registrationIDs = array();
+    $registrationIDs0 = array();
+    $registrationIDs1 = array();
     
+	 //test boazn1@gmail.com
+	 // test efrat
+         if ($CloudMessageType == CloudMessageType::Fcm)
+            array_push ($registrationIDs1, "czAeEvyi1PQ:APA91bG9Bubkf4B5KS44PBwlVGtvz6zIv72f9nJ1ViCartBSYBwUK5rS76H3o2L1u933Rimh3XTXq5A-O6hjVo9DaU5-36fX7U5pCZg1pORLsoBOHvMtodWcSepSaBdJLy4pOrmuTP-L");
+         else
+            array_push ($registrationIDs1, "APA91bHeuwNkpfuhTy5IUUseUL-BOPwnhmY8nJNS_uuV_ZpcYnRDVjQfcaiiQnEI0MxH2W1dDyViJDF22It_ZYawz8UkxDcXgIaZxOMnM1GZBSTz-TPvzfmRCo38KTZLLKZnmqoe1SgICq88Ymy92_cBHWuam8nINA");
+         
      //
+         
+     logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1));
      $result = "";
+     $resultCall = array();
      $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
      foreach ($arrOfRegID0 as $regIDs){
-        logger("sendingGCMMessage EN: ".count($regIDs)." ".$messageBody[0]." ".$title[0]);
-        $result .= " ".callGCMSender ($regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
-     }
+        
+        $resultCall = callGCMSender ($key, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
+        print_r($resultCall[1]);
+        handleInvalidTokens($resultCall[1], $regIDs);
+      }
     
      $arrOfRegID1 = array_chunk($registrationIDs1, 1000);
      foreach ($arrOfRegID1 as $regIDs){
-        logger("sendingGCMMessage Heb: ".count($regIDs)." ".$messageBody[1]." ".$title[1]);
-        $result .= " ".callGCMSender ($regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url);
+        
+        $resultCall = callGCMSender ($key, $regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url);
+        print_r($resultCall[1]);
+        handleInvalidTokens($resultCall[1], $regIDs);
      }
+    
+     
+     
      //logger($result);
     return "";        
 }
-function callGCMSender($registrationIDs, $messageBody, $title, $picture_url, $embedded_url){
+function handleInvalidTokens($jsonArray, $registration_ids){
+    $remove_ids = array();
+    $errorMessage = array();
+    logger("success:".$jsonArray["success"]." failure:".$jsonArray["failure"]);
+    logger('count results = '.count($jsonArray["results"]));
+    for($i=0; $i<count($jsonArray["results"]);$i++){
+        if(isset($jsonArray["results"][$i]["error"])){
+            if($jsonArray["results"][$i]["error"] == "NotRegistered"){
+                $remove_ids[$i] = "'".$registration_ids[$i]."'";
+            }else{
+                $errorMessage[$i] = array('id' => "'".$registration_ids[$i]."'", 'desc' => "'".$jsonArray["results"][$i]["error"]."'");
+            }
+        }
+    }
+     global $link;
+    foreach ($remove_ids as $id){
+         //print_r($regIDs);
+         $query = "update gcm_users set ResponseCode='9', ResponseMessage='NotRegistered' where gcm_regid='".$id."'";
+         $resultUpdate = mysqli_query($link, $query);
+         logger($query);
+     }
+     foreach ($errorMessage as $err){
+         //print_r($regIDs);
+         $query = "update gcm_users set ResponseCode='5', ResponseMessage=".$err['desc']." where gcm_regid='".$err['id']."'";
+         $resultUpdate = mysqli_query($link, $query);
+         logger($query);
+     }
+}
+function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_url, $embedded_url){
      
-
+    logger("sendingGCMMessage: header key=".$key." count=".count($registrationIDs)." ".$messageBody." ".$title." ".$picture_url." ".$embedded_url);
     // Set POST variables
     $url = 'https://android.googleapis.com/gcm/send';
 
@@ -299,15 +356,16 @@ function callGCMSender($registrationIDs, $messageBody, $title, $picture_url, $em
         'registration_ids' => $registrationIDs,
         'data' => array( "message" => $messageBody, "title" => $title, "picture_url" => $picture_url, "embedded_url" => $embedded_url),
     );
-    // Replace with the real server API key from Google APIs
+        
     $headers = array(
-        'Authorization: key=' . GOOGLE_API_KEY,
+        'Authorization: key=' . $key, 
         'Content-Type: application/json'
     );
 
     // Open connection
     $ch = curl_init();
-
+    //print_r($headers);
+    //print_r($registrationIDs);
     // Set the URL, number of POST vars, POST data
     curl_setopt( $ch, CURLOPT_URL, $url);
     curl_setopt( $ch, CURLOPT_POST, true);
@@ -329,11 +387,11 @@ function callGCMSender($registrationIDs, $messageBody, $title, $picture_url, $em
                 break;
 
             case "400":
-                throw new Exception('Malformed request. '.$result, Exception::MALFORMED_REQUEST);
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result);
                 break;
 
             case "401":
-                throw new Exception('Authentication Error. '.$result);
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result);
                 break;
 
             default:
@@ -341,7 +399,7 @@ function callGCMSender($registrationIDs, $messageBody, $title, $picture_url, $em
                 logger("curl_getinfo GCM: ".$resultHttpCode." ".$result);
                 break;
         }
-    return $result;
+    return array($resultHttpCode, json_decode($result, true));
 }
 function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title)
 {
@@ -356,7 +414,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         {
 
             $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'forecast') and (lang=?)", $lang);
-            while ($line = mysqli_fetch_array($res["result"], MYSQL_ASSOC) ){
+            while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
                 $description = $line["Description"]."<div class=\"alerttime\">".$now."</div>".$description;
             }
         }
@@ -421,7 +479,8 @@ if (empty($empty)) {
     }
     
     try{
-         $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);   
+         //$result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], CloudMessageType::Gcm);
+         $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], CloudMessageType::Fcm);
     } catch (Exception $ex) {
         $result .= " exception sendGCMMessage:".$ex->getMessage();
     }

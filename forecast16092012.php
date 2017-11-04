@@ -878,7 +878,7 @@ function checktofloatList ($licount)
  
 										<span class="big"><? echo "{$sig[0]['sig'][$lang_idx]}"; ?></span>
 										<br />
-										<span id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx]; if ($sig[0]['extrainfo'][$lang_idx] != "") echo " - ";?></span><span id="moreinfo"><?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></span>
+										<span id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx][0]; if ($sig[0]['extrainfo'][$lang_idx][0] != "") echo " - ";?></span><span id="moreinfo"><?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></span>
 								</a>
 							</div>
 							

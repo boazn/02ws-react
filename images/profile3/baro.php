@@ -56,11 +56,15 @@
 #   This document uses Tab 4 Settings
 ############################################################################
 $DATA   = array();
-require_once("GraphSettings.php");
+$width = $_GET['w'];
+if ($_GET['datasource'] != "")
+	require_once("GraphSettings02ws.php");
+	else
+	require_once("GraphSettings.php");
 global  $SITE;
 ############################################################################
-$SITE['hrs']            = 72;       # Adjustable via level
-$SITE['tick']           = 2;        # Adjustable via level
+$SITE['hrs']            = 168;       # Adjustable via level
+$SITE['tick']           = 4;        # Adjustable via level
 $SITE['freq']           = 2;        # Adjustable via freq
 ############################################################################
 # Check for passed variables
@@ -95,14 +99,36 @@ debug_out("Starting Array Sweep");
 foreach($rawdata as $key) {
     if ($got < $wanted) {
     	
-    	$DATA = preg_split('/ +/', $key);
-        
-        if (freq_check(substr( ret_value("time"),3,2))) {
+    	$DATA = preg_split($key_split, $key);
+		
+		debug_out("date=".ret_value("date"));
+		$timeA = explode(':',ret_value("time"));
+		
+        if (freq_check($timeA[1])) {
             debug_out("Storing data");
-            debug_out("Xaxis = " . timeto12(substr(ret_value("time"),0,2)));
-            debug_out("Yaxis = " . ret_value("dew") );
-            $rx[] = timeto12(substr(ret_value("time"),0,2));
+            debug_out("Xaxis = " . $timeA[0].":".$timeA[1]);
+            debug_out("Yaxis = " . ret_value("press") );
+            	debug_out("data[0] = '".$DATA[0]."'");
+            debug_out("data[1] = ".$DATA[1]);
+            $dateArray = explode($datedelimiter,$DATA[0]);
+			if ($_GET['datasource'] != "")
+			{
+				$dateday = $dateArray[0];
+				$datemon = $dateArray[1];
+				$dateyear = $dateArray[2];
+			}
+			else
+			{
+				$dateday = $dateArray[2];
+				$datemon = $dateArray[1];
+				$dateyear = $dateArray[0]-2000;
+			}
+			$ts = mktime($timeA[0], $timeA[1], 0, $datemon , $dateday, $dateyear+2000);
+            debug_out("ts = ".$ts);
+			debug_out("date = ".Date('H:i j/m', $ts));
+            $rx[] =  $ts;
             $ry1[] =  ret_value("press");
+            $ry2[] =  ret_value("wspeed");
  
             $SITE['tempunit'] 	= "&#xb0;" . ret_value("tempunit");
             $SITE['pressunit'] 	= ret_value("pressunit");
@@ -121,6 +147,7 @@ debug_out("Completed Array Sweep. Reversing Data");
    
 $x = array_reverse($rx);
 $y1 = array_reverse($ry1);
+$y2 = array_reverse($ry2);
 
 debug_out("Output of Xaxis Array");
 debug_out_pre(1);
@@ -138,17 +165,26 @@ debug_out_pre(0);
 
 debug_out("Starting Graph Creation");
 
-$graph = new Graph($width,$height,"auto",30);  
-$graph->SetScale("textlin");
+$graph = new Graph($width,$height);  
+$graph->SetScale("datlin");
+$graph->SetY2Scale("lin");
 $graph->SetMarginColor($SITE['bgncolor']);
 $graph->SetFrame(true,'#CDCABB',4);
 $graph->img->SetMargin(49,40,10,55);
 
-// Create a bar pot
-$bplot = new LinePlot($y1);
-$bplot->SetWeight(2);
-$bplot->SetColor("blue");
-$graph->Add($bplot);
+// Create the two linear plot
+$lineplot=new LinePlot($y1, $x);
+$lineplot2=new LinePlot($y2, $x);
+// Set the colors for the plots
+$lineplot->SetColor("blue");
+$lineplot->SetWeight(2);
+$lineplot->SetFillColor("lightblue@0.5");
+$lineplot2->SetColor("lightgray");
+$lineplot2->SetFillColor("lightgray@0.5");
+$lineplot2->SetWeight(2);
+// Add the plot to the graph
+$graph->Add($lineplot);
+$graph->AddY2($lineplot2);
 
 // titles
 $graph->title->SetFont(FF_ARIAL,FS_BOLD,8);
@@ -157,20 +193,20 @@ $graph->title->SetColor("azure4");
 $graph->title->SetPos(0.003,0.54,"left","top");
 
 //x-axis
-$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,6);
-$graph->xaxis->SetTickLabels($x); 
-$graph->xaxis->SetTextLabelInterval($SITE['tick']);
-$graph->xaxis->SetPos("min"); 
-$graph->xaxis->HideTicks(true,true); 
-$graph->xaxis->SetColor($SITE['txtcolor']); 
-$graph->xgrid->Show(true);
+
+$graph->xaxis->SetColor($SITE['txtcolor']);
+$graph->xaxis->SetLabelFormatCallback('time_callback');
+$graph->xaxis->scale->SetTimeAlign(HOURADJ_1);
+$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,7);
+$graph->xaxis->scale->ticks->Set(60*60, 30*60);
+$graph->xgrid->Show();
 
 //y-axis
 $graph->yaxis->SetColor($SITE['txtcolor']);
 $graph->yaxis->scale->SetGrace(10);
 $graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,6);
 $graph->yaxis->HideTicks(true,true);
-$graph->yaxis->SetLabelFormat('%01.0f ' . $SITE['pressunit']);
+$graph->yaxis->SetLabelFormat('%01.0f ' . "mb");
 
 // Print Wording on graphic
 
@@ -181,6 +217,14 @@ $txt2->SetPos(0.003,0.54,"left","center");
 $txt2->SetColor("azure4@0.85");
 $txt2->SetAngle(90);
 $graph->AddText($txt2);
+
+$ws = $lang_idx == 1 ? utf8_strrev($WIND_SPEED[$lang_idx]." - ".$KNOTS[$lang_idx]) : $WIND_SPEED[$lang_idx]." - ".$KNOTS[$lang_idx];
+$txtaa=new Text($ws);
+$txtaa->SetFont(FF_ARIAL, FS_BOLD,15);
+$txtaa->SetPos($width - 76,$height - 210,'center');
+$txtaa->SetColor("black");
+$graph->AddText($txtaa);
+
 
 $chart_title = $BAR[$lang_idx];
 if ($lang_idx == 1) $chart_title = utf8_strrev($chart_title);

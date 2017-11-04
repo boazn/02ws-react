@@ -9,21 +9,35 @@ function retrieveTemp2()
 {
     global $current, $min15, $min30;
     $path_to_file = 'temp2.csv';
+    $path_to_file_back = 'temptemp2.csv';
     if (stristr($_SERVER['SCRIPT_NAME'], 'getAllTempForecast'))
             $path_to_file = "../".$path_to_file;
     $temp2_array = array();
-    $temp2_array = array_map('str_getcsv', file($path_to_file));
+    try {
+        $temp2_array = @array_map('str_getcsv', @file($path_to_file));
+    } catch (Exception $ex) {
+        $temp2_array = array_map('str_getcsv', file($path_to_file_back));
+    }
+    
     $temp2 = number_format(((intval($temp2_array[1][0])/10) -32)*(5/9), 1, '.', '');
     $dewpoint2 = number_format(((intval($temp2_array[1][3])/10) -32)*(5/9), 1, '.', '');
     $heatindex2 = number_format(((intval($temp2_array[1][4])/10) -32)*(5/9), 1, '.', '');
     $thsw = number_format(((intval($temp2_array[1][25])/10) -32)*(5/9), 1, '.', '');
+    $datetime2_arr = explode(" ", $temp2_array[1][1]);
+    $date2_arr = $datetime2_arr[0]; 
+    $time2_arr = $datetime2_arr[1]; 
+    list($day2, $month2, $year2) = explode('/', $date2_arr);
+    list($hour2, $min2, $sec2) = explode(':', $time2_arr);
+    $date2 = @mktime ($hour2, $min2, $sec2, $month2, $day2 , $year2);
     if ($_GET['debug'] >= 4){
         echo $path_to_file." ";
         print_r($temp2_array);
     }
     if (empty($temp2)||($temp2_array[1][0] == 0))
     {
+       logger("empty temp2 date2, taking current values...");
        $temp2 = $current->get_temp2();
+       $date2 = time();
        $dewpoint2 = $current->get_dew();
        $heatindex2 = $current->get_heatidx();
        // no current thsw value, so copy from min15
@@ -34,7 +48,8 @@ function retrieveTemp2()
         }
        
     }
-    return array("temp2" =>$temp2, "dewpoint2" =>$dewpoint2, "heatindex2" =>$heatindex2, "thsw" => $thsw);
+    
+    return array("temp2" =>$temp2, "dewpoint2" =>$dewpoint2, "heatindex2" =>$heatindex2, "thsw" => $thsw, "date2" => $date2);
     //var_dump ($temp2_array);
 }
 $template_routing = @$_GET['section'];    
@@ -125,7 +140,9 @@ $thisYear->set_hightemp2($ary_parsed_file['HIYEARLYOUTSIDETEMP'],"");
 $thisYear->set_lowtemp2($ary_parsed_file['LOWYEARLYOUTSIDETEMP'],""); 
 $current->set_hum($ary_parsed_file['OUTSIDEHUMIDITY']);    
 $today->set_highhum($ary_parsed_file['HIHUMIDITY'],$ary_parsed_file['HIHUMTIME']);    
-$today->set_lowhum($ary_parsed_file['LOWHUMIDITY'],$ary_parsed_file['LOWHUMTIME']);    
+$today->set_lowhum($ary_parsed_file['LOWHUMIDITY'],$ary_parsed_file['LOWHUMTIME']);
+$today->set_highdew($ary_parsed_file['HIDEWPOINT'],$ary_parsed_file['HIDEWPOINTTIME']);    
+$today->set_lowdew($ary_parsed_file['LOWDEWPOINT'],$ary_parsed_file['LOWDEWPOINTTIME']);    
 $thisMonth->set_highhum($ary_parsed_file['HIMONTHLYHUMIDITY'],"");    
 $thisMonth->set_lowhum($ary_parsed_file['LOWMONTHLYHUMIDITY'],"");    
 $thisYear->set_highhum($ary_parsed_file['HIYEARLYHUMIDITY'],"");    
@@ -190,7 +207,7 @@ $today->set_hightemp2($ary_parsed_file['HIOUTSIDETEMP2'],$ary_parsed_file['HIOUT
 $today->set_lowtemp2($ary_parsed_file['LOWOUTSIDETEMP2'],$ary_parsed_file['LOWOUTSIDETEMP2TIME']);
 
 ////////// filling pm10 //////////
-$array_pm = array_map('str_getcsv', file("getAveragePM10.txt"));
+$array_pm = @array_map('str_getcsv', @file("getAveragePM10.txt"));
 $current->set_pm10($array_pm[0][0]);
 $current->set_pm10sd(round($array_pm[0][1]));
 $current->set_pm25($array_pm[0][2]);
@@ -210,11 +227,10 @@ if ($lang_idx == $HEB)
 else
 if ($lang_idx == $EN)
 {
-	
-		if ($_GET['tempunit'] == 'F')
-		{
-			$current->set_tempunit('&#176;F');
-		}
+    if ($_GET['tempunit'] == 'F')
+    {
+            $current->set_tempunit('&#176;F');
+    }
 	
 }
 
@@ -253,9 +269,33 @@ if ($current->get_rainrate() === "0.0")
 	$current->set_rainrate("0");
 $last2 = retrieveTemp2();
 $temp2 = $last2['temp2'];
+
+if (filemtime($fulldatatotake) - $last2['date2'] > 2500)
+{
+    logger("temp2 is too old: ".(filemtime($fulldatatotake)." - ".$last2['date2']." ".$temp2));
+    $PRIMARY_TEMP = 1;
+}
+
 $current->set_temp2($temp2);
 $current->set_thsw($last2['thsw']);
+$current->set_cloudiness(apc_fetch('cloudiness'));
+$temp_to_cold_meter = $current->get_temp_to_coldmeter();
+$temp_from = $temp_to_cold_meter - 0.5;
+$temp_to = $temp_to_cold_meter + 0.5;
+$last_comments = apc_fetch($temp_from."to".$temp_to."comments");
+if ($hour > 9 &&  (get_sunset_ut() - $current->get_current_time_ut() > 8600) && ($current->get_solarradiation() < 400))
+{
+    //logger("set_cloudiness: 6. sunset_ut:".get_sunset_ut()." get_current_time_ut:".$current->get_current_time_ut()." ".(get_sunset_ut() - $current->get_current_time_ut())." rad:".$current->get_solarradiation()." is sunset:".$current->is_sunset());
+    $current->set_cloudiness(6);
+}
+ if ($hour > 9 && (get_sunset_ut() - $current->get_current_time_ut() > 6000) && ($current->get_solarradiation() < 240))
+ {
+     //logger("set_cloudiness: 8. sunset_ut:".get_sunset_ut()." get_current_time_ut:".$current->get_current_time_ut()." ".(get_sunset_ut() - $current->get_current_time_ut())." rad:".$current->get_solarradiation()." is sunset:".$current->is_sunset());
+     $current->set_cloudiness(8);
+ }
+// debug
 if ($_GET['debug'] >= 4){
+echo "<br/>cloudiness= ".$current->get_cloudiness()." ".get_sunset_ut() - $current->get_current_time_ut()." ";
 print("<br><br> current: ");
 print_r($current);
 print("<br><br> today:");
@@ -265,7 +305,7 @@ print_r($yest);
 print("<br><br>");    
 print_r($thisMonth);    
 print("<br><br>");    
-print_r($thisYear);    
+print_r($thisYear);  
 }
  /******************************************************************************/
 /* 

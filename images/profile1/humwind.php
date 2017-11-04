@@ -138,7 +138,7 @@ foreach($rawdata as $key) {
 			debug_out("date = ".Date('H:i j/m', $ts));
             $rx[] =  $ts;
             $ry1[] =  ret_value("hum");
-            $ry2[] = ret_value("winddir");
+            $ry2[] = ret_value("wspeed");
  
             $SITE['tempunit'] 	= "&#xb0;" . "C";
             $SITE['pressunit'] 	= "mb";
@@ -194,7 +194,7 @@ debug_out("Starting Graph Creation");
 $graph = new Graph($width,$height);    
 $graph->SetScale("datlin");
 //$graph->SetAxisStyle(AXSTYLE_BOXIN);
-$graph->SetY2Scale("lin",0,360);
+$graph->SetY2Scale("lin");
 $graph->y2axis->scale->ticks->Set(90);
 $graph->SetMarginColor($SITE['bgncolor']);
 $graph->SetFrame(true,'#CDCABB',4);
@@ -211,10 +211,10 @@ $graph->AddY2($lineplot2);
 $lineplot2->SetWeight(2);
 
 // titles
-$graph->title->SetFont(FF_ARIAL,FS_BOLD,8);
+$graph->title->SetFont(FF_ARIAL,FS_BOLD,12);
 $graph->title->Set($SITE['sitename']);
 $graph->title->SetColor("azure4");
-$graph->title->SetPos(0.003,0.54,"left","top");
+$graph->title->SetPos(0.003,0.54,"right","top");
 
 //x-axis
 
@@ -243,8 +243,8 @@ $graph->y2axis->SetTickLabels($SITE['compass']);
 $lineplot->SetColor("blue");
 $lineplot->SetWeight(2);
 $lineplot->SetFillColor("lightblue@0.5");
-$lineplot2->SetColor("lightzure");
-$lineplot2->SetFillColor("lightzure@0.5");
+$lineplot2->SetColor("lightgreen");
+$lineplot2->SetFillColor("lightgreen.5");
 $lineplot2->SetWeight(2);
 
 // Print Wording on graphic
@@ -275,11 +275,11 @@ $txt3->SetColor("azure4");
 $graph->AddText($txt3);
 
 // Place small monthly under right index
-$hum = $lang_idx == 1 ? utf8_strrev($WIND_DIR[$lang_idx]) : $WIND_DIR[$lang_idx];
+$hum = $lang_idx == 1 ? utf8_strrev($WIND_SPEED[$lang_idx]) : $WIND_SPEED[$lang_idx];
 $txtaa=new Text($chrs . $hum);
 $txtaa->SetFont(FF_ARIAL, FS_BOLD,9);
-$txtaa->SetPos($width - 26,$height - 210,'center');
-$txtaa->SetColor("azure");
+$txtaa->SetPos($width - 36,$height - 220,'center');
+$txtaa->SetColor("green");
 $graph->AddText($txtaa);
 
 // Place small daily under right index

@@ -24,7 +24,7 @@ function validEntry()
 	$query = "SELECT voting_interval FROM `survey` s WHERE s.survey_id=?";
 	$result = db_init($query, $_GET['survey_id']);
 	global $link;
-	$row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
+	$row = @mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
 	$v_interval = $row["voting_interval"];
 	//print "v_interval=".$v_interval;
 	$query = "SELECT value, `update_time` FROM `surveyresult` s WHERE ip = '{$_SERVER['REMOTE_ADDR']}' and s.survey_id={$_GET['survey_id']} ORDER BY `update_time` ASC LIMIT 0 , 1 ";
@@ -74,14 +74,14 @@ if (isset($_POST['SendButton'])) {
 }
 
 $result = getSurvey($_GET['survey_id']);
-$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+$row = mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
 print "<h1 class=\"topbase\">".get_title($row['name'])."</h1>";
 print "<h2 style=\"margin:0em 2em;text-align:".get_s_align()."\" class=\"inv_plain_3\"";
 if (isHeb()) echo "dir=\"rtl\"";
 echo " >".get_name($row['name'])."</h2>";
 if (!$msgSent) {
 print "<div class=\"inv_plain_3_zebra float\" style=\"margin:1em 3em;padding:1em\" >";
-while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 	$lines++;
         print "\n\t\t<div ";
         if (isHeb()) echo "dir=\"rtl\"";

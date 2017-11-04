@@ -26,7 +26,7 @@ Function getLyrics($location, $song)
 </p>
 <div class="float" style="padding:0.5em">
 		<h2 class="inv_plain_3_zebra" style="padding:0.5em"><a href="http://www.lyricstime.com/doors-riders-on-the-storm-lyrics.html" class="colorbox"	rel="external" >Riders on the storm - The doors <?=get_arrow()?></a></h2>
-		<object width="480" height="295"><param name="movie" value="http://www.youtube.com/v/5qRJIBtbc2c&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/5qRJIBtbc2c&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="295"></embed></object>
+		<iframe width="480" height="270" src="https://www.youtube.com/embed/lS-af9Q-zvQ" frameborder="0" allowfullscreen></iframe>
 
 		
 		
@@ -69,7 +69,7 @@ Function getLyrics($location, $song)
 </div>
 <div class="float" style="padding:0.5em">
 	<h2 class="inv_plain_3_zebra" style="padding:0.5em"><a href="http://www.leoslyrics.com/listlyrics.php?id=97151" class="colorbox" >Sometimes It Snows In April - Prince <?=get_arrow()?></a></h2>
-	<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/cBJ0lxBhGDs?version=3&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/cBJ0lxBhGDs?version=3&amp;hl=en_US" type="application/x-shockwave-flash" width="420" height="344" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+	<iframe width="480" height="270" src="https://www.youtube.com/embed/uGzXiK8_KU8" frameborder="0" allowfullscreen></iframe>
 </div>	
 <div class="float" style="padding:0.5em">
 	<h2 class="inv_plain_3_zebra" style="padding:0.5em"><a href="http://www.lyricstime.com/eurythmics-here-comes-the-rain-again-lyrics.html" class="colorbox" rel="external">Here Comes The Rain Again - Eurythmics  <?=get_arrow()?></a></h2>
@@ -77,7 +77,7 @@ Function getLyrics($location, $song)
 </div>
 <div class="float" style="padding:0.5em">
 	<h2 class="inv_plain_3_zebra" style="padding:0.5em"><a href="http://www.lyricstime.com/bob-marley-sun-is-shining-lyrics.html" class="colorbox" rel="external">Sun Is Shining - Bob Marley <?=get_arrow()?></a></h2>
-		<iframe width="425" height="344" src="http://www.youtube.com/embed/9Mw5j8L1bWQ" frameborder="0" allowfullscreen></iframe>
+		<iframe width="480" height="270" src="https://www.youtube.com/embed/UOoHTcuORcY" frameborder="0" allowfullscreen></iframe>
 			
 </div>
  <div class="float" style="padding:0.5em">
@@ -86,9 +86,7 @@ Function getLyrics($location, $song)
 <div class="float" style="padding:0.5em">
 <iframe width="420" height="315" src="//www.youtube.com/embed/znaQ9BHBcgM" frameborder="0" allowfullscreen></iframe>
 </div>
-<div class="float" style="padding:0.5em">
-<iframe width="420" height="315" src="//www.youtube.com/embed/wxFgUZpRtVA" frameborder="0" allowfullscreen></iframe>
-</div>
+
 <script>
 	function fillSong(str)
 	{

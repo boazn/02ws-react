@@ -81,10 +81,10 @@
    
 
     /* Performing SQL query */
-    $result = db_init("SELECT * FROM average ORDER BY Month ASC");
+    $result = db_init("SELECT * FROM average ORDER BY Month ASC", "");
     /* Printing results in HTML */
     
-    while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 		$col_num = 0;
 		print "\t<tr class=\"inv_plain_3\">\n";
         foreach ($line as $col_value) {

@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /home/boazn/public/02ws.com/public
+phantomjs save_main.js

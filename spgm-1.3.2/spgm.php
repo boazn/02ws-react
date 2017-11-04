@@ -412,7 +412,7 @@ function spgm_IsGallery($strGalleryId) {
   );
 
   // searching for hazardous patterns
-  if ( ereg('^/', $strGalleryId) || ereg('\.\.', $strGalleryId) || ereg('/$', $strGalleryId) ) {
+  if ( preg_match('^/', $strGalleryId) || preg_match('\.\.', $strGalleryId) || preg_match('/$', $strGalleryId) ) {
     return false;
   }
 

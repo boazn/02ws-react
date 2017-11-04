@@ -3,6 +3,8 @@ $is_xml = true;
 include "begin_caching.php";
 include "start.php";
 //getRadioData();
+$itfeels = array();
+$itfeels = $current->get_itfeels();
 ?>
 <? header("Content-type: text/xml"); ?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
@@ -26,14 +28,14 @@ include "start.php";
         <item>
 		<title>windy</title>
 		<link><? echo BASE_URL; ?></link>
-                <description><? echo getWindStatus();?></description>
+                <description><? echo getWindStatus($lang_idx);?></description>
 		<author><? echo EMAIL_ADDRESS;?></author>
 		<guid><? echo BASE_URL; ?>/station.php#webCamera</guid>
 	</item>
         <item>
 		<title>it feels like</title>
 		<link><? echo BASE_URL; ?></link>
-                <description><? if (min($current->get_windchill(), $current->get_thw()) < ($current->get_temp() - 1) && $current->get_temp() < 20 ) echo min($current->get_windchill(), $current->get_thw())."&#176;"; else if (max($current->get_HeatIdx(), $current->get_thw()) > ($current->get_temp())) echo max($current->get_HeatIdx(), $current->get_thw())."&#176;"; ?></description>
+                <description><? echo $itfeels[1]." C";  ?></description>
 		<author><? echo EMAIL_ADDRESS;?></author>
 		<guid><? echo BASE_URL; ?>/station.php#webCamera</guid>
 	</item>

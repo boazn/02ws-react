@@ -1,6 +1,7 @@
 <?  
     ini_set("display_errors","On");
     header("Content-type: text/css");
+include "../begin_caching.php";
 include ('../ini.php');
 $lang_idx = @$_GET['lang'];
 $css_comp = explode (",",$_GET['type']);
@@ -140,6 +141,7 @@ h2 {
     font-weight:normal;
     margin-bottom:10px;
     line-height:18px;
+    <? if (isHeb()) echo "direction:rtl"; ?>
 }
 
 
@@ -290,7 +292,9 @@ width:125px;
 {
 direction:ltr important!
 }
-
+.nav .forecasttemp a{
+display:inline-block;
+}
 
 /* ==========================================================================
 				     WHAT NOW 
@@ -332,63 +336,70 @@ direction:ltr important!
     cursor:pointer;
 }
 #all_btn{
-margin-<?=get_inv_s_align()?>: -90px;
-margin-top: -42px;
+margin-<?=get_inv_s_align()?>: -117px;
+margin-top: -45px;
 border-radius: 999px;
 background:white
 }
 #now_btn {
     background-image:url("../img/now_icon.png");   
-    
-    margin-top:-13px;
-    
+    margin-top: -302px;
+    margin-<?=get_inv_s_align()?>: -38px;
 }
 
+#temp2_btn {
+    background-image:url("../img/temp2.png");
+    margin-<?=get_inv_s_align()?>:4px;
+    margin-top:-19px;
+}
 #temp_btn {
     background-image:url("../img/temp2.png");
     margin-<?=get_inv_s_align()?>:40px;
-    margin-top:-9px;
+    margin-top: 20px;
 }
-
 #moist_btn {
     background-image:url("../img/moist.png");
-    margin-<?=get_inv_s_align()?>:70px;
+    margin-<?=get_inv_s_align()?>:65px;
     margin-top:2px;   
 }
-
+#dew_btn {
+    background-image:url("../img/moist.png");
+    margin-<?=get_inv_s_align()?>:75px;
+    margin-top:5px;   
+}
 #air_btn {
     background-image:url("../img/air.png");
-    margin-<?=get_inv_s_align()?>:83px;
+    margin-<?=get_inv_s_align()?>:75px;
     margin-top:8px;   
 }
 
 #wind_btn {
     background-image:url("../img/wind.png");
-    margin-<?=get_inv_s_align()?>:81px;
-    margin-top:9px;   
+    margin-<?=get_inv_s_align()?>:61px;
+    margin-top:4px;   
 }
 
 #rain_btn {
     background-image:url("../img/rain.png");
-    margin-<?=get_inv_s_align()?>:65px;
-    margin-top:7px;   
-}
-
-#rad_btn {
-    background-image:url("../img/radiation.png");
     margin-<?=get_inv_s_align()?>:35px;
     margin-top:-3px;   
 }
 
+#rad_btn {
+    background-image:url("../img/radiation.png");
+    margin-<?=get_inv_s_align()?>:0px;
+    margin-top:-13px;   
+}
+
 #uv_btn {
     background-image:url("../img/uv.png");
-    margin-<?=get_inv_s_align()?>:-2px;
-    margin-top:-12px;   
+    margin-<?=get_inv_s_align()?>:-37px;
+    margin-top:-25px;   
 }
 #aq_btn {
     background-image:url("../img/dust2.png");
-    margin-<?=get_inv_s_align()?>:-46px;
-    margin-top:-26px;
+    margin-<?=get_inv_s_align()?>:-77px;
+    margin-top:-30px;
 }
 
 #cold_line {
@@ -417,12 +428,12 @@ background:white
      visibility:hidden;
 }
 
-#season_line {
+#fseason_line {
      position:absolute;
    width:12px;
    opacity:0.7;
    margin-top:-17px;
-   <?=get_s_align()?>:848px;
+   <?=get_s_align()?>:568px;
     -ms-transform:rotate(15deg); 
     -moz-transform:rotate(15deg); 
     -webkit-transform:rotate(15deg);
@@ -432,10 +443,10 @@ background:white
 
 #now_line {
      position:absolute;
-   width:15px;
+   width:11px;
    opacity:0.7;
-   margin-top:28px;
-   <?=get_s_align()?>:<?if (isHeb()) echo "426"; else echo "400";?>px;
+   margin-top:20px;
+   <?=get_s_align()?>:<?if (isHeb()) echo "458"; else echo "435";?>px;
     -ms-transform:rotate(<?=get_deg(110)?>deg); 
     -moz-transform:rotate(<?=get_deg(110)?>deg); 
     -webkit-transform:rotate(<?=get_deg(110)?>deg);
@@ -451,7 +462,20 @@ background:white
    <?=get_s_align()?>:<? if (isHeb()) echo "393"; else echo "367"; ?>px;
     -ms-transform:rotate(130deg); 
     -moz-transform:rotate(130deg); 
-    -webkit-transform:rotate(130deg);
+    -webkit-transform:rotate(<? if (isHeb()) echo "130"; else echo "240"; ?>deg);
+    -o-transform:rotate(130deg);
+     visibility:hidden;
+}
+
+#temp2_line {
+    position:absolute;
+   width:15px;
+   opacity:0.7;
+   margin-top:26px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "428"; else echo "402"; ?>px;
+    -ms-transform:rotate(130deg); 
+    -moz-transform:rotate(130deg); 
+    -webkit-transform:rotate(<? if (isHeb()) echo "130"; else echo "240"; ?>deg);
     -o-transform:rotate(130deg);
      visibility:hidden;
 }
@@ -464,20 +488,32 @@ background:white
    <?=get_s_align()?>:<? if (isHeb()) echo "370"; else echo "344"; ?>px;
     -ms-transform:rotate(145deg); 
     -moz-transform:rotate(145deg); 
-    -webkit-transform:rotate(145deg);
+    -webkit-transform:rotate(<? if (isHeb()) echo "145"; else echo "255"; ?>deg);
+    -o-transform:rotate(145deg);
+     visibility:hidden;
+}
+#dew_line {
+    position:absolute;
+   width:16px;
+   opacity:0.7;
+   margin-top:122px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "360"; else echo "344"; ?>px;
+    -ms-transform:rotate(145deg); 
+    -moz-transform:rotate(145deg); 
+    -webkit-transform:rotate(<? if (isHeb()) echo "145"; else echo "255"; ?>deg);
     -o-transform:rotate(145deg);
      visibility:hidden;
 }
 
 #air_line {
    position:absolute;
-   width:15px;
+   width:17px;
    opacity:0.7;
-   margin-top:120px;
+   margin-top:160px;
    <?=get_s_align()?>:<? if (isHeb()) echo "361"; else echo "336"; ?>px;
     -ms-transform:rotate(170deg); 
     -moz-transform:rotate(170deg); 
-    -webkit-transform:rotate(170deg);
+    -webkit-transform:rotate(<? if (isHeb()) echo "170"; else echo "280"; ?>deg);
     -o-transform:rotate(170deg);
      visibility:hidden;
 }
@@ -486,11 +522,11 @@ background:white
     position:absolute;
    width:15px;
    opacity:0.7;
-   margin-top:155px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "362"; else echo "337"; ?>px;
+   margin-top:190px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "380"; else echo "337"; ?>px;
     -ms-transform:rotate(185deg); 
     -moz-transform:rotate(185deg); 
-    -webkit-transform:rotate(185deg);
+    -webkit-transform:rotate(<? if (isHeb()) echo "185"; else echo "295"; ?>deg);
     -o-transform:rotate(185deg);
      visibility:hidden;
 }
@@ -499,8 +535,8 @@ background:white
     position:absolute;
    width:15px;
    opacity:0.7;
-   margin-top:190px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "375"; else echo "349"; ?>px;
+   margin-top:215px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "395"; else echo "349"; ?>px;
     -ms-transform:rotate(30deg); 
     -moz-transform:rotate(30deg); 
     -webkit-transform:rotate(30deg);
@@ -512,8 +548,8 @@ background:white
     position:absolute;
    width:15px;
    opacity:0.7;
-   margin-top:215px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "398"; else echo "373"; ?>px;
+   margin-top:232px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "421"; else echo "373"; ?>px;
     -ms-transform:rotate(50deg); 
     -moz-transform:rotate(50deg); 
     -webkit-transform:rotate(50deg);
@@ -525,8 +561,8 @@ background:white
     position:absolute;
    width:15px;
    opacity:0.7;
-   margin-top:235px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "430"; else echo "404"; ?>px;
+   margin-top:243px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "455"; else echo "404"; ?>px;
     -ms-transform:rotate(65deg); 
     -moz-transform:rotate(65deg); 
     -webkit-transform:rotate(65deg);
@@ -538,8 +574,8 @@ background:white
       position:absolute;
    width:15px;
    opacity:0.7;
-   margin-top:244px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "467"; else echo "441"; ?>px;
+   margin-top:247px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "487"; else echo "441"; ?>px;
    -ms-transform: rotate(85deg);
 	-moz-transform: rotate(85deg);
 	-webkit-transform: rotate(85deg);
@@ -758,13 +794,13 @@ margin-top: 2px;
     background-color:#BFA8C6;
     color:#FFF;
     font-family:nextexitfotlight;
-    height:30px;
+    height:35px;
     margin-<?=get_s_align()?>:-20px;
     margin-bottom:10px;
-    font-size:23px;
+    font-size:20px;
     padding-<?=get_inv_s_align()?>:10px;
     display:block;
-    line-height:30px;
+    line-height:35px;
     text-align:<?=get_inv_s_align()?>;
     opacity:0.6;
     transition:all 200ms linear 0s
@@ -778,7 +814,9 @@ margin-top: 2px;
     text-decoration:none;
     color:#fff;
 }
-
+.forcast_title_btns a{
+color:#fff;
+}
 .for_active {
      opacity:1;
 }
@@ -945,15 +983,15 @@ background-color:#BFA8C6;
 
 }
 
-#forcast_hours {
+#forcast_hours, #forcast_hours_table {
     margin-top:40px;
     margin-<?=get_s_align()?>:-5px;
     margin-<?=get_inv_s_align()?>:60px;
     text-align:<?=get_s_align()?>;
 }
 
-#forcast_hours li{
-    text-align:center;
+#forcast_hours li, #forcast_hours_table li{
+    line-height:1.5em;
     list-style:none;
     display:inline-block;
     font-family: nextexitfot_regularregular;
@@ -961,32 +999,32 @@ background-color:#BFA8C6;
 }
 
 
-#forcast_hours ul {
+#forcast_hours ul, #forcast_hours_table ul {
    font-size:13px;
 }
 
-#forcast_hours .forcast_each {
+#forcast_hours .forcast_each, #forcast_hours_table .forcast_each {
      margin-bottom:0;
 }
 
-#forcast_hours .forcast_date {
+#forcast_hours .forcast_date, #forcast_hours_table .forcast_date{
     letter-spacing:1px;
     margin-left:5px;
 }
 
-#forcast_hours .forcast_text {
+#forcast_hours .forcast_text, #forcast_hours_table .forcast_text {
     margin-right:20px;
     width:150px;
     text-align:right;
 
 }
 
-#forcast_hours  .forcast_morning {
+#forcast_hours  .forcast_morning, #forcast_hours_table .forcast_morning  {
     padding:0px;
     width:30px;
     
 }
-#for24_hours{
+.for24_hours{
 width:100%;
 margin:0 auto
 }
@@ -1037,7 +1075,7 @@ vertical-align:middle;
 }
 .forcast_day {
     <? if (isHeb()) echo "font-size:40px;"; ?>
-    color:#DD6B96;
+    color:#c4a5ce;
     margin-right:0px;
     width:25px;
 }
@@ -1069,6 +1107,20 @@ margin-<?=get_s_align()?>:10px
     font-size:14px;
 	width:200px;
 	text-align:<?=get_s_align()?> !important;
+}
+.forcast_text a{
+text-decoration:underline;
+}
+.below_forecast 
+{
+    font-size:0.7em;
+    
+}
+.below_forecast a{
+text-decoration:none
+}
+.below_forecast a:hover{
+text-decoration:underline
 }
 .extra .forcast_date {
     width:20px;
@@ -1171,10 +1223,10 @@ vertical-align: top;
 margin-<?=get_s_align()?>:0.5em
 }
 #mainadsense {
-   margin-top:35px;
+   margin-top:40px;
    float:<?=get_inv_s_align()?>;
    width:300px;
-   height:450px;
+   height:310px;
 }
 #now_stuff {
     margin-top:100px;
@@ -1187,7 +1239,7 @@ margin-<?=get_s_align()?>:0.5em
 }
 #now_stuff li{
 text-align:<?=get_s_align()?>;
-width:95%;
+width:100%;
 }
 #now_stuff h2 {
     margin-bottom:3px;
@@ -1337,10 +1389,12 @@ a:visited h2{
     font-size:14px;
     line-height:18px;
 }
-
+.white_box a{
+    color:#000
+}
 .now_messages .span4 {
     width:330px;
-    margin-<?=get_s_align()?>:<? if (isHeb()) echo "320px"; else echo "380px"; ?>;
+    
 }
 
 .now_messages a .white_box {
@@ -1428,14 +1482,19 @@ width:250px
 
 #did_you_know {
      position:absolute;
-    width:140px;
-    
-     margin-top:140px;
+    width:180px;
+    margin-top:90px;
      line-height:18px;
 }
 
 #did_you_know a, #about{
     text-decoration:underline;
+}
+
+ 
+#alerts table,#alerts th, #alerts td, .box_text table, .box_text th, .box_text td{
+    border: 1px solid black;
+    cellpadding:0.2em
 }
 
 #alerts{
@@ -1471,17 +1530,22 @@ text-align:center
     
 }
 
-.more_icons a{
+a.more_icons {
     display:inline-block;
     text-align:center;
     background-repeat:no-repeat;
     background-position:left;
-    padding-top:100px;
     margin:0 5px;
-    
+    padding-top: 110px;
+    top: 800px;
+    width:60px;
+    height:60px;
+    position:absolute;
+    z-index:111;
+    background-size: 120px;
 }
 
-.more_icons a:hover {
+a.more_icons:hover {
     cursor:pointer;
     background-position:right;
     text-decoration:none;
@@ -1489,28 +1553,39 @@ text-align:center
 }
 #weather_israel {
     background-image:url("../img/weather_israel.png");
-    width:75px;
+    right: 290px;
+   
 }
 
 #weather_hul {
     background-image:url("../img/weather_hul.png");
-    width:82px;
+    right: 190px;
+  
 }
-
+#likeddislikedforecasts{
+   right:380px;
+   
+}
 #weather_movies {
     background-image:url("../img/weather_movies.png");
-    width:88px;
+     left: 560px;
+    
 }
 
 #weather_songs {
     background-image:url("../img/weather_songs.png");
-    width:74px;
+     left: 470px;
+ 
 }
-
+#myths {
+    background-image:url("");
+     left: 270px;
+ 
+}
 #snow_poems {
     background-image:url("../img/snow_poems.png");
-    width:85px;
-}
+    left: 370px;
+ }
 #fb_like{
 margin-top:10px
 }
@@ -1565,8 +1640,8 @@ padding:2px;
 .upload_to_map :hover {
     cursor:url("../img/cursor_upload.png"), auto;
 }
-#album{
-    <?=get_inv_s_align()?>: 10px;
+#album, #userpic{
+    <?=get_inv_s_align()?>: 200px;
 	position: absolute;
 	top: 580px;
 	font-size: 1.3em;
@@ -1577,11 +1652,14 @@ padding:2px;
 	padding-left: 10px;
 	direction: rtl;
 }
-#album a{
+#album a, #userpic a{
 	color:#2C3A42;
 }
-#album a:hover {
+#album a:hover , #userpic a:hover{
 	color:#648395;
+}
+#userpic{
+    <?=get_inv_s_align()?>: 10px;
 }
 #pic_empty {
     position:absolute;
@@ -2149,6 +2227,7 @@ a#expandclick, a#contractclick {
     font-size: 1.3em;
     font-weight: bold;
     padding:0.8em;
+    display:inline-block;
 }
 
 #reportcontrols select
@@ -2795,7 +2874,7 @@ color: #fff;
 			}
 		#more {
 			position: absolute;
-			top: 720px;
+			top: 730px;
 			width:1020px;
 			float:right;
 			z-index: 13;
@@ -2832,21 +2911,21 @@ color: #fff;
 #cover_clouds-1 {
     position:absolute;
     top: 880px;
-    left: -100px;
+    left: 100px;
      z-index: 103;
 }
 
 #cover_clouds-2 {
     position:absolute;
    top: 910px;
-    left: 170px;
+    left: 300px;
     z-index:101;
 }
 
 #cover_clouds-3 {
     position:absolute;
     top: 910px;
-    right: 20px;
+    right: 100px;
     float:right;
      z-index:102;
 }
@@ -2854,7 +2933,7 @@ color: #fff;
 #cover_clouds-4 {
     position:absolute;
     top: 840px;
-    right: -90px;
+    right: 150px;
     float:right;
      z-index:100;
 }
@@ -2863,6 +2942,7 @@ color: #fff;
     border-radius: 100%;
     display: inline-block;
     position: absolute;
+    opacity:0.9;
 }
 
 .cloud1:after, .cloud1:before, .cloud1-more:after,
@@ -3123,7 +3203,7 @@ color: #fff;
 	#bg2-5 {
 		position: absolute;
 		top: 330px;
-		left: 745px;
+		left: 830px;
 		}
 	#bg2-6 {
 		position: absolute;
@@ -3186,7 +3266,7 @@ color: #fff;
 	#bg1-5 {
 		position: absolute;
 		top: 220px;
-		left: 710px
+		left: 790px
 		}
 	#bg1-6 {
 		position: absolute;
@@ -3490,7 +3570,17 @@ margin:0
     top:400px;
     z-index:500;
 }
-
+#train, #train2{
+position:absolute;
+height:60px;
+width:80px;
+left:600px;
+top:300px;
+z-index:500;
+}
+#train2{
+top:230px;left:580px
+}
 #crow:hover {
      background-position:-99px;
 }
@@ -3700,15 +3790,26 @@ font-size: 0.9em;
 	font-weight: normal;
 	margin-left: 11px;
 	color: #2C3A42;
-	padding-top: 20px;
+	padding-top: 30px;
 	font-size: 5.4em;
         direction:ltr
 	
 }
-
+#laundryidx
+{
+    
+    left: <?  if (!isHeb()) echo "8.9em"; else echo "-2px";?>;
+    top: 130px;
+    position: absolute;
+}
+#laundryidx a.info:hover span.info
+{
+  <?  if (!isHeb()) echo "left:-10em"; else "right:3em"; ?>
+ 
+}
 #windy
 {
-          margin: 0 auto;position: absolute;font-size:0.95em;width: 30%;z-index: 100;top:4.15em;left:8.4em
+          margin: 0 auto;position: absolute;font-size:0.95em;width: 30%;z-index: 100;top:5em;left:8.4em
 }
 #windy .wind_title
 {
@@ -3721,11 +3822,11 @@ margin:0 auto
 #status
 {
     position: absolute;
-    top: 125px;
+    top: 65px;
     width: 100%;
     color: #2C3A42;
     font-family: nextexitfotlight;
-    font-size: 20px;
+    font-size: 1.1em;
     line-height: 18px;
 }
 #status .wind_title
@@ -3740,6 +3841,9 @@ margin:0 auto
 {
           
 }
+#heatindex{
+margin-top:-50px;
+}
 #current_feeling_link
 {
 	font-size:100%
@@ -3750,8 +3854,8 @@ margin:0 auto
 	font-size: 15px;
         position: absolute;
         width: 100%;
-        top: 2.8em;
-        font-size: 1em;
+        top: 2.3em;
+        font-size: 1.1em;
         
 }
 #latestpressure
@@ -3802,22 +3906,22 @@ font-size: 1.9em;
 line-height: 0.6em;
 top: 36px;
 }
-#latestwind, #latesttemp, #latesttemp2, #latesthumidity, #coldmetersurvey, #latestrain, #latestuv, #latestradiation, #latestairq
+#latestwind, #latesttemp, #latesttemp2, #latesthumidity, #latestdewpoint, #coldmetersurvey, #latestrain, #latestuv, #latestradiation, #latestairq, #fseasonsurvey
 {
     display:none;
 }
-#coldmetersurvey
+#coldmetersurvey, #fseasonsurvey
 {
     overflow: hidden;
     position: relative;
 }
 #windvalue
 {
-	float:<?=get_s_align()?>;padding:0 0.5em;width:90%;
+	float:<?=get_s_align()?>;padding:0 0.3em;width:90%;
 }
 #windspeed
 {
-    float:<?=get_s_align()?>;width:50%;<? if (isHeb()) echo "direction:rtl";?>
+    float:<?=get_s_align()?>;width:58%;<? if (isHeb()) echo "direction:rtl";?>
 }
 #windtrend
 {
@@ -3825,7 +3929,7 @@ top: 36px;
 }
 #winddir
 {
-	float:<?=get_s_align()?>;width:2%;margin-top: 1.55em;margin-<?=get_s_align()?>:24%
+	float:<?=get_s_align()?>;width:12%;margin-top: 1.55em;margin-<?=get_s_align()?>:15%
 }
 .wind_icon
 {
@@ -3951,7 +4055,7 @@ margin-<?=get_s_align()?>: 200px;
 {
     text-align:<?=get_s_align()?>;
     margin-<?=get_s_align()?>:0px;
-    padding-bottom:5px;
+    padding-bottom:5px;<? if (isHeb()) echo "direction:rtl"; ?>
 	
 }
 #section h1
@@ -4177,6 +4281,10 @@ div.more
 position:relative
 }
 
+.forcast_each .spriteB.up, .forcast_each .spriteB.down {
+position:absolute;
+margin:15px
+}
 
 .sprite { background: url('images/sprite.png') no-repeat top left;  } 
 .sprite.good { background-position: 0px 0px; width: 24px; height: 24px;  } 
@@ -4212,7 +4320,7 @@ position:relative
 .spriteB.star { background-position: 0px -140px; width: 14px; height: 13px;  } 
 .spriteB.eng { background-position: 0px -163px; width: 28px; height: 17px;  } 
 .spriteB.israelflag { background-position: 0px -190px; width: 19px; height: 14px;  }
-.arrow_down{color: #829CAA;font-size: 11px;}
+.arrow_down{color: #829CAA;font-size: 11px;vertical-align: text-bottom;}
 
 
 /*
@@ -4329,10 +4437,46 @@ white-space:pre;
 line-height: 10px;
 font-size: 11px;
 }
-
+#graph_forcast{
+        position:relative;
+        height:320px;
+        direction:ltr;
+        width:540px;
+    }
+			
+    #chartjs-tooltip {
+      opacity: 1;
+      position: absolute;
+      -webkit-transition: all .1s ease;
+      transition: all .1s ease;
+      pointer-events: none;
+      border-radius: 5px;
+      -webkit-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+      top:0;
+    }
+    #chartjs-tooltip .wind_icon{
+        display:inline;
+        float:<?=get_inv_s_align()?>
+    }
+    .chartjs-tooltip-key {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+    }
+    .tooltipline{
+      width:100%;
+      float: <?=get_s_align()?>;
+      margin:0
+    }
+    .tooltipline li{
+        list-style: none;
+        float: <?=get_s_align()?>;
+        padding:0.2em;
+    }
 #alert_image{
-   padding:0.2em;
-   max-width: 315px;
+   padding:0.1em;
+   max-width: 290px;
    height: auto;
 }
 <? if (in_array("sunset", $css_comp)) { ?>
@@ -4380,4 +4524,4 @@ font-size: 11px;
 <?  include_once 'mobile.php'."?lang=".$lang_idx;?>
 <!--  /mobile -->
 <? }//mobile ?>
-
+<? if ($_GET['debug'] == '') include "../end_caching.php"; ?>

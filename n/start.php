@@ -210,18 +210,15 @@ $min = (int)strtok(":");
 $yhour = $hour;// maybe in the future it will be diffrent    
 $offset = $min % INTERVAL;// maybe the update time is not like the times written in file        
 $ymin = ($offset === 0 ? $min : $min - $offset);	
-if (($current->get_temp()=="")||($current->get_hum() == ""))		
-	$error_update = true;	    
-if (!$error_update) {        
-	$yestsametime->set_time (getMinusHourTime(24));        
-	$yestsametime->set_date (getMinusHourDate(24));
-	$updatedStationDate = mktime ($hour, $min, 0, $month, $day ,$year);// Unix timestamp
-	$date = date("G:i D ".DATE_FORMAT, $updatedStationDate);
-	$dateInHeb = replaceDays($date);
-	$datenotime = date(DATE_FORMAT , $updatedStationDate);        
-	$year = date("Y",  $updatedStationDate);
-	$monthInWord = getMonthName(date("n",  $updatedStationDate));    
-}    
+$yestsametime->set_time (getMinusHourTime(24));        
+$yestsametime->set_date (getMinusHourDate(24));
+$updatedStationDate = mktime ($hour, $min, 0, $month, $day ,$year);// Unix timestamp
+$date = date("G:i D ".DATE_FORMAT, $updatedStationDate);
+$dateInHeb = replaceDays($date);
+$datenotime = date(DATE_FORMAT , $updatedStationDate);        
+$year = date("Y",  $updatedStationDate);
+$monthInWord = getMonthName(date("n",  $updatedStationDate));    
+
 $decade = ($day < 11 ? 1 : ($day < 21 ? 2 : 3));        
 $current_season = ($month > 8 ? sprintf("%04d-%04d", $year, $year + 1) : sprintf("%04d-%04d", $year - 1, $year));  
 $prevMonthInWord = getMonthName(date("n",  mktime ($hour, $min, 0, getPrevMonth($month), 1 ,getPrevMonthYear($month, $year))));
@@ -297,7 +294,9 @@ if ($_GET['debug'] >= 1)
 	echo "<br>searching ",$now->get_date()," and ",$now->get_time()," ";
 if (searchNext ($tok, $now->get_date()))// found the date in the file
    fillPastTime ($now, searchNext ($tok, $now->get_time())); 
-
+// no current thsw value, so copy from min15
+$current->set_thsw($min15->get_thsw());
+logger("current:".$current->get_thsw()." min15:".$min15->get_thsw());
 /************ air quality ***********/
 $airq_link="http://www.svivaaqm.net/Online.aspx?ST_ID=36;1";
 $airq_path=$prefix."cache/airq.html";
@@ -318,7 +317,8 @@ $isRemoteFile = substr($sat_link,0,7)=="http://";
  ////////////////////////////////////
 ///// generating links  ////////////
 ////////////////////////////////////
-
+if (($current->get_temp()=="")||($current->get_hum() == ""))		
+	$error_update = true;
 $hoursat = sprintf("%02d%02d", (($min > 45) || ($min < 15) ) ? $hour - 4 : $hour - 3, (($min > 45) || ($min < 15) ) ? 30 : 00);
 $sat_link="http://www.sat24.com/images.php?country=eu&sat=ir&type=large&rnd=866974";
 $animation_link = "<img src=\"http://www.sat24.com/image.ashx?country=afis&amp;type=slide&amp;index=12&amp;time=&amp;sat=ir\" style=\"position: absolute; top: 0px; left: 0px; width: 640px; height: 480px; z-index: 12; opacity: 0; display: none; \">";

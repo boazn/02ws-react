@@ -1618,7 +1618,11 @@ div.moreinfo
 {
 text-decoration:none
 }
- 
+#laundryidx{
+    position: absolute;
+    margin-top: -120px;
+    margin-right: 120px;
+}
 #whatelse
 {
 	border-radius: 5px;

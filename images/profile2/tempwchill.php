@@ -250,7 +250,7 @@ $txt3->SetColor("azure4");
 $graph->AddText($txt3);
 
 
-$txtaa=new Text($chrs . "Winchill");
+$txtaa=new Text($chrs . "Wind chill");
 $txtaa->SetFont(FF_VERDANA, FS_BOLD,7);
 $txtaa->SetPos($width - 56,$height - 210,'center');
 $txtaa->SetColor("darkblue");

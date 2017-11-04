@@ -78,7 +78,7 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 
     /* Printing results in HTML */
     
-    while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 		$col_num = 0;
 		
 		

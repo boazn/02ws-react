@@ -1,31 +1,17 @@
 <?
-	$prefix = "../";
-	include_once("../include.php");
-	include_once("../start.php");
-	function fix_forecast ($frcstTable)
+ini_set('error_reporting', E_ALL);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+$prefix = "../";
+include_once("../include.php");
+include_once("../start.php");
+header('Content-Type: application/json');
+        
+        
+function fix_forecast ($frcstTable)
 {
- global $lang_idx, $DRIZZLE, $PARTLY, $CLOUDY, $PARTLY_CLOUDY, $MOSTLY, $CLEAR, $HAZE, $LOCAL_RAIN, $LIGHT_RAIN, $RAIN, $VERY_HOT_HEAT_WAVE, $PROB, $AFTERNOON, $NIGHT, $DAY, $AND, $THE, $DURING, $CLOUDY, $WINDY, $AT_TIMES, $MORNING, $SNOW, $LIGHT_SNOW, $OR, $SLEET, $CHANCE_FOR, $GENERALLY, $STRONG_WINDS, $OCCASIONAL, $HAZE, $THUNDERSTORM, $VERY_DRY, $WARMER_THAN_AVERAGE, $TO, $CHANCE_OF, $HEAVY_RAIN, $FOG, $LATER, $AT_FIRST, $STORMY, $BECMG, $FROM, $EVENING, $VERY, $WARM_WIND, $DUST, $ISOLATED;
- $frcstTable = str_replace ( "width=\"45\" height=\"45\"", "", $frcstTable);
- //$frcstTable = str_replace ( "\"35\"", "\"25\"", $frcstTable);
- $frcstTable = str_replace ( "height=\"0\">", "/>", $frcstTable);
- $frcstTable = str_replace ( "width=\"70\"", "", $frcstTable);
- $frcstTable = str_replace ( "width=\"255\"", "", $frcstTable);
- $frcstTable = str_replace ( "<br>", "", $frcstTable);
- $frcstTable = str_replace ( "<b>", "", $frcstTable);
- $frcstTable = str_replace ( "</b>", "", $frcstTable);
- $frcstTable = str_replace ( "font", "span", $frcstTable);
- $frcstTable = str_replace ( "<td", "<td class=\"inv_plain_3_zebra\" style=\"padding:0 0.5em\" ", $frcstTable);
- $frcstTable = str_replace ( "height=\"25\">", "height=\"25\"/>", $frcstTable);
- $frcstTable = str_replace ( "(", "" , $frcstTable);
- $frcstTable = str_replace ( ")", "", $frcstTable);
- $frcstTable = str_replace ( "\"3\"", "\"0\"", $frcstTable);
- $frcstTable = str_replace ( "align=\"center\"", "dir=\"ltr\"", $frcstTable);
- $frcstTable = str_replace ( "align=\"left\"", "align=\"center\"", $frcstTable);
- $frcstTable = str_replace ( "#0000ff", "\"#0066CC\"", $frcstTable);
- $frcstTable = str_replace ( "#ff3300", "\"#FF0000\"", $frcstTable);
- $frcstTable = str_replace ( "color=\"#0066CC\"", "style=\"color:#0066CC;\"", $frcstTable);
- $frcstTable = str_replace ( "color=\"#FF0000\"", "style=\"color:#FF0000;\"", $frcstTable);
- $frcstTable = str_replace ( " Jan", "/01&nbsp;&nbsp;", $frcstTable);
+ global $lang_idx, $DRIZZLE, $PARTLY, $CLOUDY, $PARTLY_CLOUDY, $MOSTLY, $CLEAR, $HAZE, $LOCAL_RAIN, $LIGHT_RAIN, $RAIN, $VERY_HOT_HEAT_WAVE, $PROB, $AFTERNOON, $NIGHT, $DAY, $AND, $THE, $DURING, $CLOUDY, $WINDY, $AT_TIMES, $MORNING, $SNOW, $LIGHT_SNOW, $OR, $SLEET, $CHANCE_FOR, $GENERALLY, $STRONG_WINDS, $OCCASIONALLY, $HAZE, $THUNDERSTORM, $VERY_DRY, $WARMER_THAN_AVERAGE, $TO, $CHANCE_OF, $HEAVY_RAIN, $FOG, $LATER, $AT_FIRST, $STORMY, $BECMG, $FROM, $EVENING, $OCCASIONAL, $VERY, $WARM_WIND, $DUST, $ISOLATED;
+ 
+ /*$frcstTable = str_replace ( " Jan", "/01&nbsp;&nbsp;", $frcstTable);
  $frcstTable = str_replace ( " Feb", "/02&nbsp;&nbsp;", $frcstTable);
  $frcstTable = str_replace ( " Mar", "/03&nbsp;&nbsp;", $frcstTable);
  $frcstTable = str_replace ( " Apr", "/04&nbsp;&nbsp;", $frcstTable);
@@ -37,136 +23,106 @@
  $frcstTable = str_replace ( " Oct", "/10&nbsp;&nbsp;", $frcstTable);
  $frcstTable = str_replace ( " Nov", "/11&nbsp;&nbsp;", $frcstTable);
  $frcstTable = str_replace ( " Dec", "/12&nbsp;&nbsp;", $frcstTable);
- $frcstTable = replaceDays($frcstTable);
+ $frcstTable = replaceDays($frcstTable);*/
  //$frcstTable = strtolower($frcstTable);
- $frcstTable = str_replace ( "ISOLATED", $ISOLATED[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SUNNY", $CLEAR[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Isolated", $ISOLATED[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Sunny", $CLEAR[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "WARMER THAN USUAL", $WARMER_THAN_AVERAGE[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "DRIZZLE", $DRIZZLE[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "PARTLY CLOUDY", $PARTLY_CLOUDY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "FAIR", "$MOSTLY[$lang_idx] $CLEAR[$lang_idx]", $frcstTable);
+ $frcstTable = str_replace ( "Drizzle", $DRIZZLE[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Partly Cloudy", $PARTLY_CLOUDY[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Fair", "$MOSTLY[$lang_idx] $CLEAR[$lang_idx]", $frcstTable);
  $frcstTable = str_replace ( "HAZE", $HAZE[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "LIGHT LOCAL RAIN", $LIGHT_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LOCAL RAIN", $LOCAL_RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Local Rain", $LOCAL_RAIN[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "LOCAL SHOWERS", $LOCAL_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LOCAL SHOWER", $LOCAL_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LIGHT RAIN SHOWER", $LIGHT_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LIGHT RAIN", $LIGHT_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "LIGHT SHOWER", $LIGHT_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SHOWERS", $RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SHOWER", $RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "RAINY", $RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "DUSTY", $DUST[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "RAIN", $RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "FOG", $FOG[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Local Shower", $LOCAL_RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Light Rain Shower", $LIGHT_RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Light Rain", $LIGHT_RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Light Shower", $LIGHT_RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Showers", $RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Shower", $RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Rainy", $RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Dusty", $DUST[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Dust", $DUST[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Rain", $RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Fog", $FOG[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Periods", $OCCASIONALLY[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "LIGHT SNOW", $LIGHT_SNOW[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "THUNDERSTORMS", $THUNDERSTORM[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Thundershowers", $THUNDERSTORM[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Thunderstorms", $THUNDERSTORM[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "THUNDER", " ".$THUNDERSTORM[$lang_idx]." ", $frcstTable);
- $frcstTable = str_replace ( "STORM", " ", $frcstTable);
- $frcstTable = str_replace ( "SNOW", $SNOW[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SLEET", $SLEET[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "CLEAR", $CLEAR[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "STRONG WINDS", $STRONG_WINDS[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "HOT AND DRY", $VERY_HOT_HEAT_WAVE[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Storm", " ", $frcstTable);
+ $frcstTable = str_replace ( "Snow", $SNOW[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Sleet", $SLEET[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Clear", $CLEAR[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Strong Winds", $STRONG_WINDS[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Hot And Dry", $VERY_HOT_HEAT_WAVE[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "HEAT WAVE", $VERY_HOT_HEAT_WAVE[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "HAZY", $HAZE[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Haze", $HAZE[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "POSSIBILITY OF", $PROB[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "POSSIBLE", $PROB[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "AFTERNOON", $AFTERNOON[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "MORNING", $MORNING[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Morning", $MORNING[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "FROM EVENING", $FROM[$lang_idx]." ".$EVENING[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "NIGHT", $NIGHT[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "DAY", $DAY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "AND", $AND[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( " Night", $NIGHT[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( " Day", $DAY[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "And", $AND[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "THE", "", $frcstTable);
- $frcstTable = str_replace ( "WARM", "", $frcstTable);
- $frcstTable = str_replace ( "DURING", $DURING[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "CLOUDY", $CLOUDY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "WINDY", $WINDY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "DRY", $VERY_DRY[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Warm", "", $frcstTable);
+ $frcstTable = str_replace ( "During", $DURING[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Cloudy", $CLOUDY[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Overcast", $CLOUDY[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Windy", $WINDY[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Dry", $VERY_DRY[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "CHANCE FOR", $CHANCE_FOR[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "AT TIMES", $AT_TIMES[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "OCCASIONAL", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "GENERALLY", $GENERALLY[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Generally", $GENERALLY[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( " OR ", " ".$OR[$lang_idx]." ", $frcstTable);
  $frcstTable = str_replace ( "LOCAL", "", $frcstTable);
- $frcstTable = str_replace ( "WITH", "", $frcstTable);
- $frcstTable = str_replace ( " TO ", " ".$TO[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "With", "", $frcstTable);
+ $frcstTable = str_replace ( " To ", " ".$TO[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "A POSSIBILITY OF", $CHANCE_OF[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "CHANCE OF", $CHANCE_OF[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "PERIOD", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "INTERVALS", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "INTERVAL", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "HEAVY RAIN", $HEAVY_RAIN[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "OVERCAST", $CLOUDY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "MOSTLY", $GENERALLY[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SPELLS", $FOG[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Chance Of", $CHANCE_OF[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Period", $OCCASIONAL[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Intervals", $OCCASIONAL[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Interval", $OCCASIONAL[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Heavy Rain", $HEAVY_RAIN[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Mostly", $GENERALLY[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Spells", $FOG[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "FEW", " ", $frcstTable);
  $frcstTable = str_replace ( " IN ", " ", $frcstTable);
  $frcstTable = str_replace ( "MAINLY", $GENERALLY[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "LATER", $LATER[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "AT FIRST", $AT_FIRST[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "SCATTERED", " ", $frcstTable);
- $frcstTable = str_replace ( "FINE", $CLEAR[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Scattered", " ", $frcstTable);
+ $frcstTable = str_replace ( "Fine", $CLEAR[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "FLURRIES", $SNOW[$lang_idx], $frcstTable);
  $frcstTable = str_replace ( "BECOMING", $BECMG[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "FREQUENT", $OCCASIONAL[$lang_idx], $frcstTable);
- $frcstTable = str_replace ( "VERY", "" , $frcstTable);
+ $frcstTable = str_replace ( "Frequent", $OCCASIONAL[$lang_idx], $frcstTable);
+ $frcstTable = str_replace ( "Very", "" , $frcstTable);
  if (isHeb())
 	$frcstTable = str_replace ( "DESERT WIND", $WARM_WIND[$lang_idx] , $frcstTable);
  
  return $frcstTable;
 }
-	header('Content-type: text/html; charset=utf-8');
-	$location = isset($_REQUEST['location']) ? $_REQUEST['location'] : "";
-	$forecast_full_page = get_file_string($location);
-	//echo $forecast_full_page;
-	$start = strpos($forecast_full_page, "Weather Information for");
-	$placepos = $start + 47;
-	//$end = strpos($forecast_full_page, "&gt;&gt;");
-	//$frcstTable = substr ( $forecast_full_page, $start, $end - $start);
-	//$frcstTable = str_replace ( "img src=\"", "img src=\"".$location."/../", $frcstTable);
-	$start = strpos($forecast_full_page, "<td width=\"70\" align=\"center\">");
-	 if ($start <= 0)
-		$start = strpos($forecast_full_page, "Issued at");
-	 $end = strpos($forecast_full_page, "<!--F");
-	 // start: <td width=\"70\" align=\"center\"> end: </td>
-	 if ($start > 0)
-	 {
-		 $frcstTable = substr ( $forecast_full_page, $start, $end - $start - 40);
-		 $frcstTable = "<tr>".$frcstTable."</tr>";
-		 $frcstTable = fix_forecast($frcstTable);
-	 }
-	 else
-	 {
-		$frcstTable = "";
-	 }
-	 $place = substr ( $forecast_full_page, $placepos, 25);
-	 $endtagplace = strpos($place, "</");
-	 if ($endtagplace > 0)
-		$place = substr ( $forecast_full_page, $placepos, $endtagplace);
-	 $climate_start = strpos($forecast_full_page, "Climatological Information") + 195;
-	 $climate_data = substr ( $forecast_full_page, $climate_start);
-	 $climate_end =  strpos($climate_data, "</table>");
-	 $climate_data = substr ( $climate_data, 0, $climate_end + 8); // 8 = </table> 
-	echo "<div id=\"wrapperforecast\">".$place."<table cellspacing=\"15\"><tr><td class=\"td\">\n<!-- td start -->\n".$frcstTable."\n<!-- td end -->\n</td></tr></table></div>";
-	$climate_data = str_replace ( date("M"), "<span class=\"inv slogan\">".getMonthName(date("n"))."</span>", $climate_data);
-	if (isHeb())
-	{
-		$climate_data = str_replace ( "Month", "חודש", $climate_data);
-		$climate_data = str_replace ( "Mean Number of", "מספר ימים ממוצע", $climate_data);
-		$climate_data = str_replace ( "Mean Total", "כמות ממוצעת" , $climate_data);
-		$climate_data = str_replace ( "Precipitation", "של גשם" , $climate_data);
-		$climate_data = str_replace ( "Rainfall", "של גשם" , $climate_data);
-		$climate_data = str_replace ( "Rain", "של גשם" , $climate_data);
-		$climate_data = str_replace ( "Days", "" , $climate_data);
-		$climate_data = str_replace ( "Daily<br>Minimum", "מינימום" , $climate_data);
-		$climate_data = str_replace ( "Daily<br>Maximum", "מקסימום" , $climate_data);
-		$climate_data = str_replace ( "Mean Temperature", $TEMP[$lang_idx]." ממוצעת" , $climate_data);
-	}
- ?>
-<?
-	echo "\n<div id=\"wrapperclimate\" class=\"inv_plain_3_zebra\">".$climate_data."</div>";
-	
 
-?>
+
+        
+        
+	$location = isset($_REQUEST['location']) ? $_REQUEST['location'] : "";
+	//$forecast_full_page = @file_get_contents($location);
+        $url = $location;
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        $output = curl_exec($curl);
+        curl_close($curl);
+              
+        $output = fix_forecast($output);
+        echo $output;
+        //$DOM = new DOMDocument;
+        //$DOM->loadHTML( $output);
+        	
+	
+	
+ ?>

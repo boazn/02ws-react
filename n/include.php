@@ -11,7 +11,7 @@ include_once ("ini.php");
 			var $pressure;
 			var $hum;
 			var $thw;
-			var $thws;
+			var $thsw;
 			var $rain; // rain in the interval
 			var $windspd;
 			var $winddir;
@@ -165,8 +165,8 @@ include_once ("ini.php");
 		 function set_cloudiness($cloudiness){
 				$this->cloudiness = $cloudiness;
 		 }
-		 function set_thws($thws){
-				$this->thws = c_or_f($thws);
+		 function set_thsw($thsw){
+				$this->thsw = c_or_f($thsw);
 		 }
 		 function set_windspd($wind){
 				$this->windspd = $wind;
@@ -248,8 +248,8 @@ include_once ("ini.php");
 				return $this->cloudiness;
 		 }
 		 
-		 function get_thws(){
-				return $this->thws;
+		 function get_thsw(){
+				return $this->thsw;
 		 }
 		 function get_rainrate(){
 				return $this->rainrate;
@@ -1325,7 +1325,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment)
 	$textToSend = "<html";
 	if (($source !== EMAIL_ADDRESS)||(isHeb()))
 			$textToSend .= " dir=\"rtl\" ";
-	$textToSend .= "><head><link href=\"".BASE_URL."/generalstyle.php?lang=".$lang_idx."&amp;forground_color=".$forground_color."&amp;base_color=".$base_color."\" rel=\"stylesheet\" type=\"text/css\"> </head><body><div style=\"padding:1em\" class=\"topbase slogan float\"><img align=\"absmiddle\" src=\"".BASE_URL."/".$header_pic."\" />&nbsp;".$WEBSITE_TITLE[$lang_idx]."</div><div style=\"padding:1em\" class=\"clear float inv_plain_3_zebra big\">".$messageBody."</div></div>";
+	$textToSend .= "><head><link href=\"".BASE_URL."/css/main.php?lang=".$lang_idx."&amp;forground_color=".$forground_color."&amp;base_color=".$base_color."\" rel=\"stylesheet\" type=\"text/css\"> </head><body><div style=\"padding:1em\" class=\"topbase slogan float\"><img align=\"absmiddle\" src=\"".BASE_URL."/".$header_pic."\" />&nbsp;".$WEBSITE_TITLE[$lang_idx]."</div><div style=\"padding:1em\" class=\"clear float inv_plain_3_zebra big\">".$messageBody."</div></div>";
         if ($target!=ME)
 		$textToSend .= "\n<div style=\"clear:both;direction:rtl\" class=\"inv big\">".$MORE_INFO[$HEB]." - <a href=\"".BASE_URL."\">".BASE_URL."</a><br />אשמח להערות ותגובות<br />Do you have something to say? Want to get this in other language? reply to this Email</div>";
 	$textToSend .= "</body></html>";
@@ -1351,7 +1351,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment)
 			$subject = "* Special Update from ".$WEBSITE_TITLE[$EN]." *";
 			$query = "SELECT * From users WHERE priority < '1'";
 			$result = mysqli_query($link, $query);
-			while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 				$lines++;
 				array_push ($EmailsToSend, $line["email"]);
 			}
@@ -1363,7 +1363,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment)
 		{
 			$query = "SELECT * From users WHERE priority > '0'";
 			$result = mysqli_query($link, $query);
-			while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 				$lines++;
 				array_push ($EmailsToSend, $line["email"]);
 			} 
@@ -1856,7 +1856,7 @@ function getUsersOnline(){
 		global $messageAction, $link;
 		
 		$result = db_init("SELECT * FROM sendmailsms WHERE (Action='$action')");
-		$row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$row = @mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
 		$sent = $row["Sent"];
                 @mysqli_close($link);
 		if ($sent==0)
@@ -1904,7 +1904,7 @@ function getUsersOnline(){
         $record_col = "{$period}_{$highorlow}";
 	$date_col = "{$record_col}_date";
         $result = db_init("SELECT * FROM extremes where (param='$param')");
-        $row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
+        $row = @mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
         global $link;
         $old_date = $row["$date_col"];		
         if ($old_date != $datenotime) //already updated --> take from old_record & old_date columns
@@ -2628,7 +2628,7 @@ function getSpecificChat($idx)
 	global $lang_idx, $HEB, $link;
 	
 	$result = db_init("SELECT * From chat where idx=".$idx);
-	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+	while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 		$lines++;
 		$linesInColumn++;
 		$col = 0;
@@ -2697,7 +2697,7 @@ $result = db_init($query);
 //if ($_SESSION['loggedin'] == "true")
 //	echo "<div class=\"indexlow\" style=\"width:100%;\"></div>";
 /* Printing results in HTML */
-while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 	$lines++;
 	$linesInColumn++;
 	$col = 0;

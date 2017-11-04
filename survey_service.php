@@ -47,7 +47,7 @@ if (isset($_POST['SendSurveyButton'])) {
 
 $query = "SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id";
 $result = db_init($query);
-while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 	$lines++;
 	$linesInColumn++;
 	$col = 0;

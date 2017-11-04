@@ -7,12 +7,14 @@
 </head>
 <body>
 <div class="base">
-<h1><?=$FAQ[$lang_idx]?></h1>
+<h1><?=$MYTHS[$lang_idx]?></h1>
 </div>
 <div class="span12" id="msgDetails">
            
 <?
- 
+ getSpecificChat(31656);
+ getSpecificChat(28948);
+ getSpecificChat(28846);
  getSpecificChat(17798);
  getSpecificChat(19874);
  getSpecificChat(23337);

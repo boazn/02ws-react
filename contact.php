@@ -1,5 +1,5 @@
 <?
-$ABOUT_ME = array("I have built this site from my own interest in weather and in nature. I wanted to deliver accurate on-line weather data to the net and to display the data in a more convinient way that I have at home. I have worked as a weather forecaster in the past and loved it, now days I work in the computer industry. The station is accurate and can be bought from the US ($500).", "ענן שגדל אל מול העניים  לעמוד ענקי של שלושה קילומטרים . הפלא  שנקרא גשם ,שלצערי לא נראה במחוזותינו יותר מדי. והשלג המופלא, הקצפת שבכל הסיפור. אלה  תמיד  ריתקו אותי - מאז שאני זוכר את עצמי  (שזה  די הרבה זמן). את האתר הקמתי ביולי-2002  מתוך רצון לשתף מידע ולהציג אותו בצורה אינטואיטיבית מצד אחד ומעמיקה מצד שני. <br />  עבדתי בעברי כחזאי. האתר מפצה על כך שאני כבר מתעסק בעצם במשהו אחר. <br /> תמונות של התחנה אפשר למצוא באלבום. את התחנה אפשר לרכוש באינטרנט  ב-500 דולר . הנתונים מועברים ישירות מהתחנה והתחזית מיוצרת על-ידי, כאשר יש לי זמן, מתוך ניתוח מפות הקיימות באינטרנט.");
+$ABOUT_ME = array("I have built this site from my own interest in weather and in nature. I wanted to deliver accurate on-line weather data to the net and to display the data in a more convenient way that I have at home. I have worked as a weather forecaster in the past and loved it, nowdays I work in the computer industry. The station is accurate and can be bought from the US ($500).", "ענן שגדל אל מול העניים  לעמוד ענקי של שלושה קילומטרים . הפלא  שנקרא גשם ,שלצערי לא נראה במחוזותינו יותר מדי. והשלג המופלא, הקצפת שבכל הסיפור. אלה  תמיד  ריתקו אותי - מאז שאני זוכר את עצמי  (שזה  די הרבה זמן). את האתר הקמתי ביולי-2002  מתוך רצון לשתף מידע ולהציג אותו בצורה אינטואיטיבית מצד אחד ומעמיקה מצד שני.<br /> השורשים נטעו בילדות והבשילו לתואר במדעי האטמוספירה. <br />  עבדתי בעברי כחזאי בשירות המטאורולוגי. כיום אני מחלק את זמני בין האתר לעיסוק השני שלי. <br /> תמונות של התחנה אפשר למצוא באלבום. את התחנה אפשר לרכוש באינטרנט  ב-500 דולר . הנתונים מועברים ישירות מהתחנה והתחזית מיוצרת על-ידי תוך שימוש באנליזה של מפות סינופטיות המיוצרות על-ידי מודלים נומריים.");
 
 ?>
         <h1><? echo $CONTACT_INFO[$lang_idx];?></h1>
@@ -60,16 +60,17 @@ $ABOUT_ME = array("I have built this site from my own interest in weather and in
 		<hr/>
 		<p>
 		על גבי הכדור הייתי פחות או יותר במקומות המסומנים<br/>
-		<div style="width:750px; position: relative;float:<?=get_s_align();?>">
-		<object width="750" height="400" type="application/x-shockwave-flash" data="http://static.travbuddy.com/flash/countries_map.swf?id=6643212" height="400" width="750">
-		<param name="movie" value="http://static.travbuddy.com/flash/countries_map.swf?id=6643212" />
-		<param name="quality" value="high" /><param name="bgcolor" value="#372060" />
-		<embed src="http://static.travbuddy.com/flash/countries_map.swf?id=6643212" quality="high" bgcolor="#372060" width="750" height="400" type="application/x-shockwave-flash"></embed>
-		</object>
-		<div style="background-color: #38235b; padding: 5px 0px 5px 0px; text-align: center; width: 749px; border-left: 1px solid #372060; font-size: 11px; color: #EEE; line-height: 1.4em;">
-		<a style="font-size: 14px; color: #FFBF42" href="http://www.travbuddy.com/travel-widgets"><strong>Create your own travel map</strong></a> - <a style="font-size: 14px; color: #FFBF42" href="http://www.travbuddy.com"><strong>TravBuddy</strong></a><br/>
-		</div>
-		</div>
+                <div style="width:750px; position: relative;float:<?=get_s_align();?>">
+                <object width="750" height="400" type="application/x-shockwave-flash" data="http://static.travbuddy.com/flash/countries_map.swf?id=6643212" height="400" width="750">
+                <param name="movie" value="http://static.travbuddy.com/flash/countries_map.swf?id=6643212" />
+                <param name="quality" value="high" /><param name="bgcolor" value="#372060" />
+                <embed src="http://static.travbuddy.com/flash/countries_map.swf?id=6643212" quality="high" bgcolor="#372060" width="750" height="400" type="application/x-shockwave-flash"></embed>
+                </object>
+                <div style="background-color: #38235b; padding: 5px 0px 5px 0px; text-align: center; width: 749px; border-left: 1px solid #372060; font-size: 11px; color: #EEE; line-height: 1.4em;">
+                <a style="font-size: 14px; color: #FFBF42" href="http://www.travbuddy.com/travel-widgets"><strong>Create your own travel map</strong></a> - <a style="font-size: 14px; color: #FFBF42" href="http://www.travbuddy.com"><strong>TravBuddy</strong></a><br/>
+                </div>
+                </div>
+		
 		</p>
 
 

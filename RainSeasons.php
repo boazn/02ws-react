@@ -9,8 +9,9 @@
 <td>
 <form method="post" action="#rainSeasons">
 	<select NAME="seasons[]" size="23" multiple>
+        <option selected value="2016-2017">2016-2017</option>
         <option selected value="2015-2016">2015-2016</option>
-        <option selected value="2014-2015">2014-2015</option>
+        <option          value="2014-2015">2014-2015</option>
         <option          value="2013-2014">2013-2014</option>
 	<option          value="2012-2013">2012-2013</option>
 	<option          value="2011-2012">2011-2012</option>
@@ -57,23 +58,16 @@
 
 	if (isset( $_POST['submit'])){
 		
-	  
-	/* Connecting, selecting database */
-	$link = @mysql_connect(MYSQL_IP, MYSQL_USER, MYSQL_PASS)
-		or die("Could not connect");
-
-	mysql_select_db(MYSQL_DB) or die("...Connection problem...");
-
-
+	 
+        
 	/* Performing SQL query */
 	$query = "SELECT * FROM rainseason where season='2001-2002'";
-	$result = mysql_query($query) ;
-	if (mysql_affected_rows() <= 0)
-		echo "couldn't get data : ".mysql_error();		
+	$result = db_init("", "");
+	$result = mysqli_query($link, $query) ;
 	/* Printing the head of table*/
 	print "<tr class=\"topbase\"><td></td>";
 
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		$month = $line["month"];
 		print "\t\t<td align=\"center\"><b>".getMonthName($month)."</b></td>\n";
 	}
@@ -87,17 +81,17 @@
 	$daystotal = 0;
 	print "\t<tr >\n";
 	$query = "SELECT * FROM rainseason where season='$season' order by year, month";
-	$result = mysql_query($query) ;
-		if (mysql_affected_rows() <= 0)
-		echo "couldn't get data : ".mysql_error();
-	$line = mysql_fetch_array($result, MYSQL_ASSOC);
+	$result = mysqli_query($link, $query) ;
+		if (mysqli_affected_rows($link) <= 0)
+		echo "couldn't get data : ".mysqli_error($link);
+	$line = mysqli_fetch_array($result, MYSQLI_ASSOC);
 	$season = $line["season"];
 
-	$result = mysql_query($query) ;
-	if (mysql_affected_rows() <= 0)
-		echo "couldn't get data : ".mysql_error();
+	$result = mysqli_query($link, $query) ;
+	if (mysqli_affected_rows($link) <= 0)
+		echo "couldn't get data : ".mysqli_error($link);
 	print "\t\t<td class=\"topbase\" align=\"center\"><strong>$season</strong></td>\n";	
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		$rain = $line["mm"];
 		$days = $line["RainyDays"];
 		$raintotal += $rain;
@@ -109,10 +103,10 @@
 	/*********************************************/
 	}
 	/* Free resultset */
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	/* Closing connection */
-	mysql_close($link);
+	mysqli_close($link);
 
 	
 	}

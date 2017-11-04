@@ -1,0 +1,367 @@
+5569612 Query	SHOW PLUGINS
+		5569612 Init DB	02ws
+		5569612 Query	SELECT * FROM `mainstory`
+ LIMIT 30, 30
+		5569612 Query	SHOW TABLE STATUS FROM `02ws` LIKE 'mainstory%'
+		5569612 Query	SELECT COUNT(*) FROM `02ws`.`mainstory`
+		5569611 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'mainstory'
+		5569612 Query	SHOW CREATE TABLE `02ws`.`mainstory`
+		5569612 Query	SHOW INDEX FROM `02ws`.`mainstory`
+		5569612 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`mainstory`
+		5569611 Query	SELECT `column_name`,
+                `mimetype`,
+                `transformation`,
+                `transformation_options`
+          FROM `phpmyadmin`.`pma_column_info`
+         WHERE `db_name`    = '02ws'
+           AND `table_name` = 'mainstory'
+           AND ( `mimetype` != ''
+              OR `transformation` != ''
+              OR `transformation_options` != '')
+		5569612 Quit	
+
+
+
+
+
+
+
+
+
+
+		150619 13:10:52	5569314 Connect	phpmyadmin@localhost on 
+		5569314 Query	SET CHARACTER SET 'utf8'
+		5569314 Query	SET collation_connection = 'utf8_general_ci'
+		5569315 Connect	boazn@localhost on 
+		5569315 Query	SET CHARACTER SET 'utf8'
+		5569315 Query	SET collation_connection = 'utf8_general_ci'
+		5569315 Query	SHOW PLUGINS
+		5569314 Query	SELECT query FROM `phpmyadmin`.`pma_bookmark` WHERE dbase = '02ws' AND (user = 'boazn') AND `label` = 'chat'
+		5569315 Init DB	02ws
+		5569315 Query	SELECT * FROM `chat`
+ LIMIT 0, 30
+		5569315 Query	SHOW TABLE STATUS FROM `02ws` LIKE 'chat%'
+		5569315 Query	SELECT COUNT(*) FROM `02ws`.`chat`
+		5569315 Init DB	02ws
+		5569315 Init DB	02ws
+		5569314 Query	SELECT tracking_active FROM `phpmyadmin`.`pma_tracking` WHERE `db_name` = '02ws'  AND `table_name` = 'chat'  ORDER BY version DESC
+		5569314 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'chat'
+		5569315 Query	SHOW CREATE TABLE `02ws`.`chat`
+		5569315 Query	SHOW INDEX FROM `02ws`.`chat`
+		5569315 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`chat`
+		5569314 Query	SELECT `column_name`,
+                `mimetype`,
+                `transformation`,
+                `transformation_options`
+          FROM `phpmyadmin`.`pma_column_info`
+         WHERE `db_name`    = '02ws'
+           AND `table_name` = 'chat'
+           AND ( `mimetype` != ''
+              OR `transformation` != ''
+              OR `transformation_options` != '')
+		5569315 Quit	
+		5569314 Quit	
+150619 13:10:54	5569316 Connect	phpmyadmin@localhost on 
+		5569316 Query	SET CHARACTER SET 'utf8'
+		5569316 Query	SET collation_connection = 'utf8_general_ci'
+		5569317 Connect	boazn@localhost on 
+		5569317 Query	SET CHARACTER SET 'utf8'
+		5569317 Query	SET collation_connection = 'utf8_general_ci'
+		5569317 Query	SHOW PLUGINS
+		5569317 Init DB	02ws
+		5569317 Query	SELECT * FROM `chat`
+ LIMIT 16290, 30
+		5569317 Query	SHOW TABLE STATUS FROM `02ws` LIKE 'chat%'
+		5569317 Query	SELECT COUNT(*) FROM `02ws`.`chat`
+		5569316 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'chat'
+		5569317 Query	SHOW CREATE TABLE `02ws`.`chat`
+		5569317 Query	SHOW INDEX FROM `02ws`.`chat`
+		5569317 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`chat`
+		5569316 Query	SELECT `column_name`,
+                `mimetype`,
+                `transformation`,
+                `transformation_options`
+          FROM `phpmyadmin`.`pma_column_info`
+         WHERE `db_name`    = '02ws'
+           AND `table_name` = 'chat'
+           AND ( `mimetype` != ''
+              OR `transformation` != ''
+              OR `transformation_options` != '')
+		5569317 Quit	
+		5569316 Quit	
+
+
+		5569018 Init DB	02ws
+		5569018 Init DB	02ws
+		5569017 Query	SELECT tracking_active FROM `phpmyadmin`.`pma_tracking` WHERE `db_name` = '02ws'  AND `table_name` = 'forecast_days'  ORDER BY version DESC
+		5569017 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'forecast_days'
+		5569018 Query	SHOW CREATE TABLE `02ws`.`forecast_days`
+		5569018 Query	SHOW INDEX FROM `02ws`.`forecast_days`
+		5569018 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`forecast_days`
+		5569017 Query	SELECT `column_name`,
+                `mimetype`,
+                `transformation`,
+                `transformation_options`
+          FROM `phpmyadmin`.`pma_column_info`
+         WHERE `db_name`    = '02ws'
+           AND `table_name` = 'forecast_days'
+           AND ( `mimetype` != ''
+              OR `transformation` != ''
+              OR `transformation_options` != '')
+
+
+	      5568899 Connect	phpmyadmin@localhost on 
+		5568899 Query	SET CHARACTER SET 'utf8'
+		5568899 Query	SET collation_connection = 'utf8_general_ci'
+		5568900 Connect	boazn@localhost on 
+		5568900 Query	SET CHARACTER SET 'utf8'
+		5568900 Query	SET collation_connection = 'utf8_general_ci'
+		5568900 Query	SHOW PLUGINS
+		5568899 Query	SELECT query FROM `phpmyadmin`.`pma_bookmark` WHERE dbase = '02ws' AND (user = 'boazn') AND `label` = 'content_sections'
+		5568900 Init DB	02ws
+		5568900 Query	SELECT * FROM `content_sections`
+ LIMIT 0, 30
+		5568900 Query	SHOW TABLE STATUS FROM `02ws` LIKE 'content\_sections%'
+		5568900 Query	SELECT COUNT(*) FROM `02ws`.`content_sections`
+		5568900 Init DB	02ws
+		5568900 Init DB	02ws
+		5568899 Query	SELECT tracking_active FROM `phpmyadmin`.`pma_tracking` WHERE `db_name` = '02ws'  AND `table_name` = 'content_sections'  ORDER BY version DESC
+		5568899 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'content_sections'
+		5568900 Query	SHOW CREATE TABLE `02ws`.`content_sections`
+		5568900 Query	SHOW INDEX FROM `02ws`.`content_sections`
+		5568900 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`content_sections`
+		5568899 Query	SELECT `column_name`,
+                `mimetype`,
+                `transformation`,
+                `transformation_options`
+          FROM `phpmyadmin`.`pma_column_info`
+         WHERE `db_name`    = '02ws'
+           AND `table_name` = 'content_sections'
+           AND ( `mimetype` != ''
+              OR `transformation` != ''
+              OR `transformation_options` != '')
+
+
+
+	      5568851 Connect	phpmyadmin@localhost on 
+		5568851 Query	SET CHARACTER SET 'utf8'
+		5568851 Query	SET collation_connection = 'utf8_general_ci'
+		5568852 Connect	boazn@localhost on 
+		5568852 Query	SET CHARACTER SET 'utf8'
+		5568852 Query	SET collation_connection = 'utf8_general_ci'
+		5568852 Query	SHOW PLUGINS
+		5568851 Query	SELECT query FROM `phpmyadmin`.`pma_bookmark` WHERE dbase = '02ws' AND (user = 'boazn') AND `label` = 'surveyresult'
+		5568852 Init DB	02ws
+		5568852 Query	SELECT * FROM `surveyresult`
+ LIMIT 0, 30
+		5568852 Query	SHOW TABLE STATUS FROM `02ws` LIKE 'surveyresult%'
+		5568852 Init DB	02ws
+		5568852 Init DB	02ws
+		5568851 Query	SELECT tracking_active FROM `phpmyadmin`.`pma_tracking` WHERE `db_name` = '02ws'  AND `table_name` = 'surveyresult'  ORDER BY version DESC
+		5568851 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'surveyresult'
+		5568852 Query	SHOW CREATE TABLE `02ws`.`surveyresult`
+		5568852 Query	SHOW INDEX FROM `02ws`.`surveyresult`
+		5568852 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`surveyresult`
+		5568851 Query	SELECT `column_name`,
+                `mimetype`,
+                `transformation`,
+                `transformation_options`
+          FROM `phpmyadmin`.`pma_column_info`
+         WHERE `db_name`    = '02ws'
+           AND `table_name` = 'surveyresult'
+           AND ( `mimetype` != ''
+              OR `transformation` != ''
+              OR `transformation_options` != '')
+		5568852 Quit	
+
+
+
+		5568823 Connect	phpmyadmin@localhost on 
+		5568823 Query	SET CHARACTER SET 'utf8'
+		5568823 Query	SET collation_connection = 'utf8_general_ci'
+		5568824 Connect	boazn@localhost on 
+		5568824 Query	SET CHARACTER SET 'utf8'
+		5568824 Query	SET collation_connection = 'utf8_general_ci'
+		5568824 Query	SHOW PLUGINS
+		5568823 Query	SELECT query FROM `phpmyadmin`.`pma_bookmark` WHERE dbase = '02ws' AND (user = 'boazn') AND `label` = 'apn_users'
+		5568824 Init DB	02ws
+		5568824 Query	SELECT * FROM `apn_users`
+ LIMIT 0, 30
+		5568824 Query	SHOW TABLE STATUS FROM `02ws` LIKE 'apn\_users%'
+		5568824 Query	SELECT COUNT(*) FROM `02ws`.`apn_users`
+		5568824 Init DB	02ws
+		5568824 Init DB	02ws
+		5568823 Query	SELECT tracking_active FROM `phpmyadmin`.`pma_tracking` WHERE `db_name` = '02ws'  AND `table_name` = 'apn_users'  ORDER BY version DESC
+		5568823 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'apn_users'
+		5568824 Query	SHOW CREATE TABLE `02ws`.`apn_users`
+		5568824 Query	SHOW INDEX FROM `02ws`.`apn_users`
+		5568824 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`apn_users`
+		5568823 Query	SELECT `column_name`,
+                `mimetype`,
+                `transformation`,
+                `transformation_options`
+          FROM `phpmyadmin`.`pma_column_info`
+         WHERE `db_name`    = '02ws'
+           AND `table_name` = 'apn_users'
+           AND ( `mimetype` != ''
+              OR `transformation` != ''
+              OR `transformation_options` != '')
+		5568823 Quit	
+		5568824 Quit	
+
+
+
+5568570 Connect	phpmyadmin@localhost on 
+		5568570 Query	SET CHARACTER SET 'utf8'
+		5568570 Query	SET collation_connection = 'utf8_general_ci'
+		5568571 Connect	boazn@localhost on 
+		5568571 Query	SET CHARACTER SET 'utf8'
+		5568571 Query	SET collation_connection = 'utf8_general_ci'
+		5568571 Query	SHOW PLUGINS
+		5568570 Query	SELECT query FROM `phpmyadmin`.`pma_bookmark` WHERE dbase = '02ws' AND (user = 'boazn') AND `label` = 'forecast_days'
+		5568571 Init DB	02ws
+		5568571 Query	SELECT * FROM `forecast_days`
+ LIMIT 0, 30
+		5568571 Query	SHOW TABLE STATUS FROM `02ws` LIKE 'forecast\_days%'
+		5568571 Query	SELECT COUNT(*) FROM `02ws`.`forecast_days`
+		5568571 Init DB	02ws
+		5568571 Init DB	02ws
+		5568570 Query	SELECT tracking_active FROM `phpmyadmin`.`pma_tracking` WHERE `db_name` = '02ws'  AND `table_name` = 'forecast_days'  ORDER BY version DESC
+		5568570 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'forecast_days'
+		5568571 Query	SHOW CREATE TABLE `02ws`.`forecast_days`
+		5568571 Query	SHOW INDEX FROM `02ws`.`forecast_days`
+		5568571 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`forecast_days`
+		5568570 Query	SELECT `column_name`,
+                `mimetype`,
+                `transformation`,
+                `transformation_options`
+          FROM `phpmyadmin`.`pma_column_info`
+         WHERE `db_name`    = '02ws'
+           AND `table_name` = 'forecast_days'
+           AND ( `mimetype` != ''
+              OR `transformation` != ''
+              OR `transformation_options` != '')
+		5568570 Quit	
+
+
+
+
+		5568511 Connect	phpmyadmin@localhost on 
+		5568511 Query	SET CHARACTER SET 'utf8'
+		5568511 Query	SET collation_connection = 'utf8_general_ci'
+		5568512 Connect	boazn@localhost on 
+		5568512 Query	SET CHARACTER SET 'utf8'
+		5568512 Query	SET collation_connection = 'utf8_general_ci'
+		5568512 Query	SHOW PLUGINS
+		5568512 Init DB	02ws
+		5568512 Query	SELECT * FROM `mainstory` ORDER BY `mainstory`.`Idx`  DESC
+ LIMIT 0, 30
+		5568512 Query	SHOW TABLE STATUS FROM `02ws` LIKE 'mainstory%'
+		5568512 Query	SELECT COUNT(*) FROM `02ws`.`mainstory`
+		5568511 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'mainstory'
+		5568512 Query	SHOW CREATE TABLE `02ws`.`mainstory`
+		5568512 Query	SHOW INDEX FROM `02ws`.`mainstory`
+		5568512 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`mainstory`
+		5568511 Query	SELECT `column_name`,
+                `mimetype`,
+                `transformation`,
+                `transformation_options`
+          FROM `phpmyadmin`.`pma_column_info`
+         WHERE `db_name`    = '02ws'
+           AND `table_name` = 'mainstory'
+           AND ( `mimetype` != ''
+              OR `transformation` != ''
+              OR `transformation_options` != '')
+		5568512 Quit	
+
+
+		5568128 Connect	phpmyadmin@localhost on 
+		5568128 Query	SET CHARACTER SET 'utf8'
+		5568128 Query	SET collation_connection = 'utf8_general_ci'
+		5568129 Connect	boazn@localhost on 
+		5568129 Query	SET CHARACTER SET 'utf8'
+		5568129 Query	SET collation_connection = 'utf8_general_ci'
+		5568129 Query	SHOW PLUGINS
+		5568129 Init DB	02ws
+		5568129 Query	SHOW TABLES LIKE 'forecast_days'
+		5568129 Init DB	02ws
+		5568129 Query	SHOW TABLE STATUS FROM `02ws` LIKE 'forecast\_days%'
+		5568129 Query	SHOW FULL COLUMNS
+        FROM `02ws`.`forecast_days`
+		5568128 Query	SELECT tracking_active FROM `phpmyadmin`.`pma_tracking` WHERE `db_name` = '02ws'  AND `table_name` = 'forecast_days'  ORDER BY version DESC
+		5568129 Query	SHOW CREATE TABLE `02ws`.`forecast_days`
+		5568129 Init DB	02ws
+		5568129 Query	SHOW FIELDS FROM `forecast_days`
+		5568129 Query	SELECT * FROM `02ws`.`forecast_days` WHERE `forecast_days`.`day` = 24
+		5568128 Query	SELECT `master_field`,
+                    `foreign_db`,
+                    `foreign_table`,
+                    `foreign_field`
+               FROM `phpmyadmin`.`pma_relation`
+              WHERE `master_db`    = '02ws'
+                AND `master_table` = 'forecast_days'
+		5568129 Query	SHOW CREATE TABLE `02ws`.`forecast_days`
+		5568129 Quit	

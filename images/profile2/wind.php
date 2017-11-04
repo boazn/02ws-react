@@ -284,10 +284,10 @@ if ($SITE['info']) {
     $graph->AddText($txt5);
     
     $knots = $lang_idx == 1 ? utf8_strrev($KNOTS[$lang_idx]) : $KNOTS[$lang_idx];
-    $txtaa=new Text($chrs . $knots);
-    $txtaa->SetFont(FF_ARIAL, FS_BOLD,14);
-    $txtaa->SetPos(90,$height - 210,'center');
-    $txtaa->SetColor("blue");
+    $txtaa=new Text($knots);
+    $txtaa->SetFont(FF_ARIAL, FS_BOLD,10);
+    $txtaa->SetPos(30,$height - 210,'center');
+    $txtaa->SetColor("black");
     $graph->AddText($txtaa);
 }
 

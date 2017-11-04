@@ -1,5 +1,6 @@
 <?php
 include_once('include.php');
+include_once ('bannerGen.php');
 $string = $_GET['text'];
 if (isset($_GET['image']))
 	$im = imagecreatefrompng("images/{$_GET['image']}");

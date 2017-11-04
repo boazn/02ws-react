@@ -5,6 +5,8 @@ function utf8_strrev($str){
 }
 function time_callback($aLabel) { 
     
+        if (Date('H', $aLabel) % 2 == 1)
+                return "";
 	if (Date('H', $aLabel) == 0)
 		return "\n".Date('j/n', $aLabel);
 	return Date('H', $aLabel);

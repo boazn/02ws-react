@@ -189,7 +189,7 @@ else {?>
 			</div>
 </div>
 <? if (count($sig) > 1) { ?>
-    <div id="what_is_h"><? echo "{$sig[0]['sig'][$lang_idx]}"; ?><br/><? echo "{$sig[0]['extrainfo'][$lang_idx]}"; ?></div>
+    <div id="what_is_h"><? echo "{$sig[0]['sig'][$lang_idx]}"; ?><br/><? echo "{$sig[0]['extrainfo'][$lang_idx][0]}"; ?></div>
 <?}?>
 </div>
 <div id="latesttemp" class="inparamdiv" style="display:none;">

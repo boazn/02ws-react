@@ -2,29 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 	// radiosonde data
 	/////////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////
-// radiosonde link
-///////////////////////////////////////////////////////
-function getRadioSondeLink()
-{
-	global $hour, $year,  $month, $day, $hoursonde; 
-
-	if ($hour<=14)	
-		$hoursonde = 00;  
-	else	
-		$hoursonde = 12; 
-	$day_radio = $day; 
-	$month_radio = $month;  
-	if ($hour<=3){	
-		$hoursonde = 12;    
-		$day_radio = getMinusDayDay(1);    
-		$month_radio = getMinusDayMonth (1);   
-	}  
-	$stnNum = 40179;//first station 40179 bet dagan//2nd station: 40265 OJMF Mafraq //3rd station : 62337 ElArish  
-	$radiosonde_link = sprintf ("http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%02sALIST&YEAR=%d&MONTH=%02d&FROM=%02d%02d&TO=%02d%02d&STNM=%d","%3", $year, $month_radio, $day_radio, $hoursonde, $day_radio, $hoursonde, $stnNum);
-	//echo $radiosonde_link;
-	return ($radiosonde_link);
-}
+ 
 	function getRadioData()
 	{
 		global $t850, $t500, $t700, $inversionThickness, $baseInversionHeight, $inversionTemp, $FireIdx, $VerticalIdx, $CAPE, $CrossIdx, $Showalter, $KIdx, $LiftedIdx, $SWEATIdx, $TotalsIdx, $BulkRichNum;

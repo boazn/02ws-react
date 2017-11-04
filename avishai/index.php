@@ -21,11 +21,14 @@ header('Content-type: text/html; charset=utf-8');
 <div class="divheader">ביוגרפיה</div>
 <div class="divheader">דברים שכתב</div>
 <div class="divheader"><a href="?p=Stories.php">סיפורים עליו</a></div>
+<div class="divheader"><a href="?p=Recommendations.php">תעודות והמלצות</a></div>
 <div class="divheader"><a href="?p=Books.php">ספרים שאהב</a></div>
 <div class="divheader"><a href="?p=Music.php">מוזיקה שאהב</a></div>
 <div class="divheader"><a href="?p=Movies.php">סרטים שאהב</a></div>
 <div class="divheader">סרט לזכרו</div>
-<div class="divheader"><a href="?p=eulogy.php"">הספדים</a></div>
+<div class="divheader"><a href="?p=eulogy.php">הספדים</a></div>
+<div class="divheader"><a href="?p=TenYears.php">עשר שנים לזכרו</a></div>
+<div class="divheader"><a href="?p=AviChai.php">בית אבי חי</a></div>
 <div class="divheader"><a href="?p=SendEmailForm.php">להוסיף לאתר</a></div>
 </div>
 <div style="clear:both">

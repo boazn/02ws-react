@@ -31,7 +31,9 @@ function updateCachedVars(){
     $result = mysqli_query($link, $query) ;
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $monthAverge->set_hightemp ($row["HighTemp"],"");
+    $monthAverge->set_hightemp2 ($row["HighTemp"],"");
     $monthAverge->set_lowtemp ($row["LowTemp"],"");
+    $monthAverge->set_lowtemp2 ($row["LowTemp"],"");
     $monthAverge->set_highhum ($row["HighHum"],"");
     $monthAverge->set_lowhum ($row["LowHum"],"");
     $monthAverge->set_rain($row["Rain"]);
@@ -56,17 +58,28 @@ function updateCachedVars(){
 }
 if ($_GET['debug'] >= 1)
 	echo "<br /><b>getting yestarday extremes</b><br />";
+$string = file_get_contents(JSON_FILE_PATH);
+$json_a = json_decode($string, true);
+$yest->set_temp_morning($json_a['jws']['yest']['morningtemp'], null);
+$yest->set_temp_day($json_a['jws']['yest']['noontemp'], null);
+$yest->set_temp_night($json_a['jws']['yest']['nighttemp'], null);
+$today->set_temp_morning($json_a['jws']['today']['morningtemp'], null);
+$today->set_temp_day($json_a['jws']['today']['noontemp'], null);
+$today->set_hightemp2($json_a['jws']['today']['hightemp'], $today->get_hightemp2_time());
+$today->set_lowtemp2($json_a['jws']['today']['lowtemp'], $today->get_lowtemp2_time());
 if ($day > 1)
 	$tok = getTokFromFile(FILE_THIS_MONTH); 
 else
 	$tok = getTokFromFile(FILE_PREV_MONTH);
 
 if (searchNext ($tok, getMinusDayDay(1))){        
-	$yest->set_hightemp(getNextWord($tok, 2),getNextWord($tok, 1));//high temp        
-	$yest->set_lowtemp(getNextWord($tok, 1),getNextWord($tok, 1));//low temp        
+	$yest->set_hightemp(getNextWord($tok, 2, "hightemp"),getNextWord($tok, 1, "hightemp time"));//high temp        
+        $yest->set_hightemp2($yest->get_hightemp2(), $yest->get_hightemp2_time());
+	$yest->set_lowtemp(getNextWord($tok, 1, "lowtemp"),getNextWord($tok, 1, "lowtemp time"));//low temp        
+        $yest->set_lowtemp2($yest->get_lowtemp2(), $yest->get_lowtemp2_time());
 	//print(getNextWord($tok, 1));//high hum        
 	//print(getNextWord($tok, 1));//low hum        
-	$yest->set_rain (getNextWord($tok, 3),"");//yest rain    
+	$yest->set_rain (getNextWord($tok, 3,"yest rain"));//yest rain    
 }    
 else{        
 	$yest->set_hightemp(null, null);$yest->set_lowtemp(null, null);$yest->set_rain(null, null);    
@@ -184,19 +197,21 @@ $detailedforecast = "";
 $forecastlevel = "";
 $taf_contents = "";
 $detailedforecast = apc_fetch('descriptionforecast'.$lang_idx);
-if ($detailedforecast)
-    $_SESSION['detailedforecast'] = $detailedforecast;
+
+if ($detailedforecast){
+	$_SESSION['detailedforecast'] = $detailedforecast;
+}
 else
 {
     $result = db_init("SELECT * FROM  `content_sections` WHERE TYPE =  'forecast' and lang=?", $lang_idx);
-    while ($line = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
         $detailedforecast = $line["Description"];
         apc_store('descriptionforecast'.$line["lang"], $line["Description"]);
         apc_store('descriptionforecasttime'.$line["lang"], $line["updatedTime"]);
     }
 }
 $detailedforecast = str_replace("\"", "'", $detailedforecast);
-$detailedforecast = replaceDays(getLocalTime(strtotime(apc_fetch('descriptionforecasttime'.$lang_idx))))."<br/>".$detailedforecast;
+$detailedforecast = $detailedforecast."<br/>".replaceDays(getLocalTime(strtotime(apc_fetch('descriptionforecasttime'.$lang_idx))));
 
 
 
@@ -207,8 +222,8 @@ if ($taf_contents)
     $_SESSION['taf_contents'] = $taf_contents;
 else
 {
-    $results = db_init("SELECT * FROM content_sections WHERE TYPE =  'taf' and lang=?", 0);
-    while ($line = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+    $result = db_init("SELECT * FROM content_sections WHERE TYPE =  'taf' and lang=?", 0);
+    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
         if ($line["active"] == 1){
            $taf_contents = $line["Description"];
            apc_store('taf', $taf_contents);
@@ -238,30 +253,45 @@ else {
 
 
 $forecastDaysDB = apc_fetch('forecastDaysDB');
-if (!$forecastDaysDB)
+
+if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
 {
-    $results = db_init("SELECT * From forecast_days ORDER BY day", "");
+    $results = db_init("SELECT d.active, d.idx, d.lang0, d.lang1, d.TempLow, d.TempHigh, d.date, d.day_name, d.icon, d.TempNight, d.TempNightCloth, d.TempHighCloth, d.humMorning, d.humDay, d.humNight, a.likes, a.dislikes From forecast_days d left join forecast_days_archive a on d.idx = a.idx ORDER BY d.idx", "");
     $forecastDaysDB = array();
-    while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
+    while ($line = $results["result"]->fetch_array(MYSQLI_ASSOC)) {
           
             if ($line["active"] == "1")
              {
-                array_push($forecastDaysDB, array('lang0' => urlencode($line["lang0"]), 'lang1' => urlencode($line["lang1"]),  'TempLow' => $line["TempLow"], 'TempHigh' => $line["TempHigh"], 'date' => $line["date"], 'day_name' => $line["day_name"], 'icon' => $line["icon"], 'TempNight' => $line["TempNight"], 'TempNightCloth' => $line["TempNightCloth"], 'TempHighCloth' => $line["TempHighCloth"]));
+                $forecastDaysDB[$line["idx"]] = array('likes' => array(), 'dislikes' => array(), 'lang0' => urlencode($line["lang0"]), 'lang1' => urlencode($line["lang1"]),  'TempLow' => $line["TempLow"], 'TempHigh' => $line["TempHigh"], 'date' => $line["date"], 'day_name' => $line["day_name"], 'icon' => $line["icon"], 'TempNight' => $line["TempNight"], 'TempNightCloth' => $line["TempNightCloth"], 'TempHighCloth' => $line["TempHighCloth"], 'humMorning'=>$line["humMorning"], 'humDay'=>$line["humDay"], 'humNight'=>$line["humNight"]);
+                for ($i = 0;$i < $line["likes"];$i++)
+                {
+                    array_push($forecastDaysDB[$line["idx"]]["likes"], $i);
+                }
+                for ($i = 0;$i < $line["dislikes"];$i++)
+                {
+                    array_push($forecastDaysDB[$line["idx"]]["dislikes"], $i);
+                }
              }
     }
+    apc_store('forecastDaysDB',$forecastDaysDB);
 }
-apc_store('forecastDaysDB',$forecastDaysDB); 
-$day_idx = 1;
- for ($i = 0; $i < count($forecastDaysDB) ; $i++) {
+
+ $day_idx = 1;
+ foreach ($forecastDaysDB as &$line)  {
      // $todayForecast_date is the previous day from temp forecast
-     $line = $forecastDaysDB[$i];
+     
     if ($day_idx == 1)
     {
            $todayForecast->set_lowtemp($line["TempLow"], null);
+           $todayForecast->set_lowtemp2($line["TempLow"], null);
            $todayForecast->set_hightemp($line["TempHigh"], null);
+           $todayForecast->set_hightemp2($line["TempHigh"], null);
            $todayForecast->set_temp_morning($line["TempLow"], null);
            $todayForecast->set_temp_day($line["TempHigh"], null);
            $todayForecast->set_temp_night($line["TempNight"], null);
+           $todayForecast->set_hum_morning($line["humMorning"], null);
+           $todayForecast->set_hum_day($line["humDay"], null);
+           $todayForecast->set_hum_night($line["humNight"], null);
            $todayForecastShortDate = $line["date"];
            list($fday_l, $fmonth_l) = preg_split('[/.-]', $line["date"]);
             list($fday, $fmonth, $fyear) = preg_split('[/.-]', $todayForecast_date); 
@@ -270,10 +300,15 @@ $day_idx = 1;
     else if ($day_idx == 2)
     {
            $tomorrowForecast->set_lowtemp($line["TempLow"], null);
+           $tomorrowForecast->set_lowtemp2($line["TempLow"], null);
            $tomorrowForecast->set_hightemp($line["TempHigh"], null);
+           $tomorrowForecast->set_hightemp2($line["TempHigh"], null);
            $tomorrowForecast->set_temp_morning($line["TempLow"], null);
            $tomorrowForecast->set_temp_day($line["TempHigh"], null);
            $tomorrowForecast->set_temp_night($line["TempNight"], null);
+           $tomorrowForecast->set_hum_morning($line["humMorning"], null);
+           $tomorrowForecast->set_hum_day($line["humDay"], null);
+           $tomorrowForecast->set_hum_night($line["humNight"], null);
 
     }
    $day_idx = $day_idx + 1;
@@ -306,7 +341,7 @@ else
 $dayForPrec = $day - 1;
 $idxDayNumber = $dayForPrec - (($decade - 1)*10);
 //var_dump (apc_fetch('monthAverage'));
-if ((!apc_fetch('currentDecadeRain')) || (!apc_fetch('monthAverage')) || ($hour == 5)){
+if ((!apc_fetch('currentDecadeRain')) || (!apc_fetch('monthAverage')) || ($hour == 4)){
     updateCachedVars();
 }
 
@@ -328,11 +363,16 @@ if ($_GET['debug'] >= 4){
         echo "<br/> nextDecadeRain=$nextDecadeRain <br/>currentDecadeRain=$currentDecadeRain <br/>idxDayNumber=$idxDayNumber <br/>oneDayPrec=$oneDayPrec <br/>dayForPrec=$dayForPrec <br/>precDelta=$precDelta <br/> rain=$currentDecadeRain + $precDelta<br/>";
 
 }
-
+$timetaf = apc_fetch("timetaf");
+$dayF = apc_fetch("dayF");
+$monthF = apc_fetch("monthF");
+$yearF = apc_fetch("yearF");
  $seasonTillNow->set_raindiffav($seasonTillNow->get_rain() - $averageTillNow->get_rain());
- $seasonTillNow->set_rainperc (round($seasonTillNow->get_rain()/$averageTillNow->get_rain()*100));
+ if ($averageTillNow->get_rain() > 0)
+    $seasonTillNow->set_rainperc (round($seasonTillNow->get_rain()/$averageTillNow->get_rain()*100));
  $thisMonth->set_raindiffav($thisMonth->get_rain() - $monthAverge->get_rain());
- $thisMonth->set_rainperc(round($thisMonth->get_rain()/$monthAverge->get_rain()*100));
+ if ($monthAverge->get_rain() > 0)
+    $thisMonth->set_rainperc(round($thisMonth->get_rain()/$monthAverge->get_rain()*100));
  $thisMonth->set_rainydaysdiffav($thisMonth->get_rainydays() - $monthAverge->get_rainydays());
  $wholeSeason->set_raindiffav($seasonTillNow->get_rain() -  $wholeSeason->get_rain());
  $wholeSeason->set_rainydaysdiffav($seasonTillNow->get_rainydays() - $wholeSeason->get_rainydays());

@@ -37,7 +37,7 @@
 ## STATION NAME 
 // This text will be displayed under the name of the chart.
 // For a different name in another language, please fill in the name of the station in the language file.
-$stationName = '02ws.com'; // This can be also changed for each language in translation files.
+$stationName = '02ws.co.il ירושמים'; // This can be also changed for each language in translation files.
 
 ## Year, Month and day when the station started sending data
 $sinceY = '2009'; // year format yyyy 

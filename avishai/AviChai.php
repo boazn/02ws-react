@@ -1,0 +1,18 @@
+<br />
+<br />
+
+<style>
+    pre{
+        direction:rtl;text-align:right;color:#000000;
+        display: block;
+        padding: 9.5px;
+        margin: 0 0 10px;
+        font-size: 13px;
+        line-height: 20px;
+        word-break: break-all;
+        word-wrap: break-word;
+    }
+</style>
+<h2>עשר שנים לזכרו</h2>
+<iframe src="http://docs.google.com/gview?url=http://02ws.co.il/avishai/images/Avi Chai.pdf&embedded=true" style="width:990px; height:700px;" frameborder="0"></iframe>
+<iframe src="http://docs.google.com/gview?url=http://02ws.co.il/avishai/images/dani danielly 2017.pdf&embedded=true" style="width:990px; height:700px;" frameborder="0"></iframe>

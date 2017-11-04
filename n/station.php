@@ -169,7 +169,7 @@ include_once "sigweathercalc.php";
                                                                                 if (!isset($_SESSION['gw'])){
                                                                                         global $link;
                                                                                         $result = db_init("SELECT avg(anomaly) FROM globalwarming");
-                                                                                        $row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
+                                                                                        $row = @mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
                                                                                         $gw =  number_format($row['avg(anomaly)'], 2, '.', '');
                                                                                         $_SESSION['gw'] = $gw;
                                                                                         @mysqli_free_result($result);
@@ -226,6 +226,7 @@ include_once "sigweathercalc.php";
 							</div>
 							<div id="loggedin" style="display:none">
 								<input id="updateprofile" class="button" title="<?=$UPDATE_PROFILE[$lang_idx]?>" value="<?=$UPDATE_PROFILE[$lang_idx]?>" /><br />
+                                                                <a href="<? echo get_query_edited_url($url_cur, 'section', 'myVotes.php');?>" class="button"/><?=$MY_VOTES[$lang_idx]?></a><br />
 								<input value="<?=$SIGN_OUT[$lang_idx]?>" onclick="signout_from_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="signout" class="button"/>
 							</div>
 						</li>
@@ -640,8 +641,8 @@ include_once "sigweathercalc.php";
                             <div class="colmetercontainer">
                                 <?
                                 $result = getSurvey(2);
-                                while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                                    print "\n\t\t<input name=\"survey\" onclick=\"toggle('genderchoose');$('#votechosen').val(".$line["field_id"].");\" class=\"coldmeterline color".($line["field_id"])."\" value=\"".get_name($line["field_name"])."\"";
+                                foreach ($result as $row) {
+                                    print "\n\t\t<input name=\"survey\" onclick=\"toggle('genderchoose');$('#votechosen').val(".$row["field_id"].");\" class=\"coldmeterline color".($row["field_id"])."\" value=\"".get_name($row["field_name"])."\"";
                                     echo " />";
                                  
                                 }
@@ -684,7 +685,7 @@ include_once "sigweathercalc.php";
                    <div id="now_stuff" class="span3">
 			<a href="<? echo $sig[0]['url'];?>" class="hlink" title="<?echo $MORE_INFO[$lang_idx];?>">
 			 	<h2><? echo "{$sig[0]['sig'][$lang_idx]}"; ?></h2>
-				<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx]; if ($sig[0]['extrainfo'][$lang_idx] != "") echo " - ";?><?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></div>
+				<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx][0]; if ($sig[0]['extrainfo'][$lang_idx][0] != "") echo " - ";?><?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></div>
 			</a>
         
 		    </div>

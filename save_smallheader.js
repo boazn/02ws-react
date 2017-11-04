@@ -1,0 +1,9 @@
+var page = require('webpage').create();
+page.open('http://www.02ws.co.il/smallheader.php', function() {
+  page.render('02ws_short.png');
+  phantom.exit();
+});
+/*page.open('http://www.02ws.co.il/smallheader.php?lang=0', function() {
+  page.render('02ws_short_eng.png');
+  phantom.exit();
+});*/

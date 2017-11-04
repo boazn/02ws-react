@@ -149,9 +149,9 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 							<span><? echo $LOW[$lang_idx].": "; ?></span>
 							<span><? echo toLeft($today->get_lowtemp().$current->get_tempunit()); ?></span>&nbsp;<? echo $ON[$lang_idx]." ".$today->get_lowtemp_time()." "; ?>
 						</span> 
-						<? echo get_img_tag($min15->get_tempchange());?>
+						<? echo get_img_tag($min15->get_tempchange(), true);?>
 						<span class="info" style="top:-33px">
-								<? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_tempchange()).$current->get_tempunit(); ?>
+								<? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_tempchange(), true).$current->get_tempunit(); ?>
 						</span>  
 					</a>
 				
@@ -164,7 +164,7 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 			<div id="windstatus">
 			
 			<div id="windy">
-			<? echo getWindStatus();?>
+			<? echo getWindStatus($lang_idx);?>
 			</div>
 			<div  id="coldmeter">
 			, <span id="current_feeling_link" title="<?=$HOTORCOLD_T[$lang_idx]?> - <?=$COLD_METER[$lang_idx]?>">...</span>
@@ -244,7 +244,7 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 					for ($i = 0; $i < count($sig); $i++) {
 					
 					echo "<li>";
-					echo "<a class=\"hlink\" style=\"font-weight:normal\" title=\"\" href=\"{$sig[$i]['url']}\" >{$sig[$i]['sig'][$lang_idx]} "." - ".$sig[$i]['extrainfo'][$lang_idx].get_arrow()."</a></li>\n";          
+					echo "<a class=\"hlink\" style=\"font-weight:normal\" title=\"\" href=\"{$sig[$i]['url']}\" >{$sig[$i]['sig'][$lang_idx]} "." - ".$sig[$i]['extrainfo'][$lang_idx][0].get_arrow()."</a></li>\n";          
 				} ?>
 				<li>
 					<a href="<? echo get_query_edited_url($url_cur, 'section', 'radar.php');?>">
@@ -322,7 +322,7 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 						<?	
 							if (!isset($_SESSION['gw'])){
 								global $link;
-								$result = db_init("SELECT avg(anomaly) FROM globalwarming");
+								$result = db_init("SELECT avg(anomaly) FROM globalwarming", "");
 								$row = @mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
 								$gw =  number_format($row['avg(anomaly)'], 2, '.', '');
 								$_SESSION['gw'] = $gw;
@@ -353,9 +353,9 @@ $ExpireString = gmdate("D, d M Y H:i:s", time() + $offset_exp) . " GMT";
 									<td <?  if (isHeb()) echo "dir=\"rtl\"" ?>><?=$HOUR[$lang_idx]?></td>
 								</tr>
 								<tr class="inv">
-									<td><? echo get_img_tag($min15->get_cloudbasechange()).abs(round($min15->get_cloudbasechange()));?></td>
-									<td><? echo get_img_tag($min30->get_cloudbasechange()).abs(round($min30->get_cloudbasechange()));?></td>
-									<td><? echo get_img_tag($oneHour->get_cloudbasechange()).abs(round($oneHour->get_cloudbasechange()));?></td>
+									<td><? echo get_img_tag($min15->get_cloudbasechange(), true).abs(round($min15->get_cloudbasechange()));?></td>
+									<td><? echo get_img_tag($min30->get_cloudbasechange(), true).abs(round($min30->get_cloudbasechange()));?></td>
+									<td><? echo get_img_tag($oneHour->get_cloudbasechange(), true).abs(round($oneHour->get_cloudbasechange()));?></td>
 								</tr>
 							</table>
 						</li>
@@ -407,7 +407,7 @@ parameters bar
 							<span><? echo $LOW[$lang_idx].": "; ?></span>
 							<span class="low"><? echo toLeft($today->get_lowtemp().$current->get_tempunit()); ?></span>&nbsp;<? echo $ON[$lang_idx]." ".$today->get_lowtemp_time()." "; ?>
 						</span> 
-						<? echo get_img_tag($min15->get_tempchange());?>
+						<? echo get_img_tag($min15->get_tempchange(), true);?>
 							  <span class="info" style="top:-33px">
 								<? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_tempchange()).$current->get_tempunit(); ?>
 							</span>  
@@ -435,9 +435,9 @@ parameters bar
 					<span><? echo $today->get_lowhum(); ?>%&nbsp;<? echo $ON[$lang_idx]." ".$today->get_lowhum_time()." "; ?></span>
 				
 				</span>
-				<? echo get_img_tag($min15->get_humchange());?>
+				<? echo get_img_tag($min15->get_humchange(), true);?>
 				   <span class="info" style="top:-40px">
-						<? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_img_tag($min15->get_humchange()).abs($min15->get_humchange())."%"; ?>
+						<? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_img_tag($min15->get_humchange(), true).abs($min15->get_humchange())."%"; ?>
 					</span>
 				</a>
 				
@@ -461,7 +461,7 @@ parameters bar
 					<span><? echo $today->get_lowbar()." ".$BAR_UNIT[$lang_idx]; ?>&nbsp;<? echo $ON[$lang_idx]." ".$today->get_lowbar_time()." "; ?></span>
 				
 				</span>
-				<? echo get_img_tag($min15->get_prschange());?>
+				<? echo get_img_tag($min15->get_prschange(), true);?>
 					<span class="info" style="top:-40px"><? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_prschange()).$BAR_UNIT[$lang_idx]; ?></span>
 				</a>
 				
@@ -484,7 +484,7 @@ parameters bar
 				</div>
 				<!-- <div id="windtrend">
 					<a href="#" class="info">
-					<? echo get_img_tag($min15->get_windspdchange());?>
+					<? echo get_img_tag($min15->get_windspdchange(), true);?>
 					<span class="info" <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_windspdchange()).$windUnits; ?></span>
 					</a>
 				</div> -->
@@ -568,7 +568,7 @@ parameters bar
 				<td class="box"><? echo($HOUR[$lang_idx]);?></td>
 				<td class="box">30<? echo($MINTS[$lang_idx]);?></td>
 			</tr>
-			<? echo "<tr class=\"trendsvalues\"><td>".get_img_tag($yestsametime->get_humchange()).abs($yestsametime->get_humchange())."</td><td>".get_img_tag($oneHour->get_humchange()).abs($oneHour->get_humchange())."</td><td>".get_img_tag($min30->get_humchange()).abs($min30->get_humchange())."</td></tr>"; ?>
+			<? echo "<tr class=\"trendsvalues\"><td>".get_img_tag($yestsametime->get_humchange(), true).abs($yestsametime->get_humchange())."</td><td>".get_img_tag($oneHour->get_humchange(), true).abs($oneHour->get_humchange())."</td><td>".get_img_tag($min30->get_humchange(), true).abs($min30->get_humchange())."</td></tr>"; ?>
 		</table>
 	</td>
 	<td style="vertical-align:top" class="inv_plain_3_zebra" id="bartrends">
@@ -578,7 +578,7 @@ parameters bar
 				<td class="box">30<? echo($MINTS[$lang_idx]);?></td>
 				<td class="box"><? echo getLastUpdateMin().($MINTS[$lang_idx]);?></td>
 			</tr>
-			<? echo "<tr class=\"trendsvalues\"  ><td>".get_img_tag($oneHour->get_prschange()).abs($oneHour->get_prschange())."</td><td>".get_img_tag($min30->get_prschange()).abs($min30->get_prschange())."</td><td>".get_img_tag($min15->get_prschange()).abs($min15->get_prschange())."</td></tr>"; ?>
+			<? echo "<tr class=\"trendsvalues\"  ><td>".get_img_tag($oneHour->get_prschange(), true).abs($oneHour->get_prschange())."</td><td>".get_img_tag($min30->get_prschange(), true).abs($min30->get_prschange())."</td><td>".get_img_tag($min15->get_prschange(), true).abs($min15->get_prschange())."</td></tr>"; ?>
 		</table>
 	</td>
 	<td style="vertical-align:top" class="inv_plain_3_zebra half_zebra" id="windtrends" >

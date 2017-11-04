@@ -1,7 +1,7 @@
 <style>
     .pic_cell
     {
-        padding:2em;margin:1em;width:14%;height:200px;overflow:hidden;line-height:1.1em
+        padding:0.5em;margin:1em;height:170px;overflow:hidden;line-height:1.1em
     }
 </style>
 <?
@@ -12,13 +12,14 @@ echo "<h1>".$PIC_OF_THE_DAY[$lang_idx]."</h1>";
 ///////////////////////////////////////////////////////////
 
 ?>
-<div class="inv_plain_3_zebra clear float" style="padding:2em;width:50%">
+<div class="inv_plain_3_zebra clear float" >
 
 <?
-echo "<a class='colorbox' href='".$contentUrl."' title='" . $caption ."'><span></span><img src='".$mediumSizeUrl."' alt='" . $photoEntry->title->text ."' title='" . $albumName ."' /></a><br />".$caption."<br />".replaceDays($dateTaken); 
+echo "<a href='".$contentUrl."' title='" . $caption ."' target=_system><img width=\"309\" src='".$mediumSizeUrl."' alt='" . $photoEntry->title->text ."' title='" . $albumName ."' /></a><br />".$caption."<br />".replaceDays($dateTaken); 
 ?>
 
 </div>
+<!--
 <div class="inv_plain_3_zebra invfloat">
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-2706630587106567";
@@ -27,12 +28,13 @@ google_ad_slot = "6408845094";
 google_ad_width = 336;
 google_ad_height = 280;
 //-->
+<!--
 </script>
 <script type="text/javascript"
 src="//pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 </div>
-<div class="clear"><br /></div>
+<div class="clear"><br /></div>-->
 <?
 //print_r($photoEntry);
        
@@ -61,7 +63,7 @@ for ($i = count($albumFeed) - 2; $i > 0; $i--){
                   $contentUrl = str_replace("s144", "s1152", $thumbnailUrl);
                 }
         
-                echo "<div class='white_box2 float pic_cell'><a class='colorbox' href='".$contentUrl."' title='" . $caption ."'><span></span><img src='".$thumbnailUrl."' alt='" . $photoEntry->title->text ."' title='" . $albumName ."' /></a><br />".$caption."<br />".replaceDays($dateTaken)."</div>"; 
+                echo "<div class='white_box2 float pic_cell'><a href='".$contentUrl."' title='" . $caption ."' target=_system><img src='".$thumbnailUrl."' alt='" . $photoEntry->title->text ."' title='" . $albumName ."' /></a><br />".$caption."<br />".replaceDays($dateTaken)."</div>"; 
 }
 
 ?>

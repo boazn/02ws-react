@@ -3,13 +3,12 @@
 //ini_set("error_reporting", E_ALL);
 include_once("start.php");
 include_once("requiredDBTasks.php");
-include_once("forecastlib.php");
 $sig_url = $sig[0]['url'];
 $sig_title = $sig[0]['sig'][$lang_idx];
 $imagefile = "phpThumb.php?src=".getUpdatedPic()."&amp;w=600&amp;h=292&amp;zc=C&amp;fltr[]=gam|0.8";//&amp;fltr[]=cont|50
 /////////////////////////////////////////
 $floated = false;
- 
+ $forecastHour = apc_fetch("forecasthour");
 ////////////////////////////////////////
 	$overlook_d = $OVERLOOK[$lang_idx]." "."<a href=\"javascript:void(0)\" class=\"info\">(?)<span class=\"info\">".$OVERLOOK_EXP[$lang_idx]."</span></a><br />";
 ?>
@@ -56,10 +55,11 @@ $floated = false;
 					}
 					else 
 					{
+                                          
+                                                $i = 0;
 						//print_r($forecastDaysDB);
- 
-						for ($i = 0; $i < count($forecastDaysDB); $i++) 
-						{
+                                                foreach ($forecastDaysDB as &$forecastday) {
+						
 						if ($i % 2 == 1)
 							$class =  " class=\"inv_plain_3\" ";
 						else
@@ -70,14 +70,14 @@ $floated = false;
 						<td class="forecastdate"><?if ($i == 5){
 							
 							echo "&nbsp;&nbsp;".$overlook_d."";
-						}?>&nbsp;<strong><?echo replaceDays($forecastDaysDB[$i]['day_name']." ")." ".$forecastDaysDB[$i]['date'];?></strong></td>
-						<td class="forecasttemp"><?=c_or_f($forecastDaysDB[$i]['TempLow'])?></td>
-						<td class="forecasttemp"><?=c_or_f($forecastDaysDB[$i]['TempHigh'])?>&nbsp;<img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempHighCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempHighCloth'])?>" /></td>
-						<td class="forecasttemp"><?=c_or_f($forecastDaysDB[$i]['TempNight'])?>&nbsp;<img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastDaysDB[$i]['TempNightCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" alt="<?=getClothTitle($forecastDaysDB[$i]['TempNightCloth'])?>" /></td>
-						<td style="text-align:center"><img src="<? echo "images/icons/day/".$forecastDaysDB[$i]['icon']; ?>" width="43" height="43" alt="<?=$forecastDaysDB[$i]['date']?>" /></td>
-						<td class="forecastdesc"><? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastDaysDB[$i][$dscpIdx]);?></td>
+						}?>&nbsp;<strong><?echo replaceDays($forecastday['day_name']." ")." ".$forecastday['date'];?></strong></td>
+						<td class="forecasttemp"><?=c_or_f($forecastday['TempLow'])?></td>
+						<td class="forecasttemp"><?=c_or_f($forecastday['TempHigh'])?>&nbsp;<img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastday['TempHighCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" alt="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" /></td>
+						<td class="forecasttemp"><?=c_or_f($forecastday['TempNight'])?>&nbsp;<img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="30" height="30" title="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" alt="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" /></td>
+						<td style="text-align:center"><img src="<? echo "images/icons/day/".$forecastday['icon']; ?>" width="43" height="43" alt="<?=$forecastday['date']?>" /></td>
+						<td class="forecastdesc"><? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);?></td>
 						</tr>
-						<? }
+						<? $i++;}
 					}
 				?>
 				<tr>
@@ -143,6 +143,7 @@ $floated = false;
                                         echo "&nbsp;&nbsp;&plusmn;".$hour_f['plusminus']."";
                                  echo "</span></li>";
 				 echo "<li class=\"forecasttemp forcast_morning\" style=\"text-align:center;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
+                                 echo "<li>&nbsp;<img style=\"vertical-align: middle\"  src=\"images/clothes/".$hour_f['cloth']."\" width=\"24.3\" height=\"20\" /></li>";
 				 echo "<li style=\"margin-top:0;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></li>";
 				
 				 if ($hour_f['wind'] > 30){
@@ -166,7 +167,7 @@ $floated = false;
 				 }
 					
 				 echo "<li style=\"margin-top:0;\"><div title=\"".$windtitle."\" class=\"wind_icon ".$wind_class." \"></div></li>";
-				 echo "<li>".$hour_f['title']."</li>";
+				 echo "<li>".$hour_f['title'][$lang_idx]."</li>";
 				 echo "</ul></li>";
 				 }
 				 }
@@ -243,7 +244,7 @@ $floated = false;
 								<a href="<? echo $sig[0]['url'];?>" class="hlink" title="<?echo $MORE_INFO[$lang_idx];?>">
  
 										<? echo "{$sig[0]['sig'][$lang_idx]}"; ?>
-										<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx]; if ($sig[0]['extrainfo'][$lang_idx] != "") echo " - ";?><?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></div>
+										<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx][0]; if ($sig[0]['extrainfo'][$lang_idx][0] != "") echo " - ";?><?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></div>
 								</a>
 							</div>
 							

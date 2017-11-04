@@ -1,53 +1,27 @@
 <?
-ini_set("display_errors","On");
+//ini_set("display_errors","On");
 include ("include.php");
 include ("lang.php");
-$CLICK_TO_CONFIRM = array("Click here to confirm your registration to 02ws.co.il and make your user active", "הקליקו כאן כדי לאשר הרשמה לאתר ירושמיים");
-$CLICK_TO_RESET = array("Click here to reset your password", "הקליקו כאן כדי לאפס ססמא לאתר ירושמיים");
-$CHECK_EMAIL_RESET_PASS = array("Go to your email for password reset", "יש לגשת אל האימייל שלך כדי לבצע איפוס ססמא");
-$PROBLEM_USER_PASSWORD =  array("Problem with user or password", "סיסמא לא נכונה או משתמש לא קיים");
-$NO_USER_EXIST = array("No user exists with", "אין משתמש עם");
+$CLICK_TO_CONFIRM = array("Click here to confirm your registration to 02ws.co.il and make your user active", "הקליקו כאן כדי לאשר הרשמה לאתר ירושמיים", "Click here to confirm your registration to 02ws.co.il and make your user active");
+$CLICK_TO_RESET = array("Click here to reset your password", "הקליקו כאן כדי לאפס ססמא לאתר ירושמיים", "Click here to reset your password");
+$CHECK_EMAIL_RESET_PASS = array("Go to your email for password reset", "יש לגשת אל האימייל שלך כדי לבצע איפוס ססמא", "Go to your email for password reset");
+$PROBLEM_USER_PASSWORD =  array("Problem with user or password", "סיסמא לא נכונה או משתמש לא קיים", "Problem with user or password");
+$NO_USER_EXIST = array("No user exists with", "אין משתמש עם", "No user exists with");
 
 session_start();
-function check_email_address($email) {
-  // First, we check that there's one @ symbol, and that the lengths are right
-  if (!ereg("[^@]{1,64}@[^@]{1,255}", $email)) {
-    // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
-    return false;
-  }
-  // Split it into sections to make life easier
-  $email_array = explode("@", $email);
-  $local_array = explode(".", $email_array[0]);
-  for ($i = 0; $i < sizeof($local_array); $i++) {
-     if (!ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
-      return false;
-    }
-  }  
-  if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
-    $domain_array = explode(".", $email_array[1]);
-    if (sizeof($domain_array) < 2) {
-        return false; // Not enough parts to domain
-    }
-    for ($i = 0; $i < sizeof($domain_array); $i++) {
-      if (!ereg("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$", $domain_array[$i])) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
+
 
 function get_user_from_email($email){
-    $query = "select user_login, u_pswd, display_name, user_nicename, user_icon, priority, locked, admin, MsgCount, MsgStart, classification  from users where email=?";
+    $query = "select user_login, u_pswd, user_status, display_name, user_rememberme, user_nicename, user_icon, priority, locked, admin, MsgCount, MsgStart, classification, PersonalColdMeter, SeasonPref, VoteCount  from users where email=?";
     $result = db_init($query, $email);
-    $line = mysqli_fetch_array($result);
+    $line = mysqli_fetch_array($result["result"]);
     $_SESSION['isAdmin'] = $line['admin'];
-    @mysqli_free_result($result);
     return $line;
 }
 
 function get_user(){
-    global $user_locked;
+    global $user_locked, $session, $cookie;
+    //logger($_SESSION['email']." ".$_COOKIE['rememberme']);
     $userJSON = "{\"user\":";
      if (!empty($_SESSION['email']) && is_valid_email($_SESSION['email'])) {
         // This means both the session file exists and contains a valid userid in the database.
@@ -56,6 +30,7 @@ function get_user(){
            Handle authenticated procedures here...
         */
         $line = get_user_from_email($_SESSION['email']);
+        //logger( $_SESSION['email']." authenticated with Session: "."\"display\":"."\"".$line['display_name']."\""." \"nicename\":"."\"".$line['user_nicename']."\""." \"priority\":".$line['priority']." \"admin\":".$line['admin']);
         if (!$user_locked)
             $_SESSION['loggedin'] = "true";
         else
@@ -95,6 +70,8 @@ function get_user(){
     $userJSON .= "\"locked\":".$locked_value;
     $_SESSION['MsgCount'] = $line['MsgCount'];
     $_SESSION['MsgStart'] = $line['MsgStart'];
+    if ($line['PersonalColdMeter'] != $_COOKIE[PERSONAL_COLD_METER])
+        setcookie(PERSONAL_COLD_METER, $line['PersonalColdMeter'], time()+3600*24*360);
     if ($_SESSION['loggedin'] == "true")
     {
             $userJSON .= ",";
@@ -117,11 +94,17 @@ function get_user(){
             $userJSON .= "\"MsgStart\":".$line['MsgStart'];
             $userJSON .= ",";
             $userJSON .= "\"clss\":".$line['classification'];
+            $userJSON .= ",";
+            $userJSON .= "\"PersonalColdMeter\":".$line['PersonalColdMeter'];
+            $userJSON .= ",";
+            $userJSON .= "\"voteCount\":".$line['VoteCount'];
             
+            //logger("get_user: ".$_SESSION['email']." ".$_SESSION['loggedin']." ".$_COOKIE[PERSONAL_COLD_METER]." ".$_COOKIE['rememberme']);
     }
     $userJSON .= "}";
     $userJSON .= "}";
     echo $userJSON;
+    
  }
 function is_valid_userid($user){
    
@@ -139,8 +122,8 @@ function is_valid_email($email){
     $email = strtolower($email);
     $query = "select user_status, locked from users where lower(email)=?";
     $result = db_init($query, $email);
-    $line = mysqli_fetch_row($result);
-    @mysqli_free_result($result);
+    $line = mysqli_fetch_row($result["result"]);
+    @mysqli_free_result($result["result"]);
     global $link;
     mysqli_close($link);
 	//echo " status=".$line[0];
@@ -150,9 +133,9 @@ function is_valid_email($email){
     return false;
 }
 function get_user_from_key($key){
-    $result = db_init("select user_status, u_pswd, display_name, user_nicename, user_icon, priority, locked, admin, email, MsgCount, MsgStart, classification from users where user_rememberme='$key'");
-    $line = mysqli_fetch_array($result);
-    @mysqli_free_result($result);
+    $result = db_init("select user_status, u_pswd, display_name, user_nicename, user_icon, priority, locked, admin, email, MsgCount, MsgStart, classification, PersonalColdMeter, SeasonPref, VoteCount from users where user_rememberme='$key'", "");
+    $line = mysqli_fetch_array($result["result"]);
+    @mysqli_free_result($result["result"]);
     global $link;
     mysqli_close($link);
     return $line;
@@ -176,7 +159,7 @@ function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_dis
     global $CLICK_TO_CONFIRM, $lang_idx, $REGISTRATION_TO_02WS;
     $email = strtolower($email);
     
-    $key = base64_encode(mcrypt_create_iv(20,MCRYPT_DEV_URANDOM)); // 
+    $key = base64_encode(random_bytes(20)); // 
     $link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
     $link->query("SET NAMES utf8;");
     $email = $link->real_escape_string ($email);
@@ -199,24 +182,25 @@ function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_dis
         echo "error: ".$link->errno." ".$link->error; 
     
 }
-function user_wants_to_update_profile($email, $pass, $user_nice_name, $user_display_name, $user_icon, $priority){
+function user_wants_to_update_profile($email, $pass, $user_nice_name, $user_display_name, $user_icon, $priority, $personal_coldmeter){
     $email = strtolower($email);
     $link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
     $link->query("SET NAMES utf8;");
     $email = $link->real_escape_string ($email);
     $user_nice_name = $link->real_escape_string ($user_nice_name);
     $user_display_name = $link->real_escape_string ($user_display_name);
-    $query = "update users set u_pswd=?, user_nicename=?, display_name=?, user_icon=?, priority=? where LOWER(email)=?";
+    $query = "update users set u_pswd=?, user_nicename=?, display_name=?, user_icon=?, priority=?, PersonalColdMeter=?  where LOWER(email)=?";
+    setcookie(PERSONAL_COLD_METER, $personal_coldmeter, time()+3600*24*360); // Set the cookie to expire after 360 days
     //echo $query;
      $stmt = $link->stmt_init();
      $stmt->prepare($query);
-     $stmt->bind_param('ssssds' , $pass, $user_nice_name, $user_display_name, $user_icon, $priority, $email);
+     $stmt->bind_param('ssssdds' , $pass, $user_nice_name, $user_display_name, $user_icon, $priority, $personal_coldmeter, $email);
     $stmt->execute();
           
     if($stmt->affected_rows==1)
     {
     	echo "0";
-        logger("user_wants_to_update_profile: succeed ".$email." ".$user_nice_name." ".$user_display_name." ".$user_icon);
+        logger("user_wants_to_update_profile: succeed ".$email." ".$user_nice_name." ".$user_display_name." ".$user_icon." ".$personal_coldmeter);
     }
     else
     {
@@ -234,7 +218,7 @@ function forgot_password($email)
     
     global $NO_USER_EXIST, $CLICK_TO_RESET, $CHECK_EMAIL_RESET_PASS, $lang_idx, $FORGOT_PASS;
     $result = db_init("SELECT u_pswd, email FROM users WHERE lower(email) = ?", $email);
-     $dbarray = $result->fetch_array(MYSQL_ASSOC);
+     $dbarray = $result["result"]->fetch_array(MYSQLI_ASSOC);
       if(sizeof($dbarray) < 1){
          echo $NO_USER_EXIST[$lang_idx]." ".$email;
       }
@@ -293,12 +277,11 @@ function user_login($user_id){
     */
    function confirmUserPass($email, $password, $isrememberme){
       /* Add slashes if necessary (for query) */
-     global $PROBLEM_USER_PASSWORD, $lang_idx, $link, $stmt, $NO_USER_EXIST, $CHECK_EMAIL;
+     global $PROBLEM_USER_PASSWORD, $lang_idx, $link, $stmt, $NO_USER_EXIST, $CHECK_EMAIL, $cookie, $session;
       $email = strtolower($email);
            
-        $query = "SELECT u_pswd, email, display_name, user_icon, user_rememberme, user_status, user_nicename, priority, locked, admin, MsgCount, MsgStart, classification FROM users WHERE lower(email) = ? and user_status=1 ";
-        $result = db_init($query, $email);
-     $dbarray = $result->fetch_array(MYSQL_ASSOC);
+        
+     $dbarray = get_user_from_email($email);
           
       if(is_null($dbarray)){
           //Indicates username failure
@@ -342,7 +325,7 @@ function user_login($user_id){
       //echo $email."<br/>".$password."<br/>".$dbarray['u_pswd']."<br/>";
       /* Validate that password is correct */
       if($password == $dbarray['u_pswd']){
-         $_SESSION['email'] = $dbarray['email'];
+         $_SESSION['email'] = $email;
 	 $_SESSION['user_icon'] = $dbarray['user_icon'];
          $_SESSION['MsgCount'] = $dbarray['MsgCount'];
         $_SESSION['MsgStart'] = $dbarray['MsgStart'];
@@ -373,6 +356,12 @@ function user_login($user_id){
             $userJSON .= ",";
             $userJSON .= "\"MsgStart\":".$dbarray['MsgStart'];
             $userJSON .= ",";
+            $userJSON .= "\"PersonalColdMeter\":".$dbarray['PersonalColdMeter'];
+            $userJSON .= ",";
+            $userJSON .= "\"SeasonPref\":".$dbarray['SeasonPref'];
+            $userJSON .= ",";
+            $userJSON .= "\"voteCount\":".$dbarray['VoteCount'];
+            $userJSON .= ",";
             $userJSON .= "\"clss\":".$dbarray['classification'];
             $userJSON .= ",";
 	    $userJSON .= "\"admin\":".$dbarray['admin'];
@@ -382,12 +371,16 @@ function user_login($user_id){
 	    $userJSON .= "}";
 	    $userJSON .= "}";
         if ($locked_value != "true")  {
-             $_SESSION['loggedin'] = "true";
-			 logger( $userJSON." authenticated ");
-			if ($isrememberme)
-			   setcookie("rememberme", $dbarray['user_rememberme'], time()+3600*24*60); // Set the cookie to expire after 60 days
+                        $_SESSION['loggedin'] = "true";
+			logger( $userJSON." authenticated ");
+                        setcookie(PERSONAL_COLD_METER, $dbarray['PersonalColdMeter'], time()+3600*24*360); // Set the cookie to expire after 60 days
+			if ($isrememberme){
+     			   setcookie("rememberme", $dbarray['user_rememberme'], time()+3600*24*60); // Set the cookie to expire after 60 days
+                        }
 		}
 		$_SESSION['isAdmin'] = $dbarray['admin'];
+                $_SESSION['email'] = $email;
+                logger("confirmUserPass: ".$_SESSION['email']." ".$_SESSION['loggedin']." ".$_COOKIE[PERSONAL_COLD_METER]." ".$_COOKIE['rememberme']);
          return $userJSON; //Success! Username and password confirmed
       }
       else{
@@ -430,7 +423,7 @@ function user_login($user_id){
       }
 
       /* Retrieve userid from result, strip slashes */
-      $dbarray = mysqli_fetch_array($result, MYSQLI_ASSOC);
+      $dbarray = mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
       $dbarray['user_login'] = stripslashes($dbarray['user_login']);
       $userid = stripslashes($userid);
 
@@ -460,6 +453,7 @@ function user_login($user_id){
 		$_SESSION['email'] = "";
 		$_SESSION['isAdmin'] = "false";
 		setcookie ("rememberme", "", time() - 3600);
+                setcookie(PERSONAL_COLD_METER, "", time() - 3600);
 		echo 0;
 		
 	}
@@ -493,7 +487,7 @@ else if ($_REQUEST['action']=="getuser"){
 }
 else if ($_REQUEST['action']=="updateprofile"){
     //echo $_POST['priority'];
-    user_wants_to_update_profile($_POST['email'], md5($_POST['password']), $_POST['user_nice_name'], $_POST['user_display_name'], $_POST['user_icon'], $_POST['priority']);
+    user_wants_to_update_profile($_POST['email'], md5($_POST['password']), $_POST['user_nice_name'], $_POST['user_display_name'], $_POST['user_icon'], $_POST['priority'], $_POST['personal_coldmeter']);
     
 }
 else { echo "no action selected";}?>

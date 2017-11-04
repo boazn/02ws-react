@@ -3,14 +3,80 @@ ini_set("display_errors","On");
 include ("include.php");
 include ("lang.php");
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+/**
+ * @param $http2ch          the curl connection
+ * @param $http2_server     the Apple server url
+ * @param $apple_cert       the path to the certificate
+ * @param $app_bundle_id    the app bundle id
+ * @param $message          the payload to send (JSON)
+ * @param $token            the token of the device
+ * @return mixed            the status code
+ */
+function sendHTTP2Push($http2ch, $http2_server, $apple_cert, $app_bundle_id, $message, $token) {
+ 
+    // url (endpoint)
+    $url = "{$http2_server}/3/device/{$token}";
+ 
+    // certificate
+    $cert = realpath($apple_cert);
+ 
+    // headers
+    $headers = array(
+        "apns-topic: {$app_bundle_id}",
+        "User-Agent: My Sender"
+    );
+ 
+    // other curl options
+    curl_setopt_array($http2ch, array(
+        CURLOPT_URL => $url,
+        CURLOPT_PORT => 443,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_POST => TRUE,
+        CURLOPT_POSTFIELDS => $message,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSLCERT => $cert,
+        CURLOPT_HEADER => 1
+    ));
+ 
+    // go...
+    $result = curl_exec($http2ch);
+    if ($result === FALSE) {
+      throw new Exception("Curl failed: " .  curl_error($http2ch));
+    }
+ 
+    // get response
+    $status = curl_getinfo($http2ch, CURLINFO_HTTP_CODE);
+ 
+    return $status;
+}
+function sendAPN($registrationIDs, $msg, $picture_url, $embedded_url){
+    // open connection 
+    $http2ch = curl_init();
+    curl_setopt($http2ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+
+    // send push
+    $apple_cert = 'apns-prod-1216.pem';
+    $message = '{"aps":{"alert":"{$msg}","sound":"default","badge":"0"}}';
+    $token = 'dbdaeae86abcde56rtyww1859fb41b2cby053ec48987847';
+    $http2_server = 'https://api.push.apple.com';
+    $app_bundle_id = 'il.co.02ws';
+
+    $status = sendHTTP2Push($http2ch, $http2_server, $apple_cert, $app_bundle_id, $message, $token);
+    echo "Response from apple -> {$status}\n";
+
+    // close connection
+    curl_close($http2ch);
+}
 function sendAPNToRegIDs($registrationIDs, $message, $picture_url, $embedded_url){
     logger("sendingAPNMessage : ".count($registrationIDs)." ".$message);
-    $payload['aps'] = array('alert' => $message, 'badge' => 1, 'sound' => 'default','EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
+    $payload['aps'] = array('alert' => $message, 'badge' => 1, 'sound' => 'lighttrainshort.wav','EmbeddedUrl' => $embedded_url, 'category' => "share", 'picture' => $picture_url);
     $payload = json_encode($payload);
 
-    $apnsHost = 'gateway.push.apple.com';
+    $apnsHost = 'gateway.sandbox.push.apple.com'; //'gateway.sandbox.push.apple.com' or 'gateway.push.apple.com'
     $apnsPort = 2195;
-    $apnsCert = 'apns-prod-1216.pem';//old= certPushProd.pem;new=apnsPushProd_1216.pem;apns-prod-1216.pem
+    $apnsCert = 'certPushDev.pem';//certPushDev.pem;apns-prod-1216.pem;apnProdCert171116.pem
     // Keep push alive (waiting for delivery) for 1 hour
     $apple_expiry = time() + (60 * 60);
     $streamContext = stream_context_create();
@@ -23,7 +89,7 @@ function sendAPNToRegIDs($registrationIDs, $message, $picture_url, $embedded_url
             //$apnsMessage = chr(0) . chr(0) . chr(32) . pack('H*', str_replace(' ', '', $regIDs['apn_regid'])) . chr(0) . chr(strlen($payload)) . $payload;
             $apnsMessage = pack("C", 1) . pack("N", $regIDs['id']) . pack("N", $apple_expiry) . pack("n", 32) . pack('H*', str_replace(' ', '', $regIDs['apn_regid'])) . pack("n", strlen($payload)) . $payload; 
 
-            while(!fwrite($apns, $apnsMessage, strlen ($apnsMessage))){
+            if(!fwrite($apns, $apnsMessage, strlen ($apnsMessage))){
                     usleep(400000); //400 msec
                     $resultAPNs .= checkAppleErrorResponse($apns);
                     logger("fwrite failed: ".$regIDs['id']." ".$regIDs['apn_regid']." ".$resultAPNs);
@@ -66,7 +132,7 @@ function cleanInvalidAPNTokens()
     
     $apnsHost = 'feedback.push.apple.com';
     $apnsPort = 2196;
-    $apnsCert = 'certPushProd.pem';
+    $apnsCert = 'apns-prod-1216.pem';//apns-prod-1216.pem//certPushProd.pem
        
     $streamContext = stream_context_create();
     stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
@@ -96,7 +162,7 @@ function cleanInvalidAPNTokens()
 function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip)
 {
   
-
+global $TIP;
 // Report all PHP errors
 error_reporting(-1);
 $registrationIDs0 = array();
@@ -108,7 +174,7 @@ $registrationIDs1 = array();
         $messageBody[0] = $TIP[0].": ".$messageBody[0];
         $messageBody[1] = $TIP[1].": ".$messageBody[1];
     }
-$reg_id = "6d5c6ca8d3d36348ea4c52f6e0813e6713ef9b823a3da66a3714228e67146a10"; //d057506a9d09770900a09fbeb25c9e404829937bc1b3da0d34216f9cc57608e5//6d5c6ca8d3d36348ea4c52f6e0813e6713ef9b823a3da66a3714228e67146a10 
+$reg_id = "263631ff1dccbdcac4aed38f4d0e18a60d5d2b45a2972b80344910865e83b42a"; //d057506a9d09770900a09fbeb25c9e404829937bc1b3da0d34216f9cc57608e5//6d5c6ca8d3d36348ea4c52f6e0813e6713ef9b823a3da66a3714228e67146a10 
 array_push ($registrationIDs1,array('apn_regid' => $reg_id, 'id' => '8025'));
 /*if (($long_range)&&($short_range))
         $result = db_init("select * FROM apn_users where active=1 or active_rain_etc=1", "");
@@ -231,7 +297,7 @@ try{
     else
         $img_tag = " <img src=\"".$picture_url."\" id=\"alert_image\" alt=\"alert image\" />";
     
-    $result = sendAPNMessage($msgSpecial, $title, $picture_url, "alerts.php");   
+    $result = sendAPNMessage($msgSpecial, $title, $picture_url, "alerts.php", "true", "true", "true");   
 	//$result = cleanInvalidAPNTokens();
     logger($result);
     /*if (empty($_POST['title1']))

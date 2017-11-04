@@ -198,7 +198,7 @@ $graph->xaxis->SetColor($SITE['txtcolor']);
 $graph->xaxis->SetLabelFormatCallback('time_callback');
 //$graph->xaxis->scale->SetTimeAlign(HOURADJ_1);
 $graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,7);
-//$graph->xaxis->scale->ticks->Set(60*60, 30*60);
+$graph->xaxis->scale->ticks->Set(60*60, 30*60);
 $graph->xgrid->Show();
 
 //y-axis
@@ -245,9 +245,9 @@ $graph->AddText($txt3);
 
 $knots = $lang_idx == 1 ? utf8_strrev($KNOTS[$lang_idx]) : $KNOTS[$lang_idx];
 $txtaa=new Text($knots);
-$txtaa->SetFont(FF_ARIAL, FS_BOLD,14);
-$txtaa->SetPos(90,$height - 210,'center');
-$txtaa->SetColor("blue");
+$txtaa->SetFont(FF_ARIAL, FS_BOLD,10);
+$txtaa->SetPos(30,$height - 210,'center');
+$txtaa->SetColor("black");
 $graph->AddText($txtaa);
 
 // If Info is on, then display

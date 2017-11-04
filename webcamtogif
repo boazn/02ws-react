@@ -1,0 +1,13 @@
+#!/bin/bash
+convert -delay 6 -annotate +30+250 ' ' -font fixed -colors 256 /home/boazn/public/02ws.com/public/images/webCamera9.jpg  \
+							    /home/boazn/public/02ws.com/public/images/webCamera8.jpg \
+							    /home/boazn/public/02ws.com/public/images/webCamera7.jpg \
+							    /home/boazn/public/02ws.com/public/images/webCamera6.jpg \
+							    /home/boazn/public/02ws.com/public/images/webCamera5.jpg \
+							    /home/boazn/public/02ws.com/public/images/webCamera4.jpg \
+							    /home/boazn/public/02ws.com/public/images/webCamera3.jpg \
+							    /home/boazn/public/02ws.com/public/images/webCamera2.jpg \
+							    /home/boazn/public/02ws.com/public/images/webCamera1.jpg \
+							 -delay 80 /home/boazn/public/02ws.com/public/images/webCamera0.jpg \
+							   /home/boazn/public/02ws.com/public/images/webcam.gif 
+convert /home/boazn/public/02ws.com/public/images/webcam.gif -deconstruct -layers Optimize -loop 0 /home/boazn/public/02ws.com/public/images/latestwebcam.gif

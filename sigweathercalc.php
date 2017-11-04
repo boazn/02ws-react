@@ -159,7 +159,9 @@ if (($hour < 11)&&($dew_over_night))
 	updateSigWeather(
 		"hum.jpg", 
 		$HIGH_DEW_OVER_NIGHT, 
-		array($today->get_highhum()."%"." ".$HUMIDITY[$EN], $today->get_highhum()."%"." ".$HUMIDITY[$HEB]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=2&amp;lang=$lang_idx");
+		array(array($today->get_highhum()."%"." ".$HUMIDITY[$EN],$today->get_highhum()."%"." ".$HUMIDITY[$EN]), 
+                      array($today->get_highhum()."%"." ".$HUMIDITY[$HEB],$today->get_highhum()."%"." ".$HUMIDITY[$HEB])), 
+                "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=2&amp;lang=$lang_idx");
 }
 if (isRaining()||(IS_SNOWING == 1))
 {
@@ -171,7 +173,9 @@ if (isRaining()||(IS_SNOWING == 1))
 	updateSigWeather(
 		"rain1.jpg", 
 		$rainOrSnow, 
-		array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
+		array(array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx]), 
+                      array($DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx])), 
+                "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
     update_action ("RainStarted", $extrainfo, $ALT);
 }
 if (($rainrateHour !== "0.0") && 
@@ -181,7 +185,9 @@ if (($rainrateHour !== "0.0") &&
 	updateSigWeather(
 		"profile1/rain.php?level=1&freq=1&amp;lang={$lang_idx}", 
 		$RAIN_HAS_JUST_STOPPED, 
-		array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
+		array(array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx]), 
+                      array($DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx])), 
+                "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
      //update_action ("RainStopped", $extrainfo, $ALT);
 }
 if (($today->get_highrainrate() !== "0.0") && 
@@ -193,7 +199,9 @@ if (($today->get_highrainrate() !== "0.0") &&
 	updateSigWeather(
 		"profile1/rain.php?level=1&freq=1&amp;lang={$lang_idx}", 
 		$RAIN_HAS_GONE, 
-		array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
+		array(array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx]), 
+                      array($DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx])), 
+                "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
 }
 
 if (($current->get_temp('&#176;c') < 2)&&($current->get_temp() != ""))
@@ -201,40 +209,46 @@ if (($current->get_temp('&#176;c') < 2)&&($current->get_temp() != ""))
 	updateSigWeather(
 		"cold.gif", 
 		$VERY_COLD, 
-		array($TEMP[$EN].": ".$current->get_temp().$current->get_tempunit(), $TEMP[$HEB].": "."<div class=\"low\">".$current->get_temp().$current->get_tempunit()."</div>"), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=2&amp;lang=$lang_idx");
+		array(array($TEMP[$EN].": ".$current->get_temp().$current->get_tempunit(),$TEMP[$EN].": ".$current->get_temp().$current->get_tempunit()), 
+                      array($TEMP[$HEB].": "."<div class=\"low\">".$current->get_temp().$current->get_tempunit()."</div>",$TEMP[$HEB].": "."<div class=\"low\">".$current->get_temp().$current->get_tempunit()."</div>")), 
+                "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=2&amp;lang=$lang_idx");
     update_action ("Cold", 
                    array("<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$EN]\" width=\"150px\" border=\"0\"></div><div class=\"loading float\">&nbsp;$CURRENT_SIG_WEATHER[$EN]&nbsp;<strong>".$ALT[$EN]."</strong><div class=\"loading float big\">&nbsp;{$extrainfo[$EN]}</div></div>", "<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$HEB]\" width=\"150px\" border=\"0\"></div><div class=\"loading float\">&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<strong>".$ALT[$HEB]."</strong><div class=\"loading float big\">&nbsp;{$extrainfo[$HEB]}</div></div>"),
                            $ALT);
 }
-if ($current->get_pm10() > 100 || $current->get_pm25() > 50)
+if ($current->get_pm10() > 130 || $current->get_pm25() > 38)
 {
     updateSigWeather(
 		"dust.gif", 
 		$HIGH_DUST, 
-		array($DUST[$EN].": ".$current->get_pm10()." µg/m3", $DUST[$HEB].": ".$current->get_pm10()." µg/m3"), get_query_edited_url(get_url(), 'section', 'dust.html'));
+		array(array($DUST[$EN].": ".$current->get_pm10()." µg/m3",$DUST[$EN].": ".$current->get_pm10()." µg/m3"), 
+                      array($DUST[$HEB].": ".$current->get_pm10()." µg/m3",$DUST[$HEB].": ".$current->get_pm10()." µg/m3")), 
+                     get_query_edited_url(get_url(), 'section', 'dust.html'));
 }
-if ($current->get_uv() > 8)
+if ($current->get_uv() > 8.3)
 {
 	updateSigWeather("hot.gif" , $HIGH_UV,
-	array($UV[$EN].": ".$current->get_uv(), $UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>"), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=UVHistory.gif&amp;profile=2&amp;lang=$lang_idx");
+	array(array($UV[$EN].": ".$current->get_uv(), $UV[$EN].": ".$current->get_uv()), 
+              array($UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>",$UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>")), 
+               "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=UVHistory.gif&amp;profile=2&amp;lang=$lang_idx");
     update_action ("UV", $extrainfo, $ALT);
 }
 
-if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') < 10)&&($min10->get_windspd() > 3))
+if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') < 10)&&($min10->get_windspd() > 5))
 {
   updateSigWeather(
     "cold.gif", 
     $COLD_SUN, 
-    array("",""), 
+    array(array("",""),array("","")), 
     "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
 
 }
-if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') < 14)&&($current->get_temp('&#176;c') > 10)&&($min10->get_windspd() > 3))
+if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') < 14)&&($current->get_temp('&#176;c') > 10)&&($min10->get_windspd() > 5))
 {
   updateSigWeather(
     "cold.gif", 
     $HALF_COLD_SUN, 
-    array("",""), 
+    array(array("",""),array("","")), 
     "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
 
 }
@@ -243,36 +257,27 @@ if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') > 11)
   updateSigWeather(
     "nowind.jpg", 
     $SUN_SHADE, 
-    array("",""), 
+    array(array("",""),array("","")), 
     "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
 
 }
-if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') > 15)&&($current->get_temp('&#176;c') < 19)&&($min10->get_windspd() < 4)&&($current->get_hum() > 40))
+if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') > 15)&&($current->get_temp('&#176;c') < 19)&&($min10->get_windspd() < 6)&&($current->get_hum() > 40))
 {
   updateSigWeather(
     "nowind.jpg", 
     $SUN_SHADE, 
-    array("",""), 
+    array(array("",""),array("","")), 
     "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
 
 }
-if ((($current->get_temp('&#176;c') > 12)&&($current->get_temp('&#176;c') < 25)&&($min10->get_windspd() < 1))||
-        (($current->get_temp('&#176;c') > 24)&&($current->get_temp('&#176;c') < 28)&&($min10->get_windspd() > 3)))
+if ((($current->get_temp('&#176;c') > 12)&&($current->get_temp('&#176;c') < 25)&&($min10->get_windspd() < 2))||
+        (($current->get_temp('&#176;c') > 24)&&($current->get_temp('&#176;c') < 28)&&($min10->get_windspd() > 4)))
 {
   updateSigWeather(
     "nowind.jpg", 
     $GOOD_TIME, 
-    array("",""), 
+    array(array("",""),array("","")), 
     "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
-
-}
-if (($current->get_hum() < 40)&&($min10->get_windspd() > 3)&&($current->get_pm10() < 100 && $current->get_pm25() < 50))
-{
-  updateSigWeather(
-    "wind1.jpg", 
-    $GOOD_LAUNDRY, 
-    array("",""), 
-    "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=hum.php&amp;profile=1&amp;lang=$lang_idx");
 
 }
 
@@ -283,19 +288,20 @@ if	((($min15->get_prschange() < -0.3)||
 	if ($min15->get_prschange() < -0.3)
 	{
 		$extrainfoS = array (
-		getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_prschange())." ".$BAR_UNIT[$EN] , getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_prschange())." ".$BAR_UNIT[$HEB]);
+		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_prschange(), true)." ".$BAR_UNIT[$EN] , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_prschange(), false)." ".$BAR_UNIT[$EN]) ,
+                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_prschange(), true)." ".$BAR_UNIT[$HEB],getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_prschange(), false)." ".$BAR_UNIT[$HEB]));
 	}
 	else if ($min30->get_prschange() < -0.5)
 	{
 		$extrainfoS = array (
-		"30 ".$MINTS[$EN].": ".get_param_tag($min30->get_prschange())." ".$BAR_UNIT[$EN] , 
-		"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_prschange())." ".$BAR_UNIT[$HEB]);
+		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_prschange(), true)." ".$BAR_UNIT[$EN] , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_prschange(), false)." ".$BAR_UNIT[$EN] ),
+		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_prschange(), true)." ".$BAR_UNIT[$HEB],"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_prschange(), false)." ".$BAR_UNIT[$HEB]));
 	}
 	else if ($oneHour->get_prschange() < -1)
 	{
 		$extrainfoS = array (
-		$HOUR[$EN].": ".get_param_tag($oneHour->get_prschange())." ".$BAR_UNIT[$EN] , 
-		$HOUR[$HEB].": ".get_param_tag($oneHour->get_prschange())." ".$BAR_UNIT[$HEB]);
+		array($HOUR[$EN].": ".get_param_tag($oneHour->get_prschange(), true)." ".$BAR_UNIT[$EN] , $HOUR[$EN].": ".get_param_tag($oneHour->get_prschange(), false)." ".$BAR_UNIT[$EN] ),
+		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_prschange(), true)." ".$BAR_UNIT[$HEB],$HOUR[$HEB].": ".get_param_tag($oneHour->get_prschange(), false)." ".$BAR_UNIT[$HEB]));
 	}
 	updateSigWeather(
 		"profile1/baro.php?datasource=downld02&amp;lang={$lang_idx}", 
@@ -307,8 +313,8 @@ if	((($min15->get_prschange() < -0.3)||
 if (($current->get_dew() > 16)&&($current->get_tempunit() == '&#176;c'))
 {
     $extrainfoS = array (
-		$DEW[$EN].": ".$current->get_dew() , 
-		$DEW[$HEB].": ".$current->get_dew());
+		array($DEW[$EN].": ".$current->get_dew() , $DEW[$EN].": ".$current->get_dew()) ,
+		array($DEW[$HEB].": ".$current->get_dew(),$DEW[$HEB].": ".$current->get_dew()));
         updateSigWeather(
 		"hum.jpg", 
 		$HIGH_HUMIDITY, 
@@ -318,8 +324,8 @@ if (($current->get_dew() > 16)&&($current->get_tempunit() == '&#176;c'))
 if (($current->get_hum() < 20)&&($current->get_hum() != ""))
 {
 	$extrainfoS = array (
-		$HUMIDITY[$EN].": ".$current->get_hum()."%" , 
-		$HUMIDITY[$HEB].": ".$current->get_hum()."%");
+		array($HUMIDITY[$EN].": ".$current->get_hum()."%" , $HUMIDITY[$EN].": ".$current->get_hum()."%") ,
+		array($HUMIDITY[$HEB].": ".$current->get_hum()."%",$HUMIDITY[$HEB].": ".$current->get_hum()."%"));
    updateSigWeather(
 		"dry_ground_1.jpg", 
 		$VERY_DRY, 
@@ -334,19 +340,20 @@ if ((($min15->get_prschange() > 0.2)||
 	if ($min15->get_prschange()  > 0.2)
 	{
 		$extrainfoS = array (
-		getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_prschange())." ".$BAR_UNIT[$EN] , getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_prschange())." ".$BAR_UNIT[$HEB]);
+		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_prschange(), true)." ".$BAR_UNIT[$EN] , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_prschange(), false)." ".$BAR_UNIT[$EN]) ,
+                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_prschange(), true)." ".$BAR_UNIT[$HEB],getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_prschange(), false)." ".$BAR_UNIT[$HEB]));
 	}
 	else if ($min30->get_prschange() > 0.5)
 	{
 		$extrainfoS = array (
-		"30 ".$MINTS[$EN].": ".get_param_tag($min30->get_prschange())." ".$BAR_UNIT[$EN] , 
-		"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_prschange())." ".$BAR_UNIT[$HEB]);
+		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_prschange(), true)." ".$BAR_UNIT[$EN] , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_prschange(), false)." ".$BAR_UNIT[$EN]) , 
+		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_prschange(), true)." ".$BAR_UNIT[$HEB],"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_prschange(), false)." ".$BAR_UNIT[$HEB]));
 	}
 	else if ($oneHour->get_prschange()  > 1)
 	{
 		$extrainfoS = array (
-		$HOUR[$EN].": ".get_param_tag($oneHour->get_prschange())." ".$BAR_UNIT[$EN] , 
-		$HOUR[$HEB].": ".get_param_tag($oneHour->get_prschange())." ".$BAR_UNIT[$HEB]);
+		array($HOUR[$EN].": ".get_param_tag($oneHour->get_prschange(), true)." ".$BAR_UNIT[$EN] , $HOUR[$EN].": ".get_param_tag($oneHour->get_prschange(), false)." ".$BAR_UNIT[$EN]) ,
+		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_prschange(), true)." ".$BAR_UNIT[$HEB],$HOUR[$HEB].": ".get_param_tag($oneHour->get_prschange(), false)." ".$BAR_UNIT[$HEB]));
 	}
 	updateSigWeather(
 		"profile1/baro.php?datasource=downld02&amp;lang={$lang_idx}", 
@@ -363,28 +370,29 @@ if ((($min15->get_tempchange() < -0.8)||
 	if ($min15->get_tempchange() < -0.8)
 	{
 		$extrainfoS = array (
-		getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange()).$current->get_tempunit() , getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange()).$current->get_tempunit());
+		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), true).$current->get_tempunit() , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), false)."°") , 
+                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), true).$current->get_tempunit(),getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), false)."°"));
 		//update_action ("TempDrop", $extrainfo, $ALT);
 	}
 	else if ($min30->get_tempchange() < -1.5)
 	{
 		$extrainfoS = array (
-		"30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange()).$current->get_tempunit() , 
-		"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange()).$current->get_tempunit());
+		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), true).$current->get_tempunit() , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), false)."°") , 
+		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), true).$current->get_tempunit(),"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), false)."°"));
 		//update_action ("TempDrop", $extrainfo, $ALT);
 	}
 	else if ($oneHour->get_tempchange() < -2.5)
 	{
 		$extrainfoS = array (
-		$HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange()).$current->get_tempunit() , 
-		$HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange()).$current->get_tempunit());
+		array($HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), true).$current->get_tempunit() , $HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), false)."°" ),
+		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), true).$current->get_tempunit(), $HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), false)."°"));
 		//update_action ("TempDrop", $extrainfo, $ALT);
 	}
 	else if (($threeHours->get_tempchange() < -4) && ($hour > 7) && ($hour < 15))
 	{
 		$extrainfoS = array (
-		"3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange()).$current->get_tempunit() , 
-		"3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange()).$current->get_tempunit());
+		array("3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), true).$current->get_tempunit() , "3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), false)."°") ,
+		array("3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), true).$current->get_tempunit(),"3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), false)."°"));
 	}
 	updateSigWeather(
 		"profile1/temp.php?datasource=downld02&amp;lang={$lang_idx}", 
@@ -401,27 +409,28 @@ if (((($min15->get_tempchange() > 1) && ($hour > 9) && ($hour < 7))   ||
 	if ($min15->get_tempchange() > 1)
 	{
 		$extrainfoS = array (
-		getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange()).$current->get_tempunit() , getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange()).$current->get_tempunit());
+		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), true).$current->get_tempunit() , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), false)."°") , 
+                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), true).$current->get_tempunit(),getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), false)."°"));
 		
 	}
 	else if ($min30->get_tempchange() > 2)
 	{
 		$extrainfoS = array (
-		"30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange()).$current->get_tempunit() , 
-		"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange()).$current->get_tempunit());
+		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), true).$current->get_tempunit() , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), false)."°") , 
+		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), true).$current->get_tempunit(),"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), false)."°"));
 		
 	}
 	else if ($oneHour->get_tempchange() > 3)
 	{
 		$extrainfoS = array (
-		$HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange()).$current->get_tempunit() , 
-		$HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange()).$current->get_tempunit());
+		array($HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), true).$current->get_tempunit() , $HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), false)."°") , 
+		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), true).$current->get_tempunit(), $HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), false)."°"));
 	}
 	else if (($threeHours->get_tempchange() > 3.5))
 	{
 		$extrainfoS = array (
-		"3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange()).$current->get_tempunit() , 
-		"3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange()).$current->get_tempunit());
+		array("3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), true).$current->get_tempunit() , "3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), false)."°" ),
+		array("3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), true).$current->get_tempunit(), "3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), false)."°"));
 		
 	}
 	updateSigWeather(
@@ -439,25 +448,26 @@ if ((($min15->get_humchange() > 15)||
 	if ($min15->get_humchange() > 15)
 	{
 		$extrainfoS = array (
-		getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_humchange())."%" , getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_humchange())."%");
+		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_humchange(), true)."%" , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_humchange(), false)."%") ,
+                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_humchange(), true)."%", getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_humchange(), false)."%"));
 	}
 	else if ($min30->get_humchange() > 20)
 	{
 		$extrainfoS = array (
-		"30 ".$MINTS[$EN].": ".get_param_tag($min30->get_humchange())."%" , 
-		"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_humchange())."%");
+		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_humchange(), true)."%" , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_humchange(), false)."%") , 
+		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_humchange(), true)."%", "30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_humchange(), false)."%"));
 	}
 	else if ($oneHour->get_humchange() > 25)
 	{
 		$extrainfoS = array (
-		$HOUR[$EN].": ".get_param_tag($oneHour->get_humchange())."%" , 
-		$HOUR[$HEB].": ".get_param_tag($oneHour->get_humchange())."%");
+		array($HOUR[$EN].": ".get_param_tag($oneHour->get_humchange(), true)."%" , $HOUR[$EN].": ".get_param_tag($oneHour->get_humchange(), false)."%") ,
+		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_humchange(), true)."%", $HOUR[$HEB].": ".get_param_tag($oneHour->get_humchange(), false)."%"));
 	}
 	else if ($threeHours->get_humchange() > 30)
 	{
 		$extrainfoS = array (
-		"3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_humchange())."%" , 
-		"3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_humchange())."%");
+		array("3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_humchange(), true)."%" , "3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_humchange(), false)."%" ),
+		array("3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_humchange(), true)."%", "3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_humchange(), false)."%"));
 	}
 	updateSigWeather(
 		"profile1/humwind.php?level=1&amp;freq=2&amp;datasource=downld02", 
@@ -474,25 +484,26 @@ if (((($min15->get_humchange() < -15)&& ($hour > 9) && ($hour < 7))||
 	if ($min15->get_humchange() < -15)
 	{
 		$extrainfoS = array (
-		getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_humchange())."%" , getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_humchange()).$current->get_tempunit());
+		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_humchange(), true)."%" , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_humchange(), false)."%"),
+                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_humchange(), true).$current->get_tempunit(), getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_humchange(), false)."°"));
 	}
 	else if ($min30->get_humchange() < -20)
 	{
 		$extrainfoS = array (
-		"30 ".$MINTS[$EN].": ".get_param_tag($min30->get_humchange())."%" , 
-		"30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_humchange())."%");
+		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_humchange(), true)."%" , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_humchange(), false)."%" ),
+		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_humchange(), true)."%", "30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_humchange(), false)."%"));
 	}
 	else if ($oneHour->get_humchange() < -25)
 	{
 		$extrainfoS = array (
-		$HOUR[$EN].": ".get_param_tag($oneHour->get_humchange())."%" , 
-		$HOUR[$HEB].": ".get_param_tag($oneHour->get_humchange())."%");
+		array($HOUR[$EN].": ".get_param_tag($oneHour->get_humchange(), true)."%" , $HOUR[$EN].": ".get_param_tag($oneHour->get_humchange(), false)."%" ),
+		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_humchange(), true)."%", $HOUR[$HEB].": ".get_param_tag($oneHour->get_humchange(), false)."%"));
 	}
 	else if (($threeHours->get_humchange() < -30) && ($hour > 15) && ($hour < 7))
 	{
 		$extrainfoS = array (
-		"3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_humchange())."%" , 
-		"3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_humchange())."%");
+		array("3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_humchange(), true)."%" , "3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_humchange(), false)."%") ,
+		array("3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_humchange(), true)."%", "3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_humchange(), false)."%"));
 	}
 	updateSigWeather(
 		"profile1/humwind.php?level=1&amp;freq=2&amp;datasource=downld02", 
@@ -503,20 +514,22 @@ if (((($min15->get_humchange() < -15)&& ($hour > 9) && ($hour < 7))||
 }
 //logger("get_temp: ".$current->get_temp('&#176;c'));
 if ((($current->get_temp('&#176;c') > 27)&&
-		  ($hightemp_diffFromAv >= 5))||
+		  ($hightemp_diffFromAv >= 5)&&
+                  ($current->get_hum() <= 30))||
 		  ((!$current->is_light())&&
 		   ($lowtemp_diffFromAv >= 5)&&
-		   ($today->get_lowtemp('&#176;c') > 19)))
+		   ($today->get_lowtemp('&#176;c') > 19)&&
+                  ($current->get_hum() <= 30)))
 {
 	$isHeatWave = true;
 	if ($hour > 6)
 	$extrainfoS = array (
-		$TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit() , 
-		$TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit());
+		array($TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit() , $TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit()) ,
+		array($TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit(), $TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit()));
 	else
 	$extrainfoS = array (
-		$TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit() , 
-		$TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit());
+		array($TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit() , $TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit()) ,
+		array($TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit(), $TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit()));
 	updateSigWeather(
 		"heat.jpg", 
 		$VERY_HOT_HEAT_WAVE, 
@@ -524,6 +537,40 @@ if ((($current->get_temp('&#176;c') > 27)&&
 		"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=3&amp;lang=$lang_idx");
 	//update_action ("HeatWave", $extrainfo, $ALT);
 }
+
+if (((($min15->get_windspdchange() > 5))||
+	 ($min30->get_windspdchange()  > 5)||
+	 ($oneHour->get_windspdchange() > 5))&& (notnull()))
+{
+	if ($min15->get_windspdchange() > 5)
+	{
+		$extrainfoS = array (
+		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_windspdchange(), true)." ".$KNOTS[$lang_idx] , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_windspdchange(), false)." ".$KNOTS[$lang_idx]),
+                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_windspdchange(), true).$current->get_windspdchange(), getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_windspdchange(), false)." ".$KNOTS[$lang_idx]));
+	}
+	else if ($min30->get_windspdchange() > 5)
+	{
+		$extrainfoS = array (
+		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_windspdchange(), true)." ".$KNOTS[$lang_idx] , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_windspdchange(), false)." ".$KNOTS[$lang_idx] ),
+		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_windspdchange(), true)." ".$KNOTS[$lang_idx], "30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_windspdchange(), false)." ".$KNOTS[$lang_idx]));
+	}
+	else if ($oneHour->get_windspdchange() > 5)
+	{
+		$extrainfoS = array (
+		array($HOUR[$EN].": ".get_param_tag($oneHour->get_windspdchange(), true)." ".$KNOTS[$lang_idx] , $HOUR[$EN].": ".get_param_tag($oneHour->get_windspdchange(), false)." ".$KNOTS[$lang_idx] ),
+		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_windspdchange(), true)." ".$KNOTS[$lang_idx], $HOUR[$HEB].": ".get_param_tag($oneHour->get_windspdchange(), false)." ".$KNOTS[$lang_idx]));
+	}
+	
+	updateSigWeather(
+		"profile1/wind.php?level=1&amp;freq=2&amp;datasource=downld02", 
+		$DRASTIC_WIND_RISE, 
+		$extrainfoS, 
+		"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=wind.php&amp;profile=1&amp;lang=$lang_idx");
+	//update_action ("WindRise", $extrainfo, $ALT);
+}
+
+
+
 
 if (stristr($current->get_winddir(), 'W')
 		&& !stristr($min15->get_winddir(), 'W') && (strlen($min15->get_winddir()) > 0)
@@ -536,8 +583,10 @@ if (stristr($current->get_winddir(), 'W')
 		"profile1/winddir.php?lang={$lang_idx}", 
 		$WIND_SHIFT, 
 		 array (
-		"<div class=\"float\" >"."60 ".$MINTS[$EN].":</div> <div class=\"float winddir ".$oneHour->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>", 
-		"<div class=\"float\" >"."60 ".$MINTS[$HEB].":</div> <div class=\"float winddir ".$oneHour->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>"), 
+		array("<div class=\"float\" >"."60 ".$MINTS[$EN].":</div> <div class=\"float winddir ".$oneHour->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>",
+                "60 ".$MINTS[$EN].":".$oneHour->get_winddir()."->".$current->get_winddir()), 
+		array("<div class=\"float\" >"."60 ".$MINTS[$HEB].":</div> <div class=\"float winddir ".$oneHour->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>",
+                "60 ".$MINTS[$HEB].":".$oneHour->get_winddir()."->".$current->get_winddir())), 
 		 "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=winddir.php&amp;profile=1&amp;lang=$lang_idx");
 	//update_action ("WindShift", $extrainfo, $ALT);
 }
@@ -551,8 +600,10 @@ else if (stristr($current->get_winddir(), 'W')
 		"profile1/winddir.php?lang={$lang_idx}", 
 		$WIND_SHIFT, 
 		 array (
-		"<div class=\"float\" >"."30 ".$MINTS[$EN].":</div> <div class=\"float winddir ".$min30->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>", 
-		"<div class=\"float\" >"."30 ".$MINTS[$HEB].":</div> <div class=\"float winddir ".$min30->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>"), 
+		array("<div class=\"float\" >"."30 ".$MINTS[$EN].":</div> <div class=\"float winddir ".$min30->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>",
+                     "30 ".$MINTS[$EN].":".$min30->get_winddir()."->".$current->get_winddir()),
+		array("<div class=\"float\" >"."30 ".$MINTS[$HEB].":</div> <div class=\"float winddir ".$min30->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>",
+                     "30 ".$MINTS[$HEB].":".$min30->get_winddir()."->".$current->get_winddir())), 
 		 "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=winddir.php&amp;profile=1&amp;lang=$lang_idx");
 	//update_action ("WindShift", $extrainfo, $ALT);
 }
@@ -565,8 +616,10 @@ else if (stristr($current->get_winddir(), 'W')
 		"profile1/winddir.php?lang={$lang_idx}", 
 		$WIND_SHIFT, 
 		 array (
-		"<div class=\"float\" >".INTERVAL." ".$MINTS[$EN].":</div> <div class=\"float winddir ".$min15->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>", 
-		"<div class=\"float\" >".INTERVAL." ".$MINTS[$HEB].":</div> <div class=\"float winddir ".$min15->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>"), 
+		array("<div class=\"float\" >".INTERVAL." ".$MINTS[$EN].":</div> <div class=\"float winddir ".$min15->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>", 
+                     INTERVAL." ".$MINTS[$EN].":".$min15->get_winddir()."->".$current->get_winddir()), 
+		array("<div class=\"float\" >".INTERVAL." ".$MINTS[$HEB].":</div> <div class=\"float winddir ".$min15->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>",
+                     INTERVAL." ".$MINTS[$HEB].":".$min15->get_winddir()."->".$current->get_winddir())), 
 		 "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=winddir.php&amp;profile=1&amp;lang=$lang_idx");
 	//update_action ("WindShift", $extrainfo, $ALT);
 }
@@ -576,8 +629,10 @@ if ($yestsametime->get_tempchange() > 3)
 		"profile2/temp.php?lang={$lang_idx}", 
 		$DRASTIC_TEMP_RISE, 
 		 array (
-		"24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_tempchange()).$current->get_tempunit() , 
-		"24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_tempchange()).$current->get_tempunit()), 
+		array("24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_tempchange(), true).$current->get_tempunit() , 
+                     "24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_tempchange(), false)."°") , 
+		array("24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_tempchange(), true).$current->get_tempunit(),
+                     "24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_tempchange(), false)."°")), 
 		 "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=2&amp;lang=$lang_idx");
 	//update_action ("TempRise", $extrainfo, $ALT);
 }
@@ -587,8 +642,10 @@ if (($yestsametime->get_tempchange() < -4)&&($yestsametime->get_tempchange() != 
 		"profile2/temp.php?lang={$lang_idx}", 
 		$DRASTIC_TEMP_DROP, 
 		 array (
-		"24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_tempchange()).$current->get_tempunit() ,
-		"24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_tempchange()).$current->get_tempunit()), 
+		array("24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_tempchange(), true).$current->get_tempunit() ,
+                     "24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_tempchange(), false)."°") ,
+		array("24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_tempchange(), true).$current->get_tempunit(),
+                     "24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_tempchange(), false)."°")), 
 		 "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=2&amp;lang=$lang_idx");
 	//update_action ("TempDrop", $extrainfo, $ALT);
 }
@@ -598,8 +655,10 @@ if ($yestsametime->get_humchange() >= 30)
 	"profile2/humwind.php?level=1&amp;freq=2&amp;datasource=downld02", 
 	$DRASTIC_HUM_RISE, 
 	 array (
-	"24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_humchange())."%" ,
-	"24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_humchange())."%"), 
+	array("24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_humchange(), true)."%" ,
+             "24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_humchange(), false)."%") ,
+	array("24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_humchange(), true)."%",
+             "24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_humchange(), false)."%")), 
 	 "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=2&amp;lang=$lang_idx");
 	//update_action ("HumRise", $extrainfo, $ALT);
 }
@@ -609,12 +668,14 @@ if (($yestsametime->get_humchange() <= -30)&&($yestsametime->get_humchange() != 
 	"profile2/humwind.php?level=1&amp;freq=2&amp;datasource=downld02", 
 	$DRASTIC_HUM_DROP, 
 	 array (
-	"24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_humchange())."%" ,
-	"24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_humchange())."%"), 
+	array("24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_humchange(), true)."%" ,
+             "24 ".$HOURS[$EN].": ".get_param_tag($yestsametime->get_humchange(), false)."%" ),
+	array("24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_humchange(), true)."%",
+             "24 ".$HOURS[$HEB].": ".get_param_tag($yestsametime->get_humchange(), false)."%")), 
 	 "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=2&amp;lang=$lang_idx");
 	//update_action ("HumDrop", $extrainfo, $ALT);
 }
-if (($current->get_windspd() > 7)&&($min10->get_windspd() > 7)){
+if (($current->get_windspd() > 16)&&($min10->get_windspd() > 16)){
     
 	$extrainfoS = array ($current->get_windspd()." ".$KNOTS[$EN], $current->get_windspd()." ".$KNOTS[$HEB]);
 	updateSigWeather(
@@ -634,14 +695,16 @@ else if (($current->get_windspd() == 0)&&($min10->get_windspd() == 0))
 		//if ($hour > 6)
 		//	update_action ("NoWind", $extrainfo, $ALT);
 }
-if ($today->get_et() > 5.6)
+if ($today->get_et() > 7)
 {
    updateSigWeather(
 	"dry.gif", 
 	array ($HIGH_ET[$EN], $HIGH_ET[$HEB]), 
 	 array (
-			$ET[$EN]." ".$TILL_NOW[$EN]." ".$today->get_et()." mm", 
-			$ET[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_et()."מ'מ"), 
+			array($ET[$EN]." ".$TILL_NOW[$EN]." ".$today->get_et()." mm", 
+                        $ET[$EN]." ".$TILL_NOW[$EN]." ".$today->get_et()." mm"), 
+			array($ET[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_et()." מ'מ",
+                        $ET[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_et()." מ'מ")), 
 	"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=ETHistory.gif&amp;profile=1&amp;lang=$lang_idx"); 
         update_action ("HighET", $extrainfo, $ALT);
 }
@@ -651,8 +714,10 @@ if ($hour > 16 && $today->get_sunshinehours() < 2 && $today->get_sunshinehours()
 	"cold.gif", 
 	array ($LOW_RAD[$EN], $LOW_RAD[$HEB]), 
 	 array (
-			$SUNSHINEHOURS[$EN]." ".$TILL_NOW[$EN]." ".$today->get_sunshinehours(), 
-			$SUNSHINEHOURS[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_sunshinehours()), 
+			array($SUNSHINEHOURS[$EN]." ".$TILL_NOW[$EN]." ".$today->get_sunshinehours(), 
+                        $SUNSHINEHOURS[$EN]." ".$TILL_NOW[$EN]." ".$today->get_sunshinehours()),
+			array($SUNSHINEHOURS[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_sunshinehours(),
+                        $SUNSHINEHOURS[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_sunshinehours())), 
 	"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rad.php&amp;profile=1&amp;lang=$lang_idx"); 
         update_action ("LowRad", $extrainfo, $ALT);
 }
@@ -666,8 +731,10 @@ if (($lowtemp_diffFromAv > 2)
 	"hot.gif", 
 	array ($WARMER_THAN_AVERAGE[$EN]." ".$TODAY[$EN], $WARMER_THAN_AVERAGE[$HEB]." ".$TODAY[$HEB]), 
 	 array (
-			$TILL_NOW[$EN]." ".$MAX[$EN]." ".$today->get_hightemp().$current->get_tempunit(), 
-			$TILL_NOW[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp().$current->get_tempunit()), 
+			array($TILL_NOW[$EN]." ".$MAX[$EN]." ".$today->get_hightemp().$current->get_tempunit(), 
+                        $TILL_NOW[$EN]." ".$MAX[$EN]." ".$today->get_hightemp().$current->get_tempunit()), 
+			array($TILL_NOW[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp().$current->get_tempunit(),
+                        $TILL_NOW[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp().$current->get_tempunit())), 
 	"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=2&amp;lang=$lang_idx");
 		//update_action ("Warmer", $extrainfo, $ALT);
 }
@@ -687,11 +754,15 @@ if (true)
 	($dep >= 0 ? "hot.gif" : "cold.jpg"), 
 	array($warmcold[$EN], $warmcold[$HEB]), 
 	($dep >= 0 ? (abs($dep) > 0 ?
-			array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"high\">".abs($dep).$current->get_tempunit()."</span>",
-			$monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"high\">".abs($dep).$current->get_tempunit()."</span>") : array("", ""))
+			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"high\">".abs($dep).$current->get_tempunit()."</span>",
+                                $monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." ".abs($dep).$current->get_tempunit()),
+			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"high\">".abs($dep).$current->get_tempunit()."</span>",
+                            $monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]." ".abs($dep).$current->get_tempunit())) : array("", ""))
 			: 
-			array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"low\">".abs($dep).$current->get_tempunit()."</span>",
-			$monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"low\">".abs($dep).$current->get_tempunit()."</span>")), 
+			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"low\">".abs($dep).$current->get_tempunit()."</span>",
+                            $monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." ".abs($dep).$current->get_tempunit()),
+			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"low\">".abs($dep).$current->get_tempunit()."</span>",
+                            $monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]." ".abs($dep).$current->get_tempunit()))), 
 	get_query_edited_url($url_cur, 'section', FILE_THIS_MONTH));
 }
 //update_action ("Warmer", $extrainfo, $ALT);
