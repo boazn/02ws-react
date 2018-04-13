@@ -18,9 +18,21 @@ function get_user_from_email($email){
     $_SESSION['isAdmin'] = $line['admin'];
     return $line;
 }
-
+function getAdFreeSection() {
+    if (($_GET['reg_id'] != "")&&($_GET['reg_id'] != "null")) {
+        if (!empty($_SESSION['email']))
+            logger ($_GET['qs']." reg_id=".$_GET['reg_id']." email:".$_SESSION['email']);
+        $_REQUEST['action']="getsubfromregid";
+        $_REQUEST["reg_id"] = $_GET['reg_id'];
+        include 'subscription_reciever.php';
+        return $res_sub;
+    }
+	else
+		return "\"\":\"\"";
+}
 function get_user(){
     global $user_locked, $session, $cookie;
+    
     //logger($_SESSION['email']." ".$_COOKIE['rememberme']);
     $userJSON = "{\"user\":";
      if (!empty($_SESSION['email']) && is_valid_email($_SESSION['email'])) {
@@ -101,6 +113,8 @@ function get_user(){
             
             //logger("get_user: ".$_SESSION['email']." ".$_SESSION['loggedin']." ".$_COOKIE[PERSONAL_COLD_METER]." ".$_COOKIE['rememberme']);
     }
+    $userJSON .= ",";
+    $userJSON .= getAdFreeSection();
     $userJSON .= "}";
     $userJSON .= "}";
     echo $userJSON;

@@ -45,7 +45,7 @@ function sendAPNToRegIDs($registrationIDs, $message, $picture_url, $embedded_url
 
     $apnsHost = 'gateway.push.apple.com';
     $apnsPort = 2195;
-    $apnsCert = 'CertPushProd291116.pem';//old= certPushProd.pem;new=apns-prod-1216.pem
+    $apnsCert = 'ApplePushProd1217.pem';//old=CertPushProd291116.pem 
     // Keep push alive (waiting for delivery) for 1 hour
     $apple_expiry = time() + (60 * 60);
     $streamContext = stream_context_create();
@@ -101,7 +101,7 @@ function cleanInvalidAPNTokens()
     
     $apnsHost = 'feedback.push.apple.com';
     $apnsPort = 2196;
-    $apnsCert = 'CertPushProd.pem';
+    $apnsCert = 'ApplePushProd1217.pem';
        
     $streamContext = stream_context_create();
     stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
@@ -244,7 +244,7 @@ if ($apple_error_response) {
 }
 function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip, $CloudMessageType)
 {
-    global $TIP;
+    global $TIP, $REPLY_ENGAGE;
     $key = "";
     $registrationIDs0 = array();
     $registrationIDs1 = array();
@@ -257,8 +257,8 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         $messageBody[0] = $TIP[0].": ".$messageBody[0];
         $messageBody[1] = $TIP[1].": ".$messageBody[1];
     }
-    $messageBody[0] = date('H:i')." ".$messageBody[0];
-    $messageBody[1] = date('H:i')." ".$messageBody[1];
+    $messageBody[0] = date('H:i')." ".$messageBody[0]." \n\n".$REPLY_ENGAGE[0];
+    $messageBody[1] = date('H:i')." ".$messageBody[1]." \n\n".$REPLY_ENGAGE[1];
     if ($CloudMessageType == CloudMessageType::Fcm)
     {
         $key = FCM_API_KEY;
@@ -356,8 +356,8 @@ function handleInvalidTokens($jsonArray, $registration_ids, $header_key){
      foreach ($errorMessage as $err){
          //print_r($regIDs);
          $query = "update gcm_users set ResponseCode='5', ResponseMessage=".$err['desc']." where gcm_regid='".$err['id']."'";
-         $resultUpdate = mysqli_query($link, $query);
-         logger($err['idx'].". ".$query);
+         //$resultUpdate = mysqli_query($link, $query);
+         //logger($err['idx'].". ".$query);
      }
 }
 function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_url, $embedded_url){

@@ -60,12 +60,13 @@
 #   Reference: Cumulus Format of realtime.txt file
 ############################################################################
 $DATA   = array();
-	require_once("GraphSettings.php");
+$width = $_GET['w'];
+require_once("GraphSettingsLatestArchive.php");
 global  $SITE;
 ############################################################################
-$SITE['hrs']            = 24;       # Adjustable via level
-$SITE['tick']           = 4;        # Adjustable via level
-$SITE['freq']           = 2;        # Adjustable via freq
+
+
+
 ############################################################################
 # Check for passed variables
 ############################################################################
@@ -77,12 +78,14 @@ check_sourceview(); # Checks to see if Source View Was passed to the script
 check_dataview();   # Checks to see if Data View Was passed to the script
 set_tz( $SITE['tz'] );
 ############################################################################
-
+$SITE['hrs']            = 1240;       # Adjustable via level
+$SITE['tick']           = 1;        # Adjustable via level
+$SITE['freq']           = 1;        # Adjustable via freq
 // Load Contents of Realtime.log file
 
 debug_out("obtaining data from: " . $SITE['hloc'] . $SITE['datafile']);
 
-$rawdata = array_reverse( file($SITE['hloc'] . $SITE['datafile']));
+
 
 debug_out("Obtained " . count($rawdata));
 debug_out("Want to obtain " . $SITE['hrs']);
@@ -98,45 +101,43 @@ $maxval = 0;
 debug_out("Starting Array Sweep");
 
 foreach($rawdata as $key) {
-    if ($got < $wanted) {
+    $got++;
+    if ($got <= $wanted ) {
     	
-    	$DATA = preg_split('/  +/', $key);
-		if (count($DATA) == 1)
-			$DATA = preg_split('/ +/', $key);
-		//debug_out(ret_value("date"));
-		$timeA = explode(':',ret_value("time"));
+    	$DATA = $key;
 		
-        if (freq_check($timeA[1])) {
+            $current_date = ret_value("date");
             debug_out("Storing data");
-            debug_out("Xaxis = " . $timeA[0].":".$timeA[1]);
-            debug_out("Y1axis = " . ret_value("rfall") );
-            debug_out("Y2axis = " . ret_value("rmonth") );
-            debug_out("count = ".count($DATA));
-			debug_out("data[0] = '".$DATA[0]."'");
-			debug_out("data[1] = ".$DATA[1]);
-			$dateArray = explode('-',$DATA[0]);
-			$dateday = $dateArray[2];
-			$datemon = $dateArray[1];
-			$dateyear =  $dateArray[0];
-			debug_out("day = ".$dateday."/".$datemon);
-			$xlabel = $timeA[0];
-			if ($timeA[0] == 0)
-				$xlabel = $dateday."/".$datemon;
-            $rx[] = $xlabel;
-            $ry1[] = ret_value("rfall");
-            $ry2[] = ret_value("rmonth");
+           
+            
+	    $dateRec = $current_date." ".ret_value("time");
+            $datetime = DateTime::createFromFormat ("Y-m-d H:i:s", $dateRec);
+            debug_out("datetime = " . $datetime->format('H:i j/m/y') );
+            debug_out("Xaxis = " . $dateRec);
+            debug_out("Y1axis = " . ret_value("Rain") );
+            debug_out("Y2axis = " . ret_value("RainRate") );
+            $ts = $datetime->getTimestamp();
+            $rx[] = $ts;
+            $ry1[] = ret_value("Rain");
+            $ry2[] = ret_value("RainRate");
  
             $SITE['tempunit'] 	= "&#xb0;" . "C";
             $SITE['pressunit'] 	= "mb";
             $SITE['rainunit'] 	= "mm";
             $SITE['windunit']	= "kts";
             
-            if (ret_value("rfall") > $maxval ) {
-                debug_out("Set MaxVal = " . ret_value("rfall"));
-                $maxval = ret_value("rfall");
+            if (ret_value("Rain") > $maxval ) {
+                debug_out("Set MaxVal = " . ret_value("Rain"));
+                $maxval = ret_value("Rain");
             }
-	        $got++;
+            if ($got == 2){
+           $least_date_title = $datetime->format('H:i j/m/y');
         }
+        if ($got == $wanted){
+            $date_title  = $datetime->format('H:i j/m/y')." - ".$least_date_title;
+        }
+	        
+       
     }
 }
 
@@ -176,16 +177,15 @@ debug_out_pre(0);
 debug_out("Starting Graph Creation");
 
 $graph = new Graph($width,$height,"auto",30);    
-$graph->SetScale("textlin");
+$graph->SetScale("datlin");
 $graph->SetY2Scale("lin");
 $graph->SetMarginColor($SITE['bgncolor']);
 $graph->SetFrame(true,'#CDCABB',4);
 $graph->img->SetMargin(45,45,20,55);
 
 // Create the two linear plot
-$lineplot=new LinePlot($y1);
-$lineplot2=new LinePlot($y2);
-
+$lineplot=new LinePlot($y1, $x);
+$lineplot2=new LinePlot($y2, $x);
 // Add the plot to the graph
 $graph->Add($lineplot);
 $graph->AddY2($lineplot2);
@@ -199,14 +199,15 @@ $graph->title->SetPos(0.003,0.54,"left","top");
 
 //x-axis
 $graph->xaxis->SetColor($SITE['txtcolor']);
-$graph->xaxis->SetTickLabels($x);
+$graph->xaxis->SetLabelFormatCallback('time_callback');
+$graph->xaxis->scale->SetTimeAlign(HOURADJ_1);
 $graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,7);
-$graph->xaxis->SetTextLabelInterval($SITE['tick']/2);
-$graph->xgrid->Show(false);
+$graph->xaxis->scale->ticks->Set(60*60, 30*60);
+$graph->xgrid->Show();
 
 //y-axis
 $graph->yaxis->SetColor($SITE['txtcolor']);
-$graph->yaxis->SetLabelFormat('%01.1f ' . $SITE['rainunit']);
+$graph->yaxis->SetLabelFormat('%01.0f ' . $SITE['rainunit']);
 $graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,6);
 //$graph->yscale->SetAutoMax(20);
 $graph->yscale->SetAutoMin(0);
@@ -216,7 +217,7 @@ $graph->yaxis->HideTicks(true,true);
 //y2-axis
 $graph->y2axis->scale->ticks->Set(20);
 $graph->y2axis->SetColor($SITE['txtcolor']);
-$graph->y2axis->SetLabelFormat('%01.0f ' . $SITE['rainunit']);
+$graph->y2axis->SetLabelFormat('%01.0f ' . 'mm/hr');
 $graph->y2scale->SetAutoMin(0);
 $graph->y2axis->SetFont(FF_VERDANA,FS_NORMAL,6);
 $graph->y2axis->HideTicks(true,true); 
@@ -258,8 +259,8 @@ $lang_idx = $_GET['lang'];
 if ($lang_idx == "")
 	$lang_idx = 1;
 // Place small monthly under right index
-$monthly = $lang_idx == 1 ? utf8_strrev($MONTHLY[$lang_idx]) : $MONTHLY[$lang_idx];
-$txtaa=new Text($chrs . $monthly);
+$rainrate = $lang_idx == 1 ? utf8_strrev($RAINRATE[$lang_idx]) : $RAINRATE[$lang_idx];
+$txtaa=new Text($chrs . $rainrate);
 $txtaa->SetFont(FF_ARIAL, FS_BOLD,10);
 $txtaa->SetPos($width - 66,$height - 275,'center');
 $txtaa->SetColor("lightblue");

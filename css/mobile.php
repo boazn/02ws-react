@@ -51,6 +51,10 @@ margin-bottom:0px;
         z-index:200;
 	<? if (isHeb()) echo "direction:rtl"; ?>
 }
+#latestairq .paramvalue
+{
+top:0px;
+}
 .spacer
 {
 	padding:0 1em 0 1em;
@@ -127,11 +131,13 @@ z-index:2000;
 }
 #nextdays
 {
-        margin-top:0.3em;
+        margin-top:0.6em;
         float:<?echo get_s_align();?>;
         <? if (isHeb()) echo "direction:rtl"; ?>
 }
-
+#section{
+position:relative;float:none;width:auto;top:0;margin:0;
+}
 #coldmeter
 {
           float:<?echo get_s_align();?>
@@ -163,6 +169,9 @@ z-index:2000;
 #updateprofile, #signout, #myvotes
 {
   padding:0.5em;margin:0.5em 0em;cursor:pointer;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>; width: 110px;
+}
+#snowtable{
+width:320px;
 }
 .chatdate
 {
@@ -264,6 +273,12 @@ width:auto
 .pivotpointer{
 clear:both
 }
+.postusername{
+margin: 0 28px 0 8px;
+}
+.chatbodyreply .avatar{
+<?echo get_s_align();?>: 18px;
+}
 #messages_box{
 float:<?echo get_s_align();?>;
 text-align:<?echo get_s_align();?>;
@@ -277,8 +292,11 @@ margin-top:0
 }
 .play {
     position: absolute;
-    top: 180px;
+    top: 170px;
     <?echo get_inv_s_align();?>: 10px;
+}
+.pic_user {
+padding-<?echo get_s_align();?>:1em
 }
 #msgDetails .white_box2{
    clear: both;
@@ -295,8 +313,7 @@ margin-top:0
     margin-bottom:5px;
 }
 #msgDetails .white_box2 div.chataftersepreply{
-    padding-right:15px;
-    padding-left:15px;
+    padding-<?echo get_s_align();?>:25px;
     margin-bottom:5px;
 }
 #chat_links
@@ -353,8 +370,8 @@ width:320px;
 	font-weight:normal;
 }
 #laundryidx{
-    left: 10.2em;
-    top: 8.7em;
+    left: -15px;
+    top: 180px;
  }
  
 #windy
@@ -372,7 +389,7 @@ width:33%;left:9.1em;top:5em
 }
 #laundryidx a.info:hover span.info
 {
-  <?  if (!isHeb()) echo "left:-10em"; else echo "right:3em"; ?>
+  <?  if (!isHeb()) echo "right:-10em"; else echo "left:3em"; ?>
  
 }
 #coldmeter a
@@ -441,7 +458,8 @@ text-align:<?=get_s_align()?>;
 }
 .forcast_title_btns:hover
 {
-	
+    margin-<?=get_s_align()?>:0.4em;
+    padding-<?=get_inv_s_align()?>:10px;
 }
 a.cboxElement {
 text-decoration: underline;
@@ -457,8 +475,8 @@ letter-spacing: 0px;
 }
 #fornextdays_title, #for24h_title, #expand, #now_title
 {
-	margin-<?=get_s_align()?>:0.3em;
-        padding-<?=get_s_align()?>:0.4em;
+	margin-<?=get_s_align()?>:4px;
+        padding-<?=get_s_align()?>:8px;
 	
 }
 #fornextdays_title
@@ -508,7 +526,7 @@ color:#3D718E;
 padding:0.5em;
 position: absolute;
 z-index: 1000;
-top: 1.5em;
+top: 1em;
 width: 160px;
 <?=get_inv_s_align()?>: 0.8em;
 }
@@ -656,11 +674,17 @@ left:450px;
 clear:both
 }
 #cold_btn{
-    margin-left: -95px;
+	width:<? if (!isHeb()) echo "50"; else echo "59"; ?>px;
+	margin-left: 3px;
     <? if (!isHeb()) echo "margin-right:0px"; ?>
 }
 #cold_btn a{
 color:#000;display:block;z-index: 100;
+}
+#season_btn{
+	margin-left: 8px;
+    
+    <? if (!isHeb()) echo "margin-right:0px"; ?>
 }
 #msgDetails img{
     max-width:255px;
@@ -754,6 +778,11 @@ color:#000;display:block;z-index: 100;
     float: <?=get_s_align()?>;
     padding: 0 0.1em;
 }
+.removeadlink{
+padding:1.2em;
+font-weight: bold;
+<? if (isHeb()) echo "direction:rtl"; ?>;
+}
 ul { list-style-type: none;}
 .success {background:#e6efc2;color:#264409;border-color:#c6d880;}
 .error, .alert {background:#fbe3e4;color:#8a1f11;border-color:#fbc2c4;}
@@ -797,7 +826,7 @@ td
 }
 #graphnav.nav li
 {
-    border:0;margin:0 0.1em
+    border:0;margin:0;float:none;padding:0.4em
 }
 #graphmain{
     clear:both;width:100%;float:<?echo get_s_align();?>;margin:0 auto;padding:0
@@ -882,8 +911,12 @@ padding:0.1em 0.5em
     margin-right: 10px;
     margin-top: 2px;
 }
-#latesttemp, #latestrain, #latesthumidity,#latestwind, #latesttemp2  {
-margin:auto
+#aq_btn{
+	margin-right: 24px;
+    margin-top: 2px;
+}
+#latesttemp, #latestrain, #latesthumidity,#latestwind, #latesttemp2, #latestairq, #latestnow  {
+margin:auto;margin-top:-68px
 }
 #valleytemp{
 font-size:0.5em;
@@ -921,16 +954,16 @@ opacity: 0;
 }
 .seker_btns{
 margin: 0 auto;
-margin-bottom: -30px;
+margin-top:-30px;
 width: 100px;
 z-index:1200;
-position:relative;
+position:absolute;
 padding-left: 0px;
 <? if (!isHeb()) echo "direction:ltr"; ?>;
 
 }
 .seker_btns li{
-width:80px;
+width:84px;
 }
 .info_btns li{
 -webkit-user-select: none; 

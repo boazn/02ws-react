@@ -225,13 +225,22 @@ if ($current->get_pm10() > 130 || $current->get_pm25() > 38)
                       array($DUST[$HEB].": ".$current->get_pm10()." µg/m3",$DUST[$HEB].": ".$current->get_pm10()." µg/m3")), 
                      get_query_edited_url(get_url(), 'section', 'dust.html'));
 }
-if ($current->get_uv() > 8.3)
+if ($current->get_uv() > 8)
 {
 	updateSigWeather("hot.gif" , $HIGH_UV,
 	array(array($UV[$EN].": ".$current->get_uv(), $UV[$EN].": ".$current->get_uv()), 
               array($UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>",$UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>")), 
                "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=UVHistory.gif&amp;profile=2&amp;lang=$lang_idx");
     update_action ("UV", $extrainfo, $ALT);
+}
+
+if ($current->get_temp3() > 45)
+{
+	updateSigWeather("hot.gif" , $HOT,
+	array(array($ROAD[$EN]." ".$TEMP[$EN].": ".$current->get_temp3(), $ROAD[$EN]." ".$TEMP[$EN].": ".$current->get_temp3()), 
+              array($TEMP[$HEB]." ".$ROAD[$HEB].": "."<span style=\"direction:ltr\">".$current->get_temp3()."</span>",$TEMP[$HEB]." ".$ROAD[$HEB].": "."<span style=\"direction:ltr\">".$current->get_temp3()."</span>")), 
+               "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp3LatestArchive&amp;profile=2&amp;lang=$lang_idx");
+   // update_action ("TEMP3", $extrainfo, $ALT);
 }
 
 if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') < 10)&&($min10->get_windspd() > 5))
@@ -270,8 +279,9 @@ if (($current->get_solarradiation() > 500)&&($current->get_temp('&#176;c') > 15)
     "".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=1&amp;lang=$lang_idx");
 
 }
-if ((($current->get_temp('&#176;c') > 12)&&($current->get_temp('&#176;c') < 25)&&($min10->get_windspd() < 2))||
-        (($current->get_temp('&#176;c') > 24)&&($current->get_temp('&#176;c') < 28)&&($min10->get_windspd() > 4)))
+if ((($current->get_temp('&#176;c') > 14)&&($current->get_temp('&#176;c') <= 18)&&($min10->get_windspd() == 0))||
+        (($current->get_temp('&#176;c') > 18)&&($current->get_temp('&#176;c') <= 25)&&($min10->get_windspd() < 2))||
+        (($current->get_temp('&#176;c') > 25)&&($current->get_temp('&#176;c') < 28)&&($min10->get_windspd() > 4)))
 {
   updateSigWeather(
     "nowind.jpg", 

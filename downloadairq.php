@@ -51,8 +51,8 @@ $doc = phpQuery::newDocumentHTML(file_get_contents($local_file_path));
 // 8 is the td of PM10
 $efrata =  $doc["#C1WebGrid1 > tr:eq(2) > td:eq(8) > div"]->text();
 $bar_ilan = $doc["#C1WebGrid1 > tr:eq(3) > td:eq(8) > div"]->text();
-$safra =  $doc["#C1WebGrid1 > tr:eq(10) > td:eq(8) > div"]->text();
-$atarot = $doc["#C1WebGrid1 > tr:eq(11) > td:eq(8) > div"]->text();
+$safra =  $doc["#C1WebGrid1 > tr:eq(9) > td:eq(8) > div"]->text();
+$atarot = $doc["#C1WebGrid1 > tr:eq(10) > td:eq(8) > div"]->text();
 $merkazit = $doc["#C1WebGrid1 > tr:eq(12) > td:eq(8) > div"]->text();
 
 
@@ -70,8 +70,8 @@ print_r($stations);
 $efrata =  $doc["#C1WebGrid1 > tr:eq(2) > td:eq(9) > div"]->text();
 $bar_ilan = $doc["#C1WebGrid1 > tr:eq(3) > td:eq(9) > div"]->text();
 $road1 = $doc["#C1WebGrid1 > tr:eq(8) > td:eq(9) > div"]->text();
-$jerusalem16 = $doc["#C1WebGrid1 > tr:eq(12) > td:eq(9) > div"]->text();
-$nayedet_merkazit = $doc["#C1WebGrid1 > tr:eq(13) > td:eq(9) > div"]->text();
+$jerusalem16 = $doc["#C1WebGrid1 > tr:eq(11) > td:eq(9) > div"]->text();
+$nayedet_merkazit = $doc["#C1WebGrid1 > tr:eq(12) > td:eq(9) > div"]->text();
 
 $stations = array(intval($bar_ilan), intval($efrata), intval($nayedet_merkazit), intval($road1), intval($jerusalem16));
 sort($stations);

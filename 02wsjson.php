@@ -16,7 +16,8 @@ if (empty($forecastHour)){
     include_once("forecastlib.php");
     $forecastHour = apc_fetch("forecasthour");
 }
-include_once("lastdaylib.php");
+//include_once("lastdaylib.php");
+include_once("periodicDBTasks.php");
 $output_json_file_path = "/home/boazn/public/02ws.com/public/02wsjson.txt";
 $JSON = "{\"jws\":";
 
@@ -61,6 +62,12 @@ $JSON .= ",";
 $JSON .= "\"solarradiation\":"."\"".$current->get_solarradiation()."\"";
 $JSON .= ",";
 $JSON .= "\"pm10\":"."\"".$current->get_pm10()."\"";
+$JSON .= ",";
+$JSON .= "\"pm25\":"."\"".$current->get_pm25()."\"";
+$JSON .= ",";
+$JSON .= "\"pm10sd\":"."\"".$current->get_pm10sd()."\"";
+$JSON .= ",";
+$JSON .= "\"pm25sd\":"."\"".$current->get_pm25sd()."\"";
 $JSON .= ",";
 $JSON .= "\"cloudiness\":"."\"".$current->get_cloudiness()."\"";
 $JSON .= ",";
@@ -739,12 +746,17 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
     $JSON .= "\"passedts\":"."\"".(time() - filemtime($picname))."\"";
     $JSON .= "}";
 }
-
-if ($photoEntry->getExifTags() != null) {
+try
+{
+if ($photoEntry != null) {
             $dateTakents = ($photoEntry->getExifTags()->getTime()->text)/1000;
              $dateTaken = getLocalTime($dateTakents);
 }
-
+}
+catch (Exception $ex) {
+    logger( "02wsjson exception:".$ex->getMessage());
+}  
+ 
 $JSON .= ",\"LatestPicOfTheDay\":";
     $JSON .= "{";
     $JSON .= "\"picurl\":"."\"".$mediumSizeUrl."\"";

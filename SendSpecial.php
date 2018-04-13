@@ -1,5 +1,9 @@
 
-
+<style>
+    #user_info{
+        top:400px
+    }
+</style>
 <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
 <div id="SendSpecialResult"></div>
 <div class="inv_plain_3" style="margin:0 auto;padding:0.5em;width:300px;text-align:right">
@@ -13,9 +17,11 @@
         title<input id="title1" name="title1" size="18"  value="" style="width:250px;direction:rtl"  /><br />
 	picture url<input id="picture_url" name="picture_url1" size="20"  value="http://www.02ws.co.il/02ws_short.png" style="width:225px;text-align:left"  /><br />
 	external url<input id="embedded_url" name="embedded_url1" size="20"  value="" style="width:225px;text-align:left"  /><br /><br />
-        &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;<input type="checkbox" id="short_range" name="short_range" value="" />short range
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="long_range" name="long_range" value="" />long range
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="tip" name="tip" value="" />tip
+        <div style="text-align: left">
+        <input type="checkbox" id="short_range" name="short_range" value="" style="width:20px"/>short range&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="long_range" name="long_range" value="" style="width:20px"/>long range&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tip" name="tip" value="" style="width:20px"/>tip
+        </div>
 		
 </div>
 

@@ -53,14 +53,17 @@ function changeProfile (inprofile)
         
         function getStormRain()
         {
-            $ary_path = array();    
-            // Array to store parsed data    
-            $ary_parsed_file = array();    
-            // Starting level - Set to 0 to display all levels. Set to 1 or higher    
-            // to skip a level that is common to all the fields.    
-            $int_starting_level = 2; 
-            $ary_parsed_file = getXMLInArray(FILE_XML_FULLDATA2);
-            return $ary_parsed_file['STORMRAIN'];
+            $DailyRain = apcu_fetch(LAST_7DAYS_DAILY_RAIN);
+            $stormrain = 0;
+            foreach ($DailyRain as $key => &$day) 
+            {
+                //echo $day['Date']." ";
+                if ($day['DailyRain'] != 0)
+                    $stormrain = $stormrain + $day['DailyRain'];
+                else
+                    return $stormrain;
+            }
+            return $stormrain;
             
         }
         
@@ -68,6 +71,28 @@ function changeProfile (inprofile)
 
 <?
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+function getLatestDailyRain()
+{
+    global $RAIN_UNIT, $lang_idx;
+    echo "<table style=\"width:100%;text-align: center\">";
+    $result = db_init("call GetLastDaysDailyRain()", "");
+    while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
+        echo "<tr><td>".$line["Date"]."</td><td>".$line["dailyrain"]." ".$RAIN_UNIT[$lang_idx]."</td></tr>";
+        
+    }
+    echo "</table>";
+}
+function GetLatestYearsRainForToday()
+{
+    global $RAIN_UNIT, $lang_idx;
+    echo "<table style=\"width:100%;text-align: center\">";
+    $result = db_init("call GetLatestYearsRainForToday()", "");
+    while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
+        echo "<tr><td>".$line["dateAsToday"]."</td><td>".$line["rain"]." ".$RAIN_UNIT[$lang_idx]."</td></tr>";
+        
+    }
+    echo "</table>";
+}
 function getExp()
 {
 		
@@ -371,13 +396,13 @@ if ((strstr(strtolower($_GET['graph']), 'temp'))||
 	if (isHeb()) echo "dir=\"rtl\"";
 	echo ">";
 	echo "<li".getBorder("temp.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'temp.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$TEMP[$lang_idx].": <span dir=\"ltr\" >".$current->get_temp2()."&#176; (".$VALLEY[$lang_idx].")</span>"."</a></li>";
-	if (($current->get_temp2() <= 10)||($current->get_temp() <= 10))
+	if (($current->get_temp2() <= 12)||($current->get_temp() <= 12))
             echo "  <li".getBorder("tempwchill.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'tempwchill.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$WIND_CHILL[$lang_idx].": <span dir=\"ltr\" >".$current->get_windchill()."&#176;"."</span>"."</a></li>";
 	if (($current->get_temp2() > 23)||($current->get_temp() > 23))
             echo "  <li".getBorder("tempheat.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'tempheat.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$HEAT_IDX[$lang_idx].": <span dir=\"ltr\" >".$current->get_HeatIdx()."&#176;"."</span>"."</a></li>";
 	echo "  <li id=\"thwtab\" ".getBorder("THWHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'THWHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$THW[$lang_idx].": <span dir=\"ltr\" >".$current->get_thw()."&#176;"."</span>"."</a></li>";
         echo "  <li id=\"thswtab\" ".getBorder("THSWHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'THSWHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$THSW[$lang_idx].": <span dir=\"ltr\" >".$current->get_thsw()."&#176;"."</span>"."</a></li>";
-	echo "  <li".getBorder("dewptLatest.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'dewptLatest.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$DEW[$lang_idx].": <span dir=\"ltr\" >".$current->get_dew()."&#176;"."</span>"."</a></li>";
+	echo "  <li".getBorder("dewptLatestArchive.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'dewptLatestArchive.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$DEW[$lang_idx].": <span dir=\"ltr\" >".$current->get_dew()."&#176;"."</span>"."</a></li>";
 	echo "  <li".getBorder("AirDensityHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'AirDensityHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$AIR_DENSITY[$lang_idx]."</a></li>";
 	echo "</ul>";
 }
@@ -396,7 +421,7 @@ else if (strstr(strtolower($_GET['graph']), 'wind')&&(!strstr(strtolower($_GET['
 	if (isHeb()) echo "dir=\"rtl\"";
 	echo ">";
 	echo "<li".getBorder("wind.php")."><a href=".get_query_edited_url(get_url(), 'graph', 'wind.php?level='.($_REQUEST['profile'])).">".$WIND_SPEED[$lang_idx]."</a></li>";
-	echo "<li".getBorder("winddir.php")."><a href=".get_query_edited_url(get_url(), 'graph', 'winddir.php?level='.($_REQUEST['profile'])).">".$WIND_DIR[$lang_idx]."</a></li>";
+	echo "<li".getBorder("WindDirectionHistory.gif")."><a href=".get_query_edited_url(get_url(), 'graph', 'WindDirectionHistory.gif?level='.($_REQUEST['profile'])).">".$WIND_DIR[$lang_idx]."</a></li>";
 	echo "<li".getBorder("HiWindSpeedHistory.gif")."><a href=".get_query_edited_url(get_url(), 'graph', 'HiWindSpeedHistory.gif').">".$WIND_HIGH[$lang_idx]."</a></li>";
 	echo "<li".getBorder("HighWindDirHistory.gif")."><a href=".get_query_edited_url(get_url(), 'graph', 'HighWindDirHistory.gif').">".$WIND_HIGH_DIR[$lang_idx]."</a></li>";
 	echo "<li".getBorder("WindRunHistory.gif")."><a href=".get_query_edited_url(get_url(), 'graph', 'WindRunHistory.gif').">".$WIND_RUN[$lang_idx]."</a></li>";
@@ -495,11 +520,11 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
             ?>
             <div class="float" id="additionalgraphs" style="padding:0 1em">
                     <a href="images/profile<? echo $_REQUEST['profile']."/".$alternategraph;?>" class='colorbox' title="<?=$alternategraphtitle?>">
-                    <img name="alternateGraph" id="alternateGraph" src="./images/profile<? echo $_REQUEST['profile']."/".$alternategraph;?>" width="230" alt="<?=$alternategraphtitle?>" style="padding:0;margin:0"/>
+                    <img name="alternateGraph" id="alternateGraph" src="./images/profile<? echo $_REQUEST['profile']."/".$alternategraph;?>" width="290" alt="<?=$alternategraphtitle?>" style="padding:0;margin:0"/>
                     </a>
                     <div class="small" style="padding:0"><?=$alternategraphtitle?></div>
             </div>
-            <div style="margin:0.5em;width:315px;" class="inv_plain_3 float">
+            <div style="margin:0.5em;width:300px;" class="inv_plain_3 float">
                     <div id="exp" class="float" style="height:auto;padding:0.5em;position:relative;direction:rtl">
                             <? echo getExp();?>
 
@@ -516,7 +541,7 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
 </div>
 
 <div class="float" style="margin:1.8em 0.1em">
-		<div>
+		<div id="adunit2">
 		<!-- small unit 2 -->
             <ins class="adsbygoogle"
                  style="display:inline-block;width:320px;height:50px"
@@ -770,13 +795,14 @@ if (strstr(strtolower($_GET['graph']), 'rain'))
 			<? echo $MAX[$lang_idx]." ".$RAINRATE[$lang_idx]." ".$monthInWord.":<br/ > <strong>".$thisMonth->get_highrainrate()." ".$RAINRATE_UNIT[$lang_idx]; ?></strong>
 		</div>
         <div class="inv_plain_3_zebra">
-                 <? echo $MAX[$lang_idx]." ".$RAINRATE[$lang_idx]." ".$year.":<br/ > <strong>".$thisYear->get_highrainrate()." ".$RAINRATE_UNIT[$lang_idx]; ?></strong>
+                 <? echo $MAX[$lang_idx]." ".$RAINRATE[$lang_idx]." ".$TILL_NOW[$lang_idx].":<br/ > <strong>".$seasonTillNow->get_highrainrate()." ".$RAINRATE_UNIT[$lang_idx]; ?></strong>
         </div>
     <div class="inv_plain_3_zebra" style="float:<?=get_inv_s_align()?>;width:42%">
         <a href="<? echo get_query_edited_url($url_cur, 'section', './reports/NOAAMO.TXT');?>">
 		<? echo $DETAILED_BY_DAY[$lang_idx]; ?>...
 	</a>
         <br />
+        
 	<a href="<? echo get_query_edited_url($url_cur, 'section', 'RainSeasons.php');?>">
 		150 <? echo $RAIN_SEASONS[$lang_idx]; ?>...
 	</a>
@@ -792,13 +818,19 @@ if (strstr(strtolower($_GET['graph']), 'rain'))
                         <? echo $YESTERDAY[$lang_idx].": <strong>".$yest->get_rain()." ".$RAIN_UNIT[$lang_idx]; ?></strong>
                 </div>
                 <div class="inv_plain_3_zebra" align="left">
-                        <? echo $STORM_RAIN[$lang_idx].", ".$UPDATES_INTERVAL[$lang_idx].": <strong>".$storm->get_rain()." ".$RAIN_UNIT[$lang_idx]; ?></strong>
+                        <? echo $STORM_RAIN[$lang_idx].": <strong>".$storm->get_rain()." ".$RAIN_UNIT[$lang_idx]; ?></strong>
                 </div>
                 <div class="inv_plain_3_zebra" align="left">
                         <? echo $MONTHLY_RAIN[$lang_idx].": <strong>".$thisMonth->get_rain()." ".$RAIN_UNIT[$lang_idx]; ?></strong>
                 </div>
                 <div class="inv_plain_3_zebra" align="left">
+                    <? getLatestDailyRain(); ?>
+                </div>
+                <div class="inv_plain_3_zebra" align="left">
                         <? echo $TOTAL_RAIN[$lang_idx].": <strong>".$seasonTillNow->get_rain()." ".$RAIN_UNIT[$lang_idx]; ?></strong>
+                </div>
+                <div class="inv_plain_3_zebra" align="left">
+                <? GetLatestYearsRainForToday(); ?>
                 </div>
         </div>
 

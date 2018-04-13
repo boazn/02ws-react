@@ -21,7 +21,7 @@ if (isset($_POST['SendButton'])) {
 
 		if (!check_email_address($_POST['email']))
 		{
-			echo("<fieldset><div><div class=\"high\">Email is not valid אימייל לא חוקי</div></div></fieldset>");
+			echo("<div><div class=\"text-error alert\">Email is not valid אימייל לא חוקי</div></div>");
 			$emailnotvalid = true;
 			
 		}
@@ -55,7 +55,7 @@ if (isset($_POST['SendButton'])) {
 			$msgSpecial = $msgSpecial."<br /><br />".$_POST['message'];
 			$result = send_Email($msgSpecial, ME, $email, $email, "", array('feedback to 02ws', 'משוב על ירושמיים'));
 		if ($result == ""){
-			echo "<fieldset class=\"topbase slogan afont\" style=\"height:200px\"><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></fieldset>";
+			echo "<div class=\"alert-success\"><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></div>";
 			$sent = true;
 		}
 		else

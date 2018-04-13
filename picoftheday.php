@@ -1,9 +1,4 @@
-<style>
-    .pic_cell
-    {
-        padding:0.5em;margin:1em;height:170px;overflow:hidden;line-height:1.1em
-    }
-</style>
+
 <?
 ini_set("display_errors","On");
 require_once 'picasaproxy.php';
@@ -42,7 +37,7 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
 //$albumFeedrv = array_reverse($albumFeedar);
 //$albumFeedrv = (object)$albumFeedrv;
 //var_dump($albumFeedar);
-for ($i = count($albumFeed) - 2; $i > 0; $i--){
+for ($i = count($albumFeed) - 2; $i > count($albumFeed) - 50; $i--){
                 $contentUrl = "";
                 $thumbnailUrl = "";
                 $photoEntry = $albumFeed[$i];

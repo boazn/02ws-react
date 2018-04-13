@@ -141,14 +141,14 @@ function parallaxScroll(){
 	
 	$('#cover_clouds-1').css('left',(100-(scrolled*2))+'px');
 	$('#cover_clouds-2').css('left',(300-(scrolled*0.8))+'px');
-        $('#weather_movies').css('left',(560-(scrolled*0.8))+'px');
+        /*$('#weather_movies').css('left',(560-(scrolled*0.8))+'px');
         $('#weather_songs').css('left',(470-(scrolled*0.8))+'px');
         $('#snow_poems').css('left',(370-(scrolled*0.8))+'px');
         $('#myths').css('left',(270-(scrolled*0.8))+'px');
 	$('#cover_clouds-3').css('right',(100-(scrolled*0.8))+'px');
         $('#weather_israel').css('right',(290-(scrolled*0.8))+'px');
         $('#weather_hul').css('right',(190-(scrolled*0.8))+'px');
-        $('#likeddislikedforecasts').css('right',(380-(scrolled*0.8))+'px');
+        $('#likeddislikedforecasts').css('right',(380-(scrolled*0.8))+'px');*/
 	$('#cover_clouds-4').css('right',(150-(scrolled*2))+'px');
 	
 }

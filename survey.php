@@ -115,9 +115,9 @@ if (isset($_POST['SendSurveyButton'])&&($_POST['survey']!='not')&&($_POST['surve
                 $temp_to_cold_meter = $itfeels[1];
                 $result = insertNewMessage($_REQUEST['survey_id'], $_POST['survey'], $temp_to_cold_meter, $_POST['comments']);
 		if ($result == "")
-			echo "<div class=\"big success\">... תודה...</div>";
+			echo "<div class=\"alert-success\">... תודה...</div>";
 		else
-			echo "<div class=\"high big\">$result</div>";
+			echo "<div class=\"text-error alert\">$result</div>";
 	
 	
 }
@@ -128,7 +128,7 @@ if (!$msgSent) {
 foreach ($result as $row) {
 	$lines++;
         if ($lines == 1){
-            print "<h1>".get_title($row['name'])."</h1>";
+            print "<h1>".get_title($row['name'])."</h1><br/><br/>";
             print "<h2 style=\"clear:both;direction:".getDirection()."\">".get_name($row['name'])."</h2>";
             print "<div class=\"inv_plain_3 float\" style=\"margin:0em 1em;padding:1.1em\" >";
         }
@@ -158,16 +158,16 @@ print "</div>";
 	
 </div>
     <script type="text/javascript">
-        $(document).ready(function () {
+    /*    $(document).ready(function () {
             $("input[name='survey']").val('not');
-        }
+        });*/
         
     </script>
 <? } 
 if (($msgSent) || (!validEntry()))
 {
-        if (isset($_SESSION['email'])&&($_REQUEST['survey_id']==2)){
-            header("Location: http://www.02ws.co.il/".$_SERVER['SCRIPT_NAME']."?section=myVotes.php&amp;lang=".$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']."\""); /* Redirect browser */
+        if (isset($_SESSION['email'])){
+            header("Location: http://www.02ws.co.il/".$_SERVER['SCRIPT_NAME']."?section=myVotes.php&amp;lang=".$lang_idx."&amp;survey_id=".$_REQUEST['survey_id']."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']."\""); /* Redirect browser */
             exit();
         }   
 	if((isset($_COOKIE['gender']))&&($_COOKIE['gender'] != ""))
@@ -215,7 +215,7 @@ if (($msgSent) || (!validEntry()))
 	
 ?>
 <div class="spacer" style="clear:both">&nbsp;</div>
-<h2><?=$MALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="small">(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
+<h2><?=$MALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span></h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span>
 <a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_m)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_m)?>&total=<?=$total?>&width=320" /><br/>
 </a>
@@ -227,7 +227,7 @@ if (($msgSent) || (!validEntry()))
 	$row_verdict = @mysqli_fetch_array($result, MYSQLI_ASSOC);
 	
 	?>
-<h2><?=$FEMALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="small">(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span></h2>
+<h2><?=$FEMALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> </h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?>>(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span>
 <a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_f)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_f)?>&total=<?=$total?>&width=320" /><br/>
 </a>
@@ -240,7 +240,7 @@ if (($msgSent) || (!validEntry()))
 	
 	?>
 
-<h2><?=$GENERAL[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="small">(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
+<h2><?=$GENERAL[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span> </h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span>
 <a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query)?>&total=<?=$total?>&width=320" /><br/>
 </a>

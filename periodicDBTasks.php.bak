@@ -1,0 +1,76 @@
+<?
+//////////////////////////////////////////////
+// filling cached data - should be run every min
+//////////////////////////////////////////////
+ 
+
+//ini_set("display_errors","On");
+//ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+//getting yestarday extremes 
+function updatePeriodicCachedVars(){
+    global $link;
+    
+	$query = "SELECT Date, Time, TEMP, TEMP2, Hum, Dew, SolarRadiation, uv FROM `archivelatest` WHERE Date = CURDATE() - 1 AND HOUR(`Time`) = HOUR(NOW()) AND MINUTE(`Time`) = MINUTE(NOW())";
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    apc_store('YestTempSameTime', $row["TEMP"]);
+	apc_store('YestTemp2SameTime', $row["TEMP2"]);
+	apc_store('YestHumSameTime', $row["Hum"]);
+	apc_store('YestDewptSameTime', $row["Dew"]);
+	apc_store('YestSolarRadiationSameTime', $row["SolarRadiation"]);
+	apc_store('YestUVSameTime', $row["uv"]);
+	echo "<br/>stored ".$row["TEMP"]." ".$row["TEMP2"].$row["Hum"]." ".$row["Dew"]." ".$row["SolarRadiation"]." "." in YestSameTime";
+
+	
+	$query = "SELECT ROUND(AVG(TEMP2), 1) temp FROM `archivelatest` WHERE `Date` = CURDATE() - 1 and Time BETWEEN '19:00:00' AND '22:00:00'";
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    apc_store('YestNightTemp', $row["temp"]);
+    logger( "<br/>stored ".$row["temp"]." in YestNightTemp");
+
+
+    $query = "SELECT ROUND(MIN(TEMP2), 1) temp FROM `archivelatest` WHERE `Date` = CURDATE() - 1 and Time BETWEEN '05:00:00' AND '08:00:00'";
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    apc_store('YestMorningTemp', $row["temp"]);
+	logger( "<br/>stored ".$row["temp"]." in YestMorningTemp");
+
+	$query = "SELECT ROUND(MAX(TEMP2), 1) temp FROM `archivelatest` WHERE `Date` = CURDATE() - 1 and Time BETWEEN '12:00:00' AND '15:00:00'";
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    apc_store('YestNoonTemp', $row["temp"]);
+	logger( "<br/>stored ".$row["temp"]." in YestNoonTemp");
+
+	$query = "SELECT ROUND(AVG(TEMP2), 1) temp FROM `archivelatest` WHERE `Date` = CURDATE()  and Time BETWEEN '19:00:00' AND '22:00:00'";
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    apc_store('TodayNightTemp', $row["temp"]);
+	logger( "<br/>stored ".$row["temp"]." in TodayNightTemp");
+    
+    $query = "SELECT ROUND(MIN(TEMP2), 1) temp FROM `archivelatest` WHERE `Date` = CURDATE()  and Time BETWEEN '05:00:00' AND '08:00:00'";
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    apc_store('TodayMorningTemp', $row["temp"]);
+	logger( "<br/>stored ".$row["temp"]." in TodayMorningTemp");
+
+	$query = "SELECT ROUND(MAX(TEMP2), 1) temp FROM `archivelatest` WHERE `Date` = CURDATE()  and Time BETWEEN '12:00:00' AND '15:00:00'";
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    apc_store('TodayNoonTemp', $row["temp"]);
+	logger( "<br/>stored ".$row["temp"]." in TodayNoonTemp");
+
+	$query = "SELECT count(*) minutes FROM `archivelatest` WHERE `Date` = CURDATE() and `SolarRadiation` > 220";
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    apc_store('SunshineHours', round($row["minutes"]/60, 1));
+	logger( "<br/>stored ".round($row["minutes"]/60)." in SunshineHours");
+    
+        
+  
+    return true;
+}
+db_init("", "");
+updatePeriodicCachedVars();
+@mysqli_free_result($result);
+mysqli_close($link);
+?>

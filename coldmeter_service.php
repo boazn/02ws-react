@@ -264,7 +264,7 @@ if (($personal_coldmeter == 1)&&($_SESSION['loggedin'] == "true")){
         $is_personal = " style=\"font-style: italic\" ";
 }
 if (empty($is_personal)){
-    if (!apc_fetch($pgender.$temp_from."to".$temp_to)){
+    if (!apcu_fetch($pgender.$temp_from."to".$temp_to)){
        //logger("calling GetColdMeter".$temp_from." ".$temp_to." ".$pgender);
        $query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, '{$pgender}', null);";
        $lastcomments = "call GetLastComments({$temp_from}, {$temp_to});";
@@ -283,9 +283,9 @@ if (empty($is_personal)){
             $commentidx = $commentidx + 1;
         }
        $feeling_verdict = $row_verdict[0]["field_name"];
-       apc_store($pgender.$temp_from."to".$temp_to, $row_verdict[0]["field_name"], 300);
-       apc_store($pgender.$temp_from."to".$temp_to."verdict", $row_verdict, 300);
-       apc_store($temp_from."to".$temp_to."comments", $row_comment, 300);
+       apcu_store($pgender.$temp_from."to".$temp_to, $row_verdict[0]["field_name"], 300);
+       apcu_store($pgender.$temp_from."to".$temp_to."verdict", $row_verdict, 300);
+       apcu_store($temp_from."to".$temp_to."comments", $row_comment, 300);
    }
    else{
        $row_verdict = apc_fetch($pgender.$temp_from."to".$temp_to."verdict");

@@ -112,10 +112,10 @@ array_shift($lastday_array); # remove column header
 $yestday_array = array_filter($lastday_array, 'only_yesterday');
 $today_array = array_filter($lastday_array, 'only_today');
 
-$today->set_lowtemp2(get_min_temp($today_array), $today->get_lowtemp2_time());
-$today->set_temp_morning(get_morning_temp($today_array), null);
-$today->set_temp_day(get_noon_temp($today_array), null);
-$today->set_hightemp2(get_max_temp($today_array), $today->get_hightemp2_time());
+//$today->set_lowtemp2(get_min_temp($today_array), $today->get_lowtemp2_time());
+$today->set_temp_morning(apcu_fetch(TODAY_MORNING_TEMP));
+$today->set_temp_day(apcu_fetch(TODAY_NOON_TEMP));
+//$today->set_hightemp2(get_max_temp($today_array), $today->get_hightemp2_time());
 $today->set_hum_morning(get_morning_hum($today_array), null);
 $today->set_hum_day(get_noon_hum($today_array), null);
 if ((count($yestday_array) == 0))
@@ -124,9 +124,9 @@ if ((count($yestday_array) == 0))
     
     
 }else{
-    $yest->set_temp_morning(get_morning_temp($yestday_array), null);
-    $yest->set_temp_day(get_noon_temp($yestday_array), null);
-    $yest->set_temp_night(get_night_temp($yestday_array), null);
+    $yest->set_temp_morning(apcu_fetch(YEST_MORNING_TEMP));
+    $yest->set_temp_day(apcu_fetch(YEST_NOON_TEMP));
+    $yest->set_temp_night(apcu_fetch(YEST_NIGHT_TEMP));
     $yest->set_hightemp2(get_max_temp($yestday_array), $yest->get_hightemp2_time());
     $yest->set_lowtemp2(get_min_temp($yestday_array), $yest->get_lowtemp2_time());
     $yest->set_hum_morning(get_morning_hum($yestday_array), null);

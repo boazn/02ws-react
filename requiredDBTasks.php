@@ -58,46 +58,13 @@ function updateCachedVars(){
 }
 if ($_GET['debug'] >= 1)
 	echo "<br /><b>getting yestarday extremes</b><br />";
-$string = file_get_contents(JSON_FILE_PATH);
-$json_a = json_decode($string, true);
-$yest->set_temp_morning($json_a['jws']['yest']['morningtemp'], null);
-$yest->set_temp_day($json_a['jws']['yest']['noontemp'], null);
-$yest->set_temp_night($json_a['jws']['yest']['nighttemp'], null);
-$today->set_temp_morning($json_a['jws']['today']['morningtemp'], null);
-$today->set_temp_day($json_a['jws']['today']['noontemp'], null);
-$today->set_hightemp2($json_a['jws']['today']['hightemp'], $today->get_hightemp2_time());
-$today->set_lowtemp2($json_a['jws']['today']['lowtemp'], $today->get_lowtemp2_time());
-if ($day > 1)
-	$tok = getTokFromFile(FILE_THIS_MONTH); 
-else
-	$tok = getTokFromFile(FILE_PREV_MONTH);
 
-if (searchNext ($tok, getMinusDayDay(1))){        
-	$yest->set_hightemp(getNextWord($tok, 2, "hightemp"),getNextWord($tok, 1, "hightemp time"));//high temp        
-        $yest->set_hightemp2($yest->get_hightemp2(), $yest->get_hightemp2_time());
-	$yest->set_lowtemp(getNextWord($tok, 1, "lowtemp"),getNextWord($tok, 1, "lowtemp time"));//low temp        
-        $yest->set_lowtemp2($yest->get_lowtemp2(), $yest->get_lowtemp2_time());
-	//print(getNextWord($tok, 1));//high hum        
-	//print(getNextWord($tok, 1));//low hum        
-	$yest->set_rain (getNextWord($tok, 3,"yest rain"));//yest rain    
-}    
-else{        
-	$yest->set_hightemp(null, null);$yest->set_lowtemp(null, null);$yest->set_rain(null, null);    
-}  
+$yest->set_temp_morning(apcu_fetch(YEST_MORNING_TEMP), null);
+$yest->set_temp_day(apcu_fetch(YEST_NOON_TEMP), null);
+$yest->set_temp_night(apcu_fetch(YEST_NIGHT_TEMP), null);
+$today->set_temp_morning(apcu_fetch(TODAY_MORNING_TEMP), null);
+$today->set_temp_day(apcu_fetch(TODAY_NOON_TEMP), null);
 
-$found = searchNext ($tok, "Rain:");//max rain    
-if (searchNext ($tok, "Rain:"))//rainy days   
-{
-	if ($day > 1)
-	{
-		$thisMonth->set_rainydays(strtok(" \t"));
-	}
-	else
-	{
-		$prevMonth->set_rainydays(strtok(" \t")); 
-		if ($today->get_rain() > 0) $thisMonth->set_rainydays(1); else $thisMonth->set_rainydays(0);
-	}
-}		
 
 // Connecting, selecting database
 if ($_GET["debug"] >= 1)
@@ -105,61 +72,51 @@ if ($_GET["debug"] >= 1)
 
 db_init("", "");
 
-if ($error_db) {
-	 $seasonTillNow->set_raindiffav("MIS"); 
-	 $seasonTillNow->set_rainperc ("MIS"); 
-	 $hightemp_diffFromAv = "MIS"; 
-	 $lowtemp_diffFromAv ="MIS"; 
-	 $highhum_diffFromAv="MIS"; 
-	 $lowhum_diffFromAv="MIS";
-	 $thisMonth->set_raindiffav("MIS");
-	 $thisMonth->set_rainperc("MIS");
-	 $thisMonth->set_rainydaysdiffav("MIS");
-	 $wholeSeason->set_rainperc("MIS");
-	 if ($_GET["debug"] >= 1)
-		echo "<b>MIS.....Finshed</b>";
-	 return;
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 /*
- * scheduled tasks
+ * scheduled tasksa
  *
  */
 // Update Rainy days and mm on day 
-if ($hour == 6) {
-	if ($day == 1)
-	{
-		$prevMonth->set_rain(getPrevMonthRain());
-		$rdays = $prevMonth->get_rainydays();$mm = $prevMonth->get_rain();$month_to_update = getPrevMonth($month);$year_to_update = getPrevMonthYear($month, $year);
-	}
-	else
-	{
-		$rdays = $thisMonth->get_rainydays();$mm = $thisMonth->get_rain();$month_to_update = $month;$year_to_update = $year;
-	}
+$thisMonth->set_rainydays(apcu_fetch(THIS_MONTH_RAINY_DAYS));
+$prevMonth->set_rainydays(apcu_fetch(PREV_MONTH_RAINY_DAYS));
+	try{
+if (($hour == 2)&&($min<10)) {
+    $tok = ($day > 1) ? getTokFromFile(FILE_THIS_MONTH) : getTokFromFile(FILE_PREV_MONTH);
+
+    $found = searchNext ($tok, "Rain:");//max rain 
+    if (searchNext ($tok, "Rain:"))//rainy days   
+    {
+        if ($day == 1)
+        {
+            $rdays = strtok(" \t");
+            apcu_store(PREV_MONTH_RAINY_DAYS, $rdays);
+            $prevMonth->set_rainydays($rdays); 
+            $mrdays = ($today->get_rain() > 0) ? 1 : 0;
+            $thisMonth->set_rainydays($mrdays);
+            apcu_store(THIS_MONTH_RAINY_DAYS, $mrdays);    
+            $prevMonth->set_rain(getPrevMonthRain());
+            $mm = $prevMonth->get_rain();$month_to_update = getPrevMonth($month);$year_to_update = getPrevMonthYear($month, $year);
+        }
+        else
+        {
+            $rdays = strtok(" \t");
+            apcu_store(THIS_MONTH_RAINY_DAYS, $rdays);
+            $thisMonth->set_rainydays($rdays);
+            $mm = $thisMonth->get_rain();$month_to_update = $month;$year_to_update = $year;
+        }
+    }
+
  $query = "UPDATE rainseason SET RainyDays=$rdays, mm=$mm WHERE ((month=$month_to_update) and (Year=$year_to_update))";
  $result = mysqli_query($link, $query); 
   //or print($php_errormsg);
+    }
+    }
+catch (Exception $e){
+    logger("set_rainydays:".$e->getMessage());
 }
-//loaddata once every day
-/*
-if (($hour <= 5)&&($hour >= 1)) {
-$query = "SELECT * From DoOnceCheckList where Action='LoadArchiveData'";
-$result = mysqli_query($link, $query);
-$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-if ($row["Today"] != $datenotime){
-	if ($day == 1)
-		$targetTable = sprintf("ar%04d%02d", $year, getMinusDayMonth(1));
-	else
-		$targetTable = sprintf("ar%04d%02d", $year, $month);
-	$ignoreLines = 3;
-	$sourcefile = FILE_ARCHIVE;
-	$query2 = "LOAD DATA LOCAL INFILE '{$sourcefile}' REPLACE INTO TABLE {$targetTable} FIELDS TERMINATED BY ' ' LINES TERMINATED BY '\r\n' IGNORE {$ignoreLines} LINES";
-	$result = mysqli_query($link, $query2); 
-	$query = "UPDATE DoOnceCheckList SET Today='$datenotime' where Action='LoadArchiveData'";
-	$result = mysqli_query($link, $query);
-}
-}*/
+
 //reset mail/sms every day if 24 hours passed since last sent
 if ($hour == 1) {
   $query = "SELECT * From dooncechecklist where Action='ResetMailSMS'";
@@ -189,7 +146,52 @@ if ($hour == 1) {
        
   //or print($php_errormsg);
 }
-
+    $query = "SELECT Date, Time, ROUND(MAX(TEMP),1) TEMP, ROUND(MAX(TEMP2), 1) TEMP2, ROUND(MAX(Hum)) Hum, Round(MAX(Dew),1) Dew, Round(MAX(TEMP3),1) TEMP3, Round(MAX(SolarRadiation)) SolarRadiation, Round(MAX(uv), 1) uv FROM `archivelatest` WHERE Date = DATE_ADD(CURDATE(), INTERVAL -1 DAY) AND HOUR(`Time`) = HOUR(NOW()) AND (MINUTE(`Time`) = MINUTE(NOW()) or MINUTE(`Time`) = MINUTE(NOW()) - 1 or MINUTE(`Time`) = MINUTE(NOW()) + 1)";
+        $result = mysqli_query($link, $query) ;
+        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        $yestsametime->set_temp( $row["TEMP"]);
+	$yestsametime->set_temp2 ($row["TEMP2"]);
+	$yestsametime->set_hum ($row["Hum"]);
+	$yestsametime->set_dew ($row["Dew"]);
+	$yestsametime->set_solarradiation ($row["SolarRadiation"]);
+	$yestsametime->set_uv($row["uv"]);
+        $yestsametime->set_temp3($row["TEMP3"]);
+        $yestsametime->set_change($current->get_temp2(), 
+                                            $current->get_hum(),
+                                            $current->get_dew(), 
+                                            $current->get_windspd(), 
+                                            $current->get_pressure(),
+                                            $current->get_cloudbase(),
+                                            $current->get_rainrate(),
+                                            $current->get_solarradiation(),
+                                            $current->get_uv(),
+                                            $current->get_temp(),
+                                            $current->get_temp3());
+        if ($_GET["debug"] >= 1)
+            echo "<br />set yestsametime:".$row["TEMP"]." ".$row["TEMP2"]." ".$row["Hum"]." ".$row["Dew"];
+        
+     $query = "SELECT Date, Time, ROUND(MAX(TEMP),1) TEMP, ROUND(MAX(TEMP2), 1) TEMP2, ROUND(MAX(Hum)) Hum, Dew, Round(MAX(TEMP3),1) TEMP3, Round(MAX(SolarRadiation)) SolarRadiation, Round(MAX(uv), 1) uv FROM `archivelatest` WHERE Date = DATE(SUBTIME(NOW(), '03:00:00')) AND HOUR(`Time`) = HOUR(SUBTIME(NOW(), '03:00:00')) AND (MINUTE(`Time`) = MINUTE(NOW()) or MINUTE(`Time`) = MINUTE(NOW()) - 1 or MINUTE(`Time`) = MINUTE(NOW()) + 1)";
+        $result = mysqli_query($link, $query) ;
+        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        $threeHours->set_temp( $row["TEMP"]);
+	$threeHours->set_temp2 ($row["TEMP2"]);
+	$threeHours->set_hum ($row["Hum"]);
+	$threeHours->set_dew ($row["Dew"]);
+	$threeHours->set_solarradiation ($row["SolarRadiation"]);
+	$threeHours->set_uv($row["uv"]);
+        $threeHours->set_change($current->get_temp2(), 
+                                            $current->get_hum(),
+                                            $current->get_dew(), 
+                                            $current->get_windspd(), 
+                                            $current->get_pressure(),
+                                            $current->get_cloudbase(),
+                                            $current->get_rainrate(),
+                                            $current->get_solarradiation(),
+                                            $current->get_uv(),
+                                            $current->get_temp(),
+                                            $current->get_temp3());
+        if ($_GET["debug"] >= 1)
+            echo "<br />set threeHours:".$row["TEMP"]." ".$row["TEMP2"]." ".$row["Hum"]." ".$row["Dew"];
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // reading messages

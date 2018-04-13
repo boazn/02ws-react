@@ -22,7 +22,7 @@ $query = str_replace ( "\'", "'", $query);
 					 if ($lang_idx != 1) $value[]=get_name($row["field_name"]);
 					 else
 						$value[]=utf8_strrev(get_name($row["field_name"]));
-    					$target[]=$row['count( * )']/$total*100;
+    					$target[]=round($row['count( * )']/$total*100);
 			    		$cpt++;
 		}
 				

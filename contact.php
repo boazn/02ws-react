@@ -38,8 +38,13 @@ $ABOUT_ME = array("I have built this site from my own interest in weather and in
 			<td <? if (isHeb()) echo "dir=\"rtl\""; ?> valign="top" style="padding:1em">
 				<img src="images/james.jpg" width="180px" height="120px">
 				<br/>
-				<span><? if ($lang_idx == $HEB) {?> וזה שגורם לניתוקים באתר, אבל הוא חמוד, תודו...<?} else {?> and the one that acount for the dissconections of the site <?}?></span>
-				<br/><br/>
+				<span><? if ($lang_idx == $HEB) {?> וזה שגורם לניתוקים באתר, אבל הוא מת, ...<?} else {?> and the one that acount for the dissconections of the site, but he is dead<?}?></span>
+				<br/>
+                                <img src="images/venice.jpg" width="180px" height="120px">
+				<br/>
+				<span><? if ($lang_idx == $HEB) {?> וכלבת ירושמיים שאחראית לתמונות בשעות מוזרות...<?} else {?> and the one that acount for the pictures taken in odd hours <?}?></span>
+				<br/>
+                                <br/>
 				<a href="spgm-1.3.2/index.php?spgmGal=GivaatCanada&spgmFilters=t" title="pictures תמונות" class="box">
 				<img src="http://www.02ws.co.il/spgm-1.3.2/gal/Old%20Station%20Pics/_thb_RainGauge.JPG" />
 				</a>

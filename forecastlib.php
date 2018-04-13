@@ -622,7 +622,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                 echo "<br/>time of taf:".$timetaf;
             array_push($forecast_title, array("<span>".$GENERALLY[$EN]." "."</span>", "<span>".$GENERALLY[$HEB]." "."</span>"));
             $passedMidnight = false;
-             for ($t=$timetaf + 1; $t <= $timetaf+39 ; $t++)
+             for ($t=$timetaf + 1; $t <= $timetaf+33 ; $t++)
              {
 
                 $h = $t % 24;
@@ -676,6 +676,28 @@ for ($i = 0; $i < count($taf_tokens); $i++)
     if (stristr ($taf_tokens[$i], "SA")) updateForecast(55, $SANDSTORM, "dust.png");
     if (stristr ($taf_tokens[$i], "DU")) updateForecast(50, $DUST, "dust.png");
     if (stristr ($taf_tokens[$i], "TCU")) updateForecast(48, $SEVERE_CLOUDS, "mostlycloudy.png");
+    if (stristr ($taf_tokens[$i], "OVC"))   {
+        $currentPri = 45;
+
+        if ($currentPri != $priority){
+             $last_priority = $currentPri;
+                // need to delete less important PC lines
+                if (($forecast_title[count($forecast_title) - 1] == $FEW_CLOUDS)||
+                        ($forecast_title[count($forecast_title) - 1] == $PARTLY_CLOUDY))
+               {
+                       $removed = array_pop($forecast_title);
+                       if ($_GET["debug"] >= 3)
+                               echo "<br/>need to delete less important PC lines: removed ".$removed."<br/>";
+               }
+               updateForecast(40, array("$CLOUDY[$EN]", "$CLOUDY[$HEB]"), "cloudy.png");
+
+               if ($priority < $currentPri)
+               {
+                       $priority = $currentPri;
+                       $taf_pic = "cloudym2.png";
+               }
+        }
+    }
     if (stristr ($taf_tokens[$i], "BKN"))   {
         $currentPri = 40;
 

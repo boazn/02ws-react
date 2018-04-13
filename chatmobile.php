@@ -57,7 +57,7 @@ function getNextPage($addToPage)
 	<input type="hidden" value="" id="current_forum_filter" />
 	<input type="hidden" value="R" id="current_forum_update_display" />
 	<input type="hidden" value="" id="current_post_idx" />
-        <input type="hidden" id="chosen_user_icon" value=""/>
+        
 	<div  class="small" id="inputFieldsDiv">
 	    <div id="new_post_btn" onclick="openNewPost(<?=$lang_idx?>)">
 				<?=$CREATE_NEW_MSG[$lang_idx]?>

@@ -40,6 +40,7 @@ function checkSpam()
 }
 function insertNewMessage ($name, $icon, $body, $category, $p_alert)
 {
+    logger("insertNewMessage");
     if (empty($_SESSION['loggedin'])||($_SESSION['loggedin']=="false")){
         echo "צריך להתחבר";
         logger("empty loggedin");
@@ -58,7 +59,7 @@ function insertNewMessage ($name, $icon, $body, $category, $p_alert)
         $category = 0;
     $query = "call InsertNewMsg ('$name','$icon', '$body', '$now', $category, '$p_email', '$p_alert')";
     logger($query);
-    $result = db_init($query);
+    $result = db_init($query, "");
     $_SESSION['MsgStart'] = $_SESSION['MsgStart'] + 1;
     // Free resultset 
     @mysqli_free_result($result["result"]);
@@ -80,7 +81,7 @@ function updateMessage ($idx, $body, $isPartialDelete)
         }
         $query = "call UpdateMessage ($idx,'$body', '$now','$p_email')";
         //echo $query;
-        $result = db_init($query);
+        $result = db_init($query, "");
         $_SESSION['MsgCount'] = $_SESSION['MsgCount'] + 1;
         // Free resultset 
         @mysqli_free_result($result);
@@ -192,7 +193,7 @@ function stickUnstickMessage ($idx, $stickValue)
 		$now = date('Y-m-d G:i:s');
 		$query = sprintf("UPDATE chat SET sticky='%d' WHERE (idx=%d)", $stickValue, $idx);
 		//echo $query;
-		$result = db_init($query);
+		$result = db_init($query, "");
 		// Free resultset 
 		@mysqli_free_result($result["result"]);
 		global $link;
@@ -204,7 +205,7 @@ function lockUnlockMessage ($idx, $lockValue)
 		$now = date('Y-m-d G:i:s');
 		$query = sprintf("UPDATE chat SET Locked='%d' WHERE (idx=%d)", $lockValue, $idx);
 		//echo $query;
-		$result = db_init($query);
+		$result = db_init($query, "");
 		
 		// Free resultset 
 		@mysqli_free_result($$result["result"]);

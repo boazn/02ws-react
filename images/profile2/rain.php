@@ -60,12 +60,13 @@
 #   Reference: Cumulus Format of realtime.txt file
 ############################################################################
 $DATA   = array();
-require_once("GraphSettings.php");
+$width = $_GET['w'];
+require_once("GraphSettingsLatestArchive.php");
 global  $SITE;
 ############################################################################
-$SITE['hrs']            = 24;       # Adjustable via level
-$SITE['tick']           = 2;        # Adjustable via level
-$SITE['freq']           = 0;        # Adjustable via freq
+
+
+
 ############################################################################
 # Check for passed variables
 ############################################################################
@@ -77,12 +78,14 @@ check_sourceview(); # Checks to see if Source View Was passed to the script
 check_dataview();   # Checks to see if Data View Was passed to the script
 set_tz( $SITE['tz'] );
 ############################################################################
-
+$SITE['hrs']            = 4440;       # Adjustable via level
+$SITE['tick']           = 1;        # Adjustable via level
+$SITE['freq']           = 1;        # Adjustable via freq
 // Load Contents of Realtime.log file
 
 debug_out("obtaining data from: " . $SITE['hloc'] . $SITE['datafile']);
 
-$rawdata = array_reverse( file($SITE['hloc'] . $SITE['datafile']));
+
 
 debug_out("Obtained " . count($rawdata));
 debug_out("Want to obtain " . $SITE['hrs']);
@@ -98,37 +101,43 @@ $maxval = 0;
 debug_out("Starting Array Sweep");
 
 foreach($rawdata as $key) {
-    if ($got < $wanted) {
+    $got++;
+    if ($got <= $wanted ) {
     	
-    	$DATA = preg_split('/ +/', $key);
-        $timeA = explode(':',ret_value("time"));
-        if (freq_check($timeA[1])) {
+    	$DATA = $key;
+		
+            $current_date = ret_value("date");
             debug_out("Storing data");
-            debug_out("Xaxis = " . timeto12(substr(ret_value("time"),0,2)));
-            debug_out("Y1axis = " . ret_value("rfall") );
-            debug_out("Y2axis = " . ret_value("rmonth") );
+           
             
-            debug_out("data[0] = '".$DATA[0]."'");
-            debug_out("data[1] = ".$DATA[1]);
-            $dateArray = explode('-',$DATA[0]);
-            $dateday = $dateArray[2];
-            $datemon = $dateArray[1];
-            debug_out("day = ".$dateday."/".$datemon);
-            $rx[] = $timeA[0].":".$timeA[1]."\n".$dateday."/".$datemon;
-            $ry1[] = ret_value("rfall");
-            $ry2[] = ret_value("rmonth");
+	    $dateRec = $current_date." ".ret_value("time");
+            $datetime = DateTime::createFromFormat ("Y-m-d H:i:s", $dateRec);
+            debug_out("datetime = " . $datetime->format('H:i j/m/y') );
+            debug_out("Xaxis = " . $dateRec);
+            debug_out("Y1axis = " . ret_value("Rain") );
+            debug_out("Y2axis = " . ret_value("RainRate") );
+            $ts = $datetime->getTimestamp();
+            $rx[] = $ts;
+            $ry1[] = ret_value("Rain");
+            $ry2[] = ret_value("RainRate");
  
-            $SITE['tempunit'] 	= "&#xb0;" . ret_value("tempunit");
-            $SITE['pressunit'] 	= ret_value("pressunit");
-            $SITE['rainunit'] 	= ret_value("rainunit");
-            $SITE['windunit']	= ret_value("windunit");
+            $SITE['tempunit'] 	= "&#xb0;" . "C";
+            $SITE['pressunit'] 	= "mb";
+            $SITE['rainunit'] 	= "mm";
+            $SITE['windunit']	= "kts";
             
-            if (ret_value("rfall") > $maxval ) {
-                debug_out("Set MaxVal = " . ret_value("rfall"));
-                $maxval = ret_value("rfall");
+            if (ret_value("Rain") > $maxval ) {
+                debug_out("Set MaxVal = " . ret_value("Rain"));
+                $maxval = ret_value("Rain");
             }
-	        $got++;
+            if ($got == 2){
+           $least_date_title = $datetime->format('H:i j/m/y');
         }
+        if ($got == $wanted){
+            $date_title  = $datetime->format('H:i j/m/y')." - ".$least_date_title;
+        }
+	        
+       
     }
 }
 
@@ -168,16 +177,15 @@ debug_out_pre(0);
 debug_out("Starting Graph Creation");
 
 $graph = new Graph($width,$height,"auto",30);    
-$graph->SetScale("textlin");
+$graph->SetScale("datlin");
 $graph->SetY2Scale("lin");
 $graph->SetMarginColor($SITE['bgncolor']);
 $graph->SetFrame(true,'#CDCABB',4);
 $graph->img->SetMargin(45,45,20,55);
 
 // Create the two linear plot
-$lineplot=new LinePlot($y1);
-$lineplot2=new LinePlot($y2);
-
+$lineplot=new LinePlot($y1, $x);
+$lineplot2=new LinePlot($y2, $x);
 // Add the plot to the graph
 $graph->Add($lineplot);
 $graph->AddY2($lineplot2);
@@ -191,18 +199,17 @@ $graph->title->SetPos(0.003,0.54,"left","top");
 
 //x-axis
 $graph->xaxis->SetColor($SITE['txtcolor']);
-$graph->xaxis->SetTickLabels($x);
-$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,6);
-$graph->xaxis->SetTextLabelInterval($SITE['tick']);
-$graph->xaxis->HideTicks(true,true); 
-$graph->xaxis->SetPos("min"); 
-$graph->xgrid->Show(true);
+$graph->xaxis->SetLabelFormatCallback('time_callback');
+$graph->xaxis->scale->SetTimeAlign(HOURADJ_1);
+$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,7);
+$graph->xaxis->scale->ticks->Set(60*60, 30*60);
+$graph->xgrid->Show();
 
 //y-axis
 $graph->yaxis->SetColor($SITE['txtcolor']);
 $graph->yaxis->SetLabelFormat('%01.0f ' . $SITE['rainunit']);
 $graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,6);
-//$graph->yscale->SetAutoMax(10);
+//$graph->yscale->SetAutoMax(20);
 $graph->yscale->SetAutoMin(0);
 $graph->yaxis->scale->SetGrace(10);
 $graph->yaxis->HideTicks(true,true); 
@@ -210,11 +217,11 @@ $graph->yaxis->HideTicks(true,true);
 //y2-axis
 $graph->y2axis->scale->ticks->Set(20);
 $graph->y2axis->SetColor($SITE['txtcolor']);
-$graph->y2axis->SetLabelFormat('%01.0f ' . $SITE['rainunit']);
+$graph->y2axis->SetLabelFormat('%01.0f ' . 'mm/hr');
 $graph->y2scale->SetAutoMin(0);
 $graph->y2axis->SetFont(FF_VERDANA,FS_NORMAL,6);
 $graph->y2axis->HideTicks(true,true); 
-$graph->y2grid->Show(true);
+$graph->y2grid->Show(false);
 
 // Set the colors for the plots
 $lineplot->SetColor("blue");
@@ -224,11 +231,10 @@ $lineplot2->SetColor("lightblue");
 $lineplot2->SetFillColor("lightblue@0.5");
 $lineplot2->SetWeight(2);
 
-
 $chart_title = $RAIN[$lang_idx];
 $txt1=new Text($lang_idx = 1 ? utf8_strrev($RAIN[$lang_idx]):$RAIN[$lang_idx]);
 $txt1->SetFont( FF_ARIAL, FS_BOLD,29);
-$txt1->ParagraphAlign('left');
+$txt1->ParagraphAlign('center');
 $txt1->SetPos(0.11,0.92,"left","center");
 $txt1->SetColor("azure4@0.6");
 $graph->AddText($txt1);
@@ -236,15 +242,15 @@ $graph->AddText($txt1);
 // Print Wording on graphic
 
 $txt2=new Text("cumulus");
-$txt2->SetFont(FF_VERDANA, FS_BOLD,35);
+$txt2->SetFont(FF_ARIAL, FS_BOLD,35);
 $txt2->ParagraphAlign('left');
 $txt2->SetPos(0.003,0.54,"left","center");
 $txt2->SetColor("azure4@0.85");
 $txt2->SetAngle(90);
 $graph->AddText($txt2);
  
-$txt3=new Text(date("M j Y",time()));
-$txt3->SetFont(FF_VERDANA, FS_BOLD,8);
+$txt3=new Text(date("j/m/Y",time()));
+$txt3->SetFont(FF_ARIAL, FS_BOLD,8);
 $txt3->SetPos(0.8,0.015,"left","top");
 $txt3->SetColor("azure4");
 $graph->AddText($txt3);
@@ -253,10 +259,10 @@ $lang_idx = $_GET['lang'];
 if ($lang_idx == "")
 	$lang_idx = 1;
 // Place small monthly under right index
-$monthly = $lang_idx == 1 ? utf8_strrev($MONTHLY[$lang_idx]) : $MONTHLY[$lang_idx];
-$txtaa=new Text($chrs . $monthly);
+$rainrate = $lang_idx == 1 ? utf8_strrev($RAINRATE[$lang_idx]) : $RAINRATE[$lang_idx];
+$txtaa=new Text($chrs . $rainrate);
 $txtaa->SetFont(FF_ARIAL, FS_BOLD,10);
-$txtaa->SetPos($width - 26,$height - 46,'center');
+$txtaa->SetPos($width - 66,$height - 275,'center');
 $txtaa->SetColor("lightblue");
 $graph->AddText($txtaa);
 
@@ -264,14 +270,14 @@ $graph->AddText($txtaa);
 $daily = $lang_idx == 1 ? utf8_strrev($DAILY_RAIN[$lang_idx]) : $DAILY_RAIN[$lang_idx];
 $txtab=new Text($chrs . $daily);
 $txtab->SetFont(FF_ARIAL, FS_BOLD,9);
-$txtab->SetPos(40,$height - 42,'center');
+$txtab->SetPos(100,$height - 240,'center');
 $txtab->SetColor("blue");
 $graph->AddText($txtab);
 
 if ($maxval == 0 ) {
     debug_out("Output NO RAIN REPORTED");
-    $txtn=new Text("NO RECENT RAIN");
-    $txtn->SetFont(FF_VERDANA, FS_BOLD,18);
+    $txtn=new Text("No Rain");
+    $txtn->SetFont(FF_ARIAL, FS_BOLD,18);
     $txtn->SetPos(0.5,0.4,"center","center");
     $txtn->SetColor("azure4@0.4");
     $graph->AddText($txtn);
@@ -294,7 +300,7 @@ if ($SITE['info']) {
         $fq = "4x an Hour";
     }
     
-    $txt4=new Text($chrs . " hr Chart");
+    /*$txt4=new Text($chrs . " hr Chart");
     $txt4->SetFont(FF_ARIAL, FS_BOLD,6);
     $txt4->SetPos($width - 50,$height - 31,'center');
     $txt4->SetColor("azure4");
@@ -305,7 +311,7 @@ if ($SITE['info']) {
     $txt5->SetFont(FF_ARIAL, FS_BOLD,6);
     $txt5->SetPos($width - 50,$height - 22,'center');
     $txt5->SetColor("azure4");
-    $graph->AddText($txt5);
+    $graph->AddText($txt5);*/
 }
 
 

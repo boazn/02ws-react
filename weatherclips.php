@@ -24,8 +24,17 @@
 <h2>How to film the Earth from space </h2>
 <iframe width="420" height="315" src="http://www.youtube.com/embed/gfgOYsWnisk" frameborder="0" allowfullscreen></iframe>
 <div class="clear"><br /></div>
-<h2>Weatherballoon with onboard Cameras</h2>
-<iframe width="420" height="315" src="http://www.youtube.com/embed/Xum6EKycUzc" frameborder="0" allowfullscreen></iframe>
+<h2>GoPro Weather Balloon Launch</h2>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/MHOCVc2vanE" frameborder="0" allowfullscreen></iframe>
+<div class="clear"><br /></div>
+<h2>High Altitude Weather Balloon Takes HD Camera to the Edge of Space</h2>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/089k2qWSmWg" frameborder="0" allowfullscreen></iframe>
+<div class="clear"><br /></div>
+<h2>Weather Balloon Near Space! GoPro-Balloon-Flight to 30km!</h2>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/9CjjbauSvBE" frameborder="0" allowfullscreen></iframe>
+<div class="clear"><br /></div>
+<h2>Weather Balloon Launch at NWS Green Bay, Wisconsin</h2>
+<iframe width="420" height="315" src="https://www.youtube.com/watch?v=jGQWUFEMxT8" frameborder="0" allowfullscreen></iframe>
 <div class="clear"><br /></div>
 <h2>Lightning captured at 7,207 images per second</h2>
 <iframe src="http://player.vimeo.com/video/28457062?color=ffffff" width="800" height="661" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>

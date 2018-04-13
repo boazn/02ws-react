@@ -56,7 +56,10 @@
 #   This document uses Tab 4 Settings
 ############################################################################
 $DATA   = array();
-require_once("GraphSettings.php");
+if ($_GET['datasource'] != "")
+	require_once("GraphSettingsLatestArchive.php");
+	else
+	require_once("GraphSettings.php");
 global  $SITE;
 ############################################################################
 $SITE['hrs']            = 24;       # Adjustable via level
@@ -76,9 +79,11 @@ set_tz( $SITE['tz'] );
         
 // Load Contents of Realtime.log file
 
-debug_out("obtaining data from: " . $SITE['hloc'] . $SITE['datafile']);
+$SITE['hrs']            = 1440;       # Adjustable via level
+$SITE['tick']           = 1;        # Adjustable via level
+$SITE['freq']           = 1;        # Adjustable via freq
+debug_out("obtaining data from: " . $resultarichive);
 
-$rawdata = array_reverse( file($SITE['hloc'] . $SITE['datafile']));
 
 debug_out("Obtained " . count($rawdata));
 debug_out("Want to obtain " . $SITE['hrs']);
@@ -90,32 +95,46 @@ $x = array();
 $y1 = array();
 $y2 = array();
 $maxval = 0;
-
+$date_title = "";
 debug_out("Starting Array Sweep");
-$datedelimiter = "-";
-$key_split = "/ +/";
 
 foreach($rawdata as $key) {
+    $got++;
     if ($got < $wanted) {
-    	
-    	$DATA = preg_split($key_split, $key);
-		debug_out(ret_value("date"));
-		$timeA = explode(':',ret_value("time"));
-		debug_out("data[0] = '".$DATA[0]."'");
-		debug_out("data[1] = ".$DATA[1]);
-        if (freq_check($timeA[1])) {
-            debug_out("Storing data");
-            debug_out("Xaxis = " . timeto12(substr(ret_value("time"),0,2)));
-            debug_out("Y1axis = " . ret_value("avgbearing"));       
-            $dateArray = explode($datedelimiter,$DATA[0]);
-				$dateday = $dateArray[2];
-				$datemon = $dateArray[1];
-			
-            debug_out("day = ".$dateday."/".$datemon);
-            $rx[] = $timeA[0].":".$timeA[1]."\n".$dateday."/".$datemon;
-            $ry1[] = ret_value("avgbearing");
-        $got++;
+    	  
+    $DATA = $key;
+        
+        debug_out("Storing data");
+        //print_r($DATA);
+        $current_date = ret_value("date");
+        $winddir = ret_value("winddir");
+        $wind = ret_value("windspd");
+        debug_out("Xaxis = " . $current_date);
+        debug_out("Y1axis = " . $winddir );
+        debug_out("Y2axis = " . $wind );
+        $dateRec = $current_date." ".ret_value("time");
+        $datetime = DateTime::createFromFormat ("Y-m-d H:i:s", $dateRec);
+
+        debug_out("datetime = " . $datetime->format('H:i j/m/y') );
+        $ts = $datetime->getTimestamp();
+        debug_out("ts = ".$ts);
+        debug_out("date = ".Date('H:i j/m/y', $ts));
+        $rx[] =  $ts;
+        $ry1[] =  $winddir;
+        $ry2[] = $wind;
+
+        $SITE['tempunit'] 	= "&#xb0;" . "C";
+        $SITE['pressunit'] 	= "mb";
+        $SITE['rainunit'] 	= "mm";
+        $SITE['windunit']	= "kts";
+        
+        if ($got == 2){
+           $least_date_title = $datetime->format('H:i j/m/y');
         }
+        if ($got == $wanted){
+            $date_title  = $datetime->format('H:i j/m/y')." - ".$least_date_title;
+        }
+                    
     }
 }
 

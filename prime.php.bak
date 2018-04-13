@@ -9,21 +9,58 @@
         $current_story_img_src = "phpThumb.php?src=".$current_story_img_src."&amp;w=200&amp;h=200&amp;zc=C";//&amp;fltr[]=cont|50 ;
         /////////////////////////////////////////
         $floated = false;
-        $random_midrag = rand(0,9);
-        
-        $MIDRAG_T = array("ירושלמים ממליצים לירושלמים – לא בוחרים בעל מקצוע בלי לבדוק חוות דעת קודמות", "300,000 חוות דעת לא טועות. סומכים על בעלי מקצוע במידרג. ", "כל הבית נמלים? אלפי חוות דעת של ירושלמים על מדבירים מומלצים", "כל כך חם שגם הג'וקים נכנסים הביתה? מדבירים מומלצים עם חוות דעת מאומתות פה ", "פעם אמרו שבירושלים לא צריך מזגן. אז אמרו..  ירושלמים ממליצים על מתקיני מזגנים ", "לפתוח עוד חלון לא יעזור. הגיע הזמן לתקן את המזגן ", "מחפשים מוביל מגילה לנחלאות? ירושלמים ממליצים על מובילים אמינים ", "זה שלא יורד גשם, לא אומר שהבעיה נעלמה. דווקא עכשיו כדאי לאטום את הגג. ", "לא נכנסים לשיפוץ בלי לדעת בוודאות שבחרנו בעל מקצוע מעולה. ירושלמים עוזרים לירושלמים- מאות חוות דעת על שיפוצים קודמים. ", "אומרים די לחאפרים – בוחרים  בעל מקצוע לפי חוות דעת אמיתיות של לקוחות כמוכם! ");
-        $MIDRAG_I = array("images/midragdefault.png", "images/midragdefault.png", "images/midragexterminator.png", "images/midragexterminator.png", "images/midragairCondition.png", "images/midragairCondition.png", "images/midragmoving.png", "images/midragsealing.png", "images/midragrenovation.png", "images/midragrenovation.png");
-        $MIDRAG_L = array($_SERVER['SCRIPT_NAME']."?section=midrag.php?", $_SERVER['SCRIPT_NAME']."?section=midrag.php", $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=6971312JF0K8S79J5", $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=J276473B00Z0A0N28", $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=E6127R0GV18085LY64028", $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=761NTJ0B5493O9UO0RMR7", $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=BT9IUX8K91S012K27W1J77448J85YI9G102", $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=V584G432065L06RO7#filter", $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=Z737BA86D34WJ02W7", $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=9N15LH0X372TP75W550614Z7NC24152U438NI3");
+        $random_midrag = rand(0,11);
+        $random_did_you_know = rand(0, count($DID_YOU_KNOW_EX)-1);
+        $MIDRAG_T = array("ירושלמים לירושלמים – לא בוחרים בעל מקצוע בלי לבדוק חוות דעת קודמות.", 
+                          "400,000 חוות דעת. בוחרים בעל מקצוע רק אחרי שקראנו חוות דעת קודמות.  ", 
+                          "פפעם אמרו שבירושלים לא צריך מזגן. אז אמרו..  ירושלמים ממליצים על מתקיני מזגנים", 
+                          "לעכשיו כשנעים אתם שוכחים כמה חם הולך להיות...  טכנאי מזגנים שירושלמים אחר המליצו עליהם פה",
+                          "מחפשים מוביל מגילה לנחלאות? ירושלמים ממליצים על מובילים אמינים ",
+                        "קיבלתם ספה מהדודה של השכן? מובילים מומלצים גם להובלות קטנות פה", 
+                        "הגשם נכנס אליכם הביתה? תגידו די לרטיבות! אנשי איטום אמינים עם מאות המלצות במידרג", 
+                        "הגשם כבר פה ואיתו הרטיבות. טפלו עכשיו עם מומחי איטום שירושלמים אחרים המליצו עליהם ", 
+                        "לא נכנסים לשיפוץ בלי לדעת בוודאות שבחרנו בעל מקצוע מעולה. ירושלמים עוזרים לירושלמים- מאות חוות דעת על שיפוצים קודמים. ", 
+                        "גשם, רוח, גראופל... לתיקונים ושיפוצים קחו המלצות מירושלמים שמדברים את השפה שלכם",
+                        "הקרה בלילה פוצצה את הדוד? טכנאי דודי חשמל שירושלמים המליצו עליהם",
+                        "החורף הגיע וגיליתם שדוד החשמל לא פועל? אין צורך להתקלח אצל השכנים, מאות המלצות על
+טכנאי דודים אמינים במידרג");
+        $MIDRAG_I = array("images/midragdefault.png", 
+                            "images/midragdefault.png", 
+                            "images/midragairCondition.png", 
+                            "images/midragairCondition.png", 
+                            "images/midragmoving.png", 
+                            "images/midragmoving.png", 
+                            "images/midragsealing.png", 
+                            "images/midragsealing.png", 
+                            "images/midragrenovation.png", 
+                            "images/midragrenovation.png",
+                            "images/midragsealing.png",
+                            "images/midragsealing.png");
+        $MIDRAG_L = array($_SERVER['SCRIPT_NAME']."?section=midrag.php", 
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php", 
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=E6127R0GV18085LY64028", 
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=761NTJ0B5493O9UO0RMR7",
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=BT9IUX8K91S012K27W1J77448J85YI9G102",
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=V798L487715GC3QX1GB7135750C7X94L7J7", 
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=V584G432065L06RO7#filter", 
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=OX8Y224XC6Y6Q75Q2", 
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=Z737BA86D34WJ02W7", 
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=9N15LH0X372TP75W550614Z7NC24152U438NI3",
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=TI3CKC0Q182D34XK5VSI84E8",
+                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&l=5O35660J2955801T6U8970J5");
+        $DID_YOU_KNOW_LINK = array(get_query_edited_url($url_cur, 'section', 'allTimeRecords.php'), get_query_edited_url($url_cur, 'section', 'myVotes.php'), get_query_edited_url($url_cur, 'section', 'snow.php'));
+        $DID_YOU_KNOW_TITLE = array($RECORDS[$lang_idx], $MY_VOTES[$lang_idx], $SNOW_JER[$lang_idx]);
         ////////////////////////////////////////
                 $overlook_d = "<a href=\"javascript:void(0)\" class=\"info\">".$OVERLOOK[$lang_idx]."<span class=\"info\">".$OVERLOOK_EXP[$lang_idx]."</span></a>";
         ?>
 		<div class="row">
 		    <div id="forcast_title">
 			<div class="forcast_title_btns for_active" onClick="change_main('#forcast_days', this, '<?=$lang_idx?>');"><? echo($FORECAST_4D[$lang_idx]); ?></div>
-			<div class="forcast_title_btns" onClick="getTempForecast(<?=$timetaf?>, '<?=$dayF."/".$monthF."/".$yearF?>');change_main('#forcast_hours', this, '<?=$lang_idx?>');"><? echo(" 24 ".$HOURS[$lang_idx]);?></div>
-			<div class="forcast_title_btns" onClick="change_main('#what_is_forcast', this, '<?=$lang_idx?>');"><?=$WHAT_IS_FORECAST[$lang_idx]?></div>
+			<div class="forcast_title_btns" onClick="change_main('#forcast_hours', this, '<?=$lang_idx?>');"><? echo(" 24 ".$HOURS[$lang_idx]);?></div>
+                        <div class="forcast_title_btns" onClick="getTempForecast(<?=$timetaf?>, '<?=$dayF."/".$monthF."/".$yearF?>');change_main('#forcast_hours_table', this, '<?=$lang_idx?>');"><? echo(" 24 ".$HOURS[$lang_idx]." ".$IN_TABLE[$lang_idx]);?></div>
 			<div class="forcast_title_btns"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a></div>		
                         <div class="forcast_title_btns"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a></div>
+                        <div class="forcast_title_btns"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=ForecasterJob.php&amp;lang=<? echo $lang_idx;?>" title="<?=$WHAT_IS_FORECAST?>"><?=$FORECASTER_JOB[$lang_idx]?></a></div>
 		    </div>
 		    
 		    <div id="forcast_main">
@@ -44,6 +81,7 @@
 						}
 						else 
 						{
+                                                    $textsum = 0;
                                                     $date_a = explode("/", array_slice($forecastDaysDB, 0, 1)[0]['date']);
                                                       if ($date_a[0] == $day)//passed midnight
                                                       {
@@ -100,9 +138,9 @@
                                                            $prefTempHighCloth = $arTempHighCloth[0];
                                                            $arTempNightCloth =  explode('_', $forecastday['TempNightCloth']);
                                                            $prefTempNightCloth = $arTempNightCloth[0];
-							
+                                                           
 					 ?>             
-							<li class="forcast_each <?if ($i >= 5) echo "tashkif";?>" id="<?=$key?>" name="<?=$key?>">
+							<li class="forcast_each <?if ($i >= TASHKIF_START) echo "tashkif";?>" id="<?=$key?>" name="<?=$key?>">
 							<ul>
                                                                 <li class="forcast_off_day">
                                                                     <?if ($i == 0) {?>
@@ -112,7 +150,7 @@
                                                                     <?}?>
                                                                 </li>
 								<li class="forcast_day">
-								<? echo replaceDays($forecastday['day_name']." ");?><? if ($i >= 5) echo "<p>".$overlook_d."</p>";?>
+								<? echo replaceDays($forecastday['day_name']." ");?><? if ($i >= TASHKIF_START) echo "<p>".$overlook_d."</p>";?>
 								</li>
 								<li class="forcast_date">
 								<? echo $forecastday['date'];?>
@@ -126,15 +164,17 @@
 								<li class="forcast_night">
 								<?=c_or_f($forecastday['TempNight'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" alt="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" /></a>
 								</li>
-                                                                <li><a href="legend.php" rel="external" ><img src="<? echo "images/icons/day/".$forecastday['icon']; ?>" width="40" height="40" alt="<?=$forecastday['date']?>" /></a></li>
+                                                                <li><?if ($i == 0) echo get_param_tag($forecastday['TempHigh'] - round($hightemp_value), true, false);?>
+                                                                    <a href="legend.php" rel="external" ><img src="<? echo "images/icons/day/".$forecastday['icon']; ?>" width="40" height="40" alt="<?=$forecastday['date']?>" /></a>
+                                                                </li>
 								<li class="forcast_text">
-									<? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);?>
+									<? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);$textsum = $textsum + strlen(urldecode($forecastday[$dscpIdx]));?>
                                    				<?if ($i < 5) {?>
-                                                                <div id="divlikes<?=$key?>" style="float:<?echo get_inv_s_align();?>;padding:0.2em;">		
-                                                                        <img src="js/tinymce/plugins/emoticons/img/good.png" width="16px" onclick="updateLikes(this.parentNode.parentNode.parentNode.parentNode.id, 'like')" style="cursor:pointer" />
-                                                                        <span class="likes" style="font-size: 0.85em"><?=count($forecastDaysDB[$key]["likes"])?></span>
-                                                                        <img src="js/tinymce/plugins/emoticons/img/bad.png" width="16px" onclick="updateLikes(this.parentNode.parentNode.parentNode.parentNode.id, 'dislike')" style="cursor:pointer" />
-                                                                        <span class="dislikes" style="font-size: 0.85em"><?=count($forecastDaysDB[$key]["dislikes"])?></span>
+                                                                <div id="divlikes<?=$key?>" style="float:<?echo get_inv_s_align();?>;padding:0.2em;font-size:0.75em">		
+                                                                        <img src="js/tinymce/plugins/emoticons/img/good.png" width="15px" onclick="updateLikes(this.parentNode.parentNode.parentNode.parentNode.id, 'like')" style="cursor:pointer" />
+                                                                        <span class="likes"><?=count($forecastDaysDB[$key]["likes"])?></span>
+                                                                        <img src="js/tinymce/plugins/emoticons/img/bad.png" width="15px" onclick="updateLikes(this.parentNode.parentNode.parentNode.parentNode.id, 'dislike')" style="cursor:pointer" />
+                                                                        <span class="dislikes"><?=count($forecastDaysDB[$key]["dislikes"])?></span>
                                                                 </div>
                                                                 <?}?>
                                                                 </li>
@@ -142,7 +182,7 @@
 							 </li>
 						<?
 								$i++;}
-						   
+                                                                
 						?>
 				    <li class="forcast_each extra" style="margin-top:0.4em">
 					<ul>
@@ -171,14 +211,21 @@
                                             <li class="forcast_night">
                                                 
                                             </li>
-                                            <? if (isHeb()) {?>
+                                            
                                            <li>
                                                <img src="<?=$MIDRAG_I[$random_midrag]?>" width="45" height="55" alt="מדרג"/>
                                             </li>
-                                            <li class="forcast_text below_forecast">
-                                                 <a href="<?=$MIDRAG_L[$random_midrag]?>"><?=$MIDRAG_T[$random_midrag]?></a>
+                                            <li class="forcast_text below_forecast" style="line-height: 15px;direction:rtl">
+                                                 <a href="https://www.google.com/maps?q=%D7%91%D7%99%D7%9C%D7%95+16+%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D&entry=gmail&source=g" target="_blank" >
+                                                     <? if (isHeb()) {?> 
+                                                         <a href="<?=$MIDRAG_L[$random_midrag]?>"><?=$MIDRAG_T[$random_midrag]?></a>
+                       
+                                                     <?} else {?>
+                                                       
+                                                     <?}?>
+												 </a>
                                             </li>
-                                            <?}?> 
+                                            
 					     
 					</ul>
 				    </li>
@@ -190,14 +237,13 @@
 			    
 			     <div id="forcast_hours" class="contentbox">
                                  <div id="graph_forcast" >
-				 <? echo($GIVEN[$lang_idx]." ".$AT[$lang_idx]." ".$timetaf.":00 ".$dayF."/".$monthF."/".$yearF);?>
-                                 <canvas id="graphForcastContainer" style="position: relative"></canvas>
+				 <canvas id="graphForcastContainer" style="position: relative"></canvas>
                                 <div id="chartjs-tooltip" class="inv_plain_3_zebra"></div>
 				<div id="for24_literal">
 					<span id="tempForecastDiv" style="display:none">
 					</span>
 				</div>
-				<ul id="for24_hours">
+				<ul class="for24_hours">
 				 <? 
                                  $sigforecastHour = apc_fetch('sigforecastHour');
                                  foreach ($sigforecastHour as $hour_f){
@@ -220,12 +266,29 @@
                                  </div>
 			    </div>
 			    
-			    <div id="what_is_forcast" class="contentbox">
-				
-				   <strong>
-				<?=$WHAT_IS_FORECAST[$lang_idx]?>
-				    </strong>
-				<?=$FORECAST_DESC[$lang_idx]?>
+			    <div id="forcast_hours_table" class="contentbox">
+				<ul class="for24_hours">
+				 <? 
+                                 $forecastHour = apc_fetch('forecasthour');
+                                 foreach ($forecastHour as $hour_f){
+                                     if (($hour_f['plusminus'] != "") || ($hour_f['time'] % 3 == 0)){
+                                        echo "<li class=\"nav forecasttimebox forcast_each\" ><ul>";
+                                        echo "<li class=\"tsfh\" style=\"text-align:center;width:0%;display:none\">".$hour_f['currentDateTime']."</li>";
+                                        echo "<li class=\"tsfh\" style=\"text-align:center;width:10%\">".date("j/m", $hour_f['currentDateTime'])."</li>";
+                                        echo "<li class=\"timefh forcast_date\" style=\"direction:ltr;text-align:right;width:12%\"><span>".$hour_f['time'].":00";
+                                           if ($hour_f['plusminus'] > 0)
+                                               echo "&nbsp;&plusmn;".$hour_f['plusminus']."";
+                                        echo "</span></li>";
+                                        echo "<li class=\"forecasttemp forcast_morning\" style=\"text-align:center;direction:ltr;width:7%\" id=\"tempfh".intval($hour_f['time']).intval(date("j", $hour_f['currentDateTime']))."\">"."</li>";
+                                        echo "<li>&nbsp;<img style=\"vertical-align: middle\"  src=\"images/clothes/".$hour_f['cloth']."\" width=\"24.3\" height=\"20\" /></li>";
+                                        echo "<li style=\"margin-top:0;width:7%\"><img src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></li>";
+                                        echo "<li style=\"margin-top:0;\"><div title=\"".getWindInfo($hour_f['wind'], $lang_idx)['windtitle']."\" class=\"wind_icon ".getWindInfo($hour_f['wind'], $lang_idx)['wind_class']." \"></div></li>";
+                                        echo "<li>".$hour_f['title'][$lang_idx]."</li>";
+                                        echo "</ul></li>";
+                                     }
+				 }
+				 ?>
+				</ul>
                                
 			    </div>
 			    
@@ -255,7 +318,9 @@
                                  else {if ($current->get_pm10() > 250) $slot = "7720562695"; else $slot = "7720562695";};//night
                         ?>
 		    <div id="mainadsense" style="background:<?=$adsense_background?>; line-height: 0;box-shadow:3px 3px 15px 15px <?=$adsense_background?>">
-			        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			        
+                               
+                                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                                 <!-- responsive main - cloudy -->
                                 <ins class="adsbygoogle"
                                      style="display:block"
@@ -265,6 +330,11 @@
                                 <script>
                                 (adsbygoogle = window.adsbygoogle || []).push({});
                                 </script>
+						<div>
+		
+	</div>
+                               
+                               
 			</div>
                    
                          
@@ -275,26 +345,23 @@
             
 	    
 	    
-<article id="more">
+<article id="more" style="<? if (($textsum >= 580)||(count($forecastDaysDB) > 6)) echo "top:790px";?>">
 	    
 		<div class="now_messages">
 		    <div class="row">
-                    <div id="rightbanner" class="span2 offset1">
-			    
-		    </div>
-		    <div id="alerts" class="span5 offset1 white_box">
+                   
+		    <div id="alerts" class="span5 offset4 white_box">
 			<h2><? echo $MESSAGES[$lang_idx];?></h2>
-                        <p class="box_text">
-			<? echo $detailedforecast;?>
-                        </p>
-                     
-		    </div>
+                        <p></p>
+                        <div id="message" class="box_text"><? echo $detailedforecast;?></div>
+                        <p id="personal_message" class="box_text"></p>
+  		    </div>
                     <div class="moon_sun span2">
 			 <div id="moon_rise" onclick="window.open('http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=<? echo $month;?>&amp;YE=<? echo $year;?>&amp;TI=Wise+Observatory+Schedule&amp;LO=35.167&amp;LA=31.783&amp;TZ=<?=GMT_TZ?>&amp;PLACE=2');">
                              <div id="moon_img" class="float">
                              <a href="http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=<? echo $month;?>&amp;YE=<? echo $year;?>&amp;TI=Wise+Observatory+Schedule&amp;LO=35.167&amp;LA=31.783&amp;TZ=<?=GMT_TZ?>&amp;PLACE=2" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>">
                                         <?
-                                        $moonurl = "http://www.almanac.com/sites/new.almanac.com/files/moon.gif";
+                                        $moonurl = "images/moonriseset.png";
                                         /*
                                         if ($moon=="ne")
                                         {
@@ -333,26 +400,35 @@
 		    <div class="row" style="margin-bottom: 0.2em">
 		    
 		    <div class="span5 offset4 white_box">
-			<h2><? echo $MainStory->get_title();?></h2>
+			<? if (isHeb()) { ?><h2><? echo $MainStory->get_title();?></h2>
 			<p class="box_text">
                             <a href="<? echo "station.php?section=mainstory.php&amp;lang=".$lang_idx;?>">
 			 <? echo mb_substr($MainStory->get_description(), 0, 68, "UTF-8");?>...<?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
                             </a>
+                            <a href="<?=$href?>" href="<? echo "station.php?section=mainstory.php&amp;lang=".$lang_idx;?>" class="invfloat">
+                            <?
+                             $box_img_src = $MainStory->get_img_src();$img_title = $MainStory->get_title();
+                             echo "<img src=\"$box_img_src\" title=\"".$img_title."\" id=\"mainpic\" alt=\"".$img_title."\" width=\"40px\" />";
+                            ?>
+                            </a>
 			</p>
+			<?}?>
 		    </div>
                         
                     <div id="adexternal" class="span2">
-                       
+                       <!--<a data-p1xtr="widget-button" data-p1xtr-image="http://www.02ws.co.il/img/logo_rain.svg"></a>-->
                     </div>
                          
 		    
 		    </div>
 		    
 		    <div class="row more_stuff">
+                        
 			<div id="did_you_know" class="span3">
+                            
                             <h2><?=$DID_YOU_KNOW[$lang_idx]?></h2>
-			    <p><?=$DID_YOU_KNOW_EX1[$lang_idx]?></p>
-			    <a href="<? echo get_query_edited_url($url_cur, 'section', 'allTimeRecords.php');?>"><?=$RECORDS[$lang_idx];?></a>
+			    <p><?=$DID_YOU_KNOW_EX[$random_did_you_know][$lang_idx]?></p>
+			    <a href="<?=$DID_YOU_KNOW_LINK[$random_did_you_know]?>"><?=$DID_YOU_KNOW_TITLE[$random_did_you_know];?></a>
 			</div>
 			<div class="span7 offset1 more_icons">
                             
@@ -370,36 +446,10 @@
                     <div class="row">
                         &nbsp;
                     </div>
-                     <div class="row">
-                        &nbsp;
-                    </div>
-                     <div class="row">
-                        &nbsp;
-                    </div>
-                    <div class="row">
-                        &nbsp;
-                    </div>
-                     <div class="row">
-                        &nbsp;
-                    </div>
-                     <div class="row">
-                        &nbsp;
-                    </div>
-                    <div class="row">
-                        &nbsp;
-                    </div>
-                     <div class="row">
-                        &nbsp;
-                    </div>
-                    <div class="row">
-                        &nbsp;
-                    </div>
-                     <div class="row">
-                        &nbsp;
-                    </div>
-             
+                    
                     <div class="row"> 
                            <div id="gp_icon" class="span8">
+                               <div>
                                 <a href="https://play.google.com/store/apps/details?id=il.co.jws.app" target="_blank">
                                     <img src="images/getitongp.svg" alt="Google play App" width="150" height="60"/>
                                 </a>
@@ -409,9 +459,19 @@
                                <a href="https://itunes.apple.com/us/app/yrwsmyym/id925504632?ls=1&mt=8" target="_blank">
                                     <img src="images/Available_on_the_App_Store.svg" alt="App Store App" width="150" height="60"/>
                                 </a>
-                               <div id="qrcode" class="span4"> 
-                                <a href="small.php<?echo "?lang=".$lang_idx;?>" title="<? echo $MOBILE_FRIENDLY[$lang_idx];?>"><img src="images/qrcode.png" width="68" height="68" alt="qrcode" /></a>
-                                </div>
+                               </div>
+                               <div id="more_icons_container">
+                                    <a id="weather_movies" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'weatherclips.php');?>" title="<? echo $WEATHER_CLIPS[$lang_idx];?>" class="hlink"><? echo $WEATHER_CLIPS[$lang_idx];?></a>
+                                    <a id="weather_songs" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'songs.php');?>"><?=$SONGS[$lang_idx]?></a>
+                                    <a id="snow_poems" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'snow.php');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a>
+                                    <?if (isHeb()){?>
+                                    <a id="myths" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'myths.php');?>" class="hlink"><? echo $MYTHS[$lang_idx];?></a>
+                                    <?}?>
+                                    <a id="weather_hul" class="more_icons" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a>
+                                    <a id="weather_israel" class="more_icons" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a>
+                                    <a id="likeddislikedforecasts" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'forecastDays.php');?>"><? echo $LIKED_FORECAST[$lang_idx];?></a>
+
+                               </div>
                             </div>
                             <?if (isHeb()) {?>
                             
@@ -448,7 +508,7 @@
                                          <script>
                                          (adsbygoogle = window.adsbygoogle || []).push({});
                                          </script>
-                    </div>
+                                        </div>
 					 <div id="plane">
 						<img src="img/plane.png" width="101" height="114" alt="plane"/>
 					 </div>
@@ -474,7 +534,8 @@
  			</audio>
 			
 			<div class="row" id="pic_stuff">
-			    <div id="album"><a href="spgm-1.3.2/index.php"  title="<?=$ALBUM_DESC[$lang_idx]?>" target="_blank"><? echo $PICTURES[$lang_idx];?></a></div>		    
+			    <div id="album"><a href="spgm-1.3.2/index.php"  title="<?=$ALBUM_DESC[$lang_idx]?>" target="_blank"><? echo $PICTURES[$lang_idx];?></a></div>
+                            <div id="userpic"><a href="<?=$_SERVER['SCRIPT_NAME']?>?section=userPics.php&amp;lang=<?=$lang_idx?>"  title="<?=$USERS_PICS[$lang_idx]?>"><? echo $USERS_PICS[$lang_idx];?></a></div>		    
 			    <div id="pic_empty"></div>
 			    
 			    <div id="map_thumbs">
@@ -552,6 +613,7 @@
                                 ?>	
                             </select>
                             <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'snowpoetry.php');?>" title="חמשירים" class="hlink">חמשירי שלג ועוד</a></li>
+                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'dictionary.php');?>" class="hlink"><?=$DICTIONARY[$lang_idx]?></a></li>
                             <li><a href="http://madeinjlm.org/" target="_blank"><img src="images/madeinjlm.png" width="146" height="144" alt="Made in Jerusalem" /></a></li>
 			    
 			</ul>

@@ -11,6 +11,7 @@ class FixedTime {
     var $day;
     var $temp;
     var $temp2;
+    var $temp3;
     var $tempunit;
     var $intemp;
     var $dew;
@@ -21,6 +22,7 @@ class FixedTime {
     var $thsw;
     var $rain; // rain in the interval
     var $windspd;
+    var $windspd10min;
     var $winddir;
     var $windchill;
     var $solarradiation;
@@ -36,6 +38,7 @@ class FixedTime {
     var $light = true;
     var $tempchange;
     var $temp2change;
+    var $temp3change;
     var $dewchange;
     var $humchange;
     var $hum2change;
@@ -98,6 +101,15 @@ class FixedTime {
         else
             $this->temp2change = number_format($temp - $this->temp2, 1, '.', '');
     }
+    
+    function set_temp3change($temp) {
+         if ($_GET["debug"] >= 4)
+            echo "<br > set_temp3change $temp - ".$this->temp3.": ".number_format($temp - $this->temp3, 1, '.', '');;
+        if ($temp == "miss")
+            $this->temp3change = "miss";
+        else
+            $this->temp3change = number_format($temp - $this->temp3, 1, '.', '');
+    }
 
      function set_dewchange($dew) {
         if ($hum == "miss")
@@ -147,9 +159,10 @@ class FixedTime {
         $this->solarradiationchange = $sr - $this->solarradiation;
     }
 
-    function set_change($temp, $hum, $dew, $windspd, $prs, $cldbase, $rainrate, $solarradiation, $uv, $temp2) {
+    function set_change($temp, $hum, $dew, $windspd, $prs, $cldbase, $rainrate, $solarradiation, $uv, $temp2, $temp3) {
         $this->set_tempchange($temp);
         $this->set_temp2change($temp2);
+        $this->set_temp3change($temp3);
         $this->set_dewchange($dew);
         $this->set_humchange($hum);
         $this->set_windspdchange($windspd);
@@ -196,6 +209,10 @@ class FixedTime {
         else
             return $this->tempchange;
     }
+    
+    function get_temp3change() {
+            return $this->temp3change;
+    }
 
     function get_srchange() {
         return $this->solarradiationchange;
@@ -237,6 +254,10 @@ class FixedTime {
         $this->temp2 = c_or_f($temp);
     }
     
+    function set_temp3($temp) {
+        $this->temp3 = c_or_f($temp);
+    }
+    
     function set_hum2($hum) {
         $this->hum2 = $hum;
     }
@@ -268,21 +289,70 @@ class FixedTime {
     function set_pm25sd($pm25sd) {
         $this->pm25sd = $pm25sd;
     }
-
-    function set_thw($thw) {
-        $this->thw = c_or_f($thw);
+    function getCalcTHW($base_temp){
+        $w = $this->windspd10min == "" ? $this->windspd : $this->windspd10min;
+        $Ta = isTempF() ? ($base_temp - 32)*5/9 : $base_temp;          /* Dry bulb temperature [°C] */
+        $e = 0;                 /* Watter vapour pressure [hPa] (humidity) */
+        $ws = 0.514444*$w;        /* Wind speed [m/s] at an elevation of 10 meters */
+        $rh = $this->hum;           /* Relative humidity [%] */
+        $Q = $this->solarradiation;       /* Net radiation absorbed per unit area of body surface [w/m2] */
+        $e = ($rh / 100) * 6.105 * exp (17.27 * $Ta / (237.7 + $Ta));
+        $ATthw = $Ta + 0.33 * $e - 0.70 * $ws - 4.00;
+        $ATthwr = round($ATthw, 1);
+        
+        $thw3 = ($this->windspd10min * 1.15 * -0.31224) + ($rh * 0.02518) +($Ta * 1.101299) - 2.73521;
+        $thw3 = round($thw3, 1);
+        $heatidx = isTempF() ? ($this->heatidx - 32)*5/9 : $this->heatidx;
+        $windchill = isTempF() ? ($this->windchill - 32)*5/9 : $this->windchill;
+        if ($this->windspd10min == 0)
+            $thw4 = $heatidx;
+        else
+        {
+            $thw4 = $heatidx + $windchill - $Ta;
+        }
+        $thw4 = round($thw4, 1);
+        $final_thw = round(array_sum(array(floatval($ATthwr),floatval($thw3),floatval($thw4) ))/3, 1);
+        //logger("base_temp:".$base_temp."  final:".$final_thw);
+        return $final_thw;
     }
-
+    function set_thw($thw) {
+        $calc_thw = $this->getCalcTHW($this->temp);
+        //if (abs($final_thw-$thw) >= 1)
+        //    logger("thw:".$thw."  final:".$calc_thw);
+        $this->thw = c_or_f($calc_thw);
+    }
+    function set_thw2($thw) {
+        $final_thw = getCalcTHW($this->temp2);
+        $this->thw = c_or_f($final_thw);
+    }
     function set_cloudiness($cloudiness) {
         $this->cloudiness = $cloudiness;
     }
 
     function set_thsw($thsw) {
+        
+        $w = $this->windspd10min == "" ? $this->windspd : $this->windspd10min;
+        if (empty($w)) $w = 0;
+        $Ta = isTempF() ? ($this->temp - 32)*5/9 : $this->temp;            /* Dry bulb temperature [°C] */
+        $ws = 0.514444*$w;        /* Wind speed [m/s] at an elevation of 10 meters */
+        $rh = $this->hum;           /* Relative humidity [%] */
+        $Q = $this->solarradiation;       /* Net radiation absorbed per unit area of body surface [w/m2] */
+        $e = ($rh / 100) * 6.105 * exp (17.27 * $Ta / (237.7 + $Ta)); /* Watter vapour pressure [hPa] (humidity) */
+        
+        $ATthsw = $Ta + 0.348 * $e - 0.70 * $ws + 0.70 * $Q / ($ws + 10) - 4.25;
+        $ATthswr = round($ATthsw, 1);
+        
+        //if (($ATthswr > 21)&&($thsw > 0))
+        //    logger("thsw:".$thsw." ".$ATthswr." (".$w." ".$Ta." ".$rh." ".$Q.")");
         $this->thsw = c_or_f($thsw);
     }
 
     function set_windspd($wind) {
         $this->windspd = $wind;
+    }
+    
+    function set_windspd10min($wind) {
+        $this->windspd10min = $wind;
     }
 
     function set_winddir($wind) {
@@ -375,6 +445,10 @@ class FixedTime {
             return $this->temp2;
         else
             return $this->temp;
+    }
+    
+    function get_temp3() {
+            return $this->temp3;
     }
     
     function get_hum2() {
@@ -544,7 +618,11 @@ class Parameter {
 class Period {
 
     var $hightemp;
+    var $hightemp2;
+    var $hightemp3;
     var $lowtemp;
+    var $lowtemp2;
+    var $lowtemp3;
     var $highhum;
     var $lowhum;
     var $highbar;
@@ -577,6 +655,8 @@ class Period {
         $this->lowtemp = new Parameter();
         $this->hightemp2 = new Parameter();
         $this->lowtemp2 = new Parameter();
+        $this->hightemp3 = new Parameter();
+        $this->lowtemp3 = new Parameter();
         $this->highhum = new Parameter();
         $this->lowhum = new Parameter();
         $this->highhum2 = new Parameter();
@@ -611,6 +691,12 @@ class Period {
         else
             return $this->hightemp->get_value();
     }
+    
+    function get_hightemp3() {
+       
+       return $this->hightemp3->get_value();
+        
+    }
 
     function get_highbar() {
         return number_format($this->highbar->get_value(), 1);
@@ -642,6 +728,10 @@ class Period {
             return $this->lowtemp2->get_value();
         else
              return $this->lowtemp->get_value();
+    }
+    
+    function get_lowtemp3() {
+            return $this->lowtemp3->get_value();
     }
 
     function get_highhum() {
@@ -724,6 +814,15 @@ class Period {
         }
             
     }
+    
+    function get_hightemp3_time() {
+        
+            if (strlen($this->hightemp3->get_time()) < 5)
+                return "0".$this->hightemp3->get_time();
+            return $this->hightemp3->get_time();
+        
+            
+    }
 
     function get_highbar_time() {
         return $this->highbar->get_time();
@@ -759,6 +858,15 @@ class Period {
         
     }
 
+    function get_lowtemp3_time() {
+        
+            if (strlen($this->lowtemp3->get_time()) < 5)
+                return "0" . $this->lowtemp3->get_time();
+            return $this->lowtemp3->get_time();
+        
+        
+    }
+    
     function get_highhum_time() {
         return $this->highhum->get_time();
     }
@@ -806,13 +914,25 @@ class Period {
     function set_hightemp2($hightemp, $time) {
         $this->hightemp2->set_value(c_or_f($hightemp));
         $this->hightemp2->set_time($time);
-        //logger('set_hightemp2: '.$hightemp);
+       // logger('set_hightemp2: '.$hightemp." ".$time);
+        
+    }
+    function set_hightemp3($hightemp, $time) {
+        $this->hightemp3->set_value(c_or_f($hightemp));
+        $this->hightemp3->set_time($time);
+       // logger('set_hightemp2: '.$hightemp." ".$time);
         
     }
 
     function set_lowtemp2($lowtemp, $time) {
         $this->lowtemp2->set_value(c_or_f($lowtemp));
         $this->lowtemp2->set_time($time);
+         
+    }
+    
+    function set_lowtemp3($lowtemp, $time) {
+        $this->lowtemp3->set_value(c_or_f($lowtemp));
+        $this->lowtemp3->set_time($time);
          
     }
 
@@ -1285,7 +1405,9 @@ function date_diff_hours($str_start, $str_end) {
     $nseconds = $nseconds % 60;
     return $nhours;
 }
-
+function isTempF(){
+    return ($_GET['tempunit'] == 'F');
+}
 function c_or_f($temp) {
 
     if ($_GET['tempunit'] == 'F') {
@@ -1581,29 +1703,31 @@ function get_file_string($full_search_url){
     return $full_page;    
 }  
 
- function fillPastTime (&$pastTime, $found){
+ function fillPastTime (&$pastTime, $ary_parsed_file, $prefix){
                 global $tok, $current, $PRIMARY_TEMP;
 				if ($_GET['debug']  >= 2) {
 					echo "<br>**** fillingPastTime ".$pastTime->get_time()." ****<br>";
+                                        //print_r($ary_parsed_file);
+                                        echo 'TEMP3'.$prefix.":".$ary_parsed_file['TEMP3'.$prefix];
 				}
-                if ($found) {
-                    $pastTime->set_temp(getNextWord($tok, 1, "temp"));
-                    $pastTime->set_hum(getNextWord($tok, 3, "hum"));
-                    $pastTime->set_dew(getNextWord($tok, 1, "dew"));
-                    $pastTime->set_windspd(getNextWord($tok, 1, "windspd"));
-                    $pastTime->set_winddir(getNextWord($tok, 1, "winddir"));
-                    $pastTime->set_windchill(getNextWord($tok, 4, "windchill"));
-                    $pastTime->set_heatidx(getNextWord($tok, 1, "heatidx"));
-                    $pastTime->set_thw(getNextWord($tok, 1, "thw"));
-                    $pastTime->set_thsw(getNextWord($tok, 1, "thsw"));
-                    $pastTime->set_pressure(getNextWord($tok, 1, "pressure"));
+                
+                    $pastTime->set_temp($ary_parsed_file['TEMP'.$prefix]);
+                    $pastTime->set_hum($ary_parsed_file['HUMIDITY'.$prefix]);
+                    $pastTime->set_dew($ary_parsed_file['DEWPT'.$prefix]);
+                    $pastTime->set_windspd($ary_parsed_file['WINDSPEED'.$prefix]);
+                    $pastTime->set_winddir($ary_parsed_file['WINDDIRECTION'.$prefix]);
+                    $pastTime->set_windchill($ary_parsed_file['WINDCHILL'.$prefix]);
+                    $pastTime->set_heatidx($ary_parsed_file['HEATINDEX'.$prefix]);
+                    $pastTime->set_thw($ary_parsed_file['THW'.$prefix]);
+                    $pastTime->set_thsw($ary_parsed_file['THSW'.$prefix]);
+                    $pastTime->set_pressure($ary_parsed_file['BAROMETER'.$prefix]);
                     $pastTime->set_cloudbase((($pastTime->get_temp()-$pastTime->get_dew()) * 125) + ELEVATION);
-                    $pastTime->set_rain(getNextWord($tok, 1, "rain"));
-                    $pastTime->set_rainrate(getNextWord($tok, 1, "rainrate"));
-                    $pastTime->set_solarradiation(getNextWord($tok, 1, "solarradiation"));
-                    $pastTime->set_uv(getNextWord($tok, 3, "uv"));
-                    $pastTime->set_temp2(getNextWord($tok, 11, "temp2"));
-                    $pastTime->set_hum2(getNextWord($tok, 1, "hum2"));
+                    $pastTime->set_rainrate($ary_parsed_file['RAINRATE'.$prefix]);
+                    $pastTime->set_solarradiation($ary_parsed_file['SOLARRAD'.$prefix]);
+                    $pastTime->set_uv($ary_parsed_file['UV'.$prefix]);
+                    $pastTime->set_temp2($ary_parsed_file['TEMP2'.$prefix]);
+                    $pastTime->set_temp3($ary_parsed_file['TEMP3'.$prefix]);
+                    $pastTime->set_hum2($ary_parsed_file['HUMIDITY'.$prefix]);
                     if ($PRIMARY_TEMP == 1)
                         $pastTime->set_change($current->get_temp(), 
                                             $current->get_hum(), 
@@ -1614,7 +1738,8 @@ function get_file_string($full_search_url){
                                             $current->get_rainrate(),
                                             $current->get_solarradiation(),
                                             $current->get_uv(),
-                                            $current->get_temp2());
+                                            $current->get_temp2(),
+                                            $current->get_temp3());
                     else if ($PRIMARY_TEMP == 2)
                         $pastTime->set_change($current->get_temp2(), 
                                             $current->get_hum(),
@@ -1625,18 +1750,11 @@ function get_file_string($full_search_url){
                                             $current->get_rainrate(),
                                             $current->get_solarradiation(),
                                             $current->get_uv(),
-                                            $current->get_temp());
-                }
-                else{
-                    $pastTime->set_temp(null);
-                    $pastTime->set_hum(null);
-                    $pastTime->set_windspd(null);
-                    $pastTime->set_winddir(null);
-                    $pastTime->set_pressure(null);
-		    $pastTime->set_rainrate(null);
-                    $pastTime->set_change(null, null, null, null, null, null, null, null, null);
-                }
+                                            $current->get_temp(),
+                                            $current->get_temp3());
  }
+                
+ 
 
 /*****************************************************************/
 // returns array of rain accumulation
@@ -1961,17 +2079,18 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     } else if ($target === ME) {
         array_push($EmailsToSend, array('email' => EMAIL_ADDRESS, 'lang' => $HEB));
     } else {//target = email
-        array_push($EmailsToSend, array('email' => $target, 'lang' => $HEB));
+        $lang = $_GET['lang'] == "" ? $HEB : $_GET['lang'];
+        array_push($EmailsToSend, array('email' => $target, 'lang' => $lang));
     }
     
        
     $textToSend = str_replace(array("display:none", "\n"), array("", "<br/>"), $textToSend);
     
-    logger("Sending mail: " . $source."(".$sourcename.")"." --> " . $target . " - " . implode(" / ", $subject));
+    logger("Sending mail: " . $source."(".$sourcename.")"." --> " . $target . " - " . implode(" / ", $subject). " lang:".$EmailsToSend[0]['lang']);
     foreach ($EmailsToSend as $email) {
         //echo "sending to $email...<br/>body=$textToSend<br/>Subject=$subject<br/>from=$source";
         $body = $textToSend[$email['lang']];
-        $body .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$email['lang']] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>.  <a href=\"" . BASE_URL . "/unsubscribe.php?email=".$email."\">Unsubscribe</a> </footer></div></body></html>";
+        $body .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$email['lang']] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>.  <a href=\"" . BASE_URL . "/unsubscribe.php?email=".$email['email']."\">Unsubscribe</a> </footer></div></body></html>";
         $mail->Body = $body;
         $mail->AltBody = strip_tags($textToSend[$email['lang']]);
         $mail->AddAddress($email['email'], "");
@@ -3184,6 +3303,7 @@ function enoughSignificant($index)
 $lang_idx = @$_GET['lang'];
 $EN = 0;
 $HEB = 1;
+$RU = 2;
 if ($_GET['lang'] == "") {
     /* if (stristr(get_url(), 'lang')){
       $new_url = str_replace ( "&amp;", "&", get_url());
@@ -3192,7 +3312,7 @@ if ($_GET['lang'] == "") {
     $lang_idx = $HEB;
 } else
     $lang_idx = @$_GET['lang'];
-if (($lang_idx != '0')&&($lang_idx != '1'))
+if (($lang_idx != '0')&&($lang_idx != '1')&&($lang_idx != '2'))
 {
     //logger("redirected to Heb:".$lang_idx);
     $lang_idx = $HEB;

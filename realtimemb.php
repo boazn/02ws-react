@@ -1,4 +1,5 @@
 <?php
+include 'include.php';
 ############################################################################
 # A Project of TNET Services, Inc.
 ############################################################################
@@ -75,7 +76,7 @@ check_sourceview();
 ############################################################################
 $SITE['version']        = "2.0";
 $SITE['home']           = "/home/boazn/public/02ws.com/public";
-$SITE['datafile']       = "realtime.log";
+$SITE['datafile']       = "realtimemb.xml";
 $SITE['source']         = "realtime.txt";
 #---------------------------------------------------------------------------
 $SITE['debug']          = 0;
@@ -99,60 +100,23 @@ if ($SITE['home'] != "YOU MUST SET THIS") {
 if ($SITE['debug']) {
     echo "Current directory is: " . getcwd() . " <br/>\n";
 }
-// Load the current contents of the source file (normally realtime.txt)
 
-if ($SITE['debug']) {
-    echo "Attempting to load: " . $SITE['source'] . " <br/>\n";
-}
-$rawdata = file($SITE['source']);
-if ($SITE['debug']) {
-    echo "We loaded: " . count($rawdata) . " - Should be 1<br/>\n";
-}
-
-// Extract the data into an array
-
-$DATA = preg_split('/ +/', $rawdata[0]);
-
-if ( $SITE['debug'] ) {
-    echo "Found " . count($DATA) . " Fields<br/>\n";
-}
-
-// Fix date so that it is in ISO format so that it is sortable
-    
-$DATA[0] = "20" . substr($DATA[0],6,2) . "-" . substr($DATA[0],3,2) . 
-    "-" . substr($DATA[0],0,2);
-
-// Open up the datafile and write out to the end of the file the new
-// Information
-
-// Output data with spaces between each field
-// It doesn't matter how many fields there are
-
-$fp = fopen( $SITE['datafile'] , 'a' );
+$fp = fopen( $SITE['datafile'] , 'w+' );
 if ($fp) {
     
     // Collect all the fields into the variable $info
-    $info = "";     # Empty info field
+    $info = "<?xml version=\"1.0\"?>\n".
+"<!--  File Name: fulldata.xml -->\n".
+"<WXDATA>\n".
+ "<PARAM>\n";     # Empty info field
     $first = 1;     # Flag for first variable
-    foreach($DATA as $key) {
-        // Trim extra spaces off the end (Removes \n's as well)
-        $key = trim($key);
-        
-        // If there is anything left...
-        if (strlen($key) > 0 ) {
-            
-            // Was this the first variable
-            if ($first) {
-                // yep.. 
-                $first=0;
-            } else {
-                // Nope... add a space
-                $info .= " ";
-            }
-            // Add the field to the end of the info variable
-            $info .= $key;
-        }
+    foreach($_GET as $key => $value)
+    {
+       echo 'Key = ' . $key . '<br />';
+       echo 'Value= ' . $value;
+       $info .= "<".$key.">".$value."</".$key.">\n";
     }
+    $info .= "</PARAM>\n</WXDATA>\n";
     if (fileIsNew())
 	{
 		// If debug, display what we ended up with
@@ -172,7 +136,11 @@ if ($fp) {
 		
 		if ($SITE['debug']) {
 			echo "Data file is not new <br/>\n";
-		}   
+		} 
+                // Write the data
+		
+		fwrite($fp, $info . "\n" ) ;
+		fclose($fp);
 	}
 } else {
     
@@ -181,7 +149,7 @@ if ($fp) {
     if ($SITE['debug']) {
         echo "UNABLE TO SAVE DATA - CHECK PERMISSIONS <br/>\n";
     }   
-    echo "Unable to open file<br/>";
+    logger( "Unable to open file<br/>");
 }
 
 if ($SITE['debug']) {

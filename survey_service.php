@@ -28,7 +28,7 @@ if (isset($_POST['SendSurveyButton'])) {
 		$msgSent = true;
 		$result = insertNewMessage($_POST['survey_id'], $_POST['value_chosen']);
 		if ($result == "")
-			echo "<fieldset class=\"inv\"><b>... תודה...</b></fieldset>";
+			echo "<fieldset class=\"alert-success\"><b>... תודה...</b></fieldset>";
 		else
 			echo "<fieldset class=\"high\"><b>$result</b></fieldset>";
 	?>

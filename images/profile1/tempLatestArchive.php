@@ -62,7 +62,7 @@
 $DATA   = array();
 $width = $_GET['w'];
 if ($_GET['datasource'] != "")
-	require_once("GraphSettingsLatest.php");
+	require_once("GraphSettingsLatestArchive.php");
 	else
 	require_once("GraphSettings.php");
 	
@@ -84,9 +84,8 @@ set_tz( $SITE['tz'] );
 $SITE['hrs']            = 1440;       # Adjustable via level
 $SITE['tick']           = 1;        # Adjustable via level
 $SITE['freq']           = 1;        # Adjustable via freq
-debug_out("obtaining data from: " . $SITE['hloc'] . $SITE['datafile']);
+debug_out("obtaining data from: " . $resultarichive);
 
-$rawdata = file($SITE['hloc'] . $SITE['datafile']);
 
 debug_out("Obtained " . count($rawdata));
 debug_out("Want to obtain " . $SITE['hrs']);
@@ -102,31 +101,30 @@ $date_title = "";
 debug_out("Starting Array Sweep");
 
 foreach($rawdata as $key) {
-	debug_out($key." ");
+	//debug_out($key." ");
         $got++;
-    if ($got <= $wanted && $got > 1) {
+    if ($got <= $wanted) {
     	
-    	$DATA = preg_split($key_split, $key);
+    	$DATA = $key;
+        
         debug_out("Storing data");
-        $current_datetime = trim(ret_value("RecDateTime"),'"');
-        debug_out("Xaxis = " . $current_datetime);
-        debug_out("Y1axis = " . ret_value("TempOut") );
-        $tempc = number_format(((trim(ret_value("TempOut"),'"')/10) -32)*(5/9), 1, '.', '');
-        debug_out("Y1axis c = " . $tempc );
-        debug_out("Y2axis = " . ret_value("HumOut") );
-        if (strlen($current_datetime) > 10)
-            $dateRec = $current_datetime;
-        else
-            $dateRec = $current_datetime." 00:00:00";
-        $datetime = DateTime::createFromFormat ("d/m/Y H:i:s", $dateRec);
+        //print_r($DATA);
+        $current_date = ret_value("date");
+        $temp = ret_value("temp2");
+        $hum = ret_value("hum");
+        debug_out("Xaxis = " . $current_date);
+        debug_out("Y1axis = " . $temp );
+        debug_out("Y2axis = " . $hum );
+        $dateRec = $current_date." ".ret_value("time");
+        $datetime = DateTime::createFromFormat ("Y-m-d H:i:s", $dateRec);
 
         debug_out("datetime = " . $datetime->format('H:i j/m/y') );
         $ts = $datetime->getTimestamp();
         debug_out("ts = ".$ts);
         debug_out("date = ".Date('H:i j/m/y', $ts));
         $rx[] =  $ts;
-        $ry1[] =  $tempc;
-        $ry2[] = trim(ret_value("HumOut"),'"');
+        $ry1[] =  $temp;
+        $ry2[] = $hum;
 
         $SITE['tempunit'] 	= "&#xb0;" . "C";
         $SITE['pressunit'] 	= "mb";
@@ -214,7 +212,7 @@ $graph->xgrid->Show();
 //y-axis
 $graph->yaxis->scale->ticks->Set(1);
 $graph->yaxis->SetColor($SITE['txtcolor']);
-$graph->yaxis->SetLabelFormat('%0.1f' . $SITE['tempunit']);
+$graph->yaxis->SetLabelFormat('%0.0f' . $SITE['tempunit']);
 $graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,7);
 $graph->yaxis->scale->SetGrace(5);
 $graph->ygrid->SetFill(true,'#EFEFEF@0.5','#FFFFFF@0.5');

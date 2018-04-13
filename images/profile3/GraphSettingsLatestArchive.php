@@ -1,8 +1,5 @@
 <?php
-function utf8_strrev($str){
-   preg_match_all('/./us', $str, $ar);
-   return join('',array_reverse($ar[0]));
-}
+
 function time_callback($aLabel) { 
     
 	if (Date('H', $aLabel) == 0)
@@ -79,6 +76,7 @@ $SITE   = array();
 # CONFIGURATION INFORMATION
 ############################################################################
 include_once("../../lang.php");
+include_once("../../include.php");
 $height = 300;
 if ($width == 0)
     $width = 550;
@@ -102,7 +100,7 @@ $SITE['debug']          = 0;        # Adjustable via debug
 $SITE['info']           = 1;        # Adjustable via info
 #---------------------------------------------------------------------------
 // Current field names (matches tag fields) used
-$SITE['cvalues'] = array("ReceiverRecID","ChannelIndex","RecDateTime","TempOut","HiTempOut","LowTempOut","HumOut","DewPoint","HeatIndex","IntervalIndex");
+$SITE['cvalues'] = array("date", "time", "temp","temp2","temp3","hum","windspd","winddir","thw","thw2","HeatIndex", "uv", "solarradiation", "pm10", "pm25", "Dew", "Rain" ,"Bar", "RainRate");
 $SITE['humidexval'] = array(
 	"0" => array("0","29","Little or no discomfort"),
 	"1" => array("30","34","Noticeable discomfort"),
@@ -114,7 +112,12 @@ $SITE['beufort'] = array("Calm","Light Air","Light Breeze","Gentle Breeze",
 	"Moderate Breeze", "Fresh Breeze", "Strong Breeze", "Near Gale",
 	"Gale", "Strong Gale", "Storm", "Violent Storm","Hurricane");	
 $SITE['compass'] = array(0 => 'N', 45 => 'NE', 90 =>'E', 135 => 'SE', 180 => 'S', 
-        225 => 'SW', 270 => 'W', 315 => 'NW', 360 => 'N');	
+        225 => 'SW', 270 => 'W', 315 => 'NW', 360 => 'N');
+$resultarichive = db_init("select date, time, temp,temp2,temp3,hum,windspd,winddir,thw,thw2,HeatIdx, uv, solarradiation, pm10, pm25, Dew, Rain, Bar, RainRate from  `archivelatest` order by ID Desc", "");
+$rawdata = array();
+while ($line = $resultarichive["result"]->fetch_array(MYSQLI_ASSOC)) {
+    array_push($rawdata, $line);
+}
 ############################################################################
 
 ############################################################################
@@ -388,7 +391,7 @@ function debug_out_pre($mode) {
 
 function ret_value($lookup) {
 	global $SITE, $DATA;
-	
+	return( $DATA[$lookup] );
 	$rtn = array_search  ( $lookup  , $SITE['cvalues'] );
 	
 	if ($rtn !== FALSE) {

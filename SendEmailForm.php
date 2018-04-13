@@ -42,12 +42,12 @@ if (isset($_POST['SendButton'])) {
 
 		// wrong values
 
-		echo("<fieldset><div class=\"logo\"><div class=\"high\">you have entered wrong values   חסרים שדות</div></div></fieldset>");
+		echo("<div class=\"text-error alert\"><div class=\"high\">you have entered wrong values   חסרים שדות</div></div>");
 
 	}
 	else if (!check_email_address($_POST['email']))
 	{
-		echo("<fieldset><div class=\"logo\"><div class=\"high\">Email is not valid אימייל לא חוקי</div></div></fieldset>");
+		echo("<div class=\"text-error alert\"><div class=\"high\">Email is not valid אימייל לא חוקי</div></div>");
 	}
 
 	else if((stristr($_SERVER['HTTP_REFERER'], "station.php") > -1 )||(stristr($_SERVER['HTTP_REFERER'], "small.php") > -1 )){
@@ -61,7 +61,7 @@ if (isset($_POST['SendButton'])) {
 		
 		$result = send_Email($msgBody, ME, $email, $name, "", array("New contact to 02WS", "הודעה חדשה לצרו קשר של ירושמיים"));
 		if ($result == "")
-			echo "<fieldset class=\"topbase slogan afont\" style=\"height:200px\"><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></fieldset>";
+			echo "<div class=\"alert-success\" ><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></div>";
 		else
 			echo "<fieldset class=\"high\"><strong>$result</strong></fieldset>";
 	?>
@@ -105,7 +105,7 @@ if (isset($_POST['SendButton'])) {
 
     
 <div style="clear:both;text-align:center;padding:1em 0;width:85%;margin:0.1em auto">
-		<input type="submit" name="SendButton" style="width:85%;font-size: 1.2em;" class="inv_plain_3_zebra" value="<? if (isHeb()) echo "שליחת הודעה"; else echo "Send Message";?>"/>
+		<input type="submit" name="SendButton" style="width:85%;font-size: 1.2em;" class="inv_plain_3_zebra btn-primary" value="<? if (isHeb()) echo "שליחת הודעה"; else echo "Send Message";?>"/>
 </div>
 
 </form>

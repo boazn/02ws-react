@@ -813,8 +813,7 @@ function imgError(image) {
 <? if (isHeb()) echo "טוען..."; else echo "Loading...";?>&nbsp;
 <img src="images/loading.gif" alt="loading" width="32" height="32"/>
 </div>
-<div style="clear:both;width:100px;float:<?echo get_s_align();?>;position:absolute;<?echo get_s_align();?>:15px" <? if (isHeb()) echo "dir=\"rtl\""; ?>>                        
-<br/><br/><br/>
+<div style="clear:both;width:100px;float:<?echo get_s_align();?>;position:absolute;<?echo get_s_align();?>:-110px" <? if (isHeb()) echo "dir=\"rtl\""; ?>>                        
 <a href="javascript: func()" onclick="launch();toggle('play')">
 	<img id="play" width="80" height="80" src="images/play.png" alt="start התחל"/>
 </a>
@@ -867,12 +866,12 @@ function imgError(image) {
     <input type="hidden" name="myPHPvar" id="hiddenPics" value="" />
     </form>
 </div>
-<div style="margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:90px;top:80px;position:absolute" id="downloadStatus">
+<div style="margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:-110px;top:370px;position:absolute" id="downloadStatus">
 
 </div>
 <div style="width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:-70px;" id="radarimg" >
 
- <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=&time=<?=$year.$month.$day.$hour.$min?>" width="512px" height="512px" alt="IMS radar" style="z-index:0"/>
+ <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=&time=<?=$year.$month.$day.$hour.$min?>" width="570px" height="570px" alt="IMS radar" style="z-index:0"/>
 
  <div style="margin:0.5em">
 	<img src="images/radar_scale_eng.jpg" alt="scale of rain rate" /><br />
@@ -880,6 +879,7 @@ function imgError(image) {
 </div>
 </div>
 <div style="float:<?echo get_s_align();?>;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
+<div id="adunit2">
 <script type="text/javascript"><!--
 google_ad_client = "pub-2706630587106567";
 /* 160x600, created 9/24/10 */
@@ -897,10 +897,10 @@ google_color_text = ["<?= $forground->bg['-9'] ?>"];
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
-
 </div>
 </div>
-<div style="width:120px;left:370px;top:520px;position:absolute;z-index:2">
+</div>
+<div style="width:120px;left:170px;top:520px;position:absolute;z-index:2">
 
 	
 

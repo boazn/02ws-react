@@ -357,6 +357,11 @@ background:white
     margin-<?=get_inv_s_align()?>:40px;
     margin-top: 20px;
 }
+#temp3_btn {
+    background-image:url("../img/temp2.png");
+    margin-<?=get_inv_s_align()?>:-190px;
+    margin-top: 130px;
+}
 #moist_btn {
     background-image:url("../img/moist.png");
     margin-<?=get_inv_s_align()?>:65px;
@@ -473,6 +478,18 @@ background:white
    opacity:0.7;
    margin-top:26px;
    <?=get_s_align()?>:<? if (isHeb()) echo "428"; else echo "402"; ?>px;
+    -ms-transform:rotate(130deg); 
+    -moz-transform:rotate(130deg); 
+    -webkit-transform:rotate(<? if (isHeb()) echo "130"; else echo "240"; ?>deg);
+    -o-transform:rotate(130deg);
+     visibility:hidden;
+}
+#temp3_line {
+    position:absolute;
+   width:15px;
+   opacity:0.7;
+   margin-top:168px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "581"; else echo "402"; ?>px;
     -ms-transform:rotate(130deg); 
     -moz-transform:rotate(130deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "130"; else echo "240"; ?>deg);
@@ -791,7 +808,7 @@ margin-top: 2px;
 .forcast_title_btns {
     border-top-<?=get_s_align()?>-radius:15px;
     border-bottom-<?=get_s_align()?>-radius:15px;
-    background-color:#BFA8C6;
+    background-color:#6b89a2;
     color:#FFF;
     font-family:nextexitfotlight;
     height:35px;
@@ -1232,6 +1249,7 @@ margin-<?=get_s_align()?>:0.5em
     margin-top:100px;
     height:160px;
     position:absolute;
+    font-weight:bold;
     text-align:<?=get_s_align()?>;
     <?=get_inv_s_align()?>:20px;
     font-size:14px;
@@ -1364,7 +1382,7 @@ text-align:<?=get_s_align()?>;
     opacity:0.7;
 }
 
-.white_box h2, .white_box p {
+.white_box h2, .white_box p, .white_box .box_text  {
     padding-right:20px;
     padding-left:13px;
 }
@@ -1498,8 +1516,10 @@ width:250px
 }
 
 #alerts{
-text-align:center
+text-align:<?=get_s_align()?>;
+
 }
+
 #outside_links {
     width:130px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
@@ -1536,18 +1556,20 @@ a.more_icons {
     background-repeat:no-repeat;
     background-position:left;
     margin:0 5px;
-    padding-top: 110px;
-    top: 800px;
+    padding-top: 65px;
+    
     width:60px;
     height:60px;
     position:absolute;
     z-index:111;
     background-size: 120px;
+    background-position-y: 10px;
 }
 
 a.more_icons:hover {
     cursor:pointer;
     background-position:right;
+    background-position-y: 10px;
     text-decoration:none;
     color:#3D718E;
 }
@@ -1559,11 +1581,11 @@ a.more_icons:hover {
 
 #weather_hul {
     background-image:url("../img/weather_hul.png");
-    right: 190px;
+    left: 150px;
   
 }
 #likeddislikedforecasts{
-   right:380px;
+   left:200px;
    
 }
 #weather_movies {
@@ -3798,7 +3820,7 @@ font-size: 0.9em;
 #laundryidx
 {
     
-    left: <?  if (!isHeb()) echo "8.9em"; else echo "-2px";?>;
+    left: <?  if (!isHeb()) echo "9.6em"; else echo "-2px";?>;
     top: 130px;
     position: absolute;
 }
@@ -3906,7 +3928,7 @@ font-size: 1.9em;
 line-height: 0.6em;
 top: 36px;
 }
-#latestwind, #latesttemp, #latesttemp2, #latesthumidity, #latestdewpoint, #coldmetersurvey, #latestrain, #latestuv, #latestradiation, #latestairq, #fseasonsurvey
+#latestwind, #latesttemp, #latesttemp2, #latesttemp3, #latesthumidity, #latestdewpoint, #coldmetersurvey, #latestrain, #latestuv, #latestradiation, #latestairq, #fseasonsurvey
 {
     display:none;
 }
@@ -4239,7 +4261,16 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
         display:inline-block;
         font-weight:bold;
 }
-
+ .pic_cell
+{
+    padding:0.5em;margin:0.5em;overflow:hidden;line-height:1.1em
+}
+.piccomment{
+       padding-top:6px;width:150px;line-height: 1em;
+   }
+.picdiv{
+    float:<?echo get_s_align();?>;padding:1px
+}
 div.less
 {
     color: #9f9b00
@@ -4336,7 +4367,7 @@ margin:15px
 #cboxLoadedContent{overflow:auto;}
 #cboxLoadedContent iframe{display:block; width:100%; height:100%; border:0;}
 #cboxTitle{margin:0;}
-#cboxLoadingOverlay, #cboxLoadingGraphic{position:absolute; top:0; left:0; width:100%;}
+#cboxLoadingOverlay, #cboxLoadingGraphic{position:absolute; top:50px; left:50px; width:20%;z-index:99999}
 #cboxPrevious, #cboxNext, #cboxClose, #cboxSlideshow{cursor:pointer;}
  
 /* 
@@ -4475,8 +4506,8 @@ font-size: 11px;
         padding:0.2em;
     }
 #alert_image{
-   padding:0.1em;
-   max-width: 290px;
+   padding:0.2em;
+   max-width: 200px;
    height: auto;
 }
 <? if (in_array("sunset", $css_comp)) { ?>

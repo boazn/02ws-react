@@ -234,26 +234,47 @@ if ((trim($_POST['command']) == "R"))
 {
     rotateAndSave($_POST['picname'], 'jpg');
 }
-$result = db_init("SELECT * FROM UserPicture order by uploadedAt DESC","");
+
+
+$latestPics = array();
+$path_to_files = "images/userpic";
+//echo $path_to_files;
+$latestPics = getfilesFromdir($path_to_files);
+
+		$archwebcam = 0;
+		foreach ($latestPics as $lpic)
+		{
+                        $archwebcam = $archwebcam + 1;
+                        if ($archwebcam < 10){
+			?>
+			
+			<div style="float:<?echo get_s_align();?>;padding:3px">
+				<a href="<?=$lpic[1]?>" title="<?echo getLocalTime($lpic[0]);?>" class="colorbox">
+					<? echo $lpic[1]; ?>
+					
+				</a>
+			</div>
+                        <? }
+		}
+
+$result = db_init("SELECT * FROM UserPicture order by uploadedAt DESC LIMIT 10","");
 $pic_number = 0;
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
         $picaname = "images/userpic/".$line["picname"];
         if ($pic_number % 1 == 0)
             echo "<div class=\"clear\" ></div>";
         ?>
-    
-       <div style="float:<?echo get_s_align();?>;padding-right:20px;width:200px" id="<?=$line["idx"]?>" <? if ($line["approved"] == 1) echo "class=\"inv_plain_3_zebra\"";?>>
+        
+       <div style="float:<?echo get_s_align();?>;padding-right:5px;width:200px;margin-top:20px;direction:rtl" id="<?=$line["idx"]?>" <? if ($line["approved"] == 1) echo "class=\"inv_plain_3_zebra\"";?>>
            
            <input type="checkbox" id="approved<?=$line["idx"]?>" name="approved<?=$line["idx"]?>"  value="<?=$line["approved"]?>" <? if ($line["approved"] == 1) echo "checked=\"checked\""; ?> />
            <input type="hidden" id="picname<?=$line["idx"]?>" name="<?=$picaname?>"  value="<?=$picaname?>" <? if ($line["approved"] == 1) echo "checked=\"checked\""; ?> />
            <input type="hidden" id="reg_id<?=$line["idx"]?>" value="<?=$line["reg_id"]?>" />&nbsp;&nbsp;&nbsp;&nbsp;
-           <img src="images/check.png" width="16px" onclick="getOnePicService(this.parentNode.id, 'U')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;
-           <img src="images/rotate.png" width="16px" onclick="getOnePicService(this.parentNode.id, 'R')" style="cursor:pointer" />
+           <img src="images/check.png" width="16px" onclick="getOnePicService(this.parentNode.id, 'U')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;
+           <img src="images/rotate.png" width="16px" onclick="getOnePicService(this.parentNode.id, 'R')" style="cursor:pointer" /><br/>
            <?=$line["name"]." <br/>".$line["comment"]."<br/>".$line["x"]." <br/>".$line["y"]?>
            
-       </div>
-        
-        <div style="float:<?echo get_s_align();?>;padding:3px" <? if ($line["approved"] == 1) echo "class=\"inv_plain_3_zebra\"";?>>
+       
                                 
                 <a href="<?=$picaname?>" title="" class="colorbox">
                         

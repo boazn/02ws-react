@@ -8,8 +8,8 @@ $SNOW_ARCHIVE = array ("<h2>Snow Archive</h2>From the archive of newspapers from
 	<? echo $SNOW_JER[$lang_idx]; ?>
 </h1>
 
-<div class="float" style="padding:0.5em 1em 0 4em;height:100%;width:44%" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
-	<div class="inv_plain_3 float" style="text-align:<?echo get_s_align();?>;width:100%;height:135px" class="inv_plain_2">
+<div class="snowexp float" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
+	<div class="inv_plain_3 float" style="text-align:<?echo get_s_align();?>;width:100%;" class="inv_plain_2">
 		<div style="float:<?echo get_s_align();?>;width:120px;padding:0.5em">
 			<a href="/images/SnowFlake.jpg" class="colorbox" title="real snow flake">
 				<img src="phpThumb.php?src=images/SnowFlake.jpg&amp;w=120" width="120px" alt="Snow flake at the microscope" />
@@ -18,7 +18,7 @@ $SNOW_ARCHIVE = array ("<h2>Snow Archive</h2>From the archive of newspapers from
 		<? echo $SNOW_EXP[$lang_idx]; ?>
 				
 	</div>
-	<div class="inv_plain_3 float" style="text-align:<?echo get_s_align();?>;width:100%;height:125px" class="inv_plain_2">
+	<div class="inv_plain_3 float" style="text-align:<?echo get_s_align();?>;width:100%;" class="inv_plain_2">
 		<div style="float:<?echo get_s_align();?>;width:120px;padding:0.5em">
 			<a href="images/sleet.jpg" class="colorbox" title="Sleet סליט">
 				<img src="phpThumb.php?src=images/sleet.jpg&amp;w=120" width="120px" alt="Sleet on a chair" />
@@ -27,7 +27,7 @@ $SNOW_ARCHIVE = array ("<h2>Snow Archive</h2>From the archive of newspapers from
 		<? echo $SLEET_EXP[$lang_idx]; ?>
 		
 	</div>
-	<div class="inv_plain_3 float" style="text-align:<?echo get_s_align();?>;width:100%;height:125px" class="inv_plain_2">
+	<div class="inv_plain_3 float" style="text-align:<?echo get_s_align();?>;width:100%;" class="inv_plain_2">
 		<div style="float:<?echo get_s_align();?>;width:120px;padding:0.5em">
 			<a href="images/20100306-graupel-3.jpg" class="colorbox" title="Graupel גראופל">
 				<img src="images/20100306-graupel-3.jpg" width="120px" />
@@ -58,18 +58,18 @@ $SNOW_ARCHIVE = array ("<h2>Snow Archive</h2>From the archive of newspapers from
 
 
 
-<div class="float clear">
+<div id="snowtable" class="float clear">
 <h2><? echo $SNOW_ARCHIVE[$lang_idx]; ?></h2>
-<table class="inv_plain_3 float" style="padding:1em;margin:1em" cellpadding="4" cellspacing="0">
+<table class="inv_plain_3 float" style="padding:0.5em;width:100%" cellpadding="4" cellspacing="0">
     <tr>
-    <th class="inv inv_plain_3 big" style="width:80px;text-align:center"><? echo $WINTER[$lang_idx];?></th>
-    <th class="inv inv_plain_3 big" style="width:100px;text-align:center"><? echo $DAY[$lang_idx];?></th>
-    <th class="inv inv_plain_3 big" style="width:40px;text-align:center"><? echo $DAYS[$lang_idx];?></th>
-    <th class="inv inv_plain_3 big" style="width:50px;text-align:center"><? echo $FROM[$lang_idx];?><br/> (<? echo $SNOW_UNIT[$lang_idx];?>)</th>
-    <th class="inv inv_plain_3 big" style="width:50px;text-align:center"><? echo $TO[$lang_idx];?><br/> (<? echo $SNOW_UNIT[$lang_idx];?>)</th>
-    <th class="inv inv_plain_3 big" style="width:220px;text-align:center"><? echo $COMMENTS[$lang_idx];?></th>
-    <th class="inv inv_plain_3 big" style="width:140px;text-align:center"><? echo $SOURCE[$lang_idx];?></th>
-    <th class="inv inv_plain_3 big" style="width:180px;text-align:center"><? echo $SNOW_PICTURES[$lang_idx];?></th>
+    <th class="inv inv_plain_3 " style="width:10%;text-align:center"><? echo $WINTER[$lang_idx];?></th>
+    <th class="inv inv_plain_3 " style="width:10%;text-align:center"><? echo $DAY[$lang_idx];?></th>
+    <th class="inv inv_plain_3 " style="width:5%;text-align:center"><? echo $DAYS[$lang_idx];?></th>
+    <th class="inv inv_plain_3 " style="width:5%;text-align:center"><? echo $FROM[$lang_idx];?><br/> (<? echo $SNOW_UNIT[$lang_idx];?>)</th>
+    <th class="inv inv_plain_3 " style="width:5%;text-align:center"><? echo $TO[$lang_idx];?><br/> (<? echo $SNOW_UNIT[$lang_idx];?>)</th>
+    <th class="inv inv_plain_3 " style="width:25%;text-align:center"><? echo $COMMENTS[$lang_idx];?></th>
+    <th class="inv inv_plain_3 " style="width:20%;text-align:center"><? echo $SOURCE[$lang_idx];?></th>
+    <th class="inv inv_plain_3 " style="width:20%;text-align:center"><? echo $SNOW_PICTURES[$lang_idx];?></th>
     </tr>
 
 	<?
@@ -89,15 +89,15 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 			 $winterEndingYear = $line['WinterBeginningYear']+1;
 			 $snowdate = new DateTime($line['SnowDate'], new DateTimeZone('Asia/Jerusalem'));
                          print "<tr>";
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"width:80px;text-align:center\">".$line['WinterBeginningYear']."-".$winterEndingYear."</td>\n";
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"width:100px;text-align:center\">".replaceDays(date_format($snowdate, " D "))."<br />".date_format($snowdate, "j/m/Y")."</td>\n";
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"width:40px;text-align:center\" >".$line['StormDays']."</div>\n";                 
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"width:50px;text-align:center\"><strong>".$line['DepthMin']."</strong></td>\n";
-			 print "\t\t<td class=\" inv_plain_3 borderfull\" style=\"width:50px;text-align:center\"><strong>".$line['DepthMax']."</strong></td>\n";
+			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".$line['WinterBeginningYear']."-".$winterEndingYear."</td>\n";
+			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".replaceDays(date_format($snowdate, " D "))."<br />".date_format($snowdate, "j/m/Y")."</td>\n";
+			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\" >".$line['StormDays']."</div>\n";                 
+			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\"><strong>".$line['DepthMin']."</strong></td>\n";
+			 print "\t\t<td class=\" inv_plain_3 borderfull\" style=\"text-align:center\"><strong>".$line['DepthMax']."</strong></td>\n";
 			 $commentsColName = "Comments".$lang_idx;
 			 $sourceColName = "Source".$lang_idx;
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"width:220px;text-align:center\">".$line[$commentsColName]."</td>\n";
-			 print "\t\t<td class=\" inv_plain_3 borderfull\" style=\"width:140px;text-align:center\">".$line[$sourceColName]."</td>\n";
+			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".$line[$commentsColName]."</td>\n";
+			 print "\t\t<td class=\" inv_plain_3 borderfull\" style=\"text-align:center\">".$line[$sourceColName]."</td>\n";
 			 print "\t\t<td>";
 		}
 		else{
@@ -124,8 +124,8 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 	?>
 <div style="clear:both"></div>
 </table>
-<div class="inv float">
-<table class="inv float" style="padding:1em;margin:1em" cellpadding="4" cellspacing="2">
+<div  class="inv float">
+<table class="inv float" style="padding:1em;" cellpadding="4" cellspacing="2">
 <tr class="inv big">
     <td><? echo $WINTER[$lang_idx];?></td>
     
@@ -141,8 +141,8 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 		print "\t<tr class=\"inv_plain_3\">\n";
 		 
 		 $winterEndingYear = $line['WinterBeginningYear']+1;
-		 print "\t\t<td class=\"inv_plain\" style=\"height:2em\" width=\"90px\"><strong>".$line['WinterBeginningYear']."-".$winterEndingYear."</strong></td>\n";
-		 print "\t\t<td class=\"\" style=\"height:2em\" width=\"100px\"><strong>".$line['snowdays']."</strong></td>\n";
+		 print "\t\t<td class=\"inv_plain\" style=\"height:2em\" <strong>".$line['WinterBeginningYear']."-".$winterEndingYear."</strong></td>\n";
+		 print "\t\t<td class=\"\" style=\"height:2em\" ><strong>".$line['snowdays']."</strong></td>\n";
 
         	foreach ($line as $col_value) {
 		    $col_num++;
@@ -173,8 +173,8 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 		print "\t<tr class=\"inv_plain_3\">\n";
 		 
 		 $winterEndingYear = $line['WinterBeginningYear']+1;
-		 print "\t\t<td class=\"inv_plain\" style=\"height:2em\" width=\"90px\"><strong>".$line['WinterBeginningYear']."-".$winterEndingYear."</strong></td>\n";
-		 print "\t\t<td class=\"\" style=\"height:2em\" width=\"100px\"><strong>".$line['snowamount']."</strong></td>\n";
+		 print "\t\t<td class=\"inv_plain\" style=\"height:2em\" ><strong>".$line['WinterBeginningYear']."-".$winterEndingYear."</strong></td>\n";
+		 print "\t\t<td class=\"\" style=\"height:2em\" <strong>".$line['snowamount']."</strong></td>\n";
 
         	foreach ($line as $col_value) {
 		    $col_num++;

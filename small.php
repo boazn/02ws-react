@@ -8,6 +8,7 @@ include "begin_caching.php";
 define("BASE_URL","http://www.02ws.co.il");
 $HOME_PAGE = array("To home page","לעמוד הראשי");
 $HOTORCOLD_T = array("Cold meter", "מדד הקור");
+$FSEASON_T = array("Best season", "העונה הטובה");
 $IT_FEELS = array("feels like", "מרגיש כמו");
 $IN_THE_SUN = array("in the sun", "בשמש");
 $MINTS = array("min", "דק'");
@@ -17,11 +18,14 @@ $RAIN_RATE = array("Rain rate" , "עוצמת גשם");
 $TEMP = array("Temperature" , "טמפרטורה");
 $WIND = array("wind" , "רוח");
 $HUMIDITY = array("humidity" , "לחות");
+$DUST = array("dust", "אבק", "пыль");
+$DUST_THRESHOLD = array("PM10 - above 130 not healthy. Above 300 sport activity is not recommended<br/>PM2.5 - above 38 not healthy. Above 100 sport activity is not recommended<br/>PM2.5 is more dangerous", "PM10 - מעל 130 לא בריא. מעל 300 לא מומלץ לעשות פעילות גופנית<br/>PM2.5 - מעל 38 לא בריא. מעל 100 לא מומלץ לעשות פעילות גופנית<br/>PM2.5 מסוכן יותר", " PM10 - выше 130 вредно для здоровья. Выше 300 не рекомендуется заниматься спортом<br/>PM2.5 - выше 38 вредно для здоровьям. Выше 100 не рекомендуется заниматься спортом<br/>PM2.5 более опасный");
 $HOURS = array("hrs", "שעות");
 $FORECAST_4D = array("Next Days", "הימים הבאים");
 $GIVEN = array("given", "ניתנה");
 $AT = array("at ", "ב-");
 $MESSAGES = array("Messages and alerts", "הודעות והתראות");
+$REMOVE_ADS = array("Want to remove ads? click here!", "רוצה להסיר פרסומות? כאן!");
 $LIVE_PICTURE = array("Live Air", "שידור חי");
 $RAIN_UNIT = array("mm", "מ''מ");
 $WIND_UNIT = array("knots", "קשר");
@@ -40,6 +44,7 @@ $EXPAND = array("In table", "בטבלה");
 $PIC_OF_THE_DAY = array("Pic of the day", "תמונת היום", "");
 $USERS_PICS = array("Users Pics", "תמונות הגולשים", "");
 $NOW = array("now", "עכשיו", "");
+
 function mainPage()
 {
     return ($_REQUEST['section'] == "");
@@ -68,17 +73,6 @@ function isHeb()
 	return ($lang_idx == 1);
 }
 }
-$lang_idx = $_REQUEST['lang'];
-$adFree = $_REQUEST['ad'];
-if ($lang_idx == "")
-    $lang_idx = 1;
-
-
-$width = "320";
-if ($_REQUEST['section'] == "radar.php")
-{
-  $width = "570";  
-}
 function isFastPage(){
     return (($_REQUEST['section'] == "alerts.php")||($_REQUEST['section'] == ""));
 }
@@ -88,6 +82,24 @@ function isAlertsPage(){
 function isGraphsPage(){
     return (($_REQUEST['section'] == "graph.php"));
 }
+function isContactPage(){
+    return (($_REQUEST['section'] == "SendEmailForm.php"));
+}
+function isRadarPage(){
+    return (($_REQUEST['section'] == "radar.php"));
+}
+$lang_idx = $_REQUEST['lang'];
+$adFree = $_REQUEST['ad'];
+if ($lang_idx == "")
+    $lang_idx = 1;
+
+
+$width = "320";
+if (isRadarPage())
+{
+  $width = "570";  
+}
+
 ?>
 <!DOCTYPE html>
 <html  <? if (isHeb()) echo "lang=\"he\" xml:lang=\"he\"" ; ?> xmlns="http://www.w3.org/1999/xhtml">
@@ -97,7 +109,6 @@ function isGraphsPage(){
 <link rel="stylesheet" href="css/mobile.php<?echo "?lang=".$lang_idx."&amp;width=".$width."&amp;fullt=".$_REQUEST['fullt']."&amp;c=".$_REQUEST['c'];?>" type="text/css" />
 
 <link rel="icon" type="image/png" href="img/favicon_sun.png" />
-<meta http-equiv="Refresh" content="1800" />
 <meta property="og:image" content="http://www.02ws.co.il/02ws_short.png" />
 <meta name="viewport" content="width=<?=$width?><? if (isFastPage()) echo ",user-scalable=no";?>" />
 <title><?=$MOBILE_FRIENDLY[$lang_idx]?></title>
@@ -112,7 +123,7 @@ function isGraphsPage(){
 
 </script>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
+<script id="adsense_start">
   (adsbygoogle = window.adsbygoogle || []).push({
     google_ad_client: "ca-pub-2706630587106567",
     enable_page_level_ads: true
@@ -124,46 +135,43 @@ function isGraphsPage(){
 <canvas id="canvas" style="display:none"></canvas>
 <div style="" id="main_cellphone_container">
 <div class="loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
-<? if ((!$adFree==1)&&(empty($_GET['email']))) {?>
-<div id="adunit1" style="display:none">
-<div class="crayze_placement" placement="02ws-main">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- Ad small page -->
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:320px;height:50px"
-         data-ad-client="ca-pub-2706630587106567"
-         data-ad-slot="6699246495"></ins>
-    <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-</div>
+<? if (empty($_GET['email'])) {?>
+<div id="adunit1" class="adunit" style="display:none">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Ad small page -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:320px;height:50px"
+     data-ad-client="ca-pub-2706630587106567"
+     data-ad-slot="6699246495"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 </div>
 <?}?>
 <? if (mainPage()) {?>
 <div id="nextdays" style="display:none">
     <div id="for_title" class="float">
-           <div id="now_title" class="forcast_title_btns for_active">
-           <a href="javascript:void(0)" onclick="navMain('currentinfo_container', $(this).parent().attr('id'))">
-                   <? echo($NOW[$lang_idx]);?>
-           </a>
-           </div>
-           <div id="for24h_title" class="forcast_title_btns">
-           <a href="javascript:void(0)" onclick="navMain('forcast_hours', $(this).parent().attr('id'))">
-                   <? echo(" 24 ".$HOURS[$lang_idx]);?>
-           </a>
-           </div>
-           <div id="expand" class="forcast_title_btns">
-               <a href="javascript:void(0)" onclick="navMain('for24_hours_D', $(this).parent().attr('id'))">
-                   <?=$EXPAND[$lang_idx]?>
-               </a>
-           </div>
-           <div id="fornextdays_title" class="forcast_title_btns">
-           <a href="javascript:void(0)" id="" onclick="navMain('forecastnextdays', $(this).parent().attr('id'))">
-                   <? echo($FORECAST_4D[$lang_idx]); ?>
-           </a>
-           </div>
+        <div id="now_title" class="forcast_title_btns for_active">
+        <a href="javascript:void(0)" onclick="navMain('currentinfo_container', $(this).parent().attr('id'))">
+                <? echo($NOW[$lang_idx]);?>
+        </a>
+        </div>
+        <div id="for24h_title" class="forcast_title_btns">
+        <a href="javascript:void(0)" onclick="navMain('forcast_hours', $(this).parent().attr('id'))">
+                <? echo(" 24 ".$HOURS[$lang_idx]);?>
+        </a>
+        </div>
+        <div id="expand" class="forcast_title_btns">
+        <a href="javascript:void(0)" onclick="navMain('for24_hours_D', $(this).parent().attr('id'))">
+            <?=$EXPAND[$lang_idx]?>
+        </a>
+        </div>
+        <div id="fornextdays_title" class="forcast_title_btns">
+        <a href="javascript:void(0)" id="" onclick="navMain('forecastnextdays', $(this).parent().attr('id'))">
+                <? echo($FORECAST_4D[$lang_idx]); ?>
+        </a>
+        </div>
    </div>
-					
 </div>
 <?}?>
 <div id="logo" <?if (!mainPage()) echo " class=\"logo_secondary\"";?> style="display:none">
@@ -178,7 +186,7 @@ function isGraphsPage(){
 </a>
 </div>
 <?}?>
-<? if (!isFastPage()&&!isGraphsPage()) {?>
+<? if (!isFastPage()&&!isGraphsPage()&&!isContactPage()&&!isRadarPage()) {?>
 <ul class="nav" id="user_info">
     <li><div id="user_icon"></div><p id="user_name"></p><span class="arrow_down">▼</span>
                 <ul style="<?echo get_s_align();?>: -2em;">
@@ -198,7 +206,12 @@ function isGraphsPage(){
         </li>
 
 </ul>
-<?} if (!mainPage()) {include($_GET['section']);}
+<?} if (!mainPage()) {
+    ?>
+<article id="section" >
+   <? include($_GET['section']);?>
+</article>
+<? }
 else {?>
 <div id="currentinfo_container" style="display:none">
 <ul class="info_btns" style="display:none">
@@ -207,13 +220,20 @@ else {?>
    <li id="moist_btn" onclick="change_circle('moist_line', 'latesthumidity')" title=""></li>
    <li id="rain_btn" onclick="change_circle('rain_line', 'latestrain')" title=""></li>
    <li id="wind_btn" onclick="change_circle('wind_line', 'latestwind')" title=""></li>
+   <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title=""></li>
 </ul>
 <ul class="seker_btns" style="display:none">
+<li id="season_btn">
+ <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=1&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" onclick="showLoading()">
+    <?=$FSEASON_T[$lang_idx]?>
+    </a>
+                        </li>
 <li id="cold_btn">
     <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" onclick="showLoading()">
     <?=$HOTORCOLD_T[$lang_idx]?>
     </a>
 </li>
+
 </ul>
 <div id="latestnow" class="inparamdiv">
  <div  id="windy">
@@ -255,7 +275,7 @@ else {?>
 </div>
 <div id="latesttemp" class="inparamdiv" style="display:none;">
         <div class="paramtitle slogan">
-             <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatest.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><? echo $TEMP[$lang_idx];?></a>
+             <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><? echo $TEMP[$lang_idx];?></a>
          </div>
         <div class="paramvalue">
              
@@ -284,12 +304,12 @@ else {?>
          </table>
     </div>
     <div class="graphslink">
-                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatest.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
     </div>
  </div>
 <div id="latesttemp2" class="inparamdiv" style="display:none;">
     <div class="paramtitle slogan">
-             <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp<?if ($PRIMARY_TEMP == 1) echo "Latest";?>.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $TEMP[$lang_idx];?></a>
+             <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp<?if ($PRIMARY_TEMP == 1) echo "LatestArchive";?>.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $TEMP[$lang_idx];?></a>
          </div>
         <div class="paramvalue">
              
@@ -318,7 +338,7 @@ else {?>
          </table>
     </div>
     <div class="graphslink">
-                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatest.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp<?if ($PRIMARY_TEMP == 1) echo "LatestArchive";?>.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
     </div>
 </div>
 <div id="latesthumidity" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
@@ -352,7 +372,7 @@ else {?>
         </table>
         </div>
         <div class="graphslink">
-                <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=humwind.php&amp;level=1&amp;freq=2&amp;datasource=downld02&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+                <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=humwind.php&amp;level=1&amp;freq=2&amp;datasource=downld02&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
    </div>
 </div>
 <div id="latestpressure" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
@@ -386,7 +406,7 @@ else {?>
       </table>
     </div>
     <div class="graphslink">
-                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" ><img src="img/graph_icon.png" alt="to graphs"/></a>
+                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>" ><img src="img/graph_icon.png" alt="to graphs"/></a>
     </div>
 </div>
 <div id="latestrain" class="inparamdiv" style="display:none" <? if (isHeb()) echo "dir=\"rtl\" ";?> title="">
@@ -420,7 +440,7 @@ else {?>
 </table>
 </div>
     <div class="graphslink">
-            <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=RainRateHistory.gif&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+            <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=RainRateHistory.gif&amp;profile=1&amp;lang=<? echo $lang_idx;?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
     </div>
 </div>  
 <div id="latestradiation" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
@@ -428,8 +448,22 @@ else {?>
 <div id="latestuv" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
 </div>
 <div id="latestairq" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
+	<div class="paramtitle slogan">
+		<?=$DUST[$lang_idx]?>
+	</div>
+	<div class="paramvalue">
+		 
+	</div>
+	<div class="highlows">
+		<?=$DUST_THRESHOLD[$lang_idx]?>
+	</div>
+	<div class="paramtrend relative">
+		<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=dust.html&amp;lang=<? echo $lang_idx;?>" title="to graph"><img src="img/graph_icon.png" alt="to graphs"/></a>
+	</div>
 </div>
 <div id="latestdewpoint" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
+</div>
+<div id="latesttemp3" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
 </div>
 <div class="inparamdiv" id="coldmetersurvey" style="display:none">
     
@@ -470,18 +504,23 @@ else {?>
  
 </div>
 <div id="for24_hours_D" style="display:none"></div>
-<div id="adunit2" style="display:none">
-    <? if (!$adFree==1) {?>
-    <div class="crayze_placement" placement="02ws-week">
-        <ins class="adsbygoogle"
-     style="display:inline-block;width:320px;height:50px"
-     data-ad-client="ca-pub-2706630587106567"
-     data-ad-slot="5203551891"></ins>
-        <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+<div id="adunit2" class="adunit" style="display:none">
+    <div class="removeadlink">
+            <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
     </div>
-    <?}?>
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Large Mobile Banner 2 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:320px;height:100px"
+     data-ad-client="ca-pub-2706630587106567"
+     data-ad-slot="4198340247"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    <div class="removeadlink">
+            <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
+    </div>
+   
 </div>
 <div id="messages_box" class="white_box" style="display:none">
     <h2><? echo $MESSAGES[$lang_idx];?></h2>
@@ -496,30 +535,32 @@ else {?>
     <p id="personal_message" >
      
     </p>
+	
     <p id="latest_picoftheday" >
      
     </p>
     <p id="latest_user_pic" >
      
     </p>
+    <!-- Ad small unit 3-->
+	<div id="adunit3" class="adunit" style="display:none">
+        <div class="removeadlink">
+            <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
+        </div>
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- Large Mobile Banner 1 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:320px;height:100px"
+		 data-ad-client="ca-pub-2706630587106567"
+		 data-ad-slot="3647675909"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+	</div>
 </div>
 
  <?}// end  homepage?>
-<div id="adunit3" style="display:none">
-    <? if (!$adFree==1) {?>
-    <!-- Ad small unit 3-->
-       <div class="crayze_placement" placement="02ws-24">
-            <!-- small unit 2 -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:320px;height:50px"
-                 data-ad-client="ca-pub-2706630587106567"
-                 data-ad-slot="3726818696"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    <?}?>
- </div>
+
 <!-- Parallax  midground clouds -->
 <div id="parallax-bg2">
     <div id="cloudiness4bg2" style="display:none">
@@ -554,8 +595,30 @@ else {?>
     </div>
     
 </div>
+<div id="startupdiv" style="display:none;top: 72px; left: 8px;z-index:999999; position: absolute;background-color:#fff" class role="dialog">
+<button type="button" id="cboxClose" style="background-image: url(../img/close.png);
+    border: none;
+    height: 32px;
+    width: 32px;
+    left: 5px;position: absolute;top: 5px;" onclick="$( this ).parent().hide();">close</button><br />
+ <div class="removeadlink">
+            <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
+    </div>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- startup mobile -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-2706630587106567"
+     data-ad-slot="5793963685"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+ <div class="removeadlink">
+            <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
+    </div>
+</div>
 <? if (!isFastPage()){ ?>
-
+<input type="hidden" id="chosen_user_icon" value=""/>
 <div style="display:none">
 <div id="profileform" style="padding:0.5em" >
                             <div class="float">
@@ -663,6 +726,7 @@ else {?>
 
 
 <script type="text/javascript">
+  var isUserAdApproved = false;
 <!--
     /*!
 loadCSS: load a CSS file asynchronously.
@@ -728,11 +792,52 @@ Licensed MIT
     }
     
     function c_or_f(temp, tempunit) {
-        if (tempunit == '°F') {
+        if ((tempunit == '°F')||(tempunit == '°Fnull')) {
             return ( Math.round(((9 * temp) / 5) + 32));
         }
         return temp;
     }
+	function loadPostData(jsonstr)
+	{
+            var C_STARTUP_AD_INTERVAL = 3;
+		 $.getScript( "footerScripts160816.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>" , function( data, textStatus, jqxhr) {
+							if (jsonstr  != undefined)
+								fillcoldmeter(jsonstr);
+							 $(".loading").hide();
+                            <?if ($_GET['reg_id'] != "") {?>
+                            $.ajax({
+                                type: "GET",
+                                url: "checkauth.php?action=getuser&reg_id=<?=$_GET['reg_id']?>&qs=<?=$_SERVER['QUERY_STRING']?>"
+                              }).done(function( jsonstr ) {
+
+                                   var jsonT = JSON.parse( jsonstr  );
+                                   if (jsonT.user.approved > 0)
+                                      isUserAdApproved = true;
+                                    if (!isUserAdApproved)
+                                    {   
+                                        $(".adunit").show();
+                                        if (sessions % C_STARTUP_AD_INTERVAL == 0)
+                                        {
+                                            $("#startupdiv").show();
+                                        }
+                                    }  
+                              });
+                            <?}else{?>
+                            if (!isUserAdApproved)
+                            {
+                               $(".adunit").show();
+                                if (sessions % C_STARTUP_AD_INTERVAL == 0)
+                                {
+                                    $("#startupdiv").show();
+                                }
+                            }
+                            else
+                              $('#adunit2').hide();  
+                            <?}?>
+                            $('#nextdays').show();
+							
+                    });
+	}
     function loadData(json)
     {
         var cssstyle_str = "";
@@ -775,16 +880,16 @@ Licensed MIT
       }
       cssstyle_str += ",mobile";
         var tempunit = getParameterByName('tempunit');
-        if (tempunit == '°F')
-        {$("#postc").show();$("#postf").hide();$("#spanc").hide();$("#spanf").show();}
-        else
-        {$("#postf").show();$("#postc").hide();$("#spanf").hide();$("#spanc").show();tempunit = '°C';}  
+        if (tempunit == '°Fnull')
+            tempunit = '°F';
+        else if (tempunit == '°Cnull')
+            tempunit = '°C';
         $('#date').html(json.jws.current.date<?=$lang_idx?>);
         $('#messages_box').children('.box_text').html(decodeURIComponent(json.jws.Messages.detailedforecast<?=$lang_idx?>).replace(/\+/g, ' '));
         $('#tempdivvalue').html(c_or_f(json.jws.current.temp, tempunit)+'<span class="paramunit">'+tempunit+'</span>');
         $('#tempdivvalue').css('visibility', 'visible');
         $('#windy').html(json.jws.windstatus.lang<? echo $lang_idx;?>);
-        
+      
        var cur_feel_link=document.getElementById('current_feeling_link');
        if (typeof coldmeter_size == 'undefined') 
                 coldmeter_size = 14;
@@ -795,15 +900,12 @@ Licensed MIT
                 url: 'coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size,
                 beforeSend: function(){$(".loading").show();}
               }).done(function( jsonstr  ) {
-                    $('#nextdays').show();
-                    $("#adunit1").show();
-                    $.getScript( "footerScripts160816.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>" , function( data, textStatus, jqxhr) {
-                            fillcoldmeter(jsonstr);
-                            $(".loading").hide();
-                    });
-
+                  
+                    loadPostData(jsonstr);
               });
-        }
+        }else
+			loadPostData();
+
         if (json.jws.feelslike.state == "windchill")
         {$("#itfeels_windchill").show();$("#itfeels_windchill .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "&#176;")}
         else if (json.jws.feelslike.state == "heatindex")
@@ -857,6 +959,8 @@ Licensed MIT
         $("#latestrain .highlows .high_time").html(json.jws.today.highrainrate_time);
         $("#latestrain .paramvalue").html(json.jws.current.rainrate+'<span class="paramunit">' + " <?=$RAINRATE_UNIT[$lang_idx]?>" +'</span>');
         $("#latestrain .paramtrend").html("<?=$DAILY_RAIN[$lang_idx]?>:&nbsp;" + json.jws.today.rain + " <?=$RAIN_UNIT[$lang_idx]?>" + "<br/>" + "<?=$TOTAL_RAIN[$lang_idx]?>:&nbsp;" + json.jws.seasonTillNow.rain + " <?=$RAIN_UNIT[$lang_idx]?>");
+		$("#latestairq .paramvalue").html(json.jws.current.pm10 + '<span class=\"paramunit\">&plusmn;' + json.jws.current.pm10sd + '&nbsp;µg/m3&nbsp;(PM10)</span><br />' + 
+                             json.jws.current.pm25  + '<span class=\"paramunit\">&plusmn;'+ json.jws.current.pm25sd + '&nbsp;µg/m3&nbsp;(PM2.5)</span>');
         for (i = 0; i< 4; i++){ 
         $('#shortforecast').children('.nav').children().eq(i).html(json.jws.forecastDays[i].day_name<?=$lang_idx?>+"  "+json.jws.forecastDays[i].date+"</br>"+"<img src=\"" + json.jws.forecastDays[i].icon + "\" onclick=\"showNextDays()\" width=\"32\" height=\"32\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></br>"+c_or_f(json.jws.forecastDays[i].TempLow, tempunit)+" - "+c_or_f(json.jws.forecastDays[i].TempHigh, tempunit));
         }
@@ -998,24 +1102,16 @@ Licensed MIT
        
        $('#messages_box').show();
        if (json.jws.LatestUserPic.passedts < 7200){
-           var latest_user_pic = "<a href=\"small.php?section=userPics.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestUserPic.picname + "\" width=\"290\" title=\"userpic\" /></br>" + decodeURIComponent(json.jws.LatestUserPic.name.replace(/\+/g, " ")) + ":" + decodeURIComponent(json.jws.LatestUserPic.comment.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";
+           var latest_user_pic = "<a href=\"small.php?section=userPics.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestUserPic.picname + "\" width=\"290\" title=\"userpic\" /></br>" + decodeURIComponent(json.jws.LatestUserPic.name.replace(/\+/g, " ")) + ": " + decodeURIComponent(json.jws.LatestUserPic.comment.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";
            $('#latest_user_pic').html(latest_user_pic);
        }
        if (json.jws.LatestPicOfTheDay.passedts < 9600){
-           var latest_pic_of_the_day = "<a href=\"small.php?section=picoftheday.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"290\" title=\"pic of the day\" /></br>" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";
+           var latest_pic_of_the_day = "<a href=\"small.php?section=picoftheday.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"290\" title=\"pic of the day\" /></br><?=$PIC_OF_THE_DAY[$lang_idx]?><br/>" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";
            $('#latest_picoftheday').html(latest_pic_of_the_day);
        }
        $('#livepic_box').show();
-       $('#rainradar_box').show();
-       $('#picday_box').show();
-       $('#userpic_box').show();
-       $('#forum_box').show();
-       $('#contact_box').show();
        $('#canvas').show();
-       if (('#adunit3').length)
-           $('#adunit3').show();
-       $("#adunit1").show();
-       if ((json.jws.states.issnowing != 1) && (json.jws.states.israining == 1))    
+        if ((json.jws.states.issnowing != 1) && (json.jws.states.israining == 1))    
        {$.getScript( "js/rain.js" );
            if (get_sound == 1){
                playSound();
@@ -1037,7 +1133,8 @@ Licensed MIT
         
         $('#' + nodeid).addClass('for_active');
         $('#' + tabcontainer).show();
-        $('#adunit2').show();
+        if (!isUserAdApproved)
+             $('#adunit2').show();
         
     }
     function playSound()
@@ -1084,7 +1181,8 @@ Licensed MIT
           alert ('error:' + e);
       }
     });
-   <?}else{?> $(".loading").hide();$("#adunit1").show(); <?}?>
+	
+   <?}else{?> $(".loading").hide(); <?}?>
 //-->
 </script>
 <? if (!isFastPage()) { ?>
@@ -1092,6 +1190,15 @@ Licensed MIT
 <script src="footerScripts160816.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>
 <script type="text/javascript">
 startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
+if (!isUserAdApproved)
+	{
+		$("#adunit1").show();
+		if (('#adunit3').length)
+			 $('#adunit3').show();
+		 $('#adunit2').show();
+	}
+	else
+	  $('#adunit2').hide();  
 </script>
 <?}?>
 </body>

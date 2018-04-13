@@ -235,16 +235,17 @@ alert (e);
 }
 }
 
-$(document).ready(function(){$(".colorbox").colorbox({maxWidth:"90%"});
-$("a[rel='external']").colorbox({width:"80%", height:"80%", iframe:true});$("a[title='legend']").colorbox({width:"85%"});
+$(document).ready(function(){$(".colorbox").colorbox({maxWidth:"95%"});
+$("a[rel='external']").colorbox({width:"99%", height:"85%", iframe:true});
+$("a[title='legend']").colorbox({width:"85%"});02/03/2018
 $(".href").colorbox({width:"35%", inline:true, href:"#href_dialog"});
 $(".imghref").colorbox({width:"35%", inline:true, href:"#href_img_dialog"});
 $(".mood").colorbox({width:"35%", inline:true, href:"#moods_dialog"});
 $(".user_icon").colorbox({width:"35%", inline:true, href:"#user_icon_dialog"});
-$("#login").colorbox({width:"260px", height:"290px", inline:true, top:"40px", href:"#loginform"});
-$(".register").colorbox({width:"260px", height:"400px", inline:true, top:"40px", fixed:true,href:"#registerform"});
-$("#forgotpass").colorbox({width:"260px", height:"200px", inline:true, top:"40px", fixed:true, href:"#passforgotform",onOpen:function(){}});
-$("#updateprofile").colorbox({width:"260px", inline:true, top:"40px",fixed:true, href:"#profileform"});
+$("#login").colorbox({width:"290px", height:"290px", inline:true, top:"40px", href:"#loginform"});
+$(".register").colorbox({width:"290px", height:"420px", inline:true, top:"40px", fixed:true,href:"#registerform"});
+$("#forgotpass").colorbox({width:"290px", height:"200px", inline:true, top:"40px", fixed:true, href:"#passforgotform",onOpen:function(){}});
+$("#updateprofile").colorbox({width:"290px", inline:true, top:"40px",fixed:true, href:"#profileform"});
 $(".icon_forecast").colorbox({width:"35%", inline:true, href:"#icons_dialog"});
 $(".temphigh").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
 $(".tempnight").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
@@ -440,6 +441,7 @@ else
      document.getElementById("latestnow").style.display = "none";
      document.getElementById("latesttemp").style.display = "none";
      document.getElementById("latesttemp2").style.display = "none";
+     document.getElementById("latesttemp3").style.display = "none";
      document.getElementById("latestpressure").style.display = "none";
      document.getElementById("latesthumidity").style.display = "none";
      document.getElementById("latestuv").style.display = "none";
@@ -455,6 +457,7 @@ else
                  document.getElementById("fseasonsurvey").style.display = "none";
 		 document.getElementById("now_line").style.visibility = "hidden";
                  document.getElementById("temp2_line").style.visibility = "hidden";
+                 document.getElementById("temp3_line").style.visibility = "hidden";
 		 document.getElementById("temp_line").style.visibility = "hidden";
 		 document.getElementById("moist_line").style.visibility = "hidden";
                  document.getElementById("dew_line").style.visibility = "hidden";
@@ -1146,6 +1149,7 @@ function fillLikes(jsonstr)
         $("#latestnow").show();
         $("#latesttemp").show();
         $("#latesttemp2").show();
+        $("#latesttemp3").show();
         $("#latesthumidity").show();
         $("#latestpressure").show();
         $("#latestwind").show();
@@ -1176,6 +1180,10 @@ function fillLikes(jsonstr)
         $("#latesttemp2").animate({
     marginLeft: "-200px",
     marginTop: "-100px"
+        }, 1500 );
+        $("#latesttemp3").animate({
+    marginLeft: "-200px",
+    marginTop: "300px"
         }, 1500 );
         
         $("#latesthumidity").animate({
@@ -1295,11 +1303,13 @@ function startup(lang, from, update)
         
                 $.ajax({
                   type: "GET",
-                  url: "checkauth.php?action=getuser&lang=" + lang
+                  url: "checkauth.php?action=getuser&lang=" + lang +"&guid=<?=$_GET['guid']?>"
                 }).done(function( jsonstr ) {
                   try{
 
                      var jsonT = JSON.parse( jsonstr  );
+                     if (jsonT.user.approved == 1)
+                        isUserAdApproved = true;
                      if (!jsonT.user.loggedin)
                          {
                             toggle('notloggedin');
@@ -1693,7 +1703,7 @@ function startup(lang, from, update)
                             $forecastHour = apcu_fetch("forecasthour");
                             foreach ($forecastHour as $key => &$hour_f) {
                             if (shouldShowWeatherIcon($hour_f)){
-                                echo "{ x: ".(($hour_f['id']+1)-0.5).", y: ".$y_image."}";
+                                echo "{ x: ".(($hour_f['id']+1)-0.5).", y: ".($y_image)."}";
                                 if ($hour_f != end($forecastHour))
                                     echo ",";
                             }
@@ -1709,7 +1719,7 @@ function startup(lang, from, update)
                             <? $y_image = getCorF($max_temp);
                             $sigWindHour = apcu_fetch("sigWindHour");
                             foreach ($sigWindHour as $hour_f){
-                                echo "{ x: ".(($hour_f['id']+1)-0.5).", y: ".$y_image."}";
+                                echo "{ x: ".(($hour_f['id']+1)-0.5).", y: ".($y_image - 1.5)."}";
                                 if ($hour_f != end($sigWindHour))
                                     echo ",";
                             }
@@ -1926,6 +1936,11 @@ function startup(lang, from, update)
 //
 // startup script
 //
+var isUserAdApproved = false;
+var sessions = getCookie('sessions');
+if (sessions == 'NaN') {sessions = 0};
+sessions = parseInt(sessions) + 1;
+rememberCookie ('sessions', sessions);
 window.addEventListener('load', function () {
 		FastClick.attach(document.body);
 	}, false);

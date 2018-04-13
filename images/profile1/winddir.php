@@ -56,12 +56,15 @@
 #   This document uses Tab 4 Settings
 ############################################################################
 $DATA   = array();
-require_once("GraphSettings.php");
+if ($_GET['datasource'] != "")
+	require_once("GraphSettings02ws.php");
+	else
+	require_once("GraphSettings.php");
 global  $SITE;
 ############################################################################
-$SITE['hrs']            = 24;       # Adjustable via level
-$SITE['tick']           = 4;        # Adjustable via level
-$SITE['freq']           = 2;        # Adjustable via freq
+$SITE['hrs']            = 1440;       # Adjustable via level
+$SITE['tick']           = 1;        # Adjustable via level
+$SITE['freq']           = 1;        # Adjustable via freq
 ############################################################################
 # Check for passed variables
 ############################################################################
@@ -98,23 +101,44 @@ $key_split = "/ +/";
 foreach($rawdata as $key) {
     if ($got < $wanted) {
     	
-    	$DATA = preg_split($key_split, $key);
-		debug_out(ret_value("date"));
+    	$DATA = preg_split('/  +/', $key);
+		if (count($DATA) == 1)
+			$DATA = preg_split('/ +/', $key);
+		debug_out(ret_value("date")." ".ret_value("time"));
 		$timeA = explode(':',ret_value("time"));
-		debug_out("data[0] = '".$DATA[0]."'");
-		debug_out("data[1] = ".$DATA[1]);
+		//debug_out("count = ".count($DATA));
+		//debug_out("data[0] = '".$DATA[0]."'");
+		//debug_out("data[1] = ".$DATA[1]);
         if (freq_check($timeA[1])) {
             debug_out("Storing data");
-            debug_out("Xaxis = " . timeto12(substr(ret_value("time"),0,2)));
-            debug_out("Y1axis = " . ret_value("avgbearing"));       
+           
+			
             $dateArray = explode($datedelimiter,$DATA[0]);
+			if ($_GET['datasource'] != "")
+			{
+				$dateday = $dateArray[0];
+				$datemon = $dateArray[1];
+				$dateyear = $dateArray[2];
+			}
+			else
+			{
 				$dateday = $dateArray[2];
 				$datemon = $dateArray[1];
-			
-            debug_out("day = ".$dateday."/".$datemon);
-            $rx[] = $timeA[0].":".$timeA[1]."\n".$dateday."/".$datemon;
-            $ry1[] = ret_value("avgbearing");
-        $got++;
+				$dateyear = $dateArray[0]-2000;
+			}
+           
+			$ts = mktime($timeA[0], $timeA[1], 0, $datemon , $dateday, $dateyear+2000);
+            debug_out("ts = ".$ts);
+			debug_out("Xaxis = ".Date('H:i j/m', $ts));
+			 debug_out("Yaxis = " . ret_value("winddir") );
+            $rx[] = $ts;
+            $ry1[] =  ret_value("winddir");
+ 
+            $SITE['tempunit'] 	= "&#xb0;" . ret_value("tempunit");
+            $SITE['pressunit'] 	= "mb";
+            $SITE['rainunit'] 	= "mm";
+            $SITE['windunit']	= "knots";
+	        $got++;
         }
     }
 }

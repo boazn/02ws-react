@@ -9,8 +9,9 @@
 <td>
 <form method="post" action="#rainSeasons">
 	<select NAME="seasons[]" size="23" multiple>
+        <option selected value="2017-2018">2017-2018</option>
         <option selected value="2016-2017">2016-2017</option>
-        <option selected value="2015-2016">2015-2016</option>
+        <option          value="2015-2016">2015-2016</option>
         <option          value="2014-2015">2014-2015</option>
         <option          value="2013-2014">2013-2014</option>
 	<option          value="2012-2013">2012-2013</option>

@@ -214,7 +214,7 @@ $graph->xgrid->Show();
 //y-axis
 $graph->yaxis->scale->ticks->Set(1);
 $graph->yaxis->SetColor($SITE['txtcolor']);
-$graph->yaxis->SetLabelFormat('%0.1f' . $SITE['tempunit']);
+$graph->yaxis->SetLabelFormat('%0.0f' . $SITE['tempunit']);
 $graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,7);
 $graph->yaxis->scale->SetGrace(5);
 $graph->ygrid->SetFill(true,'#EFEFEF@0.5','#FFFFFF@0.5');

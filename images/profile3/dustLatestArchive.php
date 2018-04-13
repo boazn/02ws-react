@@ -62,7 +62,7 @@
 $DATA   = array();
 $width = $_GET['w'];
 if ($_GET['datasource'] != "")
-	require_once("GraphSettingsLatest.php");
+	require_once("GraphSettingsLatestArchive.php");
 	else
 	require_once("GraphSettings.php");
 	
@@ -79,15 +79,14 @@ check_sourceview(); # Checks to see if Source View Was passed to the script
 check_dataview();   # Checks to see if Data View Was passed to the script
 set_tz( $SITE['tz'] );
 ############################################################################
-$SITE['hrs']            = 1440;       # Adjustable via level
+$SITE['hrs']            = 9000;       # Adjustable via level
 $SITE['tick']           = 1;        # Adjustable via level
 $SITE['freq']           = 1;        # Adjustable via freq
 ############################################################################
 
 // Load Contents of Realtime.log file
-debug_out("obtaining data from: " . $SITE['hloc'] . $SITE['datafile']);
+debug_out("obtaining data from: " . $resultarichive);
 
-$rawdata = file($SITE['hloc'] . $SITE['datafile']);
 
 debug_out("Obtained " . count($rawdata));
 debug_out("Want to obtain " . $SITE['hrs']);
@@ -107,28 +106,26 @@ foreach($rawdata as $key) {
        $got++;
      if ($got <= $wanted && $got > 1) {
     	
-    	$DATA = preg_split($key_split, $key);
+    	$DATA = $key;
+        
         debug_out("Storing data");
-        $current_datetime = trim(ret_value("RecDateTime"),'"');
-        debug_out("Xaxis = " . $current_datetime);
-        debug_out("Y1axis = " . ret_value("TempOut") );
-        $tempc = number_format(((trim(ret_value("TempOut"),'"')/10) -32)*(5/9), 1, '.', '');
-        debug_out("Y1axis c = " . $tempc );
-        $dewc = number_format(((trim(ret_value("DewPoint"),'"')/10) -32)*(5/9), 1, '.', '');
-        debug_out("Y2axis = " . $dewc );
-        if (strlen($current_datetime) > 10)
-            $dateRec = $current_datetime;
-        else
-            $dateRec = $current_datetime." 00:00:00";
-        $datetime = DateTime::createFromFormat ("d/m/Y H:i:s", $dateRec);
+        //print_r($DATA);
+        $current_date = ret_value("date");
+        $pm10 = ret_value("pm10");
+        $pm25 = ret_value("pm25");
+        debug_out("Xaxis = " . $current_date);
+        debug_out("Y1axis = " . $temp );
+        debug_out("Y2axis = " . $hum );
+        $dateRec = $current_date." ".ret_value("time");
+        $datetime = DateTime::createFromFormat ("Y-m-d H:i:s", $dateRec);
 
         debug_out("datetime = " . $datetime->format('H:i j/m/y') );
         $ts = $datetime->getTimestamp();
         debug_out("ts = ".$ts);
         debug_out("date = ".Date('H:i j/m/y', $ts));
         $rx[] =  $ts;
-        $ry1[] =  $tempc;
-        $ry2[] = trim($dewc,'"');
+        $ry1[] =  $pm10;
+        $ry2[] = $pm25;
 
         $SITE['tempunit'] 	= "&#xb0;" . "C";
         $SITE['pressunit'] 	= "mb";
@@ -190,9 +187,9 @@ $graph->img->SetMargin(45,40,20,55);
 $lineplot=new LinePlot($y1, $x);
 $lineplot2=new LinePlot($y2, $x);
 // Set the colors for the plots
-$lineplot->SetColor("red");
+$lineplot->SetColor("green");
 $lineplot->SetWeight(4);
-$lineplot->SetFillColor("lightred@0.5");
+$lineplot->SetFillColor("lightgreen@0.5");
 $lineplot2->SetColor("darkgreen");
 $lineplot2->SetFillColor("darkgreen@0.5");
 $lineplot2->SetWeight(2);
@@ -218,7 +215,7 @@ $graph->xgrid->Show();
 
 //y-axis
 $graph->yaxis->SetColor($SITE['txtcolor']);
-$graph->yaxis->SetLabelFormat('%0.0f ' . $SITE['tempunit']);
+$graph->yaxis->SetLabelFormat('%d ' );
 $graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,7);
 //$graph->yaxis->scale->SetGrace(5);
 $graph->yaxis->HideTicks(false,false); 
@@ -233,7 +230,7 @@ $txt2->SetColor("azure4@0.85");
 $txt2->SetAngle(90);
 $graph->AddText($txt2);
 
-$chart_title = $TEMP[$lang_idx]." ".$MOUNTAIN[$lang_idx]."/".$DEW[$lang_idx]." ".$MOUNTAIN[$lang_idx];
+$chart_title = $DUST[$lang_idx];
 if ($lang_idx == 1) $chart_title = utf8_strrev($chart_title);
 $txt1=new Text($chart_title);
 $txt1->SetFont(FF_ARIAL, FS_BOLD,29);
@@ -249,17 +246,17 @@ $txt3->SetColor("azure4");
 $graph->AddText($txt3);
 
 
-$txtaa=new Text($chrs . "dew");
+$txtaa=new Text($chrs . "pm2.5");
 $txtaa->SetFont(FF_VERDANA, FS_BOLD,7);
 $txtaa->SetPos($width - 56,$height - 210,'center');
 $txtaa->SetColor("darkgreen");
 $graph->AddText($txtaa);
 
-$temp = $lang_idx == 1 ? utf8_strrev($TEMP[$lang_idx]) : $TEMP[$lang_idx];
-$txtab=new Text($chrs . $temp);
+
+$txtab=new Text($chrs . "pm10");
 $txtab->SetFont(FF_ARIAL, FS_BOLD,7);
 $txtab->SetPos(70,$height - 210,'center');
-$txtab->SetColor("red");
+$txtab->SetColor("green");
 $graph->AddText($txtab);
 
 // If Info is on, then display

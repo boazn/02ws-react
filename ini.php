@@ -15,10 +15,12 @@ define("IMAGE_TYPE","gif");
 define("JSON_FILE_PATH", "/home/boazn/public/02ws.com/public/02wsjson.txt");
 define("FILE_XML_FULLDATA","fulldatacumulus.xml");
 define("FILE_XML_FULLDATA2","fulldata.xml");
+define("FILE_XML_FULLDATA3","realtimemb.xml");
+define("FILE_XML_MONTHLY_YEARLY","monthlyyearlymb.xml");
 define("FILE_CACHE","APC");
 define("EMAIL_ADDRESS","02ws.yerushamaim@gmail.com");
-define("GOOGLE_API_KEY", "AIzaSyA6nyCsWgrwXuh2tbsisPopkdgVRjQcTeQ");
-define("FCM_API_KEY", "AIzaSyCmSolZFAUmCnkVpY85bNp4ntzFZgz6fo4");
+define("GOOGLE_API_KEY", "AAAA9gsUJcw:APA91bGWiMagV4yTqG_0saibvybFuMFnuQr7TrdDmRAcaFpEKRfWIDjsgkM_MfF5guyMmrgFnBEIf0kjLbP9nvF5ToemJBPxXS96jnCWGpLoMxKAWXA-83sC9spXbAD18U45CuCe3ZL0");//AIzaSyA6nyCsWgrwXuh2tbsisPopkdgVRjQcTeQ
+define("FCM_API_KEY", "AAAA9gsUJcw:APA91bGWiMagV4yTqG_0saibvybFuMFnuQr7TrdDmRAcaFpEKRfWIDjsgkM_MfF5guyMmrgFnBEIf0kjLbP9nvF5ToemJBPxXS96jnCWGpLoMxKAWXA-83sC9spXbAD18U45CuCe3ZL0");//AIzaSyCmSolZFAUmCnkVpY85bNp4ntzFZgz6fo4
 define("MYSQL_DB","02ws");
 define("MYSQL_IP","localhost");	
 define("MYSQL_USER","boazn");	
@@ -32,10 +34,10 @@ define ("SNOW_IS_MELTING", 0);
 define ("SNOW_ON_THE_GROUND", 0);
 date_default_timezone_set('Asia/Jerusalem');
 $header_pic = "images/header/header_small1_text.jpg";//header_small1.JPG//header_lights11.jpg
-$PLACE = array("Jerusalem", "ירושלים");
-$SLOGAN = array("Jerusalem Weather Station", "תחנת מזג-אוויר עדכנית בי-ם");
-$LOGO = array("02WS", "ירושמים");
-$WEBSITE_TITLE = array ("Jerusalem Weather Forecast Station", "ירושמים - תחזית ומזג-האוויר בירושלים בזמן אמת");
+$PLACE = array("Jerusalem", "ירושלים", "Jerusalem");
+$SLOGAN = array("Jerusalem Weather Station", "תחנת מזג-אוויר עדכנית בי-ם", "Иерусалимская метеорологическая станция");
+$LOGO = array("02WS", "ירושמים", "02WS");
+$WEBSITE_TITLE = array ("Jerusalem Weather Forecast Station", "ירושמים - תחזית ומזג-האוויר בירושלים בזמן אמת", "Иерусалимская метеорологическая станция");
 $error_db = false;
 $fulldatatotake = FILE_XML_FULLDATA;
 $mySite = true;
@@ -45,7 +47,7 @@ $PRIMARY_TEMP = 2;
 // 30 min diff
 if (((@filemtime(FILE_XML_FULLDATA) + 1800) < @filemtime(FILE_XML_FULLDATA2)) || (!file_exists(FILE_XML_FULLDATA)))
 	$fulldatatotake = FILE_XML_FULLDATA2;
-
+$fulldatatotake = FILE_XML_FULLDATA3;
 /***********************************************************************/
 
 /*
