@@ -131,7 +131,7 @@ function cleanInvalidAPNTokens()
 function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip)
 {
   
-    global $TIP;
+    global $TIP, $ALERTS_PAYMENT;
     // Report all PHP errors
     error_reporting(-1);
     $registrationIDs0 = array();
@@ -173,8 +173,8 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     }
  $result = "";
  if (strlen($title[1]) > 0){
-    $messageBody[0] = $title[0].": ".$messageBody[0];
-    $messageBody[1] = $title[1].": ".$messageBody[1];
+    $messageBody[0] = $title[0].": ".$messageBody[0]." \n\n".$ALERTS_PAYMENT[0];
+    $messageBody[1] = $title[1].": ".$messageBody[1]." \n\n".$ALERTS_PAYMENT[1];
  }
  $result = sendAPNToRegIDs($registrationIDs1, date('H:i')." ".$messageBody[1], $picture_url, $embedded_url);
  $result .= sendAPNToRegIDs($registrationIDs0, date('H:i')." ".$messageBody[0], $picture_url, $embedded_url);
@@ -244,7 +244,7 @@ if ($apple_error_response) {
 }
 function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip, $CloudMessageType)
 {
-    global $TIP, $REPLY_ENGAGE;
+    global $TIP, $REPLY_ENGAGE, $ALERTS_PAYMENT;
     $key = "";
     $registrationIDs0 = array();
     $registrationIDs1 = array();
@@ -257,8 +257,8 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         $messageBody[0] = $TIP[0].": ".$messageBody[0];
         $messageBody[1] = $TIP[1].": ".$messageBody[1];
     }
-    $messageBody[0] = date('H:i')." ".$messageBody[0]." \n\n".$REPLY_ENGAGE[0];
-    $messageBody[1] = date('H:i')." ".$messageBody[1]." \n\n".$REPLY_ENGAGE[1];
+    $messageBody[0] = date('H:i')." ".$messageBody[0]." \n\n".$ALERTS_PAYMENT[0]." \n\n".$REPLY_ENGAGE[0];
+    $messageBody[1] = date('H:i')." ".$messageBody[1]." \n\n".$ALERTS_PAYMENT[1]." \n\n".$REPLY_ENGAGE[1];
     if ($CloudMessageType == CloudMessageType::Fcm)
     {
         $key = FCM_API_KEY;
@@ -417,6 +417,7 @@ function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_ur
 }
 function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title)
 {
+    global $ALERTS_PAYMENT, $PATREON_LINK;
     try
     {
         global $lang_idx;
@@ -484,13 +485,18 @@ if (empty($empty)) {
     else
         $img_tag = " <img src=\"".$picture_url."\" id=\"alert_image\" alt=\"alert image\" />";
     
+    
+
     try{
         $msgToAlertSection = array($message[0]."<br />".$img_tag, $message[1]."<br />".$img_tag);
         if (strlen($title[0]) > 0){
             $msgToAlertSection[0] = $title[0].": ".$msgToAlertSection[0];
             $msgToAlertSection[1] = $title[1].": ".$msgToAlertSection[1];
         }
-        
+        if (boolval($_POST["short_range"])){
+            $msgToAlertSection[0] = $msgToAlertSection[0]."<br />".$ALERTS_PAYMENT[0]." ".$PATREON_LINK[0];
+            $msgToAlertSection[1] = $msgToAlertSection[1]."<br />".$ALERTS_PAYMENT[1]." ".$PATREON_LINK[1];
+        }
         updateMessageFromMessages ($msgToAlertSection[0], 1, 'forecast', 0 ,'' ,'','');
         updateMessageFromMessages ($msgToAlertSection[1], 1, 'forecast', 1 ,'' ,'','');
     } 
@@ -520,7 +526,7 @@ if (empty($empty)) {
         else {
         $EmailSubject = array($title[0], $title[1]);
         }
-        $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
+        //$result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
     } 
     catch (Exception $ex) {
        $result .= " exception send_Email:".$ex->getMessage();

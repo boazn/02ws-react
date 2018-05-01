@@ -333,14 +333,14 @@ $temp_to_cold_meter = $current->get_temp_to_coldmeter();
 $temp_from = $temp_to_cold_meter - 0.5;
 $temp_to = $temp_to_cold_meter + 0.5;
 $last_comments = apcu_fetch($temp_from."to".$temp_to."comments");
-if ((get_sunset_ut() - $current->get_current_time_ut() > 8600) && ($current->get_current_time_ut() - get_sunrise_ut() > 3600) && ($current->get_solarradiation() < 400))
+if (is_in_twilight() && ($current->get_solarradiation() < 400))
 {
-    //logger("set_cloudiness: 6. sunset_ut:".get_sunset_ut()." get_current_time_ut:".$current->get_current_time_ut()." ".(get_sunset_ut() - $current->get_current_time_ut())." rad:".$current->get_solarradiation()." is sunset:".$current->is_sunset());
+    //logger("set_cloudiness: 6. sunset_ut:".get_sunset_ut()." get_current_time_ut:".$current->get_current_time_ut()." ".(get_sunset_ut() - $current->get_current_time_ut())." sunrise_ut:".get_sunrise_ut()." ".($current->get_current_time_ut() - get_sunrise_ut())." rad:".$current->get_solarradiation()." is sunset:".$current->is_sunset());
     $current->set_cloudiness(6);
 }
- if ((get_sunset_ut() - $current->get_current_time_ut() > 6000) && ($current->get_current_time_ut() - get_sunrise_ut() > 3600) && ($current->get_solarradiation() < 240))
+ if (is_in_twilight() && ($current->get_solarradiation() < 240))
  {
-     //logger("set_cloudiness: 8. sunset_ut:".get_sunset_ut()." get_current_time_ut:".$current->get_current_time_ut()." ".(get_sunset_ut() - $current->get_current_time_ut())." rad:".$current->get_solarradiation()." is sunset:".$current->is_sunset());
+     //logger("set_cloudiness: 8. sunset_ut:".get_sunset_ut()." get_current_time_ut:".$current->get_current_time_ut()." ".(get_sunset_ut() - $current->get_current_time_ut())." sunrise_ut:".get_sunrise_ut()." ".($current->get_current_time_ut() - get_sunrise_ut())." rad:".$current->get_solarradiation()." is sunset:".$current->is_sunset());
      $current->set_cloudiness(8);
  }
 // debug

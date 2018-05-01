@@ -321,6 +321,12 @@
                                 <script>
                                 (adsbygoogle = window.adsbygoogle || []).push({});
                                 </script>
+
+                                <div>
+                                <a href="https://goo.gl/5WrA5J" target="_blank">
+                                    <img width="3020" height="100" src="images/if_300x100_2.png" />
+                                </a>
+                                </div>
 						<div>
 		
 	</div>

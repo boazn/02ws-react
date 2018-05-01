@@ -76,6 +76,13 @@ if (empty($sigforecastHour)){
             ga('send', 'pageview');
 
         </script>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <script id="adsense_start">
+                (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-2706630587106567",
+                enable_page_level_ads: true
+                });
+                </script>
     </head>
     <body>
         <!--[if lt IE 9 ]>	
@@ -520,9 +527,10 @@ if (empty($sigforecastHour)){
                                                 <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
                                         </tr>
                                         <tr class="trendsvalues"><td><div class="trendvalue"><div class="innertrendvalue"><? echo get_param_tag($yestsametime->get_temp3change(), true)."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($oneHour->get_temp3change(), true)."</div></div></td><td ><div class=\"trendvalue\"><div class=\"innertrendvalue\">".get_param_tag($min30->get_temp3change(), true); ?></div></div></td></tr>
-                                </table>
+                                </table>                
                            </div>
 						   <div class="graphslink">
+                                                   <? if ($current->is_light())  echo " $ROAD_EXP[$lang_idx]"; else echo " $ROAD_EXP_NIGHT[$lang_idx]";?>
 								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp3LatestArchive.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
 						   </div>
 			</div>
@@ -683,7 +691,7 @@ if (empty($sigforecastHour)){
                         </div>
                         <div id="latestrain" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> title="<? echo $RAIN_RATE[$lang_idx]; ?>">
                             <div class="paramtitle slogan">
-                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=RainRateHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
+                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rain.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
                                             <? echo $RAIN_RATE[$lang_idx];?>
                                     </a>
                             </div>
@@ -721,7 +729,7 @@ if (empty($sigforecastHour)){
                             </div>
                                                         
                             <div class="graphslink">
-                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=RainRateHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
+                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rain.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
                             </div>
                         </div>
                         <div id="latestradiation" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> title="<? echo $SUN[$lang_idx]; ?>">
@@ -1101,6 +1109,12 @@ else {  ?>
                 }
             ?>
             
+        </div>
+        <div id="mobile_redirect" class="big inv_plain_3_zebra" style="z-index:9999;display:none;position:absolute;top:80px;left:10px;width:320px;padding:5px;margin:0 auto" >
+        <br />
+        <a   onclick="redirect_to_mobile(<?=$lang_idx?>)" id="mobile_redirect_submit" class="clear inv_plain_3" style="width:100%"><?=$MOBILE_REDIRECT[$lang_idx]?></a>        <br /><br />
+        <a   onclick="$( this ).parent().hide();" class="clear inv_plain_3" style="width:100%"><?=$STAY[$lang_idx]?></a>
+        <br />
         </div>
         <input type="hidden" id="current_feeling" value="<?=$current_feeling?>"/>
         <input type="hidden" id="chosen_user_icon" value=""/>

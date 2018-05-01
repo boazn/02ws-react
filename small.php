@@ -122,13 +122,6 @@ if (isRadarPage())
     ga('send', 'pageview');
 
 </script>
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script id="adsense_start">
-  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: "ca-pub-2706630587106567",
-    enable_page_level_ads: true
-  });
-</script>
 </head>
 <body >
 <!-- SNOW EFFECT-->
@@ -508,7 +501,17 @@ else {?>
     <div class="removeadlink">
             <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
     </div>
-	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <div id="if1">
+        <a href="https://goo.gl/5WrA5J" target="_blank">
+            <img width="320" height="100" src="images/if_320x100.png" />
+        </a>
+    </div>
+    <div id="if2">
+        <a href="https://goo.gl/5WrA5J" target="_blank">
+            <img width="320" height="100" src="images/if_320x100_1.png" />
+        </a>
+    </div>
+	
 <!-- Large Mobile Banner 2 -->
 <ins class="adsbygoogle"
      style="display:inline-block;width:320px;height:100px"
@@ -543,11 +546,12 @@ else {?>
      
     </p>
     <!-- Ad small unit 3-->
-	<div id="adunit3" class="adunit" style="display:none">
+</div>
+<div id="adunit3" class="adunit" style="display:none">
         <div class="removeadlink">
             <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
         </div>
-	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	
 	<!-- Large Mobile Banner 1 -->
 	<ins class="adsbygoogle"
 		 style="display:inline-block;width:320px;height:100px"
@@ -556,7 +560,6 @@ else {?>
 	<script>
 	(adsbygoogle = window.adsbygoogle || []).push({});
 	</script>
-	</div>
 </div>
 
  <?}// end  homepage?>
@@ -718,13 +721,6 @@ else {?>
 <?}?>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<!--<script type="text/javascript">
-    crayze_app_token = "578b9e65d6042";
-</script>
-<script async src="http://api.crayze.io/sdk/crayze.js">
-</script>-->
-
-
 <script type="text/javascript">
   var isUserAdApproved = false;
 <!--
@@ -811,7 +807,7 @@ Licensed MIT
                               }).done(function( jsonstr ) {
 
                                    var jsonT = JSON.parse( jsonstr  );
-                                   if (jsonT.user.approved > 0)
+                                   if (jsonT.user.approved == 1)
                                       isUserAdApproved = true;
                                     if (!isUserAdApproved)
                                     {   
@@ -821,6 +817,8 @@ Licensed MIT
                                             $("#startupdiv").show();
                                         }
                                     }  
+                                    else
+                                    $('#adsense_start').remove();
                               });
                             <?}else{?>
                             if (!isUserAdApproved)
@@ -831,10 +829,22 @@ Licensed MIT
                                     $("#startupdiv").show();
                                 }
                             }
-                            else
+                            else{
                               $('#adunit2').hide();  
+                              $('#adsense_start').remove();
+                            }
                             <?}?>
                             $('#nextdays').show();
+                            if (sessions % 2 == 0)
+                            {
+                                $("#if1").show();
+                                $("#if2").hide();
+                            }
+                            else 
+                            {
+                                $("#if1").hide();
+                                $("#if2").show();
+                            }
 							
                     });
 	}
@@ -1197,8 +1207,10 @@ if (!isUserAdApproved)
 			 $('#adunit3').show();
 		 $('#adunit2').show();
 	}
-	else
+	else{
 	  $('#adunit2').hide();  
+      $('#adsense_start').remove();
+    }
 </script>
 <?}?>
 </body>

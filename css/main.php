@@ -3767,6 +3767,12 @@ font-size: 0.9em;
 	<?=get_s_align()?>: 88px;
     top: 185px;
 }
+#latesttemp3 .graphslink{
+	width:140px;
+	<?=get_s_align()?>: 34px;
+    top: 158px;
+    line-height: 12px;
+}
 .paramtitle
 {
    font-size: 1em;

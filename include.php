@@ -1405,6 +1405,11 @@ function date_diff_hours($str_start, $str_end) {
     $nseconds = $nseconds % 60;
     return $nhours;
 }
+function is_in_twilight()
+{
+    global $current;
+    return ((get_sunset_ut() - $current->get_current_time_ut() > 8600) && ($current->get_current_time_ut() - get_sunrise_ut() > 8600));
+}
 function isTempF(){
     return ($_GET['tempunit'] == 'F');
 }

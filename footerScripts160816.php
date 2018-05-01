@@ -1933,6 +1933,14 @@ function startup(lang, from, update)
             };
             }
         }
+function redirect_to_mobile(lang){
+    var loc = document.URL;
+    top.location.href="small.php?size=l&lang="+lang;
+}
+function isOnMobilePage(){
+    var loc = document.URL;
+    return(loc.indexOf('small') > 0);
+}
 //
 // startup script
 //
@@ -1955,8 +1963,9 @@ trMouseOver();
       //  top.location.href="stationo.php?lang="+<?=$lang_idx?>;
     }
 }(jQuery));
-/*if (isMobile){
-    var loc = document.URL;
-    top.location.href="small.php?size=l&lang="+<?=$lang_idx?>;
-}*/
+if ((isMobile.any())&&(!isOnMobilePage())){
+    
+    //$.colorbox({href:"#mobile_redirect"});
+    $("#mobile_redirect").show();
+}
 <? if ($_GET['debug'] == '') include "end_caching.php"; ?>

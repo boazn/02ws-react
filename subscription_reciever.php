@@ -1,6 +1,7 @@
 
 <?php
  require_once 'include.php';
+ require_once 'lang.php';
  ini_set("display_errors","On");
     ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
     $REMOVE_AD_DESC = array("Put this code in the setting menu of the app to remove the ads from 02ws: ", "את הקוד מכניסים בתוך תפריט ההגדרות של האפליקציה.    הקוד שלך להסרת הפרסומות מאפליקציית ירושמיים", "");
@@ -15,18 +16,18 @@ class DB_Functions {
      * Storing new user
      * returns user details
      */
-    public function storeSub($email) {
+    public function storeSub($email, $status) {
         // insert user into database
         $email = strtolower($email);
         $lang_idx = $_GET['lang'];
         if (empty($lang_idx)) 
             $lang_idx = 1;
-        global $REMOVE_AD_DESC, $REMOVE_AD_TITLE; 
+        global $REMOVE_AD_DESC, $REMOVE_AD_TITLE, $SHORT_TERM_DESC, $SHORT_TERM_TITLE; 
         global $link;
 		try{
 							
 			//$result = db_init("call SaveUserPic ('$name', '$comment', '$user', '$picname', '$x', '$y')");
-                        $result = db_init("INSERT INTO `Subscriptions` (guid, email, approved) VALUES(UUID_SHORT(), ? ,1);", $email);
+            $result = db_init("INSERT INTO `Subscriptions` (guid, email, approved) VALUES(UUID_SHORT(), '$email' ,$status);", "");
 			// check for successful store
 			// get user details
 			$id = $link->insert_id; // last inserted id
@@ -56,7 +57,10 @@ class DB_Functions {
                 $userJSON .= ",";
                 $userJSON .= "\"approved\":"."\"".$line['approved']."\"";
                 logger("New sub updated:".$line['guid']." => ".$email);
-                send_Email(array($REMOVE_AD_DESC[0]." <br />".$line['guid'],$REMOVE_AD_DESC[1]." <br />".$line['guid'] ), $email, EMAIL_ADDRESS, "", "",  $REMOVE_AD_TITLE);
+                if ($status == 1)
+                    send_Email(array($REMOVE_AD_DESC[0]." <br />".$line['guid'],$REMOVE_AD_DESC[1]." <br />".$line['guid'] ), $email, EMAIL_ADDRESS, "", "",  $REMOVE_AD_TITLE);
+                else
+                    send_Email(array($SHORT_TERM_DESC[0]." <br />".$line['guid'],$SHORT_TERM_DESC[1]." <br />".$line['guid'] ), $email, EMAIL_ADDRESS, "", "",  $SHORT_TERM_TITLE);
                 $userJSON .= "}";
                 $userJSON .= "}";
                 return $userJSON;
@@ -66,7 +70,9 @@ class DB_Functions {
         }
    
     }
-    
+    function isAndroid($reg_id){
+        return (strlen($reg_id) == 152);
+    }
     public function UpdateRegId($reg_id, $guid) {
         // insert user into database
         $guid = trim($guid);
@@ -82,13 +88,27 @@ class DB_Functions {
                 $stmt->bind_param('ss' ,$reg_id, $guid);
                 $stmt->execute();
                 $stmt->close();
-                logger($query." ".$guid." ".$reg_id);
-                
-                mysqli_close($link);
-                if($link->affected_rows==1)
-                    return "OK";
+                logger($query." ".$reg_id." ".$guid);
+                if($link->affected_rows==1){
+                    if (isAndroid)
+                    $query = "update `gcm_users` set Approved=1 where gcm_regid=?";
+                    else
+                        $query = "update `apn_users` set Approved=1 where apn_regid=?";
+                    $stmt = $link->stmt_init();
+                    $stmt->prepare($query);
+                    $stmt->bind_param('s' ,$reg_id);
+                    $stmt->execute();
+                    $stmt->close();
+                    logger($query." "." ".$reg_id);
+                    mysqli_close($link);
+                    if($link->affected_rows==1)
+                        return "OK";
+                    else
+                        return "NOT OK";
+                }
                 else
-                    return "NOT OK";
+                return "NOT OK";
+                
                    
         } catch (Exception $ex) {
             logger("UpdateRegId: ".$reg_id." ".$ex." "." ");
@@ -230,7 +250,11 @@ else if ($_REQUEST['action']=="getsubfromregid"){
     logger ($res_sub);
 }
 else if ($_REQUEST['action']=="storeSub"){
-    $res_sub = $db->storeSub($_REQUEST["email"]);
+    $res_sub = $db->storeSub($_REQUEST["email"], 1);
+    echo ($res_sub);
+}
+else if ($_REQUEST['action']=="storeSubAlert"){
+    $res_sub = $db->storeSub($_REQUEST["email"], 2);
     echo ($res_sub);
 }
 else if ($_REQUEST['action']=="updateregid"){

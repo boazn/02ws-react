@@ -229,16 +229,16 @@ if ($current->get_uv() > 8)
 {
 	updateSigWeather("hot.gif" , $HIGH_UV,
 	array(array($UV[$EN].": ".$current->get_uv(), $UV[$EN].": ".$current->get_uv()), 
-              array($UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>",$UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>")), 
+              array($UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>",$UV[$HEB].": ".$current->get_uv())), 
                "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=UVHistory.gif&amp;profile=2&amp;lang=$lang_idx");
     update_action ("UV", $extrainfo, $ALT);
 }
 
-if ($current->get_temp3() > 45)
+if ($current->get_temp3() > 50)
 {
-	updateSigWeather("hot.gif" , $HOT,
+	updateSigWeather("hot.gif" , $HOT_GROUND,
 	array(array($ROAD[$EN]." ".$TEMP[$EN].": ".$current->get_temp3(), $ROAD[$EN]." ".$TEMP[$EN].": ".$current->get_temp3()), 
-              array($TEMP[$HEB]." ".$ROAD[$HEB].": "."<span style=\"direction:ltr\">".$current->get_temp3()."</span>",$TEMP[$HEB]." ".$ROAD[$HEB].": "."<span style=\"direction:ltr\">".$current->get_temp3()."</span>")), 
+              array($TEMP[$HEB]." ".$ROAD[$HEB].": "."<span style=\"direction:ltr\">".$current->get_temp3()."</span>",$TEMP[$HEB]." ".$ROAD[$HEB].": ".$current->get_temp3())), 
                "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp3LatestArchive&amp;profile=2&amp;lang=$lang_idx");
    // update_action ("TEMP3", $extrainfo, $ALT);
 }
@@ -742,9 +742,9 @@ if (($lowtemp_diffFromAv > 2)
 	array ($WARMER_THAN_AVERAGE[$EN]." ".$TODAY[$EN], $WARMER_THAN_AVERAGE[$HEB]." ".$TODAY[$HEB]), 
 	 array (
 			array($TILL_NOW[$EN]." ".$MAX[$EN]." ".$today->get_hightemp().$current->get_tempunit(), 
-                        $TILL_NOW[$EN]." ".$MAX[$EN]." ".$today->get_hightemp().$current->get_tempunit()), 
+                        $TILL_NOW[$EN]." ".$MAX[$EN]." ".$today->get_hightemp()."°"), 
 			array($TILL_NOW[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp().$current->get_tempunit(),
-                        $TILL_NOW[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp().$current->get_tempunit())), 
+                        $TILL_NOW[$HEB]." ".$MAX[$HEB]." ".$today->get_hightemp()."°")), 
 	"".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=temp.php&amp;profile=2&amp;lang=$lang_idx");
 		//update_action ("Warmer", $extrainfo, $ALT);
 }

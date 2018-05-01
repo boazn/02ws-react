@@ -224,11 +224,11 @@ $graph->y2axis->HideTicks(true,true);
 $graph->y2grid->Show(false);
 
 // Set the colors for the plots
-$lineplot->SetColor("blue");
+$lineplot->SetColor("lightblue");
 $lineplot->SetWeight(2);
-$lineplot->SetFillColor("blue@0.5");
-$lineplot2->SetColor("lightblue");
-$lineplot2->SetFillColor("lightblue@0.5");
+$lineplot->SetFillColor("lightblue@0.6");
+$lineplot2->SetColor("blue");
+$lineplot2->SetFillColor("blue@0.3");
 $lineplot2->SetWeight(2);
 
 $chart_title = $RAIN[$lang_idx];
@@ -263,7 +263,7 @@ $rainrate = $lang_idx == 1 ? utf8_strrev($RAINRATE[$lang_idx]) : $RAINRATE[$lang
 $txtaa=new Text($chrs . $rainrate);
 $txtaa->SetFont(FF_ARIAL, FS_BOLD,10);
 $txtaa->SetPos($width - 66,$height - 275,'center');
-$txtaa->SetColor("lightblue");
+$txtaa->SetColor("blue");
 $graph->AddText($txtaa);
 
 // Place small daily under right index
@@ -271,7 +271,7 @@ $daily = $lang_idx == 1 ? utf8_strrev($DAILY_RAIN[$lang_idx]) : $DAILY_RAIN[$lan
 $txtab=new Text($chrs . $daily);
 $txtab->SetFont(FF_ARIAL, FS_BOLD,9);
 $txtab->SetPos(100,$height - 240,'center');
-$txtab->SetColor("blue");
+$txtab->SetColor("lightblue");
 $graph->AddText($txtab);
 
 if ($maxval == 0 ) {
