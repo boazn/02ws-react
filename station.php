@@ -432,7 +432,7 @@ if (empty($sigforecastHour)){
                             
                             </div>
                             <div id="tempdivvalue">
-                                <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>
+                            <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span><span class="shade"><?if ($current->is_light()){ ?><?=" ".$SHADE[$lang_idx]." "?></span><?}?>
                            </div>
                             		
 			</div>
@@ -579,10 +579,10 @@ if (empty($sigforecastHour)){
                         </div>
                         <div id="latestdewpoint" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?>>
                             <div class="paramtitle slogan">
-                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatest.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $DEW[$lang_idx];?></a>
+                                    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $DEW[$lang_idx];?></a>
                             </div>
                             <div class="paramvalue">
-                                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatest.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"  class="info"><? echo $current->get_dew().$current->get_tempunit();?>&nbsp;</a>
+                                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"  class="info"><? echo $current->get_dew().$current->get_tempunit();?>&nbsp;</a>
                             </div>
                             <div class="highlows">
                                      <span><strong><? echo $today->get_highdew(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highdew_time()." "; ?></span>
@@ -617,7 +617,7 @@ if (empty($sigforecastHour)){
                             </table>
                             </div>
 							<div class="graphslink">
-								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatest.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
+								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
 						   </div>
                         </div>
                         <div id="latestpressure" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?>>

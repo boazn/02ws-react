@@ -37,7 +37,7 @@
 <option   value="206">מוסקבה Moscow </option>
 <option   value="267">מיאמי Miami</option>
 <option   value="603">מילנו Milano </option>
-<option   value=58">מינכן Muenchen </option>
+<option   value="58">מינכן Muenchen </option>
 <option   value="1055">מרסיי Marseille </option>
 <option   value="278">ניו-יורק New York</option>
 <option   value="224">ניו-דלהי New-Delhi</option>
@@ -52,6 +52,7 @@
 <option	  value="190">קופנהגן Copenhagen</option>
 <option	  value="207">קייב אוקראינהKiev</option>
 <option	  value="138">קייפטאון Cape Town</option>
+<option	  value="189">רייקיאוויק (איסלנד) Reykjavik</option>
 <option	  value="172">רוביניימי (לפלנד) Rovaniemi</option>
 <option	  value="1080">ריו דה ז'ינרו Rio De Janeiro</option>
 <option   value="201">רומא, איטליה Rome</option>

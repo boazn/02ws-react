@@ -1,4 +1,4 @@
-                   MONTHLY CLIMATOLOGICAL SUMMARY for MAY. 2018
+                   MONTHLY CLIMATOLOGICAL SUMMARY for JUN. 2018
 
 NAME: Boaz Nechemia's Vantage Pro   CITY: Jerusalem   STATE: Israel 
 ELEV:   745 m  LAT:  31° 46' 09" N  LONG:  35° 12' 07" E
@@ -9,10 +9,10 @@ ELEV:   745 m  LAT:  31° 46' 09" N  LONG:  35° 12' 07" E
     MEAN                              DEG   DEG         WIND                 DOM
 DAY TEMP  HIGH   TIME   LOW    TIME   DAYS  DAYS  RAIN  SPEED HIGH   TIME    DIR
 ------------------------------------------------------------------------------------
- 1  24.2  27.4   16:20  20.6    4:50   0.0   0.5   0.0   4.2  17.4   12:50    SE
- 2
- 3
- 4
+ 1  20.1  25.2   13:30  16.2    2:10   0.0   0.0   0.0   5.1  20.0   18:10    NW
+ 2  19.3  24.3   15:30  15.7    6:20   0.0   0.0   0.0   5.2  16.5   16:40    NW
+ 3  20.3  25.6   14:00  16.2    5:10   0.0   0.0   0.0   4.3  15.7   14:50    NW
+ 4  20.6  26.1   15:10  16.4    4:30   0.0   0.0   0.0   4.7  17.4   17:50    NW
  5
  6
  7
@@ -39,14 +39,13 @@ DAY TEMP  HIGH   TIME   LOW    TIME   DAYS  DAYS  RAIN  SPEED HIGH   TIME    DIR
 28
 29
 30
-31
 -------------------------------------------------------------------------------------
-    24.2  27.4     1    20.6     1     0.0   0.5   0.0   4.2  17.4     1      SE
+    20.1  26.1     4    15.7     2     0.0   0.0   0.0   4.8  20.0     1      NW
 
 Max >=  32.0:  0
 Max <=   0.0:  0
 Min <=   0.0:  0
 Min <= -18.0:  0
-Max Rain: 0.00 ON 01/05/18
+Max Rain: 0.00 ON 01/06/18
 Days of Rain: 0 (> .2 mm) 0 (> 2 mm) 0 (> 20 mm)
 Heat Base:  14.5  Cool Base:  25.0  Method: Integration

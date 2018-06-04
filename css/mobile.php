@@ -27,6 +27,9 @@ function get_inv_s_align(){
 
 ?>
 
+html {
+   min-height: 100vh;
+ }
 body{
 text-align:center;
 margin:0;
@@ -370,8 +373,8 @@ width:320px;
 	font-weight:normal;
 }
 #laundryidx{
-    left: -15px;
-    top: 180px;
+    left: -38px;
+    top: 138px;
  }
  
 #windy
@@ -899,6 +902,10 @@ padding:0.1em 0.5em
     margin-right: 18px;
     margin-top: -3px;
 }
+#temp3_btn{
+    margin-right: 254px;
+    margin-top:-40px
+}
 #moist_btn{
     margin-right: 5px;
     margin-top: 0;
@@ -915,8 +922,11 @@ padding:0.1em 0.5em
 	margin-right: 24px;
     margin-top: 2px;
 }
-#latesttemp, #latestrain, #latesthumidity,#latestwind, #latesttemp2, #latestairq, #latestnow  {
+#latesttemp, #latestrain, #latesthumidity,#latestwind, #latesttemp2, #latesttemp3, #latestairq, #latestnow  {
 margin:auto;margin-top:-68px
+}
+#latesttemp3 .graphslink{
+    top:0
 }
 #valleytemp{
 font-size:0.5em;

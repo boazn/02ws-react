@@ -27,7 +27,7 @@ function bestLaundryConditions()
    $numberOfSoSO;
    
     foreach ($forecastHour as $hour_f){
-        if (($hour_f['humidity'] > 70)&&($hour_f['wind'] < 10)&&($hour_f['temp'] < 19)&&($hour_f['currentDateTime']) > time()){
+        if (($hour_f['humidity'] > 80)&&($hour_f['wind'] < 10)&&($hour_f['temp'] < 19)&&($hour_f['currentDateTime']) > time()&&($hour_f['currentDateTime']) < (time()+(6*60*60))){
             // logger("found :".$hour_f['humidity']." ".$hour_f['wind']);
             $numberOfSoSO++;
         }

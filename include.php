@@ -533,10 +533,10 @@ class FixedTime {
             $itfeels_state = "heatindex";
             $itfeels = max($this->HeatIdx, $this->thw);
         }
-        else if (($this->solarradiation > 200)&&($this->thsw > $temp_to_mompare_to)){
+        /*else if (($this->solarradiation > 200)&&($this->thsw > $temp_to_mompare_to)){
             $itfeels_state = "thsw";
             $itfeels = $temp_to_mompare_to + number_format(0.4*($this->thsw - $temp_to_mompare_to), 1, '.', '');
-        }
+        }*/
         else if (min($this->windchill, $this->thw) < ($temp_to_mompare_to) && ($temp_to_mompare_to < 20 ) && ($this->thw != 0) && ($this->windchill != 0)){
             $itfeels_state = "windchill";
             $itfeels = min($this->windchill, $this->thw);
@@ -1992,6 +1992,7 @@ function send_SMS($number, $text) {
 
 function send_Email($messageBody, $target, $source, $sourcename, $attachment, $subject) {
     global $header_pic;
+    $footer_pic = "images/header/header_small1_text.jpg";
     $lines = 0;
     $result = "";
     //$target=ME;
@@ -2013,7 +2014,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     $EmailsToSend = array();
     $textToSend = array();
     $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+    $headers .= "Subject: =?UTF-8?Q?".base64_encode($sourcename)."?=";
     //$headers .= "Content-Language: he\r\n";
     $headers .= "From: {$source}\r\n";
     $headers .= "Reply-To: {$source}\r\n";
@@ -2023,12 +2024,13 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     $headers .= "X-MSmail-Priority: Normal";
     $headers .= "X-Priority: 3\r\n";
     $headers .= "X-Mailer: PHP" . phpversion() . "\r\n";
-    $headers .= "X-Priority: 3\r\n";
     $headers .= "X-AntiAbuse: This is a solicited email for 02WS.co.il website\r\n";
     $headers .= "X-AntiAbuse: Servername - {$_SERVER['SERVER_NAME']}\r\n";
+    $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+    $headers .= "Content-Transfer-Encoding: quoted-printable\r\n";
 
 
-    //$headers .= "Subject: =?UTF-8?Q?".base64_encode($sourcename)."?=";
+    
     //echo("message body = ".$messageBody);
     $multiLangBody = array();
     if (is_array($messageBody)) {
@@ -2047,10 +2049,11 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
 
     
     
-    $genTxtToBuild = "<html";
+    $genTxtToBuild = "<!DOCTYPE html><html ";
     if (($source !== EMAIL_ADDRESS) || (isHeb()))
         $genTxtToBuild .= " dir=\"rtl\" ";
-    $genTxtToBuild .= "><head><link href=\"" . BASE_URL . "/main.php?lang=%d\" rel=\"stylesheet\" type=\"text/css\"> </head><body><div style=\"padding:1em\" class=\"topbase slogan float\"><img align=\"absmiddle\" src=\"" . BASE_URL . "/" . $header_pic . "\" />&nbsp;%s</div><br /><p><div style=\"padding:1em\" class=\"clear float inv_plain_3 big\">%s</div></p>";
+    $genTxtToBuild .= "><head><style>.inv_plain_3_zebra     {        border: 1px solid #2C3A42; 	        background: rgba(228, 249, 251, 0.4);        color: #2C3A42;        padding: 12px;        margin: 0;        -webkit-border-radius: 8px;        border-radius: 8px;          
+    }</style><link href=\"" . BASE_URL . "/main.php?lang=%d\" rel=\"stylesheet\" type=\"text/css\"> </head><body class=\"mailbody\" style=\"width:500px;margin:0 auto\"><img src=\"" . BASE_URL . "/" . $header_pic . "\" /><h1 style=\"padding:1em;width:400px;margin:0 auto\" class=\"mailheader\">%s</h1><p class=\"mailcontainer\"><div style=\"padding:1em\" class=\"clear inv_plain_3_zebra\">%s</div></p>";
     
     array_push($textToSend, sprintf($genTxtToBuild, $EN, $WEBSITE_TITLE[$EN], is_array($messageBody) ? $multiLangBody[$EN] : $messageBody ));
     array_push($textToSend, sprintf($genTxtToBuild, $HEB, $WEBSITE_TITLE[$HEB], is_array($messageBody) ? $multiLangBody[$HEB] : $messageBody));
@@ -2091,11 +2094,11 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
        
     $textToSend = str_replace(array("display:none", "\n"), array("", "<br/>"), $textToSend);
     
-    logger("Sending mail: " . $source."(".$sourcename.")"." --> " . $target . " - " . implode(" / ", $subject). " lang:".$EmailsToSend[0]['lang']);
+    //logger("Sending mail: " . $source."(".$sourcename.")"." --> " . $target . " - " . implode(" / ", $subject). " lang:".$EmailsToSend[0]['lang']);
     foreach ($EmailsToSend as $email) {
         //echo "sending to $email...<br/>body=$textToSend<br/>Subject=$subject<br/>from=$source";
         $body = $textToSend[$email['lang']];
-        $body .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$email['lang']] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>.  <a href=\"" . BASE_URL . "/unsubscribe.php?email=".$email['email']."\">Unsubscribe</a> </footer></div></body></html>";
+        $body .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$email['lang']] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>.  <a href=\"" . BASE_URL . "/unsubscribe.php?email=".$email['email']."\">Unsubscribe</a></div><img src=\"" . BASE_URL . "/" . $footer_pic . "\" /></footer></body></html>";
         $mail->Body = $body;
         $mail->AltBody = strip_tags($textToSend[$email['lang']]);
         $mail->AddAddress($email['email'], "");

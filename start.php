@@ -262,6 +262,16 @@ $oneHour->set_time(getMinusMinTime(60));
 $oneHour->set_date(getMinusMinDate(60));
 $threeHours->set_time(getMinusMinTime(180));    
 $threeHours->set_date(getMinusMinDate(180));
+$tok = getTokFromFile($prefix.FILE_ARCHIVE);
+// now
+if ($_GET['debug'] >= 1)
+	echo "<br>searching ",$now->get_date()," and ",$now->get_time()," ";
+if (searchNext ($tok, $now->get_date()))// found the date in the file
+   fillPastTime ($now, searchNext ($tok, $now->get_time()));
+else if ($_GET['debug'] >= 1)
+    echo "<strong>NOT FOUND</strong>";
+
+
 $current->set_thsw($last2['thsw']);
 fillPastTime ($oneHour, $ary_parsed_file, '60');
 fillPastTime ($min30, $ary_parsed_file, '30');

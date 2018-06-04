@@ -189,7 +189,7 @@ function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_dis
       // now send_email with activation code
         $key = urlencode($key);
         $href="http://www.02ws.co.il/regConfirm.php?k=$key&email=$email&user=$user&lang=$lang_idx";
-        send_Email("<a href=\"$href\" >".$CLICK_TO_CONFIRM[$lang_idx]."</a>.<br /><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array($REGISTRATION_TO_02WS[$lang_idx],$REGISTRATION_TO_02WS[$lang_idx]));
+        send_Email("<br /><br /><br /><h1><a href=\"$href\" >".$CLICK_TO_CONFIRM[$lang_idx]."</a></h1><br /><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array($REGISTRATION_TO_02WS[$lang_idx],$REGISTRATION_TO_02WS[$lang_idx]));
         echo "0";
     }
     else
@@ -239,7 +239,7 @@ function forgot_password($email)
       else
       {
           $href="http://www.02ws.co.il/regConfirm.php?email=$email&lang=$lang_idx";
-          send_Email("<a href=\"$href\" >".$CLICK_TO_RESET[$lang_idx]."</a>.<br /><br />", $email, EMAIL_ADDRESS, ""  , "", array("02ws ".$FORGOT_PASS[$lang_idx],"02ws ".$FORGOT_PASS[$lang_idx]));
+          send_Email("<br /><br /><br /><h1><a href=\"$href\" >".$CLICK_TO_RESET[$lang_idx]."</a></h1><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array("02ws ".$FORGOT_PASS[$lang_idx],"02ws ".$FORGOT_PASS[$lang_idx]));
           echo $CHECK_EMAIL_RESET_PASS[$lang_idx];
       }
 }

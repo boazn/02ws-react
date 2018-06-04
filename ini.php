@@ -33,7 +33,7 @@ define ("IS_SNOWING", 0);
 define ("SNOW_IS_MELTING", 0);
 define ("SNOW_ON_THE_GROUND", 0);
 date_default_timezone_set('Asia/Jerusalem');
-$header_pic = "images/header/header_small1_text.jpg";//header_small1.JPG//header_lights11.jpg
+$header_pic = "img/logo.png";//header_small1.JPG//header_lights11.jpg
 $PLACE = array("Jerusalem", "ירושלים", "Jerusalem");
 $SLOGAN = array("Jerusalem Weather Station", "תחנת מזג-אוויר עדכנית בי-ם", "Иерусалимская метеорологическая станция");
 $LOGO = array("02WS", "ירושמים", "02WS");

@@ -37,6 +37,7 @@ $CHAT_TITLE = array("Forum", "פורום");
 $RAIN_RADAR = array("Radar", "מכ''ם גשם");
 $VALLEY = array("valley", "בעמק");
 $MOUNTAIN = array("hill", "בהר");
+$ROAD = array("at road", "בכביש");
 $AVERAGE = array("average", "ממוצע");
 $MOBILE_FRIENDLY = array("Mobile friendly" , "מותאם לנייד");
 $CONTACT_ME = array("Contact", "צרו קשר");
@@ -214,6 +215,7 @@ else {?>
    <li id="rain_btn" onclick="change_circle('rain_line', 'latestrain')" title=""></li>
    <li id="wind_btn" onclick="change_circle('wind_line', 'latestwind')" title=""></li>
    <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title=""></li>
+   <li id="temp3_btn" onclick="change_circle('temp_line', 'latesttemp3')" title=""></li>
 </ul>
 <ul class="seker_btns" style="display:none">
 <li id="season_btn">
@@ -450,13 +452,62 @@ else {?>
 	<div class="highlows">
 		<?=$DUST_THRESHOLD[$lang_idx]?>
 	</div>
-	<div class="paramtrend relative">
+    
+	<div class="paramtrend relative"></div>
+    <div class="trendstable">
+    <table>
+                <tr class="trendstitles">
+                         <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
+                         <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
+                         <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                 </tr>
+                 <tr class="trendsvalues">
+                     <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                     <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                     <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                 </tr>
+         </table>
+    </div>
+    <div class="graphslink">
 		<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=dust.html&amp;lang=<? echo $lang_idx;?>" title="to graph"><img src="img/graph_icon.png" alt="to graphs"/></a>
 	</div>
 </div>
 <div id="latestdewpoint" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
 </div>
 <div id="latesttemp3" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
+    <div class="paramtitle slogan">
+             <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp3<?if ($PRIMARY_TEMP == 1) echo "LatestArchive";?>.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $TEMP[$lang_idx];?></a>
+         </div>
+        <div class="paramvalue">
+             
+         </div>
+         <div class="highlows">
+                 <div class="high"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
+                 <div class="low"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
+         </div> 
+         <div class="paramtrend relative">
+             <div class="innertrendvalue">
+                <? echo " ".($MINTS[$lang_idx]).": "; ?>
+             </div>
+         </div>  
+   <div class="trendstable"> 
+        <table>
+                 <tr class="trendstitles">
+                         <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
+                         <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
+                         <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                 </tr>
+                 <tr class="trendsvalues">
+                     <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                     <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                     <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                 </tr>
+         </table>
+    </div>
+    <div class="graphslink">
+            <span id="temp3_desc"></span>
+                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp3<?if ($PRIMARY_TEMP == 1) echo "LatestArchive";?>.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+    </div>
 </div>
 <div class="inparamdiv" id="coldmetersurvey" style="display:none">
     
@@ -500,7 +551,7 @@ else {?>
 <div id="adunit2" class="adunit" style="display:none">
     <div class="removeadlink">
             <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
-    </div>
+    </div>  
     <div id="if1">
         <a href="https://goo.gl/5WrA5J" target="_blank">
             <img width="320" height="100" src="images/if_320x100.png" />
@@ -508,7 +559,7 @@ else {?>
     </div>
     <div id="if2">
         <a href="https://goo.gl/5WrA5J" target="_blank">
-            <img width="320" height="100" src="images/if_320x100_1.png" />
+            <img width="320" height="100" src="images/if_320x100.png" />
         </a>
     </div>
 	
@@ -520,10 +571,6 @@ else {?>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-    <div class="removeadlink">
-            <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
-    </div>
-   
 </div>
 <div id="messages_box" class="white_box" style="display:none">
     <h2><? echo $MESSAGES[$lang_idx];?></h2>
@@ -548,11 +595,7 @@ else {?>
     <!-- Ad small unit 3-->
 </div>
 <div id="adunit3" class="adunit" style="display:none">
-        <div class="removeadlink">
-            <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
-        </div>
-	
-	<!-- Large Mobile Banner 1 -->
+  	<!-- Large Mobile Banner 1 -->
 	<ins class="adsbygoogle"
 		 style="display:inline-block;width:320px;height:100px"
 		 data-ad-client="ca-pub-2706630587106567"
@@ -925,6 +968,7 @@ Licensed MIT
         $('#what_is_h').html(json.jws.states.sigtitle<? echo $lang_idx;?>+'<br/>'+json.jws.states.sigexthtml<? echo $lang_idx;?>);
         var title_temp;
         var title_temp2;
+        var title_temp3 = '<?=$ROAD[$lang_idx]?>';
         if (json.jws.current.primary_temp == 1){
            title_temp2 = '&nbsp;<?=$MOUNTAIN[$lang_idx];?>';
            title_temp = '&nbsp;<?=$VALLEY[$lang_idx];?>';
@@ -950,7 +994,20 @@ Licensed MIT
         $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.temp2change.split(",")[2]);
         $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.temp2change.split(",")[2]);
         $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.temp2change.split(",")[2]);
-        $("#latesttemp2 .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.temp2change.split(",")[2]);
+        $("#latesttemp2 .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.temp3change.split(",")[2]);
+        $("#latesttemp3 .paramvalue").html(c_or_f(json.jws.current.temp3, tempunit)+'<span class="paramunit">'+tempunit+'</span>' + '&nbsp;<span id=\"valleytemp\" title=\"\">' + title_temp3 + '</span>');
+        $("#latesttemp3 .highlows .high").html('<strong>' + c_or_f(json.jws.today.hightemp3, tempunit) + '</strong>');
+        $("#latesttemp3 .highlows .high_time").html(json.jws.today.hightemp3_time);
+        $("#latesttemp3 .highlows .low").html('<strong>' + c_or_f(json.jws.today.lowtemp3, tempunit) + '</strong>');
+        $("#latesttemp3 .highlows .low_time").html(json.jws.today.lowtemp3_time);
+        $("#latesttemp3 .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.temp3change.split(",")[2]);
+        $("#latesttemp3 .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.temp3change.split(",")[2]);
+        $("#latesttemp3 .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.temp3change.split(",")[2]);
+        $("#latesttemp3 .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.temp3change.split(",")[2]);
+        if (json.jws.current.islight == 1)
+            $("#temp3_desc").html(json.jws.desc.temp3_desc<?=$lang_idx?>);
+        else
+            $("#temp3_desc").html(json.jws.desc.temp3_night_desc<?=$lang_idx?>);
         $("#latesthumidity .paramvalue").html(json.jws.current.hum+'%');
         $("#latesthumidity .highlows .highparam").html('<strong>' + json.jws.today.highhum + '</strong>');
         $("#latesthumidity .highlows .high_time").html(json.jws.today.highhum_time);

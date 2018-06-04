@@ -72,7 +72,12 @@ function insertNewMessage ($name, $icon, $body, $category, $p_alert)
 function updateMessage ($idx, $body, $isPartialDelete)
 {
         $now = date('Y-m-d G:i:s', strtotime(SERVER_CLOCK_DIFF, time()));
-        $p_email = $_SESSION['email'];
+		$p_email = $_SESSION['email'];
+		if (empty($p_email))
+		{
+			logger("empty session in message:".$idx." ".$body);
+			return ;
+		}
         logger("last positions:".substr ($body, strlen($body)-strlen("</div>")));
         if (substr ($body, strlen($body)-strlen("</div>")) != "</div>")
         {

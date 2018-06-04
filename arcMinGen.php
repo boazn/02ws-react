@@ -23,7 +23,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
  // change that according to file
  //
  //
- $SITE['cvalues'] = array("date","Rain");
+ $SITE['cvalues'] = array("date","rain");
  $key_split = "/,+/";
  function ret_value($lookup) {
 	global $SITE, $DATA;
@@ -62,6 +62,8 @@ foreach($rawdata as $key) {
 	{
 	$value = ret_value($nameOfParam);
 	$date = ret_value("date");
+	$date = str_replace('/', '-', $date);
+	$date = date("Y-m-d", strtotime($date) );
 	if ($insertOrUpdate == "I")
 				 echo "insert into `archivemin`  ( `Date` , `".$nameOfParam."` ) VALUES ('".$date."' , ".$value.");<br>";
 				else if ($insertOrUpdate == "U")

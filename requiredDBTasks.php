@@ -213,10 +213,7 @@ else
     }
 }
 $detailedforecast = str_replace("\"", "'", $detailedforecast);
-$detailedforecast = $detailedforecast."<br/>".replaceDays(getLocalTime(strtotime(apc_fetch('descriptionforecasttime'.$lang_idx))));
-
-
-
+$detailedforecast = "<div id=\"forecasttime\" class=\"invfloat\">".replaceDays(getLocalTime(strtotime(apc_fetch('descriptionforecasttime'.$lang_idx))))."</div>".$detailedforecast;
 
 if (apc_fetch('taf'))
    $taf_contents = apc_fetch('taf');

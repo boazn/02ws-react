@@ -106,6 +106,7 @@ body {
      overflow-y: scroll;
     overflow-x: hidden;
     color:#2C3A42;
+    height:100vh
 }
 
 
@@ -1383,7 +1384,7 @@ text-align:<?=get_s_align()?>;
 }
 
 .white_box h2, .white_box p, .white_box .box_text  {
-    padding-right:20px;
+    padding-right:15px;
     padding-left:13px;
 }
 
@@ -3740,7 +3741,11 @@ a.info:hover span.info
 	text-align:center
 }
 .trendstitles .box img{
-	margin-top: 10px;
+	margin-top: 5px;
+}
+.shade
+{
+    font-size:0.2em
 }
 .inparamdiv .highlows
 {
@@ -3812,7 +3817,9 @@ font-size: 0.9em;
 {
 	
 }
-
+#forecasttime {
+    margin-top: -30px;
+}
 #tempdivvalue
 {
 	font-weight: normal;

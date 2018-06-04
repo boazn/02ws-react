@@ -534,12 +534,12 @@ if ((($current->get_temp('&#176;c') > 27)&&
 	$isHeatWave = true;
 	if ($hour > 6)
 	$extrainfoS = array (
-		array($TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit() , $TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit()) ,
-		array($TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit(), $TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit()));
+		array($TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit() , $TODAY[$EN]." ".$today->get_hightemp()."°") ,
+		array($TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit(), $TODAY[$HEB]." ".$today->get_hightemp()."°"));
 	else
 	$extrainfoS = array (
-		array($TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit() , $TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit()) ,
-		array($TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit(), $TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit()));
+		array($TODAY[$EN]." ".$today->get_hightemp().$current->get_tempunit() , $TODAY[$EN]." ".$today->get_hightemp()."°") ,
+		array($TODAY[$HEB]." ".$today->get_hightemp().$current->get_tempunit(), $TODAY[$HEB]." ".$today->get_hightemp()."°"));
 	updateSigWeather(
 		"heat.jpg", 
 		$VERY_HOT_HEAT_WAVE, 

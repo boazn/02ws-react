@@ -155,7 +155,7 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         $query = "select * FROM apn_users where active=1".$query_extension;
     }
     else if (boolval($short_range)){
-        $query = "select * FROM apn_users where active_rain_etc=1".$query_extension;
+        $query = "select * FROM apn_users where active_rain_etc=1 and approved=1".$query_extension;
     }
     else if (boolval($tip)){
         $query = "select * FROM apn_users where active_tips=1".$query_extension;
@@ -173,8 +173,8 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     }
  $result = "";
  if (strlen($title[1]) > 0){
-    $messageBody[0] = $title[0].": ".$messageBody[0]." \n\n".$ALERTS_PAYMENT[0];
-    $messageBody[1] = $title[1].": ".$messageBody[1]." \n\n".$ALERTS_PAYMENT[1];
+    $messageBody[0] = $title[0].": ".$messageBody[0];
+    $messageBody[1] = $title[1].": ".$messageBody[1];
  }
  $result = sendAPNToRegIDs($registrationIDs1, date('H:i')." ".$messageBody[1], $picture_url, $embedded_url);
  $result .= sendAPNToRegIDs($registrationIDs0, date('H:i')." ".$messageBody[0], $picture_url, $embedded_url);
@@ -257,8 +257,8 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         $messageBody[0] = $TIP[0].": ".$messageBody[0];
         $messageBody[1] = $TIP[1].": ".$messageBody[1];
     }
-    $messageBody[0] = date('H:i')." ".$messageBody[0]." \n\n".$ALERTS_PAYMENT[0]." \n\n".$REPLY_ENGAGE[0];
-    $messageBody[1] = date('H:i')." ".$messageBody[1]." \n\n".$ALERTS_PAYMENT[1]." \n\n".$REPLY_ENGAGE[1];
+    $messageBody[0] = date('H:i')." ".$messageBody[0]." \n\n".$REPLY_ENGAGE[0];
+    $messageBody[1] = date('H:i')." ".$messageBody[1]." \n\n".$REPLY_ENGAGE[1];
     if ($CloudMessageType == CloudMessageType::Fcm)
     {
         $key = FCM_API_KEY;
@@ -276,7 +276,7 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         $query = "select * FROM gcm_users where active=1".$query_extension;
     }
     else if (boolval($short_range)){
-        $query = "select * FROM gcm_users where active_rain_etc=1".$query_extension;
+        $query = "select * FROM gcm_users where active_rain_etc=1 and approved=1".$query_extension;
     }
     else if (boolval($tip)){
         $query = "select * FROM gcm_users where active_tips=1".$query_extension;

@@ -1,4 +1,5 @@
                                 <?
+$current_year = 2018;
 $tablestobeSearched = array();
 $where_clause_archivemin = array();
 $where_clause_archive = array();
@@ -374,7 +375,7 @@ function getReport($min_year,$current_year, $report)
                                 $MINTEMPMONTH = array("The most hot month", "החודש החם ביותר");
                                 $MAXTEMPMONTH = array("The most cold month", "החודש הקר ביותר");
 				$CTRL  = array("to choose multiple years or/and months use the ctrl key", "לבחירת כמה שנים או כמה חודשים יש להשתמש ב-מקש קונטרול  . אם לא תבחר שנה - יחושב עבור כל השנים. אם לא יבחר חודש - יחושב עבור כל החודשים");
-				$current_year = 2017;
+				
 				$min_year = 1909;
 				
 

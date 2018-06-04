@@ -12,7 +12,7 @@ function make_user_active($email, $user_id, $key){
     $result = db_init($query,"");
     global $link;
    
-    echo "<div class=\"inv_plain_3_zebra big float\" style=\"padding:1em\"><img src=\"".$header_pic."\" align=\"absmiddle\"/>&nbsp;&nbsp;".$REGISTRATION_TO_02WS[$lang_idx];
+    echo "<div class=\"big float\" style=\"padding:1em\"><img src=\"".$header_pic."\" align=\"absmiddle\"/>&nbsp;&nbsp;".$REGISTRATION_TO_02WS[$lang_idx];
     
     if(mysqli_affected_rows($link)==1)
     {
@@ -29,8 +29,8 @@ function make_user_active($email, $user_id, $key){
     @mysqli_free_result($result);
      $_SESSION['email'] = $email;
     	$_SESSION['loggedin'] = "true";
-        echo "<div class=\"big success \"  style=\"margin:1em;padding:1em\">".$DONE[$lang_idx];
-        echo "<br /><br /><br /><a href=\"".BASE_URL."\" style=\"text-decoration:underline\">".$HOME_PAGE[$lang_idx]."</a>".get_arrow();
+        echo "<div class=\"success\"  style=\"margin:1em;padding:1em\"><h1>".$DONE[$lang_idx];
+        echo "</h1><h1><a href=\"".BASE_URL."\" style=\"text-decoration:underline\">".$HOME_PAGE[$lang_idx]."</a>".get_arrow()."</h1>";
         echo "</div></div>";
 }	
         
