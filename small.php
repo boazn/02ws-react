@@ -10,7 +10,7 @@ $HOME_PAGE = array("To home page","לעמוד הראשי");
 $HOTORCOLD_T = array("Cold meter", "מדד הקור");
 $FSEASON_T = array("Best season", "העונה הטובה");
 $IT_FEELS = array("feels like", "מרגיש כמו");
-$IN_THE_SUN = array("in the sun", "בשמש");
+$IN_THE_SUN = array("sun", "שמש");
 $MINTS = array("min", "דק'");
 $DAILY_RAIN = array("Daily rain", "גשם היום מחצות");
 $TOTAL_RAIN = array("Total", "סה'כ");
@@ -45,6 +45,7 @@ $EXPAND = array("In table", "בטבלה");
 $PIC_OF_THE_DAY = array("Pic of the day", "תמונת היום", "");
 $USERS_PICS = array("Users Pics", "תמונות הגולשים", "");
 $NOW = array("now", "עכשיו", "");
+$SHADE = array("shade", "צל", "");
 
 function mainPage()
 {
@@ -234,28 +235,27 @@ else {?>
  <div  id="windy">
 
  </div>
-    
-<div id="itfeels_windchill" style="display:none;"> 
+<div class="" id="itfeels" style="display:none;">
+<? echo $IT_FEELS[$lang_idx]; ?>
+ <span class="" id="itfeels_thsw" style="display:none;">
+    <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>"> 
+           <span dir="ltr" class="high value" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1];  ?></span>
+    </a>| 
+</span>
+<span id="itfeels_windchill" style="display:none;"> 
 <a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" onclick="showLoading()"> 
-        <? echo $IT_FEELS[$lang_idx]; ?>
         <span dir="ltr" class="low value" title="<?=$WIND_CHILL[$lang_idx]?>">&#176;</span>
  </a> 
-</div>
-
-
-<div class="" id="itfeels_heatidx" style="display:none;">
+</span>
+<span class="" id="itfeels_heatidx" style="display:none;">
 <a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" onclick="showLoading()"> 
-        <? echo $IT_FEELS[$lang_idx]; ?>
         <span dir="ltr" class="high value" title="<?=$HEAT_IDX[$lang_idx]?>">&#176;</span>
  </a> 
+</span>
+<span class="" id="sunshade" style="display:none;">
+<? echo $IN_THE_SUN[$lang_idx]; ?>|<? echo $SHADE[$lang_idx]; ?>
+</span>
 </div>
-<div class="" id="itfeels_thsw" style="display:none;">
-    <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>"> 
-           <? echo $IT_FEELS[$lang_idx]; ?>
-           <span dir="ltr" class="high value" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1]."&#176;";  ?></span>
-           <? echo " ".$IN_THE_SUN[$lang_idx];; ?>
-    </a> 
-</div>  
 <div id="tempdivvalue" style="visibility:hidden">
 
 </div>
@@ -551,7 +551,8 @@ else {?>
 <div id="adunit2" class="adunit" style="display:none">
     <div class="removeadlink">
             <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
-    </div>  
+    </div> 
+    <!-- 
     <div id="if1">
         <a href="https://goo.gl/5WrA5J" target="_blank">
             <img width="320" height="100" src="images/if_320x100.png" />
@@ -562,7 +563,7 @@ else {?>
             <img width="320" height="100" src="images/if_320x100.png" />
         </a>
     </div>
-	
+    -->	
 <!-- Large Mobile Banner 2 -->
 <ins class="adsbygoogle"
      style="display:inline-block;width:320px;height:100px"
@@ -577,7 +578,7 @@ else {?>
     <div id="livepic_box" class="invfloat" style="display:none">
     <div class="avatar live_avatar"></div>
     
-    <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=smallwebcam.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" title="<? echo($LIVE_PICTURE[$lang_idx]);?>" onclick="showLoading()"><div class="play"><img src="images/splay.png" width="20" height="20" alt="play" /></div><img src="phpThumb.php?src=images/webCameraB.jpg&sx=200&sy=80&sw=500&sh=500&fltr%5B%5D=gam%7C0.8" width="150" height="125" alt="<? echo($LIVE_PICTURE[$lang_idx]);?>" /></a>
+    <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=smallwebcam.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" title="<? echo($LIVE_PICTURE[$lang_idx]);?>" onclick="showLoading()"><div class="play"><img src="images/splay.png" width="20" height="20" alt="play" /></div><img src="phpThumb.php?src=images/webCamera.jpg&sx=850&sy=180&sw=500&sh=500&fltr%5B%5D=gam%7C0.8" width="150" height="125" alt="<? echo($LIVE_PICTURE[$lang_idx]);?>" /></a>
     </div>
     <p class="box_text">
      
@@ -939,7 +940,7 @@ Licensed MIT
             tempunit = '°C';
         $('#date').html(json.jws.current.date<?=$lang_idx?>);
         $('#messages_box').children('.box_text').html(decodeURIComponent(json.jws.Messages.detailedforecast<?=$lang_idx?>).replace(/\+/g, ' '));
-        $('#tempdivvalue').html(c_or_f(json.jws.current.temp, tempunit)+'<span class="paramunit">'+tempunit+'</span>');
+        $('#tempdivvalue').html('<div class="shade">' + ((json.jws.current.islight == 1) ? "<?=$SHADE[$lang_idx]?>" : "") + '</div>' + c_or_f(json.jws.current.temp, tempunit)+'<span class="paramunit">'+tempunit+'</span>');
         $('#tempdivvalue').css('visibility', 'visible');
         $('#windy').html(json.jws.windstatus.lang<? echo $lang_idx;?>);
       
@@ -958,13 +959,18 @@ Licensed MIT
               });
         }else
 			loadPostData();
-
+        
+        if (json.jws.current.issun == 1)
+        {
+            $("#itfeels").show();$("#itfeels_thsw").show();$("#itfeels_thsw .value").html(c_or_f(json.jws.current.thsw, tempunit) + "");$("#sunshade").show();
+        }
+        else
+            $("#itfeels").show();
         if (json.jws.feelslike.state == "windchill")
-        {$("#itfeels_windchill").show();$("#itfeels_windchill .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "&#176;")}
+        {$("#itfeels_windchill").show();$("#itfeels_windchill .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "")}
         else if (json.jws.feelslike.state == "heatindex")
-        {$("#itfeels_heatidx").show();$("#itfeels_heatidx .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "&#176;")}
-        else if (json.jws.feelslike.state == "thsw")
-        {$("#itfeels_thsw").show();$("#itfeels_thsw .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "&#176;")}
+        {$("#itfeels_heatidx").show();$("#itfeels_heatidx .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "")}
+        
         $('#what_is_h').html(json.jws.states.sigtitle<? echo $lang_idx;?>+'<br/>'+json.jws.states.sigexthtml<? echo $lang_idx;?>);
         var title_temp;
         var title_temp2;

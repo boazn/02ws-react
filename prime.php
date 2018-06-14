@@ -305,8 +305,8 @@
                                         elseif ($current->is_sunrise()) $slot = "1674029096";//sunrise
                                         else $slot = "6243829498";}//day
                                  elseif (($current->is_light())&&(isSnowing())) {$slot = "7580961891";}//snow
-                                 elseif (isRaining()) {$slot = "6104228694";}//rain 
-                                 else {if ($current->get_pm10() > 250) $slot = "7720562695"; else $slot = "7720562695";};//night
+                                 elseif (isRaining()) {$slot = "8797073841";}//rain 
+                                 else {if ($current->get_pm10() > 250) $slot = "9197295893"; else $slot = "7720562695";};//night
                         ?>
 		    <div id="mainadsense" style="background:<?=$adsense_background?>; line-height: 0;box-shadow:3px 3px 15px 15px <?=$adsense_background?>">
 			        
@@ -323,9 +323,7 @@
                                 </script>
 
                                 <div>
-                                <a href="https://goo.gl/5WrA5J" target="_blank">
-                                    <img width="300" height="100" src="images/if_320x100.png" />
-                                </a>
+                                
                                 </div>
 						<div>
 		
@@ -546,7 +544,7 @@
 					<h3><? echo $LIVE_PICTURE[$lang_idx];?></h3>
                                         <h4></h4>
 					<a href="<? echo "station.php?section=webCamera.jpg&amp;lang=".$lang_idx;?>"><p><? echo $PIC_DESC[$lang_idx];?><?=get_arrow()?></p>
-					<img title="שידור חי  - מצלמה 2" src="phpThumb.php?src=<?=getUpdatedPic()?>&amp;sx=200&amp;sy=150&amp;sw=350&amp;sh=350&amp;fltr%5B%5D=gam%7C0.8" alt="live pic" />
+					<img title="שידור חי  - מצלמה 2" src="phpThumb.php?src=<?=getUpdatedPic()?>&amp;sx=950&amp;sy=300&amp;sw=350&amp;sh=350&amp;fltr%5B%5D=gam%7C0.8" alt="live pic" />
 					</a>
 					
 				    </div>

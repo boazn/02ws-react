@@ -546,6 +546,9 @@ width: 160px;
     z-index:99999;
     font-family:nextexitfot_regularregular;
 }
+.shade{
+    <? if (isHeb()) echo "margin: 4.5em 0 0 2.0em;"; else echo "margin: 4.5em 0 0 1.2em;";?>; 
+}
 #latestnow
 {
     padding:0.5em 0.3em 0em 0.3em;
@@ -564,7 +567,7 @@ width: 160px;
 margin:auto;
 }
 #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
-float:none;margin: 0 auto;width: 220px;top:2.3em;
+top:0;position:relative;
 }
 #heatindex{
 margin-top:-56px;

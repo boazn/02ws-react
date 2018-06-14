@@ -396,34 +396,33 @@ if (empty($sigforecastHour)){
                             <div  id="windy">
                             <? echo getWindStatus($lang_idx);?>
                             </div>
+                            <div class="" id="itfeels">
+                            
                              <?$itfeels = array();
                                $itfeels = $current->get_itfeels();
                                
-                                if ($itfeels[0] == "windchill" ){ ?>
-                                        <div id="itfeels_windchill"> 
-                                         <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<? echo $_SERVER['SCRIPT_NAME']; ?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-                                                <? echo $IT_FEELS[$lang_idx]; ?>
-                                                <span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo $itfeels[1]."&#176;"; ?></span>
-                                         </a>
-                                        </div>
-
-                                <? } 
-                                else if ($itfeels[0] == "heatindex"){ ?>
-                                        <div class="" id="itfeels_heatidx">
-                                         <a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-                                                <? echo $IT_FEELS[$lang_idx]; ?>
-                                                <span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1]."&#176;";  ?></span>
-                                         </a> 
-                                        </div>
-                            <?} else if ($itfeels[0] == "thsw"){?>
-                                        <div class="" id="itfeels_thsw">
+                                if ($current->is_sun()) { ?>
+                                        <? echo $IT_FEELS[$lang_idx]; ?>
                                          <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-                                                <? echo $IT_FEELS[$lang_idx]; ?>
-                                                <span dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1]."&#176;";  ?></span>
-                                                <? echo " ".$IN_THE_SUN[$lang_idx]; ?>
-                                         </a> 
-                                        </div>
-                            <?}?>
+                                               
+                                                <span dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span>
+                                         </a>|<? }
+                                else if (!empty($itfeels[0]))
+                                        echo $IT_FEELS[$lang_idx]; 
+                                if ($itfeels[0] == "windchill" ){ ?>
+                                         <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<? echo $_SERVER['SCRIPT_NAME']; ?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+                                                <span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo $itfeels[1]; ?></span>
+                                         </a>
+                                 <? } 
+                                else if ($itfeels[0] == "heatindex"){ ?>
+                                <a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+                                <span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1];  ?></span>
+                                </a>
+                              <?}?>
+                            <? if ($current->is_sun()) { ?>
+                            <div class="sunshade"><? echo $IN_THE_SUN[$lang_idx]; ?>|<? echo $SHADE[$lang_idx]; ?></div> 
+                            <? } ?>
+                            </div>
                             <div id="status">
                             <div  id="coldmeter">
                             <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx;?>"> <span id="current_feeling_link">...</span>
@@ -432,7 +431,7 @@ if (empty($sigforecastHour)){
                             
                             </div>
                             <div id="tempdivvalue">
-                            <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span><span class="shade"><?if ($current->is_light()){ ?><?=" ".$SHADE[$lang_idx]." "?></span><?}?>
+                            <div class="shade"><?if ($current->is_light()){ ?><?=" ".$SHADE[$lang_idx]." "?><?}?></div><? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>
                            </div>
                             		
 			</div>

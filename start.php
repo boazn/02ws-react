@@ -50,11 +50,11 @@ function retrieveTemp2()
        $dewpoint2 = $current->get_dew();
        $heatindex2 = $current->get_heatidx();
        // no current thsw value, so copy from min15
-        if (empty($min15->get_thsw()))
+       /* if (empty($min15->get_thsw()))
             $thsw = $min30->get_thsw();
         else {
             $thsw = $min15->get_thsw();
-        }
+        }*/
        
     }
     
@@ -170,7 +170,7 @@ $storm->set_rain($ary_parsed_file['STORMRAIN']);
 $current->set_rainrate($ary_parsed_file['RAINRATE']);    
 $today->set_highrainrate($ary_parsed_file['HIRAINRATE'],$ary_parsed_file['HIRAINRATETIME']);  
 $seasonTillNow->set_rain($ary_parsed_file['TOTALRAIN']); 
-$today->set_rain($ary_parsed_file['DAILYRAIN']); 
+$today->set_rain($ary_parsed_file['DAILYRAIN']);
 $current->set_dew($ary_parsed_file['DEWPT']);    
 $current->set_cloudbase((($current->get_temp()-$current->get_dew())* 125) + ELEVATION);
 $current->set_windchill($ary_parsed_file['WINDCHILL']);
@@ -265,14 +265,19 @@ $threeHours->set_date(getMinusMinDate(180));
 $tok = getTokFromFile($prefix.FILE_ARCHIVE);
 // now
 if ($_GET['debug'] >= 1)
-	echo "<br>searching ",$now->get_date()," and ",$now->get_time()," ";
-if (searchNext ($tok, $now->get_date()))// found the date in the file
-   fillPastTime ($now, searchNext ($tok, $now->get_time()));
+	echo "in ".$prefix.FILE_ARCHIVE."<br>searching ",$now->get_date()," and ",$now->get_time()," ";
+if (searchNext ($tok, $now->get_date())){// found the date in the file{}
+    if ( searchNext ($tok, $min15->get_time())){
+        $min15->set_thsw(getNextWord($tok, 14, "thsw"));
+    }
+    if ( searchNext ($tok, $now->get_time())){
+        $current->set_thsw(getNextWord($tok, 14, "thsw"));
+    }
+    if (($current->get_thsw()==""))
+        $current->set_thsw($min15->get_thsw());
+}
 else if ($_GET['debug'] >= 1)
     echo "<strong>NOT FOUND</strong>";
-
-
-$current->set_thsw($last2['thsw']);
 fillPastTime ($oneHour, $ary_parsed_file, '60');
 fillPastTime ($min30, $ary_parsed_file, '30');
 fillPastTime ($min15, $ary_parsed_file, '15');

@@ -94,7 +94,7 @@ else
     
  }
  #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
-     font-size:1.55em;width:100%;top:1.4em
+     font-size:1.55em;width:100%;top:0.2em
  }
  #statusline{
      font-size: 1.55em;margin-top:-4.5em;

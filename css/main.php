@@ -3745,7 +3745,9 @@ a.info:hover span.info
 }
 .shade
 {
-    font-size:0.2em
+    font-size:0.15em;
+    position: absolute;
+    margin: 6.2em 0 0 1.5em;
 }
 .inparamdiv .highlows
 {
@@ -3883,7 +3885,7 @@ margin-top:-50px;
 {
 	font-size:100%
 }
-#itfeels_windchill, #itfeels_heatidx, #itfeels_thsw
+#itfeels_windchill, #itfeels_heatidx, #itfeels_thsw, #itfeels
 {
     <? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr";?>;
 	font-size: 15px;
@@ -3892,6 +3894,10 @@ margin-top:-50px;
         top: 2.3em;
         font-size: 1.1em;
         
+}
+.sunshade{
+    display:inline-block;
+    margin:0.1em
 }
 #latestpressure
 {

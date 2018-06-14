@@ -461,10 +461,8 @@ class FixedTime {
 
     function get_dew() {
         global $last2, $PRIMARY_TEMP;
-        if ($PRIMARY_TEMP == 1)
-            return $this->dew;
-        else
-            return $last2['dewpoint2'];
+        return $this->dew;
+        
     }
 
     function get_hum() {
@@ -529,7 +527,12 @@ class FixedTime {
            $temp_to_mompare_to = $this->temp;
         else
            $temp_to_mompare_to = $this->temp2;
-        if (max($this->HeatIdx, $this->thw) > ($temp_to_mompare_to)&&($this->solarradiation > 200)){
+
+        if (min($this->windchill, $this->thw) < ($temp_to_mompare_to) && ($temp_to_mompare_to < 20 ) && ($this->thw != 0) && ($this->windchill != 0)){
+            $itfeels_state = "windchill";
+            $itfeels = min($this->windchill, $this->thw);
+        }
+        else if (max($this->HeatIdx, $this->thw) != ($temp_to_mompare_to)){
             $itfeels_state = "heatindex";
             $itfeels = max($this->HeatIdx, $this->thw);
         }
@@ -537,12 +540,8 @@ class FixedTime {
             $itfeels_state = "thsw";
             $itfeels = $temp_to_mompare_to + number_format(0.4*($this->thsw - $temp_to_mompare_to), 1, '.', '');
         }*/
-        else if (min($this->windchill, $this->thw) < ($temp_to_mompare_to) && ($temp_to_mompare_to < 20 ) && ($this->thw != 0) && ($this->windchill != 0)){
-            $itfeels_state = "windchill";
-            $itfeels = min($this->windchill, $this->thw);
-        }
         else{
-            $itfeels_state = "neutral";
+            $itfeels_state = "";
             $itfeels = $temp_to_mompare_to;
         }
         return array($itfeels_state, $itfeels);
@@ -566,6 +565,9 @@ class FixedTime {
 
     function is_light() {
         return $this->light;
+    }
+    function is_sun(){
+        return ($this->is_light()&&$this->get_thsw()!="");
     }
 
     function is_sunset() {
