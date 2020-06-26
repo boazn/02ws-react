@@ -22,9 +22,26 @@ $locations = isset($_REQUEST['locations']) ? $_REQUEST['locations'] : "";
     #wrapperclimate td{
         box-shadow:0 1px 5px rgba(0,0,0,0.2)
     }
-    
-    
-        
+	#list_div{
+		width:300px;text-align:center;float:<?echo get_s_align();?>;padding:0.2em;
+	}
+    #list_div select{
+		width:240px
+	}
+    #res_div{
+		text-align:center;width:315px;float:<?echo get_s_align();?>
+	}
+	ul.select {
+   list-style: none;
+   margin:  0;
+   padding: 2px;
+   border: 1px solid grey;
+}
+#forecastTable td{
+	font-size: 90%;
+}
+
+       
 </style>
 <?
 $CLIMATOLOGICAL_INFO = array("Climatological Information", "מידע אקלימי", "");
@@ -41,9 +58,9 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 <div <? if (isHeb()) echo "dir=\"rtl\" ";?> style="width:100%;margin:0 auto;float:<?echo get_inv_s_align();?>" class="inv_plain_3">
 
 
-	<div style="width:40%;text-align:center;float:<?echo get_s_align();?>;padding:1em" >
+	<div id="list_div" >
 		<form method="post" name="forecastSubmit">
-			<select style="width:340px" name="locations[]" size="14" multiple align="center" 
+			<select name="locations[]" size="14" multiple align="center" 
 			  onchange="getForecastService<? if (@$_GET['region'] == 'isr') echo "";?>(this[this.selectedIndex].value)"  <? if (!isHeb()) echo "dir=\"ltr\" ";?>>
 					<? 
 					if (@$_GET['region'] == 'isr')
@@ -52,33 +69,16 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 						include "forecast_list.php";?>
 			</select>
 		</form>
-		<div class="inv_plain_3_zebra" style="width: 60%;margin: 0 auto;padding:0.2em">
+		<!--<div class="inv_plain_3_zebra" style="width: 60%;margin: 1em auto;padding:0.4em">
 		<a href="<? echo get_query_edited_url(get_url(), 'section', 'SendEmailForm.php');?>" >
 		<? if (isHeb()) echo "בקשו יעד משלכם"; else echo "Ask for other location"; ?>
 		</a>
-		</div>
-		<div style="">
-		<script type="text/javascript"><!--
-		google_ad_client = "ca-pub-2706630587106567";
-		/* Ad for GetForecast page */
-		google_ad_slot = "7705569841";
-		google_ad_width = 336;
-		google_ad_height = 280;
-		google_color_border = ["<?= $forground->bg['+4'] ?>"];
-		google_color_bg = ["<?= $forground->bg['+4'] ?>"];
-		google_color_link = ["<?= $forground->bg['-9'] ?>"];
-		google_color_url = ["<?= $forground->bg['-9'] ?>"];
-		google_color_text = ["<?= $forground->bg['-9'] ?>"];
-		//-->
-		</script>
-		<script type="text/javascript"
-		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
-		</div>
+		</div>-->
+		
 		
 
 	</div>
-	<div style="text-align:center;width:50%;float:<?echo get_s_align();?>">
+	<div id="res_div" >
             <div align="center">
 		<div class="city_info">
 			<table cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -127,25 +127,43 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 	
 			
 		</div>
+		<div style="">
+		<script type="text/javascript"><!--
+		google_ad_client = "ca-pub-2706630587106567";
+		/* Ad for GetForecast page */
+		google_ad_slot = "7705569841";
+		google_ad_width = 336;
+		google_ad_height = 280;
+		google_color_border = ["<?= $forground->bg['+4'] ?>"];
+		google_color_bg = ["<?= $forground->bg['+4'] ?>"];
+		google_color_link = ["<?= $forground->bg['-9'] ?>"];
+		google_color_url = ["<?= $forground->bg['-9'] ?>"];
+		google_color_text = ["<?= $forground->bg['-9'] ?>"];
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+		</div>
 	</div>
 	</div>
 	
 </div>
 <? echo "<div>".$SOURCE[$lang_idx].": ".$IMS[$lang_idx]."</div>"; ?>
  <script type="text/javascript">	var pageLang = "en";	var default_search_text = "Please enter city / country / territory name";	var cookie_msg = "Cookie has to be enabled on your browser to display the WMO's World Weather Information Services website.";	var wxinfo = "[#Place Name#] Weather Information";	var hello = "Hello,";	var share_msg = "Here is the weather information for [#Place Name#] on the WMO\'s WWIS.";	var share_msg1 = "Weather information for [#Place Name#] on the WMO\'s WWIS:";	var share_msg2 = "[#Place Name#] Weather Information on the WMO\'s WWIS.";	var share_fav = "Here is the weather information for you on the WMO\'s WWIS.";	var city_not_found = "No such city found!";	var isArLang = false;	var src_path = "..";	var base_layer = "The base layer";	var additional_layer = "Additional layers";	var gray_base_map = "Gray base map";	var color_base_map = "Color base map";</script>	
- <link rel="stylesheet" type="text/css" href="http://worldweather.wmo.int/styles/jquery-ui.css" />       
- <link rel="stylesheet" type="text/css" href="http://worldweather.wmo.int/styles/common.css" />
-	<script type="text/javascript" src="http://worldweather.wmo.int/scripts/jquery-1.6.2.min.js"></script>
-	<script type="text/javascript" src="http://worldweather.wmo.int/scripts/jquery-ui.js"></script>
-	<script type="text/javascript" src="http://worldweather.wmo.int/scripts/sessvars.js"></script>
-	<script type="text/javascript" src="http://worldweather.wmo.int/scripts/common.js"></script>
-	<script type="text/javascript" src="http://worldweather.wmo.int/scripts/moment-with-langs.min.js"></script>
-	<script type="text/javascript" src="http://worldweather.wmo.int/scripts/highcharts.js"></script>
-	<script type="text/javascript" src="http://worldweather.wmo.int/scripts/OpenLayers.js"></script>
-	<script type="text/javascript" src="http://worldweather.wmo.int/scripts/osm.js"></script>
+ <link rel="stylesheet" type="text/css" href="https://worldweather.wmo.int/styles/jquery-ui.css" />       
+ <link rel="stylesheet" type="text/css" href="https://worldweather.wmo.int/styles/common.css" />
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/jquery-ui.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/sessvars.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/common.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/moment-with-langs.min.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/highcharts.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/OpenLayers.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/osm.js"></script>
         <style>
             .city_forecast_info, .city_climate_info, .city_info, #forecastTable, #climateContainer, #climateTable, .climateTable{
-                width: 550px;direction:ltr
+                width: 318px;direction:ltr
             }
         </style>
             
@@ -180,7 +198,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 		ajax.setMimeType('text/html');
 		ajax.setHandlerBoth(fillForecast);
 		ajax.postData = "CF=C" + "&LangID=<?=$lang_idx?>" + "&DayAndDate=<?=$Day_And_Date[$lang_idx]?>" + "&LocationId=" + location + "&WeatherAndTemprature=<?=$Day_And_Date[$lang_idx]?>" + "&align=<?=get_s_align()?>";
-		ajax.url = 'http://www.ims.gov.il/IMS/Pages/IsrCitiesForeCast.aspx';
+		ajax.url = 'https://www.ims.gov.il/IMS/Pages/IsrCitiesForeCast.aspx';
 		ajax.doReq();
 		
 	}
@@ -679,7 +697,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 					wxdesc = cityObj[0].forecast.forecastDay[i].wxdesc;
 				}
 								
-				forecast_row += '<td style="width: 150px;" align="left"><div style="margin-left: 45px;" class="img_set wxicon_div wxicon_' + icon + '" title="' + wxdesc + '"></div></td>';
+				forecast_row += '<td style="width: 80px;" align="left"><div style="margin-left: 45px;" class="img_set wxicon_div wxicon_' + icon + '" title="' + wxdesc + '"></div></td>';
 				forecast_row += '<td align="left">' + wxdesc + '</td>';
 				
 				forecast_row += '</tr>';
@@ -825,7 +843,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 	//Use city id to get city info from JSON file
 	function ajax_get_city_info(cityId) {
 		$.ajax({
-			url: "forecast/getForecastService.php?location=http://worldweather.wmo.int/en/json/" + cityId + "_en.xml",
+			url: "forecast/getForecastService.php?location=https://worldweather.wmo.int/en/json/" + cityId + "_en.xml",
 			type: "GET",
 			dataType: "text",
 			success: function(Jdata) {

@@ -1,15 +1,13 @@
 
 
 
-<div id="messages_box" class="white_box">
+<div id="messages_box" class="">
     <h2><? echo $MESSAGES[$lang_idx];?></h2>
     <p class="box_text" style="font-size: 1.2em;padding:0.5em">
      
     </p>
-	<div id="adunit3" style="display:none">
-        <div class="removeadlink">
-            <a href="https://www.patreon.com/bePatron?c=1347814&rid=2162701" target="_blank"><?=$REMOVE_ADS[$lang_idx];?></a>
-        </div>
+	<div id="adunit3" class="adunit" style="display:none">
+        
 	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 	<!-- Large Mobile Banner 1 -->
 	<ins class="adsbygoogle"

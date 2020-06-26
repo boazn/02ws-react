@@ -294,7 +294,7 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
          
      //
          
-     logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1));
+     //logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1));
      $result = "";
      $resultCall = array();
      $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
@@ -350,7 +350,7 @@ function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_ur
      
     logger("sendingGCMMessage: header key=".$key." count=".count($registrationIDs)." ".$messageBody." ".$title." ".$picture_url." ".$embedded_url);
     // Set POST variables
-    $url = 'https://android.googleapis.com/gcm/send';
+    $url = 'https://fcm.googleapis.com/fcm/send';
 
     $fields = array(
         'registration_ids' => $registrationIDs,

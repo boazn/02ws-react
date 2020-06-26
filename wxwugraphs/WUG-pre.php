@@ -70,7 +70,7 @@ if ($precache and !isset($copied)) { // $copied mean don't create if is active r
           }
           $tloop = false;
           $unitsLnk =  $metric ? 'metric' : 'english';
-          $WUsourceFile2 = 'http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID='.$WUID.'&graphspan=day&day='.zero_bd($cDay).'&year='.$cYear.'&month='.$cMnth.'&format=1&units='.$unitsLnk;
+          $WUsourceFile2 = 'https://www.02ws.co.il/wxwugraphs/WXDailyHistory.php?ID='.$WUID.'&graphspan=day&day='.zero_bd($cDay).'&year='.$cYear.'&month='.$cMnth.'&format=1&units='.$unitsLnk;
           $WUcacheFile2 = $dirCont.'/'.$WUID.'-day-'.$cYear.$cMnth.zero_bd($cDay).'.txt';
           ## cache file creation
           $opts = array( 

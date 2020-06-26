@@ -1,6 +1,7 @@
  <article id="forecast">
 	<?include_once("forecastlib.php");
-         include_once "picasaproxy.php";$mediumSizeUrl = "phpThumb.php?src=".$contentUrl."&amp;w=200&amp;h=200&amp;zc=C";
+		 //include_once "picasaproxy.php";
+		 $mediumSizeUrl = "phpThumb.php?src=".$contentUrl."&amp;w=200&amp;h=200&amp;zc=C";
           $sig_url = $sig[0]['url'];
         $sig_title = $sig[0]['sig'][$lang_idx];
         $imagefile = "phpThumb.php?src=".getUpdatedPic()."&amp;w=200&amp;h=200&amp;zc=C&amp;fltr[]=gam|0.8";//&amp;fltr[]=cont|50

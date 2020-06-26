@@ -121,7 +121,7 @@ $_SESSION['accessts'] = time();
           );  
           $context = stream_context_create($opts); 
           $WUcacheFile = $WUcacheDir . '/test-url-fopen.txt'; 
-          $WUsourceFile = 'http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID='.$WUID.'&graphspan=month&year=' . date('j') . '&year=' . date('Y') .  '&month=' . date('n') . '&format=1&units='.$unitsLnk;
+          $WUsourceFile = 'https://www.02ws.co.il/wxwugraphs/WXDailyHistory.php?ID='.$WUID.'&graphspan=month&year=' . date('j') . '&year=' . date('Y') .  '&month=' . date('n') . '&format=1&units='.$unitsLnk;
           
           copyWUfile();
     

@@ -23,7 +23,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
  // change that according to file
  //
  //
- $SITE['cvalues'] = array("date","rain");
+ $SITE['cvalues'] = array("date","rain", "raincode");
  $key_split = "/,+/";
  function ret_value($lookup) {
 	global $SITE, $DATA;
@@ -40,17 +40,17 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
  //$sourcefile="reports/TX.txt";
  if ($insertOrUpdate == "")
  {
-	 echo "t is missing";
+	 echo "t is missing (I or U)";
 	 exit;
  }
   if ($nameOfParam == "")
  {
-	 echo "p is missing";
+	 echo "p is missing (e.g. HiTemp or LowTemp or Rain)";
 	 exit;
  }
-  if ($sourcefile == "")
+  if ($file == "")
  {
-	 echo "f is missing";
+	 echo "f is missing (e.g. IMS_DATA)";
 	 exit;
  }
 

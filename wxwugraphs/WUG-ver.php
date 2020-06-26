@@ -142,7 +142,7 @@ if ($thisPage == 'wxwugraphs.php') {
 if ($dataSource == 'mysql') {
   $sourceString = '';
 } else {
-  $sourceString = ' '.$TWUsource.' <a href="http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID='.$WUID.'" target="_blank" onmouseover="Tip(\'&lt;img src=&#34;'.$mainDir.'images/wunder-long.png&#34; alt=&#34;Wunderground Logo&#34; width=&#34;230&#34; height=&#34;33&#34; /&gt;\',TITLE,\'Weather Undeground server\')" onmouseout="UnTip()">Wunderground.com</a>';
+  $sourceString = ' '.$TWUsource.' <a href="https://www.02ws.co.il/wxwugraphs/WXDailyHistory.php?ID='.$WUID.'" target="_blank" onmouseover="Tip(\'&lt;img src=&#34;'.$mainDir.'images/wunder-long.png&#34; alt=&#34;Wunderground Logo&#34; width=&#34;230&#34; height=&#34;33&#34; /&gt;\',TITLE,\'Weather Undeground server\')" onmouseout="UnTip()">Wunderground.com</a>';
 }
 
 $uvarg = isset($winFlag) ? $winFlag : false;

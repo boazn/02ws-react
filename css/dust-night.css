@@ -1,6 +1,5 @@
 body {
-   background-image:url("../img/bg_dust_night.png");
-   background-repeat:repeat;
+    background: linear-gradient(180deg, #39454b 0%, #444c4e 10%, #4f5352 60%, #65625a 100%);
 }
 #logo{
 	background-image:url("../img/logo_dust_night.png");

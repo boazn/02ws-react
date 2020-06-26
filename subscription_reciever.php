@@ -8,7 +8,7 @@
     $REMOVE_AD_TITLE = array("Ads removal - 02WS", "ירושמיים - הסרת פרסומות");
 
     function isAndroid($reg_id){
-        return (strlen($reg_id) == 152);
+        return (strlen($reg_id) >= 152);
     }
     class DB_Functions {
  
@@ -20,18 +20,19 @@
      * Storing new user
      * returns user details
      */
-    public function storeSub($email, $status) {
+    public function storeSub($email, $status, $reg_id) {
         // insert user into database
         $email = strtolower($email);
+        $approved = ($status == 1 ? 1 : 0);
         $lang_idx = $_GET['lang'];
         if (empty($lang_idx)) 
             $lang_idx = 1;
         global $REMOVE_AD_DESC, $REMOVE_AD_TITLE, $SHORT_TERM_DESC, $SHORT_TERM_TITLE; 
         global $link;
 		
-							
+            				
 			//$result = db_init("call SaveUserPic ('$name', '$comment', '$user', '$picname', '$x', '$y')");
-            $result = db_init("INSERT INTO `Subscriptions` (guid, email, approved) VALUES(UUID_SHORT(), '$email' ,$status);", "");
+            $result = db_init("INSERT INTO `Subscriptions` (guid, email, approved, reg_id) VALUES(UUID_SHORT(), '$email' ,$status, '$reg_id');", "");
 			// check for successful store
 			// get user details
 			$id = $link->insert_id; // last inserted id
@@ -39,10 +40,21 @@
 			
          if ($result["error"] != "") {
             $db = new DB_Functions();
-            logger("New storeSub exception:".$result["error"]);
+            //logger("New storeSub exception:".$result["error"]);
             $sub = json_decode($db->getSubFromEmail($email), true);
-            $res_sub =  $db->UpdateRegId($sub["Subscription"]["reg_id"], $sub["Subscription"]["guid"], $status, true);
+            $res_sub =  $db->UpdateRegId($email, $reg_id, $sub["Subscription"]["guid"], $status, true);
            
+        }
+        else{
+            if (strlen($reg_id) == 0)
+                exit; 
+               
+            if (isAndroid($reg_id))
+                $query = "update `gcm_users` set Approved=".$approved." where gcm_regid='".$reg_id."'";
+                else
+                    $query = "update `apn_users` set Approved=".$approved." where apn_regid='".$reg_id."'";
+                db_init($query, "") ;
+                logger($query);
         }
         
 							
@@ -64,11 +76,11 @@
         $userJSON .= "\"email\":"."\"".$line['email']."\"";
         $userJSON .= ",";
         $userJSON .= "\"approved\":"."\"".$line['approved']."\"";
-        logger("New sub updated:".$line['guid']." => ".$email);
-        if ($status == 1)
+        //logger("New sub updated:".$line['guid']." => ".$email);
+       /* if ($status == 1)
             send_Email(array($REMOVE_AD_DESC[0]." <br />".$line['guid'],$REMOVE_AD_DESC[1]." <br />".$line['guid'] ), $email, EMAIL_ADDRESS, "", "",  $REMOVE_AD_TITLE);
         else if ($status == 2)
-            send_Email(array($SHORT_TERM_DESC[0]." <br />".$line['guid'],$SHORT_TERM_DESC[1]." <br />".$line['guid'] ), $email, EMAIL_ADDRESS, "", "",  $SHORT_TERM_TITLE);
+            send_Email(array($SHORT_TERM_DESC[0]." <br />".$line['guid'],$SHORT_TERM_DESC[1]." <br />".$line['guid'] ), $email, EMAIL_ADDRESS, "", "",  $SHORT_TERM_TITLE);*/
         $userJSON .= "}";
         $userJSON .= "}";
         return $userJSON;
@@ -77,7 +89,7 @@
    
     }
     
-    public function UpdateRegId($reg_id, $guid, $approved, $isAdmin) {
+    public function UpdateRegId($email, $reg_id, $guid, $approved, $isAdmin) {
         // insert user into database
         $guid = trim($guid);
         global $link;
@@ -86,12 +98,12 @@
 		$link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
                 
                 // only update Approved if removed
-                $query = "update `Subscriptions` set reg_id=?  where guid=?";
+                $query = "update `Subscriptions` set reg_id='".$reg_id."'  where guid=?";
                 $stmt = $link->stmt_init();
                 $stmt->prepare($query);
-                $stmt->bind_param('ss' ,$reg_id, $guid);
+                $stmt->bind_param('s' , $guid);
                 $stmt->execute();
-                logger($query." ".$reg_id." ".$guid." ".$approved);
+                logger($query." ".$guid);
                 if ($isAdmin)
                 {
                     $query = "update `Subscriptions` set Approved=".$approved."  where guid='".$guid."'";
@@ -100,12 +112,14 @@
                 }
                 $stmt->close();
                 
-                if (isAndroid($reg_id))
-                $query = "update `gcm_users` set Approved=".$approved." where gcm_regid='".$reg_id."'";
-                else
-                    $query = "update `apn_users` set Approved=".$approved." where apn_regid='".$reg_id."'";
-                db_init($query, "") ;
-                logger($query);
+                if ($guid!=""){
+                    if (isAndroid($reg_id))
+                     $query = "update `gcm_users` set Approved=".$approved." where gcm_regid='".$reg_id."'";
+                    else
+                        $query = "update `apn_users` set Approved=".$approved." where apn_regid='".$reg_id."'";
+                    db_init($query, "") ;
+                    logger($query);
+                }
                 mysqli_close($link);
                 $query = "select id, guid, email, approved from `Subscriptions` where guid=?";
                 $result = db_init($query, $guid);
@@ -312,20 +326,20 @@ else if ($_REQUEST['action']=="getsubfromregid"){
     logger ($res_sub);
 }
 else if ($_REQUEST['action']=="storeSub"){
-    $res_sub = $db->storeSub($_REQUEST["email"], 1);
+    $res_sub = $db->storeSub($_REQUEST["email"], $_REQUEST["status"], $_REQUEST["reg_id"]);
     echo ($res_sub);
 }
 else if ($_REQUEST['action']=="storeSubAlert"){
-    $res_sub = $db->storeSub($_REQUEST["email"], 2);
+    $res_sub = $db->storeSub($_REQUEST["email"], 2, $_REQUEST["reg_id"]);
     echo ($res_sub);
 }
 else if ($_REQUEST['action']=="D"){
     $sub = json_decode($db->getSubFromEmail($_REQUEST["email"]), true);
-    $res_sub =  $db->UpdateRegId($sub["Subscription"]["reg_id"], $sub["Subscription"]["guid"], 0, true);
+    $res_sub =  $db->UpdateRegId($_REQUEST["email"], $sub["Subscription"]["reg_id"], $sub["Subscription"]["guid"], 0, true);
     echo ($res_sub);
 }
 else if ($_REQUEST['action']=="updateregid"){
-    $res_sub = $db->UpdateRegId($_REQUEST["regId"], $_REQUEST["guid"], 1, false);
+    $res_sub = $db->UpdateRegId($_REQUEST["email"], $_REQUEST["regId"], $_REQUEST["guid"], 1, false);
     echo ($res_sub);
 }
 else {
@@ -359,7 +373,7 @@ else {
 <img src="images/x.png" width="16px" onclick="getOneUFService('D')" style="cursor:pointer" />
 <img src="images/check.png" width="16px" onclick="getOneUFService('storeSub')" style="cursor:pointer" alt="ad"/>ads
 <img src="images/plus.png" width="16px" onclick="getOneUFService('storeSubAlert')" style="cursor:pointer" alt="short term alerts"/>alerts
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 <script language="javascript">
 function getOneUFService(command)
 {
@@ -367,7 +381,7 @@ function getOneUFService(command)
    $.ajax({
         type: "POST",
         url: "subscription_reciever.php",
-        data: {email:email,action:command},
+        data: {email:email,action:command,status:1},
    }).done(function(str){alert(str);});
 }
 

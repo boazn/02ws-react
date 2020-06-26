@@ -1,19 +1,30 @@
 
 <?
 ini_set("display_errors","On");
-require_once 'picasaproxy.php';
+//require_once 'picasaproxy.php';
 
-echo "<h1>".$PIC_OF_THE_DAY[$lang_idx]."</h1>";
+echo "<h1>".$PIC_OF_THE_DAY[$lang_idx]."</h1><div class=\"clear\" ></div>";
 ///////////////////////////////////////////////////////////
-
+$result = db_init("SELECT * FROM PicOfTheDay order by uploadedAt DESC","");
+$pic_number = 0;
+while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
+        $picaname = "images/picOfTheDay/".$line["picname"];
+        ?>
+        
+       <div class="white_box2 float pic_cell" style="" id="<?=$line["idx"]?>">
+                <?  echo $line["uploadedAt"]; ?><br/>
+                <a href="<?=$picaname?>" title="" class="colorbox">
+                        <img src="phpThumb.php?src=<? echo $picaname ?>&amp;w=290" width="290px" title="<?=$picaname?>" />
+                </a><br />
+                <? if (isHeb()) echo $line["comment1"]; else echo $line["comment0"]; ?>
+        </div>
+        
+        
+        <? 
+        $pic_number++;
+}
 ?>
-<div class="inv_plain_3_zebra clear float" >
 
-<?
-echo "<a href='".$contentUrl."' title='" . $caption ."' target=_system><img width=\"309\" src='".$mediumSizeUrl."' alt='" . $photoEntry->title->text ."' title='" . $albumName ."' /></a><br />".$caption."<br />".replaceDays($dateTaken); 
-?>
-
-</div>
 <!--
 <div class="inv_plain_3_zebra invfloat">
 <script type="text/javascript"><!--
@@ -37,7 +48,7 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
 //$albumFeedrv = array_reverse($albumFeedar);
 //$albumFeedrv = (object)$albumFeedrv;
 //var_dump($albumFeedar);
-for ($i = count($albumFeed) - 2; $i > count($albumFeed) - 50; $i--){
+/*for ($i = count($albumFeed) - 2; $i > count($albumFeed) - 50; $i--){
                 $contentUrl = "";
                 $thumbnailUrl = "";
                 $photoEntry = $albumFeed[$i];
@@ -60,5 +71,5 @@ for ($i = count($albumFeed) - 2; $i > count($albumFeed) - 50; $i--){
         
                 echo "<div class='white_box2 float pic_cell'><a href='".$contentUrl."' title='" . $caption ."' target=_system><img src='".$thumbnailUrl."' alt='" . $photoEntry->title->text ."' title='" . $albumName ."' /></a><br />".$caption."<br />".replaceDays($dateTaken)."</div>"; 
 }
-
+*/
 ?>

@@ -36,6 +36,7 @@ $SNOW_ARCHIVE = array ("<h2>Snow Archive</h2>From the archive of newspapers from
 		<? echo $GRAUPEL_EXP[$lang_idx]; ?>
 	</div>
 </div>
+<!--
 <div class="float inv_plain_3 float">
 	<script type="text/javascript"><!--
 	google_ad_client = "pub-2706630587106567";
@@ -50,11 +51,11 @@ $SNOW_ARCHIVE = array ("<h2>Snow Archive</h2>From the archive of newspapers from
 	google_color_text = ["<?= $forground->bg['-9'] ?>"];
 
 	//-->
-	</script>
+	<!--</script>
 	<script type="text/javascript"
 	src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</script>
-</div>
+</div>-->
 
 
 
@@ -90,7 +91,7 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 			 $snowdate = new DateTime($line['SnowDate'], new DateTimeZone('Asia/Jerusalem'));
                          print "<tr>";
 			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".$line['WinterBeginningYear']."-".$winterEndingYear."</td>\n";
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".replaceDays(date_format($snowdate, " D "))."<br />".date_format($snowdate, "j/m/Y")."</td>\n";
+			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".replaceDays(date_format($snowdate, " D "))."<br />".date_format($snowdate, "j/m")."<br />".date_format($snowdate, "Y")."</td>\n";
 			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\" >".$line['StormDays']."</div>\n";                 
 			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\"><strong>".$line['DepthMin']."</strong></td>\n";
 			 print "\t\t<td class=\" inv_plain_3 borderfull\" style=\"text-align:center\"><strong>".$line['DepthMax']."</strong></td>\n";

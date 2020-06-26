@@ -121,7 +121,7 @@ $langSwitch = false; // show language switch
 
 ### Units and other settings ###
 $metric = true; // true for metric units, false for imperial units
-$windmu = 'm/s'; // 'm/s' or 'km/h' for metric units selection
+$windmu = 'km/h'; // 'm/s' or 'km/h' for metric units selection
 $baroMinMax = true; // true or false - Disable minimum and maximum limits for barometric pressure graphs and informational bands/strips about intensity of pressure.
 $showSolar = true; // if you don't have solar sensor, set this value to false (graph will be disabled/hidded in graph selection and tabs)
 $wugWinW = '900'; //pixels; Default WIDTH of graph opened in a new window (default: '900' eq. for Netbooks or small notebooks/laptops)
@@ -190,7 +190,7 @@ $creditsURL = 'http://www.somesite.com';
 
 
 ### JS and CSS jQuery support
-$jQueryFile = 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'; // Custom path to jQuery libary (always needed)
+$jQueryFile = 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'; // Custom path to jQuery libary (always needed)
 $loadJQuery = true; // if you have own jQuery library, jQuery Tabs and jQuery Cookie loaded in Saratoga/CarterLake template (top.php), then you can (optionally) set this to false
 $incTabsStyle = true; // if you set $loadJQuery to false, then you may want to use own default CSS style for jQuery tabs. In this case set to false.
 

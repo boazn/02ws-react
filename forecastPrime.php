@@ -24,15 +24,15 @@ $floated = false;
 		<div class="contentbox-wrapper">
 			  
 			    
-			     <!--<div id="forcast_hours" class="contentbox">
+			     <div id="forcast_hours" class="contentbox">
 				 <? echo($GIVEN[$lang_idx]." ".$AT[$lang_idx]." ".$timetaf.":00 ".$dayF."/".$monthF."/".$yearF);?>
 				 <div id="for24_literal">
 					<span id="tempForecastDiv" style="display:none">
 					</span>
 				</div>
-				<ul id="for24_hours">
+				<ul id="for24_hours" style="display:none">
 				 <? 
-                                 $forecastHour = apc_fetch("forecasthour");
+                                 $forecastHour = $mem->get("forecasthour");
 				 foreach ($forecastHour as $hour_f){
 				 if (($hour_f['time'] % 3 == 0) || ($hour_f['plusminus'] > 0))
 				 {
@@ -56,17 +56,10 @@ $floated = false;
 				 }
 				 ?>
 				</ul>
-			    </div>-->
-			    
-			    
-                            <div id="graph_forcast" class="contentbox">
-                                <? echo($GIVEN[$lang_idx]." ".$AT[$lang_idx]." ".$timetaf.":00 ".$dayF."/".$monthF."/".$yearF);?>
-                                <canvas id="graphForcastContainer" style="position: relative"></canvas>
-                                <div id="chartjs-tooltip" class="inv_plain_3_zebra"></div>
-                                <div id="forcast_hours">
+				<div id="forcast_hours">
                                 <ul id="for24_hours">
-                                 <? 
-                                 $sigforecastHour = apc_fetch('sigforecastHour');
+								<? 
+                                 $sigforecastHour = $mem->get('sigforecastHour');
                                  foreach ($sigforecastHour as $hour_f){
                                  
                                  echo "<li class=\"nav forecasttimebox forcast_each\" ><ul>";
@@ -91,6 +84,16 @@ $floated = false;
                                  ?>
                                 </ul>
                                 </div>
+				</div>
+				 
+			    
+			    
+                            <div id="graph_forcast" class="contentbox">
+                                <? echo($GIVEN[$lang_idx]." ".$AT[$lang_idx]." ".$timetaf.":00 ".$dayF."/".$monthF."/".$yearF);?>
+								<div id="legends"></div>
+                                <canvas id="graphForcastContainer" style="position: relative"></canvas>
+                                <div id="chartjs-tooltip" class="inv_plain_3_zebra"></div>
+                                
                             </div>
                               <div id="forcast_days" class="contentbox">
 				<ul id="forcast_icons">

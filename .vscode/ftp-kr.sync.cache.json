@@ -1,0 +1,5405 @@
+{
+  "sftp://176.58.97.97:22@root": {
+    "home": {
+      "boazn": {
+        "public": {
+          "02ws.com": {
+            "public": {
+              "jquery.cycle.all.min.js": {
+                "type": "-",
+                "size": 27811,
+                "lmtime": 0,
+                "modified": false
+              },
+              "JWSBanner.fla": {
+                "type": "-",
+                "size": 163840,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apple-touch-icon-120x120-precomposed.png": {
+                "type": "-",
+                "size": 371,
+                "lmtime": 0,
+                "modified": false
+              },
+              "config.ini": {
+                "type": "-",
+                "size": 166,
+                "lmtime": 0,
+                "modified": false
+              },
+              "tracks.php": {
+                "type": "-",
+                "size": 4101,
+                "lmtime": 0,
+                "modified": false
+              },
+              "station.php": {
+                "type": "-",
+                "size": 105228,
+                "lmtime": 0,
+                "modified": false
+              },
+              "soundfiles.txt": {
+                "type": "-",
+                "size": 46,
+                "lmtime": 0,
+                "modified": false
+              },
+              "realtime.txt": {
+                "type": "-",
+                "size": 262,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apple-touch-icon-precomposed.png": {
+                "type": "-",
+                "size": 371,
+                "lmtime": 0,
+                "modified": false
+              },
+              "swfobject.js": {
+                "type": "-",
+                "size": 6880,
+                "lmtime": 0,
+                "modified": false
+              },
+              "refresh24HForecast.php": {
+                "type": "-",
+                "size": 1114,
+                "lmtime": 0,
+                "modified": false
+              },
+              "averageTable.php": {
+                "type": "-",
+                "size": 3878,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02ws_forecast_2019920.png": {
+                "type": "-",
+                "size": 48084,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendFeedback.php": {
+                "type": "-",
+                "size": 16196,
+                "lmtime": 0,
+                "modified": false
+              },
+              "messy_rss.php": {
+                "type": "-",
+                "size": 3312,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sprintf.js": {
+                "type": "-",
+                "size": 8736,
+                "lmtime": 0,
+                "modified": false
+              },
+              "robots.txt": {
+                "type": "-",
+                "size": 49,
+                "lmtime": 0,
+                "modified": false
+              },
+              "leftCol.php": {
+                "type": "-",
+                "size": 5936,
+                "lmtime": 0,
+                "modified": false
+              },
+              "checkgd.php": {
+                "type": "-",
+                "size": 554,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Copy of browsedate.php": {
+                "type": "-",
+                "size": 6026,
+                "lmtime": 0,
+                "modified": false
+              },
+              "myths.php": {
+                "type": "-",
+                "size": 670,
+                "lmtime": 0,
+                "modified": false
+              },
+              "chooseHeader.php": {
+                "type": "-",
+                "size": 6443,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ini.php": {
+                "type": "-",
+                "size": 3094,
+                "lmtime": 0,
+                "modified": false
+              },
+              "summerpic.txt": {
+                "type": "-",
+                "size": 261,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Shot1.gif": {
+                "type": "-",
+                "size": 512995,
+                "lmtime": 0,
+                "modified": false
+              },
+              "generalstyle.php": {
+                "type": "-",
+                "size": 239,
+                "lmtime": 0,
+                "modified": false
+              },
+              "whatsnew.php": {
+                "type": "-",
+                "size": 625,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecast.php": {
+                "type": "-",
+                "size": 14236,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sharsheleg.jpg": {
+                "type": "-",
+                "size": 987769,
+                "lmtime": 0,
+                "modified": false
+              },
+              "OJAM.TXT": {
+                "type": "-",
+                "size": 129,
+                "lmtime": 0,
+                "modified": false
+              },
+              "IMG_5523.JPG": {
+                "type": "-",
+                "size": 2587556,
+                "lmtime": 0,
+                "modified": false
+              },
+              "counterWebCam.php": {
+                "type": "-",
+                "size": 1589,
+                "lmtime": 0,
+                "modified": false
+              },
+              "nsbutton.class": {
+                "type": "-",
+                "size": 6924,
+                "lmtime": 0,
+                "modified": false
+              },
+              "changedata.php": {
+                "type": "-",
+                "size": 596,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecast": {},
+              "models.php": {
+                "type": "-",
+                "size": 22494,
+                "lmtime": 0,
+                "modified": false
+              },
+              "time.php": {
+                "type": "-",
+                "size": 395,
+                "lmtime": 0,
+                "modified": false
+              },
+              "chat_service.php": {
+                "type": "-",
+                "size": 12442,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Shot1_Scene 1.swf": {
+                "type": "-",
+                "size": 4705,
+                "lmtime": 0,
+                "modified": false
+              },
+              "pictures.htm": {
+                "type": "-",
+                "size": 685,
+                "lmtime": 0,
+                "modified": false
+              },
+              "CertPushProd.pem": {
+                "type": "-",
+                "size": 8324,
+                "lmtime": 0,
+                "modified": false
+              },
+              "cropimage.php": {
+                "type": "-",
+                "size": 522,
+                "lmtime": 0,
+                "modified": false
+              },
+              "picasaproxy.php": {
+                "type": "-",
+                "size": 2237,
+                "lmtime": 0,
+                "modified": false
+              },
+              "tempfulldata.xml": {
+                "type": "-",
+                "size": 5172,
+                "lmtime": 0,
+                "modified": true
+              },
+              "browsedate.php": {
+                "type": "-",
+                "size": 22295,
+                "lmtime": 0,
+                "modified": false
+              },
+              "csscolor.php": {
+                "type": "-",
+                "size": 13260,
+                "lmtime": 0,
+                "modified": false
+              },
+              "climate.php": {
+                "type": "-",
+                "size": 1678,
+                "lmtime": 0,
+                "modified": false
+              },
+              "minifylib.php": {
+                "type": "-",
+                "size": 11221,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecasticon.gif": {
+                "type": "-",
+                "size": 5340,
+                "lmtime": 0,
+                "modified": false
+              },
+              "choose.htm": {
+                "type": "-",
+                "size": 486,
+                "lmtime": 0,
+                "modified": false
+              },
+              "animation.php": {
+                "type": "-",
+                "size": 3156,
+                "lmtime": 0,
+                "modified": false
+              },
+              "2weeks.php": {
+                "type": "-",
+                "size": 2034,
+                "lmtime": 0,
+                "modified": false
+              },
+              "check.png": {
+                "type": "-",
+                "size": 1160,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Shot2.fla": {
+                "type": "-",
+                "size": 85504,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sigweather_old.php": {
+                "type": "-",
+                "size": 8122,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jquery.cycle.all.min.js.gz": {
+                "type": "-",
+                "size": 6832,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apsPushProd_1216.pem": {
+                "type": "-",
+                "size": 4226,
+                "lmtime": 0,
+                "modified": false
+              },
+              "RainSeasons.dat": {
+                "type": "-",
+                "size": 3,
+                "lmtime": 0,
+                "modified": false
+              },
+              "JWSBanner.gif": {
+                "type": "-",
+                "size": 540,
+                "lmtime": 0,
+                "modified": false
+              },
+              "smallN.php": {
+                "type": "-",
+                "size": 45297,
+                "lmtime": 0,
+                "modified": false
+              },
+              "st01_03.xls": {
+                "type": "-",
+                "size": 47616,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Current_Conditions.htm": {
+                "type": "-",
+                "size": 2740,
+                "lmtime": 0,
+                "modified": false
+              },
+              "compareToEK.php": {
+                "type": "-",
+                "size": 6348,
+                "lmtime": 0,
+                "modified": false
+              },
+              "WhatToWear.php": {
+                "type": "-",
+                "size": 7520,
+                "lmtime": 0,
+                "modified": false
+              },
+              "error.log": {
+                "type": "-",
+                "size": 0,
+                "lmtime": 0,
+                "modified": false
+              },
+              "refresh.png": {
+                "type": "-",
+                "size": 4566,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ReceiptValidator": {},
+              "midrag.php": {
+                "type": "-",
+                "size": 215,
+                "lmtime": 0,
+                "modified": false
+              },
+              "bannerSonde.php": {
+                "type": "-",
+                "size": 2639,
+                "lmtime": 0,
+                "modified": false
+              },
+              "print.php": {
+                "type": "-",
+                "size": 1144,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sitemap_google_ssl.xml": {
+                "type": "-",
+                "size": 61523,
+                "lmtime": 0,
+                "modified": false
+              },
+              "hometable.php": {
+                "type": "-",
+                "size": 27637,
+                "lmtime": 0,
+                "modified": false
+              },
+              "google90b7f639fdcaf793.html": {
+                "type": "-",
+                "size": 53,
+                "lmtime": 0,
+                "modified": false
+              },
+              "NOAAPRMO.TXT": {
+                "type": "-",
+                "size": 3412,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ui.core.js": {
+                "type": "-",
+                "size": 13783,
+                "lmtime": 0,
+                "modified": false
+              },
+              "starto.php": {
+                "type": "-",
+                "size": 16431,
+                "lmtime": 0,
+                "modified": false
+              },
+              "bannerGen.php": {
+                "type": "-",
+                "size": 6364,
+                "lmtime": 0,
+                "modified": false
+              },
+              "generalstyleNew.php": {
+                "type": "-",
+                "size": 242,
+                "lmtime": 0,
+                "modified": false
+              },
+              "tod_White.jpg": {
+                "type": "-",
+                "size": 7476,
+                "lmtime": 0,
+                "modified": false
+              },
+              "lang.php": {
+                "type": "-",
+                "size": 60520,
+                "lmtime": 0,
+                "modified": false
+              },
+              "buttongradient.php": {
+                "type": "-",
+                "size": 683,
+                "lmtime": 0,
+                "modified": false
+              },
+              "showcase.js": {
+                "type": "-",
+                "size": 17601,
+                "lmtime": 0,
+                "modified": false
+              },
+              "songs": {},
+              "lightning.php": {
+                "type": "-",
+                "size": 886,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apple-touch-icon-76x76-precomposed.png": {
+                "type": "-",
+                "size": 371,
+                "lmtime": 0,
+                "modified": false
+              },
+              "save_smallheader": {
+                "type": "-",
+                "size": 134,
+                "lmtime": 0,
+                "modified": false
+              },
+              "snowpoetry.php": {
+                "type": "-",
+                "size": 178,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendSpecialnew.php": {
+                "type": "-",
+                "size": 7207,
+                "lmtime": 0,
+                "modified": false
+              },
+              "3months.php": {
+                "type": "-",
+                "size": 2077,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Shot1.swf": {
+                "type": "-",
+                "size": 5651,
+                "lmtime": 0,
+                "modified": false
+              },
+              "nsmenuitem.class": {
+                "type": "-",
+                "size": 1191,
+                "lmtime": 0,
+                "modified": false
+              },
+              "periodicDBTasks.php": {
+                "type": "-",
+                "size": 4683,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecast2.php": {
+                "type": "-",
+                "size": 38351,
+                "lmtime": 0,
+                "modified": false
+              },
+              "statusmap.php": {
+                "type": "-",
+                "size": 1618,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendGCMMessage.php": {
+                "type": "-",
+                "size": 2745,
+                "lmtime": 0,
+                "modified": false
+              },
+              "todayspic.php": {
+                "type": "-",
+                "size": 1206,
+                "lmtime": 0,
+                "modified": false
+              },
+              "rss_forecast.php": {
+                "type": "-",
+                "size": 3825,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpthumb.gif.php": {
+                "type": "-",
+                "size": 29867,
+                "lmtime": 0,
+                "modified": false
+              },
+              "cleanInvalidTokens.php": {
+                "type": "-",
+                "size": 2181,
+                "lmtime": 0,
+                "modified": false
+              },
+              "copyFtp02wsToWebcam": {
+                "type": "-",
+                "size": 951,
+                "lmtime": 0,
+                "modified": false
+              },
+              "compareAverage.php": {
+                "type": "-",
+                "size": 2957,
+                "lmtime": 0,
+                "modified": false
+              },
+              "report02ws.sql": {
+                "type": "-",
+                "size": 1172,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Shot1.fla": {
+                "type": "-",
+                "size": 835072,
+                "lmtime": 0,
+                "modified": false
+              },
+              "monthdata.htm": {
+                "type": "-",
+                "size": 1836,
+                "lmtime": 0,
+                "modified": false
+              },
+              "rundailyforecast": {
+                "type": "-",
+                "size": 152,
+                "lmtime": 0,
+                "modified": false
+              },
+              "dailyRainGraph.php": {
+                "type": "-",
+                "size": 12693,
+                "lmtime": 0,
+                "modified": false
+              },
+              "davisticker.class": {
+                "type": "-",
+                "size": 6721,
+                "lmtime": 0,
+                "modified": false
+              },
+              "banner_iframe.php": {
+                "type": "-",
+                "size": 342,
+                "lmtime": 0,
+                "modified": false
+              },
+              "downld02.txt": {
+                "type": "-",
+                "size": 37056,
+                "lmtime": 0,
+                "modified": false
+              },
+              "remote_stream.html": {
+                "type": "-",
+                "size": 644,
+                "lmtime": 0,
+                "modified": false
+              },
+              "browsedate.dat": {
+                "type": "-",
+                "size": 4,
+                "lmtime": 0,
+                "modified": false
+              },
+              "main.php": {
+                "type": "-",
+                "size": 106245,
+                "lmtime": 0,
+                "modified": false
+              },
+              "fonts": {},
+              "latest.htm": {
+                "type": "-",
+                "size": 396,
+                "lmtime": 0,
+                "modified": false
+              },
+              "test.bmp": {
+                "type": "-",
+                "size": 11924,
+                "lmtime": 0,
+                "modified": false
+              },
+              "small_test.php": {
+                "type": "-",
+                "size": 38902,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecastlibnew.php": {
+                "type": "-",
+                "size": 28633,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecast16092012.php": {
+                "type": "-",
+                "size": 38729,
+                "lmtime": 0,
+                "modified": false
+              },
+              "chatOld.php": {
+                "type": "-",
+                "size": 12014,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ndmode.txt": {
+                "type": "-",
+                "size": 1016,
+                "lmtime": 0,
+                "modified": false
+              },
+              "txl.exe": {
+                "type": "-",
+                "size": 368640,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ApnsPHP": {},
+              "begin_caching_test.php": {
+                "type": "-",
+                "size": 1378,
+                "lmtime": 0,
+                "modified": false
+              },
+              "webcamtogif": {
+                "type": "-",
+                "size": 993,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpThumb.php": {
+                "type": "-",
+                "size": 29073,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendSpecialEx.php": {
+                "type": "-",
+                "size": 2667,
+                "lmtime": 0,
+                "modified": false
+              },
+              "TextTicker.swf": {
+                "type": "-",
+                "size": 2251,
+                "lmtime": 0,
+                "modified": false
+              },
+              "downloadradar": {
+                "type": "-",
+                "size": 573,
+                "lmtime": 0,
+                "modified": false
+              },
+              "arcGen.php": {
+                "type": "-",
+                "size": 1657,
+                "lmtime": 0,
+                "modified": false
+              },
+              "checkttf.php": {
+                "type": "-",
+                "size": 755,
+                "lmtime": 0,
+                "modified": false
+              },
+              "getUserDetailes.php": {
+                "type": "-",
+                "size": 4456,
+                "lmtime": 0,
+                "modified": false
+              },
+              "gcm_register.php": {
+                "type": "-",
+                "size": 3636,
+                "lmtime": 0,
+                "modified": false
+              },
+              "stationo.php": {
+                "type": "-",
+                "size": 61547,
+                "lmtime": 0,
+                "modified": false
+              },
+              "firstdata.htm": {
+                "type": "-",
+                "size": 1715,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Services.php": {
+                "type": "-",
+                "size": 4238,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ui.datepicker.js": {
+                "type": "-",
+                "size": 68708,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecast_test.php": {
+                "type": "-",
+                "size": 25771,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ads.txt": {
+                "type": "-",
+                "size": 58,
+                "lmtime": 0,
+                "modified": false
+              },
+              "text.htm": {
+                "type": "-",
+                "size": 158,
+                "lmtime": 0,
+                "modified": false
+              },
+              "alerts.php": {
+                "type": "-",
+                "size": 834,
+                "lmtime": 0,
+                "modified": false
+              },
+              "station12092012.php": {
+                "type": "-",
+                "size": 63021,
+                "lmtime": 0,
+                "modified": false
+              },
+              "abaxdata.dat": {
+                "type": "-",
+                "size": 5,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecastlibNew.php": {
+                "type": "-",
+                "size": 39684,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecastDays.php": {
+                "type": "-",
+                "size": 6651,
+                "lmtime": 0,
+                "modified": false
+              },
+              "chat2.php": {
+                "type": "-",
+                "size": 25284,
+                "lmtime": 0,
+                "modified": false
+              },
+              "webcam02ws.jpg": {
+                "type": "-",
+                "size": 182846,
+                "lmtime": 0,
+                "modified": false
+              },
+              "lastdaylib.php": {
+                "type": "-",
+                "size": 4629,
+                "lmtime": 0,
+                "modified": false
+              },
+              "tn_rgb_composites.jpg": {
+                "type": "-",
+                "size": 5062,
+                "lmtime": 0,
+                "modified": false
+              },
+              "streamN.php": {
+                "type": "-",
+                "size": 17129,
+                "lmtime": 0,
+                "modified": false
+              },
+              "averageRain.php": {
+                "type": "-",
+                "size": 5751,
+                "lmtime": 0,
+                "modified": false
+              },
+              "favicon.ico": {
+                "type": "-",
+                "size": 688,
+                "lmtime": 0,
+                "modified": false
+              },
+              "dust.html": {
+                "type": "-",
+                "size": 12304,
+                "lmtime": 0,
+                "modified": false
+              },
+              "_AutoRecipe.rcp": {
+                "type": "-",
+                "size": 58,
+                "lmtime": 0,
+                "modified": false
+              },
+              "save_smallheader.js": {
+                "type": "-",
+                "size": 309,
+                "lmtime": 0,
+                "modified": false
+              },
+              "reports\\NOAAYR.TXT": {
+                "type": "-",
+                "size": 1884,
+                "lmtime": 0,
+                "modified": false
+              },
+              "gb.dat.php": {
+                "type": "-",
+                "size": 17833,
+                "lmtime": 0,
+                "modified": false
+              },
+              "s3Slider.js": {
+                "type": "-",
+                "size": 4118,
+                "lmtime": 0,
+                "modified": false
+              },
+              "img": {},
+              "bannerSondeT.php": {
+                "type": "-",
+                "size": 2697,
+                "lmtime": 0,
+                "modified": false
+              },
+              "include.php": {
+                "type": "-",
+                "size": 124346,
+                "lmtime": 0,
+                "modified": false
+              },
+              "myVotes.php": {
+                "type": "-",
+                "size": 12185,
+                "lmtime": 0,
+                "modified": false
+              },
+              "faq.php": {
+                "type": "-",
+                "size": 824,
+                "lmtime": 0,
+                "modified": false
+              },
+              "tod_Green.jpg": {
+                "type": "-",
+                "size": 7488,
+                "lmtime": 0,
+                "modified": false
+              },
+              "mess.txt": {
+                "type": "-",
+                "size": 251,
+                "lmtime": 0,
+                "modified": false
+              },
+              "chat_service.php.bak": {
+                "type": "-",
+                "size": 11152,
+                "lmtime": 0,
+                "modified": false
+              },
+              "img_cartoon": {},
+              "contact.php": {
+                "type": "-",
+                "size": 6150,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ios_development.pem": {
+                "type": "-",
+                "size": 2004,
+                "lmtime": 0,
+                "modified": false
+              },
+              "records.htm": {
+                "type": "-",
+                "size": 1750,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpthumb.functions.php": {
+                "type": "-",
+                "size": 33856,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jquery-1.3.2.min.js": {
+                "type": "-",
+                "size": 57254,
+                "lmtime": 0,
+                "modified": false
+              },
+              "boaz06022005.sql": {
+                "type": "-",
+                "size": 19094,
+                "lmtime": 0,
+                "modified": false
+              },
+              "yesterday.php": {
+                "type": "-",
+                "size": 1518,
+                "lmtime": 0,
+                "modified": false
+              },
+              "rain.htm": {
+                "type": "-",
+                "size": 398,
+                "lmtime": 0,
+                "modified": false
+              },
+              "spgm-1.3.2": {},
+              "textTicker.php": {
+                "type": "-",
+                "size": 3484,
+                "lmtime": 0,
+                "modified": false
+              },
+              "dictionary.php": {
+                "type": "-",
+                "size": 9012,
+                "lmtime": 0,
+                "modified": false
+              },
+              "WindSpeed.gif": {
+                "type": "-",
+                "size": 4380,
+                "lmtime": 0,
+                "modified": false
+              },
+              "testGD.php": {
+                "type": "-",
+                "size": 604,
+                "lmtime": 0,
+                "modified": false
+              },
+              "st01_04.xls": {
+                "type": "-",
+                "size": 47616,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apple-touch-icon-76x76.png": {
+                "type": "-",
+                "size": 347,
+                "lmtime": 0,
+                "modified": false
+              },
+              "hometable01092012.php": {
+                "type": "-",
+                "size": 6987,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ip_upload.html": {
+                "type": "-",
+                "size": 864,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendGcmService.php": {
+                "type": "-",
+                "size": 21454,
+                "lmtime": 0,
+                "modified": false
+              },
+              "getAveragePM10.txt": {
+                "type": "-",
+                "size": 13,
+                "lmtime": 0,
+                "modified": true
+              },
+              "bkbk2006.php": {
+                "type": "-",
+                "size": 27004,
+                "lmtime": 0,
+                "modified": false
+              },
+              "copywebcam": {
+                "type": "-",
+                "size": 301,
+                "lmtime": 0,
+                "modified": false
+              },
+              "class.bufferapp.php": {
+                "type": "-",
+                "size": 5977,
+                "lmtime": 0,
+                "modified": false
+              },
+              "temp2.txt": {
+                "type": "-",
+                "size": 704,
+                "lmtime": 0,
+                "modified": false
+              },
+              "mail_service.php": {
+                "type": "-",
+                "size": 902,
+                "lmtime": 0,
+                "modified": false
+              },
+              "log": {},
+              "SendSpecialService.php": {
+                "type": "-",
+                "size": 17450,
+                "lmtime": 0,
+                "modified": false
+              },
+              "mainstory.php": {
+                "type": "-",
+                "size": 1253,
+                "lmtime": 0,
+                "modified": false
+              },
+              "basestyle09092012.php": {
+                "type": "-",
+                "size": 35583,
+                "lmtime": 0,
+                "modified": false
+              },
+              "faviconB.ico": {
+                "type": "-",
+                "size": 548,
+                "lmtime": 0,
+                "modified": false
+              },
+              "allTimeRecords.php": {
+                "type": "-",
+                "size": 16355,
+                "lmtime": 0,
+                "modified": false
+              },
+              "counter.php": {
+                "type": "-",
+                "size": 2219,
+                "lmtime": 0,
+                "modified": false
+              },
+              "bannerT.php": {
+                "type": "-",
+                "size": 2535,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jquery.colorbox-min.js": {
+                "type": "-",
+                "size": 8762,
+                "lmtime": 0,
+                "modified": false
+              },
+              "compare.php": {
+                "type": "-",
+                "size": 4666,
+                "lmtime": 0,
+                "modified": false
+              },
+              "averages.html": {
+                "type": "-",
+                "size": 2013,
+                "lmtime": 0,
+                "modified": false
+              },
+              "scwblank.html": {
+                "type": "-",
+                "size": 0,
+                "lmtime": 0,
+                "modified": false
+              },
+              "NOAAYR.TXT": {
+                "type": "-",
+                "size": 2755,
+                "lmtime": 0,
+                "modified": false
+              },
+              "dailyforecastbatch.php": {
+                "type": "-",
+                "size": 81,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Shot2.swf": {
+                "type": "-",
+                "size": 11012,
+                "lmtime": 0,
+                "modified": false
+              },
+              "testForecast.php": {
+                "type": "-",
+                "size": 22629,
+                "lmtime": 0,
+                "modified": false
+              },
+              "radiosonde.php": {
+                "type": "-",
+                "size": 19420,
+                "lmtime": 0,
+                "modified": false
+              },
+              "base.ico": {
+                "type": "-",
+                "size": 318,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Apple Development IOS Push Services- il.co.jws.pem": {
+                "type": "-",
+                "size": 1956,
+                "lmtime": 0,
+                "modified": false
+              },
+              "arcMinGen.php": {
+                "type": "-",
+                "size": 1796,
+                "lmtime": 0,
+                "modified": false
+              },
+              ".htpasswd": {
+                "type": "-",
+                "size": 43,
+                "lmtime": 0,
+                "modified": false
+              },
+              "textTicker.js": {
+                "type": "-",
+                "size": 3663,
+                "lmtime": 0,
+                "modified": false
+              },
+              "statusmap.txt": {
+                "type": "-",
+                "size": 836,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpmailer": {},
+              "realtimemb.xml": {
+                "type": "-",
+                "size": 2993,
+                "lmtime": 0,
+                "modified": true
+              },
+              "10MinAvgWindSpeed.gif": {
+                "type": "-",
+                "size": 4404,
+                "lmtime": 0,
+                "modified": false
+              },
+              "randomflash.txt": {
+                "type": "-",
+                "size": 64,
+                "lmtime": 0,
+                "modified": false
+              },
+              "lastday.php": {
+                "type": "-",
+                "size": 3729,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02wsjsontest.txt": {
+                "type": "-",
+                "size": 32458,
+                "lmtime": 0,
+                "modified": false
+              },
+              "NOAAPRYR.TXT": {
+                "type": "-",
+                "size": 3255,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jquery-ui-1.7.1.custom.css": {
+                "type": "-",
+                "size": 26071,
+                "lmtime": 0,
+                "modified": false
+              },
+              "guestbook.dat": {
+                "type": "-",
+                "size": 250,
+                "lmtime": 0,
+                "modified": false
+              },
+              "js": {},
+              "_ExportSpecs.t2x": {
+                "type": "-",
+                "size": 79,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecastPrime.php": {
+                "type": "-",
+                "size": 16602,
+                "lmtime": 0,
+                "modified": false
+              },
+              "secured": {},
+              "CertPushProd291116.pem": {
+                "type": "-",
+                "size": 8468,
+                "lmtime": 0,
+                "modified": false
+              },
+              "stream_test2.html": {
+                "type": "-",
+                "size": 1394,
+                "lmtime": 0,
+                "modified": false
+              },
+              "picoftheday.php": {
+                "type": "-",
+                "size": 2911,
+                "lmtime": 0,
+                "modified": false
+              },
+              "imageSQLGraph.php": {
+                "type": "-",
+                "size": 5872,
+                "lmtime": 0,
+                "modified": false
+              },
+              "yeardata.htm": {
+                "type": "-",
+                "size": 1996,
+                "lmtime": 0,
+                "modified": false
+              },
+              "realtimembmysql.txt": {
+                "type": "-",
+                "size": 255,
+                "lmtime": 0,
+                "modified": true
+              },
+              "example.png": {
+                "type": "-",
+                "size": 23783,
+                "lmtime": 0,
+                "modified": false
+              },
+              "contact.html": {
+                "type": "-",
+                "size": 345,
+                "lmtime": 0,
+                "modified": false
+              },
+              "imagesloaded.pkgd.min.js": {
+                "type": "-",
+                "size": 6416,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecastlikes_service.php": {
+                "type": "-",
+                "size": 7953,
+                "lmtime": 0,
+                "modified": false
+              },
+              "reports\\NOAAMO.TXT": {
+                "type": "-",
+                "size": 1144,
+                "lmtime": 0,
+                "modified": false
+              },
+              "parsejson.php": {
+                "type": "-",
+                "size": 251,
+                "lmtime": 0,
+                "modified": false
+              },
+              "monthlyyearlymb.php": {
+                "type": "-",
+                "size": 6394,
+                "lmtime": 0,
+                "modified": false
+              },
+              "smallwebcam.php": {
+                "type": "-",
+                "size": 1848,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpThumb.config.php": {
+                "type": "-",
+                "size": 20320,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpinfo.php": {
+                "type": "-",
+                "size": 22,
+                "lmtime": 0,
+                "modified": false
+              },
+              "smallold.php": {
+                "type": "-",
+                "size": 29768,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Current_Vantage_Pro.htm": {
+                "type": "-",
+                "size": 5132,
+                "lmtime": 0,
+                "modified": false
+              },
+              "generalstyle2.php": {
+                "type": "-",
+                "size": 240,
+                "lmtime": 0,
+                "modified": false
+              },
+              "haemek": {},
+              "randomrain.txt": {
+                "type": "-",
+                "size": 64,
+                "lmtime": 0,
+                "modified": false
+              },
+              "wugraphs.php": {
+                "type": "-",
+                "size": 6527,
+                "lmtime": 0,
+                "modified": false
+              },
+              "reports": {
+                "0119.txt": {
+                  "type": "-",
+                  "size": 3501,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0416.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1208.txt": {
+                  "type": "-",
+                  "size": 3108,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "realtime.txt": {
+                  "type": "-",
+                  "size": 260,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0806.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2007.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0515.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0316.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0809.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1206.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1213.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1209.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_TEMP_50_52.csv": {
+                  "type": "-",
+                  "size": 18528,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2003.txt": {
+                  "type": "-",
+                  "size": 3319,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0219.txt": {
+                  "type": "-",
+                  "size": 3255,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "R95p.png": {
+                  "type": "-",
+                  "size": 13827,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "ims_rain1718.csv": {
+                  "type": "-",
+                  "size": 780,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2017.txt": {
+                  "type": "-",
+                  "size": 3277,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TG90p.png": {
+                  "type": "-",
+                  "size": 14083,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0617.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0510.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "ims_data_201701_rain.csv": {
+                  "type": "-",
+                  "size": 502,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0313.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1217.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1114.txt": {
+                  "type": "-",
+                  "size": 3417,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0913.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0506.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "RX1day.png": {
+                  "type": "-",
+                  "size": 14480,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1010.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0317.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0606.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0202.txt": {
+                  "type": "-",
+                  "size": 3230,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1212.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TN10p.png": {
+                  "type": "-",
+                  "size": 14312,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1011.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "ims_rain1819.csv": {
+                  "type": "-",
+                  "size": 1241,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0703.txt": {
+                  "type": "-",
+                  "size": 3494,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0405.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TXn.png": {
+                  "type": "-",
+                  "size": 16041,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "R75p.png": {
+                  "type": "-",
+                  "size": 14370,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TNx.png": {
+                  "type": "-",
+                  "size": 15868,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "NOAAPRMO.TXT": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 1569097226741,
+                  "modified": false
+                },
+                "1013.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2014.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0713.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0615.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_RAIN.txt": {
+                  "type": "-",
+                  "size": 9004,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1006.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0613.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1101.txt": {
+                  "type": "-",
+                  "size": 1286,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0604.txt": {
+                  "type": "-",
+                  "size": 3412,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0309.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0203.txt": {
+                  "type": "-",
+                  "size": 3251,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TN90p.png": {
+                  "type": "-",
+                  "size": 14168,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "R20mm.png": {
+                  "type": "-",
+                  "size": 13911,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0902.txt": {
+                  "type": "-",
+                  "size": 3408,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1216.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_RAIN_13_15.csv": {
+                  "type": "-",
+                  "size": 1745,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "ETR.png": {
+                  "type": "-",
+                  "size": 13842,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1111.txt": {
+                  "type": "-",
+                  "size": 3416,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0505.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "downld02.txt": {
+                  "type": "-",
+                  "size": 81797,
+                  "lmtime": 1569097227416,
+                  "modified": false
+                },
+                "0318.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0307.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "ims_data_rain_2016.csv": {
+                  "type": "-",
+                  "size": 1030,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0616.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0718.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1109.txt": {
+                  "type": "-",
+                  "size": 3415,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0217.txt": {
+                  "type": "-",
+                  "size": 3251,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0412.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0707.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TXx.png": {
+                  "type": "-",
+                  "size": 16223,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0910.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0611.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_RAIN05.txt": {
+                  "type": "-",
+                  "size": 433,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0804.txt": {
+                  "type": "-",
+                  "size": 3494,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0319.txt": {
+                  "type": "-",
+                  "size": 3501,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "NOAAMO.TXT": {
+                  "type": "-",
+                  "size": 2715,
+                  "lmtime": 1569097226703,
+                  "modified": false
+                },
+                "0509.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0508.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0504.txt": {
+                  "type": "-",
+                  "size": 3494,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TX90p.png": {
+                  "type": "-",
+                  "size": 14407,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TNn.png": {
+                  "type": "-",
+                  "size": 15369,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "SU.png": {
+                  "type": "-",
+                  "size": 13446,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0308.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0113.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1008.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0209.txt": {
+                  "type": "-",
+                  "size": 3252,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1007.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0206.txt": {
+                  "type": "-",
+                  "size": 3252,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1202.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "ims_temp1718.csv": {
+                  "type": "-",
+                  "size": 5832,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0218.txt": {
+                  "type": "-",
+                  "size": 3255,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0708.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "records.htm": {
+                  "type": "-",
+                  "size": 16041,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2016.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0917.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1102.txt": {
+                  "type": "-",
+                  "size": 3415,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0111.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0712.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0402.txt": {
+                  "type": "-",
+                  "size": 3393,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0517.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0410.txt": {
+                  "type": "-",
+                  "size": 3336,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TX_SOUID100479.txt": {
+                  "type": "-",
+                  "size": 119198,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1005.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "ims_temp1819.csv": {
+                  "type": "-",
+                  "size": 7788,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0511.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1215.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "NOAAYR.TXT": {
+                  "type": "-",
+                  "size": 2860,
+                  "lmtime": 1569097227003,
+                  "modified": false
+                },
+                "1218.txt": {
+                  "type": "-",
+                  "size": 3502,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0115.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0702.txt": {
+                  "type": "-",
+                  "size": 3474,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "RR1.png": {
+                  "type": "-",
+                  "size": 13030,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1115.txt": {
+                  "type": "-",
+                  "size": 3416,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0204.txt": {
+                  "type": "-",
+                  "size": 3333,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "GD4.png": {
+                  "type": "-",
+                  "size": 15421,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2004.txt": {
+                  "type": "-",
+                  "size": 3255,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "NOAAPRYR.TXT": {
+                  "type": "-",
+                  "size": 3277,
+                  "lmtime": 1569097227354,
+                  "modified": false
+                },
+                "IMS_TEMP05.txt": {
+                  "type": "-",
+                  "size": 1280,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0802.txt": {
+                  "type": "-",
+                  "size": 3474,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0110.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TN.png": {
+                  "type": "-",
+                  "size": 13593,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0711.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_TEMP.csv": {
+                  "type": "-",
+                  "size": 63506,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1116.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1014.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0716.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2004.zip": {
+                  "type": "-",
+                  "size": 419117,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0114.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0909.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1118.txt": {
+                  "type": "-",
+                  "size": 3419,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1107.txt": {
+                  "type": "-",
+                  "size": 3415,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0314.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0207.txt": {
+                  "type": "-",
+                  "size": 3252,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0112.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0805.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0512.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "R99p.png": {
+                  "type": "-",
+                  "size": 13617,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "downld08.txt": {
+                  "type": "-",
+                  "size": 312932,
+                  "lmtime": 1569097227515,
+                  "modified": false
+                },
+                "ims_data_201701.csv": {
+                  "type": "-",
+                  "size": 3833,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0304.txt": {
+                  "type": "-",
+                  "size": 3495,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0608.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_TEMP_52_63.csv": {
+                  "type": "-",
+                  "size": 91918,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1017.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0818.txt": {
+                  "type": "-",
+                  "size": 3343,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1204.txt": {
+                  "type": "-",
+                  "size": 3495,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0705.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0704.txt": {
+                  "type": "-",
+                  "size": 3546,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TG10p.png": {
+                  "type": "-",
+                  "size": 14129,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0102.txt": {
+                  "type": "-",
+                  "size": 3477,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1117.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_TEMP_13_15.csv": {
+                  "type": "-",
+                  "size": 15535,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0906.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0216.txt": {
+                  "type": "-",
+                  "size": 3333,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TG.png": {
+                  "type": "-",
+                  "size": 13722,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0417.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1004.txt": {
+                  "type": "-",
+                  "size": 3495,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0104.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0710.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "LLBG.TXT": {
+                  "type": "-",
+                  "size": 414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2012.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TX10p.png": {
+                  "type": "-",
+                  "size": 14098,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0315.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0211.txt": {
+                  "type": "-",
+                  "size": 3252,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "LLJR.TXT": {
+                  "type": "-",
+                  "size": 0,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1018.txt": {
+                  "type": "-",
+                  "size": 3500,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0618.txt": {
+                  "type": "-",
+                  "size": 3417,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0213.txt": {
+                  "type": "-",
+                  "size": 3251,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0502.txt": {
+                  "type": "-",
+                  "size": 3396,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0305.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "sources.txt": {
+                  "type": "-",
+                  "size": 1502,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1012.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2006.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0303.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0814.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "R95pTOT.png": {
+                  "type": "-",
+                  "size": 15257,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0914.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "CDD.png": {
+                  "type": "-",
+                  "size": 14188,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0513.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0419.txt": {
+                  "type": "-",
+                  "size": 3417,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1016.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0306.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2015.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1003.txt": {
+                  "type": "-",
+                  "size": 3494,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0810.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0714.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0816.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0205.txt": {
+                  "type": "-",
+                  "size": 3252,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1015.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0310.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0812.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TN.txt": {
+                  "type": "-",
+                  "size": 435154,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0414.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0409.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0808.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0908.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0208.txt": {
+                  "type": "-",
+                  "size": 3333,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0609.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TX.txt": {
+                  "type": "-",
+                  "size": 424875,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2013.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0105.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "RR.txt": {
+                  "type": "-",
+                  "size": 587888,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0911.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2003.zip": {
+                  "type": "-",
+                  "size": 789860,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1002.txt": {
+                  "type": "-",
+                  "size": 3495,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "R75pTOT.png": {
+                  "type": "-",
+                  "size": 15476,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0507.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0602.txt": {
+                  "type": "-",
+                  "size": 3392,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0614.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2002.txt": {
+                  "type": "-",
+                  "size": 3255,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2005.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "CWD.png": {
+                  "type": "-",
+                  "size": 14039,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0215.txt": {
+                  "type": "-",
+                  "size": 3252,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0312.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1203.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0311.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0214.txt": {
+                  "type": "-",
+                  "size": 3250,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0603.txt": {
+                  "type": "-",
+                  "size": 3412,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0406.txt": {
+                  "type": "-",
+                  "size": 3416,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0612.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1110.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0912.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0212.txt": {
+                  "type": "-",
+                  "size": 3334,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1108.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0519.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0403.txt": {
+                  "type": "-",
+                  "size": 3413,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2011.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2018.txt": {
+                  "type": "-",
+                  "size": 3277,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "RX5day.png": {
+                  "type": "-",
+                  "size": 14869,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0907.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TR.png": {
+                  "type": "-",
+                  "size": 13267,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0516.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0518.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1113.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1214.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0715.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0503.txt": {
+                  "type": "-",
+                  "size": 3494,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0605.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "RR.png": {
+                  "type": "-",
+                  "size": 13825,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1009.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0706.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "LatestArchive.csv": {
+                  "type": "-",
+                  "size": 229089,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0709.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0109.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0407.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0803.txt": {
+                  "type": "-",
+                  "size": 3494,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2010.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0905.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "FD.png": {
+                  "type": "-",
+                  "size": 12417,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1104.txt": {
+                  "type": "-",
+                  "size": 3413,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "R99pTOT.png": {
+                  "type": "-",
+                  "size": 14912,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0103.txt": {
+                  "type": "-",
+                  "size": 3441,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0807.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1207.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0610.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0302.txt": {
+                  "type": "-",
+                  "size": 3475,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "ims_data_temp_2016.csv": {
+                  "type": "-",
+                  "size": 9027,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_DATA_08_10_RAIN.csv": {
+                  "type": "-",
+                  "size": 54,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0116.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0916.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1105.txt": {
+                  "type": "-",
+                  "size": 3415,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0619.txt": {
+                  "type": "-",
+                  "size": 3417,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0117.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0918.txt": {
+                  "type": "-",
+                  "size": 3417,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0817.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1205.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0607.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_RAIN_29.csv": {
+                  "type": "-",
+                  "size": 114,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0418.txt": {
+                  "type": "-",
+                  "size": 3418,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0411.txt": {
+                  "type": "-",
+                  "size": 3415,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0415.txt": {
+                  "type": "-",
+                  "size": 3415,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2008.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1106.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0118.txt": {
+                  "type": "-",
+                  "size": 3502,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0408.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1211.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0108.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0717.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_TEMP.txt": {
+                  "type": "-",
+                  "size": 63506,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0813.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "2009.txt": {
+                  "type": "-",
+                  "size": 3274,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1210.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0413.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0815.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0904.txt": {
+                  "type": "-",
+                  "size": 3463,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1103.txt": {
+                  "type": "-",
+                  "size": 3412,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0811.txt": {
+                  "type": "-",
+                  "size": 3496,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_DATA_08_10.csv": {
+                  "type": "-",
+                  "size": 2664,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1112.txt": {
+                  "type": "-",
+                  "size": 3415,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0107.txt": {
+                  "type": "-",
+                  "size": 3498,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0903.txt": {
+                  "type": "-",
+                  "size": 3412,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0106.txt": {
+                  "type": "-",
+                  "size": 3499,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0404.txt": {
+                  "type": "-",
+                  "size": 3412,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0915.txt": {
+                  "type": "-",
+                  "size": 3414,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "TX.png": {
+                  "type": "-",
+                  "size": 14094,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0210.txt": {
+                  "type": "-",
+                  "size": 3251,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "0514.txt": {
+                  "type": "-",
+                  "size": 3497,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "R10m.png": {
+                  "type": "-",
+                  "size": 13686,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "1201.txt": {
+                  "type": "-",
+                  "size": 3476,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "IMS_RAIN_32.csv": {
+                  "type": "-",
+                  "size": 317,
+                  "lmtime": 0,
+                  "modified": false
+                }
+              },
+              "songs.php": {
+                "type": "-",
+                "size": 7002,
+                "lmtime": 0,
+                "modified": false
+              },
+              "stream_both.html": {
+                "type": "-",
+                "size": 2461,
+                "lmtime": 0,
+                "modified": false
+              },
+              "TXT2CSV.EXE": {
+                "type": "-",
+                "size": 14700,
+                "lmtime": 0,
+                "modified": false
+              },
+              "JWSBanner_Scene 1.swf": {
+                "type": "-",
+                "size": 1421,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02wsphpinfo.php": {
+                "type": "-",
+                "size": 22,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sharsheleg.png": {
+                "type": "-",
+                "size": 31482,
+                "lmtime": 0,
+                "modified": false
+              },
+              "unsubscribe.php": {
+                "type": "-",
+                "size": 1367,
+                "lmtime": 0,
+                "modified": false
+              },
+              "downloadradar.php": {
+                "type": "-",
+                "size": 1602,
+                "lmtime": 0,
+                "modified": false
+              },
+              "time.htm": {
+                "type": "-",
+                "size": 289,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ubergallery": {},
+              "dailypicloop.html": {
+                "type": "-",
+                "size": 11738,
+                "lmtime": 0,
+                "modified": false
+              },
+              "footerScripts240716.php": {
+                "type": "-",
+                "size": 255847,
+                "lmtime": 0,
+                "modified": false
+              },
+              "picsOfTheDayManager.php": {
+                "type": "-",
+                "size": 11501,
+                "lmtime": 0,
+                "modified": false
+              },
+              "whatisforecast.php": {
+                "type": "-",
+                "size": 238,
+                "lmtime": 0,
+                "modified": false
+              },
+              "webcam.html": {
+                "type": "-",
+                "size": 1164,
+                "lmtime": 0,
+                "modified": false
+              },
+              "dailymbmysql.php": {
+                "type": "-",
+                "size": 6824,
+                "lmtime": 0,
+                "modified": false
+              },
+              "smallheader.php": {
+                "type": "-",
+                "size": 12925,
+                "lmtime": 0,
+                "modified": false
+              },
+              "checkauth.php": {
+                "type": "-",
+                "size": 20458,
+                "lmtime": 0,
+                "modified": false
+              },
+              "chooseHeader.htm": {
+                "type": "-",
+                "size": 3664,
+                "lmtime": 0,
+                "modified": false
+              },
+              "banner.php": {
+                "type": "-",
+                "size": 2507,
+                "lmtime": 0,
+                "modified": false
+              },
+              "redir.html": {
+                "type": "-",
+                "size": 528,
+                "lmtime": 0,
+                "modified": false
+              },
+              "reports\\NOAAPRMO.TXT": {
+                "type": "-",
+                "size": 3496,
+                "lmtime": 0,
+                "modified": false
+              },
+              "menudata.htm": {
+                "type": "-",
+                "size": 962,
+                "lmtime": 0,
+                "modified": false
+              },
+              "automnpic.txt": {
+                "type": "-",
+                "size": 80,
+                "lmtime": 0,
+                "modified": false
+              },
+              "counter.inc": {
+                "type": "-",
+                "size": 1575,
+                "lmtime": 0,
+                "modified": false
+              },
+              "allTimeRecords.dat": {
+                "type": "-",
+                "size": 2,
+                "lmtime": 0,
+                "modified": false
+              },
+              "picanimation.js": {
+                "type": "-",
+                "size": 9490,
+                "lmtime": 0,
+                "modified": false
+              },
+              "imagesloaded.js": {
+                "type": "-",
+                "size": 7572,
+                "lmtime": 0,
+                "modified": false
+              },
+              "snow.php": {
+                "type": "-",
+                "size": 11901,
+                "lmtime": 0,
+                "modified": false
+              },
+              "temp2.csv": {
+                "type": "-",
+                "size": 698,
+                "lmtime": 0,
+                "modified": false
+              },
+              "oldDomain": {},
+              "hometableNew.php": {
+                "type": "-",
+                "size": 13375,
+                "lmtime": 0,
+                "modified": false
+              },
+              "globalwarm.php": {
+                "type": "-",
+                "size": 11964,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02wsjson.txt": {
+                "type": "-",
+                "size": 36026,
+                "lmtime": 0,
+                "modified": true
+              },
+              "phpthumb.ico.php": {
+                "type": "-",
+                "size": 5286,
+                "lmtime": 0,
+                "modified": false
+              },
+              "prime.php": {
+                "type": "-",
+                "size": 42666,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sigweatherNew.php": {
+                "type": "-",
+                "size": 10254,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jsFunctions.js": {
+                "type": "-",
+                "size": 24316,
+                "lmtime": 0,
+                "modified": false
+              },
+              "guestBook.php": {
+                "type": "-",
+                "size": 26731,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpthumb.class.php": {
+                "type": "-",
+                "size": 188081,
+                "lmtime": 0,
+                "modified": false
+              },
+              "scw.js": {
+                "type": "-",
+                "size": 89343,
+                "lmtime": 0,
+                "modified": false
+              },
+              "wap.php": {
+                "type": "-",
+                "size": 1492,
+                "lmtime": 0,
+                "modified": false
+              },
+              "month.php": {
+                "type": "-",
+                "size": 2006,
+                "lmtime": 0,
+                "modified": false
+              },
+              "small2.php": {
+                "type": "-",
+                "size": 87359,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Shot1.html": {
+                "type": "-",
+                "size": 1170,
+                "lmtime": 0,
+                "modified": false
+              },
+              "picmovie.php": {
+                "type": "-",
+                "size": 3085,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendAPNMessage.php": {
+                "type": "-",
+                "size": 2323,
+                "lmtime": 0,
+                "modified": false
+              },
+              "userPicsManager.php": {
+                "type": "-",
+                "size": 5135,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02ws_forecast_201992.png": {
+                "type": "-",
+                "size": 56573,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sigweather.php": {
+                "type": "-",
+                "size": 1488,
+                "lmtime": 0,
+                "modified": false
+              },
+              "general.css": {
+                "type": "-",
+                "size": 6493,
+                "lmtime": 0,
+                "modified": false
+              },
+              "moonriseset.png": {
+                "type": "-",
+                "size": 1211,
+                "lmtime": 0,
+                "modified": false
+              },
+              "rp.class": {
+                "type": "-",
+                "size": 1077,
+                "lmtime": 0,
+                "modified": false
+              },
+              "loaddata.php": {
+                "type": "-",
+                "size": 1489,
+                "lmtime": 0,
+                "modified": false
+              },
+              "smallBarUp.php": {
+                "type": "-",
+                "size": 62980,
+                "lmtime": 0,
+                "modified": false
+              },
+              "faviconold.ico": {
+                "type": "-",
+                "size": 318,
+                "lmtime": 0,
+                "modified": false
+              },
+              "search.php": {
+                "type": "-",
+                "size": 427,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Daily.htm": {
+                "type": "-",
+                "size": 570,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ErrorLog.txt": {
+                "type": "-",
+                "size": 44,
+                "lmtime": 0,
+                "modified": false
+              },
+              "user_picture_reciever.php": {
+                "type": "-",
+                "size": 3095,
+                "lmtime": 0,
+                "modified": false
+              },
+              "picturesshow.htm": {
+                "type": "-",
+                "size": 188,
+                "lmtime": 0,
+                "modified": false
+              },
+              "stream_singleFrameJWS.html": {
+                "type": "-",
+                "size": 4316,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Tag-List.htm": {
+                "type": "-",
+                "size": 12353,
+                "lmtime": 0,
+                "modified": false
+              },
+              "reports\\NOAAPRYR.TXT": {
+                "type": "-",
+                "size": 3274,
+                "lmtime": 0,
+                "modified": false
+              },
+              "subscription_reciever.php": {
+                "type": "-",
+                "size": 14546,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apn_register.php": {
+                "type": "-",
+                "size": 2109,
+                "lmtime": 0,
+                "modified": false
+              },
+              "g.php": {
+                "type": "-",
+                "size": 27834,
+                "lmtime": 0,
+                "modified": false
+              },
+              "graph.php": {
+                "type": "-",
+                "size": 49975,
+                "lmtime": 0,
+                "modified": false
+              },
+              "small.1.php": {
+                "type": "-",
+                "size": 75137,
+                "lmtime": 0,
+                "modified": false
+              },
+              "start.php": {
+                "type": "-",
+                "size": 18410,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jquery.colorbox.min.js": {
+                "type": "-",
+                "size": 13287,
+                "lmtime": 0,
+                "modified": false
+              },
+              "cv-compro.doc": {
+                "type": "-",
+                "size": 30208,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02wsjson.php": {
+                "type": "-",
+                "size": 41081,
+                "lmtime": 0,
+                "modified": false
+              },
+              "bannerad.php": {
+                "type": "-",
+                "size": 525,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Jer_Rain.xls": {
+                "type": "-",
+                "size": 13824,
+                "lmtime": 0,
+                "modified": false
+              },
+              "latest.php": {
+                "type": "-",
+                "size": 4867,
+                "lmtime": 0,
+                "modified": false
+              },
+              "small.php": {
+                "type": "-",
+                "size": 89100,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Shot1.swd": {
+                "type": "-",
+                "size": 594,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jquery.expandable.js": {
+                "type": "-",
+                "size": 4000,
+                "lmtime": 0,
+                "modified": false
+              },
+              "imageGraph.php": {
+                "type": "-",
+                "size": 2439,
+                "lmtime": 0,
+                "modified": false
+              },
+              "tableaverage.php": {
+                "type": "-",
+                "size": 7850,
+                "lmtime": 0,
+                "modified": false
+              },
+              "weatherclips.php": {
+                "type": "-",
+                "size": 3586,
+                "lmtime": 0,
+                "modified": false
+              },
+              "fulldatambtemplate.xml": {
+                "type": "-",
+                "size": 4900,
+                "lmtime": 0,
+                "modified": false
+              },
+              "History": {},
+              "winterpic.txt": {
+                "type": "-",
+                "size": 223,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02ws_forecast_201995.png": {
+                "type": "-",
+                "size": 54628,
+                "lmtime": 0,
+                "modified": false
+              },
+              "getWeatherSummary.php": {
+                "type": "-",
+                "size": 303,
+                "lmtime": 0,
+                "modified": false
+              },
+              "whatsnew.txt": {
+                "type": "-",
+                "size": 4229,
+                "lmtime": 0,
+                "modified": false
+              },
+              "pic_movie_archive.php": {
+                "type": "-",
+                "size": 5124,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02ws_short.png": {
+                "type": "-",
+                "size": 47301,
+                "lmtime": 0,
+                "modified": true
+              },
+              "realtimelog.php": {
+                "type": "-",
+                "size": 4032,
+                "lmtime": 0,
+                "modified": false
+              },
+              "2weeks.htm": {
+                "type": "-",
+                "size": 1046,
+                "lmtime": 0,
+                "modified": false
+              },
+              "realtimerotate.php": {
+                "type": "-",
+                "size": 7092,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ajaxEmail.js": {
+                "type": "-",
+                "size": 941,
+                "lmtime": 0,
+                "modified": false
+              },
+              "whatsnew.htm": {
+                "type": "-",
+                "size": 444,
+                "lmtime": 0,
+                "modified": false
+              },
+              "t_webCamera.jpg": {
+                "type": "-",
+                "size": 3732,
+                "lmtime": 0,
+                "modified": false
+              },
+              "updateForecast.php": {
+                "type": "-",
+                "size": 56535,
+                "lmtime": 0,
+                "modified": false
+              },
+              "averages.php": {
+                "type": "-",
+                "size": 10450,
+                "lmtime": 0,
+                "modified": false
+              },
+              "to do.html": {
+                "type": "-",
+                "size": 428,
+                "lmtime": 0,
+                "modified": false
+              },
+              "webcam.php": {
+                "type": "-",
+                "size": 11018,
+                "lmtime": 0,
+                "modified": false
+              },
+              "rss.php": {
+                "type": "-",
+                "size": 4209,
+                "lmtime": 0,
+                "modified": false
+              },
+              "images": {
+                "profile7": {
+                  "HeatIndex.htm": {
+                    "type": "-",
+                    "size": 477,
+                    "lmtime": 1569097226466,
+                    "modified": false
+                  },
+                  "OutsideDewPoint.htm": {
+                    "type": "-",
+                    "size": 498,
+                    "lmtime": 1569097226499,
+                    "modified": false
+                  },
+                  "THW.htm": {
+                    "type": "-",
+                    "size": 494,
+                    "lmtime": 1569097226580,
+                    "modified": false
+                  },
+                  "WindDirection.htm": {
+                    "type": "-",
+                    "size": 494,
+                    "lmtime": 1569097226621,
+                    "modified": false
+                  },
+                  "WindChill.htm": {
+                    "type": "-",
+                    "size": 505,
+                    "lmtime": 1569097226611,
+                    "modified": false
+                  },
+                  "MonthlyRain.htm": {
+                    "type": "-",
+                    "size": 496,
+                    "lmtime": 1569097226488,
+                    "modified": false
+                  },
+                  "WindSpeed.htm": {
+                    "type": "-",
+                    "size": 515,
+                    "lmtime": 1569097226642,
+                    "modified": false
+                  },
+                  "YearlyRain.htm": {
+                    "type": "-",
+                    "size": 495,
+                    "lmtime": 1569097226654,
+                    "modified": false
+                  },
+                  "Barometer.htm": {
+                    "type": "-",
+                    "size": 538,
+                    "lmtime": 1569097226425,
+                    "modified": false
+                  },
+                  "StormRain.htm": {
+                    "type": "-",
+                    "size": 502,
+                    "lmtime": 1569097226559,
+                    "modified": false
+                  },
+                  "OutsideTemp.htm": {
+                    "type": "-",
+                    "size": 497,
+                    "lmtime": 1569097226535,
+                    "modified": false
+                  },
+                  "RainRate.htm": {
+                    "type": "-",
+                    "size": 494,
+                    "lmtime": 1569097226545,
+                    "modified": false
+                  },
+                  "Time.htm": {
+                    "type": "-",
+                    "size": 536,
+                    "lmtime": 1569097226590,
+                    "modified": false
+                  },
+                  "Date.htm": {
+                    "type": "-",
+                    "size": 542,
+                    "lmtime": 1569097226456,
+                    "modified": false
+                  },
+                  "OutsideHumidity.htm": {
+                    "type": "-",
+                    "size": 493,
+                    "lmtime": 1569097226514,
+                    "modified": false
+                  },
+                  "DailyRain.htm": {
+                    "type": "-",
+                    "size": 495,
+                    "lmtime": 1569097226435,
+                    "modified": false
+                  }
+                },
+                "profile1": {
+                  "ReceptionHistory.gif": {
+                    "type": "-",
+                    "size": 12688,
+                    "lmtime": 1569097227836,
+                    "modified": false
+                  },
+                  "WindChillHistory.gif": {
+                    "type": "-",
+                    "size": 12340,
+                    "lmtime": 1569097227772,
+                    "modified": false
+                  },
+                  "BarometerHistory.gif": {
+                    "type": "-",
+                    "size": 12768,
+                    "lmtime": 1569097227799,
+                    "modified": false
+                  },
+                  "winddir.php": {
+                    "type": "-",
+                    "size": 9900,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "WindDirectionHistory.gif": {
+                    "type": "-",
+                    "size": 12843,
+                    "lmtime": 1569097227763,
+                    "modified": false
+                  },
+                  "InsideHeatIndexHistory.gif": {
+                    "type": "-",
+                    "size": 12323,
+                    "lmtime": 1569097227689,
+                    "modified": false
+                  },
+                  "EMCHistory.gif": {
+                    "type": "-",
+                    "size": 11946,
+                    "lmtime": 1569097227845,
+                    "modified": false
+                  },
+                  "HighUVHistory.gif": {
+                    "type": "-",
+                    "size": 11815,
+                    "lmtime": 1569097227918,
+                    "modified": false
+                  },
+                  "InsideDewPointHistory.gif": {
+                    "type": "-",
+                    "size": 12143,
+                    "lmtime": 1569097227727,
+                    "modified": false
+                  },
+                  "rain.php": {
+                    "type": "-",
+                    "size": 11302,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "dewptLatestArchive.php": {
+                    "type": "-",
+                    "size": 10519,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "baro.php": {
+                    "type": "-",
+                    "size": 9659,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "humwind.php": {
+                    "type": "-",
+                    "size": 11506,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "UVDoseHistory.gif": {
+                    "type": "-",
+                    "size": 12393,
+                    "lmtime": 1569097227937,
+                    "modified": false
+                  },
+                  "winddirLatestArchive.php": {
+                    "type": "-",
+                    "size": 9900,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "UVHistory.gif": {
+                    "type": "-",
+                    "size": 11785,
+                    "lmtime": 1569097227818,
+                    "modified": false
+                  },
+                  "HiWindSpeedHistory.gif": {
+                    "type": "-",
+                    "size": 12901,
+                    "lmtime": 1569097227754,
+                    "modified": false
+                  },
+                  "GraphSettingsLatest.php": {
+                    "type": "-",
+                    "size": 13415,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "InsideHumidityHistory.gif": {
+                    "type": "-",
+                    "size": 12416,
+                    "lmtime": 1569097227709,
+                    "modified": false
+                  },
+                  "ETHistory.gif": {
+                    "type": "-",
+                    "size": 12860,
+                    "lmtime": 1569097227790,
+                    "modified": false
+                  },
+                  "GraphSettingsLatestArchive.php": {
+                    "type": "-",
+                    "size": 13730,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "temp2.php": {
+                    "type": "-",
+                    "size": 11668,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "wind.php": {
+                    "type": "-",
+                    "size": 10672,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "HeatDegDaysHistory.gif": {
+                    "type": "-",
+                    "size": 11635,
+                    "lmtime": 1569097227863,
+                    "modified": false
+                  },
+                  "HighSolarRadHistory.gif": {
+                    "type": "-",
+                    "size": 12513,
+                    "lmtime": 1569097227909,
+                    "modified": false
+                  },
+                  "rad.php": {
+                    "type": "-",
+                    "size": 10042,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "SolarRadHistory.gif": {
+                    "type": "-",
+                    "size": 12494,
+                    "lmtime": 1569097227809,
+                    "modified": false
+                  },
+                  "InsideTempHistory.gif": {
+                    "type": "-",
+                    "size": 12505,
+                    "lmtime": 1569097227661,
+                    "modified": false
+                  },
+                  "dewptLatest.php": {
+                    "type": "-",
+                    "size": 10883,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "temp.php": {
+                    "type": "-",
+                    "size": 11641,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "dustLatestArchive.php": {
+                    "type": "-",
+                    "size": 10365,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "graph.php": {
+                    "type": "-",
+                    "size": 27029,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "SolarEnergyHistory.gif": {
+                    "type": "-",
+                    "size": 11989,
+                    "lmtime": 1569097227927,
+                    "modified": false
+                  },
+                  "OutsideTempHistory.gif": {
+                    "type": "-",
+                    "size": 12486,
+                    "lmtime": 1569097227676,
+                    "modified": false
+                  },
+                  "HighWindDirHistory.gif": {
+                    "type": "-",
+                    "size": 13411,
+                    "lmtime": 1569097227900,
+                    "modified": false
+                  },
+                  "WindRunHistory.gif": {
+                    "type": "-",
+                    "size": 12612,
+                    "lmtime": 1569097227881,
+                    "modified": false
+                  },
+                  "windtemp.php": {
+                    "type": "-",
+                    "size": 10321,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "temp02ws.php": {
+                    "type": "-",
+                    "size": 10350,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "tempheat.php": {
+                    "type": "-",
+                    "size": 10587,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "RainHistory.gif": {
+                    "type": "-",
+                    "size": 11299,
+                    "lmtime": 1569097227781,
+                    "modified": false
+                  },
+                  "DewPointHistory.gif": {
+                    "type": "-",
+                    "size": 12733,
+                    "lmtime": 1569097227736,
+                    "modified": false
+                  },
+                  "barorain.php": {
+                    "type": "-",
+                    "size": 10385,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "GraphSettings02ws.php": {
+                    "type": "-",
+                    "size": 14400,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "GraphSettingsDailyArchive.php": {
+                    "type": "-",
+                    "size": 13742,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "THSWHistory.gif": {
+                    "type": "-",
+                    "size": 12392,
+                    "lmtime": 1569097227946,
+                    "modified": false
+                  },
+                  "tempLatestArchive.php": {
+                    "type": "-",
+                    "size": 11095,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "RainRateHistory.gif": {
+                    "type": "-",
+                    "size": 11471,
+                    "lmtime": 1569097227827,
+                    "modified": false
+                  },
+                  "dewpt.php": {
+                    "type": "-",
+                    "size": 10460,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "HeatIndexHistory.gif": {
+                    "type": "-",
+                    "size": 12518,
+                    "lmtime": 1569097227700,
+                    "modified": false
+                  },
+                  "OutsideHumidityHistory.gif": {
+                    "type": "-",
+                    "size": 11909,
+                    "lmtime": 1569097227718,
+                    "modified": false
+                  },
+                  "CoolDegDaysHistory.gif": {
+                    "type": "-",
+                    "size": 12161,
+                    "lmtime": 1569097227872,
+                    "modified": false
+                  },
+                  "temp3LatestArchive.php": {
+                    "type": "-",
+                    "size": 11352,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "tempLatest.php": {
+                    "type": "-",
+                    "size": 11403,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "WindSpeedHistory.gif": {
+                    "type": "-",
+                    "size": 13217,
+                    "lmtime": 1569097227745,
+                    "modified": false
+                  },
+                  "GraphSettings.php": {
+                    "type": "-",
+                    "size": 15645,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "AirDensityHistory.gif": {
+                    "type": "-",
+                    "size": 12658,
+                    "lmtime": 1569097227854,
+                    "modified": false
+                  },
+                  "tempwchill.php": {
+                    "type": "-",
+                    "size": 10673,
+                    "lmtime": 0,
+                    "modified": false
+                  },
+                  "THWHistory.gif": {
+                    "type": "-",
+                    "size": 12356,
+                    "lmtime": 1569097227891,
+                    "modified": false
+                  }
+                }
+              },
+              "apple-touch-icon.png": {
+                "type": "-",
+                "size": 347,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ChooseTarget.htm": {
+                "type": "-",
+                "size": 237,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ApplePushProd1217.pem": {
+                "type": "-",
+                "size": 8468,
+                "lmtime": 0,
+                "modified": false
+              },
+              "chat.php": {
+                "type": "-",
+                "size": 14119,
+                "lmtime": 0,
+                "modified": false
+              },
+              "downloadairq.php": {
+                "type": "-",
+                "size": 3800,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ApplePush1218.pem": {
+                "type": "-",
+                "size": 8754,
+                "lmtime": 0,
+                "modified": false
+              },
+              "guestbook.dat.php": {
+                "type": "-",
+                "size": 15205,
+                "lmtime": 0,
+                "modified": false
+              },
+              "navwinbutton.class": {
+                "type": "-",
+                "size": 8657,
+                "lmtime": 0,
+                "modified": false
+              },
+              "webcamdata.dat": {
+                "type": "-",
+                "size": 3,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpthumb.filters.php": {
+                "type": "-",
+                "size": 68939,
+                "lmtime": 0,
+                "modified": false
+              },
+              "smallA.php": {
+                "type": "-",
+                "size": 46846,
+                "lmtime": 0,
+                "modified": false
+              },
+              "greybox": {},
+              "forecastplus.php": {
+                "type": "-",
+                "size": 1799,
+                "lmtime": 0,
+                "modified": false
+              },
+              "browsedate.html": {
+                "type": "-",
+                "size": 1963,
+                "lmtime": 0,
+                "modified": false
+              },
+              "coldmeter_service.php": {
+                "type": "-",
+                "size": 12540,
+                "lmtime": 0,
+                "modified": false
+              },
+              "st01_02x.xls": {
+                "type": "-",
+                "size": 50688,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jquery.masonry.min.js": {
+                "type": "-",
+                "size": 23648,
+                "lmtime": 0,
+                "modified": false
+              },
+              "css": {
+                "cloudy.min.css": {
+                  "type": "-",
+                  "size": 1711,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "bootstrap.css": {
+                  "type": "-",
+                  "size": 127290,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "sunrise.css": {
+                  "type": "-",
+                  "size": 1920,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "night.eng.min.css": {
+                  "type": "-",
+                  "size": 5026,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "sunset.min.css": {
+                  "type": "-",
+                  "size": 1618,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "dust.min.css": {
+                  "type": "-",
+                  "size": 1631,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "bootstrap.min.css": {
+                  "type": "-",
+                  "size": 106100,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "main.css": {
+                  "type": "-",
+                  "size": 50719,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "main.php": {
+                  "type": "-",
+                  "size": 96843,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "fonts": {},
+                "night2.min.css": {
+                  "type": "-",
+                  "size": 5057,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "bootstrap0.css": {
+                  "type": "-",
+                  "size": 127247,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "sunset.css": {
+                  "type": "-",
+                  "size": 1843,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "bootstrap-responsive.min.css": {
+                  "type": "-",
+                  "size": 17003,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "dust-night.min.css": {
+                  "type": "-",
+                  "size": 1643,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "sunrise.min.css": {
+                  "type": "-",
+                  "size": 1678,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                ".DS_Store": {
+                  "type": "-",
+                  "size": 15364,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "snow_night.css": {
+                  "type": "-",
+                  "size": 3585,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "night0.min.css": {
+                  "type": "-",
+                  "size": 5743,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "snow.css": {
+                  "type": "-",
+                  "size": 3501,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "bootstrap-responsive.css": {
+                  "type": "-",
+                  "size": 22265,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "rain.min.css": {
+                  "type": "-",
+                  "size": 4427,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "night.min.css": {
+                  "type": "-",
+                  "size": 5090,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "main0.css": {
+                  "type": "-",
+                  "size": 74161,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "night.css": {
+                  "type": "-",
+                  "size": 6074,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "bootstrap.php": {
+                  "type": "-",
+                  "size": 127873,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "images": {},
+                "dust-night.css": {
+                  "type": "-",
+                  "size": 1859,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "dust.css": {
+                  "type": "-",
+                  "size": 1857,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "main1.css": {
+                  "type": "-",
+                  "size": 74607,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "bootstrap1.css": {
+                  "type": "-",
+                  "size": 127262,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "snow_night.min.css": {
+                  "type": "-",
+                  "size": 3069,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "snow.min.css": {
+                  "type": "-",
+                  "size": 2990,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "main2.css": {
+                  "type": "-",
+                  "size": 74161,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "night1.min.css": {
+                  "type": "-",
+                  "size": 5939,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "mobile.php": {
+                  "type": "-",
+                  "size": 24677,
+                  "lmtime": 1569097095613,
+                  "modified": false
+                },
+                "bootstrap2.css": {
+                  "type": "-",
+                  "size": 127247,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "cloudy.css": {
+                  "type": "-",
+                  "size": 1974,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "rain.css": {
+                  "type": "-",
+                  "size": 5181,
+                  "lmtime": 0,
+                  "modified": false
+                }
+              },
+              "basestyle.php": {
+                "type": "-",
+                "size": 43468,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jquery.elastic.js": {
+                "type": "-",
+                "size": 1719,
+                "lmtime": 0,
+                "modified": false
+              },
+              "archives": {},
+              "springpic.txt": {
+                "type": "-",
+                "size": 208,
+                "lmtime": 0,
+                "modified": false
+              },
+              "openclosewindow.php": {
+                "type": "-",
+                "size": 1293,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sitemap_google.xml": {
+                "type": "-",
+                "size": 61020,
+                "lmtime": 0,
+                "modified": false
+              },
+              "cache": {},
+              "chat.sql": {
+                "type": "-",
+                "size": 715594,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sqlqeueries.sql": {
+                "type": "-",
+                "size": 767,
+                "lmtime": 0,
+                "modified": false
+              },
+              "keyfile.txt": {
+                "type": "-",
+                "size": 49,
+                "lmtime": 0,
+                "modified": false
+              },
+              "browseresult.php": {
+                "type": "-",
+                "size": 318,
+                "lmtime": 0,
+                "modified": false
+              },
+              "getWeather.php": {
+                "type": "-",
+                "size": 1720,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Zend": {},
+              "footerScripts.min.js": {
+                "type": "-",
+                "size": 20806,
+                "lmtime": 0,
+                "modified": false
+              },
+              "PIE.htc": {
+                "type": "-",
+                "size": 347,
+                "lmtime": 0,
+                "modified": false
+              },
+              "reports.php": {
+                "type": "-",
+                "size": 22088,
+                "lmtime": 0,
+                "modified": false
+              },
+              "convertToCSV.bat": {
+                "type": "-",
+                "size": 110,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sound": {},
+              "survey_service.php": {
+                "type": "-",
+                "size": 2416,
+                "lmtime": 0,
+                "modified": false
+              },
+              "monthlyyearlymb.xml": {
+                "type": "-",
+                "size": 1223,
+                "lmtime": 0,
+                "modified": false
+              },
+              "fingerprint.jsp": {
+                "type": "-",
+                "size": 9778,
+                "lmtime": 0,
+                "modified": false
+              },
+              "tips.php": {
+                "type": "-",
+                "size": 211,
+                "lmtime": 0,
+                "modified": false
+              },
+              "button.php": {
+                "type": "-",
+                "size": 216,
+                "lmtime": 0,
+                "modified": false
+              },
+              "randomsnow.txt": {
+                "type": "-",
+                "size": 42,
+                "lmtime": 0,
+                "modified": false
+              },
+              "headerGCnew.jpg": {
+                "type": "-",
+                "size": 41656,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecastNew.php": {
+                "type": "-",
+                "size": 47028,
+                "lmtime": 0,
+                "modified": false
+              },
+              "RainSeasons.php": {
+                "type": "-",
+                "size": 5821,
+                "lmtime": 0,
+                "modified": false
+              },
+              "averages.dat": {
+                "type": "-",
+                "size": 1,
+                "lmtime": 0,
+                "modified": false
+              },
+              "captcha.php": {
+                "type": "-",
+                "size": 1574,
+                "lmtime": 0,
+                "modified": false
+              },
+              "classes.inc": {
+                "type": "-",
+                "size": 3171,
+                "lmtime": 0,
+                "modified": false
+              },
+              "fulldata.xml": {
+                "type": "-",
+                "size": 5172,
+                "lmtime": 1569097226414,
+                "modified": true
+              },
+              "02ws_short_eng.png": {
+                "type": "-",
+                "size": 55508,
+                "lmtime": 0,
+                "modified": true
+              },
+              "save_main": {
+                "type": "-",
+                "size": 73,
+                "lmtime": 0,
+                "modified": false
+              },
+              "legend.php": {
+                "type": "-",
+                "size": 6677,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendEmailToMoshe.php": {
+                "type": "-",
+                "size": 1573,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jquery.colorbox.js": {
+                "type": "-",
+                "size": 24366,
+                "lmtime": 0,
+                "modified": false
+              },
+              "audio": {},
+              "receipt_validator.php": {
+                "type": "-",
+                "size": 4226,
+                "lmtime": 0,
+                "modified": false
+              },
+              "basestyleNew.php": {
+                "type": "-",
+                "size": 31436,
+                "lmtime": 0,
+                "modified": false
+              },
+              "save_main.js": {
+                "type": "-",
+                "size": 455,
+                "lmtime": 0,
+                "modified": false
+              },
+              "JWSBanner.html": {
+                "type": "-",
+                "size": 1552,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendGCM.php": {
+                "type": "-",
+                "size": 2885,
+                "lmtime": 0,
+                "modified": false
+              },
+              "testIS.html": {
+                "type": "-",
+                "size": 23,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apnProdCert171116.pem": {
+                "type": "-",
+                "size": 4371,
+                "lmtime": 0,
+                "modified": false
+              },
+              "pic.php": {
+                "type": "-",
+                "size": 394,
+                "lmtime": 0,
+                "modified": false
+              },
+              "runningtreks.php": {
+                "type": "-",
+                "size": 14482,
+                "lmtime": 0,
+                "modified": false
+              },
+              "bannerpng.php": {
+                "type": "-",
+                "size": 510,
+                "lmtime": 0,
+                "modified": false
+              },
+              "chatmobile.php": {
+                "type": "-",
+                "size": 5011,
+                "lmtime": 0,
+                "modified": false
+              },
+              "fulldatacumulus.xml": {
+                "type": "-",
+                "size": 4370,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sprintf2.js": {
+                "type": "-",
+                "size": 5130,
+                "lmtime": 0,
+                "modified": false
+              },
+              "healthcheck": {
+                "type": "-",
+                "size": 256,
+                "lmtime": 0,
+                "modified": false
+              },
+              "stream.html": {
+                "type": "-",
+                "size": 1097,
+                "lmtime": 0,
+                "modified": false
+              },
+              "index.wml": {
+                "type": "-",
+                "size": 1076,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Sly": {},
+              "diffFromYest.php": {
+                "type": "-",
+                "size": 4634,
+                "lmtime": 0,
+                "modified": false
+              },
+              "captcha": {},
+              "RSS.xml": {
+                "type": "-",
+                "size": 3293,
+                "lmtime": 0,
+                "modified": false
+              },
+              "avishai": {},
+              "maps.php": {
+                "type": "-",
+                "size": 320,
+                "lmtime": 0,
+                "modified": false
+              },
+              "capture.avi": {
+                "type": "-",
+                "size": 311816,
+                "lmtime": 0,
+                "modified": false
+              },
+              "footerScripts.js": {
+                "type": "-",
+                "size": 0,
+                "lmtime": 0,
+                "modified": false
+              },
+              "station02072013.php": {
+                "type": "-",
+                "size": 62584,
+                "lmtime": 0,
+                "modified": false
+              },
+              "JWSBanner.swd": {
+                "type": "-",
+                "size": 3757,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ChooseMain.htm": {
+                "type": "-",
+                "size": 163,
+                "lmtime": 0,
+                "modified": false
+              },
+              "loadArMin.php": {
+                "type": "-",
+                "size": 1113,
+                "lmtime": 0,
+                "modified": false
+              },
+              "cookies.txt": {
+                "type": "-",
+                "size": 220,
+                "lmtime": 0,
+                "modified": false
+              },
+              "mobile-privacy-policy-ad-sponsored-apps.html": {
+                "type": "-",
+                "size": 9048,
+                "lmtime": 0,
+                "modified": false
+              },
+              "moon.js": {
+                "type": "-",
+                "size": 7487,
+                "lmtime": 0,
+                "modified": false
+              },
+              "aTicker.class": {
+                "type": "-",
+                "size": 6814,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Noname1.txt": {
+                "type": "-",
+                "size": 217,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendSpecialServicenew.php": {
+                "type": "-",
+                "size": 16745,
+                "lmtime": 0,
+                "modified": false
+              },
+              "realtimemb.php": {
+                "type": "-",
+                "size": 6417,
+                "lmtime": 0,
+                "modified": false
+              },
+              "realtime.log": {
+                "type": "-",
+                "size": 6684794,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendSpecial.php": {
+                "type": "-",
+                "size": 7206,
+                "lmtime": 0,
+                "modified": false
+              },
+              "converttogif": {
+                "type": "-",
+                "size": 435,
+                "lmtime": 0,
+                "modified": false
+              },
+              "begin_caching.php": {
+                "type": "-",
+                "size": 2816,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendEmailForm.php": {
+                "type": "-",
+                "size": 3900,
+                "lmtime": 0,
+                "modified": false
+              },
+              "SendAPNService.php": {
+                "type": "-",
+                "size": 5109,
+                "lmtime": 0,
+                "modified": false
+              },
+              "userPics.php": {
+                "type": "-",
+                "size": 1002,
+                "lmtime": 0,
+                "modified": false
+              },
+              "save_jsontxt": {
+                "type": "-",
+                "size": 213,
+                "lmtime": 0,
+                "modified": false
+              },
+              "footerScripts160816.php": {
+                "type": "-",
+                "size": 356431,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Sajax.php": {
+                "type": "-",
+                "size": 8602,
+                "lmtime": 0,
+                "modified": false
+              },
+              "bannerSonde_iframe.php": {
+                "type": "-",
+                "size": 1402,
+                "lmtime": 0,
+                "modified": false
+              },
+              "wxwugraphs": {},
+              "wap.wml": {
+                "type": "-",
+                "size": 840,
+                "lmtime": 0,
+                "modified": false
+              },
+              "smallajax.php": {
+                "type": "-",
+                "size": 38297,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ajax.js": {
+                "type": "-",
+                "size": 3206,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecast_new.php": {
+                "type": "-",
+                "size": 22529,
+                "lmtime": 0,
+                "modified": false
+              },
+              "rss_details.php": {
+                "type": "-",
+                "size": 3260,
+                "lmtime": 0,
+                "modified": false
+              },
+              "stream.php": {
+                "type": "-",
+                "size": 1083,
+                "lmtime": 0,
+                "modified": false
+              },
+              "ForecasterJob.php": {
+                "type": "-",
+                "size": 3039,
+                "lmtime": 0,
+                "modified": false
+              },
+              "menu.php": {
+                "type": "-",
+                "size": 4626,
+                "lmtime": 0,
+                "modified": false
+              },
+              "send-text.php": {
+                "type": "-",
+                "size": 2863,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apple-touch-icon-152x152.png": {
+                "type": "-",
+                "size": 347,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpthumb.bmp.php": {
+                "type": "-",
+                "size": 37493,
+                "lmtime": 0,
+                "modified": false
+              },
+              "index.php": {
+                "type": "-",
+                "size": 6553,
+                "lmtime": 0,
+                "modified": false
+              },
+              "new": {},
+              "smallajaxservice.php": {
+                "type": "-",
+                "size": 31156,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Snow31012008.avi": {
+                "type": "-",
+                "size": 2711040,
+                "lmtime": 0,
+                "modified": false
+              },
+              "error_log": {
+                "type": "-",
+                "size": 1013475,
+                "lmtime": 0,
+                "modified": false
+              },
+              "radar.php": {
+                "type": "-",
+                "size": 19751,
+                "lmtime": 0,
+                "modified": false
+              },
+              "stream_ip.html": {
+                "type": "-",
+                "size": 901,
+                "lmtime": 0,
+                "modified": false
+              },
+              "picturesmain.htm": {
+                "type": "-",
+                "size": 4614,
+                "lmtime": 0,
+                "modified": false
+              },
+              "survey.php": {
+                "type": "-",
+                "size": 15127,
+                "lmtime": 0,
+                "modified": false
+              },
+              "flashSeekbar.js": {
+                "type": "-",
+                "size": 6203,
+                "lmtime": 0,
+                "modified": false
+              },
+              "n": {},
+              "todays.htm": {
+                "type": "-",
+                "size": 296,
+                "lmtime": 0,
+                "modified": false
+              },
+              "colorbox.css": {
+                "type": "-",
+                "size": 2394,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apple-touch-icon-152x152-precomposed.png": {
+                "type": "-",
+                "size": 371,
+                "lmtime": 0,
+                "modified": false
+              },
+              "wapredirect.php": {
+                "type": "-",
+                "size": 29637,
+                "lmtime": 0,
+                "modified": false
+              },
+              "chattest.php": {
+                "type": "-",
+                "size": 5865,
+                "lmtime": 0,
+                "modified": false
+              },
+              "footerScripts.php": {
+                "type": "-",
+                "size": 254742,
+                "lmtime": 0,
+                "modified": false
+              },
+              "realtimembmysql.php": {
+                "type": "-",
+                "size": 6686,
+                "lmtime": 0,
+                "modified": false
+              },
+              "nowimage.php": {
+                "type": "-",
+                "size": 2488,
+                "lmtime": 0,
+                "modified": false
+              },
+              "bannerSondeTSuspended.php": {
+                "type": "-",
+                "size": 2697,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02ws_forecast_2019830.png": {
+                "type": "-",
+                "size": 59223,
+                "lmtime": 0,
+                "modified": false
+              },
+              "emptyTable.php": {
+                "type": "-",
+                "size": 764,
+                "lmtime": 0,
+                "modified": false
+              },
+              "jpgraph": {},
+              "JWS.flp": {
+                "type": "-",
+                "size": 132,
+                "lmtime": 0,
+                "modified": false
+              },
+              "sigweathercalc.php": {
+                "type": "-",
+                "size": 41320,
+                "lmtime": 0,
+                "modified": false
+              },
+              "requiredDBTasks.php": {
+                "type": "-",
+                "size": 23762,
+                "lmtime": 0,
+                "modified": false
+              },
+              "end_caching.php": {
+                "type": "-",
+                "size": 727,
+                "lmtime": 0,
+                "modified": false
+              },
+              "getWeather_list.php": {
+                "type": "-",
+                "size": 664,
+                "lmtime": 0,
+                "modified": false
+              },
+              "IMG_5522.JPG": {
+                "type": "-",
+                "size": 2835496,
+                "lmtime": 0,
+                "modified": false
+              },
+              "getRowsNum.php": {
+                "type": "-",
+                "size": 799,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apns-prod-1216.pem": {
+                "type": "-",
+                "size": 4226,
+                "lmtime": 0,
+                "modified": false
+              },
+              "treks": {},
+              "02ws_forecast_2019914.png": {
+                "type": "-",
+                "size": 53212,
+                "lmtime": 0,
+                "modified": false
+              },
+              "save_smallheader_eng.js": {
+                "type": "-",
+                "size": 186,
+                "lmtime": 0,
+                "modified": false
+              },
+              "Apple Production IOS Push Services- il.co.jws.pem": {
+                "type": "-",
+                "size": 1952,
+                "lmtime": 0,
+                "modified": false
+              },
+              "season0203.htm": {
+                "type": "-",
+                "size": 3072,
+                "lmtime": 0,
+                "modified": false
+              },
+              "certPushDev.pem": {
+                "type": "-",
+                "size": 4165,
+                "lmtime": 0,
+                "modified": false
+              },
+              "footerScripts290716.php": {
+                "type": "-",
+                "size": 255947,
+                "lmtime": 0,
+                "modified": false
+              },
+              "README-wxwugraphs.html": {
+                "type": "-",
+                "size": 2051,
+                "lmtime": 0,
+                "modified": false
+              },
+              "phpthumb.unsharp.php": {
+                "type": "-",
+                "size": 5944,
+                "lmtime": 0,
+                "modified": false
+              },
+              "st01_05x.xls": {
+                "type": "-",
+                "size": 51200,
+                "lmtime": 0,
+                "modified": false
+              },
+              "JWSBanner.swf": {
+                "type": "-",
+                "size": 1384,
+                "lmtime": 0,
+                "modified": false
+              },
+              "footerScripts130419.php": {
+                "type": "-",
+                "size": 363885,
+                "lmtime": 0,
+                "modified": false
+              },
+              "02ws_forecast_201996.png": {
+                "type": "-",
+                "size": 53785,
+                "lmtime": 0,
+                "modified": false
+              },
+              "wxwugraphs.php": {
+                "type": "-",
+                "size": 6881,
+                "lmtime": 0,
+                "modified": false
+              },
+              "apple-touch-icon-120x120.png": {
+                "type": "-",
+                "size": 347,
+                "lmtime": 0,
+                "modified": false
+              },
+              "blueprint": {},
+              "PHPWee": {},
+              "csshover.htc": {
+                "type": "-",
+                "size": 3071,
+                "lmtime": 0,
+                "modified": false
+              },
+              "regConfirm.php": {
+                "type": "-",
+                "size": 2136,
+                "lmtime": 0,
+                "modified": false
+              },
+              "forecastlib.php": {
+                "type": "-",
+                "size": 45124,
+                "lmtime": 0,
+                "modified": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$version": 1
+}

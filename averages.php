@@ -18,15 +18,15 @@
 <table summary="" border="5" id="mouseover" <? if (isHeb()) echo "dir=rtl"; ?> width="100%" style="text-align: center">
 <tr class="inv">
     <td><? echo $MONTH[$lang_idx];?></td>
-    <td><? echo($MIN[$lang_idx])."<br /> ".($TEMP[$lang_idx]);?><br/> (<? echo $current->get_tempunit(); ?>)</td>
-    <td><? echo($MAX[$lang_idx])."<br /> ".($TEMP[$lang_idx]);?><br/> (<? echo $current->get_tempunit(); ?>)</td>
-    <td><? echo($MID[$lang_idx])."<br /> ".($TEMP[$lang_idx]);?><br/> (<? echo $current->get_tempunit(); ?>)</td>
-    <td><? echo($MIN[$lang_idx])."<br /> ".($MIN[$lang_idx]);?><br/>(<? echo $current->get_tempunit(); ?>)</td>
-    <td><? echo($MAX[$lang_idx])."<br /> ".($MAX[$lang_idx]);?><br/>(<? echo $current->get_tempunit(); ?>)</td>
-    <td><? echo($MAX[$lang_idx])."<br /> ". ($HUMIDITY[$lang_idx]);?><br/> (%)</td>
-    <td><? echo($MIN[$lang_idx])."<br /> ".($HUMIDITY[$lang_idx]);?><br/> (%)</td>
-    <td><? echo($MID[$lang_idx])."<br /> ".($HUMIDITY[$lang_idx]);?><br/> (%)</td>
-    <td><? echo $RAIN[$lang_idx];?><br/> (mm)</td>
+    <td><? echo($MIN[$lang_idx])."<br /> ".($TEMP[$lang_idx]);?><br/> <div class="paramunit big">&#176;</div><div class="param big"><? echo $current->get_tempunit(); ?></div></td>
+    <td><? echo($MAX[$lang_idx])."<br /> ".($TEMP[$lang_idx]);?><br/> <div class="paramunit big">&#176;</div><div class="param big"><? echo $current->get_tempunit(); ?></div></td>
+    <td><? echo($MID[$lang_idx])."<br /> ".($TEMP[$lang_idx]);?><br/> <div class="paramunit big">&#176;</div><div class="param big"><? echo $current->get_tempunit(); ?></div></td>
+    <td><? echo($MIN[$lang_idx])."<br /> ".($RECORD[$lang_idx]);?><br/><div class="paramunit big">&#176;</div><div class="param big"><? echo $current->get_tempunit(); ?></div></td>
+    <td><? echo($MAX[$lang_idx])."<br /> ".($RECORD[$lang_idx]);?><br/><div class="paramunit big">&#176;</div><div class="param big"><? echo $current->get_tempunit(); ?></div></td>
+    <td><? echo($MAX[$lang_idx])."<br /> ". ($HUMIDITY[$lang_idx]);?><br/> %</td>
+    <td><? echo($MIN[$lang_idx])."<br /> ".($HUMIDITY[$lang_idx]);?><br/> %</td>
+    <td><? echo($MID[$lang_idx])."<br /> ".($HUMIDITY[$lang_idx]);?><br/> %</td>
+    <td><? echo $RAIN[$lang_idx];?><br/> mm</td>
     <td><? echo $RAINY_DAYS[$lang_idx];?></td>
     <td><? echo($MIN[$lang_idx])."<br /> ".($RAIN[$lang_idx]);?></td>
     <td><? echo($MAX[$lang_idx])."<br /> ".($RAIN[$lang_idx]);?></td>
@@ -48,7 +48,7 @@
 <?
 	function getColTitle($colNum)
 	{
-		global $MAX, $MIN, $HIGH, $MID, $TEMP, $HUMIDITY, $RAIN, $RAINY_DAYS, $lang_idx;
+		global $MAX, $MIN, $HIGH, $MID, $TEMP, $HUMIDITY, $RAIN, $RAINY_DAYS, $lang_idx, $RECORD;
 		if ($colNum == 1)
 			return "";
 		else if ($colNum == 2)
@@ -57,6 +57,10 @@
 			return "{$MAX[$lang_idx]}&nbsp;{$TEMP[$lang_idx]}";
 		else if ($colNum == 4)
 			return "{$MID[$lang_idx]}&nbsp;{$TEMP[$lang_idx]}";
+		else if ($colNum == 5)
+			return "{$MIN[$lang_idx]}&nbsp;{$RECORD[$lang_idx]}";
+		else if ($colNum == 6)
+			return "{$MAX[$lang_idx]}&nbsp;{$RECORD[$lang_idx]}";
 		else if ($colNum == 7)
 			return "{$MAX[$lang_idx]}&nbsp;{$HUMIDITY[$lang_idx]}";
 		else if ($colNum == 8)
@@ -96,13 +100,17 @@
 				else
 					print "\t\t<td class=\"topbase\">".getMonthName($col_value)."</td>\n";
 			}
-			else
-				print "\t\t<td style=\"direction:ltr\" title=\"".getColTitle($col_num)."\"><a href=# class=\"info\"><span style=\"direction:ltr\">".round($col_value, 1)."</span><span class=\"info\">".getColTitle($col_num)."</span></a></td>\n";
+			else if ($col_num == 5)
+			    print "\t\t<td style=\"direction:ltr\" title=\"".getColTitle($col_num)."\" class=\"number\"><a href=# class=\"info\"><span style=\"direction:ltr\">".round($col_value, 1)." <br/>".$line["AbsLowTempDate"]."</span><span class=\"info\">".getColTitle($col_num)."</span></a></td>\n";
+			else if ($col_num == 6)
+			   print "\t\t<td style=\"direction:ltr\" title=\"".getColTitle($col_num)."\" class=\"number\"><a href=# class=\"info\"><span style=\"direction:ltr\">".round($col_value, 1)." <br/>".$line["AbsHighTempDate"]."</span><span class=\"info\">".getColTitle($col_num)."</span></a></td>\n";
+			else if ($col_num <= 13)
+				print "\t\t<td style=\"direction:ltr\" title=\"".getColTitle($col_num)."\" class=\"number\"><a href=# class=\"info\"><span style=\"direction:ltr\">".round($col_value, 1)."</span><span class=\"info\">".getColTitle($col_num)."</span></a></td>\n";
         }
         print "\t</tr>\n";
     }
     
-	print "\t<tr class=\"inv_plain_2\" style=\"height:3em\"><td>".$AVERAGE[$lang_idx]." - ".$WHOLE_SEASON[$lang_idx]."</td>\n";
+	print "\t<tr class=\"inv_plain_2\" style=\"height:3em\" class=\"number\"><td>".$AVERAGE[$lang_idx]." - ".$WHOLE_SEASON[$lang_idx]."</td>\n";
 	 /* Performing SQL query */
     $query = "SELECT avg(LowTemp) FROM average";
     $result = mysqli_query($link, $query);

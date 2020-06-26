@@ -1,6 +1,8 @@
 <?php
 
   include_once ("ini.php");
+  $mem = new Memcached();
+  $mem->addServer('localhost', 11211);
   // Settings
   $cachedir = 'cache'; // Directory to cache files in (keep outside web root)
   $cachetime = 300; // Seconds to cache files for
@@ -32,7 +34,7 @@
   );
   // Script
   $path =  "/".basename($_SERVER['SCRIPT_NAME'])."#".$_SERVER['QUERY_STRING'];
-  $page = 'http://' . $_SERVER['HTTP_HOST'] .basename($_SERVER['SCRIPT_NAME']).serialize($_GET).serialize($_POST); 
+  $page = 'https://' . $_SERVER['HTTP_HOST'] .basename($_SERVER['SCRIPT_NAME']).serialize($_GET).serialize($_POST); 
   
   $cachefile = $cachedir.$path.'.'.$cacheext; // Cache file to either load or create
 
@@ -48,11 +50,11 @@
   if (strlen($path) > 60)
       $ignore_page = true;
   if (FILE_CACHE == "APC"){
-   $cachefile_created = apc_fetch($path."_created");
+   $cachefile_created = $mem->get($path."_created");
    if ($res_page){
-    $newfile_time = apc_fetch($path."_new");
+    $newfile_time = $mem->get($path."_new");
     if (!$newfile_time)
-        apc_store($path."_new", time());
+      $mem->set($path."_new", time(), time() + 300);
    }
   }
    else
@@ -79,7 +81,7 @@
 	ob_start('ob_gzhandler');
     
     if (FILE_CACHE == "APC")
-        echo apc_fetch($path);
+        echo $mem->get($path);
     else
         readfile($cachefile);
     //echo "/*from cache*/";

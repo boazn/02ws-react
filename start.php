@@ -1,4 +1,4 @@
-<?
+<?php
 //redirectToSite(get_url());
 //ini_set("display_errors","On");	
 include_once("lang.php");
@@ -64,7 +64,7 @@ function retrieveTemp2()
 $template_routing = @$_GET['section'];    
 $profile = @$_GET['profile'];
 $hoursForecast = @$_GET['hours'];
-$limitLines = 8;
+$limitLines = LIMIT_CHAT_LINES;
 //
 // url reset
 //
@@ -107,6 +107,7 @@ $thisYear = new TimeRange();
 $today = new ForecastDay();
 $todayForecast = new ForecastDay();
 $tomorrowForecast = new ForecastDay();
+$nextTomorrowForecast = new ForecastDay();
 $yest = new ForecastDay();    
 $wholeSeason = new TimeRange();    
 $wholeSeason->set_rain(RAIN_TOTAL);    
@@ -115,6 +116,9 @@ $seasonTillNow = new TimeRange();
 $averageTillNow = new TimeRange();  
 $storm =  new TimeRange();
 $tomorrow = new TimeRange();
+$mem = new Memcached();
+$mem->addServer('localhost', 11211);
+
 
 //////////////////////////////////////////////
 // parsing XML data
@@ -163,14 +167,18 @@ $current->set_windspd($ary_parsed_file['WINDSPEED']);
 $min10->set_windspd($ary_parsed_file['WIND10AVG']);
 $current->set_windspd10min($ary_parsed_file['WIND10AVG']);
 $today->set_highwind($ary_parsed_file['HIWINDSPEED'],$ary_parsed_file['HIWINDSPEEDTIME']); 
-$current->set_pressure($ary_parsed_file['BAROMETER']);    
-$today->set_highbar($ary_parsed_file['HIBAROMETER'],$ary_parsed_file['HIBAROMETERTIME']);    
-$today->set_lowbar($ary_parsed_file['LOWBAROMETER'],$ary_parsed_file['LOWBAROMETERTIME']); 
+$current->set_pressure($ary_parsed_file['BAR']);    
+$today->set_highbar($ary_parsed_file['HIBAR'],$ary_parsed_file['HIBARTIME']);    
+$today->set_lowbar($ary_parsed_file['LOWBAR'],$ary_parsed_file['LOWBARTIME']); 
 $storm->set_rain($ary_parsed_file['STORMRAIN']);    
-$current->set_rainrate($ary_parsed_file['RAINRATE']);    
-$today->set_highrainrate($ary_parsed_file['HIRAINRATE'],$ary_parsed_file['HIRAINRATETIME']);  
-$seasonTillNow->set_rain($ary_parsed_file['TOTALRAIN']); 
+$current->set_rainrate($ary_parsed_file['RAINRATE']);
+$current->set_rainrate2($ary_parsed_file['RAINRATE2']);      
+$today->set_highrainrate($ary_parsed_file['HIRAINRATE'],$ary_parsed_file['HIRAINRATETIME']);
+$today->set_highrainrate2($ary_parsed_file['HIRAINRATE2'],$ary_parsed_file['HIRAINRATETIME']);  
+$seasonTillNow->set_rain($ary_parsed_file['TOTALRAIN']);
+$seasonTillNow->set_rain2($ary_parsed_file['TOTALRAIN2']); 
 $today->set_rain($ary_parsed_file['DAILYRAIN']);
+$today->set_rain2($ary_parsed_file['DAILYRAIN2']);
 $current->set_dew($ary_parsed_file['DEWPT']);    
 $current->set_cloudbase((($current->get_temp()-$current->get_dew())* 125) + ELEVATION);
 $current->set_windchill($ary_parsed_file['WINDCHILL']);
@@ -181,6 +189,7 @@ $current->set_solarradiation($ary_parsed_file['SOLARRAD']);
 $current->set_uv($ary_parsed_file['UV']);
 $today->set_highuv($ary_parsed_file['HIUV'],$ary_parsed_file['HIUVTIME']);
 $yest->set_rain($ary_parsed_file['YESTRAIN']);
+$yest->set_rain2($ary_parsed_file['YESTRAIN2']);
 $yest->set_hightemp($ary_parsed_file['YESTHITEMP'], null);
 $yest->set_lowtemp($ary_parsed_file['YESTLOWTEMP'], null);
 $yest->set_hightemp2($ary_parsed_file['YESTHITEMP2'], null);
@@ -232,7 +241,7 @@ $thisYear->set_highuv($ary_parsed_file['HIYEARLYUV'],"");
 
 $thisMonth->set_highradiation($ary_parsed_file['HIMONTHLYSOLARRAD'],"");
 $thisYear->set_highradiation($ary_parsed_file['HIYEARLYSOLARRAD'],"");
-$current->set_tempunit('&#176;c');
+$current->set_tempunit('C');
 
 $day = (int)strtok($current->get_date(), "/");    
 $month = (int)strtok("/");    
@@ -248,10 +257,12 @@ $yestsametime->set_time (getMinusHourTime(24));
 $yestsametime->set_date (getMinusHourDate(24));
 $updatedStationDate = mktime ($hour, $min, 0, $month, $day ,$year);// Unix timestamp
 $date = date("D  G:i  ".DATE_FORMAT, $updatedStationDate);
+$daytime = date("D  G:i  ", $updatedStationDate); 
 $dateInHeb = replaceDays($date);
+$daytimeInHeb = replaceDays($daytime);
 $datenotime = date(DATE_FORMAT , $updatedStationDate);        
 $year = date("Y",  $updatedStationDate);
-	$monthInWord = getMonthName(date("n",  $updatedStationDate));   
+$monthInWord = getMonthName(date("n",  $updatedStationDate));   
 $now->set_time(getMinusMinTime(0));    
 $now->set_date(getMinusMinDate(0));  
 $min15->set_time(getMinusMinTime(INTERVAL));    
@@ -265,7 +276,7 @@ $threeHours->set_date(getMinusMinDate(180));
 $tok = getTokFromFile($prefix.FILE_ARCHIVE);
 // now
 if ($_GET['debug'] >= 1)
-	echo "in ".$prefix.FILE_ARCHIVE."<br>searching ",$now->get_date()," and ",$now->get_time()," ";
+	echo "<br>in ".$prefix.FILE_ARCHIVE."<br>searching ",$now->get_date()," and ",$now->get_time()," ";
 if (searchNext ($tok, $now->get_date())){// found the date in the file{}
     if ( searchNext ($tok, $min15->get_time())){
         $min15->set_thsw(getNextWord($tok, 14, "thsw"));
@@ -322,15 +333,7 @@ $now->set_rain($current->get_rain());
 if ($current->get_rainrate() === "0.0")
 	$current->set_rainrate("0");
 
-
-if (filemtime($fulldatatotake) - $last2['date2'] > 2500)
-{
-  //  logger("temp2 is too old: ".(filemtime($fulldatatotake)." - ".$last2['date2']." ".$temp2));
-  // $PRIMARY_TEMP = 1;
-}
-
-
-$current->set_cloudiness(apc_fetch('cloudiness'));
+$current->set_cloudiness($mem->get('cloudiness'));
 $ary_parsed_file = getXMLInArray(FILE_XML_FULLDATA2);
 if ($current->get_windspd() == "--")
 {
@@ -339,15 +342,17 @@ if ($current->get_windspd() == "--")
     $min10->set_windspd($ary_parsed_file['WIND10AVG']);
     $current->set_windspd10min($ary_parsed_file['WIND10AVG']);
 }
+$current->set_intemp($ary_parsed_file['INSIDETEMP']);
 $current->set_thw($ary_parsed_file['THW']);
 $today->set_et($ary_parsed_file['DAILYET']);
 //$current->set_thsw($ary_parsed_file['THSW']);
-$today->set_sunshinehours(apc_fetch(SUNSHINE_HOURS));
+$today->set_sunshinehours($mem->get(SUNSHINE_HOURS));
 
 $temp_to_cold_meter = $current->get_temp_to_coldmeter();
 $temp_from = $temp_to_cold_meter - 0.5;
 $temp_to = $temp_to_cold_meter + 0.5;
-$last_comments = apcu_fetch($temp_from."to".$temp_to."comments");
+$last_comments = array();
+$last_comments = $mem->get($temp_from."to".$temp_to."comments");
 if (is_in_twilight() && ($current->get_solarradiation() < 400))
 {
     //logger("set_cloudiness: 6. sunset_ut:".get_sunset_ut()." get_current_time_ut:".$current->get_current_time_ut()." ".(get_sunset_ut() - $current->get_current_time_ut())." sunrise_ut:".get_sunrise_ut()." ".($current->get_current_time_ut() - get_sunrise_ut())." rad:".$current->get_solarradiation()." is sunset:".$current->is_sunset());

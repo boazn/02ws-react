@@ -1,6 +1,13 @@
 <?php
-include "start.php";
+ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+include_once("include.php"); 
+include_once "start.php";
 include_once ("requiredDBTasks.php");
+include_once "sigweathercalc.php";
+$forecastDaysDB = $mem->get('forecastDaysDB');
+//print_r($forecastDaysDB);
+$forecastHour = $mem->get('forecasthour');
+$sigforecastHour = $mem->get('sigforecastHour');
 //logger("rss_forecast read");
 class SimpleRest {
 	
@@ -63,6 +70,41 @@ class SimpleRest {
 
 class ForecastRestHandler extends SimpleRest {
 
+	private $m_forecastDaysDB = Array();
+	private $m_forecastDaysOut = Array();
+	private $m_current = Array();
+	private $m_currentOut = Array();
+	
+	private function generateForecastOut(){
+		foreach ($this->m_forecastDaysDB as $forecastDay){
+			array_push($this->m_forecastDaysOut, array('date' => $forecastDay['date'], 'day_name' => $forecastDay['day_name'], 'lang0' => $forecastDay['lang0'], 'lang1' => $forecastDay['lang1'], 'TempLow' => $forecastDay['TempLow'], 'TempHigh' => $forecastDay['TempHigh'], 'TempNight' => $forecastDay['TempNight'], 'humDay' => $forecastDay['humDay']));
+		}
+		
+	}
+	Public function generateCurrentOut($current, $today){
+		
+			array_push($this->m_currentOut, array('time' => $current->get_time()));
+			array_push($this->m_currentOut, array('temp' => $current->get_temp()));
+			array_push($this->m_currentOut, array('temp2' => $current->get_temp2()));
+			array_push($this->m_currentOut, array('temp3' => $current->get_temp3()));
+			array_push($this->m_currentOut, array('hum' => $current->get_hum()));
+			array_push($this->m_currentOut, array('pressure' => $current->get_pressure()));
+			array_push($this->m_currentOut, array('winddir' => $current->get_winddir()));
+			array_push($this->m_currentOut, array('windspd' => $current->get_windspd()));
+			array_push($this->m_currentOut, array('rainrate' => $current->get_rainrate()));
+			array_push($this->m_currentOut, array('rainchance' => $current->get_rainchance()));
+			array_push($this->m_currentOut, array('solarradiation' => $current->get_solarradiation()));
+			array_push($this->m_currentOut, array('sunshinehours' => $today->get_sunshinehours()));
+			array_push($this->m_currentOut, array('rain' => $today->get_rain2()));
+				
+		
+	}
+	public function __construct($forecastDaysDB)
+    {
+		$this->m_forecastDaysDB = $forecastDaysDB;
+		$this->generateForecastOut();
+	} 
+
 	function output($rawData) {
 		if(empty($rawData)) {
 			$statusCode = 404;
@@ -71,15 +113,18 @@ class ForecastRestHandler extends SimpleRest {
 			$statusCode = 200;
 		}
 		$requestContentType = $_SERVER['HTTP_ACCEPT'];
-		$this ->setHttpHeaders($requestContentType, $statusCode);
+		//$this ->setHttpHeaders($requestContentType, $statusCode);
 				
 		if(strpos($requestContentType,'application/json') !== false){
+			$this ->setHttpHeaders('application/json', $statusCode);
 			$response = $this->encodeJson($rawData);
 			echo $response;
 		} else if(strpos($requestContentType,'text/html') !== false){
+			$this ->setHttpHeaders('text/html', $statusCode);
 			$response = $this->encodeHtml($rawData);
 			echo $response;
 		} else if(strpos($requestContentType,'application/xml') !== false){
+			$this ->setHttpHeaders('application/xml', $statusCode);
 			$response = $this->encodeXml($rawData);
 			echo $response;
 		}
@@ -89,7 +134,7 @@ class ForecastRestHandler extends SimpleRest {
 	
 	public function encodeHtml($responseData) {
 	
-		$htmlResponse = "<table border='1'>";
+		$htmlResponse = "<table>";
 		foreach($responseData as $key=>$value) {
     			$htmlResponse .= "<tr><td>". $key. "</td><td>". $value. "</td></tr>";
 		}
@@ -111,28 +156,44 @@ class ForecastRestHandler extends SimpleRest {
 		return $xml->asXML();
 	}
 	
-	function getAllForecast() {	
-		$rawData = apc_fetch('forecastDaysDB');
-		output($rawData);
+	function getAllForecast($lang, $tempunit) {	
+			
+		$rawData = $this->m_forecastDaysOut;
+		$this->output($rawData);
+		//$this->output($rawData);
+	}
+	public function getForecast($id, $lang, $tempunit) {
+	
+		$keys = array_keys($this->m_forecastDaysOut);
+		if ($id > 0){ 
+			$rawData = $this->m_forecastDaysOut[$keys[$id-1]];
+			$this->output($rawData);
+		}
+		else
+			$this->getAllForecast($lang, $tempunit);
 		
 	}
-	public function getForecast($id) {
+	public function getCurrent($id, $lang, $tempunit) {
 
-		$forecastDaysDB = apc_fetch('forecastDaysDB');
-		$rawData = $forecastDaysDB[$id];
+		$keys = array_keys($this->m_currentOut);
+		if ($id > 0){
+			$rawData = $this->m_currentOut[$keys[$id-1]];
+			$this->output($rawData);
+		}
+		else
+			$this->getAllCurrent($lang, $tempunit);
 
-		output($rawData);
+		
 	}
-	public function getCurrentTemp($id) {
 
-		global $current;
-		$rawData = $current->get_temp();
-		output($rawData);
+	public function getAllCurrent($lang, $tempunit) {
+		$rawData = $this->m_currentOut;
+		$this->output($rawData);
 	}
 }
 $view = "";
 $lang = 1;
-$tempunit = '°c';
+$tempunit = 'ï¿½c';
 if(isset($_GET["view"]))
 	$view = $_GET["view"];
 if(isset($_GET["lang"]))
@@ -147,16 +208,20 @@ switch($view){
 
 	case "all":
 		// to handle REST Url /mobile/list/
-		$forecastRestHandler = new ForecastRestHandler();
-		$forecastRestHandler->getAllForecast();
+		$forecastRestHandler = new ForecastRestHandler($forecastDaysDB);
+		$forecastRestHandler->getAllForecast($lang, $tempunit);
 		break;
 		
 	case "single":
 		// to handle REST Url /mobile/show/<id>/
-		$forecastRestHandler = new ForecastRestHandler();
-		$forecastRestHandler->getForecast($_GET["id"]);
+		$forecastRestHandler = new ForecastRestHandler($forecastDaysDB);
+		$forecastRestHandler->getForecast($_GET["id"], $lang, $tempunit);
 		break;
-
+	case "now":
+		$forecastRestHandler = new ForecastRestHandler($forecastDaysDB);
+		$forecastRestHandler->generateCurrentOut($current, $today);
+		$forecastRestHandler->getCurrent($_GET["id"], $lang, $tempunit);
+		break;
 	case "" :
 		//404 - not found;
 		break;

@@ -3,8 +3,11 @@
 function time_callback($aLabel) { 
     
 	if (Date('H', $aLabel) == 0)
-		return "\n".Date('j/n', $aLabel);
-	return Date('H', $aLabel);
+        return "\n".Date('j/n', $aLabel);
+    if (Date('H', $aLabel) % 3 == 0)    
+        return Date('H', $aLabel);
+    else
+        return "";
 		
 } 
 $datedelimiter = "-";

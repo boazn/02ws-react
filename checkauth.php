@@ -188,7 +188,7 @@ function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_dis
     {
       // now send_email with activation code
         $key = urlencode($key);
-        $href="http://www.02ws.co.il/regConfirm.php?k=$key&email=$email&user=$user&lang=$lang_idx";
+        $href="https://www.02ws.co.il/regConfirm.php?k=$key&email=$email&user=$user&lang=$lang_idx";
         send_Email("<br /><br /><br /><h1><a href=\"$href\" >".$CLICK_TO_CONFIRM[$lang_idx]."</a></h1><br /><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array($REGISTRATION_TO_02WS[$lang_idx],$REGISTRATION_TO_02WS[$lang_idx]));
         echo "0";
     }
@@ -238,7 +238,7 @@ function forgot_password($email)
       }
       else
       {
-          $href="http://www.02ws.co.il/regConfirm.php?email=$email&lang=$lang_idx";
+          $href="https://www.02ws.co.il/regConfirm.php?email=$email&lang=$lang_idx";
           send_Email("<br /><br /><br /><h1><a href=\"$href\" >".$CLICK_TO_RESET[$lang_idx]."</a></h1><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array("02ws ".$FORGOT_PASS[$lang_idx],"02ws ".$FORGOT_PASS[$lang_idx]));
           echo $CHECK_EMAIL_RESET_PASS[$lang_idx];
       }
@@ -272,14 +272,7 @@ function set_new_password($email, $pass)
       }
 }
 
-function user_login($user_id){
-     // if is checked "remember me" when registaring
-    $key = base64_encode(mcrypt_create_iv(100,MCRYPT_DEV_URANDOM)); // 
-    // Be sure to store the $key value in your database
-    setcookie("rememberme", $key, time()+3600*24*30); // Set the cookie to expire after 30 days
-    $result = db_init("update users set user_rememberme=$key where user_login=$user_id");
-    @mysqli_free_result($result);
-}
+
 
  /**
     * confirmUserPass - Checks whether or not the given
@@ -387,9 +380,9 @@ function user_login($user_id){
         if ($locked_value != "true")  {
                         $_SESSION['loggedin'] = "true";
 			logger( $userJSON." authenticated ");
-                        setcookie(PERSONAL_COLD_METER, $dbarray['PersonalColdMeter'], time()+3600*24*360); // Set the cookie to expire after 60 days
+                        setcookie(PERSONAL_COLD_METER, $dbarray['PersonalColdMeter'], time()+3600*24*360); // Set the cookie to expire after 360 days
 			if ($isrememberme){
-     			   setcookie("rememberme", $dbarray['user_rememberme'], time()+3600*24*60); // Set the cookie to expire after 60 days
+     			   setcookie("rememberme", $dbarray['user_rememberme'], time()+3600*24*360); // Set the cookie to expire after 360 days
                         }
 		}
 		$_SESSION['isAdmin'] = $dbarray['admin'];

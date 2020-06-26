@@ -1,10 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="he" lang="he">
- <head>
+<!DOCTYPE html>
+    <head>
+  <meta charset="utf-8">
   <title>Jerusalem Weather Station Gallery</title>
-  <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="TEXT/HTML; CHARSET=WINDOWS-1255">
-  
+   
   <!-- IMPORTANT
        Do not forget to modify the following according to the theme you use.
        You can also use your own stylesheet, just import the one provided 
@@ -16,7 +14,7 @@
  </head>
  <body>
 <center>
-  <h1>ΰμαεν ϊξεπεϊ ξζβ-ΰεειψ ιψεωμιν<br>Jerusalem Weather Station Gallery</h1>
+  <h1>ΧΧΧ‘Χ•Χ ΧªΧΧ•Χ Χ•Χª ΧΧ–Χ’-ΧΧ•Χ•Χ™Χ¨ Χ™Χ¨Χ•Χ©ΧΧ™Χ<br>Jerusalem Weather Station Gallery</h1>
   <script type="text/javascript"><!--
 	google_ad_client = "pub-2706630587106567";
 	google_ad_width = 468;
@@ -34,16 +32,16 @@
 	<script type="text/javascript"
 	  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</script>
-  <a href="../station.php" class="hlink">return to Home Page ηζεψ μγσ δαιϊ</a>
+  <a href="../station.php" class="hlink">return to Home Page Χ—Χ–Χ•Χ¨ ΧΧ“Χ£ Χ”Χ‘Χ™Χª</a>
 <?php 
 $include_path=".:../";
 ini_set("include_path",$include_path);
 include_once("../ini.php");
 require("spgm.php");
 ?>
-<a href="../station.php" class="hlink">return to Home Page ηζεψ μγσ δαιϊ</a>
+<a href="../station.php" class="hlink">return to Home Page Χ—Χ–Χ•Χ¨ ΧΧ“Χ£ Χ”Χ‘Χ™Χª</a>
 <div class="tbl"><a href="../<? echo GUESTBOOK;?>">write your impression and comments in the guestbook</a><br/>
-<a href="../<? echo GUESTBOOK;?>">λϊεα ΰϊ δϊψωξεϊκ α ρτψ δΰεψηιν</a>
+<a href="../<? echo GUESTBOOK;?>">Χ›ΧªΧ•Χ‘ ΧΧª Χ”ΧªΧ¨Χ©ΧΧ•ΧªΧ Χ‘ Χ΅Χ¤Χ¨ Χ”ΧΧ•Χ¨Χ—Χ™Χ</a>
 </div>
 </center>
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">

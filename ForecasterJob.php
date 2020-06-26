@@ -12,7 +12,7 @@
 תנועת העננים לא תמיד צפויה. האם הענן יתפרק או יתעצם? אלה שאלות שנתקל החזאי בניסיון לחזות את תנועת העננים.");
         ?>
 
-<article class="white_box" style="padding:1em">
+<article id="forecastJob" class="white_box" style="padding:1em">
     <br/> 
     <p>
         <h2></h2>

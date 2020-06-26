@@ -82,7 +82,7 @@ set_tz( $SITE['tz'] );
 # force values 
 ############################################################################
 $SITE['hrs']            = 4320;       # Adjustable via level
-$SITE['tick']           = 1;        # Adjustable via level
+$SITE['tick']           = 2;        # Adjustable via level
 $SITE['freq']           = 1;        # Adjustable via freq
 debug_out("obtaining data from: " . $resultarichive);
 

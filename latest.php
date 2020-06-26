@@ -26,7 +26,7 @@ include_once("include.php");
 <tr>
 		
 		<td style="<? if (isHeb()) echo "direction:rtl"; ?>">
-			<a href="station.php?section=graph&graph=HiWindSpeedHistory&profile=1"><img width="410px" src="./images/profile1/HiWindSpeedHistory.<?=IMAGE_TYPE?>" alt="latest High Wind"><br /><span ><? echo $HIGH[$lang_idx].": ".$today->get_highwind()." ".$KNOTS[$lang_idx]." ".$ON[$lang_idx]." ".$today->get_highwind_time(); ?></span></img></a>
+			<a href="station.php?section=graph&graph=HiWindSpeedHistory&profile=1"><img width="410px" src="./images/profile1/HiWindSpeedHistory.<?=IMAGE_TYPE?>" alt="latest High Wind"><br /><span ><? echo $HIGH[$lang_idx].": ".$today->get_highwind()." ".$KMH[$lang_idx]." ".$ON[$lang_idx]." ".$today->get_highwind_time(); ?></span></img></a>
 		</td>
 		<td>
 			<a href="station.php?section=graph&graph=WindDirectionHistory&profile=1"><img width="410px" src="./images/profile1/WindDirectionHistory.<?=IMAGE_TYPE?>" alt="latest Wind Direction"></img></a>

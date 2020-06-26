@@ -22,7 +22,7 @@ function fillForecastTime (&$pastTime, $found){
                     $pastTime->set_winddir(null);
                     $pastTime->set_pressure(null);
 					$pastTime->set_rainrate(null);
-                    $pastTime->set_change(null, null, null, null, null, null);
+                    $pastTime->set_change(null, null, null, null, null, null, null, null);
                 }
  }
 ini_set("display_errors","On");

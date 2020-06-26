@@ -205,7 +205,7 @@ $PHPTHUMB_CONFIG['disable_onlycreateable_passthru'] = true;   // if true, any im
 // * Speed optimizations configuration
 $PHPTHUMB_CONFIG['prefer_imagemagick']           = true;  // If true, use ImageMagick to resize thumbnails if possible, since it is usually faster than GD functions; if false only use ImageMagick if PHP memory limit is too low.
 $PHPTHUMB_CONFIG['use_exif_thumbnail_for_speed'] = false; // If true, and EXIF thumbnail is available, and is larger or equal to output image dimensions, use EXIF thumbnail rather than actual source image for generating thumbnail. Benefit is only speed, avoiding resizing large image.
-$PHPTHUMB_CONFIG['allow_local_http_src']         = false; // If true, 'src' parameter can be "http://<thishostname>/path/image.ext" instead of just "/path/image.ext"; if false then display warning message to encourage more efficient local-filename calling.
+$PHPTHUMB_CONFIG['allow_local_http_src']         = true; // If true, 'src' parameter can be "http://<thishostname>/path/image.ext" instead of just "/path/image.ext"; if false then display warning message to encourage more efficient local-filename calling.
 
 // END USER CONFIGURATION SECTION
 

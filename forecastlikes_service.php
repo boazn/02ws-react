@@ -2,15 +2,15 @@
 <?php
 header("Access-Control-Allow-Origin: null");
  require_once 'include.php';
+ include_once("start.php");
 class DB_Functions {
  
     private $db;
- 
-      
+    
  function getForecastDays($param, $AscOrDesc, $maxormin, $condition){
      
-     $query = "select * from forecast_days_archive order by ".$param." ".$AscOrDesc.";";
-     logger($query);
+     $query = "select * from forecast_days_archive ".$condition." order by ".$param." ".$AscOrDesc.";";
+     //logger($query);
      $result = db_init($query, "");
      $JSON = "{\"jws\":";
      $JSON .= "{\"forecastDays\":[";
@@ -63,7 +63,8 @@ class DB_Functions {
  }
  function updateForecastDayLikes ($idx)
 {
-    $forecastDaysDB = apc_fetch('forecastDaysDB');
+    global $mem;
+    $forecastDaysDB = $mem->get('forecastDaysDB');
      $day = $forecastDaysDB[$idx]['day'];
     $date = $forecastDaysDB[$idx]['date'];
     $day_name = $forecastDaysDB[$idx]['day_name'];
@@ -83,7 +84,7 @@ class DB_Functions {
     else
         unset($forecastDaysDB[$idx]['likes'][$key]); 
     //var_dump($forecastDaysDB[$idx]['likes']);
-    apc_store('forecastDaysDB',$forecastDaysDB);
+    $mem->set('forecastDaysDB',$forecastDaysDB);
     $likes = count($forecastDaysDB[$idx]['likes']);
     if ($likes > 0){
         $query = "UPDATE forecast_days_archive SET likes='{$likes}',lang0='{$lang0}',lang1='{$lang1}', Updated_at=SYSDATE() WHERE (idx=$idx)";
@@ -106,7 +107,8 @@ class DB_Functions {
 
 function updateForecastDayDislikes ($idx)
 {
-    $forecastDaysDB = apc_fetch('forecastDaysDB');
+    global $mem;
+    $forecastDaysDB = $mem->get('forecastDaysDB');
     $day = $forecastDaysDB[$idx]['day'];
     $date = $forecastDaysDB[$idx]['date'];
     $day_name = $forecastDaysDB[$idx]['day_name'];
@@ -126,7 +128,7 @@ function updateForecastDayDislikes ($idx)
     else
        unset($forecastDaysDB[$idx]['dislikes'][$key]); 
     //var_dump($forecastDaysDB[$idx]['dislikes']);
-    apc_store('forecastDaysDB',$forecastDaysDB);
+    $mem->set('forecastDaysDB',$forecastDaysDB);
     $dislikes = count($forecastDaysDB[$idx]['dislikes']);
     if ($dislikes > 0){
         $query = "UPDATE forecast_days_archive SET dislikes='{$dislikes}',lang0='{$lang0}',lang1='{$lang1}', Updated_at=SYSDATE()  WHERE (idx=$idx)";
@@ -168,6 +170,7 @@ if (isset($_POST["command"])) {
     $lang = $_POST["lang"];
     $command = $_POST["command"];
     $db = new DB_Functions();
+    
     if ($command == "like")
         $res = $db->updateForecastDayLikes($idx);
     else if ($command == "dislike")

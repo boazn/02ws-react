@@ -420,10 +420,10 @@ direction:ltr
 }
 
 @font-face { font-family: "brakim";
-			src: url(http://www.02ws.com/fonts/ActionManShaded.eot); /* IE */
-			 src: local("brakim"), url(http://www.02ws.com/fonts/ActionManShaded.ttf) format("truetype"); /* non-IE */}
+			src: url(https://www.02ws.com/fonts/ActionManShaded.eot); /* IE */
+			 src: local("brakim"), url(https://www.02ws.com/fonts/ActionManShaded.ttf) format("truetype"); /* non-IE */}
 @font-face { font-family: "barakkis2";
-			 src: local("barakkis2"), url(http://www.02ws.com/fonts/barakkis2.ttf) format("truetype"); /* non-IE */}
+			 src: local("barakkis2"), url(https://www.02ws.com/fonts/barakkis2.ttf) format("truetype"); /* non-IE */}
 @font-face {
     font-family: 'Alef';
     src: url('fonts/Alef-bold.eot');
@@ -1400,7 +1400,7 @@ width:90%;clear:both;
 	display:block;
 	background:#<?= $forground->bg['+9'] ?>;
 	color: #<?= $forground->bg['-10'] ?>;
-	background-image: url(buttongradient.php?bg2=<?= $forground->bg['+3'] ?>&bg=<?= $forground->bg['+10'] ?>&width=1&height=60);
+	/*background-image: url(buttongradient.php?bg2=<?= $forground->bg['+3'] ?>&bg=<?= $forground->bg['+10'] ?>&width=1&height=60);*/
 	opacity:0.25;
 	filter: alpha(opacity=25);
 	height: 100%;

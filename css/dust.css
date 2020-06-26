@@ -1,7 +1,6 @@
 
 body {
-   background-image:url("../img/bg_dust.png");
-   background-repeat:repeat;
+    background: linear-gradient(180deg, #65625a 0%, #4f5352 10%, #4f5352 60%, #65625a 100%);
 }
 a {
 	

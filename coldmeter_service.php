@@ -1,6 +1,6 @@
 <?
 header('Content-type: text/html; charset=utf-8');
-$forecastHour = apc_fetch('forecasthour');
+
 if (count($_SESSION) > 0)
 foreach ($_SESSION as $key=>$value)
 {
@@ -12,13 +12,14 @@ foreach ($_COOKIE as $key=>$value)
 }
 function get_laundry_index()
 {   
-    global $forecastHour, $current, $lang_idx, $GOOD_LAUNDRY, $SOSO_LAUNDRY, $BAD_LAUNDRY;
-    if ((dustExistsNow())||(dustExistsIn24hf())||(rainExistsIn24hf()))
-        return array("no_L", $BAD_LAUNDRY[$lang_idx]) ;
+    global $forecastHour, $nextSigForecast, $current, $lang_idx, $GOOD_LAUNDRY, $SOSO_LAUNDRY, $BAD_LAUNDRY, $START_IN;
+    if ((dustExistsNow())||(dustExistsIn24hf())||(rainExistsIn24hf())){
+		return array("no_L", $BAD_LAUNDRY[$lang_idx], $nextSigForecast['hrs']) ;
+	}
     else if (bestLaundryConditions())
-        return array("good_L", $GOOD_LAUNDRY[$lang_idx]);
+        return array("good_L", $GOOD_LAUNDRY[$lang_idx], $nextSigForecast['hrs']);
     else
-       return array("semiLgrey", $SOSO_LAUNDRY[$lang_idx]);
+       return array("semiLgrey", $SOSO_LAUNDRY[$lang_idx], $nextSigForecast['hrs']);
 }
     
 function bestLaundryConditions()
@@ -50,27 +51,41 @@ function averageLaundryConditions()
        return false;
     return true;
 }
+// is rain coming in 6 hours
 function rainExistsIn24hf ()
 {
-    global $forecastHour;
+    global $mem, $forecastHour, $nextSigForecast;
     //logger("rainExistsIn24hf ".count($forecastHour));
     foreach ($forecastHour as $hour_f){
         
-       if (($hour_f['rain'] > 0)&&($hour_f['currentDateTime']) > time()){
-            
-            return true;
-        }
+       if (($hour_f['rain'] > 0)&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 21600)){
+			$nextSigForecast = array('rain' => $hour_f['rain'], 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => null);
+			$mem->set('nextSigForecast', $nextSigForecast);
+			return true;
+		}
+		else if (($hour_f['rain'] > 0)&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 44000)){
+			$nextSigForecast = array('rain' => $hour_f['rain'], 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => null);
+			$mem->set('nextSigForecast', $nextSigForecast);
+			return false;
+		} 
     }
     return false;
 }
+// is dust coming in 6 hours
 function dustExistsIn24hf ()
 {
-    global $forecastHour;
+    global $mem, $forecastHour;
     foreach ($forecastHour as $hour_f){
-         if (($hour_f['icon'] == "dust.png")&&($hour_f['currentDateTime']) > time()){
-             
+         if (($hour_f['icon'] == "dust.png")&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 21600)){
+            $nextSigForecast = array('rain' => 0, 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => $hour_f['icon']);
+			$mem->set('nextSigForecast', $nextSigForecast);
             return true;
-         }
+		 }
+		 else if (($hour_f['icon'] == "dust.png")&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 44600)){
+            $nextSigForecast = array('rain' => 0, 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => $hour_f['icon']);
+			$mem->set('nextSigForecast', $nextSigForecast);
+            return false;
+		 }
     }
     return false;
 }
@@ -86,7 +101,7 @@ function checkAsterisk($row_verdict)
     if (count($row_verdict) < 2)
         return "";
     if ($row_verdict[0]["count"] < ($row_verdict[1]["count"] + 90))
-        return "<a href=\"javascript:void(0)\" class=\"info\" >*<span class=\"info\">".$close_to_sec_coldmeter."</span></a>";
+        return "<a href=\"javascript:void(0)\" id=\"asterisk\" class=\"info\" >&#x002A;<span class=\"info\">".$close_to_sec_coldmeter."</span></a>";
 }
 function get_heat_index($temp, $hum)
 {
@@ -235,11 +250,13 @@ function get_heat_index($temp, $hum)
 include_once("include.php");
 include_once("start.php");
 include_once("requiredDBTasks.php");
+$forecastHour = $mem->get('forecasthour');
+$nextSigForecast = array();
 $pgender = $_COOKIE['gender'];
 $personal_coldmeter = $_COOKIE[PERSONAL_COLD_METER];
 $coldmeter_size = $_GET['coldmetersize'];
 if ($coldmeter_size =="")
-    $coldmeter_size = 15;
+    $coldmeter_size = 17;
 if ($current->get_temp() == "")
     exit;
 $temp_to_cold_meter = $current->get_temp_to_coldmeter();
@@ -264,8 +281,8 @@ if (($personal_coldmeter == 1)&&($_SESSION['loggedin'] == "true")){
         $is_personal = " style=\"font-style: italic\" ";
 }
 if (empty($is_personal)){
-    if (!apcu_fetch($pgender.$temp_from."to".$temp_to)){
-       //logger("calling GetColdMeter".$temp_from." ".$temp_to." ".$pgender);
+    if (!$mem->get($pgender.$temp_from."to".$temp_to)){
+       //logger("calling GetColdMeter ".$temp_from." ".$temp_to." ".$pgender);
        $query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, '{$pgender}', null);";
        $lastcomments = "call GetLastComments({$temp_from}, {$temp_to});";
        //echo $query_verdict;
@@ -283,13 +300,13 @@ if (empty($is_personal)){
             $commentidx = $commentidx + 1;
         }
        $feeling_verdict = $row_verdict[0]["field_name"];
-       apcu_store($pgender.$temp_from."to".$temp_to, $row_verdict[0]["field_name"], 300);
-       apcu_store($pgender.$temp_from."to".$temp_to."verdict", $row_verdict, 300);
-       apcu_store($temp_from."to".$temp_to."comments", $row_comment, 300);
+       $mem->set($pgender.$temp_from."to".$temp_to, $row_verdict[0]["field_name"], time() + 300);
+       $mem->set($pgender.$temp_from."to".$temp_to."verdict", $row_verdict, time() +  300);
+       $mem->set($temp_from."to".$temp_to."comments", $row_comment, time() + 300);
    }
    else{
-       $row_verdict = apc_fetch($pgender.$temp_from."to".$temp_to."verdict");
-       $feeling_verdict = apc_fetch($pgender.$temp_from."to".$temp_to);
+       $row_verdict = $mem->get($pgender.$temp_from."to".$temp_to."verdict");
+       $feeling_verdict = $mem->get($pgender.$temp_from."to".$temp_to);
    }
 }
 $current_feeling = get_name($feeling_verdict);
@@ -298,7 +315,9 @@ $current_feeling = get_name($feeling_verdict);
  $cloth_name = getClothName($current_feeling);
  $arCloth_name =  explode('_', $cloth_name);
  $prefCloth_name = $arCloth_name[0];
-$current_feeling = "<a href=\"WhatToWear.php#".$prefCloth_name."?lang=".$lang_idx."\" target=_blank  >"."<img src=\"images/clothes/".$cloth_name."\" title=\"".getClothTitle($cloth_name, $current->get_temp())."\" width=\"".$coldmeter_size*1.21."\" height=\"".$coldmeter_size."\" style=\"vertical-align: middle\" /></a>&nbsp;<a ".$_SERVER['SCRIPT_NAME']."?section=survey.php&amp;survey_id=2&amp;lang=".$lang_idx."\"".$is_personal." title=\"".$HOTORCOLD_T[$lang_idx]." - ".$COLD_METER[$lang_idx]."\">".$current_feeling."</a>".checkAsterisk($row_verdict);    
+ if ($current->get_solarradiation() > 220)
+	$shade = $SHADE[$lang_idx];
+$current_feeling = "<a href=\"javascript:void(0)\" class=\"info currentcloth\" ><span class=\"info\">".getClothTitle($cloth_name, $current->get_temp_to_coldmeter())."</span><img src=\"images/clothes/".$cloth_name."\" width=\"".$coldmeter_size*1.21."\" height=\"".$coldmeter_size."\" style=\"vertical-align: middle\" /></a></a><a class=\"info\" id=\"coldmetertitle\" href=\"javascript:void(0)\" ".$is_personal."><span class=\"info\" style=\"cursor: default;\" onclick=\"redirect('small.php?section=survey.php&amp;survey_id=2&amp;lang=".$lang_idx."&amp;email=".$_SESSION['email']."')\">".$HOTORCOLD_T[$lang_idx]." - ".$COLD_METER[$lang_idx]."</span>".$current_feeling."</a>".checkAsterisk($row_verdict)." ".$shade;    
 
 $current_heat_index = get_heat_index($current->get_temp(), $current->get_hum());
  
@@ -309,5 +328,5 @@ if ($current_heat_index != "")
 echo $current_feeling;
 $laundry_con = array();
 $laundry_con = get_laundry_index();
-echo "<div id=\"laundryidx\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"images/laundry/".$laundry_con[0].".svg\" width=\"36\" height=\"36\" alt=\"laundry\" title=\"".$laundry_con[1]."\" /><span class=\"info\">".$laundry_con[1]."</span></a></div>";    
+echo "<div id=\"laundryidx\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"images/laundry/".$laundry_con[0].".svg\" width=\"36\" height=\"36\" alt=\"laundry\" title=\"".$laundry_con[1]."\" /><span class=\"info\">".$laundry_con[1]." (".($laundry_con[2] != "" ?  $REMOVE_LAUNDRY[$lang_idx]." ".$IN[$lang_idx]." ".$laundry_con[2]." ".$HOURS[$lang_idx]: "").")</span></a><div><strong>".$laundry_con[2]."</strong></div></div>";    
 ?>

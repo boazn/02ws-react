@@ -8,11 +8,12 @@ include_once("include.php");
 include_once("start.php");
 include_once("requiredDBTasks.php");
 include_once "sigweathercalc.php";
-$sigforecastHour = apc_fetch('sigforecastHour');
+include_once "runwalkcalc.php";
+$sigforecastHour = $mem->get('sigforecastHour');
 if (empty($sigforecastHour)){
     $forecastlib_origin = "station.php";
     include_once("forecastlib.php");
-    $forecastHour = apc_fetch("forecasthour");
+    $forecastHour = $mem->get("forecasthour");
 }
 ?>
  <!DOCTYPE html>
@@ -22,47 +23,48 @@ if (empty($sigforecastHour)){
         <meta name="description" content="<? if (isHeb()) {?>מתעדכן כל דקה מתחנה פיזית על הגג. תחזית ל-24 שעות, לימים הבאים , ארכיון וכל מה שרצית לדעת<?} else {?>What is the weather in Jerusalem, Israel? Here you have 6 days forecast, current significant conditions, live pictures, weather graphs,  detailed archive and much more. This is online weather station which updates every minute. <?} ?>"/>
         <meta name="keywords" content="climate, forecast, weather, jerusalem תחזית מזג אויר , אקלים, שלג, ממוצע, ארכיון"/>
         <meta name="author" content="Boaz" />
-	<meta property="og:image" content="http://www.02ws.co.il/02ws_short<?if (!isHeb()) echo "_eng";?>.png?r=<?=time()?>" />
+	<meta property="og:image" content="https://www.02ws.co.il/02ws_short<?if (!isHeb()) echo "_eng";?>.png?r=<?=time()?>" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="628" />
         <meta property="og:description" content="<? echo "{$sig[0]['sig'][$lang_idx]}"; ?>" /> 
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
         <link rel="stylesheet" href="css/bootstrap<?=$lang_idx; ?>.css" type="text/css" >
+        
 	<!--<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.css">-->
-        <style>
+        <style id="style_in_head">
             body {
                 padding-top: 40px;
                 padding-bottom: 40px;
             }
         </style>
-        <link rel="stylesheet" href="css/main.php?lang=<?=$lang_idx;?>" type="text/css">
+        <link rel="stylesheet"  href="css/main.php?lang=<?=$lang_idx;?>" type="text/css">
         <? if ($current->is_sunset()) { ?>
-        <link rel="stylesheet" href="css/sunset.min.css" type="text/css">
+        <link rel="stylesheet" title="mystyle" href="css/sunset.min.css" type="text/css">
         <? }?>
         <? if ($current->is_sunrise()) { ?>
-        <link rel="stylesheet" href="css/sunrise.min.css" type="text/css">
+        <link rel="stylesheet" title="mystyle" href="css/sunrise.min.css" type="text/css">
         <? }?>
         <? if (($current->is_light())&&($current->get_cloudiness() > 6)) {?>
-             <link rel="stylesheet" href="css/cloudy.min.css" type="text/css" media="screen">
+             <link rel="stylesheet" title="mystyle" href="css/cloudy.min.css" type="text/css" media="screen">
         <? }?>
         <? if ($current->get_pm10() > 300) { ?>
-        <link rel="stylesheet" href="css/dust.min.css" type="text/css">
+        <link rel="stylesheet" title="mystyle" href="css/dust.min.css" type="text/css">
         <? }?>
         <? if (!$current->is_light()){  ?>       
-            <link rel="stylesheet" href="css/night<?=$lang_idx?>.min.css" type="text/css">
+            <link rel="stylesheet" title="mystyle" href="css/night<?=$lang_idx?>.min.css" type="text/css">
             <? if ($current->get_pm10() > 300) { ?>
-            <link rel="stylesheet" href="css/dust-night.min.css" type="text/css">
+            <link rel="stylesheet" title="mystyle" href="css/dust-night.min.css" type="text/css">
             <? }?>
         <? }?>
         <? if (isRaining()){ ?>
-	<link rel="stylesheet" href="css/rain.min.css" type="text/css">
+	<link rel="stylesheet" title="mystyle" href="css/rain.min.css" type="text/css">
         <? }?>
         <? if (isSnowing()) { ?>
         <? if ($current->is_light()){?>
-        <link rel="stylesheet" href="css/snow.min.css" type="text/css">
+        <link rel="stylesheet" title="mystyle" href="css/snow.min.css" type="text/css">
         <? } else {?>
-        <link rel="stylesheet" href="css/snow_night.min.css" type="text/css">
+        <link rel="stylesheet" title="mystyle" href="css/snow_night.min.css" type="text/css">
         <? }?>
         <? }?>
         <link rel="icon" type="image/png" href="img/favicon_sun.png">
@@ -87,8 +89,8 @@ if (empty($sigforecastHour)){
     <body>
         <!--[if lt IE 9 ]>	
 	<div class="topbase" id="topmessage" class="big" style="z-index:9999">
-        Please update you browser. The site does not support internet explorer 6-8.<br /><br />אנא עדכן את הדפדפן<a href="http://www.mozilla.com"><img border="0" alt="Firefox 3" title="Firefox 3" src="http://sfx-images.mozilla.org/affiliates/Buttons/firefox3/120x240.png" /></a>
-	<a href="http://www.google.com/chrome/"><img src="http://www.techdigest.tv/assets_c/2009/02/google-chrome-logo-thumb-300x300-75857.jpg" alt="Chrome" width="150px"></a>
+        Please update you browser. The site does not support internet explorer 6-8.<br /><br />אנא עדכן את הדפדפן<a href="https://www.mozilla.com"><img border="0" alt="Firefox 3" title="Firefox 3" src="https://sfx-images.mozilla.org/affiliates/Buttons/firefox3/120x240.png" /></a>
+	<a href="https://www.google.com/chrome/"><img src="https://www.techdigest.tv/assets_c/2009/02/google-chrome-logo-thumb-300x300-75857.jpg" alt="Chrome" width="150px"></a>
         <br />
         <br />
         <a href="stationo.php?lang=<?=$lang_idx?>">Old 02WS site ירושמיים הישן</a>
@@ -110,13 +112,13 @@ if (empty($sigforecastHour)){
                                                                 </a>
                                                         </li>
                                                         <li>
-                                                                <a href="http://en.sat24.com/en/is" title="<? echo  $SATELLITE[$lang_idx];?>" rel="external">		
+                                                                <a href="https://en.sat24.com/en/is" title="<? echo  $SATELLITE[$lang_idx];?>" rel="external">		
                                                                         <? echo  $SATELLITE[$lang_idx].get_arrow();?>
                                                                 </a>
                                                         </li>
                                                         <li>										
                                                                         <? if (!$error_db){ $licount = $licount + 1;?>
-                                                                        <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph&amp;graph=RainHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>" title="<? echo $TILL_NOW[$lang_idx].": ".$seasonTillNow->get_rain()." ; ".$NORMAL[$lang_idx]." ".$TILL_NOW[$lang_idx].": ".$averageTillNow->get_rain();?>">
+                                                                        <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph&amp;graph=RainHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>" title="<? echo $TILL_NOW[$lang_idx].": ".$seasonTillNow->get_rain2()." ; ".$NORMAL[$lang_idx]." ".$TILL_NOW[$lang_idx].": ".$averageTillNow->get_rain();?>">
                                                                             <? if ($daysWithoutRain >= 4){ echo $daysWithoutRain." ".$DAYS_WITHOUT_RAIN[$lang_idx]." - "; } ?>  
                                                                                 <? echo " <span>";
                                                                                  if ($seasonTillNow->get_raindiffav() > 0) echo $LEFTOVER[$lang_idx]; else echo $LACK[$lang_idx];
@@ -147,7 +149,7 @@ if (empty($sigforecastHour)){
                                                                         if ($res)
                                                                         { ?>
                                                                         <li style="width:160px">
-                                                                                        <a class="hlink" href="http://en.wikipedia.org/wiki/Haines_Index" target="_blank">
+                                                                                        <a class="hlink" href="https://en.wikipedia.org/wiki/Haines_Index" target="_blank">
                                                                                                         <?echo $FIRE_INDEX[$lang_idx];?>
                                                                                                         <?SortIndex ("", $FireIdx."", 4 , 5 , 6 , true, true);?>
                                                                                         </a>
@@ -157,22 +159,17 @@ if (empty($sigforecastHour)){
                                                                 }*/
                                                                 ?>
                                                     <li>
-                                                        <a class="hlink" href="<? echo get_query_edited_url($url_cur, 'section', 'openclosewindow.php');?>" title="<? echo $INSIDE[$lang_idx].": ".$current->get_intemp()." ; ".$OUTSIDE[$lang_idx].": ".$current->get_temp();?>">
-                                                                <? echo $YOU_BETTER[$lang_idx]." <span>";
-                                                                 echo isOpenOrClose();
-                                                                         echo " </span>".$THE_WINDOW[$lang_idx].get_arrow();?>
-                                                                </a>
-                                                        </li>
+                                                       
                                                         <li><a href="JWSBanner.html" class="hlink"><? echo $BANNER_FLASH_VIEW[$lang_idx];?></a></li>
                                                         <li>
                                                                 <a class="hlink" href="<? echo get_query_edited_url(get_url(), 'section', 'radiosonde.php');?>" title="<?echo $STORM_POWER[$lang_idx];?>">
                                                                         <? echo $CURRENT_ENERGY[$lang_idx].get_arrow();?>
                                                                 </a>
                                                         </li>
-                                                        <li><a class="hlink" href="http://www.svivaaqm.net/DynamicTable.aspx?G_ID=14" title="Additional stations in Jerusalem עוד תחנות בי-ם" rel='external' >
+                                                        <li><a class="hlink" href="https://www.svivaaqm.net/DynamicTable.aspx?G_ID=14" title="Additional stations in Jerusalem עוד תחנות בי-ם" rel='external' >
                                                                                                                  <?  echo $STATIONS_NEARBY[$lang_idx].get_arrow(); ?></a>
                                                         </li>
-                                                        <li><a class="hlink" href="http://www.wunderground.com/stationmaps/gmap.asp?zip=00000&amp;wmo=40184" title="Nearby stations עוד תחנות באזור" rel='external' >
+                                                        <li><a class="hlink" href="https://www.wunderground.com/stationmaps/gmap.asp?zip=00000&amp;wmo=40184" title="Nearby stations עוד תחנות באזור" rel='external' >
                                                                 <?  echo $WEATHER_NEARBY[$lang_idx].get_arrow(); ?></a>
                                                         </li>
                                                         <!-- Global Warming -->
@@ -206,7 +203,7 @@ if (empty($sigforecastHour)){
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', '2weeks.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_WEEK[$lang_idx].get_arrow();?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'month.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_MONTH[$lang_idx].get_arrow();?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'allTimeRecords.php');?>" class="hlink" title="<?=$RECORDS_LINK[$lang_idx];?>"><? echo $RECORDS[$lang_idx].get_arrow();?></a></li>
-                                                        <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'RainSeasons.php');?>" class="hlink">150 <? echo $RAIN_SEASONS[$lang_idx].get_arrow();?></a></li>
+                                                        <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'RainSeasons.php');?>" class="hlink">170 <? echo $RAIN_SEASONS[$lang_idx].get_arrow();?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'forecastDays.php');?>" class="hlink"><? echo $LIKED_FORECAST[$lang_idx].get_arrow();?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'radar.php');?>"><? echo $RAIN_RADAR[$lang_idx]." - ".$ARCHIVE[$lang_idx].get_arrow();?></a></li>
                                                         <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'browsedate.php');?>" class="hlink"><? echo $ARCHIVE[$lang_idx].get_arrow();?></a></li>
@@ -263,19 +260,19 @@ if (empty($sigforecastHour)){
 								else {?>
 								<p id="hebrew"><a href="#" onclick="changeLang('1')" title="switch to hebrew">עברית</a></p>
 				<?} ?>
-                         <? if ((!isHeb())&&(first_page())) {?>
+                         <? if (!isHeb()) {?>
 				<div dir="ltr" class="il_image" id="tempunitconversion">
-				<form method="post" action="<?=$_SERVER['SCRIPT_NAME'];?>?lang=<? echo $lang_idx;?>&amp;tempunit=<? if ($current->get_tempunit() == '&#176;c') echo 'F'; else echo 'c';?>" id="tempconversion">
-					<input type="hidden" name="tocorf" value="<? if ($current->get_tempunit() == '&#176;C') echo '&#176;F'; else echo '&#176;C';?>" /> 
-					<?  if ($current->get_tempunit() == '&#176;F') { ?>
+				<form method="post" action="<?=$_SERVER['SCRIPT_NAME'];?>?lang=<? echo $lang_idx;?>&amp;tempunit=<? if (strpos(strtoupper($current->get_tempunit()), 'F') !== False) echo 'C'; else echo 'F';?>" id="tempconversion">
+					<input type="hidden" name="tocorf" value="<? if (strpos(strtoupper($current->get_tempunit()), 'F') !== False) echo '&#176;C'; else echo '&#176;F';?>" /> 
+					<?  if (strpos(strtoupper($current->get_tempunit()), 'F') !== False) { ?>
 					<a href="javascript:void(0)" onclick="document.getElementById('tempconversion').submit();">&#176;C</a>
 					<?  } else { ?>
 					&#176;C
 					<?  } ?>
 					| 
-					<?  if ($current->get_tempunit() == '&#176;c') { ?>
+					<?  if (strpos(strtoupper($current->get_tempunit()), 'C') !== False)  { ?>
 					<a href="javascript:void(0)" onclick="document.getElementById('tempconversion').submit();">&#176;F</a>
-					<?  } else { ?>
+					<?  } else {  ?>
 					&#176;F
 					<?  } ?>
 				</form>
@@ -287,19 +284,20 @@ if (empty($sigforecastHour)){
             </div>
         </div>
         <div class="container row">
+            <input type="button" id="CloseCircles" style="top:300px;display:none;position:absolute;cursor:pointer;width:36px;z-index:999" class="close_icon" title="להחזיר למקום" onclick="javascript:closeAllCircles()" />
             <div id="slogan">
                 <span><? echo $SLOGAN[$lang_idx];?></span>&nbsp;&nbsp;
                <? echo $ELEVATION[$lang_idx]." ".ELEVATION." ".$METERS[$lang_idx]; ?>&nbsp;&nbsp;
-               <span <? if (time() - filemtime($fulldatatotake) > 3600) echo "class=\"high afont\"";?>>
+               <span id="date" <? if (time() - filemtime($fulldatatotake) > 3600) echo "class=\"high afont\"";?>>
                <? if (isHeb()) echo $dateInHeb; else echo $date;?>
                </span>
                <div id="addthis_icon" class="addthis_toolbox addthis_default_style"><a class="addthis_button_compact"><?=$SHARE[$lang_idx];?></a></div>
                <div id="fb_like" class="invfloat">
-            	 <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FJerusalem-Israel%2F02ws-yrwsmyym-mzg-hwwyr-bzmn-mt%2F118726368187010&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" style="border:none; overflow:hidden; width:100px; height:21px;allowTransparency:true"></iframe>
+            	 <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FJerusalem-Israel%2F02ws-yrwsmyym-mzg-hwwyr-bzmn-mt%2F118726368187010&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" style="border:none; overflow:hidden; width:100px; height:21px;allowTransparency:true"></iframe>
                          
                 </div> 
                <ul id="ftr_icons" class="invfloat">
-                    <li><a href="rss_forecast.php<?echo "?lang=".$lang_idx;?>" id="rss"></a></li>
+                    <li><a href="<? echo get_query_edited_url(get_url(), 'section', 'Api.php');?>" id="rss"></a></li>
                     <li><a href="https://twitter.com/YERU02WS" target="_blank" id="twitter"></a></li>
                     <li><a href="https://www.facebook.com/pages/02ws-ירושמיים-מזג-האוויר-בזמן-אמת/118726368187010" target="_blank" id="facebook"></a></li>
                 </ul>
@@ -316,7 +314,7 @@ if (empty($sigforecastHour)){
 						<a class="now active" href="#now"><?=$CURRENT_SIG_WEATHER[$lang_idx]?></a>
                     </li>
                     <li>
-						<a class="more" href="#more"><?=$WHAT_MORE[$lang_idx]?></a>
+						<a class="whatmore" href="#whatmore"><?=$WHAT_MORE[$lang_idx]?></a>
                     </li>
                     <li>
 						<a class="pics" href="#pics"><?=$LIVE_PICTURE[$lang_idx]?></a>
@@ -352,7 +350,7 @@ if (empty($sigforecastHour)){
         <div id="content">
             <article id="now">
                <div class="row"> 
-		<div class="main_info span6 offset3">
+		<div class="main_info span6 offset5">
 		    <ul class="info_btns">
                             
                         
@@ -374,11 +372,15 @@ if (empty($sigforecastHour)){
 			    <li id="uv_btn" onclick="change_circle('uv_line', 'latestuv')" title="<? echo $UV[$lang_idx];?>"></li>
 			    
                             <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title="<? echo $AIR_QUALITY[$lang_idx];?>"></li>
-                            <li id="all_btn" onclick="showAllCircles()" title="<? echo $FULL[$lang_idx];?>"></li>
+                            <li id="more_stations_btn" onclick="change_circle('otherstations_line', 'latestotherstations');getLatest('ראש-צורים', '77', 'IMS');getLatest('צובה', '188', 'IMS');getLatest('חוף מערבי', '178', 'IMS');getLatest('עין גדי','211', 'IMS');getLatest('מעלה אדומים', '218', 'IMS');" title="<? echo $STATIONS_NEARBY[$lang_idx];?>"></li>
                             <li id="now_btn" onclick="change_circle('now_line', 'latestnow')"></li>
                             <li id="temp2_btn" onclick="change_circle('temp2_line', 'latesttemp')" title="<? echo $TEMP[$lang_idx];?>"></li>
+                            <li id="window_btn" onclick="change_circle('window_line', 'latestwindow')" title="<? echo $YOU_BETTER[$lang_idx]." ".isOpenOrClose()." ".$THE_WINDOW[$lang_idx];?>" class="<?if (isOpenOrClose()==$OPEN[$lang_idx]){echo"window_open";}else{echo"window_closed";};?>"></li>	
+                            <li id="moon_btn" onclick="change_circle('moon_line', 'latestmoon')" title="" class=""></li>
                             <li id="temp3_btn" onclick="change_circle('temp3_line', 'latesttemp3')" title="<? echo $TEMP[$lang_idx]." ".$ROAD[$lang_idx];?>"></li>
-			</ul>
+                            <li id="runwalk_btn" onclick="change_circle('runwalk_line', 'latestrunwalk')" title="<?=$RUN_WALK[$lang_idx]?>"></li>
+                            <li id="all_btn" onclick="showAllCircles()" title="<? echo $FULL[$lang_idx];?>"></li>
+                            </ul>
                        <hr id="now_line" />
                        <hr id="aq_line" />
                             <hr id="temp3_line" />
@@ -391,6 +393,10 @@ if (empty($sigforecastHour)){
                             <hr id="rain_line" />
                             <hr id="rad_line" />
                             <hr id="uv_line" />
+                            <hr id="window_line" />
+                            <hr id="moon_line" />
+                            <hr id="runwalk_line" />
+                            <hr id="otherstations_line" />
 		    <div id="info_circle">
                         <div id="latestnow" class="inparamdiv">
                             <div  id="windy">
@@ -405,23 +411,28 @@ if (empty($sigforecastHour)){
                                         <? echo $IT_FEELS[$lang_idx]; ?>
                                          <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
                                                
-                                                <span dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span>
-                                         </a>|<? }
+                                                <span id="itfeels_thsw" dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span>
+                                         </a><img src="images/shadow.png" width="15" title="<? echo $IN_THE_SUN[$lang_idx]."/".$SHADE[$lang_idx]; ?>" alt="<? echo $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" /><? }
                                 else if (!empty($itfeels[0]))
                                         echo $IT_FEELS[$lang_idx]; 
                                 if ($itfeels[0] == "windchill" ){ ?>
                                          <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<? echo $_SERVER['SCRIPT_NAME']; ?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-                                                <span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo $itfeels[1]; ?></span>
+                                                <span id="itfeels_windchill" dir="ltr" class="value" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo $itfeels[1]; ?></span> 
                                          </a>
                                  <? } 
                                 else if ($itfeels[0] == "heatindex"){ ?>
                                 <a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-                                <span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1];  ?></span>
+                                <span id="itfeels_heatidx" dir="ltr" class="high value" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1];  ?></span> 
+                                </a>
+                                <?}else if ($itfeels[0] == "thw"){?>
+                                <a title="<?=$THW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=thw.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+                                <span id="itfeels_thw" dir="ltr" class="value" title="<?=$THW[$lang_idx]?>"><? echo $itfeels[1];  ?></span> 
                                 </a>
                               <?}?>
                             <? if ($current->is_sun()) { ?>
-                            <div class="sunshade"><? echo $IN_THE_SUN[$lang_idx]; ?>|<? echo $SHADE[$lang_idx]; ?></div> 
+                            <div class="sunshade"></div> 
                             <? } ?>
+                            
                             </div>
                             <div id="status">
                             <div  id="coldmeter">
@@ -430,10 +441,12 @@ if (empty($sigforecastHour)){
                             </div>
                             
                             </div>
-                            <div id="tempdivvalue">
-                            <div class="shade"><?if ($current->is_light()){ ?><?=" ".$SHADE[$lang_idx]." "?><?}?></div><? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?></span>
+                            <div id="tempdivvalue" title="<?if ($current->is_light()){ echo " ".$SHADE[$lang_idx]." "; }?>">
+                            <? echo $current->get_temp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div>
                            </div>
-                            		
+                           <? if ($current->get_rainchance()>0) { ?>
+                            <div class="rainpercent"><? echo $current->get_rainchance();?>%</div>
+                           <? } ?> 		
 			</div>
                      
                       <div id="latesttemp" class="inparamdiv">
@@ -442,16 +455,16 @@ if (empty($sigforecastHour)){
                                 </div>
                                <div class="paramvalue">
                                     
-                                        <? echo $current->get_temp();?><span class="paramunit"><? echo $current->get_tempunit(); ?>&nbsp;<? if ($PRIMARY_TEMP == 1) echo " $VALLEY[$lang_idx]"; else echo " $MOUNTAIN[$lang_idx]";?></span>
+                                        <? echo $current->get_temp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?>&nbsp;<? if ($PRIMARY_TEMP == 1) echo " $VALLEY[$lang_idx]"; else echo " $MOUNTAIN[$lang_idx]";?></div>
                                     
                                 </div>
                                 <div class="highlows">
-                                        <div class="high"><strong><? echo toLeft($today->get_hightemp()); ?></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_hightemp_time()." "; ?>
-                                        <div class="low"><strong><? echo toLeft($today->get_lowtemp()); ?></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_lowtemp_time()." "; ?>
+                                        <div class="highparam"><? echo toLeft($today->get_hightemp()); ?></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<span class="high_time"><? echo $today->get_hightemp_time()." "; ?></span>
+                                        <div class="lowparam"><? echo toLeft($today->get_lowtemp()); ?></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<span class="low_time"><? echo $today->get_lowtemp_time()." "; ?></span>
                                 </div> 
                                 <div class="paramtrend relative">
                                     <div class="innertrendvalue">
-                                       <? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_tempchange(), true).$current->get_tempunit(); ?>
+                                       <? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_tempchange(), true); ?>
                                     </div>
                                 </div>  
                           <div class="trendstable"> 
@@ -474,16 +487,16 @@ if (empty($sigforecastHour)){
                                 </div>
                                <div class="paramvalue">
                                     
-                                   <? echo $current->get_temp2();?><span class="paramunit"><? echo $current->get_tempunit(); ?>&nbsp;<?if ($PRIMARY_TEMP == 1) echo " $MOUNTAIN[$lang_idx]"; else echo " $VALLEY[$lang_idx]";?></span>
+                                   <? echo $current->get_temp2();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?>&nbsp;<?if ($PRIMARY_TEMP == 1) echo " $MOUNTAIN[$lang_idx]"; else echo " $VALLEY[$lang_idx]";?></div>
                                     
                                 </div>
                                 <div class="highlows">
-                                        <div class="high"><strong><? echo toLeft($today->get_hightemp2()); ?></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_hightemp2_time()." "; ?>
-                                        <div class="low"><strong><? echo toLeft($today->get_lowtemp2()); ?></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_lowtemp2_time()." "; ?>
+                                        <div class="highparam"><? echo toLeft($today->get_hightemp2()); ?></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<span class="high_time"><? echo $today->get_hightemp2_time()." "; ?></span>
+                                        <div class="lowparam"><? echo toLeft($today->get_lowtemp2()); ?></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<span class="low_time"><? echo $today->get_lowtemp2_time()." "; ?></span>
                                 </div> 
                                 <div class="paramtrend relative">
                                     <div class="innertrendvalue">
-                                       <? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_temp2change(), true).$current->get_tempunit(); ?>
+                                       <? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_param_tag($min15->get_temp2change(), true); ?>
                                     </div>
                                 </div>  
                           <div class="trendstable"> 
@@ -506,12 +519,12 @@ if (empty($sigforecastHour)){
                                 </div>
                                <div class="paramvalue">
                                     
-                                   <? echo $current->get_temp3();?><span class="paramunit"><? echo $current->get_tempunit(); ?>&nbsp;<?echo " $ROAD[$lang_idx]";?></span>
+                                   <? echo $current->get_temp3();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?>&nbsp;<?echo " $ROAD[$lang_idx]";?></div>
                                     
                                 </div>
                                 <div class="highlows">
-                                        <div class="high"><strong><? echo toLeft($today->get_hightemp3()); ?></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_hightemp3_time()." "; ?>
-                                        <div class="low"><strong><? echo toLeft($today->get_lowtemp3()); ?></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_lowtemp3_time()." "; ?>
+                                        <div class="highparam"><? echo toLeft($today->get_hightemp3()); ?></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<span class="high_time"><? echo $today->get_hightemp3_time()." "; ?></span>
+                                        <div class="lowparam"><? echo toLeft($today->get_lowtemp3()); ?></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<span class="low_time"><? echo $today->get_lowtemp3_time()." "; ?></span>
                                 </div> 
                                 <div class="paramtrend relative">
                                     <div class="innertrendvalue">
@@ -541,8 +554,8 @@ if (empty($sigforecastHour)){
                                     <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=humwind.php&amp;level=1&amp;freq=2&amp;datasource=downld02&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"  class="info"><? echo $current->get_hum();?>%&nbsp;</a>
                             </div>
                             <div class="highlows">
-                                     <span><strong><? echo $today->get_highhum(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highhum_time()." "; ?></span>
-                                     &nbsp;&nbsp;&nbsp;&nbsp;<span><strong><? echo $today->get_lowhum(); ?></strong>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_lowhum_time()." "; ?></span>
+                                     <span><div class="highparam"><? echo $today->get_highhum(); ?></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highhum_time()." "; ?></span>
+                                     &nbsp;&nbsp;&nbsp;&nbsp;<span><div class="lowparam"><? echo $today->get_lowhum(); ?></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/></span>&nbsp;<span class="low_time"><? echo $today->get_lowhum_time()." "; ?></span>
                              </div>
                            <div class="paramtrend relative">
                                 <div class="innertrendvalue">
@@ -581,17 +594,17 @@ if (empty($sigforecastHour)){
                                     <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $DEW[$lang_idx];?></a>
                             </div>
                             <div class="paramvalue">
-                                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"  class="info"><? echo $current->get_dew().$current->get_tempunit();?>&nbsp;</a>
+                                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"  class="info"><? echo $current->get_dew()."<div class=\"paramunit\">&#176;</div><div class=\"param\">".$current->get_tempunit()."</div>";?>&nbsp;</a>
                             </div>
                             <div class="highlows">
-                                     <span><strong><? echo $today->get_highdew(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highdew_time()." "; ?></span>
-                                     &nbsp;&nbsp;&nbsp;&nbsp;<span><strong><? echo $today->get_lowdew(); ?></strong>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_lowdew_time()." "; ?></span>
+                                     <span><strong><div class="highparam"><? echo $today->get_highdew(); ?></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highdew_time()." "; ?></span>
+                                     &nbsp;&nbsp;&nbsp;&nbsp;<span><strong><div class="lowparam"><? echo $today->get_lowdew(); ?></div></strong>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/></span>&nbsp;<span class="low_time"><? echo $today->get_lowdew_time()." "; ?></span>
                              </div>
-                           <div class="paramtrend relative">
+                           <!--<div class="paramtrend relative">
                                 <div class="innertrendvalue">
                                 <? echo getLastUpdateMin()." ".($MINTS[$lang_idx]).": ".get_img_tag($min15->get_dewchange(), true).abs($min15->get_humchange()).$tu; ?>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="trendstable">
                             <table>
                             <tr class="trendstitles">
@@ -616,6 +629,7 @@ if (empty($sigforecastHour)){
                             </table>
                             </div>
 							<div class="graphslink">
+                                                       <?=$DEW_DESC[$lang_idx]?><br/>
 								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
 						   </div>
                         </div>
@@ -625,12 +639,12 @@ if (empty($sigforecastHour)){
                             </div>
                             <div id="pressure_value" class="paramvalue">
                                     <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=baro.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>" class="info">
-                                    <? echo $current->get_pressure()." <span class=\"paramunit\">".$BAR_UNIT[$lang_idx]."</span>";?>
+                                    <? echo $current->get_pressure()." <div class=\"param\">".$BAR_UNIT[$lang_idx]."</div>";?>
                                      </a>
                                      </div>
                             <div class="highlows">
-                                     <span><strong><? echo $today->get_highbar(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highbar_time()." "; ?></span>
-                                    &nbsp;&nbsp;<span><strong><? echo $today->get_lowbar(); ?></strong>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_lowbar_time()." "; ?></span>
+                                     <span><strong><div class="highparam"><? echo $today->get_highbar(); ?></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highbar_time()." "; ?></span>
+                                    &nbsp;&nbsp;<span><strong><div class="lowparam"><? echo $today->get_lowbar(); ?></div></strong>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_lowbar_time()." "; ?></span>
                            </div>
                             <div class="trendstable">
                             <table>
@@ -645,6 +659,8 @@ if (empty($sigforecastHour)){
 							<div class="graphslink">
 								<a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=baro.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>"><img src="img/graph_icon.png" alt="to graphs"/></a>
 						   </div>
+                        </div>
+                        <div id="latestwebcam" class="inparamdiv" style="display:none">
                         </div>
                         <div id="latestwind" class="inparamdiv">
 			<div class="paramtitle slogan">
@@ -662,16 +678,16 @@ if (empty($sigforecastHour)){
 				</div>
                                 <div  id="windspeed">
 					<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" >
-                                            <span class="<? if (isHeb()) echo "heb"; ?>"><? echo $current->get_windspd()." <span class=\"paramunit\">".$KNOTS[$lang_idx]."</span>";?></span>
+                                            <span class="<? if (isHeb()) echo "heb"; ?>"><? echo $current->get_windspd()." <div class=\"param\">".$KMH[$lang_idx]."</div>";?></span>
 					</a>
 				</div>
                           </div>
                             <div class="highlows">
-                                    <span><strong><? echo $today->get_highwind(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highwind_time()." "; ?></span>
+                                    <span><strong><div class="highparam"><? echo $today->get_highwind(); ?></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highwind_time()." "; ?></span>
                             </div>
                             <div class="paramtrend relative">
                                     <div class="">  
-                                      <? echo " 10 ".$MINTS[$lang_idx]." ".$AVERAGE[$lang_idx].": <strong>".$min10->get_windspd()."</strong> ".$KNOTS[$lang_idx];?>
+                                      <? echo " 10 ".$MINTS[$lang_idx]." ".$AVERAGE[$lang_idx].": <strong>".$min10->get_windspd()."</strong> ".$KMH[$lang_idx];?>
                                     </div>
                             </div>
                                 <div class="trendstable">	
@@ -696,14 +712,16 @@ if (empty($sigforecastHour)){
                             </div>
                             <div id="rainratevalue" class="paramvalue">
                                     <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rain.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
-                                            <? echo $current->get_rainrate()." <span class=\"paramunit\">".$RAINRATE_UNIT[$lang_idx]."</span>";?>
+                                            <? echo $current->get_rainrate()." <div class=\"param\">".$RAINRATE_UNIT[$lang_idx]."</div>";?>
                                     </a> 
                             </div>
                             <div class="highlows">
-                                <span><strong><? echo $today->get_highrainrate(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highrainrate_time()." "; ?></span>
+                                <span><strong><div class="highparam"><? echo $today->get_highrainrate(); ?></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highrainrate_time()." "; ?></span>
                             </div>
                             
                             <div class="trendstable">
+                            <? echo $DAILY_RAIN[$lang_idx].":&nbsp;".$today->get_rain2();?>&nbsp;&nbsp;<br/>
+                            <? echo $TOTAL_RAIN[$lang_idx].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$lang_idx];?>
                              <table id="rainrate15min">
                             <tr class="trendstitles">
                                     <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour"/></td>
@@ -743,7 +761,11 @@ if (empty($sigforecastHour)){
                                     </a>
                             </div>
                             <div class="highlows">
-                                <span><strong><? echo $today->get_highradiation(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highradiation_time()." "; ?></span>
+                            <span><strong><div class="highparam"><? echo $today->get_highradiation(); ?></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highradiation_time()." "; ?></span><br/>
+                                <? echo $today->get_sunshinehours();?>
+				<? echo $SUNSHINEHOURS[$lang_idx]." ".$TILL_NOW[$lang_idx];?> <br />
+                               <? echo $RISE[$lang_idx]; ?>: <? echo $sunrise; ?>&nbsp;&nbsp;&nbsp;<? echo $SET[$lang_idx]; ?>: <? echo $sunset; ?>
+                                
                             </div>
                             <div class="trendstable">
                             <table>
@@ -769,6 +791,40 @@ if (empty($sigforecastHour)){
                                     <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rad.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
                             </div>
                         </div>
+                        <div id="chartjs-tooltip" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
+                        </div>
+                        <div id="latestmoon" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?>>
+                        <div class="moon_sun span2">
+			 <div id="moon_rise" onclick="window.open('http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=<? echo $month;?>&amp;YE=<? echo $year;?>&amp;TI=Wise+Observatory+Schedule&amp;LO=35.167&amp;LA=31.783&amp;TZ=<?=GMT_TZ?>&amp;PLACE=2');">
+                             <div id="moon_img" class="float">
+                             <a href="http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=<? echo $month;?>&amp;YE=<? echo $year;?>&amp;TI=Wise+Observatory+Schedule&amp;LO=35.167&amp;LA=31.783&amp;TZ=<?=GMT_TZ?>&amp;PLACE=2" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>">
+                                        <?
+                                        $moonurl = "images/moonriseset.png";
+                                        /*
+                                        if ($moon=="ne")
+                                        {
+                                                echo $FULL_MOON[$lang_idx];
+                                                //update_action ("MoonFullNew", "<br/><b>".$FULL_MOON[$HEB]."</b><br/><img src=\"$moonurl\" width=\"50\">", $FULL_MOON);
+                                        }
+                                        else if ($moon=="ny") 
+                                        {
+                                                echo $NEW_MOON[$lang_idx];
+                                        }
+                                        else echo $MOON[$lang_idx]." ".$TODAY[$lang_idx];*/
+                                        ?>
+                                        <img src="<?=$moonurl?>" width="40" height="40" alt="<? echo $MOON[$lang_idx];?>"/>
+                                </a>
+                             </div>
+			    <div class="float">
+                                              &nbsp;<? echo $RISE[$lang_idx]; ?>:<br />&nbsp;<? echo $SET[$lang_idx]; ?>:
+                            </div>
+			    <div id="moonriseset_values" class="float">
+									
+			    </div>
+			    </div>
+			    
+			</div>               
+                        </div>
                         <div id="latestuv" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> title="<? echo $SUN[$lang_idx]; ?>">
                             <div class="paramtitle slogan">
                                     <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=UVHistory.gif&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
@@ -782,7 +838,7 @@ if (empty($sigforecastHour)){
                                     </a> 
                             </div>
                             <div class="highlows">
-                                <span><strong><? echo $today->get_highuv(); ?></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<? echo $today->get_highuv_time()." "; ?></span>
+                                <span><strong><div class="highparam"><? echo $today->get_highuv(); ?></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highuv_time()." "; ?></span>
                             </div>
                             <div class="trendstable">
                              <table>
@@ -813,18 +869,88 @@ if (empty($sigforecastHour)){
                         <div class="paramtitle slogan">
                             <?=$DUST[$lang_idx]?>
                         </div>
-                        <div class="paramvalue">
-                             <? echo $current->get_pm10()."<span class=\"paramunit\">&plusmn;{$current->get_pm10sd()}&nbsp;µg/m3&nbsp;(PM10)</span>";?><br />
-                             <? echo $current->get_pm25()."<span class=\"paramunit\">&plusmn;{$current->get_pm25sd()}&nbsp;µg/m3&nbsp;(PM2.5)</span>";?>
+                        <div id="aqvalues">
+                             <ul>
+                             <li class="line"><ul><li></li><li></li><li class="dustexp"><?=$DUST_THRESHOLD1[$lang_idx]?></li><li class="dustexp"><?=$DUST_THRESHOLD2[$lang_idx]?></li></ul></li>
+                             <li class="line" title="PM10 -> <? echo "&plusmn;".$current->get_pm10sd();?>"><ul><li><?=$DUSTPM10[$lang_idx]?></li><li><span class="number"><? echo $current->get_pm10();?></span>&nbsp;<span class="small">µg/m3</span></li><li>+130</li><li>+300</li></ul></li>
+                             <li class="line" title="PM2.5 -> <? echo "&plusmn;".$current->get_pm25sd();?>"><ul><li><?=$DUSTPM25[$lang_idx]?></li><li><span class="number"><? echo $current->get_pm25();?></span>&nbsp;<span class="small">µg/m3</span></li><li>+38</li><li>+100</li></ul></li>
+                             <li ><?=$DUST_THRESHOLD3[$lang_idx]?></li>
+                             </ul>
+                            
+                                    
+                        </div>
                         
-                        </div>
-                        <div class="highlows">
-                            <?=$DUST_THRESHOLD[$lang_idx]?>
-                        </div>
-                        <div class="paramtrend relative">
+                        <div class="trendstable">
+                             <table>
+                            <tr class="trendstitles">
+                                    <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+                                    <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+                                    <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+                                    
+                            </tr>
+                            <tr class="trendsvalues">
+                                <td><div class="trendvalue"><div class="innertrendvalue">
+                                    <? echo get_img_tag($yestsametime->get_pm10change(), true).abs($yestsametime->get_pm10change());?>
+                                        </div></div></td>
+                                <td><div class="trendvalue"><div class="innertrendvalue">
+                                    <? echo get_img_tag($oneHour->get_pm10change(), true).abs($oneHour->get_pm10change());?>
+                                </div></div></td>
+                                <td><div class="trendvalue"><div class="innertrendvalue">
+                                    <? echo get_img_tag($min30->get_pm10change(), true).abs($min30->get_pm10change());?>
+                                </div></div></td>
+                            </tr>
+
+                            </table>
+                            </div>
+                        <div class="graphslink">
                             <a href="<? echo get_query_edited_url(get_url(), 'section', 'dust.html');?>" title="<? echo($FORECAST_TITLE[$lang_idx]." ".$FOR[$lang_idx]." ".$DUST[$lang_idx]); ?>"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
                         </div>
                        
+                    </div>
+                    <div id="latestwindow" class="inparamdiv">
+                        <div class="paramtitle slogan">
+                        <? echo $YOU_BETTER[$lang_idx]." <span>";
+                                echo isOpenOrClose();
+                                echo " </span>".$THE_WINDOW[$lang_idx];?>
+                                       
+                        </div>
+                        <div class="exp">
+                                <div>
+                                        <? echo $INSIDE[$lang_idx].": ".$current->get_intemp()." <br/ > ".$OUTSIDE[$lang_idx].": ".$current->get_temp();?>
+                                </div>
+                                <div>
+                                        <? echo $PIVOT_DESC[$lang_idx]." ".$PIVOT_TEMP."<? echo $current->get_tempunit(); ?>"; ?>
+                                </div>
+                        </div>                      
+                    </div>
+                    <div id="latestotherstations" class="inparamdiv">
+                        <div class="WUNowRes" id="WUNowRes_short"></div>
+                        <div class="ImsNowRes" id="ImsNowRes_short"></div>
+                        <div class="graphslink">
+                                <a href="<? echo get_query_edited_url(get_url(), 'section', 'IsraelNow.php');?>" title=""><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
+                        </div>
+                    </div>
+                    <div id="latestrunwalk" class="inparamdiv">
+                        <div class="paramtitle slogan">
+                                <?=$RUN_WALK[$lang_idx]?>
+                        </div>
+                        <div class="exp">
+                        <ul id="sigrunwalkweather">
+                                <li class="firstlinerunwalk"><?if ($current->get_solarradiation()>50) echo $MOUNTAIN[$lang_idx].":<span class=\"number\">".$current->get_temp()."</span>°&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$VALLEY[$lang_idx].":<span class=\"number\">".$current->get_temp2()."</span>°"; else echo $MOUNTAIN[$lang_idx].":<span class=\"number\">".$current->get_temp2()."°-".$current->get_temp()."°</span>&nbsp;&nbsp;&nbsp;&nbsp;".$VALLEY[$lang_idx].":<span class=\"number\">".$current->get_temp3()."°</span>"; ?></li>
+                                <li class="itfeels"></li>
+                                <?
+                                //if (count($sigRun) > 2)
+                                        for ($i = 1; $i < count($sigRun); $i++) {
+                                        if ($i == 1) {$class = "class=\"windhumsituation\"";} else{$class = "";}                       
+                                        echo "<li ".$class.">";
+                                        echo "<a class=\"hlink\" title=\"\" href=\"".$_SERVER['SCRIPT_NAME'].$sigRun[$i]['url']."\" >{$sigRun[$i]['sig'][$lang_idx]} "." <br/> ".$sigRun[$i]['extrainfo'][$lang_idx][0]."</a></li>\n";          
+                                } 
+                                ?> 
+                                </ul>            
+                        </div>
+                        <div class="graphslink">
+                            <a href="<? echo get_query_edited_url(get_url(), 'section', 'runwalk.php');?>" title=""><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
+                        </div>
                     </div>
                     <div class="inparamdiv" id="coldmetersurvey">
                             <div class="colmeterq">
@@ -891,22 +1017,17 @@ if (empty($sigforecastHour)){
 			
 <!--			<li id="mood_btn" onclick="change_circle('-2200px', 'mood_line')">סקר מצב רוח</li>
 			<hr id="mood_line"></hr>-->
-			<li id="season_btn" onclick="change_circle('fseason_line', 'fseasonsurvey')" title="<?=$FSEASON_T[$lang_idx]?>"><?=$FSEASON_T[$lang_idx]?>                           
-                        </li>
-			
-		    </ul>
-                            
-                    <hr id="cold_line" />
-                    <hr id="fseason_line" />
-		</div>
-                   <ul  id="now_stuff" class="nav span3">
-                       <li>
-			<a href="<? echo $sig[0]['url'];?>" class="hlink" title="<?echo $WHAT_ELSE[$lang_idx];?>">
-			 	<h2><? echo "{$sig[0]['sig'][$lang_idx]}"; ?></h2>
-				<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx][0]; if ($sig[0]['extrainfo'][$lang_idx][0] != "") echo ", ";?>&nbsp;<?echo $MORE_INFO[$lang_idx].get_arrow();?>&nbsp;<? if (count($sig) > 1) echo " <span class=\"invhigh\">&nbsp;".(count($sig)-1)."&nbsp;</span>";?></div>
-			</a>
-                           <ul style="top:-4.5em;<?echo get_s_align();?>: 8.2em;" class="inv_plain_3_zebra">
-                              <? if ($boolbroken) {?>
+			<li id="now_stuff" onmouseover="javascript:$('#more_sigweather').show();$('#sigweather').show();" onmouseout="javascript:$('#more_sigweather').hide();$('#sigweather').hide();">
+                        <div id="what_is_h">
+                        <a href="<? echo $_SERVER['SCRIPT_NAME'].$sig[0]['url'];?>" class="hlink"  title="<?echo $WHAT_ELSE[$lang_idx];?>">
+			 	<? echo "{$sig[0]['sig'][$lang_idx]}"; ?>; 
+				<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx][0]; if ($sig[0]['extrainfo'][$lang_idx][0] != "") echo " ";?>&nbsp;<? if (count($sig) > 1) echo "<div class=\"invhigh\">&nbsp;".(count($sig)-1)."&nbsp;</div>".get_arrow();?></div>
+                         </a>
+                         </div>
+                           <ul id="more_sigweather" class="">
+                                <li>
+                                <ul id="sigweather">
+                                <? if ($boolbroken) {?>
                                         <li class="">
                                                 <div id="brokenlatesttemp"></div>
                                                 <div id="brokenlatesthumidity"></div>
@@ -915,18 +1036,27 @@ if (empty($sigforecastHour)){
                                                 <div id="brokenlatestrainrate" ></div>
                                         </li>
                                 <? } ?>
+                                
                                 <?
                                 if (count($sig) > 1)
-                                        for ($i = 0; $i < count($sig); $i++) {
+                                        for ($i = 1; $i < count($sig); $i++) {
 
                                         echo "<li>";
-                                        echo "<a class=\"hlink\" style=\"font-weight:normal\" title=\"\" href=\"{$sig[$i]['url']}\" >{$sig[$i]['sig'][$lang_idx]} "." - ".$sig[$i]['extrainfo'][$lang_idx][0].get_arrow()."</a></li>\n";          
+                                        echo "<a class=\"hlink\" style=\"font-weight:normal\" title=\"\" href=\"".$_SERVER['SCRIPT_NAME'].$sig[$i]['url']."\" >{$sig[$i]['sig'][$lang_idx]} "." - ".$sig[$i]['extrainfo'][$lang_idx][0].get_arrow()."</a></li>\n";          
                                 } ?> 
+                                </ul>
+                                </li>
                            </ul>
+                                                  
                         </li>
-                       
-        
+                        
+			
 		    </ul>
+                            
+                    <hr id="cold_line" />
+                    <hr id="fseason_line" />
+		</div>
+
     </div>
                  </article>
 	       
@@ -995,7 +1125,7 @@ else {  ?>
 		$height = 480;
 	}
 	else if ($template_routing == "nearby"){            
-		$url = "http://www.wunderground.com/stationmaps/gmap.asp?zip=00000&amp;wmo=40184&amp;lang=".$lang_idx;            
+		$url = "https://www.wunderground.com/stationmaps/gmap.asp?zip=00000&amp;wmo=40184&amp;lang=".$lang_idx;            
 		$include = false;
 
 	}
@@ -1024,20 +1154,24 @@ else {  ?>
 		/*echo "<script language=\"JavaScript\" type=\"text/javascript\"image";
 		echo "document.getElementById('iframe').location.href='http://www.wunderground.com/cgi-bin/findweather/getForecast?setunits=metric';";
 		echo "</script>";*/
-	}
-	echo "<footer class=\"footer footerinsection\">Designed by <a target=\"_blank\" href=\"http://www.behance.net/galizorea\">Gali Zorea</a></footer>";	 
+        }
+        
+	echo "<footer class=\"footer footerinsection\">Designed by <a target=\"_blank\" href=\"https://www.behance.net/galizorea\">Gali Zorea</a>, <a target=\"_blank\" href=\"javascript:void()\">Efrat Shiloach</a><br/>";	 
+        echo "Icons made by <a href=\"https://www.flaticon.com/authors/alfredo-hernandez\" title=\"Alfredo Hernandez\">Alfredo Hernandez</a>, <a href=\"http://www.freepik.com/\" title=\"Freepik\">Freepik</a> from <a href=\"https://www.flaticon.com/\" title=\"Flaticon\"> www.flaticon.com</a>	";
+        echo "</footer>";
         echo "</article>";	
 			
 } 
 	
         
 	?>   
-		
+	
         </div>
        
 		 
         </div> <!-- /container -->
-		
+	<div id="chartjs-tooltip" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
+                    </div>	
         <?if (first_page()){?>
         <div id="bottom_bg">
                 <div  id="bg_backHills"></div>
@@ -1055,66 +1189,60 @@ else {  ?>
 		
 	<!-- Parallax  midground clouds -->
 	<div id="parallax-bg2">
-                       
-						
-                                        <div id="bg2-3" class="cloud2"><div class="cloud2-more"></div></div>
-                                        <? if ($current->get_cloudiness() > 2) {?>
-                                                <div id="bg2-1" class="cloud3"><div class="cloud3-more"></div></div>
-                                                <div id="bg2-4" class="cloud1"><div class="cloud1-more"></div></div>
-						<div id="bg2-6" class="cloud4"><div class="cloud4-more"></div></div>
-                                                <div id="bg2-7" class="cloud2"><div class="cloud2-more"></div></div>
-						<?}?>
-						<? if ($current->get_cloudiness() > 5) {?>
-                                                <div id="bg2-2" class="cloud4"><div class="cloud4-more"></div></div>
-						<div id="bg2-8" class="cloud-big"><div class="cloud-big-more"></div></div>
-                                                <?}?>
-                                                <? if ($current->get_cloudiness() > 6) {?>
-                                                <div id="bg2-5" class="cloud-big"><div class="cloud-big-more"></div></div>
-                                                <div id="bg2-9" class="cloud-big"><div class="cloud-big-more"></div></div>
-						<div id="bg2-10" class="cloud-big"><div class="cloud-big-more"></div></div>
-						<?}?>
-                        
-                        
-	</div>
+        <div id="bg2-1" class="cloud3" style="display:none"><div class="cloud3-more"></div></div>
+        <div id="bg2-4" class="cloud1" style="display:none"><div class="cloud1-more"></div></div>
+        <div id="bg2-6" class="cloud4" style="display:none"><div class="cloud4-more"></div></div>
+        <div id="bg2-7" class="cloud2" style="display:none"><div class="cloud2-more"></div></div>
+	<div id="bg2-2" class="cloud4" style="display:none"><div class="cloud4-more"></div></div>
+	<div id="bg2-8" class="cloud-big" style="display:none"><div class="cloud-big-more"></div></div>
+        <div id="bg2-5" class="cloud-big" style="display:none"><div class="cloud-big-more"></div></div>
+        <div id="bg2-9" class="cloud-big" style="display:none"><div class="cloud-big-more"></div></div>
+        <div id="bg2-10" class="cloud-big" style="display:none"><div class="cloud-big-more"></div></div>					
+       </div>
 	
 	<!-- Parallax  background clouds -->
 	<div id="parallax-bg1">
-						
-                        <? if ($current->get_cloudiness() > 2) {?>
-						<div id="bg1-3" class="cloud4"><div class="cloud4-more"></div></div>
-						<div id="bg1-4" class="cloud-big"><div class="cloud-big-more"></div></div>
-						<div id="bg1-5" class="cloud3"><div class="cloud3-more"></div></div>
-                                                <div id="bg1-6" class="cloud2"><div class="cloud2-more"></div></div>
-						<?}?>
-						<? if ($current->get_cloudiness() > 5) {?>
-                                                <div id="bg1-1" class="cloud4"><div class="cloud4-more"></div></div>
-                                                <div id="bg1-2" class="cloud3"><div class="cloud3-more"></div></div>
-						<div id="bg1-7" class="cloud-big"><div class="cloud-big-more"></div></div>
-                                                <div id="bg1-8" class="cloud-big"><div class="cloud-big-more"></div></div>
-                                                <?}?>
-                                                <? if ($current->get_cloudiness() > 6) {?>
-						<div id="bg1-9" class="cloud-big"><div class="cloud-big-more"></div></div>
-						<div id="bg1-10" class="cloud-big"><div class="cloud-big-more"></div></div>
-                                                <?}?>
-						
-                        
-                   
-                        
-	</div>
+	<div id="bg1-3" class="cloud4" style="display:none"><div class="cloud4-more"></div></div>
+        <div id="bg1-4" class="cloud-big" style="display:none"><div class="cloud-big-more"></div></div>
+        <div id="bg1-5" class="cloud3" style="display:none"><div class="cloud3-more"></div></div>
+        <div id="bg1-6" class="cloud2" style="display:none"><div class="cloud2-more"></div></div>
+        <div id="bg1-1" class="cloud4" style="display:none"><div class="cloud4-more"></div></div>
+        <div id="bg1-2" class="cloud3" style="display:none"><div class="cloud3-more"></div></div>
+        <div id="bg1-7" class="cloud-big" style="display:none"><div class="cloud-big-more"></div></div>
+        <div id="bg1-8" class="cloud-big" style="display:none"><div class="cloud-big-more"></div></div>
+        <div id="bg1-9" class="cloud-big" style="display:none"><div class="cloud-big-more"></div></div>
+        <div id="bg1-10" class="cloud-big" style="display:none"><div class="cloud-big-more"></div></div>					
+       </div>
         <div id="last_comments" style="display:none">
             <?
-                foreach ($last_comments as $comment) {
+                /*foreach ($last_comments as $comment) {
                     echo $comment["comment"]." ";
-                }
+                }*/
             ?>
             
         </div>
-        <div id="mobile_redirect" class="big inv_plain_3_zebra" style="z-index:9999;display:none;position:absolute;top:80px;left:10px;width:320px;padding:5px;margin:0 auto" >
-        <br />
-        <a   onclick="redirect_to_mobile(<?=$lang_idx?>)" id="mobile_redirect_submit" class="clear inv_plain_3" style="width:100%"><?=$MOBILE_REDIRECT[$lang_idx]?></a>        <br /><br />
-        <a   onclick="$( this ).parent().hide();" class="clear inv_plain_3" style="width:100%"><?=$STAY[$lang_idx]?></a>
-        <br />
+        <div id="mobile_redirect" class="big inv_plain_3_zebra" style="opacity:1;text-align:center;z-index:9999;display:none;position:absolute;top:50px;left:0px;width:400px;height:850px;margin:0 auto" >
+        <button type="button" id="cboxCloseMobileRedirect" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();">close</button>
+        <br /><br />
+        <h2 class="big inv_plain_2"><a   onclick="redirect_to_mobile(<?=$lang_idx?>)" id="mobile_redirect_submit" class="clear inv_plain_3" style="width:100%"><?=$MOBILE_REDIRECT[$lang_idx]?></a></h2><br/><br/><br/><br/><br/>      
+        <!--<h2 class="big inv_plain_2"><a   onclick="$( this ).parent().parent().hide();" class="clear inv_plain_3" style="width:100%"><?=$STAY[$lang_idx]?></a></h2><br/> <br/><br/><br/>-->  
+        <div>
+                <a href="https://play.google.com/store/apps/details?id=il.co.jws.app" target="_blank">
+                        <img src="images/getitongp.svg" alt="Google play App" width="150" height="60"/>
+                </a>
+                </div>
+                <div>
+                <a href="https://apksfull.com/%D7%99%D7%A8%D7%95%D7%A9%D7%9E%D7%99%D7%99%D7%9D-il-co-jws-app/" target="_blank">
+                APK
+                </a>
+                </div>
+                <div>
+                <a href="https://itunes.apple.com/us/app/yrwsmyym/id925504632?ls=1&mt=8" target="_blank">
+                        <img src="images/Available_on_the_App_Store.svg" alt="App Store App" width="150" height="60"/>
+                </a>
+                </div>
         </div>
+        <div style="display:none" class="loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
         <input type="hidden" id="current_feeling" value="<?=$current_feeling?>"/>
         <input type="hidden" id="chosen_user_icon" value=""/>
                         <div style="display:none">
@@ -1145,7 +1273,8 @@ else {  ?>
                             <input type="checkbox" name="personal_coldmeter" value="" id="profileform_personal_coldmeter" disabled/><?=$PERSONAL_COLD_METER[$lang_idx]?><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<? echo get_s_align()?>:-100px"><?=$PERSONAL_COLD_METER_EXP[$lang_idx]?></span></a>
                             </div>
 
-                            <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
+
+                            
                             <div id="profileform_result" class="float"></div>
                             <input type="submit" value="<?=$UPDATE_PROFILE[$lang_idx]?>" onclick="updateprofile_to_server(<?=$lang_idx?>)" id="profileform_submit" class="invfloat clear inv_plain_3"/>
                             <input type="submit" value="<?=$DONE[$lang_idx]?>" onclick="$('#cboxClose').click();window.location.reload()" id="profileform_OK" class="info invfloat inv_plain_3" style="display:none"/>
@@ -1230,15 +1359,15 @@ var sc_security="";
 </script>
 <!-- End of StatCounter Code -->
 <!-- Grab Google CDN's jQuery. fall back to local if necessary --> 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
 <script>!window.jQuery && document.write('<script src="/js/jquery-1.6.1.min.js"><\/script>')</script>
 <script type="text/javascript">
 var lang=<?=$lang_idx?>;
 </script>
 <?if (first_page()){?>
-
 <script src="js/parallax.js"></script>
 <?}?>
+
  <? if (isRaining()&&(!isSnowing())){ ?>
 <script src="js/rain.js"></script>
 <? }?>
@@ -1247,11 +1376,38 @@ var lang=<?=$lang_idx?>;
 <? }?>
 <script src="js/tinymce/tinymce.min.07032017.js"></script>
 <script src="js/modernizr.custom.37797.js"></script> 
-<script src="footerScripts160816.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&guid=<?=$_GET['guid']?>"  type="text/javascript"></script>
+<script src="footerScripts250320.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&guid=<?=$_GET['guid']?>"  type="text/javascript"></script>
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
-<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=boazn"></script>
+<script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js#pubid=boazn"></script>
 <script type="text/javascript">
 /* <![CDATA[ */
+<? if ($current->get_cloudiness() > 2) {?>
+        $("#bg2-1").show();
+        $("#bg2-4").show();
+        $("#bg2-6").show();
+        $("#bg2-7").show();
+        $("#bg1-3").show();
+        $("#bg1-4").show();
+        $("#bg1-5").show();
+        $("#bg1-6").show();
+        
+<?}?>
+<? if ($current->get_cloudiness() > 5) {?>
+        $("#bg2-2").show();
+        $("#bg2-8").show();
+        $("#bg1-1").show();
+        $("#bg1-2").show();
+        $("#bg1-7").show();
+        $("#bg1-8").show();
+
+<?}?>
+<? if ($current->get_cloudiness() > 6) {?>
+        $("#bg2-5").show();
+        $("#bg2-9").show();
+        $("#bg2-10").show();
+        $("#bg1-9").show();
+        $("#bg1-10").show();
+<?}?>
     mj = mjd(<? echo $day;?>, <? echo $month;?>, <? echo $year;?>, 0.0);
     var mrs = find_moonrise_set(mj, <?=GMT_TZ?>, 35.2, 31.7);
     var div_moon = document.getElementById('moonriseset_values');
@@ -1259,13 +1415,33 @@ var lang=<?=$lang_idx?>;
             div_moon.innerHTML = mrs;
     <?if (first_page()){?>
        if( isMobile.any() ){
-              // window.location.replace('http://www.02ws.co.il/small.php?size=l&amp;lang='+lang);
+              // window.location.replace('https://www.02ws.co.il/small.php?size=l&amp;lang='+lang);
            }
     <?}?>
     startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
     if (isUserAdApproved){
          $("#mainadsense").hide();
     }
+
+    function refreshContent(){
+        $.ajax({
+        type: "GET",
+        url: "02wsjson.txt",
+        beforeSend: function(){$(".loading").show();}
+        }).done(function( jsonstr  ) {
+        try{
+
+                fillAllJson(jsonstr);
+                $(".loading").hide();
+        }
+        catch (e) {
+                //alert ('error:' + e);
+        }
+        });
+    }
+    
+    setInterval(refreshContent, 60000);
+    
 /* ]]> */
 </script>
 <script>
@@ -1329,6 +1505,7 @@ if (count($messageToSend) > 0)
 	
 /************************************************************************/
 ?>
+
 </body>
 </html>
 <? if (($_GET['debug'] == '')||(!$error_update)) include "end_caching.php"; ?>

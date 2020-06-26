@@ -149,7 +149,7 @@ function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_dis
     {
       // now send_email with activation code
         $key = urlencode($key);
-        $href="http://www.02ws.co.il/regConfirm.php?k=$key&email=$email&user=$user&lang=$lang_idx";
+        $href="https://www.02ws.co.il/regConfirm.php?k=$key&email=$email&user=$user&lang=$lang_idx";
         send_Email("<a href=\"$href\" >".$CLICK_TO_CONFIRM[$lang_idx]."</a>.<br /><br /><br />", $email, EMAIL_ADDRESS, $REGISTRATION_TO_02WS[$lang_idx], "");
         echo "0";
     }
@@ -189,7 +189,7 @@ function forgot_password($email)
       {
           /* Retrieve password from result, strip slashes */
          $dbarray = mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
-         $href="http://www.02ws.co.il/regConfirm.php?email=$email&lang=$lang_idx";
+         $href="https://www.02ws.co.il/regConfirm.php?email=$email&lang=$lang_idx";
           send_Email("<a href=\"$href\" >".$CLICK_TO_RESET[$lang_idx]."</a>.<br /><br />", $email, EMAIL_ADDRESS, "02ws ".$FORGOT_PASS[$lang_idx], "");
           echo $CHECK_EMAIL_RESET_PASS[$lang_idx];
       }

@@ -88,7 +88,7 @@ if (!isset($cron)) {
   );  
   $context = stream_context_create($opts); 
   
-  $WUsourceFile = 'http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID='.$WUID.'&graphspan=day&day=' .  $day . '&year=' . $year .  '&month=' . $month . '&format=1&units='.$unitsLnk;
+  $WUsourceFile = 'https://www.02ws.co.il/wxwugraphs/WXDailyHistory.php?ID='.$WUID.'&graphspan=day&day=' .  $day . '&year=' . $year .  '&month=' . $month . '&format=1&units='.$unitsLnk;
   $endOfDay = strtotime($year.'-'.$month.'-'.$day.' 23:59:59');
   
   // add zeros to date format

@@ -5,7 +5,7 @@
 <body onload=trMouseOver()>
 <?php
 
-$current_year = 2017;
+$current_year = $year;
 $min_year = 1909;
 function isDaySubmited($value_day){
 	global $_POST;
@@ -173,6 +173,36 @@ function isYearSubmited($value_year){
 	</td>
 </tr>
 <tr>
+	<td <? echo get_inv_align(); ?>> </td>
+	<td <? echo get_align(); ?>>
+		<input type="checkbox" name="high_temp_search" <?if (isset( $_POST['high_temp_search'])) echo "checked"; ?>>  <? echo $TEMP[$lang_idx]." ".$MAX[$lang_idx];?>  
+		
+	</td>
+	<td <? echo get_inv_align(); ?>>
+		
+	</td>
+	<td <? echo get_align(); ?>>
+		<input type="text" name="low_high_temp" value=<?if ((isset( $_POST['low_high_temp']))&&(isset( $_POST['high_temp_search']))) echo $_POST['low_high_temp']; else echo "0";?> SIZE="4">
+		-- 
+		<input type="text" name="high_high_temp" value=<?if (isset( $_POST['high_high_temp'])) echo $_POST['high_high_temp']; else echo "100";?> SIZE="4">C
+	</td>
+</tr>
+<tr>
+	<td <? echo get_inv_align(); ?>> </td>
+	<td <? echo get_align(); ?>>
+		<input type="checkbox" name="low_temp_search" <?if (isset( $_POST['low_temp_search'])) echo "checked"; ?>>  <? echo $TEMP[$lang_idx]." ".$MIN[$lang_idx];?>  
+		
+	</td>
+	<td <? echo get_inv_align(); ?>>
+		
+	</td>
+	<td <? echo get_align(); ?>>
+		<input type="text" name="low_low_temp" value=<?if ((isset( $_POST['low_low_temp']))&&(isset( $_POST['low_temp_search']))) echo $_POST['low_low_temp']; else echo "0";?> SIZE="4">
+		-- 
+		<input type="text" name="high_low_temp" value=<?if (isset( $_POST['high_low_temp'])) echo $_POST['high_low_temp']; else echo "100";?> SIZE="4">C
+	</td>
+</tr>
+<tr>
 	<td></td>
 	<td <? echo get_align(); ?>>
 		<input type="checkbox" name="hum_search" <?if (isset( $_POST['hum_search'])) echo "checked"; ?>> <? echo $HUMIDITY[$lang_idx];?> 
@@ -272,12 +302,10 @@ function isYearSubmited($value_year){
 </form>
 <div class="spacer">&nbsp;</div>
 <a name="archive"></a>
-<table summary="" align="center" border="3" id="mouseover">
-<? if (($yearToSearch < 2002)&& ($yearToSearch != 0)) {?>
-<tr><td class="topbase">Date</td><td class="base"><span class="high">High<br /><? echo $TEMP[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</span></td><td class="base"><span class="low">Low<br /><? echo $TEMP[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</span></td><td class="base"><? echo $RAIN[$lang_idx];?> (mm)</td></tr>
-<?}else {?>
-<tr><td class="topbase">Date</td><td class="topbase">Time</td><td class="base"><? echo $TEMP[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</td><td class="base"><span class="high">High<br /><? echo $TEMP[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</span></td><td class="base"><span class="low">Low<br /><? echo $TEMP[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</span></td><td class="base"><? echo $HUMIDITY[$lang_idx];?><br />(%)</td><td class="base"><? echo $DEW[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</td><td class="base"><? echo $WIND_SPEED[$lang_idx];?>(Kt)</td><td class="base"><? echo $WIND_DIR[$lang_idx];?></td><td class="base"><? echo $WIND_SPEED[$lang_idx]." ".$HIGH[$lang_idx];?> (Knots) </td><td class="base"><? echo $WIND_DIR[$lang_idx]." ".$HIGH[$lang_idx];?></td><td class="base"><? echo $WIND_CHILL[$lang_idx];?><br />(<? echo $current->get_tempunit(); ?>)</td><td class="base"><? echo $HEAT_IDX[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</td><td class="base">THW (<? echo $current->get_tempunit(); ?>)</td><td class="base"><? echo $BAR[$lang_idx];?> (mb)</td><td class="base"><? echo $RAIN[$lang_idx];?> (mm)</td><td class="base"><? echo $RAINRATE[$lang_idx];?> (mm/hr)</td></tr>
-<?}?>
+<table summary="" style="text-align:center;borde:3" id="mouseover">
+
+<tr><td class="topbase" style="width:100px">Date</td><td class="topbase">Time</td><td class="base"><? echo $TEMP[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</td><td class="base"><span>High<br /><? echo $TEMP[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</span></td><td class="base"><span class="low">Low<br /><? echo $TEMP[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</span></td><td class="base"><? echo $RAIN[$lang_idx];?><br />(mm)</td><td class="base"><? echo $DEW[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</td><td class="base"><? echo $WIND_SPEED[$lang_idx];?>(Kt)</td><td class="base"><? echo $WIND_DIR[$lang_idx];?></td><td class="base"><? echo $WIND_SPEED[$lang_idx]." ".$HIGH[$lang_idx];?> (Knots) </td><td class="base"><? echo $WIND_DIR[$lang_idx]." ".$HIGH[$lang_idx];?></td><td class="base"><? echo $WIND_CHILL[$lang_idx];?><br />(<? echo $current->get_tempunit(); ?>)</td><td class="base"><? echo $HEAT_IDX[$lang_idx];?> (<? echo $current->get_tempunit(); ?>)</td><td class="base">THW (<? echo $current->get_tempunit(); ?>)</td><td class="base"><? echo $BAR[$lang_idx];?> (mb)</td><td class="base"><? echo $HUMIDITY[$lang_idx];?> (%)</td><td class="base"><? echo $RAINRATE[$lang_idx];?> (mm/hr)</td></tr>
+
 <?php
  /* Connecting, selecting database */
  function pushAllDB($elementInTableName)
@@ -366,9 +394,9 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
 			$condition .= " AND ";
 		else
 			$condition="WHERE ";
-		$condition .= sprintf("((Temp>='{%d}' AND Temp<='{%d}')", $_POST['low_temp'], $_POST['high_temp']);
-		$condition .= sprintf(" OR (LowTemp>='{%d}' AND LowTemp<='{%d}')", $_POST['low_temp'], $_POST['high_temp']);
-		$condition .= sprintf(" OR (HiTemp>='{%d}' AND HiTemp<='{%d}'))", $_POST['low_temp'], $_POST['high_temp']);
+		$condition .= sprintf("((Temp>=%d AND Temp<=%d)", $_POST['low_temp'], $_POST['high_temp']);
+		$condition .= sprintf(" OR (LowTemp>=%d AND LowTemp<=%d )", $_POST['low_temp'], $_POST['high_temp']);
+		$condition .= sprintf(" OR (HiTemp>=%d  AND HiTemp<=%d ))", $_POST['low_temp'], $_POST['high_temp']);
 		$virgin_condition = false;
 	}
 	if (isset( $_POST['hum_search'])){
@@ -376,7 +404,7 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
 			$condition .= " AND ";
 		else
 			$condition="WHERE ";
-		$condition .= sprintf("Hum>={%d} AND Hum<={%d}", $_POST['low_hum'] , $_POST['high_hum']);
+		$condition .= sprintf("Hum>=%d AND Hum<=%d", $_POST['low_hum'] , $_POST['high_hum']);
 		$virgin_condition = false;
 	}
 	if (isset( $_POST['rainrate_search'])){
@@ -385,7 +413,7 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
 		else
 			$condition="WHERE ";
 		$rainI = $_POST['low_rainrate']/INTERVAL;
-		$condition .= sprintf("RainRate>={%d} AND RainRate<={%d} OR Rain>%d", $_POST['low_rainrate'], $_POST['high_rainrate'], $rainI);
+		$condition .= sprintf("RainRate>=%d AND RainRate<=%d OR Rain>%d", $_POST['low_rainrate'], $_POST['high_rainrate'], $rainI);
 		$virgin_condition = false;
 	}
 	if (isset( $_POST['windSpeed_search'])){
@@ -393,7 +421,7 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
 			$condition .= " AND ";
 		else
 			$condition="WHERE ";
-		$condition .= sprintf("(WindSpd>={%d} AND WindSpd<={%d}) OR (HiSpeed>={%d} AND HiSpeed<={%d})",$_POST['low_windSpeed'] , $_POST['high_windSpeed'], $_POST['low_windSpeed'], $_POST['high_windSpeed']);
+		$condition .= sprintf("(WindSpd>=%d AND WindSpd<=%d) OR (HiSpeed>=%d AND HiSpeed<=%d)",$_POST['low_windSpeed'] , $_POST['high_windSpeed'], $_POST['low_windSpeed'], $_POST['high_windSpeed']);
 		$virgin_condition = false;
 	}
 	if (isset( $_POST['time_search'])){
@@ -409,7 +437,23 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
 			$condition .= " AND ";
 		else
 			$condition="WHERE ";
-		$condition .= sprintf("Bar>={%d} AND Bar<={%d}", $_POST['low_bar'] ,$_POST['high_bar']);
+		$condition .= sprintf("Bar>=%d AND Bar<=%d", $_POST['low_bar'] ,$_POST['high_bar']);
+		$virgin_condition = false;
+	}
+	if (isset( $_POST['high_temp_search'])){
+		if (!$virgin_condition)
+			$condition .= " AND ";
+		else
+			$condition="WHERE ";
+		$condition .= sprintf("HiTemp>=%d AND HiTemp<=%d", $_POST['low_high_temp'] ,$_POST['high_high_temp']);
+		$virgin_condition = false;
+	}
+	if (isset( $_POST['low_temp_search'])){
+		if (!$virgin_condition)
+			$condition .= " AND ";
+		else
+			$condition="WHERE ";
+		$condition .= sprintf("LowTemp>=%d AND LowTemp<=%d", $_POST['low_low_temp'] ,$_POST['high_low_temp']);
 		$virgin_condition = false;
 	}
 	    
@@ -418,11 +462,14 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
     /* Performing SQL query */
 	for ($i = 0;$tables[$i]!=null ;$i++) {
 		$table = $tables[$i];
-		$query = "SELECT Date,Time,Temp,HiTemp,LowTemp,Hum,Dew,WindSpd,WindDir,HiSpeed,HiDir,WindChill,HeatIdx,THW,Bar,Rain,RainRate FROM $table $condition";
-		if (($yearToSearch < 2002)&& ($yearToSearch != 0))
-				$query = "SELECT Date,HiTemp,LowTemp,Rain FROM archivemin $condition";
+		$query = "SELECT Date,Time,Temp,HiTemp,LowTemp,RainH,Dew,WindSpd,WindDir,HiSpeed,HiDir,WindChill,HeatIdx,THW,Bar,Hum,RainRate FROM $table $condition";
+		if (($yearToSearch < 2002)&& ($yearToSearch != 0)||isset( $_POST['high_temp_search'])||isset( $_POST['low_temp_search'])){
+			$query = "SELECT Date,HiTemp,LowTemp,Rain FROM archivemin $condition";
+			$isArchiveMin = true;
+		}
+				
 		//*********  debug  ******************
-		//print_r("day:".$_POST['browseday']);
+		//print_r("<br/> day:".$_POST['browseday']);
 		//print_r(" month:".$_POST['browsemonth']);
 		//print_r(" year:".$_POST['browseyear']);
 		//print_r(" yearToSearch:".$yearToSearch);
@@ -440,8 +487,12 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
 				print "\t\t<td";
 				if ($col < 1)
 						print " class=\"topbase\"";
+				if (($isArchiveMin)&&($col == 1))
+					print "></td><td></td><td\n";
+						
 				print " title=\"".getColumnName($col)."\"";
 				print ">$col_value</td>\n";
+					
 				$col++;
 			}
 			print "\t</tr>\n";
@@ -494,7 +545,7 @@ function getColumnName($columnNumber)
 			return "Low ".$TEMP[$lang_idx]." "."(<? echo $current->get_tempunit(); ?>)";
 			break;
 		case 5:
-			return $HUMIDITY[$lang_idx]." "."(%)";
+			return $RAIN[$lang_idx]." "."(mm)";
 			break;
 		case 6:
 			return $DEW[$lang_idx]." "."(<? echo $current->get_tempunit(); ?>)";
@@ -524,7 +575,7 @@ function getColumnName($columnNumber)
 			return $BAR[$lang_idx]." "."(mb)";
 			break;
 		case 15:
-			return $RAIN[$lang_idx]." "."(mm)";
+			return $HUMIDITY[$lang_idx]." "."(%)";
 			break;
 		case 16:
 			return $RAINRATE[$lang_idx]." "."(mm/hr)";
@@ -542,7 +593,7 @@ function getColumnName($columnNumber)
 <?
 	if (($_POST['browseyear'] > 2008) && ($_POST['browsemonth']!== "") && ($_POST['browseday']!== ""))
                                             
-					echo "<iframe src=\"http://www.wunderground.com/personal-weather-station/dashboard?ID=IJERUSAL1#history/s".$_POST['browseyear'].$_POST['browsemonth'].$_POST['browseday']."/e".$_POST['browseyear'].$_POST['browsemonth'].$_POST['browseday']."/mdaily\" width=1050 height=1500 seamless></iframe>" ;
+					echo "<iframe src=\"https://www.wunderground.com/personal-weather-station/dashboard?ID=IJERUSAL1#history/s".$_POST['browseyear'].$_POST['browsemonth'].$_POST['browseday']."/e".$_POST['browseyear'].$_POST['browsemonth'].$_POST['browseday']."/mdaily\" width=1050 height=1500 seamless></iframe>" ;
 ?>
 </body>
 </html>

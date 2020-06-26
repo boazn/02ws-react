@@ -26,7 +26,7 @@ mainCol
 			//error_reporting(E_ERROR | E_PARSE);
 			//ini_set("error_reporting", E_ALL);
                         // fetch once again because it is cut otherwise
-                        $forecastDaysDB = apc_fetch('forecastDaysDB');
+                        $forecastDaysDB = $mem->get('forecastDaysDB');
                         $forecastlib_origin = "hometable.php";
 			include_once("forecastlib.php");
 			$sig_url = $sig[0]['url'];
@@ -202,7 +202,7 @@ mainCol
 							
 						</div>
 					</div>
-					<? if (!stristr(get_url(), "forecast")) {include_once "picasaproxy.php";$mediumSizeUrl = "phpThumb.php?src=".$contentUrl."&amp;w=550&amp;h=220&amp;zc=C";?>
+					<? if (!stristr(get_url(), "forecast")) {$mediumSizeUrl = "phpThumb.php?src=".$contentUrl."&amp;w=550&amp;h=220&amp;zc=C";?>
 					
 					<div id="sigweather_slider">
 							<ul id="sliderselector">

@@ -1,0 +1,29 @@
+// Push settings file - first generated on Wed Sep 18 2019 07:36:01 GMT+0300 (Israel Daylight Time).
+// Note: Optional items are commented out and can be uncommented if you wish to set them.
+// Preset environments are: prod, dev, stage. Custom environments (and their colours) can be created in settings.
+{
+	"env": "default",
+	"default": {
+		"service": "SFTP",
+		"options": {
+			// "timeZoneOffset": 0,
+			// "testCollisionTimeDiffs": true,
+			// "collisionUploadAction": null,
+			// "collisionDownloadAction": null,
+			// "followSymlinks": false,
+			// "reminder": true,
+			// "reminderTimeout": null,
+			"host": "",
+			// "port": 22,
+			"username": "root",
+			"password": "bn19za72",
+			 "privateKey": "ssh-rsa",
+			 "keyPassphrase": "AAAAB3NzaC1yc2EAAAADAQABAAABAQDU/padLpEYn0W9rnSMwkKSRKjWdICB86oJdhXiYgLJp9Mg76CLfUU68Vyz8B6PxOT81oNGhBS92we5iEdR45JfQQ9Cj5K0+2Qnhv1gzLANQTA3juZDW55l24iYCe5HWqqSiYttEPAe1b2aq7jtcIjqLHDJ4poViL1DgO7ngHk4TDb0yYZSB21Is2QrSbwi8wE5f9l6fn48t7sKw8XK9WAnYSVPGQfThyP6HvEQYBEQ1KP7KkPLcRkPoYDnsNhBzQuKqsf05/4QTCpsn/4zfZFDAgWKe3/j567HwT5bCToDcc0OEfo6EfelnZ2nypuHBGsCJOcZndhkTlUTAjC1PZCd",
+			"root": "/home/boazn/public/02ws.com/public/",
+			// "keepaliveInterval": 3000,
+			 "debug": true,
+			// "fileMode": "",
+			// "sshGateway": null
+		}
+	}
+}

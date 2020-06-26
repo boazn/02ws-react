@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/bin/php /home/boazn/public/02ws.com/public/SendSpecial.php?dailyforecast=1

@@ -1,8 +1,6 @@
 
 body {
-    background-color: #BFDDE0;
-    background-image:url("../img/bg_sunrise.png");
-    background-repeat:repeat;
+    background: linear-gradient(180deg, #afd9ea 0%, #b6dae5 4%, #e8e6c1 90%, #f4e9b5 100%;
     color:#000;
 }
 

@@ -1,2 +1,4 @@
 #!/bin/bash
-curl http://www.02ws.co.il/02wsjson.php > /home/boazn/public/02ws.com/public/02wsjson.txt.temp
+cd /home/boazn/public/02ws.com/public
+phantomjs save_smallheader.js
+phantomjs save_smallheader_eng.js

@@ -20,6 +20,7 @@
 <option   value="168">הלסינקי Helsinki</option>
 <option  value="1">הונג-קונג HonkKong</option>
 <option	 value="24">וארשה Warsaw</option>
+<option	 value="204">וילנה Vilnius</option>
 <option	 value="17">וינה Vienna</option>
 <option	 value="606">ונציה Venezia</option>
 <option	 value="919">ורנה, בולגריה Varna</option>
@@ -54,6 +55,7 @@
 <option	  value="138">קייפטאון Cape Town</option>
 <option	  value="189">רייקיאוויק (איסלנד) Reykjavik</option>
 <option	  value="172">רוביניימי (לפלנד) Rovaniemi</option>
+<option	 value="175">ריגה Riga</option>
 <option	  value="1080">ריו דה ז'ינרו Rio De Janeiro</option>
 <option   value="201">רומא, איטליה Rome</option>
 <option   value="312">ציריך, שוויץ Zurich</option>

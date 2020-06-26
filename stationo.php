@@ -478,8 +478,8 @@ parameters bar
 			<div id="windvalue">
 				<div  id="windspeed">
 					<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" >
-					<span style="font-size:95%" <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo $current->get_windspd()." ".$KNOTS[$lang_idx];?></span>
-					<!-- <span class="info" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="left:-0.5em"><? echo $HIGH[$lang_idx].": ".$today->get_highwind()." ".$KNOTS[$lang_idx]." ".$ON[$lang_idx]." "." ".$today->get_highwind_time(); ?></span> -->
+					<span style="font-size:95%" <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo $current->get_windspd()." ".$KMH[$lang_idx];?></span>
+					<!-- <span class="info" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="left:-0.5em"><? echo $HIGH[$lang_idx].": ".$today->get_highwind()." ".$KMH[$lang_idx]." ".$ON[$lang_idx]." "." ".$today->get_highwind_time(); ?></span> -->
 					</a>
 				</div>
 				<!-- <div id="windtrend">

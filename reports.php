@@ -1,5 +1,5 @@
                                 <?
-$current_year = 2018;
+$current_year = 2020;
 $tablestobeSearched = array();
 $where_clause_archivemin = array();
 $where_clause_archive = array();
@@ -125,7 +125,7 @@ function getReport($min_year,$current_year, $report)
 	global $tablestobeSearched;
 	global $where_clause_archivemin; 
 	global $where_clause_archive;
-	
+	$orderbydate = false;
 	$monthMode = false;
 	if ($report == "minofmax")
 	{
@@ -179,9 +179,33 @@ function getReport($min_year,$current_year, $report)
 		$unit = "&#176;C";
                 $tableToSearch="archive";
 	}
+	else if ($report == "mindew")
+	{
+		$maxOrMin = "MIN";
+		$param = "Dew";
+		$AscOrDesc = "ASC";
+		$unit = "&#176;C";
+        $tableToSearch="archive";
+	}
 	else if ($report == "maxrain")
 	{
 		$maxOrMin = "SUM";
+		$param = "Rain";
+		$AscOrDesc = "Desc";
+		$unit = "mm";
+	}
+	else if ($report == "firstrain")
+	{
+		$orderbydate = true;
+		$maxOrMin = "";
+		$param = "Rain";
+		$AscOrDesc = "Asc";
+		$unit = "mm";
+	}
+	else if ($report == "lastrain")
+	{
+		$orderbydate = true;
+		$maxOrMin = "";
 		$param = "Rain";
 		$AscOrDesc = "Desc";
 		$unit = "mm";
@@ -242,6 +266,8 @@ function getReport($min_year,$current_year, $report)
 				
 				for ($j = 0;$where_clause_archivemin[$j]!=null ;$j++) {
 					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month FROM  `".$table."` where `".$param."` IS NOT NULL  ";
+					if ($param == "Rain")
+						$query_total .= " and Rain > 0 ";
 					if (trim($where_clause_archivemin[$j]) != ""){
                                             $query_total .= " AND ( ";
                                             $query_total .= $where_clause_archivemin[$j];
@@ -256,6 +282,8 @@ function getReport($min_year,$current_year, $report)
 			{	
 				for ($j = 0;$where_clause_archive[$j]!=null ;$j++) {
 					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month FROM  `".$table."` where `".$param."` IS NOT NULL  ";
+					if ($param == "Rain")
+						$query_total .= " and Rain > 0 ";
 					$query_total .= " AND ( ";
 					$query_total .= $where_clause_archive[$j];
 					$query_total .= " ) ";
@@ -269,7 +297,10 @@ function getReport($min_year,$current_year, $report)
 		}
 		
 		$query_total .= ") ar where month is not null ";
-		$query_total .= "  ORDER BY ".$maxOrMin.$param." ".$AscOrDesc." LIMIT 0 , 15";
+		if ($orderbydate)
+		$query_total .= "  ORDER BY MONTH(Date),DAY(DATE) ".$AscOrDesc." LIMIT 0 , 30";
+		else
+		$query_total .= "  ORDER BY ".$maxOrMin.$param." ".$AscOrDesc." LIMIT 0 , 30";
 	}
 	else
 	{
@@ -279,6 +310,8 @@ function getReport($min_year,$current_year, $report)
 			$table = $tablestobeSearched[$i];
 			//echo " <br/>".$table." <br/>";
 			$query_total .= "SELECT  ".$param." ,  `Date` FROM  `".$table."` where ".$param." IS NOT NULL  ";
+			if ($param == "Rain")
+						$query_total .= " and Rain > 0 ";
 			if ($table == "archivemin")
 			{
                             if (count($where_clause_archivemin) > 0){
@@ -306,7 +339,10 @@ function getReport($min_year,$current_year, $report)
 		}
 		
 		$query_total .= ") ar ";
-		$query_total .= "  GROUP BY  `Date` ORDER BY ".$maxOrMin."(  ".$param." ) ".$AscOrDesc." LIMIT 0 , 15";
+		if ($orderbydate)
+		$query_total .= "  GROUP BY  YEAR(Date) order by MONTH(Date),DAY(DATE) ".$AscOrDesc." LIMIT 0 , 30";
+		else
+		$query_total .= "  GROUP BY  `Date` ORDER BY ".$maxOrMin."(  ".$param." ) ".$AscOrDesc." LIMIT 0 , 30";
 		}
 	//echo $query_total;
 	
@@ -369,7 +405,10 @@ function getReport($min_year,$current_year, $report)
 				$MAXHUM = array("The maximum of humidity", "הלחות הגבוהה ביותר");
 				$MINHUM = array("The minimum of humidity", "הלחות הנמוכה ביותר");
 				$MAXDEW = array("The maximum of dew point", "נקודת הטל הגבוהה ביותר");
+				$MINDEW = array("The maximum of dew point", "נקודת הטל הנמוכה ביותר");
 				$MAXRAIN = array("The most rainy day", "היום הגשום ביותר");
+				$LASTRAIN = array("The last rainy day", "היום הגשום המאוחר ביותר");
+				$FIRSTRAIN = array("The first rainy day", "היום הגשום המוקדם ביותר");
 				$MAXRAINMONTH = array("The most rainy month", "החודש הגשום ביותר");
 				$MINRAINMONTH = array("The most dry month", "החודש השחון ביותר");
                                 $MINTEMPMONTH = array("The most hot month", "החודש החם ביותר");
@@ -446,7 +485,10 @@ function getReport($min_year,$current_year, $report)
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxhum" name="report" <? if ($_POST['report'] == "maxhum") echo "checked"; ?>/><?=$MAXHUM[$lang_idx]?> (2002+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minhum" name="report" <? if ($_POST['report'] == "minhum") echo "checked"; ?>/><?=$MINHUM[$lang_idx]?> (2002+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxdew" name="report" <? if ($_POST['report'] == "maxdew") echo "checked"; ?>/><?=$MAXDEW[$lang_idx]?> (2002+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="mindew" name="report" <? if ($_POST['report'] == "mindew") echo "checked"; ?>/><?=$MINDEW[$lang_idx]?> (2002+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxrain" name="report" <? if ($_POST['report'] == "maxrain") echo "checked"; ?>/><?=$MAXRAIN[$lang_idx]?> (1909+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="firstrain" name="report" <? if ($_POST['report'] == "firstrain") echo "checked"; ?>/><?=$FIRSTRAIN[$lang_idx]?> (1909+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="lastrain" name="report" <? if ($_POST['report'] == "lastrain") echo "checked"; ?>/><?=$LASTRAIN[$lang_idx]?> (1909+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxrainmonth" name="report" <? if ($_POST['report'] == "maxrainmonth") echo "checked"; ?>/><?=$MAXRAINMONTH[$lang_idx]?> (1909+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minrainmonth" name="report" <? if ($_POST['report'] == "minrainmonth") echo "checked"; ?>/><?=$MINRAINMONTH[$lang_idx]?> (1909+)<br />
 					</div>
@@ -467,7 +509,7 @@ function getReport($min_year,$current_year, $report)
 						</tr>
 						<tr class="inv_plain_3">
 							<td>Jerusalem centeral (Generali)</td>
-							<td>1950-2016</td>
+							<td>1950-<?=$current_year?></td>
 							<td>yyyy-mm-dd</td>
 						</tr>
 						<tr class="inv_plain_3">

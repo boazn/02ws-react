@@ -156,7 +156,7 @@ if (($rainrateHour !== "0.0") &&
 	updateSigWeather(
 		"profile1/rain.php?level=1&freq=1&amp;lang={$lang_idx}", 
 		$RAIN_HAS_JUST_STOPPED, 
-		array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
+		array($DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
      //update_action ("RainStopped", "$CURRENT_SIG_WEATHER[$EN] <b>".$ALT[$EN]."</b><IMG src=\"".BASE_URL."/images/$pic\" ALT=\"$ALT[$EN]\" width=\"320\" border=0>");
 }
 if (($today->get_highrainrate() !== "0.0") && 
@@ -168,7 +168,7 @@ if (($today->get_highrainrate() !== "0.0") &&
 	updateSigWeather(
 		"profile1/rain.php?level=1&freq=1&amp;lang={$lang_idx}", 
 		$RAIN_HAS_GONE, 
-		array($DAILY_RAIN[$EN].": ".$today->get_rain().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
+		array($DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx], $DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx]), "".BASE_URL."/".$_SERVER['SCRIPT_NAME']."?section=graph&amp;graph=rain.php&amp;profile=1&amp;lang=$lang_idx");
 }
 if (isRaining())
 {

@@ -1,25 +1,4 @@
-<style>
-    .radio-toolbar input[type="radio"] {
-    display:none;
-}
-
-.radio-toolbar label {
-    display:inline-block;
-    background-color:#ddd;
-    padding:5px;
-    font-size:18px;
-    margin: 0.1em;
-}
-#genderchooseradio label {
-    display:block;
-    margin: 0.3em 0.2em;
-}
-.radio-toolbar input[type="radio"]:checked + label {
-    background-color:#bbb;
-}
-
-
-</style>
+<div class="survey">
 <form method="post">
 <?
 $itfeels = array();
@@ -128,11 +107,11 @@ if (!$msgSent) {
 foreach ($result as $row) {
 	$lines++;
         if ($lines == 1){
-            print "<h1>".get_title($row['name'])."</h1><br/><br/>";
-            print "<h2 style=\"clear:both;direction:".getDirection()."\">".get_name($row['name'])."</h2>";
-            print "<div class=\"inv_plain_3 float\" style=\"margin:0em 1em;padding:1.1em\" >";
+            print "<h1 class=\"title\">".get_title($row['name'])."</h1><br/><br/>";
+            print "<h2 class=\"question\" style=\"clear:both;direction:".getDirection()."\">".get_name($row['name'])."</h2>";
+            print "<div class=\" float\" style=\"margin:0em 1em;\" >";
         }
-        print "\n\t\t<div class=\"radio-toolbar\"";
+        print "\n\t\t<div class=\"radio-toolbar color".$row["field_id"]."\"";
         if (isHeb()) echo "dir=\"rtl\"";
         echo " style=\"\">";
         print "\n\t\t<input type=\"radio\" name=\"survey\" id=\"idx".($row["field_id"])."\" value=\"".$row["field_id"]."\" ";
@@ -141,11 +120,11 @@ foreach ($result as $row) {
 }
 print "</div>";
 ?>
-    <div class="inv_plain_3" style="float:<? echo get_s_align(); ?>;margin-<? echo get_s_align(); ?>:1em;width:179px;padding:1em;text-align:<? echo get_s_align(); ?>">
+    <div class="" style="float:<? echo get_s_align(); ?>;margin-<? echo get_s_align(); ?>:1em;width:179px;padding:1em;text-align:<? echo get_s_align(); ?>">
         <? if (isHeb()) echo "עוד משהו רציתי להגיד"; else echo "one more thing";?><br />
         <textarea name="comments" rows="6" <?if (isHeb()) echo " dir=\"rtl\"";?>  value="" style="width:170px;font-size: 1.2em;"></textarea>
     </div>
-<div class="inv_plain_3" style="float:<? echo get_s_align(); ?>;margin-<? echo get_s_align(); ?>:1em;padding:0.2em;text-align:<? echo get_s_align(); ?>">
+<div class="" style="float:<? echo get_s_align(); ?>;margin-<? echo get_s_align(); ?>:1em;padding:0.2em;text-align:<? echo get_s_align(); ?>">
 	<div class="radio-toolbar float big" id="genderchooseradio" style="padding: 1em;text-align:<? echo get_s_align(); ?>" <? if (isHeb()) echo "dir=\"rtl\""; ?>><?=$IM[$lang_idx];?> 
         <input type="radio" value="m" name="gender" id="male"  /><label for="male"><?=$MALE[$lang_idx];?></label>
 	<input type="radio" value="f" name="gender" id="female" /><label for="female"><?=$FEMALE[$lang_idx];?></label>
@@ -167,7 +146,7 @@ print "</div>";
 if (($msgSent) || (!validEntry()))
 {
         if (isset($_SESSION['email'])){
-            header("Location: http://www.02ws.co.il/".$_SERVER['SCRIPT_NAME']."?section=myVotes.php&amp;lang=".$lang_idx."&amp;survey_id=".$_REQUEST['survey_id']."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']."\""); /* Redirect browser */
+            header("Location: https://www.02ws.co.il/".$_SERVER['SCRIPT_NAME']."?section=myVotes.php&lang=".$lang_idx."&survey_id=".$_REQUEST['survey_id']."&fullt=".$_GET['fullt']."&s=".$_GET['s']."&c=".$_GET['c']."\""); /* Redirect browser */
             exit();
         }   
 	if((isset($_COOKIE['gender']))&&($_COOKIE['gender'] != ""))
@@ -217,7 +196,7 @@ if (($msgSent) || (!validEntry()))
 <div class="spacer" style="clear:both">&nbsp;</div>
 <h2><?=$MALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span></h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span>
 <a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_m)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_m)?>&total=<?=$total?>&width=320" /><br/>
+<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_m)?>&total=<?=$total?>&width=320" /><br/>
 </a>
 <?
 	$result = mysqli_query($link, $query_total_f);
@@ -229,7 +208,7 @@ if (($msgSent) || (!validEntry()))
 	?>
 <h2><?=$FEMALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> </h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?>>(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span>
 <a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_f)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_f)?>&total=<?=$total?>&width=320" /><br/>
+<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_f)?>&total=<?=$total?>&width=320" /><br/>
 </a>
     <?
 	$result = mysqli_query($link, $query_total);
@@ -242,10 +221,9 @@ if (($msgSent) || (!validEntry()))
 
 <h2><?=$GENERAL[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span> </h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span>
 <a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query)?>&total=<?=$total?>&width=320" /><br/>
+<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query)?>&total=<?=$total?>&width=320" /><br/>
 </a>
 <? } @mysqli_free_result($result);?>
 </div>
-
-
 </form>
+</div>

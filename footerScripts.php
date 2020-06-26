@@ -1602,7 +1602,7 @@ function startup(lang, from, update)
                              
                             //tooltipItems[0].index
                             //data.datasets[0].data[tooltipItems[0].index] + '<br />' +
-                        return '<br />' +  data.datasets[0].data[tooltipItems[0].index] + '<?=$_GET['temp_unit'];?><br />' + data.datasets[1].label + ": " + data.datasets[1].data[tooltipItems[0].index] +  ' <?=$KNOTS[$lang_idx]?> <div title=\"""\" class=\"wind_icon ' +  getWindInfo(data.datasets[1].data[tooltipItems[0].index]) + '\"></div><br />' + data.datasets[2].label + ": " + data.datasets[2].data[tooltipItems[0].index] + '%<br /><ul class=\"tooltipline\"><li><img width=\"24\" height=\"24\" src=\"images/clothes/' + data.datasets[5].data[tooltipItems[0].index] + '\" /></li><li><img width=\"24\" height=\"24\" src=\"images/icons/day/' + data.datasets[4].data[tooltipItems[0].index] + '\" /></li><li>' +	
+                        return '<br />' +  data.datasets[0].data[tooltipItems[0].index] + '<?=$_GET['temp_unit'];?><br />' + data.datasets[1].label + ": " + data.datasets[1].data[tooltipItems[0].index] +  ' <?=$KMH[$lang_idx]?> <div title=\"""\" class=\"wind_icon ' +  getWindInfo(data.datasets[1].data[tooltipItems[0].index]) + '\"></div><br />' + data.datasets[2].label + ": " + data.datasets[2].data[tooltipItems[0].index] + '%<br /><ul class=\"tooltipline\"><li><img width=\"24\" height=\"24\" src=\"images/clothes/' + data.datasets[5].data[tooltipItems[0].index] + '\" /></li><li><img width=\"24\" height=\"24\" src=\"images/icons/day/' + data.datasets[4].data[tooltipItems[0].index] + '\" /></li><li>' +	
 						   data.datasets[3].data[tooltipItems[0].index] + '</li></ul>';
                     }
                 

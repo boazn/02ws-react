@@ -6,6 +6,7 @@
     $MAX_LIKE_DISLIKE = array("Max like minus dislike", "הפרש גבוה של לייק-דיסלייק");
     $MAX_DISLIKE = array("Max dislike", "הכי הרבה דיסלייק");
     $MAX_LIKE = array("Max like", "הכי הרבה לייקים");
+    $LATEST = array("Latest", "החדשות ביותר");
     ?>
 </h1>
 <div class="clear"> </div>
@@ -17,6 +18,7 @@
 <a href="javascript:void(0)" onclick="javascript:OnClickGetForecastDays(this, 'likes-dislikes', 'desc','', '')" class="inv_plain_3"><?=$MAX_LIKE_DISLIKE[$lang_idx]?></a>
 <a href="javascript:void(0)" onclick="javascript:OnClickGetForecastDays(this, 'dislikes-likes', 'desc','', '')" class="inv_plain_3"><?=$MAX_DISLIKE_LIKE[$lang_idx]?></a>
 <a href="javascript:void(0)" onclick="javascript:OnClickGetForecastDays(this, 'dislikes+likes', 'desc','', '')" class="inv_plain_3"><?=$MAX_EMOTIONS[$lang_idx]?></a>
+<a href="javascript:void(0)" onclick="javascript:OnClickGetForecastDays(this, 'updated_at', 'desc','', 'WHERE updated_at < DATE_ADD(CURDATE(), INTERVAL -5 DAY)')" class="inv_plain_3"><?=$LATEST[$lang_idx]?></a>
 </div>
 <div id="forecastDaysContainer">
    <div id="forecastnextdays_table" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="border-spacing:1px 8px;padding:3px;width:100%">
@@ -44,14 +46,14 @@
        var forecastDays;
        forecastDays = "<table style=\"border-spacing:4px;width:100%\">";
        forecastDays += "<tr style=\"height:2em\">";
-       forecastDays += "<td></td>";
-       forecastDays += "<td id=\"morning_icon\"></td>";
-       forecastDays += "<td id=\"noon_icon\"></td>";
-       forecastDays += "<td id=\"night_icon\"></td>";
-       forecastDays += "<td></td>";
-       forecastDays += "<td></td>";
-       forecastDays += "<td><img src=\"js/tinymce/plugins/emoticons/img/good.png\" width=\"32px\" /></td>";
-       forecastDays += "<td><img src=\"js/tinymce/plugins/emoticons/img/bad.png\" width=\"32px\" /></td>";
+       forecastDays += "<th></th>";
+       forecastDays += "<th id=\"morning_icon\"></th>";
+       forecastDays += "<th id=\"noon_icon\"></td>";
+       forecastDays += "<th id=\"night_icon\"></th>";
+       forecastDays += "<th></th>";
+       
+       forecastDays += "<th><img src=\"js/tinymce/plugins/emoticons/img/good.png\" width=\"32px\" /></th>";
+       forecastDays += "<th><img src=\"js/tinymce/plugins/emoticons/img/bad.png\" width=\"32px\" /></th>";
        forecastDays += "</tr>";
        for (i = 0; i< json.jws.forecastDays.length; i++){
             TempHighCloth = '&nbsp;<a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastDays[i].TempHighCloth+'\" width=\"20\" height=\"15\" title=\"'+json.jws.forecastDays[i].TempHighClothTitle<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastDays[i].TempHighClothTitle<? echo $lang_idx;?>+'</span></a>';
@@ -62,9 +64,11 @@
             forecastDays += "<td class=\"tsfh\" style=\"text-align:center;direction:ltr\">" + c_or_f(json.jws.forecastDays[i].TempLow, tempunit) +"</td>";
             forecastDays += "<td class=\"tsfh\" style=\"text-align:center;direction:ltr\">" + c_or_f(json.jws.forecastDays[i].TempHigh, tempunit) + TempHighCloth + "</td>";
             forecastDays += "<td class=\"tsfh\" style=\"text-align:center;direction:ltr\">" + c_or_f(json.jws.forecastDays[i].TempNight, tempunit) + TempNightCloth + "</td>";
-            forecastDays += "<td style=\"width:32px\"><img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"32\" height=\"32\" alt=\"" + json.jws.forecastDays[i].icon +"\" />"+"</td>";
             fulltextforecast = json.jws.forecastDays[i].lang<? echo $lang_idx;?>;
-            forecastDays += "<td class=\"text\" style=\"width:200px;padding:0 0.2em 0 0.2em\">" + fulltextforecast +"</td>";
+            forecastDays += "<td class=\"text\" style=\"width:200px;padding:0 0.2em 0 0.2em\">";
+            forecastDays += "<img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"32\" height=\"32\" alt=\"" + json.jws.forecastDays[i].icon +"\" />";
+            forecastDays += fulltextforecast;
+            forecastDays += "</td>";
             forecastDays += "<td class=\"text\" >" + json.jws.forecastDays[i].likes +"</td>";
             forecastDays += "<td class=\"text\" >" + json.jws.forecastDays[i].dislikes +"</td>";
             forecastDays += "</tr>";

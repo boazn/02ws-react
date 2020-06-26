@@ -1,3 +1,8 @@
+<style>
+#section{
+    width:800px
+}
+</style>
 <div id="personal_message" class="clear float box_text inv_plain_3_zebra white_box">
     
 </div>
@@ -5,7 +10,8 @@
 <?
         $result = db_init("","");
         $email = $_SESSION['email'];
-        $survey_id = $_GET['survey_id'];
+        $survey_id = $_REQUEST['survey_id'];
+        
 	if((isset($_COOKIE['gender']))&&($_COOKIE['gender'] != ""))
 		$genderclause = " AND gender = '".$_COOKIE['gender']."'";
 	if ($survey_id == 2)
@@ -19,12 +25,13 @@
 	$temp_to = $temp_to_cold_meter + 0.5;
 	$title = $temp_from."&#176;C - ".$temp_to."&#176;C";
 	
-	$query = "SELECT sf.field_name, count( * ) FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sr.survey_id = sf.survey_id AND sf.survey_id =2 AND temp <={$temp_to} AND temp >={$temp_from} GROUP BY sf.field_name order by sf.field_id";
-	$query_m = "SELECT sf.field_name, count( * ) FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sr.survey_id = sf.survey_id AND sf.survey_id =2 AND temp <={$temp_to} AND temp >={$temp_from} AND gender = 'm' GROUP BY sf.field_name order by sf.field_id";
-	$query_f = "SELECT sf.field_name, count( * ) FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sr.survey_id = sf.survey_id AND sf.survey_id =2 AND temp <={$temp_to} AND temp >={$temp_from} AND gender = 'f' GROUP BY sf.field_name order by sf.field_id";
-     $my_query_m = "SELECT sf.field_name, count( * ) FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sr.survey_id = sf.survey_id AND sf.survey_id =2 AND temp <={$temp_to} AND temp >={$temp_from} AND gender = 'm' AND email='{$email}' GROUP BY sf.field_name order by sf.field_id";
-	$my_query_f = "SELECT sf.field_name, count( * ) FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sr.survey_id = sf.survey_id AND sf.survey_id =2 AND temp <={$temp_to} AND temp >={$temp_from} AND gender = 'f' AND email='{$email}' GROUP BY sf.field_name order by sf.field_id";
-        
+	$query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, '', '');";
+	$query_verdict_m = "call GetColdMeter({$temp_from}, {$temp_to}, 'm', '');";
+	$query_verdict_f = "call GetColdMeter({$temp_from}, {$temp_to}, 'f', '');";
+    $my_query_verdict_m = "call GetColdMeter({$temp_from}, {$temp_to}, 'm', '{$email}');";
+    $my_query_verdict_f = "call GetColdMeter({$temp_from}, {$temp_to}, 'f', '{$email}');";
+    
+    
 	$query_verdict = "SELECT sf.field_name, count( * ) FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sr.survey_id = sf.survey_id AND sf.survey_id =2 AND temp <={$temp_to} AND temp >={$temp_from} GROUP BY sf.field_name ORDER BY `count( * )` DESC";
 	$query_verdict_m = "SELECT sf.field_name, count( * ) FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sr.survey_id = sf.survey_id AND sf.survey_id =2 AND temp <={$temp_to} AND temp >={$temp_from} AND gender = 'm' GROUP BY sf.field_name ORDER BY `count( * )` DESC";
 	$query_verdict_f = "SELECT sf.field_name, count( * ) FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sr.survey_id = sf.survey_id AND sf.survey_id =2 AND temp <={$temp_to} AND temp >={$temp_from} AND gender = 'f' GROUP BY sf.field_name ORDER BY `count( * )` DESC";
@@ -41,11 +48,6 @@
 	else
 	{
 		$title=$FSEASON[$lang_idx];
-		$query = "SELECT count( * ) , sf.field_name FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sf.survey_id =1 AND sr.survey_id = sf.survey_id GROUP BY sf.field_name";
-		$query_m = "SELECT count( * ) , sf.field_name FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sf.survey_id =1 AND sr.survey_id = sf.survey_id AND gender = 'm' GROUP BY sf.field_name";
-		$query_f = "SELECT count( * ) , sf.field_name FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sf.survey_id =1 AND sr.survey_id = sf.survey_id AND gender = 'f' GROUP BY sf.field_name";
-		$my_query_m = "SELECT count( * ) , sf.field_name FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sf.survey_id =1 AND sr.survey_id = sf.survey_id AND gender = 'm' AND email='{$email}' GROUP BY sf.field_name";
-		$my_query_f = "SELECT count( * ) , sf.field_name FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sf.survey_id =1 AND sr.survey_id = sf.survey_id AND gender = 'f' AND email='{$email}' GROUP BY sf.field_name";
 		
 		$query_verdict = "SELECT count( * ) , sf.field_name FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sf.survey_id =1 AND sr.survey_id = sf.survey_id GROUP BY sf.field_name ORDER BY `count( * )` DESC";
 		$query_verdict_m = "SELECT count( * ) , sf.field_name FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sf.survey_id =1 AND sr.survey_id = sf.survey_id AND gender = 'm' GROUP BY sf.field_name ORDER BY `count( * )` DESC";
@@ -74,8 +76,8 @@ if (!empty($_SESSION['email'])){
 <div class="spacer" style="clear:both">&nbsp;</div>
 <h3 class="inv_plain_2"><?=$MY_VOTES[$lang_idx]?></h3>
 <h2 class="inv_plain_2"><?=$MALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="big"><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="">(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
-<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($my_query_m)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($my_query_m)?>&total=<?=$total?>&width=320" /><br/>
+<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&email=<?=$email?>&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
+<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&email=<?=$email?>&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
 </div>
 <?
@@ -90,8 +92,8 @@ if (!empty($_SESSION['email'])){
 <div class="spacer" style="clear:both">&nbsp;</div>
 <h3 class="inv_plain_2">כולם </h3>
 <h2 class="inv_plain_2"><?=$MALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="big"><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
-<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_m)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_m)?>&total=<?=$total?>&width=320" /><br/>
+<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
+<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
 </div>
 <?
@@ -107,8 +109,8 @@ if (!empty($_SESSION['email'])){
 <h3 class="inv_plain_2"><?=$MY_VOTES[$lang_idx]?></h3>
 <h2 class="inv_plain_2"><?=$FEMALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="big"><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span></h2>
 <? if ($total > 0) {?>
-<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($my_query_f)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($my_query_f)?>&total=<?=$total?>&width=320" /><br/>
+<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&email=<?=$email?>&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
+<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&email=<?=$email?>&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
 <?}?>
 </div>
@@ -124,8 +126,8 @@ if (!empty($_SESSION['email'])){
 <div class="float">
 <h3 class="inv_plain_2">כולם </h3>
 <h2 class="inv_plain_2"><?=$FEMALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="big"><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span></h2>
-<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_f)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_f)?>&total=<?=$total?>&width=320" /><br/>
+<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
+<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
 </div>
 <h3 class="clear inv_plain_2"><?=$MY_VOTES[$lang_idx]?> </h3>

@@ -9,6 +9,7 @@
 <div class="base">
 <h1><?=$MYTHS[$lang_idx]?></h1>
 </div>
+<article id="faq">
 <div class="span12" id="msgDetails">
            
 <?
@@ -18,5 +19,6 @@
  getSpecificChat(32271);
 ?>
 </div>
+</article>
 </body>
 <html>

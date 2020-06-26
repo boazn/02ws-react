@@ -1,5 +1,5 @@
 body{
-    background-image:url("../img/bg_cloudy2.png");
+    background: linear-gradient(180deg, #a4bfc9 0%, #adc8d2 10%, #b5cfd9 90%, #cee8f1 100%); /* #1e528e #2d91c2 #246fa8 #57c1eb #00bfff*/
     color:#000;
 }
 .cloud1, .cloud2, .cloud3, .cloud4, .cloud-big

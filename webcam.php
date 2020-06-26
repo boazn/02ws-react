@@ -75,11 +75,11 @@ if (stristr($imagefile, "Z"))
 	</div>
 </div>
 <? if (file_exists("images/webCameraB.jpg")) { ?>
-<!--<div class="webcam_image">
+<div class="webcam_image">
 	<div><?=$CAMERA[$lang_idx];?> 2 <? echo getLocalTime(filemtime("images/webCameraB.jpg"));?></div>
 	<a href="images/webCameraB.jpg" class='colorbox' title="<?=$CAMERA[$lang_idx];?> 2;<? echo getLocalTime(filemtime("images/webCameraB.jpg"));?>">
 	<span></span>
-        <img name="animation" id="baseGraph" src="phpThumb.php?src=images/webCameraB.jpg&amp;w=380&amp;fltr[]=gam|0.6" width="380" height="300px" title="<?=$LIVE_PICTURE[$lang_idx];?>  - <?=$CAMERA[$lang_idx];?> 2" />
+        <img name="animation" id="baseGraph" src="phpThumb.php?src=images/webCameraB.jpg&amp;w=380&amp;fltr[]=gam|0.8" width="380" height="300px" title="<?=$LIVE_PICTURE[$lang_idx];?>  - <?=$CAMERA[$lang_idx];?> 2" />
 	</a>
 	
 	<div class="inv_plain_3_zebra webcam_desc">
@@ -88,7 +88,7 @@ if (stristr($imagefile, "Z"))
 	   <? if ($lang_idx == $HEB) {?>זו תמונה ברזולוציה גבוהה של חלק קטן מתמונת מצלמה 1. רואים בה את מרכז העיר , העיר העתיקה והר הצופים ועוד.<?} ?>
 	   
 	</div>
-</div>-->
+</div>
 <? }?>
 <!-- <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=<?echo nextPic($_GET['section']);?>&amp;lang=<? echo($lang_idx);?>" alt="click to get next picture">
 <img src="images/forward.png" alt="click to get next picture לתמונה הבאה"/>
@@ -113,7 +113,7 @@ if (stristr($imagefile, "Z"))
 <? if  (stristr(strtolower($template_routing), 'webcam')) { ?>
  
  <div style="padding:1em;clear:both;float:<?echo get_s_align();?>" dir="rtl">
-	<div><?=$CAMERA_LOOP[$lang_idx];?></div>
+	<div><a href="images/latestwebcam.gif" download><img src="images/download.png" width="20" alt="download" /></a><?=$CAMERA_LOOP[$lang_idx];?></div> 
 	 <img name="animation" id="latestpics" width="320px" height="240px" alt="<? echo getPageTitle();?>" /> 
 	<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

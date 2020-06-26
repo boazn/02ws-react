@@ -75,7 +75,7 @@ $mnthOut = implode("\",\"", $mnthNames);
 $mnthOut = '"'.$mnthOut.'"';
 
 
-$WUsourceFile = 'http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID='.$WUID.'&graphspan=year&year=' . $year . '&format=1&units='.$unitsLnk;
+$WUsourceFile = 'https://www.02ws.co.il/wxwugraphs/WXDailyHistory.php?ID='.$WUID.'&graphspan=year&year=' . $year . '&format=1&units='.$unitsLnk;
 $WUrequest = $year;
 $thisYear = date('Y');
 $endOfYear = strtotime($year.'-12-31 23:59:59'); 

@@ -12,6 +12,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <?
 include_once("include.php");
 include "start.php";
+include_once("requiredDBTasks.php");
+include_once "sigweathercalc.php";
+include_once "runwalkcalc.php";
 ini_set("display_errors","On");
 $pageToPrint = $_GET['section'];
 if  ((stristr($pageToPrint, 'txt'))||(stristr($pageToPrint, 'TXT')))

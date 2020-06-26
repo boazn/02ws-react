@@ -1,0 +1,811 @@
+Started forecastlib section.....
+examining 2019/09/30
+token:0 last_priority= priority= taf_pic= count=0 last= new_line= startTime= endTime=
+
+examining 09:30
+time of taf:9
+
+time_at_day= 10
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 3892
+prevTempHour= 19.7
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:0 time=10 1569826800 temp=19 jacketlight_n3.png
+
+time_at_day= 11
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 7492
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:1 time=11 1569830400 temp=19 jacketlight_n3.png
+
+time_at_day= 12
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 11092
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:2 time=12 1569834000 temp=19 jacketlight_n3.png
+
+time_at_day= 13
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 14692
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:3 time=13 1569837600 temp=19 jacketlight_n3.png
+
+time_at_day= 14
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 18292
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=
+forecastHour:4 time=14 1569841200 temp=19 jacketlight_n3.png
+
+time_at_day= 15
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 21892
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=
+forecastHour:5 time=15 1569844800 temp=19 jacketlight_n3.png
+
+time_at_day= 16
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 25492
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:6 time=16 1569848400 temp=19 jacketlight_n3.png
+
+time_at_day= 17
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 29092
+prevTempHour= 19
+average of tempHour and current temp:20
+average of tempHour and 2current temp:20
+tempHour=20
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:7 time=17 1569852000 temp=20 longsleeves_n3.png
+
+time_at_day= 18
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 32692
+prevTempHour= 20
+average of tempHour and current temp:20
+average of tempHour and 2current temp:20
+tempHour=20
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:8 time=18 1569855600 temp=20 longsleeves_n3.png
+
+time_at_day= 19
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 36292
+prevTempHour= 20
+average of tempHour and current temp:20
+average of tempHour and 2current temp:20
+tempHour=20
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:9 time=19 1569859200 temp=20 longsleeves_n3.png
+
+time_at_day= 20
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 39892
+prevTempHour= 20
+average of tempHour and current temp:20
+average of tempHour and 2current temp:20
+tempHour=20
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:10 time=20 1569862800 temp=20 longsleeves_n3.png
+
+time_at_day= 21
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 43492
+prevTempHour= 20
+average of tempHour and current temp:20
+average of tempHour and 2current temp:20
+tempHour=20
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:11 time=21 1569866400 temp=20 longsleeves_n3.png
+
+time_at_day= 22
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 47092
+prevTempHour= 20
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=
+forecastHour:12 time=22 1569870000 temp=19 jacketlight_n3.png
+
+time_at_day= 23
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=0
+get_temp_morning= 18.1
+get_temp_day= 19.7
+get_temp_night= 20
+tsh - time()= 50692
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=
+forecastHour:13 time=23 1569873600 temp=19 jacketlight_n3.png
+
+time_at_day= 0
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 54292
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-20
+forecastHour:14 time=00 1569877200 temp=19 jacketlight_n3.png
+
+time_at_day= 1
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 57892
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-20
+forecastHour:15 time=1 1569880800 temp=19 jacketlight_n3.png
+
+time_at_day= 2
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 61492
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-20
+forecastHour:16 time=2 1569884400 temp=19 jacketlight_n3.png
+
+time_at_day= 3
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 65091
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=19
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-20
+forecastHour:17 time=3 1569888000 temp=19 jacketlight_n3.png
+
+time_at_day= 4
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 68691
+prevTempHour= 19
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=18
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=
+forecastHour:18 time=4 1569891600 temp=18 jacketlight_n3.png
+
+time_at_day= 5
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 72291
+prevTempHour= 18
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=18
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=
+forecastHour:19 time=5 1569895200 temp=18 jacketlight_n3.png
+
+time_at_day= 6
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 75891
+prevTempHour= 18
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=18
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=
+forecastHour:20 time=6 1569898800 temp=18 jacketlight_n3.png
+
+time_at_day= 7
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 79491
+prevTempHour= 18
+average of tempHour and current temp:19
+average of tempHour and 2current temp:19
+tempHour=18
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:21 time=7 1569902400 temp=18 jacketlight_n3.png
+
+time_at_day= 8
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 83091
+prevTempHour= 18
+average of tempHour and current temp:20
+average of tempHour and 2current temp:20
+tempHour=20
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:22 time=8 1569906000 temp=20 longsleeves_n3.png
+
+time_at_day= 9
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 86691
+prevTempHour= 20
+average of tempHour and current temp:20
+average of tempHour and 2current temp:20
+tempHour=21
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:23 time=9 1569909600 temp=21 longsleeves_n3.png
+
+time_at_day= 10
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 90291
+prevTempHour= 21
+average of tempHour and current temp:21
+average of tempHour and 2current temp:21
+tempHour=23
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:24 time=10 1569913200 temp=23 tshirt_n3.png
+
+time_at_day= 11
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 93891
+prevTempHour= 23
+average of tempHour and current temp:22
+average of tempHour and 2current temp:21
+tempHour=24
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:25 time=11 1569916800 temp=24 tshirt_n3.png
+
+time_at_day= 12
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 97491
+prevTempHour= 24
+average of tempHour and current temp:23
+average of tempHour and 2current temp:22
+tempHour=26
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:26 time=12 1569920400 temp=26 shorts_n3.png
+
+time_at_day= 13
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 101091
+prevTempHour= 26
+average of tempHour and current temp:23
+average of tempHour and 2current temp:22
+tempHour=27
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-50
+forecastHour:27 time=13 1569924000 temp=27 shorts_n3.png
+
+time_at_day= 14
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 104691
+prevTempHour= 27
+average of tempHour and current temp:24
+average of tempHour and 2current temp:22
+tempHour=28
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=
+forecastHour:28 time=14 1569927600 temp=28 shorts_n3.png
+
+time_at_day= 15
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 108291
+prevTempHour= 28
+average of tempHour and current temp:24
+average of tempHour and 2current temp:23
+tempHour=29
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=
+forecastHour:29 time=15 1569931200 temp=29 shorts_n3.png
+
+time_at_day= 16
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 111891
+prevTempHour= 29
+average of tempHour and current temp:24
+average of tempHour and 2current temp:23
+tempHour=29
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:30 time=16 1569934800 temp=29 shorts_n3.png
+
+time_at_day= 17
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 115491
+prevTempHour= 29
+average of tempHour and current temp:23
+average of tempHour and 2current temp:22
+tempHour=26
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:31 time=17 1569938400 temp=26 shorts_n3.png
+
+time_at_day= 18
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 119091
+prevTempHour= 26
+average of tempHour and current temp:22
+average of tempHour and 2current temp:21
+tempHour=25
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:32 time=18 1569942000 temp=25 tshirt_n3.png
+
+time_at_day= 19
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 122691
+prevTempHour= 25
+average of tempHour and current temp:21
+average of tempHour and 2current temp:21
+tempHour=23
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:33 time=19 1569945600 temp=23 tshirt_n3.png
+
+time_at_day= 20
+current temp=19.7
+today high temp=19.7
+today low temp=18.1
+tommorrowForecast_day=30
+firstdayinforecast=30
+fday=29
+passedMidnight=1
+get_temp_morning= 18
+get_temp_day= 29
+get_temp_night= 20
+tsh - time()= 126291
+prevTempHour= 23
+average of tempHour and current temp:21
+average of tempHour and 2current temp:20
+tempHour=22
+get_hum_morning= 90
+get_hum_day= 40
+get_hum_night= 70
+currentDay get_hum_night= 70
+diff=-30
+forecastHour:34 time=20 1569949200 temp=22 longsleeves_n3.png

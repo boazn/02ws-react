@@ -35,12 +35,12 @@ $(document).ready(function() {
 		});
     	return false;
 	});
-    $('a.more').click(function(){
+    $('a.whatmore').click(function(){
 	$('.main_nav a').removeClass('active');
-	$('.main_nav a.more').addClass('active');
+	$('.main_nav a.whatmore').addClass('active');
 	 isClicked = true;
     	$('html, body').animate({
-    		scrollTop:$('#more').offset().top
+    		scrollTop:$('#whatmore').offset().top
     	}, 1000, function() {
 	    	parallaxScroll(); // Callback is required for iOS
 		});
@@ -102,12 +102,12 @@ function parallaxScroll(){
             $('#forcast_title').css('opacity',1);
         }
 	
-	if (scrolled >= $('#more').offset().top + 150) {
+	if (scrolled >= $('#whatmore').offset().top + 100) {
 		//alert("ss");
-		$('#rightbanner').css(margin,(80-(scrolled-$('#more').offset().top))+'px');
-		$('#rightbanner').css('opacity',(1-((scrolled-$('#more').offset().top)*0.005)));
-		$('#did_you_know').css(margin,(60-(scrolled-$('#more').offset().top))+'px');
-		$('#did_you_know').css('opacity',(1-((scrolled-$('#more').offset().top)*0.005)));
+		$('#rightbanner').css(margin,(80-(scrolled-$('#whatmore').offset().top))+'px');
+		$('#rightbanner').css('opacity',(1-((scrolled-$('#whatmore').offset().top)*0.005)));
+		$('#did_you_know').css(margin,(60-(scrolled-$('#whatmore').offset().top))+'px');
+		$('#did_you_know').css('opacity',(1-((scrolled-$('#whatmore').offset().top)*0.005)));
 	} else {
 		$('#rightbanner').css(margin,80 +"px");
 		$('#rightbanner').css('opacity',1);
@@ -139,17 +139,18 @@ function parallaxScroll(){
         $('#pic_thumb2').css('top',(1540-(scrolled*0.6))+'px');
         $('#pic_thumb1').css('top',(1370-(scrolled*0.6))+'px');
 	
-	$('#cover_clouds-1').css('left',(100-(scrolled*2))+'px');
+	$('#cover_clouds-1').css('left',(80-(scrolled*2))+'px');
 	$('#cover_clouds-2').css('left',(300-(scrolled*0.8))+'px');
+	$('#cover_clouds-3').css('right',(100-(scrolled*0.8))+'px');
+	$('#cover_clouds-4').css('right',(150-(scrolled*2))+'px');
         /*$('#weather_movies').css('left',(560-(scrolled*0.8))+'px');
         $('#weather_songs').css('left',(470-(scrolled*0.8))+'px');
         $('#snow_poems').css('left',(370-(scrolled*0.8))+'px');
         $('#myths').css('left',(270-(scrolled*0.8))+'px');
-	$('#cover_clouds-3').css('right',(100-(scrolled*0.8))+'px');
-        $('#weather_israel').css('right',(290-(scrolled*0.8))+'px');
+	    $('#weather_israel').css('right',(290-(scrolled*0.8))+'px');
         $('#weather_hul').css('right',(190-(scrolled*0.8))+'px');
         $('#likeddislikedforecasts').css('right',(380-(scrolled*0.8))+'px');*/
-	$('#cover_clouds-4').css('right',(150-(scrolled*2))+'px');
+	
 	
 }
 
@@ -157,7 +158,7 @@ function parallaxScroll(){
 function redrawDotNav(){
 	var section1Top =  0;
 	// The top of each section is offset by half the distance to the previous section.
-	var section2Top =  $('#more').offset().top - (($('#pics').offset().top - $('#more').offset().top) / 2);
+	var section2Top =  $('#whatmore').offset().top - (($('#pics').offset().top - $('#whatmore').offset().top) / 2);
 	var section3Top =  $('#pics').offset().top - (($('#forum').offset().top - $('#pics').offset().top) / 2);
 	var section4Top =  $('#forum').offset().top - (($(document).height() - $('#forum').offset().top) / 2);;
 	$('.main_nav a').removeClass('active');

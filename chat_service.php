@@ -40,7 +40,7 @@ function checkSpam()
 }
 function insertNewMessage ($name, $icon, $body, $category, $p_alert)
 {
-    logger("insertNewMessage");
+    
     if (empty($_SESSION['loggedin'])||($_SESSION['loggedin']=="false")){
         echo "צריך להתחבר";
         logger("empty loggedin");
@@ -53,9 +53,9 @@ function insertNewMessage ($name, $icon, $body, $category, $p_alert)
     $p_email = $_SESSION['email'];
     if ($_SESSION['isAdmin'] == 1)
 	        $name = "<span class=\"high\">".$name."</span>";
-    $msg_total_count = $_SESSION['MsgCount'] + $_SESSION['MsgStart'];
+    $msg_total_count = $_SESSION['MsgCount'] + $_SESSION['MsgStart'] + 1;
     $name .= "<div class=\"msgcount\">#".$msg_total_count."</div>";
-    if ($category == "")
+    if (($category == "")||($category == "null"))
         $category = 0;
     $query = "call InsertNewMsg ('$name','$icon', '$body', '$now', $category, '$p_email', '$p_alert')";
     logger($query);
@@ -69,6 +69,21 @@ function insertNewMessage ($name, $icon, $body, $category, $p_alert)
 	
 }
 
+function fixDiv ()
+{
+    
+    $query = "update `chat` set `body` = concat(`body`, '</div></div>') where MID(`body`, -6) <> '</div>' order by `date_chat` desc LIMIT 1";
+    logger($query);
+    $result = db_init($query, "");
+    // Free resultset 
+    @mysqli_free_result($result["result"]);
+    global $link;
+    mysqli_close($link);
+		
+	
+}
+
+
 function updateMessage ($idx, $body, $isPartialDelete)
 {
         $now = date('Y-m-d G:i:s', strtotime(SERVER_CLOCK_DIFF, time()));
@@ -78,7 +93,7 @@ function updateMessage ($idx, $body, $isPartialDelete)
 			logger("empty session in message:".$idx." ".$body);
 			return ;
 		}
-        logger("last positions:".substr ($body, strlen($body)-strlen("</div>")));
+        //logger("last positions:".substr ($body, strlen($body)-strlen("</div>")));
         if (substr ($body, strlen($body)-strlen("</div>")) != "</div>")
         {
             logger("missing </div>: ".substr ($body, strlen($body)-strlen("</div>"))." ".strlen($body)." ".strlen("</div>")." ".$body);
@@ -113,7 +128,7 @@ function AddToMessage($name, $user_icon, $body, $idx, $mood)
 {
 	//logger("in AddToMEssage");
         $orig_name = $name;
-        $msg_total_count = $_SESSION['MsgCount'] + $_SESSION['MsgStart'];
+        $msg_total_count = $_SESSION['MsgCount'] + $_SESSION['MsgStart'] + 1;
 	if ($name != "")
 		$body = nl2br($body);
         $line = getMsg($idx, false);
@@ -131,7 +146,7 @@ function AddToMessage($name, $user_icon, $body, $idx, $mood)
         
         if ($_SESSION['isAdmin'] == 1)
 	        $name = "<span class=\"high\">".$name."</span>";
-	$body = $prev_body." ".$clearboth.HIDDENSEPERATOR." <div class=\"float chataftersepreply ".$firstreplyline." \"><div class=\"float chatbodyreply ".$firstreplyline."\">".SEPERATOR."<div class=\"avatar ".$user_icon."\"></div><div class=\"postusername\">".$name."</div><div class=\"msgcount\">#".$msg_total_count."</div>"."<div class=\"chatdatereply\">".replaceDays(date('D H:i', strtotime(SERVER_CLOCK_DIFF, time())))."</div>&nbsp;".$body."</div></div>";
+	$body = $prev_body." ".$clearboth.HIDDENSEPERATOR." <div class=\"float chataftersepreply ".$firstreplyline." \"><div class=\"float chatbodyreply ".$firstreplyline."\">".SEPERATOR."<div class=\"avatar ".$user_icon."\"></div><div class=\"postusername\">".$name."</div><div class=\"chatdatereply\">".replaceDays(date('D H:i', strtotime(SERVER_CLOCK_DIFF, time())))."</div><div class=\"msgcount\">#".$msg_total_count."</div>&nbsp;".$body."</div></div>";
 	checkSpam();
         if ($_POST['private'] == "1")
         {
@@ -245,6 +260,8 @@ function msgManagement($name, $body, $mood)
 		stickUnstickMessage($_POST['idx'], "0");
 	else if (strtoupper(trim($body)) == "A")
 		SaveAppendtoSession($_POST['idx']);
+	else if (strtoupper(trim($body)) == "F")
+		fixDiv();
 	else if (isAdvancedCommand($body))
 	{
             logger("advanced command");
@@ -255,7 +272,7 @@ function msgManagement($name, $body, $mood)
 		else if(trim($commands[0]) == "M")
 			moveReplyFromTo($commands[1] - 1, $_POST['idx'], $_SESSION['APPEND_TO_MSG_IDX']);
 	}
-	else
+	else 
 		AddToMessage ($name, $_SESSION['user_icon'], $body, $_POST['idx'], $mood);
 }
 
@@ -307,31 +324,33 @@ else if((stristr($_SERVER['HTTP_REFERER'], "02ws.co") > -1 )||(stristr($_SERVER[
         //only change messages when not searching
 	if ($searchname == "")
 	{
-            	
-                
-                if ($_POST['idx'] != "")
-		{
-			if ($_SESSION['isAdmin'] == 1)
-				msgManagement($name, $body, $mood);
-			else if ($_SESSION['loggedin'] == "true")
-				AddToMessage ($name, $_SESSION['user_icon'], $body, $_POST['idx'], $mood);
-                        else
-                            logger("message id ".$_POST['idx']." ".$_SESSION['loggedin']." ".$body);
-		}
-		else if ($_SESSION['loggedin'] == "true")
-		{
-			checkSpam();
-                        if ($_POST['private'] == "1")
-                        {
-                            send_Email($body, ME, $_SESSION['email'], $name, "", array("Private Message from 02WS forum from ".$name, "הודעה פרטית מפורום ירושמיים של ".$name));
-                        }   
-                        else
-			insertNewMessage($mood.$name, $_SESSION['user_icon'], "<div class=\"float chatfirstbody\">".$body."</div>", $_REQUEST['category'], $_REQUEST['alert']);
-		}
-                else
-                {
-                    logger("idx=".$_POST['idx']." and not loggedin");
-                }
+		try {
+				if ($_POST['idx'] != "")
+				{
+					if ($_SESSION['isAdmin'] == 1)
+						msgManagement($name, $body, $mood);
+					else if ($_SESSION['loggedin'] == "true")
+						AddToMessage ($name, $_SESSION['user_icon'], $body, $_POST['idx'], $mood);
+								else
+									logger("message id ".$_POST['idx']." ".$_SESSION['loggedin']." ".$body);
+				}
+				else if ($_SESSION['loggedin'] == "true")
+				{
+					checkSpam();
+								if ($_POST['private'] == "1")
+								{
+									send_Email($body, ME, $_SESSION['email'], $name, "", array("Private Message from 02WS forum from ".$name, "הודעה פרטית מפורום ירושמיים של ".$name));
+								}   
+								else
+					insertNewMessage($mood.$name, $_SESSION['user_icon'], "<div class=\"float chatfirstbody\">".$body."</div>", $_REQUEST['category'], $_REQUEST['alert']);
+				}
+						else
+						{
+							logger("idx=".$_POST['idx']." and not loggedin");
+						}
+		} catch (Exception $e) {
+			logger( 'Caught exception in new message for the forum: '.  $e->getMessage());
+		}   
 	}
 }
 else{

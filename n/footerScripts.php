@@ -598,6 +598,8 @@ function attachEnter(){
         }
         function getMessageService(filter, start, update, lang, category)
 	{	
+
+        localStorage.setItem("category",category); 
 		if (update==1)
                     tinyMCE.triggerSave();
 		var name = $('#profileform_displayname').val();
@@ -655,7 +657,8 @@ function attachEnter(){
         {
             $('#current_forum_update_display').val('A');
             $('#current_forum_startline').val(parseInt($('#current_forum_startline').val())+limit);
-            getMessageService(limit, $('#current_forum_startline').val(), 0, lang);
+            category = localStorage.getItem("category"); 
+            getMessageService(limit, $('#current_forum_startline').val(), 0, lang, category);
         }
         function changeLang (lang)
         {

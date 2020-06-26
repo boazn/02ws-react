@@ -7,11 +7,66 @@
       daily pic loop
 
     </title>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
 	<script type="text/javascript" src="sprintf2.js"></script>
 
 	<script language="javascript" type="text/javascript">
-
+   function checkImageExists(imageSrc, good, bad) {
+      var img = new Image();
+      img.onload = good; 
+      img.onerror = bad;
+      img.src = imageSrc;
+   }
+   function getLatestImgTime(min_sub){
+      var coeff = 1000 * 60 * 10;
+      
+      var date = new Date();  //or use any other date
+      var rounded = new Date(Math.round(date.getTime() / coeff) * coeff);
+      var found = false;
+      rounded.setTime(rounded.getTime() - min_sub*60*1000);
+      var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/IMSRadar/IMSRadar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
+      //console.log(imagepath);
+      checkImageExists(imagepath,
+      function(){ 
+         
+         //alert(imagepath);
+         console.log(imagepath + " found");
+         found = true;
+         buildImageArray(rounded);
+      }, 
+      function(){ 
+         
+         if (numSearched > 8){
+            console.log("img not found. passed threshold");
+            rounded = null;
+            found = false;
+         }
+            
+      else{
+         min_sub = min_sub + 5;
+         numSearched = numSearched + 1;
+         console.log(imagepath + " not found. Searching -" + min_sub);
+         getLatestImgTime(min_sub);
+      } 
+      });
+      
+      
+         
+      /*if (imageExists(imagepath))
+         return rounded;
+      else{
+         numSearched = numSearched + 1
+         min_sub = min_sub + 5;
+         console.log("img not found. Searching " + min_sub);
+         if (numSearched > 20)
+            return false;
+         else
+            return getLatestImgTime(min_sub);
+      }*/
+     
+   }
+   
+      
 	//============================================================
 
 //                >> jsImagePlayer 1.0 <<
@@ -63,106 +118,111 @@ imageNum = new Array();       //keeps track of which images to omit from loop
 //********* SET UP THESE VARIABLES - MUST BE CORRECT!!!*********************
 <? if ($_GET['pics'] == "") $numOfPics = 10 ; else $numOfPics = $_GET['pics'];  ?>
 var numOfPics = <?=$numOfPics?>;
-
+var numSearched = 0;
 modImages = new Array();
-
-for (i = 0; i < numOfPics ; i++)
-
-{
-
-	var imagepath = sprintf("http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%02d&TotalImages=%02d&LangID=1&Location=&time=<?=$year.$month.$day.$hour.$min?>", i, numOfPics);
-	modImages[i] = imagepath;
-
-}
-<?
-	
-/*	$radarpics = getLastFilesFromDir("images/radar", $numOfPics);
-	$radarpics = array_reverse($radarpics);
-	$archradar = 0;
-	foreach ($radarpics as $rpic)
-	{
-		?>
-			var imagepath = "<?=$rpic[1]?>";
-		<?
-		echo "modImages[".$archradar."] = imagepath;";
-		$archradar = $archradar + 1;
-	}
-*/	
-?>
-
+timeImages = new Array();
+year = <?=$year?>;
+month =  <?=$month?>;
+day =  <?=$day?>;
 first_image = 1;
 
-last_image = numOfPics;
+      last_image = numOfPics;
 
- 
+      
 
-//**************************************************************************
+      //**************************************************************************
 
- 
+      
 
-//=== THE CODE STARTS HERE - no need to change anything below ===
+      //=== THE CODE STARTS HERE - no need to change anything below ===
 
 
 
-normal_delay = 1000;
+      normal_delay = 1000;
 
-delay = normal_delay;         //delay between frames in 1/100 seconds
+      delay = normal_delay;         //delay between frames in 1/100 seconds
 
-delay_step = 150;
+      delay_step = 150;
 
-delay_max = 6000;
+      delay_max = 6000;
 
-delay_min = 50;
+      delay_min = 50;
 
-dwell_multipler = 3;
+      dwell_multipler = 4;
 
-dwell_step = 1;
+      dwell_step = 1;
 
-end_dwell_multipler   = dwell_multipler;
+      end_dwell_multipler   = 1;
 
-start_dwell_multipler = 1;      // originally: dwell_multipler;
+      start_dwell_multipler = dwell_multipler;      // originally: dwell_multipler;
 
-current_image = first_image;     //number of the current image
+      current_image = first_image;     //number of the current image
 
-timeID = null;
+      timeID = null;
 
-status = 0;                      // 0-stopped, 1-playing
+      status = 0;                      // 0-stopped, 1-playing
 
-play_mode = 0;                   // 0-normal, 1-loop, 2-sweep
+      play_mode = 2;                   // 0-normal, 1-loop, 2-sweep
 
-size_valid = 0;
+      size_valid = 0;
 
- 
+      
 
-//===> Make sure the first image number is not bigger than the last image number
+      //===> Make sure the first image number is not bigger than the last image number
 
-if (first_image > last_image)
+      if (first_image > last_image)
 
-{
+      {
 
-   var help = last_image;
+         var help = last_image;
 
-   last_image = first_image;
+         last_image = first_image;
 
-   first_image = help;
+         first_image = help;
 
+      }
+      getLatestImgTime(10);
+      setInterval(getLatestImgTime, 60*1000, 10);
+
+function buildImageArray(rounded){
+   for (i = 0; i < numOfPics ; i++)
+
+      {
+         
+         var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/IMSRadar/IMSRadar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
+         modImages[i] = imagepath;
+         timeImages[i] = new Date(rounded);
+         if (i == 0){
+
+            theImages[0] = new Image();
+      	   theImages[0].src = imagepath;
+	         imageNum[0] = true;
+            document.images['animation'].src = imagepath;
+         }
+            
+         console.log("putting: " + imagepath);
+         rounded.setMinutes( rounded.getMinutes() - 5 ); 
+
+      }
+      <?
+         
+      /*	$radarpics = getLastFilesFromDir("images/radar", $numOfPics);
+         $radarpics = array_reverse($radarpics);
+         $archradar = 0;
+         foreach ($radarpics as $rpic)
+         {
+            ?>
+               var imagepath = "<?=$rpic[1]?>";
+            <?
+            echo "modImages[".$archradar."] = imagepath;";
+            $archradar = $archradar + 1;
+         }
+      */	
+      ?>
+
+      
 }
 
-
-
-
-
-//==============================================================
-
-//== All previous statements are performed as the page loads. ==
-
-//== The following functions are also defined at this time.   ==
-
-//==============================================================
-
- 
-
-//===> Stop the animation
 
 function stop()
 
@@ -250,7 +310,7 @@ function animate_fwd()
 	displayCurrentIdx();
 
    document.images['animation'].src = theImages[current_image-first_image].src;   //display image onto screen
-
+   $("#frametime").html(sprintf("%02d:%02d",timeImages[current_image-first_image].getHours(),timeImages[current_image-first_image].getMinutes()));
    document.control_form.frame_nr.value = current_image;                //display image number
 
     var loading = document.getElementById("waiting");
@@ -358,7 +418,7 @@ function animate_rev()
    displayCurrentIdx();
 
    document.images['animation'].src = theImages[current_image-first_image].src;   //display image onto screen
-
+   $("#frametime").html(sprintf("%02d:%02d",timeImages[current_image-first_image].getHours(),timeImages[current_image-first_image].getMinutes()));
    document.control_form.frame_nr.value = current_image;                //display image number
 
 
@@ -455,7 +515,7 @@ function incrementimage(number)
    displayCurrentIdx();
 
    document.images['animation'].src = theImages[current_image-first_image].src;   //display image
-
+   $("#frametime").html(sprintf("%02d:%02d",timeImages[current_image-first_image].getHours(),timeImages[current_image-first_image].getMinutes()));
    document.control_form.frame_nr.value = current_image;                //display image number
 
 }
@@ -498,7 +558,7 @@ function decrementimage(number)
    displayCurrentIdx();
 
    document.images['animation'].src = theImages[current_image-first_image].src;   //display image
-
+   $("#frametime").html(sprintf("%02d:%02d",timeImages[current_image-first_image].getHours(),timeImages[current_image-first_image].getMinutes()));
    document.control_form.frame_nr.value = current_image;                //display image number
 
 }
@@ -596,15 +656,15 @@ function launch()
    {
 
 	  document.images['animation'].src = theImages[i-first_image].src;
-
+     
       document.control_form.frame_nr.value = i;
    }
 
    // this needs to be done to set the right mode when the page is manually reloaded
 
-   change_mode (1);
+   change_mode (2);
 
-   fwd();
+   rev();
    document.getElementById("speedinterval").innerText = Math.round(1000/delay*100)/100;
    
 
@@ -721,11 +781,11 @@ function startup()
 
 	//===> Preload the first image (while page is downloading)
 
-	   theImages[0] = new Image();
+	   //theImages[0] = new Image();
 
-	   theImages[0].src = modImages[0];
+	   //theImages[0].src = modImages[0];
 
-	   imageNum[0] = true;
+	   //imageNum[0] = true;
 
 }
 
@@ -786,6 +846,7 @@ function startup()
  function displayImageIdx(idx)
  {
 	  document.images['animation'].src = theImages[idx - 1].src;
+     $("#frametime").html(sprintf("%02d:%02d",timeImages[idx - 1].getHours(),timeImages[idx - 1].getMinutes()));
 	  document.control_form.frame_nr.value = idx;
 	  current_image = idx;
 	  displayCurrentIdx();
@@ -793,7 +854,7 @@ function startup()
  }
 function imgError(image) {
     image.onerror = "";
-    image.src = "http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=&time=<?=$min.$hour.$day.$month.$year?>";
+    image.src = "";
     var img = new Image();
     img.src = image.src;
     return true;
@@ -809,10 +870,12 @@ function imgError(image) {
 
 <div style="width:100%;">
 <h1><?=$RAIN_RADAR[$lang_idx]?></h1>
+
 <div id="waiting" class="topbase" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="display:none;">
 <? if (isHeb()) echo "טוען..."; else echo "Loading...";?>&nbsp;
 <img src="images/loading.gif" alt="loading" width="32" height="32"/>
 </div>
+<div  id="wrapper" >
 <div style="clear:both;width:100px;float:<?echo get_s_align();?>;position:absolute;<?echo get_s_align();?>:-110px" <? if (isHeb()) echo "dir=\"rtl\""; ?>>                        
 <a href="javascript: func()" onclick="launch();toggle('play')">
 	<img id="play" width="80" height="80" src="images/play.png" alt="start התחל"/>
@@ -836,7 +899,7 @@ function imgError(image) {
 	</div>
 </div>
  <div id="run_title" style="display:none" class="inv_plain_3_zebra">
- <a href="javascript: func()" onclick="change_mode(1);fwd()">
+ <a href="javascript: func()" onclick="change_mode(2);fwd()">
 	<? if (isHeb()) echo "הרצה"; else echo "Play"; ?>
 </a><?=get_arrow()?><?=get_arrow()?>
 </div>
@@ -870,14 +933,19 @@ function imgError(image) {
 
 </div>
 <div style="width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:-70px;" id="radarimg" >
-
- <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=9&TotalImages=10&LangID=1&Location=&time=<?=$year.$month.$day.$hour.$min?>" width="570px" height="570px" alt="IMS radar" style="z-index:0"/>
-
+ <div id="frametime" class="topbase"></div>
+ <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="" width="570px" height="570px" alt="IMS radar" style="z-index:0"/>
+ 
+ 
  <div style="margin:0.5em">
 	<img src="images/radar_scale_eng.jpg" alt="scale of rain rate" /><br />
 	<? echo $SOURCE[$lang_idx].": ".$IMS[$lang_idx];?>
 </div>
+</div><!-- id="wrapper" -->
 </div>
+<div style="margin-<?echo get_inv_s_align();?>:-100px">
+<iframe src="https://geshem.space/" width="520px" height="640px" scrolling="auto" id="iframegeshem" class="base" allowtransparency="true" marginHeight="0" marginWidth="0" frameborder="0" ></iframe>
+ </div>
 <div style="float:<?echo get_s_align();?>;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
 <div id="adunit2">
 <script type="text/javascript"><!--
@@ -900,7 +968,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </div>
 </div>
 </div>
-<div style="width:120px;left:170px;top:520px;position:absolute;z-index:2">
+<div style="width:120px;right: -100px;top: 780px;position:absolute;z-index:2">
 
 	
 

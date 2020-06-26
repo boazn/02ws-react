@@ -8,7 +8,7 @@ $sig_title = $sig[0]['sig'][$lang_idx];
 $imagefile = "phpThumb.php?src=".getUpdatedPic()."&amp;w=600&amp;h=292&amp;zc=C&amp;fltr[]=gam|0.8";//&amp;fltr[]=cont|50
 /////////////////////////////////////////
 $floated = false;
- $forecastHour = apc_fetch("forecasthour");
+ $forecastHour = $mem->get("forecasthour");
 ////////////////////////////////////////
 	$overlook_d = $OVERLOOK[$lang_idx]." "."<a href=\"javascript:void(0)\" class=\"info\">(?)<span class=\"info\">".$OVERLOOK_EXP[$lang_idx]."</span></a><br />";
 ?>
@@ -177,7 +177,7 @@ $floated = false;
 				
 			</div>
 		</div>
-		<? if (!stristr(get_url(), "forecast")) {include_once "picasaproxy.php";?>
+		<? if (!stristr(get_url(), "forecast")) {?>
 		
 		<div id="sigweather_slider">
 				<ul id="sliderselector">

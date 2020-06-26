@@ -181,13 +181,13 @@
 			return $DEW[$lang_idx]." "."(".$current->get_tempunit().")";
 			break;
 		case 7:
-			return $WIND_SPEED[$lang_idx]." "."(".$KNOTS[$lang_idx].")";
+			return $WIND_SPEED[$lang_idx]." "."(".$KMH[$lang_idx].")";
 			break;
 		case 8:
 			return $WIND_DIR[$lang_idx];
 			break;
 		case 9:
-			return $HIGH[$lang_idx]." ".$WIND_SPEED[$lang_idx]." "."(".$KNOTS[$lang_idx].")";
+			return $HIGH[$lang_idx]." ".$WIND_SPEED[$lang_idx]." "."(".$KMH[$lang_idx].")";
 			break;
 		case 10:
 			return "High ".$WIND_DIR[$lang_idx];

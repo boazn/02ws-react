@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/bin/wget "www.02ws.co.il" --timeout 6 --tries=1 -O - 2>&1 | grep "www.02ws.co.il" |  echo "Subject: The site is OK" || service php7.0-fpm restart |  echo "Subject: The site is down, restarting fpm..." | sendmail  02ws.yerushamaim@gmail.com

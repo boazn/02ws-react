@@ -74,6 +74,7 @@ check_sourceview();
 #
 ############################################################################
 include('include.php');
+include_once("start.php");
 $SITE['version']        = "2.0";
 $SITE['home']           = "/home/boazn/public/02ws.com/public";
 $SITE['datafile']       = "realtimembmysql.txt";
@@ -121,7 +122,7 @@ if ($fp) {
        $info .= "'".$value."', ";
 	   
     }
-	$info .= "null, null, ".$pm10.", ".$pm25;
+	$info .= $current->get_thw().", null, ".$pm10.", ".$pm25;
     $info .= ")\n";
     if (fileIsNew())
 	{
@@ -164,7 +165,8 @@ db_init($info, "");
 
 if ($SITE['debug']) {
     echo "COMPLETE<br/>\n";
-}   
+} 
+//log($info);  
 // We are done
 exit;
 

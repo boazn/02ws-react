@@ -17,7 +17,7 @@ else if ($size == 'l')
 else if ($_REQUEST['section'] != "")
     $width = "570px";
 else
-    $width = "1200px";
+    $width = "1100px";
 ?>
 <!DOCTYPE html>
 <html  <? if (isHeb()) echo "lang=\"he\" xml:lang=\"he\""; ?> xmlns="http://www.w3.org/1999/xhtml">
@@ -80,8 +80,14 @@ else
      background-size: cover;
     
 }
+.spriteB.up, .spriteB.down{
+    width: 15px;
+    height: 20px;
+    background-size: 0.3em;
+}
  body, .inparamdiv{   
-     font-size:34px
+     font-size:38px;
+     font-weight:bold;
  }
  .inparamdiv{
      width:500px;
@@ -89,20 +95,20 @@ else
  }
  #latestnow
  {
-     padding: 2.5em 0.2em 1em 0.2em;
+     padding: 2em 0.2em 1em 0.2em;
      margin: 0 auto;
     
  }
- #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
-     font-size:1.55em;width:100%;top:0.2em
+ #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw, #itfeels_thw{
+     width:100%;top:0.2em;
  }
  #statusline{
-     font-size: 1.55em;margin-top:-4.5em;
+     font-size: 1.8em;margin-top:-3.9em;font-weight:bold;
  }
  #laundryidx{
      position:absolute;
     left: 9.2em;
-    top: 8.9em;
+    top: 6.9em;
  }
  #laundryidx img{
      width:120px;height:120px
@@ -114,31 +120,58 @@ else
     color:#ffffff
     <?}?>
  }
+ #date
+ {
+     font-size:1em;
+     margin-top: 0.1em; 
+ }
+ #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw, #itfeels_thw, #itfeels{
+    position: initial;
+    font-size: 1.6em;
+ }
+ .wind_icon{
+ background-size: 390%;
+    width: 100px;
+    height: 34px;
+ }
+ .moderate_wind{
+    background-position: -100px -5px;
+ }
+ .light_wind{
+    background-position: -180px -5px;
+ }
+ .strong_wind{
+    background-position: -10px -5px;
+ }
  #logo
  {
      
-    height: 112px;
-    background-size: 112px;
-    margin-<?echo get_s_align();?>: 380px;
-    margin-top: 0.4em;
+    height: 90px;
+    background-size: 90px;
+    margin-<?echo get_s_align();?>: 395px;
+    margin-top: 0.3em;
+    padding-top: 0.35em;
      width:45%;
      position:relative;
      text-align: center;
      display: inline-block;
      font-family: nextexitfotlight;
-     font-size: 1.5em;
+     font-size: 1.8em;
     
-      background-position: <?echo get_s_align();?> 5px top;
+      background-position: <?echo get_s_align();?> 0px top;
  }
  #currentinfo_container
  {
-     margin-top: -1.5em
+     margin-top: -1.5em;
+     margin: auto 9em;
  }
  #what_is_h{
-     font-size: 1.4em;
-     line-height: 1.2em;
-     margin-<?=get_s_align()?>:-380px;
-     top: -80px;
+     font-size: 1.5em;
+     line-height: 1em;
+     margin-<?=get_s_align()?>:-250px;
+     top: -190px;
+     width:50%;
+     font-weight: bold;
      position: absolute;
     <? if (!$current->is_light()||isRaining()) { ?>
     color:#ffffff
@@ -147,14 +180,15 @@ else
  }
  .paramunit{
      font-family: Alef;
-     font-size:0.7em
+     font-size:0.2em
      
  }
  #tempdivvalue
 {
     font-weight: normal;
     font-family: nextexitfotlight;
-    font-size:6.5em
+    font-size:6.5em;
+    margin-top: -20px;
 }
 #heatindex
 {
@@ -163,15 +197,19 @@ else
 #windy
 {
     width: 10%;
-    left: 7.2em;
-    top: 3.6em;
+    left: 4em;
+    top: 0.2em;
+}
+#curerentcloth
+{
+    left:6em;
 }   
 #shortforecast
 {
-    width: 30%;
+    width: 33%;
     position:absolute;
     font-family:nextexitfotlight;
-    font-size: 1.1em;
+    font-size: 1.3em;
     <?=get_inv_s_align()?>:-30px;
     margin-top: -410px;
     <? if (!$current->is_light()||isRaining()) { ?>
@@ -187,10 +225,7 @@ else
 {
     font-size:1.2em
 }
-#currentinfo_container
-{
-    margin: auto 10em;
-}
+
 </style>
 </head>
 <body>
@@ -200,7 +235,9 @@ else
 <div style="width:<?=$width?>" <? if (isheb()) echo "dir=\"rtl\""; ?> id="main_cellphone_container">
 
 <div class="smalllogo" id="logo">
+<span id="date">
 <? if (isHeb()) echo $dateInHeb; else echo $date;?>
+</span>
 </div>
 <? if ($_GET['section'] != "") { ?>
 <div id="tohome" class="invfloat topbase"><a href="<? echo BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?lang=".$lang_idx;?>"  title="<? echo $HOME_PAGE[$lang_idx];?>" class="hlink">
@@ -211,35 +248,35 @@ else
 else {?>
 <div id="currentinfo_container">
 <div id="latestnow" class="inparamdiv">
+<div id="itfeels">
  <?$itfeels = array();
    $itfeels = $current->get_itfeels();
-    if ($itfeels[0] == "windchill" ){ ?>
-            <div id="itfeels_windchill"> 
-            <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-                    <? echo $IT_FEELS[$lang_idx]; ?>
-                    <span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo min($current->get_windchill(), $current->get_thw())."&#176;"; ?></span>
-             </a> 
-            </div>
+   if ($current->is_sun()) { ?>
+    <? echo $IT_FEELS[$lang_idx]; ?>
+     <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+           
+            <span dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span>
+     </a><img src="images/shadow.png" width="15" title="<? echo $IN_THE_SUN[$lang_idx]."/".$SHADE[$lang_idx]; ?>" alt="<? echo $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" /><? }
+else if (!empty($itfeels[0]))
+    echo $IT_FEELS[$lang_idx]; 
+if ($itfeels[0] == "windchill" ){ ?>
+     <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<? echo $_SERVER['SCRIPT_NAME']; ?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+            <span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo $itfeels[1]; ?></span> 
+     </a>
+<? } 
+else if ($itfeels[0] == "heatindex"){ ?>
+<a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+<span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1];  ?></span> 
+</a>
 
-    <? } 
-    else if ($itfeels[0] == "heatindex"){  ?>
-            <div class="" id="itfeels_heatidx">
-            <a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-                    <? echo $IT_FEELS[$lang_idx]; ?>
-                    <span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo max($current->get_HeatIdx(), $current->get_thw())."&#176;";  ?></span>
-             </a> 
-            </div>
-    <?} else if ($itfeels[0] == "thsw"){?>
-                                        <div class="" id="itfeels_thsw">
-                                         <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-                                                <? echo $IT_FEELS[$lang_idx]; ?>
-                                                <span dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1]."&#176;";  ?></span>
-                                                <? echo " ".$IN_THE_SUN[$lang_idx]; ?>
-                                         </a> 
-                                        </div>
-                            <?}?>
+<?}else if ($itfeels[0] == "thw"){?>
+                                <a title="<?=$THW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=thw.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+                                <span id="itfeels_thw" dir="ltr" class="value" title="<?=$THW[$lang_idx]?>"><? echo $itfeels[1];  ?></span> 
+                                </a>
+                              <?}?>
+    </div>
 <div id="tempdivvalue">
-<a href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"><? echo $current->get_temp()."<span class=\"paramunit\">&#176;c"; ?></span></a>
+<a href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"><? echo $current->get_temp()."<div class=\"paramunit\">&#176;</div><div class=\"param\">".$current->get_tempunit()."</div></a>"; ?>
 </div>
 
 <div id="statusline">
@@ -277,7 +314,7 @@ else {?>
     </ul>
 </div>
 </div>
-<div id="spacer" style="line-hight:4em;clear:both">&nbsp;</div>    
+<div id="spacer" style="line-height: 0.1em;clear:both">&nbsp;</div>    
     
 <!-- Parallax  midground clouds -->
 	<!-- Parallax  midground clouds -->
@@ -342,11 +379,29 @@ else {?>
 <? if (isSnowing()||(stristr($template_routing, 'snow'))) { ?>
 <script src="js/snow.js"></script>
 <? }?>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"  type="text/javascript"></script>
-<script src="footerScripts.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"  type="text/javascript"></script>
+<script src="footerScripts250320.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
 <script type="text/javascript">
 var coldmeter_size = 40;
 startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
+function refreshContent(){
+        $.ajax({
+        type: "GET",
+        url: "02wsjson.txt",
+        beforeSend: function(){$(".loading").show();}
+        }).done(function( jsonstr  ) {
+        try{
+
+                fillAllJson(jsonstr);
+                $(".loading").hide();
+        }
+        catch (e) {
+                //alert ('error:' + e);
+        }
+        });
+    }
+    
+    setInterval(refreshContent, 60000);
 </script>
 </body>
 </html>

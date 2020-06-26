@@ -1,4 +1,4 @@
-<?
+<?php
 $station_code = TAF_STATION;//TAF_STATION; 
 $shift_forecast_time = 0;
 $taf_file = "cache/".$station_code.".txt"; 
@@ -15,34 +15,50 @@ $endTime = "";
 $startDateTime = "";
 $endDateTime = "";
 $plusminus = 0;
-list($fday, $fmonth, $fyear) = explode('/', $dayF."/".$monthF."/".$yearF);
-list($firstdayinforecast, $firstdayinforecast_month) = explode('/', $fday_l);
-$yest_date = @mktime (0, 0, 0, $fmonth, $fday-1 , $fyear);
-$todayForecast_date = date ("Y-m-d", @mktime (0, 0, 0, $fmonth, $fday , $fyear));
-$tommorrowForecast_date = date ("Y-m-d", @mktime (0, 0, 0, $fmonth, $fday+1 , $fyear));
-$tommorrowForecast_day = date ("d", @mktime (0, 0, 0, $fmonth, $fday+1 , $fyear));
-$atommorrowForecast_date = date ("Y-m-d", @mktime (0, 0, 0, $fmonth, $fday+2 , $fyear));
+$currentDay = new ForecastDay();
+$currentDay->set_temp_day($today->get_hightemp(), null);
+$currentDay->set_temp_night(round($current->get_temp()), null);
+$currentDay->set_temp_morning($today->get_lowtemp(), null);
+$currentDay->set_hum_day($today->get_hum_day(), null);
+$currentDay->set_hum_night($todayForecast->get_hum_night(), null);
+$currentDay->set_hum_morning($today->get_hum_morning(), null);
 logger("starting forecastlib...from ".$forecastlib_origin);
-function calcForecastTemp($time_at_day)
- {
-        global $todayForecast, $passedMidnight, $tomorrowForecast, $fday, $fday_l, $todayForecast_date, $tommorrowForecast_day, $today, $current, $firstdayinforecast;
-        $currentDay = new ForecastDay();
-        $currentDay->set_temp_day($today->get_hightemp(), null);
-        $currentDay->set_temp_night(round($current->get_temp()), null);
-        $currentDay->set_temp_morning($today->get_lowtemp(), null);
-         if ($fday != $firstdayinforecast)            //24h starts in yesterday
-		$forcastday = ($passedMidnight? $todayForecast : $currentDay);
+function getForecastDay($fday, $firstdayinforecast){
+        global $todayForecast, $currentDay, $passedMidnight, $nextTomorrowForecast, $forcastday, $tomorrowForecast;
+        
+        if ($fday != $firstdayinforecast){
+                //24h starts in yesterday
+                switch ($passedMidnight){
+                        case 2:
+                        $forcastday = $nextTomorrowForecast;
+                        break;
+                        case 1:
+                        $forcastday = $todayForecast;
+                        break;
+                        default:
+                        $forcastday = $currentDay;
+                        break;
+                }
+             
+       }        
         else if ($fday == $firstdayinforecast) //24h starts in todayForecast
-		$forcastday = ($passedMidnight? $tomorrowForecast : $todayForecast);
-       
-	$MAX_TIME = 14;
-        $MULTIPLE_FACTOR = 0.9; //how quickly temp rise 0.9 - 1.2
-        if (GMT_TZ == 3) {$MAX_TIME = 15;$MULTIPLE_FACTOR = 1.1;}
-	//if ($passedMidnight && ($fday_l == $tommorrowForecast_day))
+                $forcastday = ($passedMidnight? $tomorrowForecast : $todayForecast);
+               
+        //logger("forcastday null returned=".is_null($forcastday)." ".$fday." ".$firstdayinforecast." ".$passedMidnight);
+             
+        return $forcastday;
+}
+function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR)
+ {
+        global $todayForecast, $passedMidnight, $nextTomorrowForecast, $tomorrowForecast, $fday, $todayForecast_date, $tommorrowForecast_day, $today, $current, $firstdayinforecast;
+                
+        //if ($passedMidnight && ($firstdayinforecast == $tommorrowForecast_day))
 	//		$forcastday = $todayForecast;
        
-        if ($_GET['debug'] >= 1){
+        if ($_REQUEST['debug'] >= 1){
                 echo "<br>";
+                echo "MAX_TIME=", $MAX_TIME;
+                echo "<br>MULTIPLE_FACTOR= ",$MULTIPLE_FACTOR;
                 echo "<br>time_at_day= ",$time_at_day;
                 echo "<br>current temp=".$current->get_temp();
                 echo "<br>today high temp=".$today->get_hightemp();
@@ -53,14 +69,19 @@ function calcForecastTemp($time_at_day)
                 echo "<br>passedMidnight=".$passedMidnight;
                 echo "<br>get_temp_morning= ",$forcastday->get_temp_morning();
                 echo "<br>get_temp_day= ",$forcastday->get_temp_day();
-		echo "<br>get_temp_night= ",$forcastday->get_temp_night();
+                echo "<br>get_temp_night= ",$forcastday->get_temp_night();
+                echo "<br>tsh - time()= ",($tsh - time());
+                echo "<br>prevTempHour= ",$prev_temp;
+               
 
         }
            
         
-       if ($time_at_day <= 3)
-                $tempHour = $forcastday->get_temp_morning() + 1;
-
+       if ($time_at_day <= 1){
+                $tempHour = round(($prev_temp + $forcastday->get_temp_morning())/2); 
+       }
+        elseif ($time_at_day > 1 && $time_at_day <= 3)
+                $tempHour = round(($prev_temp + $forcastday->get_temp_morning())/2);
         elseif ($time_at_day > 3 && $time_at_day < 7)
                 $tempHour = $forcastday->get_temp_morning();
 
@@ -68,45 +89,54 @@ function calcForecastTemp($time_at_day)
                         $diff = $forcastday->get_temp_day() - $forcastday->get_temp_morning();
                         $tempHour = round($forcastday->get_temp_morning() + (($time_at_day - ($MAX_TIME - 1 - 7))/($MAX_TIME - 1 - 7))*$diff*$MULTIPLE_FACTOR);
         }
-        elseif ($time_at_day >= ($MAX_TIME - 1) && $time_at_day <= $MAX_TIME)
-                $tempHour = $forcastday->get_temp_day();
+        elseif ($time_at_day >= ($MAX_TIME - 1) && $time_at_day <= ($MAX_TIME+1)){
+                
+                $tempHour = round(($prev_temp + $forcastday->get_temp_day())/2);
+        }
+               
 
-        elseif ($time_at_day > $MAX_TIME && $time_at_day <= 21){
+        elseif ($time_at_day > $MAX_TIME+1 && $time_at_day <= 21){
                         $diff = $forcastday->get_temp_day() - $forcastday->get_temp_night();
                         $tempHour = round($forcastday->get_temp_day() - (($time_at_day - $MAX_TIME)/(20 - $MAX_TIME + 1))*$diff);
         }
        elseif ($time_at_day >= 22 && $time_at_day <= 23)
                 $tempHour = $forcastday->get_temp_night() - 1;
+       if ($_REQUEST['debug'] >= 1){
+              echo "<br>average of tempHour and current temp:".round(($tempHour + $current->get_temp())/2);
+              echo "<br>average of tempHour and 2current temp:".round(($tempHour + (2*$current->get_temp()))/3);
+       }
+        
+       if ($tsh - time() <= 3000){
+                $tempHour =   round($prev_temp);
+       }
+        elseif  ($tsh - time() <= 4800){
+                $tempHour = round(($tempHour + (2*$current->get_temp()))/3);
+        }
+       elseif  ($tsh - time() <= 9600)
+               $tempHour = round(($tempHour + $current->get_temp())/2);
+      if ($_REQUEST['debug'] >= 1)
+                echo "<br><strong>tempHour</strong>=".$tempHour;
+        if ($tempHour == 9)
+        {
+                logger("tempHour = 9 : tsh - time()=".$tsh - time()." time_at_day=".$time_at_day." prev_temp=".$prev_temp." get_temp=".$current->get_temp());
+        }
+
       return $tempHour;
  }
- function calcForecastHum($time_at_day)
+ function calcForecastHum($time_at_day, $forcastday)
  {
-        global $todayForecast, $passedMidnight, $threeHours, $tomorrowForecast, $fday, $fday_l, $todayForecast_date, $tommorrowForecast_day, $today, $current, $firstdayinforecast;
-        $currentDay = new ForecastDay();
-        $currentDay->set_hum_day($today->get_hum_day(), null);
-        $currentDay->set_hum_night($todayForecast->get_hum_night(), null);
-        $currentDay->set_hum_morning($today->get_hum_morning(), null);
-         if ($fday != $firstdayinforecast)            //24h starts in yesterday
-		$forcastday = ($passedMidnight? $todayForecast : $currentDay);
-        else if ($fday == $firstdayinforecast) //24h starts in todayForecast
-		$forcastday = ($passedMidnight? $tomorrowForecast : $todayForecast);
-       
-	$MAX_TIME = 14;
+        global $currentDay, $todayForecast, $passedMidnight, $threeHours, $nextTomorrowForecast, $tomorrowForecast, $fday, $todayForecast_date, $tommorrowForecast_day, $today, $current, $firstdayinforecast;
+        
+        $MAX_TIME = 14;
         $MULTIPLE_FACTOR = 0.9; //how quickly temp rise 0.9 - 1.2
         if (GMT_TZ == 3) {$MAX_TIME = 15;$MULTIPLE_FACTOR = 1.1;}
-	//if ($passedMidnight && ($fday_l == $tommorrowForecast_day))
-	//		$forcastday = $todayForecast;
-       
-        if ($_GET['debug'] >= 1){
-                echo "<br>";
-                echo "<br>time_at_day= ",$time_at_day;
-                echo "<br>current hum=".$current->get_hum();
-                echo "<br>today high hum=".$today->get_highhum();
-                echo "<br>today low hum=".$today->get_lowhum();
-                echo "<br>tommorrowForecast_day=".$tommorrowForecast_day;
-                echo "<br>firstdayinforecast=".$firstdayinforecast;
-                echo "<br>fday=".$fday;
-                echo "<br>passedMidnight=".$passedMidnight;
+	//if ($passedMidnight && ($firstdayinforecast == $tommorrowForecast_day))
+        //		$forcastday = $todayForecast;
+        $forcastday = new ForecastDay();
+        $forcastday = $todayForecast;      
+        
+        if ($_REQUEST['debug'] >= 1){
+                
                 echo "<br>get_hum_morning= ",$forcastday->get_hum_morning();
                 echo "<br>get_hum_day= ",$forcastday->get_hum_day();
 		echo "<br>get_hum_night= ",$forcastday->get_hum_night();
@@ -155,7 +185,7 @@ function calcForecastTemp($time_at_day)
         }
        elseif ($time_at_day >= 22 && $time_at_day <= 23)
                 $hourHum = $forcastday->get_hum_night();
-        if ($_GET['debug'] >= 1){
+        if ($_REQUEST['debug'] >= 1){
                  echo "<br>diff=".$diff;
          }
       return $hourHum;
@@ -185,7 +215,7 @@ function rainExistsInTaf ($forecast_title, $priority)
         global $BETWEEN, $FROM, $TO, $RAIN_WILL_STOP, $lang_idx, $RAIN, $DRIZZLE, $HAIL;
         $rainStoppedExists = false;
         // if rain is on the same segment - it does not exist
-        if ($_GET["debug"] >= 3)
+        if ($_REQUEST["debug"] >= 3)
                 echo "rainExistsInTaf: last: ".$forecast_title[count($forecast_title) - 1]." beforelast: ".$forecast_title[count($forecast_title) - 2]."<br/>";
 
         if ((stristr($forecast_title[count($forecast_title) - 1], $RAIN[$lang_idx])) ||
@@ -221,7 +251,7 @@ function FromExistsInTaf ($forecast_title)
 
 function getWindSpeed($windstr)
 {
-        return substr($windstr, 3, 2);
+        return substr($windstr, 3, 2)*2;
 }
 function getStartTime ($timerange)
 {
@@ -237,7 +267,7 @@ function getStartTime ($timerange)
 function getPlusMinus ($starthour, $endhour)
 {
     $avTime = getAverageTime ($starthour, $endhour);
-    if ($_GET['debug'] > 3)
+    if ($_REQUEST['debug'] > 3)
    echo "avtime=".$avTime." start=".$starthour." end=".$endhour;
     if ($avTime < $starthour)
      return ($avTime + 24) - $starthour;
@@ -329,158 +359,186 @@ function isTom ($timetaf, $timeFromTo)
 function isLastTokenIsProb()
 {
         global $lang_idx, $forecast_title, $GOOD_CHANCE_FOR, $LOW_CHANCE_FOR;
-        //if ($_GET["debug"] >= 3)
+        //if ($_REQUEST["debug"] >= 3)
         //    echo "<br />LastToken:".trim($forecast_title[count($forecast_title)-2]);
     return (trim($forecast_title[count($forecast_title)-2][$lang_idx])==trim($LOW_CHANCE_FOR[$lang_idx])||trim($forecast_title[count($forecast_title)-2][$lang_idx])==trim($GOOD_CHANCE_FOR[$lang_idx]));
 }
  
+
+
+function extendValuesForPlusMinus(){
+    //extend rain to plusminus values
+    global $forecastHour;
+    $index_hour = 0;
+    //logger("extend rain to plusminus values");
+    foreach ($forecastHour as &$hour_f){
+                if ($hour_f['plusminus'] > 0){
+                        for ($i=1; $i <= $hour_f['plusminus'] ; $i++){
+                                //logger("forecastHour".$forecastHour[$index_hour]['time']." ".$index_hour." ".$i." priority:".$forecastHour[$index_hour]['priority']);
+                                if ($forecastHour[$index_hour]['priority'] >= $forecastHour[$index_hour-1]['priority']) {//priority going up
+                                        if ($index_hour-$i > 0){
+                                                $forecastHour[$index_hour-$i]['rain'] = $hour_f['rain'];
+                                                if ($_REQUEST["debug"] >= 3)
+                                                echo( "<br/>".$forecastHour[$index_hour]['time'].": priority going up plusminus=".$hour_f['plusminus']." set forecast time=".$forecastHour[$index_hour-$i]['time']." into ".$hour_f['rain']." ".$hour_f['icon']." ".$hour_f['title'][0]." ".$hour_f['wind']);
+                                      
+                                         }
+                                        
+                                }else{//priority going down
+                                        if ($index_hour+$i < count($forecastHour)){
+                                               //$forecastHour[$index_hour+$i]['rain'] = $hour_f['rain'];
+                                              if ($_REQUEST["debug"] >= 3)
+                                              echo("<br/>".$forecastHour[$index_hour]['time'].": priority going down plusminus=".$hour_f['plusminus']." set forecast time=".$forecastHour[$index_hour+$i]['time']." into ".$hour_f['rain']." ".$hour_f['icon']." ".$hour_f['title'][0]." ".$hour_f['wind']);
+                                        
+                                        }
+        
+                                }
+                                
+                        }
+                }
+       $index_hour++;  
+    }
+    return $forecastHour;
+}
 function updateForecastHour($currentPri, $title, $icon){
     global $forecastHour, $startDateTime, $plusminus, $endDateTime, $new_line, $same_sigment, $year, $priority, $forecast_title, $isProb, $prob_mag;
 
-                if ($_GET["debug"] >= 3)
-                        {
-                                echo "inUpdateForecastHour--> startDateTime=";
-                                if ($startDateTime > 0)
-                                        echo date(" H d/m/Y", $startDateTime);
-                                echo " endDateTime=";
-                                if ($endDateTime > 0)
-                                        echo date(" H d/m/Y", $endDateTime);
+        if ($_REQUEST["debug"] >= 3)
+        {
+                echo "inUpdateForecastHour--> startDateTime=";
+                if ($startDateTime > 0)
+                     echo date(" H d/m/Y", $startDateTime);
+                echo " endDateTime=";
+                if ($endDateTime > 0)
+                     echo date(" H d/m/Y", $endDateTime);
 
-                                echo  "title=".$title[0]." CurrentPri=".$currentPri;
-                        }
-
+                echo  "title=".$title[0]." CurrentPri=".$currentPri;
+        }
+    
     foreach ($forecastHour as &$hour_f){
-                        $currentDateTime = $hour_f['currentDateTime'];
+        
+        $currentDateTime = $hour_f['currentDateTime'];
         if (($currentDateTime == $startDateTime) && $plusminus > 0)	
             $hour_f['plusminus'] = $plusminus;
-        if ((($currentDateTime >= $startDateTime) &&
-            ($currentDateTime <= $endDateTime))||
-                                (($currentDateTime >= $startDateTime) &&
-            ($endDateTime==""))||
+        if ((($currentDateTime >= $startDateTime) && ($currentDateTime <= $endDateTime))||
+            (($currentDateTime >= $startDateTime) && ($endDateTime==""))||
             (($startDateTime=="")&&($endDateTime==""))){
-            if ($_GET["debug"] >= 3)
-            echo "<br />newline=".$new_line." forecast_title=".count($forecast_title)." p=".$hour_f['priority']." icon=".$icon." plusminus=".$hour_f['plusminus']." in ".date("H d/m/y", $hour_f['currentDateTime'])." (".$hour_f['time']."): ";
-            /*if (($icon != "")&&($new_line))
-                                {
-                $hour_f['icon'] = $icon;
-                                        if ($_GET["debug"] >= 3)
-                                                 echo " icon into ".$icon;
-                                }*/
-                                if ($icon == "wind"){
-                                        $hour_f['wind'] = $title;
-                                        if ($_GET["debug"] >= 3){
-                                                echo " wind into ".$title;
-                                        }
-                                        continue;
-                                }
+               if ($_REQUEST["debug"] >= 3)
+                echo "<br />newline=".$new_line." forecast_title=".count($forecast_title)." p=".$hour_f['priority']." icon=".$icon." plusminus=".$hour_f['plusminus']." in ".date("H d/m/y", $hour_f['currentDateTime'])." (".$hour_f['time']."): ";
+            
+                if ($icon == "wind"){
+                        $hour_f['wind'] = $title;
+                        if ($_REQUEST["debug"] >= 3){
+                                echo " wind into ".$title;
+                        }
+                        continue;
+                }
 
-             $last_priority = $hour_f['priority'];
-             if (($icon != "")
-                         &&(($currentPri > $hour_f['priority'] )||($new_line)))
-                {
+              $last_priority = $hour_f['priority'];
+              if (($icon != "") &&(($currentPri > $hour_f['priority'] )||($new_line))){
                         $forecast_img = $icon;
                         if (($currentPri <= 55)&&(($hour_f['time']>19)||($hour_f['time']<6)))
                               $forecast_img =  ($currentPri < 30) ? "forcast_moon.png" : "moonpc.png";
                           $hour_f['icon'] = $forecast_img;
-                        if ($_GET["debug"] >= 3){
+                        if ($_REQUEST["debug"] >= 3){
                                  echo " icon into ".$forecast_img;
                                  echo " p into ".$currentPri;
                                  }
                 }
-
-                 if ((($last_priority <= 35)&&(!$isProb))||(($new_line)&&(!isLastTokenIsProb())))
-                 {
-                        $hour_f['title'] = $title;
-                        if ($_GET["debug"] >= 3)
-                         echo	" + title ".$title[0]." truncated"; 
-                 }
-                 else if (($currentPri > $hour_f['priority'] )||(isLastTokenIsProb()))
-                {   
-                        $comatoappend = " ";
-                        if ((!isLastTokenIsProb())&&(count($hour_f['title'])>0)) $comatoappend = ", ";
-                        {
-                            $hour_f['title'][0] .= $comatoappend.$title[0];
-                            $hour_f['title'][1] .= $comatoappend.$title[1];
-                       }
-                        
-                        if ($_GET["debug"] >= 3)
-                         echo	" + title ".$title[0]." appended"; 
-                 }
-                 if ($currentPri > 65){
+                if ($currentPri > 65){
                         $hour_f['rain'] = 80;
                         if ($isProb){
                             if ($prob_mag == Chance::Low) $hour_f['rain'] = 30;
+                            elseif ($prob_mag == Chance::VLow) $hour_f['rain'] = 10;
                             elseif ($prob_mag == Chance::Good) $hour_f['rain'] = 60;
                         }
                 }
                 else
                     $hour_f['rain'] = 0;
-                 if ($_GET["debug"] >= 3)
+                 if ((($last_priority <= 35)&&(!$isProb))||(($new_line)&&(!isLastTokenIsProb()))){
+                        $hour_f['title'] = $title;
+                        if ($_REQUEST["debug"] >= 3)
+                         echo	" + title ".$title[0]." truncated"; 
+                 }
+                 else if (($currentPri > $hour_f['priority'] )||(isLastTokenIsProb())){   
+                        $comatoappend = " ";
+                        if ((!isLastTokenIsProb())&&(count($hour_f['title'])>0)) $comatoappend = ", ";{
+                            $hour_f['title'][0] .= $comatoappend.$title[0];
+                            $hour_f['title'][1] .= $comatoappend.$title[1];
+                       }
+                       if ($hour_f['rain'] > 0){
+                        $hour_f['title'][0] .= $comatoappend.$hour_f['rain']."%";
+                        $hour_f['title'][1] .= $comatoappend.$hour_f['rain']."%"; 
+                       }
+                       
+                        if ($_REQUEST["debug"] >= 3)
+                         echo	" + title ".$title[0]." appended"; 
+                 }
+                 
+                 if ($_REQUEST["debug"] >= 3)
                     echo " + rain=".$hour_f['rain'];
                  
                  $hour_f['priority'] = $currentPri;
 
-            if ((((!$new_line)||($same_sigment))&&($currentPri > 40))||(($currentPri > $hour_f['priority'])&&($hour_f['priority']>50)))
-                                {
+            if ((((!$new_line)||($same_sigment))&&($currentPri > 40))||(($currentPri > $hour_f['priority'])&&($hour_f['priority']>50))){
 
-                                    /* if (($icon != "")&&($currentPri > $hour_f['priority'] ))
-                                        {
-                                                $hour_f['icon'] = $icon;
-                                                $hour_f['priority'] = $currentPri;
-                                                if ($_GET["debug"] >= 3){
-                                                         echo " icon into ".$icon;
-                                                         echo " p into ".$hour_f['priority'];
-                                                         }
-                                        }   
-                                        $hour_f['title'] .= $title."<br />";
-                                        if ($_GET["debug"] >= 3)
-                                         echo	" + title appended<br />";*/
-                                }
-                  else
-                                {
-                                   /* if (($icon != "")&&($currentPri > $hour_f['priority']))
-                                        {
-                                                $hour_f['icon'] = $icon;
-                                                if ($_GET["debug"] >= 3)
-                                                         echo " icon into ".$icon;
-                                        }
-                                        $hour_f['title'] = $title."<br />";
-                                        $hour_f['priority'] = $currentPri;
-                                        if ($_GET["debug"] >= 3){
-                                                          echo " p into ".$hour_f['priority'];
-                                                         echo	" + title appended<br />";
-                                                         }*/
+                        /* if (($icon != "")&&($currentPri > $hour_f['priority'] ))
+                        {
+                                $hour_f['icon'] = $icon;
+                                $hour_f['priority'] = $currentPri;
+                                if ($_REQUEST["debug"] >= 3){
+                                                echo " icon into ".$icon;
+                                                echo " p into ".$hour_f['priority'];
+                                                }
+                        }   
+                        $hour_f['title'] .= $title."<br />";
+                        if ($_REQUEST["debug"] >= 3)
+                                echo	" + title appended<br />";*/
+                }
+              else{
+                        /* if (($icon != "")&&($currentPri > $hour_f['priority']))
+                        {
+                                $hour_f['icon'] = $icon;
+                                if ($_REQUEST["debug"] >= 3)
+                                                echo " icon into ".$icon;
+                        }
+                        $hour_f['title'] = $title."<br />";
+                        $hour_f['priority'] = $currentPri;
+                        if ($_REQUEST["debug"] >= 3){
+                                                echo " p into ".$hour_f['priority'];
+                                                echo	" + title appended<br />";
+                                                }*/
 
-                                }
+                }
 
         }
 
-    }
+    }//foreach
+    
 
 }
  
 function updateForecast($currentPri, $title, $pic)
 {
-        global $priority, $forecast_title, $taf_pic, $last_priority, $title_pic, $new_line, $isProb, $prob_mag, $GOOD_CHANCE_FOR, $LOW_CHANCE_FOR, $lang_idx, $forecastHour, $same_sigment, $startTime, $endTimeForFH, $current, $hour;
+        global $mem, $priority, $forecast_title, $taf_pic, $last_priority, $title_pic, $new_line, $isProb, $prob_mag, $GOOD_CHANCE_FOR, $LOW_CHANCE_FOR, $lang_idx, $forecastHour, $same_sigment, $startTime, $endTimeForFH, $current, $hour;
 
          $last_priority = $priority;
-         if ($_GET["debug"] >= 3)
+         if ($_REQUEST["debug"] >= 3)
         {
                 echo "<br/>inUpdateForecast--> title=".$title[0]." currentPri=".$currentPri." last_priority=".$last_priority." priority=".$priority." taf_pic=".$taf_pic." count=".count($forecast_title)."  new_line=".$new_line."  isProb=".$isProb."<br/>";
         }
         if (count($forecast_title) == 1){
             if ($currentPri<=20)
-                    apc_store("cloudiness", 0);
+                    $mem->set("cloudiness", 0);
             else if ($currentPri<=25)
-                    apc_store("cloudiness", 2);
+                    $mem->set("cloudiness", 2);
             else if ($currentPri<=35)
-                    apc_store("cloudiness", 4);
+                    $mem->set("cloudiness", 4);
             else if ($currentPri<=40)
-                    apc_store("cloudiness", 6);
+                    $mem->set("cloudiness", 6);
             else if (($currentPri==50)||($currentPri==55)) // dust
-                    apc_store("cloudiness", 2);
+                    $mem->set("cloudiness", 2);
             else
-                    apc_store("cloudiness", 8);
+                    $mem->set("cloudiness", 8);
         }
 
         //logger("cloudiness= ".$current->get_cloudiness()." sunset_ut:".get_sunset_ut()." get_current_time_ut:".$current->get_current_time_ut()." ".(get_sunset_ut() - $current->get_current_time_ut())." rad:".$current->get_solarradiation()." is sunset:".$current->is_sunset());
@@ -504,7 +562,7 @@ function updateForecast($currentPri, $title, $pic)
                   $prob_to_put = $LOW_CHANCE_FOR;
               array_push($forecast_title, $prob_to_put);
               updateForecastHour($currentPri, $prob_to_put, "");
-              if ($_GET["debug"] >= 3)
+              if ($_REQUEST["debug"] >= 3)
                       echo "<br/>added ".$prob_to_put[0]."<br/>";
               
             $same_sigment = true;
@@ -516,7 +574,7 @@ function updateForecast($currentPri, $title, $pic)
                  if (($priority == 0)||($priority >= 50) || ($currentPri >= 35))
                  {
                          array_push($forecast_title, $title);
-                          if ($_GET["debug"] >= 3)
+                          if ($_REQUEST["debug"] >= 3)
                                 echo "currentPri >= priority --> added ".$title[0]."<br/>";
                  }
                  else if (!$new_line)
@@ -524,11 +582,11 @@ function updateForecast($currentPri, $title, $pic)
                           if (count($forecast_title) > 1)
                          {
                                 $removed = array_pop($forecast_title);
-                                if ($_GET["debug"] >= 3)
+                                if ($_REQUEST["debug"] >= 3)
                                         echo "not new line: removed ".$removed[0]."<br/>";
                          } 
                          array_push($forecast_title, $title);
-                          if ($_GET["debug"] >= 3)
+                          if ($_REQUEST["debug"] >= 3)
                                 echo "not new line: added ".$title[0]."<br/>";
                  }
 
@@ -541,7 +599,7 @@ function updateForecast($currentPri, $title, $pic)
          else if (($new_line)&&($currentPri != $priority))
          {
                         array_push($forecast_title, $title);
-                        if ($_GET["debug"] >= 3)
+                        if ($_REQUEST["debug"] >= 3)
                            echo "new_line + currentPri != priority --> added ".$title[0]."<br/>";
                         updateForecastHour($currentPri, $title, $pic);
          }
@@ -559,15 +617,11 @@ function updateForecast($currentPri, $title, $pic)
 /////////////////////////////////////////////////////////
  
  
-if ($_GET["debug"] >= 1)
-echo "<br/><strong>Stared forecast section.....</strong>";
-if ($_GET["debug"] >= 3)
-        echo "<br/></b><div align=left>";
+if ($_REQUEST["debug"] >= 1)
+echo "<br/></b><div align=left><br/><strong>Started forecastlib section.....</strong>";
 
  $hourindex = 0;
-
-
-
+/*
 if ($taf_contents == ""){
         if ((!file_exists($taf_file))||(filesize($taf_file) == 0)||(((time() - filemtime($taf_file)) > 3600)))
         {
@@ -586,43 +640,67 @@ if ($taf_contents == ""){
         }
         $taf_contents = @file_get_contents($taf_file);
         //$_SESSION['taf_contents'] = $taf_contents;
-}
+}*/
 
 $source = $taf_contents;
 $forecast_title = array();
 $generally="";
 $same_sigment = false;
-$taf_contents = str_replace("<br/>", "", $taf_contents);
-$taf_contents = str_replace("/>", "", $taf_contents);
-$taf_contents = str_replace("<br", "", $taf_contents);
+$taf_contents = str_replace("<br/>", " ", $taf_contents);
+$taf_contents = str_replace("/>", " ", $taf_contents);
+$taf_contents = str_replace("<br", " ", $taf_contents);
+$MAX_TIME = $_REQUEST['MAX_TIME'];
+$MULTIPLE_FACTOR = $_REQUEST['MULTIPLE_FACTOR'];
 
 $taf_tokens = tokenizeQuoted($taf_contents);
 //print_r($taf_tokens);
 for ($i = 0; $i < count($taf_tokens); $i++)
 {
-    if ($_GET["debug"] >= 3)
+    if ($_REQUEST["debug"] >= 3)
             echo "<br/>examining <strong>".$taf_tokens[$i]."</strong>";
     if ($i == 0)
     {
-            list($yearF, $monthF, $dayF) = explode('/', $taf_tokens[$i]);
-            apcu_store("dayF", $dayF);
-            apcu_store("monthF", $monthF);
-            apcu_store("yearF", $yearF);
+        list($yearF, $monthF, $dayF) = explode('/', $taf_tokens[$i]);
+        list($fday, $fmonth, $fyear) = explode('/', $dayF."/".$monthF."/".$yearF);
+        list($firstdayinforecast, $firstdayinforecast_month) = explode('/', $firstdayinforecast_l);
+        $yest_date = @mktime (0, 0, 0, $fmonth, $fday-1 , $fyear);
+        $todayForecast_date = date ("Y-m-d", @mktime (0, 0, 0, $fmonth, $fday , $fyear));
+        $tommorrowForecast_date = date ("Y-m-d", @mktime (0, 0, 0, $fmonth, $fday+1 , $fyear));
+        $tommorrowForecast_day = date ("d", @mktime (0, 0, 0, $fmonth, $fday+1 , $fyear));
+        $atommorrowForecast_date = date ("Y-m-d", @mktime (0, 0, 0, $fmonth, $fday+2 , $fyear));
+        $mem->set("dayF", $dayF);
+        $mem->set("monthF", $monthF);
+        $mem->set("yearF", $yearF);
+        if ($_REQUEST['debug'] >= 1){
+                echo "<br>in reading first token in taf:".$taf_tokens[$i];
+                echo "<br>firstdayinforecast_l=".$firstdayinforecast_l;
+                echo "<br>firstdayinforecast_month=".$firstdayinforecast_month;
+                echo "<br>firstdayinforecast=".$firstdayinforecast;
+                echo "<br>yest_date=".$yest_date;
+                echo "<br>tommorrowForecast_date=".$tommorrowForecast_date;
+                echo "<br>tommorrowForecast_day=".$tommorrowForecast_day;
+                
+                echo "<br>fday=".$fday;
+                echo "<br>fmonth=".$fmonth;
+                echo "<br>fyear=".$fyear;
+         }
     }
     $dayC = $dayF;
     if (stristr ($taf_tokens[$i], ":")) {
+        
             $taf_pic = "clear.png";
             $title_pic = array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]");
             $current->set_cloudiness(0);
             $priority = 0;
             $new_line = true;
             $timetaf = (int)$taf_tokens[$i];
-            apcu_store("timetaf", $timetaf);
-            if ($_GET["debug"] >= 3)
+            $mem->set("timetaf", $timetaf);
+            if ($_REQUEST["debug"] >= 3)
                 echo "<br/>time of taf:".$timetaf;
             array_push($forecast_title, array("<span>".$GENERALLY[$EN]." "."</span>", "<span>".$GENERALLY[$HEB]." "."</span>"));
-            $passedMidnight = false;
-             for ($t=$timetaf + 1; $t <= $timetaf+33 ; $t++)
+            $passedMidnight = 0;
+            $prev_temp = $current->get_temp();
+             for ($t=$timetaf + 1; $t <= $timetaf+39 ; $t++)
              {
 
                 $h = $t % 24;
@@ -630,25 +708,37 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                 if ($t % 24 == 0)
                {
                         $time = "00";
-                        $passedMidnight = true;
+                        $passedMidnight = $passedMidnight + 1;
                }
                 else 
                    $time = sprintf("%d", $h);
                if ($t % 24 == 0)
                        $dayC = $dayC + 1;
                $currentDateTime =  mktime ($h, 0, 0, $monthF, $dayC , $yearF);
-
-               $tempHour = calcForecastTemp($h); 
+               $forcastday = getForecastDay($fday, $firstdayinforecast);
+               $tempHour = calcForecastTemp($h, $currentDateTime, $prev_temp, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR); 
+               $prev_temp = $tempHour;
                $clothHour = getCloth($tempHour);
-               $humHour = calcForecastHum($h);
-               if ($_GET["debug"] >= 3)
+               $humHour = calcForecastHum($h, $forcastday);
+               if ($_REQUEST["debug"] >= 3)
                     echo "<br/> forecastHour:".$hourindex." time=".$time." ".$currentDateTime." temp=".$tempHour." ".$clothHour;
                array_push($forecastHour, array('id' => $hourindex, 'time' => $time, 'currentDateTime' => $currentDateTime, 'plusminus' => 0, 'change' => 0, 'temp' => $tempHour, 'wind' => 0, 'humidity' => $humHour ,'rain' => 0, 'icon' => "", 'title' => array(), 'cloth' => $clothHour, 'priority' => 0));
                $hourindex += 1;
-           }
+        }
+        
+
+           
    }
     if (stristr ($taf_tokens[$i], "KT")) {
            updateForecast($currentPri, getWindSpeed($taf_tokens[$i]), "wind");
+    }
+    if (stristr ($taf_tokens[$i], "PROB10")) {
+        $isProb = true;
+        $prob_mag = Chance::VLow;
+    }
+    if (stristr ($taf_tokens[$i], "PROB20")) {
+        $isProb = true;
+        $prob_mag = Chance::VLow;
     }
     if (stristr ($taf_tokens[$i], "PROB30")) {
             $isProb = true;
@@ -686,7 +776,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                         ($forecast_title[count($forecast_title) - 1] == $PARTLY_CLOUDY))
                {
                        $removed = array_pop($forecast_title);
-                       if ($_GET["debug"] >= 3)
+                       if ($_REQUEST["debug"] >= 3)
                                echo "<br/>need to delete less important PC lines: removed ".$removed."<br/>";
                }
                updateForecast(40, array("$CLOUDY[$EN]", "$CLOUDY[$HEB]"), "cloudy.png");
@@ -708,7 +798,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                         ($forecast_title[count($forecast_title) - 1] == $PARTLY_CLOUDY))
                {
                        $removed = array_pop($forecast_title);
-                       if ($_GET["debug"] >= 3)
+                       if ($_REQUEST["debug"] >= 3)
                                echo "<br/>need to delete less important PC lines: removed ".$removed."<br/>";
                }
                updateForecast(40, array("$MOSTLY[$EN] $CLOUDY[$EN]", "$MOSTLY[$HEB] $CLOUDY[$HEB]"), "mostlycloudy.png");
@@ -727,7 +817,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
             if ($forecast_title[sizeof($forecast_title) - 1] == $FEW_CLOUDS)
            {
                    $removed = array_pop($forecast_title);
-                   if ($_GET["debug"] >= 3)
+                   if ($_REQUEST["debug"] >= 3)
                            echo "<br/>need to delete less important PC lines: removed ".$removed."<br/>";
            }
 
@@ -751,19 +841,21 @@ for ($i = 0; $i < count($taf_tokens); $i++)
     if ((stristr ($taf_tokens[$i], "BR"))&&(!stristr ($taf_tokens[$i], "<"))) updateForecast(63, $FOG, "fogy.png");
 
     if (stristr ($taf_tokens[$i], "TEMPO"))    {
-        if ($_GET["debug"] >= 3)
-                echo " In  TEMPO<br/>";
+        if ($_REQUEST["debug"] >= 3)
+                echo "<br/>In  TEMPO:";
         $same_sigment = false;
-        if (stristr($taf_tokens[$i+1], "/"))
-        {
-            $timerange = $taf_tokens[$i+1];
-            $startTime = getStartTime($timerange);
-            $endTime = getEndTime($timerange);
-            $startDateTime = getStartDateTime($timerange, true);
-
-            $endDateTime = getEndDateTime($timerange);
-            if ($_GET["debug"] >= 3)
-                    echo "<br/>examining <strong>".$timerange."</strong>";
+      
+        $timerange = $taf_tokens[$i+1];
+        $startTime = getStartTime($timerange);
+        $endTime = getEndTime($timerange);
+        $startDateTime = getStartDateTime($timerange, false);
+        $endDateTime = getEndDateTime($timerange);
+        if ($_REQUEST["debug"] >= 3){
+                echo "<br/>examining <strong>".$timerange."</strong>";
+                echo "<br/>startTime=".$startTime;
+                echo "<br/>endTime=".$endTime;
+                echo "<br/>startDateTime=".date(" H d/m/Y", $startDateTime);
+                echo "<br/>endDateTime=".date(" H d/m/Y", $endDateTime);
         }
         $new_line = true;
         //if (rainExistsInTaf ($forecast_title, $priority)) 
@@ -775,7 +867,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                 (stristr ($forecast_title[count($forecast_title) - 1][$lang_idx], $BETWEEN[$lang_idx]))))
         {
                 $removed = array_pop($forecast_title); // tempo becmg
-                if ($_GET["debug"] >= 3)
+                if ($_REQUEST["debug"] >= 3)
                         "removed ".$removed."<br/>";
 
         }
@@ -790,7 +882,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
         $tempotime .= "";
 
         array_push($forecast_title, $tempotime);
-        if ($_GET["debug"] >= 3)
+        if ($_REQUEST["debug"] >= 3)
                 echo "<br/> added ".$tempotime;
   }
 
@@ -803,7 +895,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
         $plusminus = getPlusMinus($startTime, $endTime);
         $endDateTime = "";
         $new_line = true;
-        if ($_GET["debug"] >= 3)
+        if ($_REQUEST["debug"] >= 3)
                         echo "<br/>examining <strong>".$timerange."</strong>";
         $i = $i+1;
         //if (rainExistsInTaf ($forecast_title, $priority)) 
@@ -815,25 +907,25 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                 (stristr ($forecast_title[count($forecast_title) - 1][$lang_idx], $BETWEEN[$lang_idx])))||(stristr ($forecast_title[count($forecast_title) - 1][$lang_idx], $TEMPO[$lang_idx])))
         {
             $removed = array_pop($forecast_title); // tempo becmg
-            if ($_GET["debug"] >= 3)
+            if ($_REQUEST["debug"] >= 3)
                     echo "need to delete irrelavent lines without any weather: removed ".$removed."<br/>";
 
         }
         
-        if ($_GET["debug"] >= 3)
-                echo " In  BECMG<br/>";
+        if ($_REQUEST["debug"] >= 3)
+                echo "<br/>In  BECMG:";
 
         if ($startTime < 24)
                 $tempotime = $BETWEEN[$lang_idx]." ".$startTime.".00".isTom($timetaf, $startTime)."-".$endTime.".00 ";
         $tempotime .=  " ".$BECMG[$lang_idx]." ".$BECMG_TO[$lang_idx];
         $tempotime .= "";
         array_push($forecast_title, $tempotime);
-        if ($_GET["debug"] >= 3)
+        if ($_REQUEST["debug"] >= 3)
                 echo " added ".$tempotime."<br/>";
 
 
     }
-    if ($_GET["debug"] >= 3)
+    if ($_REQUEST["debug"] >= 3)
     {
      echo " <br />token:".$i." last_priority=".$last_priority." priority=".$priority." taf_pic=".$taf_pic." count=".count($forecast_title)." last=".$forecast_title[count($forecast_title) - 1][1]." new_line=".$new_line." startTime=".$startDateTime." endTime=".$endDateTime."<br/>";
     }
@@ -844,7 +936,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
 if ((stristr ($forecast_title[sizeof($forecast_title) - 1][0], $TO[0]))||(stristr ($forecast_title[count($forecast_title) - 1][0], $TEMPO[0])))
 {
     $removed = array_pop($forecast_title); // tempo becmg
-    if ($_GET["debug"] >= 3)
+    if ($_REQUEST["debug"] >= 3)
             echo "removed the last line: ".$removed[0]."<br/>";
 
 }
@@ -852,16 +944,17 @@ if (count($forecast_title) == 1) // generally
 {
     updateForecast(20, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "clear.png");
 }
-if ($_GET["debug"] >= 3)
+if ($_REQUEST["debug"] >= 3)
 {
     echo "number of items in forecast: ".count($forecast_title)."<br/>";
     for ($i = 0; $i < count($forecast_title); $i++) {
             echo $forecast_title[$i][0]."<br />";
     }
 }	
-if ($_GET["debug"] >= 3)
+if ($_REQUEST["debug"] >= 3)
         echo "</div>";
-if ($_GET["debug"] >= 1)
+ $forecastHour = extendValuesForPlusMinus();
+if ($_REQUEST["debug"] >= 1)
         echo "<strong>finished</strong>";
 
 
@@ -895,17 +988,17 @@ for ($i = 0; $i < count($forecast_title); $i++) {
 }
 $forcastTicker = str_replace("\"", "'", $forcastTicker);
 
-apc_store("forecasthour", $forecastHour);
+$mem->set("forecasthour", $forecastHour);
 $sigforecastHour = array();
 $i = 0;
 foreach ($forecastHour as $hour_f){
-    if (($hour_f === reset($forecastHour)) || (($hour_f['plusminus'] > 0) && enoughSignificant($i)))
+    if (($hour_f === reset($forecastHour)) || (($hour_f['plusminus'] > 0) && enoughSignificant($i)) || (weatherSignificant($i)))
     {
         array_push($sigforecastHour, $hour_f);
     }
 $i++;
 }
-apc_store("sigforecastHour", $sigforecastHour);
+$mem->set("sigforecastHour", $sigforecastHour);
 
 
 $sigWindHour = array();
@@ -917,6 +1010,6 @@ foreach ($forecastHour as $hour_f){
     }
 $i++;
 }
-apc_store("sigWindHour", $sigWindHour);
+$mem->set("sigWindHour", $sigWindHour);
 
 ?>

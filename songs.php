@@ -73,11 +73,21 @@ Function getLyrics($location, $song)
 </div>	
 <div class="float" style="padding:0.5em">
 	<h2 class="inv_plain_3_zebra" style="padding:0.5em"><a href="http://www.lyricstime.com/eurythmics-here-comes-the-rain-again-lyrics.html" class="colorbox" rel="external">Here Comes The Rain Again - Eurythmics  <?=get_arrow()?></a></h2>
-	<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/uy115Hbm9DU&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/uy115Hbm9DU&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
+	<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/TzFnYcIqj6I&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/uy115Hbm9DU&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
 </div>
 <div class="float" style="padding:0.5em">
 	<h2 class="inv_plain_3_zebra" style="padding:0.5em"><a href="http://www.lyricstime.com/bob-marley-sun-is-shining-lyrics.html" class="colorbox" rel="external">Sun Is Shining - Bob Marley <?=get_arrow()?></a></h2>
 		<iframe width="480" height="270" src="https://www.youtube.com/embed/UOoHTcuORcY" frameborder="0" allowfullscreen></iframe>
+			
+</div>
+<div class="float" style="padding:0.5em">
+	<h2 class="inv_plain_3_zebra" style="padding:0.5em"><a href="https://genius.com/Steve-miller-band-winter-time-lyrics" class="colorbox" rel="external">Winter Time - Steve Miller Band <?=get_arrow()?></a></h2>
+		<iframe width="480" height="270" src="https://www.youtube.com/embed/93AymOJkKcw" frameborder="0" allowfullscreen></iframe>
+			
+</div>
+<div class="float" style="padding:0.5em">
+	<h2 class="inv_plain_3_zebra" style="padding:0.5em"><a href="https://genius.com/Tori-amos-winter-lyrics" class="colorbox" rel="external">Winter - Tori Amos <?=get_arrow()?></a></h2>
+		<iframe width="480" height="270" src="https://www.youtube.com/embed/_PDlGUdDF8Y" frameborder="0" allowfullscreen></iframe>
 			
 </div>
  <div class="float" style="padding:0.5em">

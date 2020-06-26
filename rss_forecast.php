@@ -5,7 +5,7 @@ include "start.php";
 include_once ("requiredDBTasks.php");
 //logger("rss_forecast read");
 ?>
-<? header("Content-type: text/xml");$forecastDaysDB = apc_fetch('forecastDaysDB'); ?>
+<? header("Content-type: text/xml");$forecastDaysDB = $mem->get('forecastDaysDB'); ?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel>
 	<title><? echo $LOGO[$EN]; ?></title>
@@ -61,7 +61,7 @@ include_once ("requiredDBTasks.php");
 						<td><?echo replaceDays($forecastday['day_name']." ")." ".$forecastday['date'];?></td>
 						<td class="low" dir="ltr" id="lowtemp<?=$i+1?>" style="padding:0 1em" <? echo get_align(); ?>><?=c_or_f($forecastday['TempLow'])?></td>
 						<td class="high" dir="ltr" id="hightemp<?=$i+1?>" style="padding:0 1em" <? echo get_align(); ?>><?=c_or_f($forecastday['TempHigh'])?></td>
-						<td align="center" ><img id="icon<?=$i+1?>" src="<? echo "images/icons/day/".$forecastday['icon']; ?>" width="35px" title="<? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);?>"/></td>
+						<td align="center" ><img id="icon<?=$i+1?>" src="<? echo "images/icons/day/".$forecastday['icon']; ?>" width="35px" title=""/></td>
 						<td id="desc<?=$i+1?>" style="padding:0 0.4em 0 0.4em"><? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);?></td>
 						</tr>
                                                 
@@ -82,7 +82,7 @@ include_once ("requiredDBTasks.php");
         <link><? echo BASE_URL; ?>/small.php</link>
 	<guid><? echo BASE_URL; ?></guid>
 	<title><?echo replaceDays($forecastday['day_name']." ")." ".$forecastday['date'];?>: <?=c_or_f($forecastday['TempLow'])?> <?=c_or_f($forecastday['TempHigh'])?></title>
-	<description> <? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);?></description>
+	<description> <? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo "\"".urldecode($forecastday[$dscpIdx])."\"";?></description>
 	</item>
 	<? } ?>
 </channel>

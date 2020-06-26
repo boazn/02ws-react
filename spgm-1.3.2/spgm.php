@@ -367,12 +367,12 @@ function spgm_IsPicture($strPictureFileName, $strGalleryId) {
   );
  
   // check filename patterns
-  if ( PREF_THUMB != '' AND eregi('^'.PREF_THUMB.'*', $strPictureFileName) )
+  if ( PREF_THUMB != '' AND preg_match('^'.PREF_THUMB.'*', $strPictureFileName) )
     return false;
   $validated = false;
   $extnb = count($cfg['global']['supportedExtensions']);
   for ($i=0; $i<$extnb; $i++) {
-    if ( eregi($cfg['global']['supportedExtensions'][$i].'$', $strPictureFileName) ) {
+    if ( preg_match($cfg['global']['supportedExtensions'][$i].'$', $strPictureFileName) ) {
       $validated = true;
       break;
     }

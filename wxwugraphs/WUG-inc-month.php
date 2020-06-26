@@ -95,7 +95,7 @@ function my_mb_ucfirst($str, $e='utf-8') { // UTF-8 support
     }
 }
 
-$WUsourceFile = 'http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID='.$WUID.'&graphspan=month&year=' . $year .  '&month=' . $month . '&format=1&units='.$unitsLnk;
+$WUsourceFile = 'https://www.02ws.co.il/wxwugraphs/WXDailyHistory.php?ID='.$WUID.'&graphspan=month&year=' . $year .  '&month=' . $month . '&format=1&units='.$unitsLnk;
 // add zeros to date format
 $month = strlen($month) == 2 ? $month : "0".$month ;
 $WUrequest = $year . $month;
