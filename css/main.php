@@ -476,7 +476,7 @@ position:absolute;
     margin-top: 272px;
     position: absolute;
  }
-#window_btn:hover, #webcam_btn:hover, #all_btn:hover, #moon_btn:hover, #runwalk_btn:hover, $dew_btn:hover, #more_stations_btn:hover, #laundryidx:hover {
+#window_btn:hover, #webcam_btn:hover, #all_btn:hover, #moon_btn:hover, #runwalk_btn:hover, #dew_btn:hover, #more_stations_btn:hover, #laundryidx:hover {
     opacity: 1;
 }
 #webcam_btn {

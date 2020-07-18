@@ -136,6 +136,15 @@ class ForecastRestHandler extends SimpleRest {
 	
 		$htmlResponse = "<table>";
 		foreach($responseData as $key=>$value) {
+			if (is_array($value)){
+				$htmlResponse .= "<tr><td>". $key. "</td><td>";
+				foreach($value as $innerkey=>$innervalue) {
+					$htmlResponse .= $innerkey.": ".$innervalue;
+				}
+				$htmlResponse .= "</td></tr>";
+			}
+				
+			else
     			$htmlResponse .= "<tr><td>". $key. "</td><td>". $value. "</td></tr>";
 		}
 		$htmlResponse .= "</table>";

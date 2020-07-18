@@ -27,9 +27,10 @@ function changeProfile (inprofile)
 	//document.profileChanger.submit();
 	
 }
+
 </script>
 <?
-	ini_set("display_errors","On");
+	ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
 	if ($_GET['graph']=="OutsideTempHistory")
 		$_GET['graph'] = 'temp.php';
 	if ($_GET['graph']=="RainRateHistory")
@@ -68,10 +69,18 @@ function changeProfile (inprofile)
             
         }
         
-?>
 
-<?
-ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+function getLatestMaxMinTemp(){
+	global $lang_idx;
+	$query = "call getLatestMaxMinTemp()";
+	$result = db_init($query, "");
+	
+	while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
+        echo "<tr class=\"inv_plain_2\"><td class=\"number\">".$line["Date"]."</td><td><span class=\"number\">".$line["maxtemp2"]."</span></td><td><span class=\"number\">".$line["mintemp2"]."</span></td></tr>";
+        
+    }
+	
+}
 function getLatestDailyRain()
 {
     global $RAIN_UNIT, $lang_idx;
@@ -588,27 +597,37 @@ if (strstr(strtolower($_GET['graph']), 'temp'))
 {	 ?>
 	<div class="float" style="margin:1em 0.5em;<? if (isHeb()) echo "direction:rtl"; ?>" class="inv_plain_2_zebra" >
 	<table <? if (isHeb()) echo "dir=\"rtl\""; ?> id="mouseover" cellpadding="4">
+	
 	<tr>
 		
-		<td></td>
-		<td class="topbase"><? echo($TODAY[$lang_idx]);?></td>
-		<td  class="topbase"><a href="<? echo get_query_edited_url($url_cur, 'section', 'reports/downld02.txt');?>" class="hlink" target="_self" title="temp today compared to its month's average"><? echo($YESTERDAY[$lang_idx]);?></a></td>
-		<td  class="topbase" title="temp today compared to its month's average"><a href="<? echo get_query_edited_url(get_url(), 'section', 'averages');?>"  class="hlink" target="_self" title="<? echo $AVERAGE[$lang_idx];?>"><? echo($NORMAL[$lang_idx])." - ".$monthInWord;?></a></td>
+		
+		<td class="topbase"></td>
+		<td  class="topbase"><? echo($MAX[$lang_idx]);?> <? echo($TEMP[$lang_idx]);?></td>
+		<td  class="topbase"><? echo($MIN[$lang_idx]);?> <? echo($TEMP[$lang_idx]);?></td>
+	</tr>
+	
+	<tr class="inv_plain_2">
+		<td><a href="<? echo get_query_edited_url(get_url(), 'section', 'averages');?>"  class="hlink" target="_self" title="<? echo $AVERAGE[$lang_idx];?>"><? echo($NORMAL[$lang_idx])." - ".$monthInWord;?></a></td>
+		<td class="high"><? if (!$error_db) echo $monthAverge->get_hightemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
+		<td class="low"><?  if (!$error_db) echo $monthAverge->get_lowtemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
 	</tr>
 	<tr class="inv_plain_2">
 		
-		<td><? echo($MAX[$lang_idx]);?> <? echo($TEMP[$lang_idx]);?></td>
+		<td><? echo($TODAY[$lang_idx]);?></td>
         <td class="high"><? echo toLeft($today->get_hightemp()); ?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div> <? echo " [".$today->get_hightemp_time()."] "; ?></td>
-		<td><?echo $yest->get_hightemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
-		<td><? if (!$error_db) echo $monthAverge->get_hightemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
+		<td class="low"><? echo toLeft($today->get_lowtemp()); ?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div><? echo " [".$today->get_lowtemp_time()."] "; ?></td>
 	</tr>
 	<tr class="inv_plain_2">
-		<td><? echo($MIN[$lang_idx]);?> <? echo($TEMP[$lang_idx]);?></td>
-        <td class="low"><? echo toLeft($today->get_lowtemp()); ?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div><? echo " [".$today->get_lowtemp_time()."] "; ?></td>
-		<td><?echo $yest->get_lowtemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
-		<td><?  if (!$error_db) echo $monthAverge->get_lowtemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
+		<td><a href="<? echo get_query_edited_url($url_cur, 'section', 'reports/downld02.txt');?>" class="hlink" target="_self" title="temp today compared to its month's average"><? echo($YESTERDAY[$lang_idx]);?></a></td>
+        <td class="high"><?echo $yest->get_hightemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
+		<td class="low"> <?echo $yest->get_lowtemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
+		<td></td>
 		</tr>
+		
+                    <? getLatestMaxMinTemp(); ?>
+     
 	</table>
+	
 </div>	
 	<!-- <form method="POST" name="temptHoursDist" style="background:transparent;" <? if (isHeb()) echo "DIR=rtl"; ?>>
 	<input type="submit" name="button" value="<? echo $SHOW[$lang_idx];?>" width=22 title="go" border=0>

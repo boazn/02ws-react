@@ -185,7 +185,7 @@ width: 75%;
 position: fixed;
 left: 51%;
 margin-left: -37.5%;
-margin-top:130px;
+margin-top:30px;
 z-index:2000;
 }
 .forecasttemp
@@ -552,6 +552,7 @@ width:320px;
 #startinfo_container .invhigh
 {
     background-color: transparent;
+    color:initial;
     vertical-align: super;
     font-size: 0.55em;
     display:inline
@@ -1431,7 +1432,10 @@ position: relative;
     background-size: 60%;
     background-color: #eeeeee;
 }
-
+#more_stations_btn{
+    margin-top: -113px;
+    margin-right: 278px;
+}
 #cold_btn{
     float: none;
     width:36px;
@@ -1458,6 +1462,9 @@ margin:auto;margin-top:-90px
 #latesttemp3 .graphslink{
     top:0;
     right:36px;
+}
+#latestotherstations .graphslink{
+    top:70px
 }
 #valleytemp{
 font-size:0.5em;

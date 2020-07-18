@@ -220,6 +220,21 @@ function isYearSubmited($value_year){
 <tr>
 	<td></td>
 	<td <? echo get_align(); ?>>
+		<input type="checkbox" name="dew_search" <?if (isset( $_POST['dew_search'])) echo "checked"; ?>> <? echo $DEW[$lang_idx];?> 
+		
+	</td>
+	<td <? echo get_inv_align(); ?>>
+		
+	</td>
+	<td <? echo get_align(); ?>>
+		<input type="text" name="low_dew" value=<?if ((isset( $_POST['low_dew']))&&(isset( $_POST['dew_search']))) echo $_POST['low_dew']; else echo "0";?> SIZE=4>
+		-- 
+		<input type="text" name="high_dew" value=<?if (isset( $_POST['high_dew'])) echo $_POST['high_dew']; else echo "100";?> SIZE="4">%
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td <? echo get_align(); ?>>
 		<input type="checkbox" name="rainrate_search" <? if (isset( $_POST['rainrate_search'])) echo "checked"; ?>> <? echo $RAIN_RATE[$lang_idx];?> 
 		
 	</td>
@@ -381,7 +396,9 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
         $posted_low_temp = $_POST['low_temp'];
         $posted_high_temp = $_POST['high_temp'];
         $posted_low_hum = $_POST['low_hum'];
-        $posted_high_hum = $_POST['high_hum'];
+		$posted_high_hum = $_POST['high_hum'];
+		$posted_low_dew = $_POST['low_dew'];
+        $posted_high_dew = $_POST['high_dew'];
         $posted_low_rainrate = $_POST['low_rainrate'];
         $posted_high_rainrate = $_POST['high_rainrate'];
         $posted_low_windSpeed = $_POST['low_windSpeed'];
@@ -405,6 +422,14 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
 		else
 			$condition="WHERE ";
 		$condition .= sprintf("Hum>=%d AND Hum<=%d", $_POST['low_hum'] , $_POST['high_hum']);
+		$virgin_condition = false;
+	}
+	if (isset( $_POST['dew_search'])){
+		if (!$virgin_condition)
+			$condition .= " AND ";
+		else
+			$condition="WHERE ";
+		$condition .= sprintf("Dew>=%d AND Dew<=%d", $_POST['low_dew'] , $_POST['high_dew']);
 		$virgin_condition = false;
 	}
 	if (isset( $_POST['rainrate_search'])){
@@ -462,7 +487,7 @@ if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
     /* Performing SQL query */
 	for ($i = 0;$tables[$i]!=null ;$i++) {
 		$table = $tables[$i];
-		$query = "SELECT Date,Time,Temp,HiTemp,LowTemp,RainH,Dew,WindSpd,WindDir,HiSpeed,HiDir,WindChill,HeatIdx,THW,Bar,Hum,RainRate FROM $table $condition";
+		$query = "SELECT Date,Time,Temp,HiTemp,LowTemp,Rain,Dew,WindSpd,WindDir,HiSpeed,HiDir,WindChill,HeatIdx,THW,Bar,Hum,RainRate FROM $table $condition";
 		if (($yearToSearch < 2002)&& ($yearToSearch != 0)||isset( $_POST['high_temp_search'])||isset( $_POST['low_temp_search'])){
 			$query = "SELECT Date,HiTemp,LowTemp,Rain FROM archivemin $condition";
 			$isArchiveMin = true;
