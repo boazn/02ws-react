@@ -48,7 +48,7 @@ $ROAD = array("at road", "בכביש");
 $AVERAGE = array("average", "ממוצע");
 $MOBILE_FRIENDLY = array("Mobile friendly" , "מותאם לנייד");
 $WEBSITE_TITLE = array ("Jerusalem Weather Forecast Station", "ירושמים - תחזית ומזג-האוויר בירושלים בזמן אמת", "Иерусалимская метеорологическая станция");
-$CONTACT_ME = array("Contact", "צרו קשר");
+$MORE_INFO = array("more", "עוד", "еще");
 $EXPAND = array("In table", "בטבלה");
 $PIC_OF_THE_DAY = array("Pic of the day", "תמונת היום", "");
 $USERS_PICS = array("Users Pics", "תמונות הגולשים", "");
@@ -112,6 +112,13 @@ function isForecastPage(){
 }
 function isSnowPage(){
     return (($_REQUEST['section'] == "snow.php"));
+}
+function getUrl($page){
+    global $lang_idx;
+    if ($page != "")
+        return $_SERVER['SCRIPT_NAME']."?section=".$page."&amp;lang=".$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];
+    else
+        return $_SERVER['SCRIPT_NAME']."lang=".$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];
 }
 $lang_idx = $_REQUEST['lang'];
 $adFree = $_REQUEST['ad'];
@@ -203,7 +210,7 @@ if (isRadarPage())
 <a href="station.php?section=frommobile&amp;lang=<? echo $lang_idx;?>" id="logotitle" title="<? echo $HOME_PAGE[$lang_idx];?>" onclick="showLoading()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 <div id="date"></div>
 </div>
-<? if (isAlertsPage()) { ?>
+<? if (isAlertsPage()||!isFastPage()) { ?>
 
 <div id="tohome" class="invfloat inv_plain_3">
 <a href="<? echo BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?lang=".$lang_idx."&amp;tempunit=".$_GET['tempunit']."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>"  title="<? echo $HOME_PAGE[$lang_idx];?>" class="hlink">
@@ -282,6 +289,8 @@ else {?>
     <li id="temp3_btn" onclick="change_circle('temp_line', 'latesttemp3')" title=""></li>
     </li>
     <li id="runwalk_btn" onclick="change_circle('runwalk_line', 'latestrunwalk')" title=""></li>
+    </li>
+    <li id="more_stations_btn" onclick="change_circle('otherstations_line', 'latestotherstations');getLatest('ראש-צורים', '77', 'IMS');getLatest('צובה', '188', 'IMS');getLatest('חוף מערבי', '178', 'IMS');getLatest('עין גדי','211', 'IMS');getLatest('מעלה אדומים', '218', 'IMS');" title=""></li>
     </li>
 </ul>
 <div id="latestnow" class="inparamdiv">
@@ -643,11 +652,11 @@ else {?>
 <div class="paramtitle slogan">
         
 </div>
-<div class="exp">
-                    
-        </div>
+<div class="WUNowRes" id="WUNowRes_short"></div>
+<div class="ImsNowRes" id="ImsNowRes_short"></div>
+
     <div class="graphslink">
-            <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=runwalk.php&amp;lang=<? echo $lang_idx;?>" title="more"><img src="img/graph_icon.png" alt="more info"/></a>
+            <a href="<? echo getUrl("IsraelNow.php")?>" title="more"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
         </div>
 </div>
 <div id="latestrunwalk" class="inparamdiv">
@@ -658,7 +667,7 @@ else {?>
                     
         </div>
         <div class="graphslink">
-            <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=runwalk.php&amp;lang=<? echo $lang_idx;?>" title="more"><img src="img/graph_icon.png" alt="more info"/></a>
+            <a href="<? echo getUrl("runwalk.php")?>" title="more"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
         </div>
 </div>    
 <div style="clear:both;height:55px">&nbsp;</div>

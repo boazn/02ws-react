@@ -304,7 +304,7 @@ $LAYERS_BELOW3_PLUS = array("3 layers beneath, scarf and warm hat, long underwea
 $UMBRELLA = array("Umbrella", "מטריה", "Зонт");
 ////////////////////////////////////////////////////////////////////////////
 $NOTHING_SPECIAL = array("Nothing Special", "שום דבר מיוחד", "Пустяк");
-$HIGH_DEW_OVER_NIGHT = array("High dew over night", "הרבה טל במהלך הלילה", "Ночью много росы");
+$HIGH_DEW_OVER_NIGHT = array("High dew over night - wet grass", "הרבה טל במהלך הלילה - דשא רטוב", "Ночью много росы");
 $RAIN_WILL_STOP = array("Rain will stop", "הגשם ייפסק", "Дождь прекратиться");
 $MORE_CLOUDS = array("Much more clouds", "העננים ייתרבו", "Будет больше туч");
 $RAIN_HAS_JUST_STOPPED = array("Break in rain", "הפוגה בגשם", "Дождь взял передышку");

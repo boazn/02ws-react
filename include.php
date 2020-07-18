@@ -37,6 +37,7 @@ class FixedTime {
     var $pm25sd;
     var $cloudiness;
     var $heatidx;
+    var $heatidx2;
     var $rainrate;
     var $rainrate2;
     var $rainratechange;
@@ -402,6 +403,10 @@ class FixedTime {
         $this->heatidx = c_or_f($temp);
     }
 
+    function set_heatidx2($temp) {
+        $this->heatidx2 = c_or_f($temp);
+    }
+
     function set_rainrate($rrate) {
         $this->rainrate = $rrate;
     }
@@ -551,8 +556,14 @@ class FixedTime {
     }
 
     function get_heatidx() {
-        global $last2, $PRIMARY_TEMP;
+        global $PRIMARY_TEMP;
         return $this->heatidx;
+       
+    }
+
+    function get_heatidx2() {
+        global $PRIMARY_TEMP;
+        return $this->heatidx2;
        
     }
 

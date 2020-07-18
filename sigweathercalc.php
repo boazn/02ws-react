@@ -145,10 +145,8 @@ else if (($today->get_highwind() == $thisMonth->get_highwind())
 
 
       /************************************************************************/
-if (($today->get_highrainrate() == "0.3") && 
-    ($current->get_rainrate() == "0.0")&&
-	(($today->get_highrainrate_time() >= 4)&&
-	($today->get_highrainrate_time() <= 8)))
+if ((max($today->get_highrainrate(),$today->get_highrainrate2())  == "0.2") && 
+    ($current->get_rainrate() == "0.0"))
 {
 	  $dew_over_night = true;
 }
@@ -161,7 +159,7 @@ if (($today->get_highrainrate() == "0.3") &&
     //update_action ("Fog", $extrainfo, $ALT);
 }*/
 
-if (($hour < 11)&&($dew_over_night))
+if (($hour < 10)&&($dew_over_night))
 {
 	updateSigWeather(
 		"hum.jpg", 

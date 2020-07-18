@@ -369,7 +369,7 @@
             <?if (isHeb()){?>
             <div style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
             <a href="https://runnerswithoutborders.org/race/" style="">המרוץ שמנפץ את חומות השנאה:
-קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2020 בירושלים</a>
+קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2021 בירושלים</a>
 	        </div>
             <?}?>                
                                
