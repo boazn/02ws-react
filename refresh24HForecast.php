@@ -27,7 +27,7 @@ foreach ($forecastHour as $hour_f)
     {
         $strTemp .= $hour_f['temp']." ";
     }
-logger("refresh 24HForecast done. current temp=".$current->get_temp()." factor=".$mem->get('MULTIPLE_FACTOR')." max_time=".$mem->get('max_time')." ".$strTemp);
+//logger("refresh 24HForecast done. current temp=".$current->get_temp()." factor=".$mem->get('MULTIPLE_FACTOR')." max_time=".$mem->get('max_time')." ".$strTemp);
 //echo "-------------<br/>";
 //var_dump($forecastHour);
 //var_dump($sigforecastHour);

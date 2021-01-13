@@ -11,7 +11,7 @@ function insertNewMessage ($survey_id, $value)
 		//$now = getLocalTime(time());
 		$query = "INSERT INTO surveyresult (survey_id, value, ip, update_time) VALUES('{$survey_id}', '{$value}', '{$_SERVER['REMOTE_ADDR']}','{$now}');";
 		//echo $query;
-		$result = db_init($query);
+		$result = db_init($query, "");
 		if (!$result) {
 			$message  = 'Invalid query: ' . mysql_error() . "\n";
 			$message .= 'Whole query: ' . $query;
@@ -46,7 +46,7 @@ if (isset($_POST['SendSurveyButton'])) {
 
 
 $query = "SELECT sf.`field_id` , sf.`field_name` , s.name FROM surveyfields sf, survey s WHERE s.survey_id = sf.survey_id";
-$result = db_init($query);
+$result = db_init($query, "");
 while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 	$lines++;
 	$linesInColumn++;

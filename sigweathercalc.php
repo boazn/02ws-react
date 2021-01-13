@@ -243,7 +243,7 @@ if (($current->get_dew() > c_or_f(15))&&(true))
 {
 		$ToDisplay = array();
 		$ToDisplay = $HIGH_HUMIDITY;
-		if ($current->get_dew() > c_or_f(22))
+		if ($current->get_dew() > c_or_f(22.5))
 			$ToDisplay = $SAUNA3;
 		else if ($current->get_dew() > c_or_f(20))
 			$ToDisplay = $SAUNA2;
@@ -281,6 +281,17 @@ if (abs($current->get_temp() - $current->get_temp2()) > 2)
 	$extrainfoS = array (
 		array($MOUNTAIN[$EN].": ".$current->get_temp()." ".$VALLEY[$EN].": ".$current->get_temp2(), $MOUNTAIN[$EN].": ".$current->get_temp()." ".$VALLEY[$EN].": ".$current->get_temp2()) ,
 		array($MOUNTAIN[$HEB].": ".$current->get_temp()." ".$VALLEY[$HEB].": ".$current->get_temp2(), $MOUNTAIN[$HEB].": ".$current->get_temp()." ".$VALLEY[$HEB].": ".$current->get_temp2()));
+	updateSigWeather(
+		"profile1/temp.php?datasource=downld02&amp;lang={$lang_idx}", 
+		$MOUNTAIN_VALLEY_DIF, 
+		$extrainfoS, 
+		"?section=graph.php&amp;graph=temp.php&amp;profile=1");
+}
+if (abs($current->get_hum() - $current->get_hum2()) > 20)
+{
+	$extrainfoS = array (
+		array($MOUNTAIN[$EN].": ".$current->get_hum()."% ".$VALLEY[$EN].": ".$current->get_hum2()."%", $MOUNTAIN[$EN].": ".$current->get_hum()."% ".$VALLEY[$EN].": ".$current->get_hum2()."%") ,
+		array($MOUNTAIN[$HEB].": ".$current->get_hum()."% ".$VALLEY[$HEB].": ".$current->get_hum2()."%", $MOUNTAIN[$HEB].": ".$current->get_hum()."% ".$VALLEY[$HEB].": ".$current->get_hum2()."%"));
 	updateSigWeather(
 		"profile1/temp.php?datasource=downld02&amp;lang={$lang_idx}", 
 		$MOUNTAIN_VALLEY_DIF, 

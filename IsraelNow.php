@@ -10,7 +10,7 @@ echo "<h2>IMS = ".$SOURCE[$lang_idx].": ".$IMS[$lang_idx]."</h2>";
 </p>
 <div class="ImsNowRes" id="ImsNowRes"></div><br/><br/>
 <p>
-<?echo "<h2 style=\"clear:both\">WU = ".$SOURCE[$lang_idx].": Weather Undergorund</h2>";?>
+<?echo "<h2 style=\"clear:both\">WU = ".$SOURCE[$lang_idx].": Weather Underground</h2>";?>
 <div class="WUNowRes" id="WUNowRes"></div>
 </p>
 <!--<iframe src="https://www.wunderground.com/wundermap/?isPresentationActive=0&renderer=2&Units=metric&zoom=13&lat=31.77708743611025&lon=35.17300056593422&covid19=0&wxstn=1&wxstnmode=tw&aq=0&aqvalue=NaN&radar=0&radarType=NaN&radaropa=0.7&satellite=0&satelliteopa=0.8&insertHurricaneNameHere=false&goes16opa=&storm-cells=0&severe=0&severeopa=0.9&sst=0&sstopa=0.8&sstanom=0&sstanomopa=0.8&cam=0&fronts=0&hur=0&models=0&modelsmodel=ecmwf&modelsopa=0.8&modelstype=SURPRE&lightning=0&fire=0&fireopa=0.9&fireRisk=0&fireRiskOpacity=0.9&firePerimeter=0&firePerimeterOpacity=0.9&smoke=0&smokeOpacity=0.9&rep=0&surge=0&tor=0&windstr=0&windstrDensity=undefined&windstreamSpeed=undefined&windstreamSpeedFilter=undefined&windstreamPalette=undefined&hurrArch=0&hurrArchBasin=undefined&hurrArchYear=undefined&hurrArchStorm=undefined"  style="width:500px;height:300px" ></iframe>-->

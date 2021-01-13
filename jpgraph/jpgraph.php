@@ -1492,6 +1492,7 @@ class Graph {
         else {
             $txts = $this->texts;
         }
+        if ($txts)
         $n = count($txts);
         $min=null;
         $max=null;
@@ -3021,7 +3022,9 @@ class Graph {
 
     // Get Y min and max values for added lines
     function GetLinesYMinMax( $aLines ) {
-        $n = count($aLines);
+        $n = 0;
+        if ($aLines)
+            $n = count($aLines);
         if( $n == 0 ) return false;
         $min = $aLines[0]->scaleposition ;
         $max = $min ;
@@ -3039,6 +3042,8 @@ class Graph {
 
     // Get X min and max values for added lines
     function GetLinesXMinMax( $aLines ) {
+        if (!$aLines)
+            return false;
         $n = count($aLines);
         if( $n == 0 ) return false ;
         $min = $aLines[0]->scaleposition ;

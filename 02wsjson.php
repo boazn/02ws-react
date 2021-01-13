@@ -8,7 +8,6 @@ include_once("include.php");
 include_once "start.php";
 include_once ("requiredDBTasks.php");
 include_once "sigweathercalc.php";
-include_once "runwalkcalc.php";
 
 $forecastDaysDB = $mem->get('forecastDaysDB');
 $forecastHour = $mem->get('forecasthour');
@@ -20,6 +19,8 @@ if (empty($forecastHour)){
 }
 //include_once("lastdaylib.php");
 include_once("periodicDBTasks.php");
+include_once "runwalkcalc.php";
+include_once "forecastcalc.php";
 $output_json_file_path = "/home/boazn/public/02ws.com/public/02wsjson.txt";
 $output_json_file_path_short = "/home/boazn/public/02ws.com/public/02wsjsonshort.json";
 $JSON_ROOT = "{\"jws\":";
@@ -45,6 +46,8 @@ $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"primary_temp\":"."\"".$PRIMARY_TEMP."\"";
 $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"hum\":"."\"".$current->get_hum()."\"";
+$CURRENT_JSON .= ",";
+$CURRENT_JSON .= "\"hum2\":"."\"".$current->get_hum2()."\"";
 $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"pressure\":"."\"".$current->get_pressure()."\"";
 $CURRENT_JSON .= ",";
@@ -689,6 +692,8 @@ $JSON .= "\"temp\":"."\"".$hour_f['temp']."\"";
 $JSON .= ",";
 $JSON .= "\"hum\":"."\"".$hour_f['humidity']."\"";
 $JSON .= ",";
+$JSON .= "\"rain\":"."\"".$hour_f['rain']."\"";
+$JSON .= ",";
 $JSON .= "\"uv\":"."\"".$hour_f['uv']."\"";
 $JSON .= ",";
 $JSON .= "\"dust\":"."\"".$hour_f['dust']."\"";
@@ -777,6 +782,12 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= ",";
     $JSON .= "\"windNight\":"."\"".getWindInfo($day_f['windNight'], 0)['wind_class']."\"";
     $JSON .= ",";
+    $JSON .= "\"windMorningSpd\":"."\"".$day_f['windMorning']."\"";
+    $JSON .= ",";
+    $JSON .= "\"windDaySpd\":"."\"".$day_f['windDay']."\"";
+    $JSON .= ",";
+    $JSON .= "\"windNightSpd\":"."\"".$day_f['windNight']."\"";
+    $JSON .= ",";
     $JSON .= "\"TempNight\":"."\"".$day_f['TempNight']."\"";
     $JSON .= ",";
     $JSON .= "\"humNight\":"."\"".$day_f['humNight']."\"";
@@ -795,13 +806,14 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= ",";
     $JSON .= "\"night_icon\":"."\""."images/icons/day/".$day_f['iconnight']."\"";
     $JSON .= ",";
-    $day_f['lang1'] = str_replace('<br />', ', ',  $day_f['lang1']);
-    $day_f['lang0'] = str_replace('<br />', ', ',  $day_f['lang0']);
-    $JSON .= "\"lang1\":"."\"".str_replace('"', '',urldecode($day_f['lang1']))."\"";
+    $day_f['lang1'] = preg_replace("/<br\W*?\/>/", " ", $day_f['lang1']);
+    $day_f['lang0'] = preg_replace("/<br\W*?\/>/", " ", $day_f['lang0']);
+    $JSON .= "\"lang1\":"."\"".str_replace('"', '``',urldecode($day_f['lang1']))."\"";
      $JSON .= ",";
     $JSON .= "\"lang0\":"."\"".urldecode($day_f['lang0'])."\"";
     $JSON .= "},";
 }
+$random_did_you_know = rand(0, count($DID_YOU_KNOW_EX)-1);
 $JSON = trim($JSON, ",");
 $JSON .= "]";
 $JSON .= ",\"Messages\":";
@@ -818,11 +830,17 @@ $JSON .= "\"latestalert1\":"."\"".urlencode($mem->get('latestalert1'))."\"";
 $JSON .= ",";
 $JSON .= "\"addonalert1\":"."\"".urlencode($mem->get('addonalert1'))."\"";
 $JSON .= ",";
+$JSON .= "\"latestalerttype\":"."\"".$mem->get('latestalerttype')."\"";
+$JSON .= ",";
 $JSON .= "\"detailedforecast1\":"."\"".urlencode($mem->get('descriptionforecast1'))."\"";
 $JSON .= ",";
 $JSON .= "\"passedts\":"."\"".(time() - $mem->get('latestalerttime0'))."\"";
 $JSON .= ",";
 $JSON .= "\"timeforecast1\":"."\"".replaceDays(getLocalTime(strtotime($mem->get('descriptionforecasttime1'))))."\"";
+$JSON .= ",";
+$JSON .= "\"tip0\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$EN]."\"";
+$JSON .= ",";
+$JSON .= "\"tip1\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$HEB]."\"";
 $JSON .= "}";
 
 $JSON .= ",\"windstatus\":";
@@ -848,7 +866,7 @@ $JSON .= "{";
 $index_hour = 0;
 foreach ($forecastHour as $hour_f){
     $index_hour++;    
-    if (($hour_f['currentDateTime'] - time() > 0)){
+    if (($hour_f['currentDateTime'] - time() >= 0)){
          $nowHourIndex = $index_hour;
          $mem->set('nowHourIndex', $nowHourIndex);
          break;
@@ -937,6 +955,24 @@ $RUNWALK_JSON = rtrim($RUNWALK_JSON, ",");
 $RUNWALK_JSON .= "]";
 $JSON .= $RUNWALK_JSON; 
 
+$FORECASTCALC_JSON = ", \"sigForecastCalc\": [";
+foreach ($sigForecast as $sig_i){
+    $sigtitle0 = $sig_i['sig'][0];
+    $sigtitle1 = $sig_i['sig'][1];
+    $sigext0 = $sig_i['extrainfo'][0][0];
+    $sigext0plain = $sig_i['extrainfo'][0][1];
+    $sigext1 = $sig_i['extrainfo'][1][0];
+    $sigext1plain = $sig_i['extrainfo'][1][1];
+    $FORECASTCALC_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", 
+               \"sigtitle1\":"."\"".$sigtitle1."\", 
+               \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , 
+               \"sigext1\":"."\"".str_replace('"', "&quot;", $sigext1)."\",
+               \"url\":"."\"".$sig_i['url']."\"  }";
+               $FORECASTCALC_JSON .= ",";
+}
+$FORECASTCALC_JSON = rtrim($FORECASTCALC_JSON, ",");
+$FORECASTCALC_JSON .= "]";
+$JSON .= $FORECASTCALC_JSON; 
 
 
 $result = db_init("SELECT * FROM UserPicture where approved=1 order by uploadedAt DESC LIMIT 1","");

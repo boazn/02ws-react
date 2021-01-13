@@ -465,7 +465,7 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
 		<? echo getExp();?>
  </div>
 <div class="float" style="margin:1em 0.2em;" >	
-	 <div id="graphImage"> 
+	 <div id="graphImage" class="float"> 
 		<? 
                         $graph = $_GET['graph'];
 			if (isset($_POST['profile'])){
@@ -491,15 +491,15 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
 	(strstr(strtolower($_GET['graph']), 'eth')))) {?>
                 <a class="enlarge" href="images/profile<? echo $_REQUEST['profile']."/".$graph;?>?level=<?=($_REQUEST['profile'])?>&amp;freq=2<?=$datasource?>&amp;w=1600&amp;lang=<?=$lang_idx?>" target="_system" title="click to enlarge">
                 <span></span>
-		<img name="baseGraph" id="baseGraph" src="./images/profile<? echo $_REQUEST['profile']."/".$graph;?>?level=<?=($_REQUEST['profile'])?>&amp;freq=2<?=$datasource?>&amp;lang=<?=$lang_idx?>" alt="<? echo getPageTitle()?>" <? if (strstr($_GET['graph'], 'Hum')) echo "class=\"inv_plain\"";?> style="padding:0;margin:0"/>
+		<img name="baseGraph" id="baseGraph" src="https://www.02ws.co.il/images/profile<? echo $_REQUEST['profile']."/".$graph;?>?level=<?=($_REQUEST['profile'])?>&amp;freq=2<?=$datasource?>&amp;lang=<?=$lang_idx?>" alt="<? echo getPageTitle()?>" <? if (strstr($_GET['graph'], 'Hum')) echo "class=\"inv_plain\"";?> style="padding:0;margin:0"/>
                 </a>
 		<?} else{ if (isHeb()) $lang="&lang=he";?>
 		<iframe src="https://www.02ws.co.il/wxwugraphs/graphy1a.php?y=<?=$year?>&theme=default&w=260&h=290<?=$lang?>"  width="320" height="482"></iframe>
 		<?} ?>
 		</div>
-                <form method="post" name="profileChanger" action="" style="background:transparent;" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
-				<? echo $GRAPH[$lang_idx]." ".$FOR[$lang_idx];?>
-				<select size="1" id="profile" name="profile" class="inv_plain_2" onchange="changeProfile(this.options[this.selectedIndex].value)" <? if (isHeb()) echo "dir=\"rtl\""; ?>> 
+                <form method="post" name="profileChanger" action="" style="" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="padding:1em">
+				<? echo "&nbsp;&nbsp;".$GRAPH[$lang_idx]." ".$FOR[$lang_idx];?>
+				<select size="1" id="profile" name="profile" class="inv_plain_3_zebra" onchange="changeProfile(this.options[this.selectedIndex].value)" <? if (isHeb()) echo "dir=\"rtl\""; ?>> 
 						<option	<? if ($_REQUEST['profile'] == "1") echo " selected ";?> value="1"><? echo $TODAY[$lang_idx];?></option>
 						<option	<? if ($_REQUEST['profile'] == "2") echo " selected ";?> value="2">3 <? echo $DAYS[$lang_idx];?></option>
 						<option	<? if ($_REQUEST['profile'] == "3") echo " selected ";?> value="3"><? echo $LAST_WEEK[$lang_idx];?></option>
@@ -509,7 +509,7 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
 				</select>
                 <input type="hidden" name="myPHPvar" id="hiddenProfile" value="" />
                 </form>
-                <ul id="moregraphs" style="list-style-type: bullet;float:<?=get_s_align();?>">
+                <ul id="moregraphs" style="list-style-type: bullet;float:<?=get_s_align();?>" >
                 <li><a href="/wxwugraphs/graphy1a.php?y=<?=$year?>&theme=default&w=820&h=295" rel="external"><? echo $BY_DATE[$lang_idx];?></a></li>
                 <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'latest.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$TODAY[$lang_idx];?></a></li>
                 <li><a href="<? echo get_query_edited_url($url_cur, 'section', '2weeks.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_WEEK[$lang_idx];?></a></li>
@@ -822,26 +822,30 @@ if (strstr(strtolower($_GET['graph']), 'rain'))
 
 <?
 	//echo "<td class=verysmall>".getRainAccArrayTable($rainAcc)."</td>";
+	$rainarray = array();
 	$rainarray = getRainAccArray($rainAcc, 0, 0);
 	$timearray = array();
-	for ($i=0 ; $i < count($rainarray) ; $i++)
-	{
-		if ($rainarray[$i]['time'] == "00:00")
-			array_push ($timearray, sprintf("%s 00:00",$rainarray[$i]['date']));
-		else
-			array_push ($timearray, $rainarray[$i]['time']);
+	if ($rainarray){
+		for ($i=0 ; $i < count($rainarray) ; $i++)
+		{
+			if ($rainarray[$i]['time'] == "00:00")
+				array_push ($timearray, sprintf("%s 00:00",$rainarray[$i]['date']));
+			else
+				array_push ($timearray, $rainarray[$i]['time']);
+		}
+		$accarray = array();
+		for ($i=0 ; $i < count($rainarray) ; $i++)
+		{
+			array_push ($accarray, $rainarray[$i]['rainacc']);
+		}
+		$timearrayE = implode(" ", $timearray);
+		$rainarrayE = implode(" ", $accarray);
+		//echo $timearrayE;
+			echo "<a class=\"enlarge\" href=\"imageGraph.php?title=Last $rainAcc hours of accumulated rain &Xtitle=&Ytitle=mm&interval=$rainAcc&rainarray=$rainarrayE&timearray=$timearrayE\" target=\"_system\" title=\"click to enlarge\">";
+		echo "<img src=\"imageGraph.php?title=Last $rainAcc hours of accumulated rain &Xtitle=&Ytitle=mm&interval=$rainAcc&rainarray=$rainarrayE&timearray=$timearrayE\" alt=\"Last $rainAcc hours of accumulated rain\" width=\"320\"/>";
+			echo "</a>";           
 	}
-	$accarray = array();
-	for ($i=0 ; $i < count($rainarray) ; $i++)
-	{
-		array_push ($accarray, $rainarray[$i]['rainacc']);
-	}
-	$timearrayE = implode(" ", $timearray);
-	$rainarrayE = implode(" ", $accarray);
-	//echo $timearrayE;
-        echo "<a class=\"enlarge\" href=\"imageGraph.php?title=Last $rainAcc hours of accumulated rain &Xtitle=&Ytitle=mm&interval=$rainAcc&rainarray=$rainarrayE&timearray=$timearrayE\" target=\"_system\" title=\"click to enlarge\">";
-	echo "<img src=\"imageGraph.php?title=Last $rainAcc hours of accumulated rain &Xtitle=&Ytitle=mm&interval=$rainAcc&rainarray=$rainarrayE&timearray=$timearrayE\" alt=\"Last $rainAcc hours of accumulated rain\" width=\"320\"/>";
-        echo "</a>";           
+	
 ?>
 
 </div>

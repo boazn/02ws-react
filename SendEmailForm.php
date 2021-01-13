@@ -50,7 +50,7 @@ if (isset($_POST['SendButton'])) {
 		echo("<div class=\"text-error alert\"><div class=\"high\">Email is not valid אימייל לא חוקי</div></div>");
 	}
 
-	else if((stristr($_SERVER['HTTP_REFERER'], "station.php") > -1 )||(stristr($_SERVER['HTTP_REFERER'], "small.php") > -1 )){
+	else if((stristr($_SERVER['HTTP_REFERER'], "station.php") > -1 )||(stristr($_SERVER['HTTP_REFERER'], "small") > -1 )){
 
 		$msgSent = true;
 		$insert_msgdate = date('Y-m-d G:i:s', strtotime(SERVER_CLOCK_DIFF, time()));
@@ -61,7 +61,7 @@ if (isset($_POST['SendButton'])) {
 		
 		$result = send_Email($msgBody, ME, $email, $name, "", array("New contact to 02WS", "הודעה חדשה לצרו קשר של ירושמיים"));
 		if ($result == "")
-			echo "<div class=\"alert-success\" ><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></div>";
+			echo "<div class=\"alert-success inv_plain_3_zebra white-box\" style=\"margin:0 auto\"><h2>The Message was sent</h2><h2> ההודעה נשלחה</h2><h2>Thanks</h2><h2> תודה</h2></div>";
 		else
 			echo "<fieldset class=\"high\"><strong>$result</strong></fieldset>";
 	?>

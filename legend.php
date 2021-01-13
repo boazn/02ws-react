@@ -43,15 +43,17 @@
 <div><img align="absmiddle" src="images/icons/day/snowshow2.png" width="50px" height="50px" ><img align="absmiddle" src="images/icons/day/snow.gif" width="50px" height="50px" ><?=$SNOW[$lang_idx]?></div>
 </div>
 <div class="float" style="width:15%">
-<?=$RAIN[$lang_idx]." - ".$ISOLATED[$lang_idx]?><br />
-<?=$RAIN[$lang_idx]." ".$OCCASIONALLY[$lang_idx]?><br />
-<?=$RAIN[$lang_idx]." ".$ALTERNATELY[$lang_idx]?><br />
-<?=$RAIN[$lang_idx]." ".$AT_TIMES[$lang_idx]?><br />
-<?=$RAINY[$lang_idx]?><br /><br /><br />
-<?=$WEAK_WINDS[$lang_idx]?><br />
-<?=$MODERATE_WINDS[$lang_idx]?><br />
-<?=$STRONG_WINDS[$lang_idx]?><br />
-<?=$EXTREME_WINDS[$lang_idx]?><br />
+<div><img align="absmiddle" src="images/icons/day/rainPC.gif" width="65px" height="65px" ><?=$RAIN[$lang_idx]." - ".$ISOLATED[$lang_idx]?></div>
+<div><?=$RAIN[$lang_idx]." ".$OCCASIONALLY[$lang_idx]?></div>
+<div><img align="absmiddle" src="images/icons/day/rain.gif" width="65px" height="65px" ><?=$RAIN[$lang_idx]." ".$ALTERNATELY[$lang_idx]?></div>
+<div><img align="absmiddle" src="images/icons/day/rain.gif" width="65px" height="65px" ><?=$RAIN[$lang_idx]." ".$AT_TIMES[$lang_idx]?></div>
+<div><img align="absmiddle" src="images/icons/day/rain.gif" width="65px" height="65px" ><?=$RAINY[$lang_idx]?></div>
+<br /><br /><br />
+<div><div class="wind_icon no_wind"></div><?=$NO_WIND[$lang_idx]?></div>
+<div><div class="wind_icon light_wind"></div><?=$WEAK_WINDS[$lang_idx]?></div>
+<div><div class="wind_icon moderate_wind"></div><?=$MODERATE_WINDS[$lang_idx]?></div>
+<div><div class="wind_icon high_wind"></div><?=$STRONG_WINDS[$lang_idx]?></div>
+<div><div class="wind_icon high_wind"></div><?=$EXTREME_WINDS[$lang_idx]?></div>
 
 
 </div>

@@ -1,4 +1,4 @@
-<?
+<?php
 header('Content-type: text/html; charset=utf-8');
 //ini_set("display_errors","On");
 if ($_GET['debug'] == '')
@@ -10,11 +10,7 @@ include_once("requiredDBTasks.php");
 include_once "sigweathercalc.php";
 include_once "runwalkcalc.php";
 $sigforecastHour = $mem->get('sigforecastHour');
-if (empty($sigforecastHour)){
-    $forecastlib_origin = "station.php";
-    include_once("forecastlib.php");
-    $forecastHour = $mem->get("forecasthour");
-}
+
 ?>
  <!DOCTYPE html>
     <head>
@@ -38,7 +34,7 @@ if (empty($sigforecastHour)){
                 padding-bottom: 40px;
             }
         </style>
-        <link rel="stylesheet"  href="css/main.php?lang=<?=$lang_idx;?>" type="text/css">
+        <link rel="stylesheet"  href="css/main<?=$lang_idx;?>.css" type="text/css">
         <? if ($current->is_sunset()) { ?>
         <link rel="stylesheet" title="mystyle" href="css/sunset.min.css" type="text/css">
         <? }?>
@@ -78,11 +74,11 @@ if (empty($sigforecastHour)){
             ga('send', 'pageview');
 
         </script>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                 <script id="adsense_start">
                 (adsbygoogle = window.adsbygoogle || []).push({
                 google_ad_client: "ca-pub-2706630587106567",
-                enable_page_level_ads: true
+                enable_page_level_ads: false
                 });
                 </script>
     </head>
@@ -176,7 +172,7 @@ if (empty($sigforecastHour)){
                                                         <li >
                                                                 <a class="hlink" href="<? echo get_query_edited_url(get_url(), 'section', 'globalwarm.php');?>" onmouseover="toggle('globalwarmanomaly')" onmouseout="toggle('globalwarmanomaly')"><? echo $GLOBAL_WARMING[$lang_idx]; ?>:<span dir="ltr">
                                                                         <?	
-                                                                           $gw =  number_format(apc_fetch('avganomaly'), 2, '.', '');
+                                                                           $gw =  number_format($mem->get('avganomaly'), 2, '.', '');
                                                                            $gw_plus_minus = $gw >= 0 ? "+" : "";
                                                                            echo $gw_plus_minus.$gw;
                                                                            echo $current->get_tempunit(); ?>
@@ -314,6 +310,9 @@ if (empty($sigforecastHour)){
 						<a class="now active" href="#now"><?=$CURRENT_SIG_WEATHER[$lang_idx]?></a>
                     </li>
                     <li>
+						<a class="forecast" href="#forecast"><?=$FORECAST_TITLE[$lang_idx]?></a>
+                    </li>
+                    <li>
 						<a class="whatmore" href="#whatmore"><?=$WHAT_MORE[$lang_idx]?></a>
                     </li>
                     <li>
@@ -411,7 +410,7 @@ if (empty($sigforecastHour)){
                                         <? echo $IT_FEELS[$lang_idx]; ?>
                                          <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
                                                
-                                                <span id="itfeels_thsw" dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span>
+                                                <span id="itfeels_thsw" dir="ltr" class="high value" title="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span>
                                          </a><img src="images/shadow.png" width="15" title="<? echo $IN_THE_SUN[$lang_idx]."/".$SHADE[$lang_idx]; ?>" alt="<? echo $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" /><? }
                                 else if (!empty($itfeels[0]))
                                         echo $IT_FEELS[$lang_idx]; 
@@ -455,7 +454,7 @@ if (empty($sigforecastHour)){
                                 </div>
                                <div class="paramvalue">
                                     
-                                        <? echo $current->get_temp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?>&nbsp;<? if ($PRIMARY_TEMP == 1) echo " $VALLEY[$lang_idx]"; else echo " $MOUNTAIN[$lang_idx]";?></div>
+                                       <? echo $current->get_temp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?>&nbsp;<? if ($PRIMARY_TEMP == 1) echo " $VALLEY[$lang_idx]"; else echo " $MOUNTAIN[$lang_idx]";?></div>
                                     
                                 </div>
                                 <div class="highlows">
@@ -487,8 +486,8 @@ if (empty($sigforecastHour)){
                                 </div>
                                <div class="paramvalue">
                                     
-                                   <? echo $current->get_temp2();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?>&nbsp;<?if ($PRIMARY_TEMP == 1) echo " $MOUNTAIN[$lang_idx]"; else echo " $VALLEY[$lang_idx]";?></div>
-                                    
+                                   <? if ($current->is_light()) echo $current->get_temp2(); else echo $current->get_temp2();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?>&nbsp;<?if ($PRIMARY_TEMP == 1) echo " $MOUNTAIN[$lang_idx]"; else echo " $VALLEY[$lang_idx]";?></div>
+                                   <div class="small valley"><? if (!$current->is_light()) echo $LOW_VALLEY[$lang_idx].": ".$current->get_temp3();?>&nbsp;</div>
                                 </div>
                                 <div class="highlows">
                                         <div class="highparam"><? echo toLeft($today->get_hightemp2()); ?></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/>&nbsp;<span class="high_time"><? echo $today->get_hightemp2_time()." "; ?></span>
@@ -552,7 +551,9 @@ if (empty($sigforecastHour)){
                             </div>
                             <div class="paramvalue">
                                     <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=humwind.php&amp;level=1&amp;freq=2&amp;datasource=downld02&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"  class="info"><? echo $current->get_hum();?>%&nbsp;</a>
+                                    <div class="small valley"><? echo $VALLEY[$lang_idx].":".$current->get_hum2();?>%&nbsp;</div>
                             </div>
+                            
                             <div class="highlows">
                                      <span><div class="highparam"><? echo $today->get_highhum(); ?></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highhum_time()." "; ?></span>
                                      &nbsp;&nbsp;&nbsp;&nbsp;<span><div class="lowparam"><? echo $today->get_lowhum(); ?></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/></span>&nbsp;<span class="low_time"><? echo $today->get_lowhum_time()." "; ?></span>
@@ -794,6 +795,9 @@ if (empty($sigforecastHour)){
                         <div id="chartjs-tooltip" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
                         </div>
                         <div id="latestmoon" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?>>
+                        <div class="paramtitle slogan">
+                        <? echo $MOON[$lang_idx];?>
+                        </div>
                         <div class="moon_sun span2">
 			 <div id="moon_rise" onclick="window.open('http://wise-obs.tau.ac.il/cgi-bin/eran/calen.html?MO=<? echo $month;?>&amp;YE=<? echo $year;?>&amp;TI=Wise+Observatory+Schedule&amp;LO=35.167&amp;LA=31.783&amp;TZ=<?=GMT_TZ?>&amp;PLACE=2');">
                              <div id="moon_img" class="float">
@@ -1346,18 +1350,22 @@ else {  ?>
         <source src="sound/rain/RAINFIBL.mp3"></source>
 </audio>
 <? }?>
-<!-- Start of StatCounter Code -->
+<!-- Default Statcounter code for Jerusalem Weather Station
+http://02ws.co.il -->
 <script type="text/javascript">
 var sc_project=548696; 
 var sc_invisible=1; 
-var sc_security="";
-(function() {
-  var st = document.createElement('script'); st.type = 'text/javascript'; st.async = true;
-  st.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://') + 'www.statcounter.com/counter/counter_xhtml.js';
-  var s = document.getElementsByTagName('script')[1]; s.parentNode.insertBefore(st, s);
-})();
+var sc_security=""; 
 </script>
-<!-- End of StatCounter Code -->
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
+<noscript><div class="statcounter"><a title="Web Analytics
+Made Easy - StatCounter" href="https://statcounter.com/"
+target="_blank"><img class="statcounter"
+src="https://c.statcounter.com/548696/0//1/" alt="Web
+Analytics Made Easy - StatCounter"></a></div></noscript>
+<!-- End of Statcounter Code -->
 <!-- Grab Google CDN's jQuery. fall back to local if necessary --> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
 <script>!window.jQuery && document.write('<script src="/js/jquery-1.6.1.min.js"><\/script>')</script>
@@ -1376,7 +1384,7 @@ var lang=<?=$lang_idx?>;
 <? }?>
 <script src="js/tinymce/tinymce.min.07032017.js"></script>
 <script src="js/modernizr.custom.37797.js"></script> 
-<script src="footerScripts250320.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&guid=<?=$_GET['guid']?>"  type="text/javascript"></script>
+<script src="footerScripts161120.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&guid=<?=$_GET['guid']?>"  type="text/javascript"></script>
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
 <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js#pubid=boazn"></script>
 <script type="text/javascript">

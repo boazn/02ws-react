@@ -8,7 +8,7 @@
 
     </title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
-	<script type="text/javascript" src="sprintf2.js"></script>
+	<script type="text/javascript" src="/sprintf2.js"></script>
 
 	<script language="javascript" type="text/javascript">
    function checkImageExists(imageSrc, good, bad) {
@@ -25,6 +25,7 @@
       var found = false;
       rounded.setTime(rounded.getTime() - min_sub*60*1000);
       var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/IMSRadar/IMSRadar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
+      //var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/radar/radar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
       //console.log(imagepath);
       checkImageExists(imagepath,
       function(){ 
@@ -43,7 +44,7 @@
          }
             
       else{
-         min_sub = min_sub + 5;
+         min_sub = min_sub + 5;//default = 5
          numSearched = numSearched + 1;
          console.log(imagepath + " not found. Searching -" + min_sub);
          getLatestImgTime(min_sub);
@@ -138,7 +139,7 @@ first_image = 1;
 
 
 
-      normal_delay = 1000;
+      normal_delay = 500;
 
       delay = normal_delay;         //delay between frames in 1/100 seconds
 
@@ -188,8 +189,8 @@ function buildImageArray(rounded){
    for (i = 0; i < numOfPics ; i++)
 
       {
-         
          var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/IMSRadar/IMSRadar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
+         //var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/radar/radar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
          modImages[i] = imagepath;
          timeImages[i] = new Date(rounded);
          if (i == 0){
@@ -201,10 +202,10 @@ function buildImageArray(rounded){
          }
             
          console.log("putting: " + imagepath);
-         rounded.setMinutes( rounded.getMinutes() - 5 ); 
+         rounded.setMinutes( rounded.getMinutes() - 5 ); // default = 5
 
       }
-      <?
+      <?php
          
       /*	$radarpics = getLastFilesFromDir("images/radar", $numOfPics);
          $radarpics = array_reverse($radarpics);
@@ -868,7 +869,7 @@ function imgError(image) {
   <body onload="startup">
 
 
-<div style="width:100%;">
+<div style="width:120%;">
 <h1><?=$RAIN_RADAR[$lang_idx]?></h1>
 
 <div id="waiting" class="topbase" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="display:none;">
@@ -876,7 +877,7 @@ function imgError(image) {
 <img src="images/loading.gif" alt="loading" width="32" height="32"/>
 </div>
 <div  id="wrapper" >
-<div style="clear:both;width:100px;float:<?echo get_s_align();?>;position:absolute;<?echo get_s_align();?>:-110px" <? if (isHeb()) echo "dir=\"rtl\""; ?>>                        
+<div id="radarcontrols" >                        
 <a href="javascript: func()" onclick="launch();toggle('play')">
 	<img id="play" width="80" height="80" src="images/play.png" alt="start התחל"/>
 </a>
@@ -929,24 +930,27 @@ function imgError(image) {
     <input type="hidden" name="myPHPvar" id="hiddenPics" value="" />
     </form>
 </div>
-<div style="margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:-110px;top:370px;position:absolute" id="downloadStatus">
+<div style="display:none;margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:-110px;top:370px;position:absolute" id="downloadStatus">
 
 </div>
-<div style="width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:-70px;" id="radarimg" >
+<div style="width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:100px;" id="radarimg" >
  <div id="frametime" class="topbase"></div>
  <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="" width="570px" height="570px" alt="IMS radar" style="z-index:0"/>
  
  
  <div style="margin:0.5em">
-	<img src="images/radar_scale_eng.jpg" alt="scale of rain rate" /><br />
 	<? echo $SOURCE[$lang_idx].": ".$IMS[$lang_idx];?>
 </div>
 </div><!-- id="wrapper" -->
 </div>
-<div style="margin-<?echo get_inv_s_align();?>:-100px">
-<iframe src="https://geshem.space/" width="520px" height="640px" scrolling="auto" id="iframegeshem" class="base" allowtransparency="true" marginHeight="0" marginWidth="0" frameborder="0" ></iframe>
+<div style="float:<?echo get_s_align();?>;margin-<?echo get_inv_s_align();?>:0px">
+<iframe src="https://geshem.space/" width="420px" height="640px" scrolling="auto" id="iframegeshem" class="base" allowtransparency="true" marginHeight="0" marginWidth="0" frameborder="0" ></iframe>
+   
  </div>
-<div style="float:<?echo get_s_align();?>;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
+ <div style="float:<?echo get_s_align();?>;margin-<?echo get_s_align();?>:0px">
+ <iframe src="https://www.rainviewer.com/map.html?loc=32.147,33.7281,7&oFa=0&oC=0&oU=0&oCS=1&oF=0&oAP=0&rmt=4&c=1&o=83&lm=0&th=0&sm=1&sn=1" width="420px" frameborder="0" style="border:0;height:63vh;" allowfullscreen></iframe>
+   </div>
+<div style="clear:both;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
 <div id="adunit2">
 <script type="text/javascript"><!--
 google_ad_client = "pub-2706630587106567";
@@ -963,12 +967,12 @@ google_color_text = ["<?= $forground->bg['-9'] ?>"];
 //-->
 </script>
 <script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 </div>
 </div>
 </div>
-<div style="width:120px;right: -100px;top: 780px;position:absolute;z-index:2">
+<div style="display:none;width:120px;right: -100px;top: 780px;position:absolute;z-index:2">
 
 	
 
@@ -991,12 +995,13 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <h2 style="padding:1em"><?=$ARCHIVE[$lang_idx]?></h2>
 <div style="padding:1em"><?=$BY_DATE[$lang_idx]?></div>
 <?
-		$latestRadarDays = getfilesFromdir("images/radar/gif");
+		$latestRadarDays = getfilesFromdir($_SERVER['DOCUMENT_ROOT']."/images/radar/gif");
 		$archradar = 0;
 		foreach ($latestRadarDays as $lradar)
 		{
             if (stristr($lradar[1], "dailyradar")) 
-			{$archradar = $archradar + 1;
+         {$archradar = $archradar + 1;
+            $lradar[1] = str_replace($_SERVER['DOCUMENT_ROOT'], '',$lradar[1]);
 			?>
 			
 			<div style="float:<?echo get_s_align();?>;padding:0.5em" class="inv_plain_3_zebra">

@@ -3,7 +3,7 @@ header('Content-type: text/html; charset=utf-8');
 if ($_GET['debug'] == '')
     include "begin_caching.php";
 include_once("include.php"); 
-include_once("starto.php");
+include_once("start.php");
 include_once("requiredDBTasks.php");
 include_once "sigweathercalc.php";
 ini_set("display_errors","On");

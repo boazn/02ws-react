@@ -29,19 +29,19 @@
 		$found = searchDoubleNext ($radio_contents_tok, "1000.0", "999.0");//skipping ground inversion
 		if ($found)
 		{
-			$nextHeight = getNextWord($radio_contents_tok, 1);
-			$nextTemp = getNextWord($radio_contents_tok, 1);
-			$nextHum = getNextWord($radio_contents_tok, 2);
+			$nextHeight = getNextWord($radio_contents_tok, 1, "Height");
+			$nextTemp = getNextWord($radio_contents_tok, 1, "Temp");
+			$nextHum = getNextWord($radio_contents_tok, 2, "Hum");
 			
 			do {
 				$baseHeight = $nextHeight;
 				$baseTemp = $nextTemp;
 				$baseHum = $nextHum;
-				$nextPres = getNextWord($radio_contents_tok, 7);//next level pres
-				$nextHeight = getNextWord($radio_contents_tok, 1);//next level height
-				$nextTemp = getNextWord($radio_contents_tok, 1);
-				$nextDP = getNextWord($radio_contents_tok, 1);
-				$nextHum = getNextWord($radio_contents_tok, 1);
+				$nextPres = getNextWord($radio_contents_tok, 7, "Pres");//next level pres
+				$nextHeight = getNextWord($radio_contents_tok, 1, "Height");//next level height
+				$nextTemp = getNextWord($radio_contents_tok, 1, "Nextword");
+				$nextDP = getNextWord($radio_contents_tok, 1, "Nextword");
+				$nextHum = getNextWord($radio_contents_tok, 1, "Nextword");
 				if ($nextPres == "850.0"){ 
 					$t850 = $nextTemp;
 					$dp850 = $nextDP;
@@ -59,11 +59,11 @@
 				$baseHeight = $nextHeight;
 				$baseTemp = $nextTemp;
 				$baseHum = $nextHum;
-				$nextPres = getNextWord($radio_contents_tok, 7);//next level pres
-				$nextHeight = getNextWord($radio_contents_tok, 1);//next level height
-				$nextTemp = getNextWord($radio_contents_tok, 1);
-				$nextDP = getNextWord($radio_contents_tok, 1);
-				$nextHum = getNextWord($radio_contents_tok, 1);
+				$nextPres = getNextWord($radio_contents_tok, 7, "Pres");//next level pres
+				$nextHeight = getNextWord($radio_contents_tok, 1, "Height");//next level height
+				$nextTemp = getNextWord($radio_contents_tok, 1, "Nextword");
+				$nextDP = getNextWord($radio_contents_tok, 1, "Nextword");
+				$nextHum = getNextWord($radio_contents_tok, 1, "Nextword");
 				if ($nextPres == "850.0"){ 
 					$t850 = $nextTemp;
 					$dp850 = $nextDP;
@@ -80,15 +80,15 @@
 			// if inversion is below 850mb level
 			if ($t850=="") 
 				if (searchNext ($radio_contents_tok, "850.0")) {
-					$t850 = getNextWord($radio_contents_tok, 2);
-					$dp850 = getNextWord($radio_contents_tok, 1);
+					$t850 = getNextWord($radio_contents_tok, 2, "Nextword");
+					$dp850 = getNextWord($radio_contents_tok, 1, "Nextword");
 				}
 			if ($t700=="")
 				if (searchNext ($radio_contents_tok, "700.0")) 
-					$t700 = getNextWord($radio_contents_tok, 2);
+					$t700 = getNextWord($radio_contents_tok, 2, "Nextword");
 			if ($t500=="") 
 				if (searchNext ($radio_contents_tok, "500.0")) 
-					$t500 = getNextWord($radio_contents_tok, 2);
+					$t500 = getNextWord($radio_contents_tok, 2, "Nextword");
 
 			$inversionThickness = $topInversionHeight - $baseInversionHeight;
 			$inversionTemp =  $topInversionTemp - $baseInversionTemp;
@@ -106,25 +106,25 @@
 			// ************** index claculation ***************
 			//Showalter index
 			if (searchNext ($radio_contents_tok, "index:"))//Showalter index
-				$Showalter = getNextWord($radio_contents_tok, 1);
+				$Showalter = getNextWord($radio_contents_tok, 1, "Showalter");
 			if (searchNext ($radio_contents_tok, "index:"))// Lifted index
-				$LiftedIdx = getNextWord($radio_contents_tok, 1);
+				$LiftedIdx = getNextWord($radio_contents_tok, 1), "Showalter";
 			if (searchNext ($radio_contents_tok, "index:"))//SWEAT index
-				$SWEATIdx = getNextWord($radio_contents_tok, 1);
+				$SWEATIdx = getNextWord($radio_contents_tok, 1, "Showalter");
 			if (searchNext ($radio_contents_tok, "index:"))//K index
-				$KIdx = getNextWord($radio_contents_tok, 1);
+				$KIdx = getNextWord($radio_contents_tok, 1, "K index");
 			if (searchNext ($radio_contents_tok, "index:"))//Cross totals index
-				$CrossIdx = getNextWord($radio_contents_tok, 1);
+				$CrossIdx = getNextWord($radio_contents_tok, 1, "Cross");
 			if (searchNext ($radio_contents_tok, "index:"))//Vertical totals index
-				$VerticalIdx = getNextWord($radio_contents_tok, 1);
+				$VerticalIdx = getNextWord($radio_contents_tok, 1, "Vertical");
 			if (searchNext ($radio_contents_tok, "index:"))//Totals totals index
-				$TotalsIdx = getNextWord($radio_contents_tok, 1);
+				$TotalsIdx = getNextWord($radio_contents_tok, 1, "Totals");
 			if (searchNext ($radio_contents_tok, "Energy:"))//CAPE
-				$CAPE = getNextWord($radio_contents_tok, 1);
+				$CAPE = getNextWord($radio_contents_tok, 1, "CAPE");
 			if (searchNext ($radio_contents_tok, "Inhibition:"))//Convective Inhibition
-				$ConIn = getNextWord($radio_contents_tok, 1);
+				$ConIn = getNextWord($radio_contents_tok, 1, "Convective");
 			if (searchNext ($radio_contents_tok, "Number:"))//Bulk Richardson Number
-				$BulkRichNum = getNextWord($radio_contents_tok, 1);
+				$BulkRichNum = getNextWord($radio_contents_tok, 1, "Bulk");
 			
 			return true;
 		}

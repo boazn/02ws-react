@@ -59,7 +59,7 @@ $atarot = $doc["#C1WebGrid1 > tr:eq(7) > td:eq(8) > div"]->text();
 $merkazit = $doc["#C1WebGrid1 > tr:eq(9) > td:eq(8) > div"]->text();
 
 
-$stations = array(intval($efrata), intval($safra), intval($atarot));
+$stations = array(intval($efrata), intval($safra));
 sort ($stations);
 echo "pm10 before:";
 print_r($stations);

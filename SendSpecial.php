@@ -51,6 +51,9 @@
   display: inline-block;
   color: #000000;
 }
+select{
+    height:25px
+}
 </style>
 <input type='file' onchange="readURL(this);" accept="video/*,image/*,video/mp4,video/x-m4v" name="imagefile" id="imagefile"   size="60"  style="float:left;width:150px"/><br />
 <img id="localimg" src="#" alt="your image" width="300"/><br />
@@ -59,6 +62,51 @@
 </video>
 <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
 <div id="SendSpecialResult"></div>
+<label for="subject">subject:</label>
+<select name="subject" id="subject">
+  <option value=""></option>
+  <option value="will start">will start</option>
+  <option value="will stop">will stop</option>
+  <option value="sunset">sunset</option>
+  <option value="boiler">boiler</option>
+  <option value="evapotranspiration">evapotranspiration</option>
+  <option value="frost">frost</option>
+  <option value="uv">uv</option>
+</select><br/>
+<label for="rainminfrom">from:</label>
+<select name="rainminfrom" id="rainminfrom">
+  <option value=""></option>
+  <option value="10">10</option>
+  <option value="20">20</option>
+  <option value="30">30</option>
+  <option value="45">45</option>
+  <option value="60">60</option>
+  <option value="90">90</option>
+</select><br/>
+<label for="rainminto">to:</label>
+<select name="rainminto" id="rainminto">
+    <option value=""></option>
+  <option value="20">20</option>
+  <option value="30">30</option>
+  <option value="45">45</option>
+  <option value="60">60</option>
+  <option value="90">90</option>
+  <option value="120">120</option>
+</select><br/>
+<label for="rainpart">part:</label>
+<select name="rainpart" id="rainpart">
+   <option value=""></option>
+  <option value="west">west</option>
+  <option value="north">north</option>
+  <option value="south">south</option>
+  <option value="east">east</option>
+</select><br/>
+<label for="words">words:</label>
+<select name="words" id="words">
+   <option value=""></option>
+  <option value="min">min</option>
+  <option value="hours">hours</option>
+</select>   
 <div class="inv_plain_3" style="margin:0 auto;padding:0.5em;width:300px;text-align:right">
 	<strong>Your message</strong><br/>
         <textarea id="message0" name="message0" cols="3   0" rows="3"  value="<? echo $message; ?>" style="text-align:left;font-size: 1em;width:290px"><? echo $message; ?></textarea><br/>
@@ -222,6 +270,106 @@ Upload.prototype.progressHandling = function (event) {
     $('.nav').hide();
     $('#localimg').hide();
     $('#localvid').hide();
+    });
+
+    $("#subject").change(function(){
+       
+        switch ($("#subject").val()){
+            case "will start":
+                $("#title0").val("rain is coming");
+                $("#title1").val("גשם בא");
+                $("#message0").append("The rain is expected to arrive");
+                $("#message1").append("גשם צפוי להגיע");
+            break;
+            case "will stop":
+                $("#title0").val("rain is coming");
+                $("#title1").val("הגשם ייפסק");
+                $("#message0").append("The rain is expected to pass" );
+                $("#message1").append("הגשם צפוי להיפסק");
+               
+            break;
+            case "sunset":
+                $("#message0").append("Your attention is recommended " );
+                $("#message1").append("כדאי להביט מערבה בשעת השקיעה. יהיה מעניין באזור ");
+                $("#title0").val("Nicer than usual sunset");
+                $("#title1").val("שקיעה מהממת מהרגיל");
+               
+            break;
+            case "boiler":
+                $("#message0").append("Low sunshine hours " );
+                $("#message1").append("השמש לא סיפקה את הסחורה ");
+                $("#title0").val("Turn on the boiler");
+                $("#title1").val("כדאי להדליק את הבוילר");
+            break;
+            case "evapotranspiration":
+                $("#message0").append("Irrigation needed " );
+                $("#message1").append("הצמחים צמאים ");
+                $("#title0").val("High evapotranspiration");
+                $("#title1").val("אידוי גבוה");
+                
+            break;
+            case "frost":
+                $("#message0").append("Frost on the ground and cars in the lowest places " );
+                $("#message1").append("קרה על הקרקע ועל הרכבים במקומות הנמוכים ");
+                $("#title0").val("Frost");
+                $("#title1").val("קרה");
+                
+            break;
+            case "uv":
+                $("#message0").append("Especially for deligate type of skin. " );
+                $("#message1").append("במיוחד לבעלי עור רגיש ");
+                $("#title0").val("High and dangerous UV");
+                $("#title1").val("קרינה גבוהה ומסוכנת");
+                
+            break;
+            default:
+            break;
+        }
+        
+    });
+    $("#rainminfrom").change(function(){
+        $("#message1").append(" תוך כ-"+($("#rainminfrom").val())+" ");
+        $("#message0").append(" within "+($("#rainminfrom").val())+" ");
+    });
+    $("#rainminto").change(function(){
+        $("#message1").append("עד "+($("#rainminto").val())+" דק");
+        $("#message0").append(" to "+($("#rainminto").val())+" min ");
+    });
+    $("#words").change(function(){
+        var heb_side;
+        switch ($("#words").val()){
+            case "min":
+                heb_side = "דק";
+            break;
+            case "hours":
+                heb_side = "שעות";
+            break;
+            default:
+            break;
+        }
+        $("#message1").append(" " + heb_side);
+        $("#message0").append(" "+($("#words").val()));
+    });
+    $("#rainpart").change(function(){
+        var heb_side;
+        switch ($("#rainpart").val()){
+            case "south":
+                heb_side = "דרום";
+            break;
+            case "west":
+                heb_side = "מערב";
+            break;
+            case "north":
+                heb_side = "צפון";
+            break;
+            case "east":
+                heb_side = "מזרח";
+            break;
+            default:
+            break;
+        }
+        $("#message1").append(" בדגש "+heb_side+" העיר ");
+        $("#message0").append(" esp to the "+($("#rainpart").val())+" parts");
     });
 </script>
     

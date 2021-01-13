@@ -1,11 +1,77 @@
 <?
 ini_set("display_errors","On");
+include ("include.php");
 include_once("start.php");
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+require_once 'vendor/autoload.php';
+
+use Jose\Component\Core\AlgorithmManager;
+use Jose\Component\KeyManagement\JWKFactory;
+use Jose\Component\Signature\JWSBuilder;
+use Jose\Component\Signature\Algorithm\ES256;
+use Jose\Component\Signature\Serializer\JWSSerializerManager;
+use Jose\Component\Signature\Serializer\CompactSerializer;
+
 class CloudMessageType {
 
     const Gcm = 1;
     const Fcm = 2;
+}
+
+function getToken($cerPath, $secret, $teamId) {
+	// 1.
+	$algorithmManager = new AlgorithmManager([ 
+		new ES256() 
+	]);
+
+	// 2.
+	$jwk = JWKFactory::createFromKeyFile($cerPath);
+
+	// We instantiate our JWS Builder.
+	$jwsBuilder = new JWSBuilder(
+	    $algorithmManager
+	);
+
+	// 3.
+	$payload = json_encode([
+	    'iat' => time(),
+	    'iss' => $teamId,
+	]);
+
+	// 4.
+	$jws = $jwsBuilder
+	    ->create()                                                  // We want to create a new JWS
+	    ->withPayload($payload)                                     // We set the payload
+	    ->addSignature($jwk, ['alg' => 'ES256', 'kid' => $secret])  // We add a signature with a simple protected header
+	    ->build();                                                  // We build it
+
+    // The serializer manager. We only use the JWS Compact Serialization Mode.
+    $serializerManager = new JWSSerializerManager([
+        new CompactSerializer(),
+    ]);
+	
+    // 5.
+    $token = $serializerManager->serialize("jws_compact", $jws);
+	return $token;
+}
+
+function sendAPN($registrationIDs, $msg, $picture_url, $embedded_url){
+    // open connection 
+    $http2ch = curl_init();
+    curl_setopt($http2ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+
+    // send push    
+    $apple_cert = 'ApplePush1218.pem';
+    $message = '{"aps":{"alert":"{$msg}","sound":"lighttrainshort.wav","badge":"1"}}';
+    $token = '64559e7a912254227033d04a8e347e5563e142a4519a61a937af2c188cba1f1e';
+    $http2_server = 'https://api.push.apple.com';
+    $app_bundle_id = 'il.co.02ws';
+
+    $status = sendHTTP2Push($http2ch, $http2_server, $apple_cert, $app_bundle_id, $message, $token);
+    echo "Response from apple -> {$status}\n";
+
+    // close connection
+    curl_close($http2ch);
 }
 /*******************************************************************************************/
  /**
@@ -27,7 +93,7 @@ class CloudMessageType {
 				move_uploaded_file($_FILES['file']['tmp_name'], $file_path);
 				
 			//$result = db_init("call SaveUserPic ('$name', '$comment', '$user', '$picname', '$x', '$y')");
-                        $result = db_init("INSERT INTO `UserPicture` (name, comment, approved, uploadedAt, User, x, y, picname, reg_id) VALUES('$name', '$comment', 0, SYSDATE(), '$user', '$x', '$y', '$picname', '$reg_id');");
+                        $result = db_init("INSERT INTO `UserPicture` (name, comment, approved, uploadedAt, User, x, y, picname, reg_id) VALUES('$name', '$comment', 0, SYSDATE(), '$user', '$x', '$y', '$picname', '$reg_id');", "");
 			// check for successful store
 			// get user details
 			$id = $link->insert_id; // last inserted id
@@ -88,12 +154,17 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
           }
     }
  $result = "";
- if (strlen($title[1]) > 0){
-    $messageBody[0] = $title[0].": ".$messageBody[0];
-    $messageBody[1] = $title[1].": ".$messageBody[1];
+ 
+ $chunkedOfRegID1 = array_chunk($registrationIDs1, 10000);
+ foreach ($chunkedOfRegID1 as $regIDs1){
+    $token = getToken('AuthKey_669J3G9XB5.p8', '669J3G9XB5', 'SAPLRRD8P5');
+    $result .= sendAPNToRegIDs($regIDs1, $title[1], date('H:i')." ".$messageBody[1], $picture_url, $embedded_url, $token);
  }
- $result = sendAPNToRegIDs($registrationIDs1, date('H:i')." ".$messageBody[1], $picture_url, $embedded_url);
- $result .= sendAPNToRegIDs($registrationIDs0, date('H:i')." ".$messageBody[0], $picture_url, $embedded_url);
+ $chunkedOfRegID0 = array_chunk($registrationIDs0, 10000);
+ foreach ($chunkedOfRegID0 as $regIDs0){
+    $token = getToken('AuthKey_669J3G9XB5.p8', '669J3G9XB5', 'SAPLRRD8P5');
+    $result .= sendAPNToRegIDs($regIDs0, $title[0], date('H:i')." ".$messageBody[0], $picture_url, $embedded_url, $token);
+ }
  return $result;
 
 }
@@ -194,7 +265,7 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
      
      $result .= '<br/> --- '.count($registrationIDs1).' GCMs Completed';
      $result .= '<br/> --- '.count($registrationIDs0).' GCMs Completed';
-     //logger($result);
+     logger($result);
     return $result;        
 }
 function getForecastDay()
@@ -218,7 +289,7 @@ function getForecastDay()
       }
       return $first_day;
 }
-function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $addon, $class)
+function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $addon, $class, $messageType)
 {
     global $mem, $ALERTS_PAYMENT, $PATREON_LINK;
     try
@@ -247,6 +318,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         $mem->set('latestalert'.$lang, $description);
         $mem->set('addonalert'.$lang, $addon);
         $mem->set('latestalerttime'.$lang, time());
+        $mem->set('latestalerttype', $messageType);
         $res = db_init($query, "" );
         // Free resultset 
         @mysqli_free_result($res);
@@ -343,14 +415,16 @@ if (empty($empty)) {
             $msgToAlertSection[1] = sprintf ($msgformat, $title[1], $msgToAlertSection[1]);
         }
         $addon = array();
+        $messageType = "";
         if ($_POST["short_range"]=="true"){
             $addon[0] = $ALERTS_PAYMENT[0];
             $addon[1] = $ALERTS_PAYMENT[1];
+            $messageType = "short_range";
         }
         if ($_POST["alert_section"]=="1"){
             
-            updateMessageFromMessages ($msgToAlertSection[0], 1, 'LAlert', 0 ,'' ,'','', $addon[0], $class_alerttitle);
-            updateMessageFromMessages ($msgToAlertSection[1], 1, 'LAlert', 1 ,'' ,'','', $addon[1], $class_alerttitle);
+            updateMessageFromMessages ($msgToAlertSection[0], 1, 'LAlert', 0 ,'' ,'','', $addon[0], $class_alerttitle, $messageType);
+            updateMessageFromMessages ($msgToAlertSection[1], 1, 'LAlert', 1 ,'' ,'','', $addon[1], $class_alerttitle, $messageType);
     
           }
         } 
@@ -359,20 +433,26 @@ if (empty($empty)) {
     }
     
     try{
-        $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);   
+        logger("calling sendGCMMessage with ".$title[0]);
         $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"], CloudMessageType::Gcm);
         $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"], CloudMessageType::Fcm);
-    
+        //$result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);   
+        
     } catch (Exception $ex) {
         $result .= " exception sendGCMMessage:".$ex->getMessage();
     }
-    
+
+
     try{
+        logger("calling sendAPNMessage with ".$title[0]);
         $result .= sendAPNMessage($msgSpecial, $title, $picture_url, "alerts.php", $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"]);
     } 
     catch (Exception $ex) {
         $result .= " exception sendAPNMessage:".$ex->getMessage();
     }
+    
+    
+    
     
     try {
         if  ($_POST["email"]=="1"){

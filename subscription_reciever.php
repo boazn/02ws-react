@@ -31,7 +31,8 @@
         global $link;
 		
             				
-			//$result = db_init("call SaveUserPic ('$name', '$comment', '$user', '$picname', '$x', '$y')");
+            //$result = db_init("call SaveUserPic ('$name', '$comment', '$user', '$picname', '$x', '$y')");
+            logger("StoreSub:".$email." ".$reg_id." ".$status);
             $result = db_init("INSERT INTO `Subscriptions` (guid, email, approved, reg_id) VALUES(UUID_SHORT(), '$email' ,$status, '$reg_id');", "");
 			// check for successful store
 			// get user details

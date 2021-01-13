@@ -5,14 +5,14 @@ function fillForecastTime (&$pastTime, $found){
 					echo "<br>**** fillingPastTime ".$pastTime->get_time()." ****<br>";
 				}
                 if ($found) {
-                    $pastTime->set_temp(getNextWord($tok, 1));
-                      $pastTime->set_hum(getNextWord($tok, 3));
-					  $pastTime->set_dew(getNextWord($tok, 1));
-                      $pastTime->set_windspd(getNextWord($tok, 1));
-                      $pastTime->set_winddir(getNextWord($tok, 1));
-                      $pastTime->set_pressure(getNextWord($tok, 7));
+                    $pastTime->set_temp(getNextWord($tok, 1, "temp"));
+                      $pastTime->set_hum(getNextWord($tok, 3, "hum"));
+					  $pastTime->set_dew(getNextWord($tok, 1, "dew"));
+                      $pastTime->set_windspd(getNextWord($tok, 1, "windspd"));
+                      $pastTime->set_winddir(getNextWord($tok, 1, "winddir"));
+                      $pastTime->set_pressure(getNextWord($tok, 7, "pressure"));
 					  $pastTime->set_cloudbase((($pastTime->get_temp()-$pastTime->get_dew()) * 125) + ELEVATION);
-					  $pastTime->set_rainrate(getNextWord($tok, 2));
+					  $pastTime->set_rainrate(getNextWord($tok, 2, "rainrate"));
                  
                 }
                 else{

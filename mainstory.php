@@ -27,4 +27,8 @@
 			</div>
 			
 	</div>
+	
+</div>
+<div style="clear:both">
+	<a href="https://www.animalshop.co.il/page/%D7%97%D7%A0%D7%95%D7%AA-%D7%97%D7%99%D7%95%D7%AA-%D7%91%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D" target=_blank>Animal shop - חנות חיות בירושלים</a>
 </div>

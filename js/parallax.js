@@ -35,6 +35,17 @@ $(document).ready(function() {
 		});
     	return false;
 	});
+	$('a.forecast').click(function(){
+		$('.main_nav a').removeClass('active');
+		$('.main_nav a.forecast').addClass('active');
+		 isClicked = true;
+			$('html, body').animate({
+				scrollTop:$('#forecast').offset().top
+			}, 1000, function() {
+				parallaxScroll(); // Callback is required for iOS
+			});
+			return false;
+		});
     $('a.whatmore').click(function(){
 	$('.main_nav a').removeClass('active');
 	$('.main_nav a.whatmore').addClass('active');
@@ -158,17 +169,20 @@ function parallaxScroll(){
 function redrawDotNav(){
 	var section1Top =  0;
 	// The top of each section is offset by half the distance to the previous section.
-	var section2Top =  $('#whatmore').offset().top - (($('#pics').offset().top - $('#whatmore').offset().top) / 2);
-	var section3Top =  $('#pics').offset().top - (($('#forum').offset().top - $('#pics').offset().top) / 2);
-	var section4Top =  $('#forum').offset().top - (($(document).height() - $('#forum').offset().top) / 2);;
+	var section2Top =  $('#forecast').offset().top - (($('#whatmore').offset().top - $('#forecast').offset().top) / 2);
+	var section3Top =  $('#whatmore').offset().top - (($('#pics').offset().top - $('#whatmore').offset().top) / 2);
+	var section4Top =  $('#pics').offset().top - (($('#forum').offset().top - $('#pics').offset().top) / 2);
+	var section5Top =  $('#forum').offset().top - (($(document).height() - $('#forum').offset().top) / 2);;
 	$('.main_nav a').removeClass('active');
 	if($(document).scrollTop() >= section1Top && $(document).scrollTop() < section2Top){
 		$('.main_nav a.now').addClass('active');
 	} else if ($(document).scrollTop() >= section2Top && $(document).scrollTop() < section3Top){
-		$('.main_nav a.more').addClass('active');
-	} else if ($(document).scrollTop() >= section3Top && $(document).scrollTop() < section4Top){
+		$('.main_nav a.forecast').addClass('active');
+	}else if ($(document).scrollTop() >= section3Top && $(document).scrollTop() < section4Top){
+		$('.main_nav a.whatmore').addClass('active');
+	} else if ($(document).scrollTop() >= section4Top && $(document).scrollTop() < section5Top){
 		$('.main_nav a.pics').addClass('active');
-	} else if ($(document).scrollTop() >= section4Top){
+	} else if ($(document).scrollTop() >= section5Top){
 		$('.main_nav a.forum').addClass('active');
 	}
 	

@@ -5,7 +5,7 @@ ini_set("display_errors","Off");
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
 if ($_GET['debug'] == '')
 include "begin_caching.php";
-define("BASE_URL","https://www.02ws.co.il");
+define("BASE_URL","http://www.02ws.co.il");
 $HOME_PAGE = array("To home page","לעמוד הראשי");
 $HOTORCOLD_T = array("Cold meter", "מדד הקור");
 $FSEASON_T = array("Best season", "העונה הטובה");
@@ -15,6 +15,9 @@ $MINTS = array("min", "דק'");
 $DAILY_RAIN = array("Daily rain", "גשם היום מחצות");
 $SYSTEM = array("System", "מערכת");
 $TOTAL_RAIN = array("Total", "סה'כ");
+$RAIN = array("rain","גשם");
+$CLOTH = array("cloth","לבוש");
+$CHANCE_OF = array("Chance of", "סיכוי ל-");
 $RAIN_RATE = array("Rain rate" , "עוצמת גשם");
 $TEMP = array("Temperature" , "טמפרטורה");
 $WIND = array("wind" , "רוח");
@@ -137,11 +140,11 @@ if (isRadarPage())
 <html  <? if (isHeb()) echo "lang=\"he\" xml:lang=\"he\"" ; ?> xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-<link rel="stylesheet" href="css/main.php?lang=<?=$lang_idx;?>&type=" type="text/css">
-<link rel="stylesheet" href="css/mobile.php<?echo "?lang=".$lang_idx."&amp;width=".$width."&amp;fullt=".$_REQUEST['fullt']."&amp;c=".$_REQUEST['c'];?>" type="text/css" />
+<link rel="stylesheet" href="css/main<?=$lang_idx;?>.css" type="text/css">
+<link rel="stylesheet" href="css/mobile<?=$lang_idx;?>.css" type="text/css" />
 
 <link rel="icon" type="image/png" href="img/favicon_sun.png" />
-<meta property="og:image" content="https://www.02ws.co.il/02ws_short.png" />
+<meta property="og:image" content="http://www.02ws.co.il/02ws_short.png" />
 <meta name="viewport" content="width=<?=$width?><? if (isFastPage()) echo ",user-scalable=no";?>" />
 <title><?=$WEBSITE_TITLE[$lang_idx]." - ".$MOBILE_FRIENDLY[$lang_idx]?></title>
 <script id="loadGA">
@@ -158,6 +161,8 @@ if (isRadarPage())
 <body >
 <!-- SNOW EFFECT-->
 <canvas id="canvas" style="display:none"></canvas>
+<div id="navbar" style="display:none">
+</div>
 <div style="" id="main_cellphone_container">
 <div class="loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
 <? if (empty($_GET['email'])&&!isSurveyPage()) {?>
@@ -203,8 +208,7 @@ if (isRadarPage())
         
    </div>
 </div>
-<div id="navbar" style="display:none">
-</div>
+
 <?}?>
 <div id="logo" <?if (!mainPage()) echo " class=\"logo_secondary\"";?> style="display:none">
 <a href="station.php?section=frommobile&amp;lang=<? echo $lang_idx;?>" id="logotitle" title="<? echo $HOME_PAGE[$lang_idx];?>" onclick="showLoading()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
@@ -243,6 +247,10 @@ if (isRadarPage())
         </li>
 
 </ul>
+<div id="register_suggest" style="display:none" class role="dialog">
+<button type="button" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();">close</button><br />
+<div class="clear"><a href="javascript: void(0)" class="button register" id="register_suggest_register" title="<?=$REGISTER[$lang_idx]?>"><?=$REGISTER[$lang_idx]?></a></div>
+</div>
 <?} if (!mainPage()) {
     ?>
 <article id="section" >
@@ -679,11 +687,19 @@ else {?>
 		</span>
 	</div>
         <div id="for24_hours_s" style="display:none"></div>
-        <div id="legends"></div>
+        <div id="legends">
+            <ul>
+                <li><span id="legend0" style="text-decoration: underline;" onclick="showHourlyParam('temp', 0)" ><?=$TEMP[$lang_idx]?></span></li>
+                <li><span id="legend2" style="" onclick="showHourlyParam('humidity', 2)" ><?=$HUMIDITY[$lang_idx]?></span></li>
+                <li><span id="legend1" style="" onclick="showHourlyParam('rain', 1)" ><?=$RAIN[$lang_idx]?></span></li>
+                <li><span id="legend3" style="" onclick="showHourlyParam('cloth', 3)" ><?=$CLOTH[$lang_idx]?></span></li>
+                
+            </ul>
+        </div>    
         <div id="graph_forcastWrapper" >
-        <div id="graph_forcast" >
-            
-            <canvas id="graphForcastContainer"></canvas>
+        <div id="graph_forcast" class="metric-chart h-bar-chart" >
+        <ul id="for24_graph_ng" class="x-axis-bar-list">
+        </ul>   
         </div>
         
         </div>
@@ -738,9 +754,14 @@ else {?>
    
     <div id="if3">
 		
-
+    <div>
+    <a href="https://traintheater.co.il/festival/2020/"><img src="images/yerushamaiim-tt.jpg" alt="tt" /></a>
+    </div>
     </div>
     <div id="if4">
+    <div>
+    <a href="https://traintheater.co.il/festival/2020/"><img src="images/yerushamaiim-tt.jpg" alt="tt" /></a>
+    </div>
 		
     </div>
 	<div id="if1">
@@ -1063,8 +1084,8 @@ Licensed MIT
                             }
 
                             if (isMobile.iOS()){
-                                $(".removeadlink a").attr("href", "https://www.patreon.com/02ws");
-                                $(".removeadlink a").attr("target", "_blank");
+                             //   $(".removeadlink a").attr("href", "https://www.patreon.com/02ws");
+                             //   $(".removeadlink a").attr("target", "_blank");
 
                             }
                                 
@@ -1122,29 +1143,39 @@ Licensed MIT
         var latest_user_pic = "<a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=userPics.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestUserPic.picname + "\" width=\"320\" title=\"userpic\" /></br>" + decodeURIComponent(json.jws.LatestUserPic.name.replace(/\+/g, " ")) + ": " + decodeURIComponent(json.jws.LatestUserPic.comment.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";      
         var latest_pic_of_the_day = "<div class=\"txtindiv\"><?=$PIC_OF_THE_DAY[$lang_idx]?>" + "<br/>" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")) + "</div><a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=picoftheday.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"320\" title=\"pic of the day\" /></a>";
         var latest_pic_of_the_day_text = "<a href=\"javascript:void(0)\" class=\"info\" ><div class=\"title\">" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")).substring(0, 30) + "...</div>" + "<span class=\"info\"> <div class=\"\"><?=$PIC_OF_THE_DAY[$lang_idx]?>: " + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")) + "</div><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"320\" title=\"pic of the day\" /></span></a>";
+        var latest_tip_of_the_day = "<a href=\"javascript:void(0)\" class=\"info\" ><div class=\"title\">" + decodeURIComponent(json.jws.Messages.tip<?=$lang_idx?>.replace(/\+/g, " ")).substring(0, 30) + "...</div>" + "<span class=\"info\"> <div class=\"inv_plain_3_zebra\">" + decodeURIComponent(json.jws.Messages.tip<?=$lang_idx?>.replace(/\+/g, " ")) + "</div></span></a>";
+        var lastindex = 81;
+        var lastindexoftime = 29;
+        var lastindexplainmode = 30;
+        var containsanchor = latestalerttext.indexOf("<a");
+        var containstitle = latestalerttext.indexOf("title", lastindexoftime);
+        var containsalert = latestalerttext.indexOf("alerttxt");
+        lastindex = (containsalert > 0) ? lastindex : lastindexplainmode;
+        partialtextlastindex = (containsanchor > 0) ? containsanchor - 1 : lastindex;
+        partialtextlastindex = (containstitle > 0) ? (latestalerttext.indexOf("</div>", containstitle) + 6) : partialtextlastindex;
+        //partialtextlastindex = Math.min(partialtextlastindex, lastindex);
+        partialtext = latestalerttext.substring(0, partialtextlastindex);
+        if ((latestalerttext.length > partialtextlastindex))
+            latestalerttext = "<a href=\"javascript:void(0)\" class=\"info\" >" + latestalerttext.substring(0, partialtext.length-1) + "<div class=\"title\">" + '<? echo get_arrow();?>' + "</div>" + "<span class=\"info\"> " + latestalerttext + "</span></a>";
 
         $('#messages_box').children('.box_text').html(decodeURIComponent(json.jws.Messages.addonalert<?=$lang_idx?>+json.jws.Messages.latestalert<?=$lang_idx?>+json.jws.Messages.detailedforecast<?=$lang_idx?>).replace(/\+/g, ' '));
         $('#tempdivvalue, #tempdivvaluestart').html('<div class="shade">' + ((json.jws.current.islight == 1) ? "" : "") + '</div>' + c_or_f(json.jws.current.temp, tempunit)+'<div class="param">'+tempunit+'</div>');
         $('#tempdivvalue').css('visibility', 'visible');
         $('#tempdivvaluestart').fadeIn(30);
         if (json.jws.Messages.passedts < 12000){
-            var lastindex = 81;
-            var lastindexoftime = 29;
-            var lastindexplainmode = 30;
-            var containsanchor = latestalerttext.indexOf("<a");
-            var containstitle = latestalerttext.indexOf("title", lastindexoftime);
-            var containsalert = latestalerttext.indexOf("alerttxt");
-            lastindex = (containsalert > 0) ? lastindex : lastindexplainmode;
-            partialtextlastindex = (containsanchor > 0) ? containsanchor - 1 : lastindex;
-            partialtextlastindex = (containstitle > 0) ? (latestalerttext.indexOf("</div>", containstitle) + 6) : partialtextlastindex;
-            //partialtextlastindex = Math.min(partialtextlastindex, lastindex);
-            partialtext = latestalerttext.substring(0, partialtextlastindex);
-            if ((latestalerttext.length > partialtextlastindex))
-                latestalerttext = "<a href=\"javascript:void(0)\" class=\"info\" >" + latestalerttext.substring(0, partialtext.length) + "<div class=\"title\">...</div>" + "<span class=\"info\"> " + latestalerttext + "</span></a>";
-            $('#latestalert').html(latestalerttext);
+             $('#latestalert').html(latestalerttext);
         }
         else if (json.jws.LatestPicOfTheDay.passedts < 7200){
             $('#latestalert').html(latest_pic_of_the_day_text);
+        }
+        else if (json.jws.sigForecastCalc.length > 0){
+            $('#latestalert').html(json.jws.sigForecastCalc[0].sigtitle<? echo $lang_idx;?>+
+                                 '&nbsp;<div class=\"invhigh\">&nbsp;' + 
+                                  ((json.jws.sigForecastCalc.length > 1) ? json.jws.sigForecastCalc.length : "") + 
+                                         '&nbsp;</div>');
+        }
+        else{
+            $('#latestalert').html(latest_tip_of_the_day);
         }
         
         if (json.jws.LatestUserPic.passedts < 7200){
@@ -1296,46 +1327,88 @@ Licensed MIT
        
            forecastHours += "<ul class=\"nav forecasttimebox\" >";
            forecastHours += "<li class=\"tsfh currentts\" style=\"display:none\"><span>" + json.jws.sigforecastHours[i].currentDateTime + "</span></li>";
-           forecastHours += "<li class=\"tsfh forcast_date\"><span>" + json.jws.sigforecastHours[i].date + "</span></li>";
-           forecastHours += "<li class=\"timefh forcast_time\"><span>" + json.jws.sigforecastHours[i].time + ":00" + (json.jws.sigforecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.sigforecastHours[i].plusminus : "") +"</span></li>";
-           forecastHours += "<li class=\"forecasttemp\" id=\"tempfh"+ json.jws.sigforecastHours[i].time + "\"><span>" + c_or_f(json.jws.sigforecastHours[i].temp, tempunit) + "<img style=\"vertical-align: middle\" src=\"images/clothes/"+json.jws.sigforecastHours[i].cloth+"\" height=\"15\" width=\"20\" /></span></li>";
-           forecastHours += "<li style=\"padding:0;\"><div title=\"" + json.jws.sigforecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.sigforecastHours[i].updateForecast+" \"></div></li>";
+           forecastHours += "<li class=\"tsfh text timefh\"><span>" + json.jws.sigforecastHours[i].date + "</span></li>";
+           forecastHours += "<li class=\"tsfh forecasttemp\"><span>" + json.jws.sigforecastHours[i].time + ":00" + (json.jws.sigforecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.sigforecastHours[i].plusminus : "") +"</span></li>";
+           //forecastHours += "<li class=\"forecasttemp\" id=\"tempfh"+ json.jws.sigforecastHours[i].time + "\"><span>" + c_or_f(json.jws.sigforecastHours[i].temp, tempunit) + "<img style=\"vertical-align: middle\" src=\"images/clothes/"+json.jws.sigforecastHours[i].cloth+"\" height=\"15\" width=\"20\" /></span></li>";
+           forecastHours += "<li style=\"padding:0;\"><div title=\"" + json.jws.sigforecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.sigforecastHours[i].wind_class+" \"></div></li>";
            forecastHours += "<li class=\"forcast_icon\"><span><img src=\"images/icons/day/"+json.jws.sigforecastHours[i].icon+"\" height=\"30\" width=\"30\" /></span></li>";
            forecastHours += "<li class=\"forcast_title\"><span>"+json.jws.sigforecastHours[i].title<? echo $lang_idx;?>+"</span></li>";
            forecastHours += "</ul>";
        }
        
        var forecastHoursD = "";
+       var forecastHoursNG = "";
+       var max_temp = -10; var min_temp = 110;
+       var max_hum = -10; var min_hum = 110;
         for (i = 0; i< json.jws.forecastHours.length; i++){
-        if (i >= json.jws.states.nowHourIndex)
-        if ((json.jws.forecastHours[i].time % 3 == 0) || (json.jws.forecastHours[i].plusminus > 0))
-        {
-           var  TempCloth = '&nbsp;<a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastHours[i].cloth+'\" width=\"20\" height=\"15\" title=\"'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'</span></a>';
-           forecastHoursD += "<li class=\"nav forecasttimebox\" index=\"" + i + "\" ><ul>";
-           forecastHoursD += "<li class=\"plus\"><div class=\"open-close-button\" index=\"" + i + "\"></div></li>";
-           forecastHoursD += "<li class=\"tsfh currentts text\" style=\"display:none\"><span>" + json.jws.forecastHours[i].currentDateTime + "</span></li>";
-           var strDate = json.jws.forecastHours[i].time + ":00" + (json.jws.forecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus : "");
-           if (json.jws.forecastHours[i].time == 0)
-                strDate = json.jws.forecastHours[i].day<? echo $lang_idx;?>;
-           forecastHoursD += "<li class=\"tsfh text timefh \"><span>" + strDate + "</span></li>";
-           //forecastHoursD += "<li class=\"timefh forcast_time\"><span>" + json.jws.forecastHours[i].time + ":00" + (json.jws.forecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus : "") +"</span></li>";
-           forecastHoursD += "<li class=\"tsfh forecasttemp\" id=\"tempfh"+ json.jws.forecastHours[i].time + "\"><div class=\"number\">" + c_or_f(json.jws.forecastHours[i].temp, tempunit) + "" +TempCloth + "</div></li>";
-           forecastHoursD += "<li class=\"wind\" style=\"padding:0;\"><div title=\"" + json.jws.forecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.forecastHours[i].wind_class+" \"></div><div class=\"humidity extra"+i+"\"><?=$HUMIDITY[$lang_idx]?>" + "  " +json.jws.forecastHours[i].hum+"%</div></li>";
-           forecastHoursD += "<li class=\"forcast_icon\"><span><img src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"30\" width=\"30\" /></span></li>";
-           forecastHoursD += "<li class=\"forcast_title text\"><span>"+json.jws.forecastHours[i].title<? echo $lang_idx;?>+"</span></li>";
-           forecastHoursD += "</ul></li>";
-           
-       }
+        if (i >= json.jws.states.nowHourIndex){
+            if (parseInt(json.jws.forecastHours[i].temp) > max_temp) max_temp = json.jws.forecastHours[i].temp; 
+            if (parseInt(json.jws.forecastHours[i].temp) < min_temp) min_temp = json.jws.forecastHours[i].temp;
+            if (json.jws.forecastHours[i].hum > max_hum) max_hum = json.jws.forecastHours[i].hum; 
+            if (json.jws.forecastHours[i].hum < min_hum) min_hum = json.jws.forecastHours[i].hum;
+            if ((json.jws.forecastHours[i].time % 3 == 0) || (json.jws.forecastHours[i].plusminus > 0))
+            {
+                var  TempCloth = '&nbsp;<a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastHours[i].cloth+'\" width=\"20\" height=\"15\" title=\"'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'</span></a>';
+                forecastHoursD += "<li class=\"nav forecasttimebox\" index=\"" + i + "\" ><ul>";
+                forecastHoursD += "<li class=\"plus\"><div class=\"open-close-button\" index=\"" + i + "\"></div></li>";
+                forecastHoursD += "<li class=\"tsfh currentts text\" style=\"display:none\"><span>" + json.jws.forecastHours[i].currentDateTime + "</span></li>";
+                var strDate = json.jws.forecastHours[i].time + ":00" + (json.jws.forecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus : "");
+                if (json.jws.forecastHours[i].time == 0)
+                        strDate = json.jws.forecastHours[i].day<? echo $lang_idx;?>;
+                forecastHoursD += "<li class=\"tsfh text timefh \"><span>" + strDate + "</span></li>";
+                //forecastHoursD += "<li class=\"timefh forcast_time\"><span>" + json.jws.forecastHours[i].time + ":00" + (json.jws.forecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus : "") +"</span></li>";
+                forecastHoursD += "<li class=\"tsfh forecasttemp\" id=\"tempfh"+ json.jws.forecastHours[i].time + "\"><div class=\"number\">" + c_or_f(json.jws.forecastHours[i].temp, tempunit) + "" +TempCloth + "</div></li>";
+                forecastHoursD += "<li class=\"wind\" style=\"padding:0;\"><div title=\"" + json.jws.forecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.forecastHours[i].wind_class+" \"></div><div class=\"humidity extra"+i+"\"><?=$HUMIDITY[$lang_idx]?>" + "  " +json.jws.forecastHours[i].hum+"%</div></li>";
+                forecastHoursD += "<li class=\"forcast_icon\"><span><img src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"30\" width=\"30\" /></span></li>";
+                forecastHoursD += "<li class=\"forcast_title text\"><span>"+json.jws.forecastHours[i].title<? echo $lang_idx;?>+"</span></li>";
+                forecastHoursD += "</ul></li>";
+                
+            }
+        }
+        
        if (i == 6) {
             //    forecastHoursD += "<ul class=\"nav forecasttimebox\" ><li class=\"forcast_each invfloat\" style=\"padding-left:2em\"><a href=\"http://shaon-horef.co.il\" target=_blank >שאון חורף > פעם אחרונה לטירוף של החורף!</a></li></ul>  ";
-
-
-            
+        
+        }
+       }
+       var prev_wind, bottom, tempclass, addonclass;
+       for (i = 0; i< json.jws.forecastHours.length; i++){
+        if (i >= json.jws.states.nowHourIndex)
+        {
+            forecastHoursNG += "<li class=\"x-axis-bar-item\">";
+            toptime =  (json.jws.forecastHours[i].time % 4 == 0) ? json.jws.forecastHours[i].day<? echo $lang_idx;?>+"</br>"+json.jws.forecastHours[i].time+":00" : json.jws.forecastHours[i].time + ":00";
+            forecastHoursNG += "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('"+toptime+"','"+json.jws.forecastHours[i].icon+"',"+ json.jws.forecastHours[i].temp+","+json.jws.forecastHours[i].wind+",'"+json.jws.forecastHours[i].cloth.substring(json.jws.forecastHours[i].cloth.split('/', 2).join('/').length)+"',"+json.jws.forecastHours[i].rain+","+json.jws.forecastHours[i].hum+")\">";
+            forecastHoursNG += "<div class=\"x-axis-bar primary\" style=\"height: 100%\">"+toptime+"</div>";    
+            bottom = 92;
+            forecastHoursNG += "<div class=\"x-axis-bar tertiary icon\" style=\"height: "+ bottom +"%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"25\" width=\"28\" alt=\""+json.jws.forecastHours[i].icon+"\" /></div>";
+            bottom = ((json.jws.forecastHours[i].temp-min_temp)*80)/(max_temp - min_temp);
+            if (bottom < 10) bottom = 12;
+            else if (bottom < 20) bottom = bottom + 3;
+            else if (bottom > 60) addonclass = "uppervalue"; else addonclass = "";
+            tempclass = (i % 2 == 0) ? "secondary" : "secondaryalt";
+            forecastHoursNG += "<div class=\"x-axis-bar "+ tempclass + " " + addonclass+" temp\" style=\"height: "+bottom+"%;\"><span class=\"x-axis-bar-value\" data-value=\""+ json.jws.forecastHours[i].temp +"° "+json.jws.forecastHours[i].hum+"%\">"+ c_or_f(json.jws.forecastHours[i].temp, tempunit) + "°</span></div>";
+            forecastHoursNG += "<div class=\"x-axis-bar tertiary cloth icon "+ addonclass + "\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"x-axis-bar-value "+ addonclass + "\" data-value=\"" + json.jws.forecastHours[i].cloth_title<?=$lang_idx;?> +  "\"><img style=\"vertical-align: middle\" src=\""+json.jws.forecastHours[i].cloth+"\" height=\"30\" width=\"30\" /></span></div>";
+            bottom = 40;
+            if (json.jws.forecastHours[i].plusminus > 0)
+                forecastHoursNG += "<div class=\"x-axis-bar tertiary\" style=\"height: "+ bottom +"%;\"><span class=\"x-axis-bar-value\" data-value=\""+"&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus+"\"></span></div>";
+            bottom = 82;
+            if (i == json.jws.states.nowHourIndex || (json.jws.forecastHours[i].wind != prev_wind))
+                forecastHoursNG += "<div class=\"x-axis-bar tertiary wind\" style=\"height: "+ bottom +"%;\"><div title=\""+json.jws.forecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.forecastHours[i].wind_class+" \"></div></div>";
+            bottom = json.jws.forecastHours[i].rain;
+            if (bottom > 0)
+                forecastHoursNG += "<div class=\"x-axis-bar tertiary rain\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"x-axis-bar-value\" data-value=\"\">"+json.jws.forecastHours[i].rain+"%</span></div>";
+            bottom = json.jws.forecastHours[i].hum;
+            forecastHoursNG += "<div class=\"x-axis-bar tertiary humidity\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"x-axis-bar-value\" data-value=\"<?=$HUMIDITY[$lang_idx]?>\">"+json.jws.forecastHours[i].hum+"%</span></div>";
+            forecastHoursNG += "</div>";
+            forecastHoursNG += "</li>";
+            prev_wind = json.jws.forecastHours[i].wind;
         }
        }
        //$('#for24_given').html('<? echo $GIVEN[$lang_idx]." ".$AT[$lang_idx]." ";?>' + json.jws.TAF.timetaf + ':00 ' + json.jws.TAF.dayF + '/' + json.jws.TAF.monthF + '/' + json.jws.TAF.yearF);
        $('#for24_hours_s').html(forecastHours);
-       $('#for24_hours, #forcast_hours_table').html(forecastHoursD);
+       $('#for24_graph_ng').html(forecastHoursNG);
+       $('#forcast_hours_table').html(forecastHoursD);
+       $('#for24_hours').html(forecastHours);
        
        var forecastDays;
        var fulltextforecast;

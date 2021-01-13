@@ -1,7 +1,7 @@
 <style>
     #rainsummery td
     {
-        padding: 0.4em;
+        padding: 0.2em;
     }
 </style>
 <table id="mouseover" width="100%" <? if (isHeb()) echo "dir=\"rtl\""; ?>> 
@@ -68,7 +68,7 @@
 
 		<td dir="ltr" title="<? echo $TILL_NOW[$lang_idx].": ".$seasonTillNow->get_rain()." <--> ".$NORMAL[$lang_idx]." ".$TILL_NOW[$lang_idx].": ".$averageTillNow->get_rain();?>" >
 			
-			<div  <? if ($seasonTillNow->get_raindiffav() > 0) echo "class=\"more number\">+"; else echo " class=\"less number\">"; echo round($seasonTillNow->get_raindiffav())."&nbsp;(".$seasonTillNow->get_rainperc()."%)";?>>
+			<div  <? if ($seasonTillNow->get_raindiffav() > 0) echo "class=\"more number\">+"; else echo " class=\"less number\">"; echo round($seasonTillNow->get_raindiffav())."&nbsp;(".$seasonTillNow->get_rainperc()."%)";?>
 			</div>
 			
 		</td>
@@ -114,14 +114,14 @@
 
 		<td dir="ltr" title="<? echo $TILL_NOW[$lang_idx].": ".$seasonTillNow->get_rain()." <--> ".$WHOLE_SEASON[$lang_idx]." ".$NORMAL[$lang_idx].": ".$wholeSeason->get_rain();?>" >
 			
-			<div  <? if ($wholeSeason->get_raindiffav() >0) echo "class=\"more number\">+"; else echo " class=\"less number\">";echo round($wholeSeason->get_raindiffav())."&nbsp;(".$wholeSeason->get_rainperc()."%)"; ?>>
+			<div  <? if ($wholeSeason->get_raindiffav() >0) echo "class=\"more number\">+"; else echo " class=\"less number\">";echo round($wholeSeason->get_raindiffav())."&nbsp;(".$wholeSeason->get_rainperc()."%)"; ?>
 			</div>
 			
 		</td>
 
 		<td dir="ltr" title="<? echo $TILL_NOW[$lang_idx].": ".$seasonTillNow->get_rainydays()." <--> ".$WHOLE_SEASON[$lang_idx]." ".$NORMAL[$lang_idx].": ".$wholeSeason->get_rainydays();?>" >
 			
-			<div  <? if ($wholeSeason->get_rainydaysdiffav() >0) echo "class=\"more number\">+"; else echo " class=\"less number\">";echo $wholeSeason->get_rainydaysdiffav();?>>
+			<div  <? if ($wholeSeason->get_rainydaysdiffav() >0) echo "class=\"more number\">+"; else echo " class=\"less number\">";echo $wholeSeason->get_rainydaysdiffav();?>
 			</div>
 			
 		</td>
@@ -170,7 +170,7 @@
 		<td dir="ltr" title="<? echo $monthInWord." ".$year.": ".$thisMonth->get_rain()." <--> ".$NORMAL[$lang_idx].": ".$monthAverge->get_rain();?>" >
 			<? if (!$error_db) {?>
 			
-			<div  <? if ($thisMonth->get_raindiffav() > 0) echo "class=\"more number\">+"; else echo "class=\"less number\">"; echo round($thisMonth->get_raindiffav())."&nbsp;(".$thisMonth->get_rainperc()."%)";?>>
+			<div  <? if ($thisMonth->get_raindiffav() > 0) echo "class=\"more number\">+"; else echo "class=\"less number\">"; echo round($thisMonth->get_raindiffav())."&nbsp;(".$thisMonth->get_rainperc()."%)";?>
 			</div>
 			
 			<? } ?>
@@ -178,7 +178,7 @@
 		<td dir="ltr" title="<? echo $monthInWord." ".$year.": ".$thisMonth->get_rainydays()." <--> ".$NORMAL[$lang_idx].": ".$monthAverge->get_rainydays();?>" >
 			<? if (!$error_db) {?>
 			
-			<div  <? if ($thisMonth->get_rainydaysdiffav() > 0) echo "class=\"more number\">+"; else echo "class=\"less number\">"; echo $thisMonth->get_rainydaysdiffav();?>>
+			<div  <? if ($thisMonth->get_rainydaysdiffav() > 0) echo "class=\"more number\">+"; else echo "class=\"less number\">"; echo $thisMonth->get_rainydaysdiffav();?>
 			</div>
 			
 			<? } ?>

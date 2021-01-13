@@ -1,14 +1,17 @@
                                 <?
 $current_year = 2020;
+$min_year = 1846;
 $tablestobeSearched = array();
 $where_clause_archivemin = array();
 $where_clause_archive = array();
- function pushTables($min_year,$current_year, $monthMode, $param)
+$where_clause_rainseason = array();
+ function pushTables($min_year,$current_year, $monthMode, $param, $tableToSearch)
  {
 	global $tablestobeSearched;
 	global $where_clause_archivemin; 
 	global $where_clause_archive;
-        global $tableToSearch;
+	global $where_clause_rainseason;
+        
         $params_in_my_station = array("Hum", "Dew");
         if (in_array($param, $params_in_my_station))
             $startingYearFromMyStation = 2002;
@@ -23,7 +26,14 @@ $where_clause_archive = array();
 				foreach ($_POST['months'] as $monthToSearch)
 				{
 					
-					if ($tableToSearch != "archive")
+					
+					if ($tableToSearch == "rainseason")
+					{
+						array_push ($where_clause_rainseason, sprintf(" ( Year = %04d and month = %d) ", $yearToSearch , $monthToSearch  ));
+						if (!in_array("rainseason", $tablestobeSearched))
+						 array_push ($tablestobeSearched, "rainseason");
+					}
+					else if ($tableToSearch != "archive")
 					{
 						array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
 						if (!in_array("archivemin", $tablestobeSearched)) 
@@ -39,8 +49,14 @@ $where_clause_archive = array();
 			}
 			else //no month selected
 			{
-				
-				if ($tableToSearch != "archive")
+
+				if ($tableToSearch == "rainseason")
+				{
+					array_push ($where_clause_rainseason, sprintf(" ( Year = %04d) ", $yearToSearch  ));
+					if (!in_array("rainseason", $tablestobeSearched))
+						array_push ($tablestobeSearched, "rainseason");
+				}
+				else if ($tableToSearch != "archive")
 				{
 					if ($monthMode)
 					{
@@ -72,23 +88,40 @@ $where_clause_archive = array();
 	}
 	else // no year selected
         {
-                if ((!in_array("archivemin", $tablestobeSearched))&&((!in_array($param, $params_in_my_station))))
+			//echo "<br/>tableToSearch=".$tableToSearch."<br/>";
+				if ($tableToSearch == "rainseason")
+				{
+					if (!in_array("rainseason", $tablestobeSearched))
+						array_push ($tablestobeSearched, "rainseason");
+				}
+                else if ((!in_array("archivemin", $tablestobeSearched))&&((!in_array($param, $params_in_my_station))))
                 {
                         array_push ($tablestobeSearched, "archivemin");
-                }
-                if ((!in_array("archive", $tablestobeSearched))&&((in_array($param, $params_in_my_station))))
+				}
+				
+                else if ((!in_array("archive", $tablestobeSearched))&&((in_array($param, $params_in_my_station))))
                       array_push ($tablestobeSearched, "archive");
                 if (count($_POST['months']) > 0)
                  {
                     foreach ($_POST['months'] as $monthToSearch)
                     {
-                            for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
-                                    array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-                            }
-
-                             for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
-                                    array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-                            }
+						if ($tableToSearch == "rainseason")
+						{
+							//echo "min_year=".$min_year." current_year=".$current_year;
+							for ($yearToSearch = $min_year ;$yearToSearch <= $current_year ;$yearToSearch++) {
+								array_push ($where_clause_rainseason, sprintf(" ( Year = %04d and month = %d) ", $yearToSearch , $monthToSearch  ));
+							}
+						}
+						else{
+							for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
+								array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+							}
+							
+							for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
+									array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+							}
+						}
+                           
 
                     }
                 }
@@ -97,13 +130,22 @@ $where_clause_archive = array();
                     if ($monthMode)
 			{
                             for ($monthToSearch = 1;$monthToSearch <= 12 ;$monthToSearch++) { 
-                                for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
-                                               array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-                                 }
+								if ($tableToSearch == "rainseason")
+							{
+								for ($yearToSearch = $min_year ;$yearToSearch <= $current_year ;$yearToSearch++) {
+									array_push ($where_clause_rainseason, sprintf(" ( Year = %04d and month = %d) ", $yearToSearch , $monthToSearch  ));
+								}
+								}else{
+									for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
+										array_push ($where_clause_archive, sprintf(" ( Year = %04d and month = %d) ", $yearToSearch , $monthToSearch  ));
+									}
 
-                               for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
-                                      array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
-                               }
+									for ($yearToSearch = $startingYearFromMyStation ;$yearToSearch <= $current_year ;$yearToSearch++) {
+										array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
+									}
+								}
+                                
+							   
                             }
                        }   
                     else {
@@ -125,6 +167,7 @@ function getReport($min_year,$current_year, $report)
 	global $tablestobeSearched;
 	global $where_clause_archivemin; 
 	global $where_clause_archive;
+	global $where_clause_rainseason;
 	$orderbydate = false;
 	$monthMode = false;
 	if ($report == "minofmax")
@@ -177,7 +220,7 @@ function getReport($min_year,$current_year, $report)
 		$param = "Dew";
 		$AscOrDesc = "Desc";
 		$unit = "&#176;C";
-                $tableToSearch="archive";
+        $tableToSearch="archive";
 	}
 	else if ($report == "mindew")
 	{
@@ -217,6 +260,8 @@ function getReport($min_year,$current_year, $report)
 			$param = "Rain";
 			$AscOrDesc = "Desc";
 			$unit = "mm";
+			$tableToSearch="rainseason";
+			$min_year = 1846;
 	}
 	else if ($report == "minrainmonth")
 	{
@@ -225,6 +270,8 @@ function getReport($min_year,$current_year, $report)
 			$param = "Rain";
 			$AscOrDesc = "Asc";
 			$unit = "mm";
+			$tableToSearch="rainseason";
+			$min_year = 1846;
 	}
         /*
          * SELECT AVG( LowTemp+HiTemp)/2 AVGLowTemp , DATE_FORMAT(`Date`, '%Y-%m') month FROM `archivemin` where `LowTemp` IS NOT NULL AND ( ( DATEDIFF( `Date` , DATE( '2002-07-01' ) ) >=0 AND DATEDIFF( `Date` , DATE( '2002-08-01' ) ) <0) )
@@ -237,6 +284,7 @@ function getReport($min_year,$current_year, $report)
 			$param = "HiTemp";
 			$AscOrDesc = "Asc";
 			$unit = "&#176;C";
+			
 	}
         else if ($report == "mintempmonth")
 	{
@@ -247,25 +295,38 @@ function getReport($min_year,$current_year, $report)
 			$AscOrDesc = "Desc";
 			$unit = "&#176;C";
 	}
-
-	pushTables($min_year,$current_year, $monthMode, $param);
-
+	else if ($report == "consecutiverainseason")
+	{
+			
+			$complex = "";
+			$maxOrMin = "SUM";
+			$tableToSearch="rainseason";
+			$param = "mm";
+			$AscOrDesc = "Desc";
+			$unit = "mm";
+			$group_by_column = "season";
+			$min_year = 1846;
+	}
+	//echo "monthMode=".$monthMode." param=".$param." tableToSearch=".$tableToSearch." <br\>";
+	pushTables($min_year,$current_year, $monthMode, $param, $tableToSearch);
+	//print_r($tablestobeSearched);
+	//print_r($where_clause_archivemin);
 	global $link;
 	db_init("", "");
 	if ($complex == "") 
             { $complex = $param;};
 	if ($monthMode)
 	{
-			$query_total = "SELECT ".$maxOrMin.$param." ,  month FROM (";
+			$query_total = "SELECT ".$maxOrMin.$param." ,  month, station FROM (";
 		
 		for ($i = 0;$tablestobeSearched[$i]!=null ;$i++) {
 			$table = $tablestobeSearched[$i];
-			
+			//echo "<br/>table=".$table." ";
 			if ($table == "archivemin")
 			{
 				
 				for ($j = 0;$where_clause_archivemin[$j]!=null ;$j++) {
-					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month FROM  `".$table."` where `".$param."` IS NOT NULL  ";
+					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month, 244730 as station FROM  `".$table."` where `".$param."` IS NOT NULL  ";
 					if ($param == "Rain")
 						$query_total .= " and Rain > 0 ";
 					if (trim($where_clause_archivemin[$j]) != ""){
@@ -278,10 +339,27 @@ function getReport($min_year,$current_year, $report)
 				}
 				
 			}
+			else if ($table == "rainseason")
+			{
+				
+				for ($j = 0;$where_clause_rainseason[$j]!=null ;$j++) {
+					$query_total .= " SELECT mm ".$maxOrMin.$param." , year , CONCAT_WS('-', t.year, t.month) month, station FROM  `".$table."` t where `mm` IS NOT NULL  ";
+					if ($param == "Rain")
+						$query_total .= " and `mm` > 0 ";
+					if (trim($where_clause_rainseason[$j]) != ""){
+                                            $query_total .= " AND ( ";
+                                            $query_total .= $where_clause_rainseason[$j];
+                                            $query_total .= " ) ";
+                                        }
+					if ($j < count($where_clause_rainseason) - 1)
+						$query_total .= " UNION ALL ";
+				}
+				
+			}
 			else
 			{	
 				for ($j = 0;$where_clause_archive[$j]!=null ;$j++) {
-					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month FROM  `".$table."` where `".$param."` IS NOT NULL  ";
+					$query_total .= " SELECT ".$maxOrMin."(  ".$complex." ) ".$maxOrMin.$param." ,  DATE_FORMAT(`Date`, '%Y-%m') month, 1 as station FROM  `".$table."` where `".$param."` IS NOT NULL  ";
 					if ($param == "Rain")
 						$query_total .= " and Rain > 0 ";
 					$query_total .= " AND ( ";
@@ -344,11 +422,12 @@ function getReport($min_year,$current_year, $report)
 		else
 		$query_total .= "  GROUP BY  `Date` ORDER BY ".$maxOrMin."(  ".$param." ) ".$AscOrDesc." LIMIT 0 , 30";
 		}
+	//var_dump($_POST);
 	//echo $query_total;
 	
 	$result = mysqli_query($link, $query_total);
 	echo "<table align=\"center\">";
-	echo "<tr class=\"base\"><td style=\"text-align:center\">".$unit."</td><td style=\"text-align:center\">yyyy-mm-dd</td></tr>";
+	echo "<tr class=\"base\"><td style=\"text-align:center\">".$unit."</td><td style=\"text-align:center\">yyyy-mm-dd</td><td>Station ID</td></tr>";
 	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		$lines++;
 		$col = 0;
@@ -373,7 +452,7 @@ function getReport($min_year,$current_year, $report)
 				       print "<input type=\"hidden\" name=\"browsemonth\" 	value=\"$current_date[1]\">";
 				       print "<input type=\"hidden\" name=\"browseday\" 	value=\"$current_date[0]\">";
                                 }
-                                else
+                                else if (stristr($col_value, "-"))
                                       
                                 
                                 {
@@ -411,11 +490,12 @@ function getReport($min_year,$current_year, $report)
 				$FIRSTRAIN = array("The first rainy day", "היום הגשום המוקדם ביותר");
 				$MAXRAINMONTH = array("The most rainy month", "החודש הגשום ביותר");
 				$MINRAINMONTH = array("The most dry month", "החודש השחון ביותר");
+				$CONSECUTIVERAINSEASON = array("Rain seasons with", "עונות גשם עם");
                                 $MINTEMPMONTH = array("The most hot month", "החודש החם ביותר");
                                 $MAXTEMPMONTH = array("The most cold month", "החודש הקר ביותר");
 				$CTRL  = array("to choose multiple years or/and months use the ctrl key", "לבחירת כמה שנים או כמה חודשים יש להשתמש ב-מקש קונטרול  . אם לא תבחר שנה - יחושב עבור כל השנים. אם לא יבחר חודש - יחושב עבור כל החודשים");
 				
-				$min_year = 1909;
+				
 				
 
 				function isMonthSubmited($value_month){
@@ -435,7 +515,21 @@ function getReport($min_year,$current_year, $report)
 					
 					return false;
 				}
+				function  isconsecutiveseasonsSubmited($value_con){
+					global $_POST;
+					if (in_array($value_con, $_POST['consecutiveseasons']))
+						return true;
+					
+					return false;
+				}
 
+				function  ismoreorlessSubmited($value_more){
+					global $_POST;
+					if (in_array($value_more, $_POST['ismoreorlessSubmited']))
+						return true;
+					
+					return false;
+				}
 				
 				?>
 				<h1><?=$REPORTS[$lang_idx]?></h1>
@@ -489,8 +583,21 @@ function getReport($min_year,$current_year, $report)
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxrain" name="report" <? if ($_POST['report'] == "maxrain") echo "checked"; ?>/><?=$MAXRAIN[$lang_idx]?> (1909+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="firstrain" name="report" <? if ($_POST['report'] == "firstrain") echo "checked"; ?>/><?=$FIRSTRAIN[$lang_idx]?> (1909+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="lastrain" name="report" <? if ($_POST['report'] == "lastrain") echo "checked"; ?>/><?=$LASTRAIN[$lang_idx]?> (1909+)<br />
-						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxrainmonth" name="report" <? if ($_POST['report'] == "maxrainmonth") echo "checked"; ?>/><?=$MAXRAINMONTH[$lang_idx]?> (1909+)<br />
-						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minrainmonth" name="report" <? if ($_POST['report'] == "minrainmonth") echo "checked"; ?>/><?=$MINRAINMONTH[$lang_idx]?> (1909+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxrainmonth" name="report" <? if ($_POST['report'] == "maxrainmonth") echo "checked"; ?>/><?=$MAXRAINMONTH[$lang_idx]?> (1846+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minrainmonth" name="report" <? if ($_POST['report'] == "minrainmonth") echo "checked"; ?>/><?=$MINRAINMONTH[$lang_idx]?> (1846+)<br />
+						<!--<select name="consecutiveseasons" size="2" >
+						<option value='2' <?if (isconsecutiveseasonsSubmited("2")) echo "selected";?>>2</option>
+						<option value='3' <?if (isconsecutiveseasonsSubmited("3")) echo "selected";?>>3</option>
+						<option value='4' <?if (isconsecutiveseasonsSubmited("4")) echo "selected";?>>4</option>
+						<option value='5' <?if (isconsecutiveseasonsSubmited("5")) echo "selected";?>>5</option>
+						</select> 
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="consecutiverainseason" name="report" <? if ($_POST['report'] == "consecutiverainseason") echo "checked"; ?>/><?=$CONSECUTIVERAINSEASON[$lang_idx]?>
+						<select name="moreorless" size="2" >
+						<option value='more' <?if (ismoreorlessSubmited("more")) echo "selected";?>><?=$MORE_THAN[$lang_idx]?></option>
+						<option value='less' <?if (ismoreorlessSubmited("less")) echo "selected";?>><?=$LESS_THAN[$lang_idx]?></option>
+						</select> 
+						<input name="rainseasonmm" size="5" maxlength="6" placeholder="mm" style="width:10%;" value="<?=$_POST['rainseasonmm']?>" />
+						 (1846+)<br />-->
 					</div>
 					<div class="inv_plain_3" style="clear:both;padding:1em;width:auto" >
 						<input type="submit" name="submit" value="<? echo $SHOW[$lang_idx];?>" style="width:150px;margin:0 3em 0 1em">
@@ -500,29 +607,43 @@ function getReport($min_year,$current_year, $report)
 						<tr class="topbase">
 							<td>Source</td>
 							<td>Year</td>
-							<td>Date</td>
+							
 						</tr>
 						<tr class="inv_plain_3">
 							<td>my station</td>
 							<td>2005+</td>
-							<td>yyyy-mm-dd</td>
+							
 						</tr>
 						<tr class="inv_plain_3">
 							<td>Jerusalem centeral (Generali)</td>
 							<td>1950-<?=$current_year?></td>
-							<td>yyyy-mm-dd</td>
+							
 						</tr>
 						<tr class="inv_plain_3">
 							<td>Jerusalem - old city</td>
 							<td>1948-1949</td>
-							<td>yyyy-mm-dd</td>
+							
 						</tr>
 						<tr class="inv_plain_3">
 							<td>Jerusalem - Saint Anne</td>
 							<td>1907-1948</td>
-							<td>yyyy-mm-dd</td>
+							
 						</tr>
+						<tr class="topbase">
+							<td>Station ID</td>
+							<td>Name</td>
+							
+						</tr>
+						<?
+						$result = db_init("SELECT * FROM  `Stations`;", "");
+						while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
+							echo "<tr class=\"inv_plain_3\"><td>".$line["ID"]."</td><td>".$line["Name0"]."</td><tr>";
+						}
+						?>
 					</table>
+					
+					
+					
 					</div>
 				</div>
 				</form>

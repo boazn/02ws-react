@@ -64,7 +64,7 @@ if (stristr($imagefile, "Z"))
 	<div><?=$CAMERA[$lang_idx];?> 1 <? echo getLocalTime(filemtime("images/webCamera0.jpg"));?></div>
 	<a href="images/webCamera0.jpg" class="colorbox" title="<?=$LIVE_PICTURE[$lang_idx];?>">
 	<span></span>
-		<img name="animation" id="baseGraph" src="images/webCamera0.jpg" width="380px" height="300px" title="<?=$LIVE_PICTURE[$lang_idx];?>  - <?=$CAMERA[$lang_idx];?> 1" />
+		<img name="animation" id="baseGraph" src="images/webCamera0.jpg" width="475px" height="300px" title="<?=$LIVE_PICTURE[$lang_idx];?>  - <?=$CAMERA[$lang_idx];?> 1" />
 	</a>
 	
 	<div class="inv_plain_3_zebra webcam_desc">
@@ -79,7 +79,7 @@ if (stristr($imagefile, "Z"))
 	<div><?=$CAMERA[$lang_idx];?> 2 <? echo getLocalTime(filemtime("images/webCameraB.jpg"));?></div>
 	<a href="images/webCameraB.jpg" class='colorbox' title="<?=$CAMERA[$lang_idx];?> 2;<? echo getLocalTime(filemtime("images/webCameraB.jpg"));?>">
 	<span></span>
-        <img name="animation" id="baseGraph" src="phpThumb.php?src=images/webCameraB.jpg&amp;w=380&amp;fltr[]=gam|0.8" width="380" height="300px" title="<?=$LIVE_PICTURE[$lang_idx];?>  - <?=$CAMERA[$lang_idx];?> 2" />
+        <img name="animation" id="baseGraph" src="phpThumb.php?src=images/webCameraB.jpg&amp;w=475&amp;fltr[]=gam|0.8" width="475px" height="300px" title="<?=$LIVE_PICTURE[$lang_idx];?>  - <?=$CAMERA[$lang_idx];?> 2" />
 	</a>
 	
 	<div class="inv_plain_3_zebra webcam_desc">

@@ -79,7 +79,6 @@ function fixDiv ()
     @mysqli_free_result($result["result"]);
     global $link;
     mysqli_close($link);
-		
 	
 }
 
@@ -148,7 +147,7 @@ function AddToMessage($name, $user_icon, $body, $idx, $mood)
 	        $name = "<span class=\"high\">".$name."</span>";
 	$body = $prev_body." ".$clearboth.HIDDENSEPERATOR." <div class=\"float chataftersepreply ".$firstreplyline." \"><div class=\"float chatbodyreply ".$firstreplyline."\">".SEPERATOR."<div class=\"avatar ".$user_icon."\"></div><div class=\"postusername\">".$name."</div><div class=\"chatdatereply\">".replaceDays(date('D H:i', strtotime(SERVER_CLOCK_DIFF, time())))."</div><div class=\"msgcount\">#".$msg_total_count."</div>&nbsp;".$body."</div></div>";
 	checkSpam();
-        if ($_POST['private'] == "1")
+        if ($_REQUEST['private'] == "1")
         {
             send_Email($body, $line['user_email'], $_SESSION['email'], $orig_name, "", array("Private Message from 02WS forum"." - ".$orig_name, "הודעה פרטית מפורום ירושמיים"." - ".$orig_name));
         }
@@ -249,17 +248,17 @@ function deleteMessage ($idx)
 function msgManagement($name, $body, $mood)
 {
 	if (strtoupper(trim($body)) == "D")
-		deleteMessage($_POST['idx']);
+		deleteMessage($_REQUEST['idx']);
 	else if (strtoupper(trim($body)) == "L") 
-		lockUnlockMessage($_POST['idx'], "1");
+		lockUnlockMessage($_REQUEST['idx'], "1");
 	else if (strtoupper(trim($body)) == "UL") 
-		lockUnlockMessage($_POST['idx'], "0");
+		lockUnlockMessage($_REQUEST['idx'], "0");
 	else if (strtoupper(trim($body)) == "S") 
-		stickUnstickMessage($_POST['idx'], "1");
+		stickUnstickMessage($_REQUEST['idx'], "1");
 	else if (strtoupper(trim($body)) == "U") 
-		stickUnstickMessage($_POST['idx'], "0");
+		stickUnstickMessage($_REQUEST['idx'], "0");
 	else if (strtoupper(trim($body)) == "A")
-		SaveAppendtoSession($_POST['idx']);
+		SaveAppendtoSession($_REQUEST['idx']);
 	else if (strtoupper(trim($body)) == "F")
 		fixDiv();
 	else if (isAdvancedCommand($body))
@@ -268,12 +267,12 @@ function msgManagement($name, $body, $mood)
 		$commands = explode(";", $body);
 		//var_dump ($commands);
 		if (trim($commands[0]) == "D")
-			DeletePartialMessage($_POST['idx'], $commands[1] - 1);
+			DeletePartialMessage($_REQUEST['idx'], $commands[1] - 1);
 		else if(trim($commands[0]) == "M")
-			moveReplyFromTo($commands[1] - 1, $_POST['idx'], $_SESSION['APPEND_TO_MSG_IDX']);
+			moveReplyFromTo($commands[1] - 1, $_REQUEST['idx'], $_SESSION['APPEND_TO_MSG_IDX']);
 	}
 	else 
-		AddToMessage ($name, $_SESSION['user_icon'], $body, $_POST['idx'], $mood);
+		AddToMessage ($name, $_SESSION['user_icon'], $body, $_REQUEST['idx'], $mood);
 }
 
 function isAdvancedCommand($body)
@@ -291,24 +290,24 @@ function isAdvancedCommand($body)
 
  
 // en = 0 ; heb = 1
-if ($_POST['lang'] == "") 	
+if ($_REQUEST['lang'] == "") 	
 {
 	$lang_idx = $HEB;
 }
 else
-	$lang_idx = $_POST['lang'];
+	$lang_idx = $_REQUEST['lang'];
 
-$limitInput = $_POST['limit'];
+$limitInput = $_REQUEST['limit'];
 //echo " limitInput=".$limitInput;
-$name = urldecode($_POST['name']);
+$name = urldecode($_REQUEST['name']);
 $name = str_replace("'", "`", $name);
-$body = urldecode($_POST['body']);
+$body = urldecode($_REQUEST['body']);
 $body = str_replace("'", "`", $body);
 //$body = str_replace("\"", "``", $body);
-$mood = urldecode($_POST['mood']);
+$mood = urldecode($_REQUEST['mood']);
 $isAdmin = $_SESSION['isAdmin'];
 //echo $isAdmin;
-$searchname = urldecode($_POST['searchname']);
+$searchname = urldecode($_REQUEST['searchname']);
 $body = preg_replace('@ (https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', ' <a href="$1" rel="external">$1</a> ', $body);
 if (empty($_SESSION['loggedin'])||$_SESSION['loggedin']=="false"||$name==$NAME[$HEB] || $body==$BODY[$HEB] || $name==$NAME[$EN] || $body==$BODY[$EN] || $name=="" || $body=="")
 
@@ -325,19 +324,19 @@ else if((stristr($_SERVER['HTTP_REFERER'], "02ws.co") > -1 )||(stristr($_SERVER[
 	if ($searchname == "")
 	{
 		try {
-				if ($_POST['idx'] != "")
+				if ($_REQUEST['idx'] != "")
 				{
 					if ($_SESSION['isAdmin'] == 1)
 						msgManagement($name, $body, $mood);
 					else if ($_SESSION['loggedin'] == "true")
-						AddToMessage ($name, $_SESSION['user_icon'], $body, $_POST['idx'], $mood);
+						AddToMessage ($name, $_SESSION['user_icon'], $body, $_REQUEST['idx'], $mood);
 								else
-									logger("message id ".$_POST['idx']." ".$_SESSION['loggedin']." ".$body);
+									logger("message id ".$_REQUEST['idx']." ".$_SESSION['loggedin']." ".$body);
 				}
 				else if ($_SESSION['loggedin'] == "true")
 				{
 					checkSpam();
-								if ($_POST['private'] == "1")
+								if ($_REQUEST['private'] == "1")
 								{
 									send_Email($body, ME, $_SESSION['email'], $name, "", array("Private Message from 02WS forum from ".$name, "הודעה פרטית מפורום ירושמיים של ".$name));
 								}   
@@ -346,7 +345,7 @@ else if((stristr($_SERVER['HTTP_REFERER'], "02ws.co") > -1 )||(stristr($_SERVER[
 				}
 						else
 						{
-							logger("idx=".$_POST['idx']." and not loggedin");
+							logger("idx=".$_REQUEST['idx']." and not loggedin");
 						}
 		} catch (Exception $e) {
 			logger( 'Caught exception in new message for the forum: '.  $e->getMessage());
@@ -357,8 +356,8 @@ else{
   echo("page came from...".$_SERVER['HTTP_REFERER']." --> exit  ");
   //exit;
 }
-if ($_POST['startLine'] != "")
-	$startLine = $_POST['startLine'];
+if ($_REQUEST['startLine'] != "")
+	$startLine = $_REQUEST['startLine'];
 else
 	$startLine = 0;
 $totalText = 0;

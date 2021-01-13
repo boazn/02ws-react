@@ -42,7 +42,7 @@ $itfeels = $current->get_itfeels();
         <item>
 		<title>what_is_h</title>
 		<link><? echo BASE_URL; ?></link>
-                <description><? if (count($sig) > 1) echo "{$sig[0]['sig'][$lang_idx]}"; ?></description>
+                <description><? if ($sig && count($sig) > 1) echo "{$sig[0]['sig'][$lang_idx]}"; ?></description>
 		<author><? echo EMAIL_ADDRESS;?></author>
 		<guid><? echo BASE_URL; ?>/station.php#webCamera</guid>
 	</item>

@@ -24,12 +24,52 @@ ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
     }
     #forcast_title
     {
-        right:150px
+        right:50px
     }
+    #forcast_hours
+    {
+        direction:rtl
+    }
+    .cell{
+        float:right;padding:0.3em 0.3em 0 0.3em
+    }
+    .invcell{
+        float:left;padding:5px 0.8em
+    }
+    .shrinked{
+        padding:0.3em 0.2em 0em 0.2em
+    }
+    .cellspace{
+        padding:0.3em 0.5em 0 0.5em
+    }
+    textarea{
+        width:390px;
+        height:35px;
+    }
+    textarea.floated{
+        width:390px;
+        height:35px;
+    }
+    .btnsstart, .tempstart{clear:both;}
+    @media only screen and (min-width: 1000px) {
+        textarea{
+            width:650px;
+            height:12px;
+        }
+        textarea.floated{
+            width:380px;
+        
+        }
+        .btnsstart, .tempstart{clear:none;}
+        .cell{
+            padding:1em
+        }
+    }
+    
     input{border:0}
 </style>
-<div style="width:1050px">
-<div style="margin:0;padding:0m;text-align:right"  id="forDetails">
+<div class="">
+<div class=""   id="forDetails">
 <?
 
 function get_Fromdir($path){    
@@ -46,6 +86,58 @@ function get_Fromdir($path){
             array_multisort($array_lowercase, SORT_ASC, SORT_STRING, $items);
             return $items;    	
 	}	
+}
+function refreshCssFile($url, $local_file_path){
+   
+        $agent= 'Mozilla/4.0';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  2);
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+        curl_setopt($ch, CURLOPT_URL,$url);
+        $result=curl_exec($ch);
+        //echo  $result;
+        $file = fopen($local_file_path,"w");
+        fwrite ($file, $result);
+        fclose ($file);
+}
+
+function translateText($text, $target_lang){
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://nlp-translation.p.rapidapi.com/v1/translate",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "text=".$text."&from=en&to=".$target_lang, // ar fr ru
+        CURLOPT_HTTPHEADER => [
+            "accept-encoding: application/gzip",
+            "content-type: application/x-www-form-urlencoded",
+            "x-rapidapi-host: nlp-translation.p.rapidapi.com",
+            "x-rapidapi-key: c09c5dfa87msh532b42e84065a8fp175c90jsnd908da654439"
+        ],
+    ]);
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+        return "cURL Error #:" . $err;
+    } else {
+        $result_tr = json_decode($response);
+        //var_dump($result_tr);
+        echo $result_tr->translated_text->$target_lang;
+        return $result_tr->translated_text->$target_lang;
+    }
 }
 function updateForecastMessage ($lang, $desc, $active)
 {
@@ -90,7 +182,10 @@ function insertNewMessage ($day, $day_name, $date, $temp_low, $temp_morning_clot
         $forecastDaysDB[$idx] = array('likes' => array(), 
                                       'dislikes' => array(), 
                                       'lang0' => urlencode($lang0), 
-                                      'lang1' => urlencode($lang1),  
+                                      'lang1' => urlencode($lang1),
+                                      //'lang2' => translateText(urlencode($lang0), 'ru'),
+                                      //'lang3' => translateText(urlencode($lang0), 'fr'),
+                                      //'lang4' => translateText(urlencode($lang0), 'ar'),
                                       'TempLow' => $temp_low, 
                                       'TempHigh' => $temp_high, 
                                       'date' => $date, 
@@ -122,8 +217,11 @@ function updateForecastDay ($idx, $day_name, $date, $temp_low, $temp_morning_clo
     $now = date('Y-m-d G:i:s', strtotime("-1 hours 0 minutes", time()));
     //$now = getLocalTime(time());
     $lang0 = nl2br($lang0);
+    $lang0 = str_replace("'", "`", $lang0);
+    $lang0 = str_replace("\"", "``", $lang0);
     $lang1 = nl2br($lang1);
     $lang1 = str_replace("'", "`", $lang1);
+    $lang1 = str_replace("\"", "``", $lang1);
     $query = "UPDATE forecast_days SET TempLow='{$temp_low}', TempHigh='{$temp_high}', TempLowCloth='{$temp_morning_cloth}', TempHighCloth='{$temp_high_cloth}', TempNight='{$temp_night}', TempNightCloth='{$temp_night_cloth}', TempDay='{$temp_day}', humMorning='{$humMorning}', humDay='{$humDay}', humNight='{$humNight}', windMorning='{$windMorning}', windDay='{$windDay}', windNight='{$windNight}', lang0='{$lang0}', lang1='{$lang1}' , active={$active}, icon='{$icon}', iconmorning='{$iconmorning}', iconnight='{$iconnight}', date='{$date}', day_name='{$day_name}'  WHERE (idx=$idx)";
 
     //echo $query;
@@ -150,6 +248,9 @@ function updateForecastDay ($idx, $day_name, $date, $temp_low, $temp_morning_clo
         $forecastDaysDB[$idx]['windNight'] = $windNight;
         $forecastDaysDB[$idx]['lang0'] = $lang0;
         $forecastDaysDB[$idx]['lang1'] = $lang1;
+        //$forecastDaysDB[$idx]['lang2'] = translateText(urlencode($lang0), 'ru');
+        //$forecastDaysDB[$idx]['lang3'] = translateText(urlencode($lang0), 'fr');
+        //$forecastDaysDB[$idx]['lang4'] = translateText(urlencode($lang0), 'ar');
         $forecastDaysDB[$idx]['active'] = $active;
         $forecastDaysDB[$idx]['icon'] = $icon;
         $forecastDaysDB[$idx]['iconmorning'] = $iconmorning;
@@ -217,7 +318,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
     }
     
         
-      echo $query;
+     // echo $query;
     
     // Free resultset 
     @mysqli_free_result($result);
@@ -419,12 +520,31 @@ echo $_POST['command'];
         //$_REQUEST['debug'] = 3;    
         include_once ("requiredDBTasks.php");
         include_once ("sigweathercalc.php");
-        //$_REQUEST['debug'] = 3;
         $mem->set('max_time', $_POST['max_time']);
         $mem->set('MULTIPLE_FACTOR', $_POST['multiple_factor']);
         $_REQUEST['MAX_TIME'] = $_POST['max_time'];
         $_REQUEST['MULTIPLE_FACTOR'] = $_POST['multiple_factor']; //how quickly temp rise 0.9 - 1.2
         include("forecastlib.php");
+        $local_file_path = "/home/boazn/public/02ws.com/public/css/mobile0.css";
+        if (is_writable($local_file_path))
+            refreshCssFile("https://www.02ws.co.il/css/mobile.php?lang=0", $local_file_path);
+        else
+            echo $local_file_path." is not writable";
+        $local_file_path = "/home/boazn/public/02ws.com/public/css/mobile1.css";
+        if (is_writable($local_file_path))
+            refreshCssFile("https://www.02ws.co.il/css/mobile.php?lang=1", $local_file_path);
+        else
+            echo $local_file_path." is not writable";
+        $local_file_path = "/home/boazn/public/02ws.com/public/css/main1.css";
+        if (is_writable($local_file_path))
+            refreshCssFile("https://www.02ws.co.il/css/main.php?lang=1", $local_file_path);
+        else
+            echo $local_file_path." is not writable";
+        $local_file_path = "/home/boazn/public/02ws.com/public/css/main0.css";
+        if (is_writable($local_file_path))
+            refreshCssFile("https://www.02ws.co.il/css/main.php?lang=0", $local_file_path);
+        else
+            echo $local_file_path." is not writable";
         
        
         
@@ -436,44 +556,44 @@ $langp = 0;
 $result = db_init("SELECT * FROM content_sections WHERE (TYPE='taf') and (lang=?)", $langp);
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 ?>
-<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" style="width:100%;float:<?echo get_s_align();?>;clear:both;padding:0.2em" id="taf">
-	
-        <div style="float:<?echo get_s_align();?>;padding:0.3em" >
-		
-		<input type="checkbox" id="reloadf" name="reloadf"  value="<?=$_POST["reloadf"]?>" <? if ($_POST["reloadf"] == 1) echo "checked=\"checked\""; ?> />reloadF from DB
-		
+<div  class="invcell <? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" class="cell" id="taf">
+    <div style="position:absolute;top:3em;left: 450px;">
+        <input type="checkbox" id="reloadf" name="reloadf"  value="<?=$_POST["reloadf"]?>" <? if ($_POST["reloadf"] == 1) echo "checked=\"checked\""; ?> />reloadF from DB
+    </div>
+	<div class="cell">
+        <input id="max_time" name="max_time" size="2"  value="<?=$mem->get('max_time')?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:40px;font-size:2em"/>
 	</div>
-    
-	<div style="float:<?echo get_s_align();?>;padding:0.3em" >
+	<div class="cell">
+        <input id="MULTIPLE_FACTOR" name="MULTIPLE_FACTOR" size="3"  value="<?=$mem->get('MULTIPLE_FACTOR')?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:50px;font-size:2em"/>
+	</div>
+	<div class="cell" >
 		
 		<input type="checkbox" id="activetaf" name="active<?=$line["day"]?>"  value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
 		
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em">
+	<div class="cell">
 		<span >taf</span>	 
 		<input id="langtaf" name="lang<?=$line["lang"]?>" size="1"  value="-1" style="width:0"  />
 		
 	</div>
 	
-	
-	<div style="float:<?echo get_s_align();?>;padding:0.3em">
-		
-		<textarea id="descriptiontaf" name="Description<?=$line["lang"]?>" rows="4" style="font: 10px/12px Helvetiva, Arial, sans-serif;  max-height: 215px;width: 650px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><? if ($line["active"] == 0) echo getUpdatedForecast(); else echo preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]);?></textarea>
-		
-	</div>
-	
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell">
 		
 		<!-- <input id="commandtaf" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'taf')" style="cursor:pointer" />
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
-        <input id="max_time" name="max_time" size="2"  value="<?$MAX_TIME = 14; if (GMT_TZ == 3) {$MAX_TIME = 15;} echo $MAX_TIME;?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:20px"/>
+	<div class="cell">
+		
+		<textarea id="descriptiontaf" name="Description<?=$line["lang"]?>" rows="4" style="width:280px;font-size: 1.1em;  min-height: 50px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><? if ($line["active"] == 0) echo getUpdatedForecast(); else echo preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]);?></textarea>
+		
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
-        <input id="MULTIPLE_FACTOR" name="MULTIPLE_FACTOR" size="3"  value="1.0"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:25px"/>
-	</div>
-	<!-- <div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell">
+    <span id="datetaf"><?=$mem->get('datetaf')?></span><br /><span id="timetaf"><?=$mem->get('timetaf')?>:00</span>
+    </div>
+    
+    
+	
+	<!-- <div class="cell">
 		<input type="checkbox" id="taf" value=""  onclick="disableOthers(this)" />
 	</div> -->
 
@@ -546,18 +666,40 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
          }		
 	?>
 
-<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> small" style="width:100%;float:<?echo get_s_align();?>;clear:both;padding:0.3em" id="<?=$line["idx"]?>">
-	
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
+<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> small invcell" style="clear:both;margin-bottom:0.5em" id="<?=$line["idx"]?>">
+    <div class="cell cellspace ">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+	<div class="cell">
+	<img src="images/x.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'D', 'forecastd')" style="cursor:pointer" />
+    </div>
+    <div class="cell cellspace ">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+	<div class="cell">
+			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'lang1<?=$line["idx"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
+    </div>
+    <div class="cell cellspace ">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+        <div class="cell">		
+			<img src="images/plus.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecastd')" style="cursor:pointer" />
+			
+    </div>
+    <div class="cell cellspace ">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+	<div class="cell shrinked">
 		<input type="checkbox" id="active<?=$line["idx"]?>" name="active<?=$line["idx"]?>" value="<?=$line["active"]?>"  onclick="empty(this, '<?=$BODY[$lang_idx]?>');" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?>  />
 	</div>
-        <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
+        <div class="cell shrinked">
 			 
 		<input id="idx<?=$line["idx"]?>" name="idx<?=$line["idx"]?>" size="1"  value="<?=$line["idx"]?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:0px" />
 		
 	</div>
-	
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em;">
+    
+	<div class="cell" >
 		<select size="1" id="day_name<?=$line["idx"]?>"  style="margin:0;width:60px;text-align:<?if (isHeb()) echo "right"; else echo "left";?>" name="day_name<?=$line["idx"]?>">  
 			<option	 value="Sun" <? if ($line["day_name"]=="Sun") echo "selected"; ?>>Sun</option>
 			<option	 value="Mon" <? if ($line["day_name"]=="Mon") echo "selected"; ?>>Mon</option>
@@ -569,89 +711,85 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 		</select>
 		
 		
-	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
+    </div>
+    
+	<div class="cell shrinked">
 			<input id="date<?=$line["idx"]?>" name="date<?=$line["idx"]?>" size="3"  value="<?=$line["date"]?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:40px"/>
 	</div>
     
-	
+	<div  class="cell tempstart">
+    <input id="templow<?=$line["idx"]?>" name="templow<?=$line["idx"]?>" size="1"  value="<?=$line["TempLow"]?>" style="width:20px;background-color:#33CCFF" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
+		
+	</div>
+    <div class="cell shrinked">
+		<input id="humMorning<?=$line["idx"]?>" name="humMorning<?=$line["idx"]?>" size="1"  value="<?=$line["humMorning"]?>" style="width:20px;background-color:#DDA0DD" />
+	</div>
+    <div class="cell shrinked">
+		<input id="windMorning<?=$line["idx"]?>" name="windMorning<?=$line["idx"]?>" size="1"  value="<?=$line["windMorning"]?>" style="width:20px;background-color:#DDA000" />
+	</div>
+    <div class="cell">
+		<a class="templow" title="temp_morning_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="temp_morning_cloth<?=$line["idx"]?>"><img src="<? echo CLOTHES_PATH."/".$line["TempLowCloth"];?>" width="25px" height="25px" id="temp_morning_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempLowCloth"]?>" /></a>
+	</div>
     
-
-	
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-			
-		<textarea id="lang1<?=$line["idx"]?>" name="lang1<?=$line["idx"]?>" size="80" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 215px;width:500px;text-align:right;direction:rtl;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?></textarea>
+    <div class="cell shrinked">
+		<a class="icon_forecast" title="morning_icon<?=$line["idx"]?>" href="javascript:void(0)" id="morning_icon<?=$line["idx"]?>"><img src="images/icons/day/<?=$line["iconmorning"]?>" width="30px"  height="30px" id="morning_icon<?=$line["idx"]?>_img" /></a>
+    </div>
+    <div class="cell cellspace ">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+	<div class="cell ">
+			<input id="temphigh<?=$line["idx"]?>" name="temphigh<?=$line["day"]?>" size="1"  value="<?=$line["TempHigh"]?>" style="width:20px;background-color:#FF3300" onclick="empty(this, '<?=$NAME[$lang_idx]?>');" />
 	</div>
-	<div id="day_href_plugin<?=$line["idx"]?>" class="float" style="padding:0.3em 0.2em 0em 0.2em">
-			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
+        <div class="cell shrinked">
+		<input id="humDay<?=$line["idx"]?>" name="humDay<?=$line["idx"]?>" size="1"  value="<?=$line["humDay"]?>" style="width:20px;background-color:#DDA0DD" />
 	</div>
-        <div style="float:<?echo get_s_align();?>;padding:0.3em 2.5em 0em 0.3em">
-	<img src="images/x.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'D', 'forecastd')" style="cursor:pointer" />
+    <div class="cell shrinked">
+		<input id="windDay<?=$line["idx"]?>" name="windDay<?=$line["idx"]?>" size="1"  value="<?=$line["windDay"]?>" style="width:20px;background-color:#DDA000" />
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 2.5em 0em 0.3em">
-			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'lang1<?=$line["idx"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
+	<div class="cell">
+		<a class="temphigh" title="temphigh_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="temphigh_cloth<?=$line["idx"]?>"><img src="<? echo CLOTHES_PATH."/".$line["TempHighCloth"];?>" width="25px" height="25px" id="temphigh_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempHighCloth"]?>" /></a>
 	</div>
-        <div style="float:<?echo get_s_align();?>;padding:0.3em 2.5em 0em 0.3em">		
-			<img src="images/plus.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecastd')" style="cursor:pointer" />
-			
+    <div class="cell shrinked">
+		<a class="icon_forecast" title="day_icon<?=$line["idx"]?>" href="javascript:void(0)" id="day_icon<?=$line["idx"]?>"><img src="images/icons/day/<?=$line["icon"]?>" width="30px"  height="30px" id="day_icon<?=$line["idx"]?>_img" /></a>
+    </div>
+    <div class="cell cellspace ">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+	<div class="cell ">
+		<input id="tempnight<?=$line["idx"]?>" name="tempnight<?=$line["idx"]?>" size="1"  value="<?=$line["TempNight"]?>" style="width:20px;background-color:#33CCFF;" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
 	</div>
+        <div class="cell shrinked">
+		<input id="humNight<?=$line["idx"]?>" name="humNight<?=$line["idx"]?>" size="1"  value="<?=$line["humNight"]?>" style="width:20px;background-color:#DDA0DD" />
+	</div>
+    <div class="cell shrinked">
+		<input id="windNight<?=$line["idx"]?>" name="windNight<?=$line["idx"]?>" size="1"  value="<?=$line["windNight"]?>" style="width:20px;background-color:#DDA000" />
+	</div>
+	<div class="cell shrinked">
+			<a class="tempnight" title="tempnight_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="tempnight_cloth<?=$line["idx"]?>"><img src="<?echo CLOTHES_PATH."/".$line["TempNightCloth"];?>" width="25px" height="25px" id="tempnight_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempNightCloth"]?>" /></a>
+	</div>
+    <div class="cell shrinked">
+		<a class="icon_forecast" title="night_icon<?=$line["idx"]?>" href="javascript:void(0)" id="night_icon<?=$line["idx"]?>"><img src="images/icons/day/<?=$line["iconnight"]?>" width="30px"  height="30px" id="night_icon<?=$line["idx"]?>_img" /></a>
+    </div>
+    
+    
+       
 	
         
         
        
-	<div style="clear:both;float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		
-		<input id="templow<?=$line["idx"]?>" name="templow<?=$line["idx"]?>" size="1"  value="<?=$line["TempLow"]?>" style="width:20px;background-color:#33CCFF" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
-		
+	
+    <div style="clear:both" class="cell shrinked">
+			
+            <textarea id="lang1<?=$line["idx"]?>" name="lang1<?=$line["idx"]?>" size="80" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 215px;text-align:right;direction:rtl;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?></textarea>
+        </div>
+		<div id="day_href_plugin<?=$line["idx"]?>" class="cell">
+			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
+    </div>
+         <div style="clear:both" class="cell shrinked">
+        <textarea id="lang0<?=$line["idx"]?>" name="lang0<?=$line["idx"]?>" size="40" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif; width:340px; max-height: 215px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?></textarea>
+        <span style="font-size:2.1em"><?//=$forecastDaysDB[$line["idx"]]['lang2']?></span>
 	</div>
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<input id="humMorning<?=$line["idx"]?>" name="humMorning<?=$line["idx"]?>" size="1"  value="<?=$line["humMorning"]?>" style="width:20px;background-color:#DDA0DD" />
-	</div>
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<input id="windMorning<?=$line["idx"]?>" name="windMorning<?=$line["idx"]?>" size="1"  value="<?=$line["windMorning"]?>" style="width:20px;background-color:#DDA000" />
-	</div>
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0em">
-		<a class="templow" title="temp_morning_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="temp_morning_cloth<?=$line["idx"]?>"><img src="<? echo CLOTHES_PATH."/".$line["TempLowCloth"];?>" width="25px" height="25px" id="temp_morning_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempLowCloth"]?>" /></a>
-	</div>
-    
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<a class="icon_forecast" title="morning_icon<?=$line["idx"]?>" href="javascript:void(0)" id="morning_icon<?=$line["idx"]?>"><img src="images/icons/day/<?=$line["iconmorning"]?>" width="30px"  height="30px" id="morning_icon<?=$line["idx"]?>_img" /></a>
-	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.5em 0em 0.2em">
-			<input id="temphigh<?=$line["idx"]?>" name="temphigh<?=$line["day"]?>" size="1"  value="<?=$line["TempHigh"]?>" style="width:20px;background-color:#FF3300" onclick="empty(this, '<?=$NAME[$lang_idx]?>');" />
-	</div>
-        <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<input id="humDay<?=$line["idx"]?>" name="humDay<?=$line["idx"]?>" size="1"  value="<?=$line["humDay"]?>" style="width:20px;background-color:#DDA0DD" />
-	</div>
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<input id="windDay<?=$line["idx"]?>" name="windDay<?=$line["idx"]?>" size="1"  value="<?=$line["windDay"]?>" style="width:20px;background-color:#DDA000" />
-	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0em">
-		<a class="temphigh" title="temphigh_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="temphigh_cloth<?=$line["idx"]?>"><img src="<? echo CLOTHES_PATH."/".$line["TempHighCloth"];?>" width="25px" height="25px" id="temphigh_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempHighCloth"]?>" /></a>
-	</div>
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<a class="icon_forecast" title="day_icon<?=$line["idx"]?>" href="javascript:void(0)" id="day_icon<?=$line["idx"]?>"><img src="images/icons/day/<?=$line["icon"]?>" width="30px"  height="30px" id="day_icon<?=$line["idx"]?>_img" /></a>
-	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 1.5em 0em 0.2em">
-		<input id="tempnight<?=$line["idx"]?>" name="tempnight<?=$line["idx"]?>" size="1"  value="<?=$line["TempNight"]?>" style="width:20px;background-color:#33CCFF;" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
-	</div>
-        <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<input id="humNight<?=$line["idx"]?>" name="humNight<?=$line["idx"]?>" size="1"  value="<?=$line["humNight"]?>" style="width:20px;background-color:#DDA0DD" />
-	</div>
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<input id="windNight<?=$line["idx"]?>" name="windNight<?=$line["idx"]?>" size="1"  value="<?=$line["windNight"]?>" style="width:20px;background-color:#DDA000" />
-	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-			<a class="tempnight" title="tempnight_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="tempnight_cloth<?=$line["idx"]?>"><img src="<?echo CLOTHES_PATH."/".$line["TempNightCloth"];?>" width="25px" height="25px" id="tempnight_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempNightCloth"]?>" /></a>
-	</div>
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<a class="icon_forecast" title="night_icon<?=$line["idx"]?>" href="javascript:void(0)" id="night_icon<?=$line["idx"]?>"><img src="images/icons/day/<?=$line["iconnight"]?>" width="30px"  height="30px" id="night_icon<?=$line["idx"]?>_img" /></a>
-	</div>
-         <div style="float:<?echo get_s_align();?>;padding:0.3em 0.2em 0em 0.2em">
-		<textarea id="lang0<?=$line["idx"]?>" name="lang0<?=$line["idx"]?>" size="70" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 215px;width:450px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?></textarea>
-	</div>
-	<div id="day_href_plugin<?=$line["idx"]?>" class="float" style="padding:0.3em 0.2em 0em 0.2em">
+	<div id="day_href_plugin<?=$line["idx"]?>" class="cell" >
 			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
 	</div>
 	
@@ -669,35 +807,35 @@ $query = "SELECT * FROM  `content_sections` WHERE TYPE =  'LAlert'";
 $result = mysqli_query($link, $query);
 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
-<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" style="width:100%;float:<?echo get_s_align();?>;clear:both;padding:0.2em 0.3em 0.2em 0.3em" id="LAlert<?=$line["lang"]?>">
+<div  class="invcell <? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" style="float:left" id="LAlert<?=$line["lang"]?>">
 	
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell">
 		
 		<input type="checkbox" id="activeLAlert<?=$line["lang"]?>" name="active<?=$line["day"]?>" value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
 		
 	</div>
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+    <div class="cell" style="width:80px">
 		<span><?=date('Y-m-d G:i D ', $mem->get('latestalerttime'.$line["lang"]))?></span>
 		
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em;visibility:hidden;width:0">
+	<div class="cell" style="visibility:hidden;width:0">
 		<span >forecast<?=$line["lang"]?></span>	 
 		<input id="langLAlert<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>" readonly="readonly" style="width:0" />
 		
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell" >
 		
-		<textarea id="descriptionLAlert<?=$line["lang"]?>" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;width:750px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
+		<textarea id="descriptionLAlert<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
     
-	<div id="forecast_href_plugin" class="float" style="padding:0.3em 0.3em 0em 0.3em">
+	<div id="forecast_href_plugin" class="float cell">
 			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell">
 			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'latestalert<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell btnsstart" style="width:20px">
 		
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		
@@ -705,7 +843,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         <img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'LAlert')" style="cursor:pointer" />
 	</div>
 		
-	<!-- <div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<!-- <div class="cell">
 		<input type="checkbox" id="forecast<?=$line["lang"]?>" value=""  onclick="disableOthers(this)" />
 	</div> -->
 </div>
@@ -718,41 +856,41 @@ $query = "SELECT * FROM  `content_sections` WHERE TYPE =  'forecast'";
 $result = mysqli_query($link, $query);
 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
-<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" style="width:100%;float:<?echo get_s_align();?>;clear:both;padding:0.2em 0.3em 0.2em 0.3em" id="forecast<?=$line["lang"]?>">
+<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell" style="float:left" id="forecast<?=$line["lang"]?>">
 	
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell">
 		
 		<input type="checkbox" id="activeforecast<?=$line["lang"]?>" name="active<?=$line["day"]?>" value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
 		
 	</div>
-    <div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+    <div class="cell" style="width:80px">
 		<span><?=date('Y-m-d G:i D ', $mem->get('descriptionforecasttime'.$line["lang"]))?></span>
 		
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em;visibility:hidden;width:0">
+	<div class="cell" style="visibility:hidden;width:0">
 		<span >forecast<?=$line["lang"]?></span>	 
 		<input id="langforecast<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>" readonly="readonly" style="width:0" />
 		
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell">
 		
-		<textarea id="descriptionforecast<?=$line["lang"]?>" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;width: 750px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
+		<textarea id="descriptionforecast<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
     
-	<div id="forecast_href_plugin" class="float" style="padding:0.3em 0.3em 0em 0.3em">
+	<div id="forecast_href_plugin" class="float btnsstart" style="padding:0.3em 0.3em 0em 0.3em">
 			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell">
 			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell btnsstart">
 		
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecast')" style="cursor:pointer" />
 	</div>
 		
-	<!-- <div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<!-- <div class="cell">
 		<input type="checkbox" id="forecast<?=$line["lang"]?>" value=""  onclick="disableOthers(this)" />
 	</div> -->
 </div>
@@ -767,43 +905,46 @@ $query = "call GetCurrentStory";
 $result = mysqli_query($link, $query) or die("Error mysqli_query: ".mysqli_error($link));
 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
-<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" style="width:100%;float:<?echo get_s_align();?>;clear:both;padding:0.2em 0.3em 0.2em 0.3em" id="CurrStory<?=$line["lang"]?>">
+<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell" style="float:left" id="CurrStory<?=$line["lang"]?>">
 	
 	<div style="float:<?echo get_s_align();?>;padding:1em 0.3em 0em 0.3em">
 		
 		<input id="activeCurrStory<?=$line["lang"]?>" name="active<?=$line["active"]?>" size="1"  type="checkbox" value="<?=$line["active"]?>" style="text-align:<?if ($line["lang"] == 1) echo "right"; else "left";?>"   <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> /><br /><br />link<br />img<br />Idx
 		
 	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell">
 		<input id="idxCurrStory<?=$line["lang"]?>" name="idx<?=$line["lang"]?>" size="2" style="width:50px" value="<?=$line["Idx"]?>"  /><span >CurrStory<?=$line["lang"]?></span><br />	 
-		<input id="langCurrStory<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>"  readonly="readonly" style="width:220px" /><br />
-		<input id="titleCurrStory<?=$line["lang"]?>" name="title<?=$line["lang"]?>" size="18" value="<?=$line["Title"]?>" style="width:220px;text-align:<?if ($line["lang"] == 1) echo "right;direction:rtl"; else "left";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
-		<input id="hrefCurrStory<?=$line["lang"]?>" name="href<?=$line["lang"]?>" size="18"  value="<?=$line["href"]?>" style="width:220px;text-align:left" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
-		<input id="imgCurrStory<?=$line["lang"]?>" name="img<?=$line["lang"]?>" size="18"  value="<?=$line["img_src"]?>" style="width:220px;text-align:left" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
+		<input id="langCurrStory<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>"  readonly="width:80px;readonly" style="width:8px" /><br />
+		<input id="titleCurrStory<?=$line["lang"]?>" name="title<?=$line["lang"]?>" size="18" value="<?=$line["Title"]?>" style="width:80px;text-align:<?if ($line["lang"] == 1) echo "right;direction:rtl"; else "left";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
+		<input id="hrefCurrStory<?=$line["lang"]?>" name="href<?=$line["lang"]?>" size="18"  value="<?=$line["href"]?>" style="width:80px;text-align:left" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
+		<input id="imgCurrStory<?=$line["lang"]?>" name="img<?=$line["lang"]?>" size="18"  value="<?=$line["img_src"]?>" style="width:80px;text-align:left" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
 		
 	</div>
 	
 	
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<div class="cell">
 		
-		<textarea id="descriptionCurrStory<?=$line["lang"]?>" name="Description<?=$line["lang"]?>" size="100"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?>" style="height:200px;font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 120px;width: 500px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
+		<textarea id="descriptionCurrStory<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" size="100"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?>" style="height:200px;font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 120px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
-	</div>
-	<div id="currstory_href_plugin" class="float" style="padding:0.3em 0.3em 0em 0.3em">
-			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
-	</div>
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
-			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'descriptionCurrStory<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
 	</div>
 	
 	
-	<div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
-		
+			
+	
+	
+	
+    <div class="cell btnsstart" style="width:20px">
+        <div class="cell" id="currstory_href_plugin" class="float btnsstart">
+                <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
+        </div>
+        <div class="cell">
+            <a href="javascript: void(0)" onclick="additalic(getSelText(), 'descriptionCurrStory<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
+        </div>
 		<!-- <input id="commandCurrStory<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" style="text-align:<?if ($line["lang"] == 1) echo "right"; else "left";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		<img src="images/plus.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'ISTORY', 'mainstory')" style="cursor:pointer" />
 		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'USTORY',  'mainstory')" style="cursor:pointer" />
 	</div>
-	<!-- <div style="float:<?echo get_s_align();?>;padding:0.3em 0.3em 0em 0.3em">
+	<!-- <div class="cell">
 		<input type="checkbox" id="CurrStory<?=$line["lang"]?>" value=""  onclick="disableOthers(this)" />
 	</div> -->
 	

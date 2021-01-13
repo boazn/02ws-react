@@ -1,4 +1,4 @@
-<?
+<?  
 header('Content-type: text/html; charset=utf-8');
 if ($_GET['debug'] == '')
 	include "begin_caching.php";
@@ -20,44 +20,44 @@ else
     $width = "1100px";
 ?>
 <!DOCTYPE html>
-<html  <? if (isHeb()) echo "lang=\"he\" xml:lang=\"he\""; ?> xmlns="http://www.w3.org/1999/xhtml">
+<html  <?php   if (isHeb()) echo "lang=\"he\" xml:lang=\"he\""; ?> xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link title="Default Colors" href="basestyle.php<?echo "?lang=".$lang_idx;?>" rel="stylesheet" type="text/css" media="screen" /> 
+
  <link rel="stylesheet" href="css/main.php?lang=<?=$lang_idx;?>" type="text/css">
-        <? if ($current->is_sunset()) { ?>
+        <?php   if ($current->is_sunset()) { ?>
         <link rel="stylesheet" href="css/sunset.min.css" type="text/css">
-        <? }?>
-        <? if ($current->is_sunrise()) { ?>
+        <?php   }?>
+        <?php   if ($current->is_sunrise()) { ?>
         <link rel="stylesheet" href="css/sunrise.min.css" type="text/css">
-        <? }?>
-        <? if (($current->is_light())&&($current->get_cloudiness() > 6)) {?>
+        <?php   }?>
+        <?php   if (($current->is_light())&&($current->get_cloudiness() > 6)) {?>
              <link rel="stylesheet" href="css/cloudy.min.css" type="text/css" media="screen">
-        <? }?>
-        <? if ($current->get_pm10() > 250) { ?>
+        <?php   }?>
+        <?php   if ($current->get_pm10() > 250) { ?>
         <link rel="stylesheet" href="css/dust.min.css" type="text/css">
-        <? }?>
-        <? if (!$current->is_light()) { ?>
+        <?php   }?>
+        <?php   if (!$current->is_light()) { ?>
         <link rel="stylesheet" href="css/night.min.css" type="text/css">
-            <? if ($current->get_pm10() > 250) { ?>
+            <?php   if ($current->get_pm10() > 250) { ?>
             <link rel="stylesheet" href="css/dust-night.min.css" type="text/css">
-            <? }?>
-        <? }?>
-        <? if (isRaining()){ ?>
+            <?php   }?>
+        <?php   }?>
+        <?php   if (isRaining()){ ?>
 	<link rel="stylesheet" href="css/rain.min.css" type="text/css">
-        <? }?>
-        <? if (((isRaining())&&($current->get_temp() < 2))||(stristr($template_routing, 'snow'))||(IS_SNOWING == 1)) { ?>
-        <? if ($current->is_light()){?>
+        <?php   }?>
+        <?php   if (((isRaining())&&($current->get_temp() < 2))||(stristr($template_routing, 'snow'))||(IS_SNOWING == 1)) { ?>
+        <?php   if ($current->is_light()){?>
         <link rel="stylesheet" href="css/snow.min.css" type="text/css">
-        <? } else {?>
+        <?php   } else {?>
         <link rel="stylesheet" href="css/snow_night.min.css" type="text/css">
-        <? }?>
-        <? }?>
-<link rel="stylesheet" href="css/mobile.php<?echo "?lang=".$lang_idx."&amp;width=".$width;?>" type="text/css" media="screen">
+        <?php   }?>
+        <?php   }?>
+<link rel="stylesheet" href="css/mobile.php<?php echo "?lang=".$lang_idx."&amp;width=".$width;?>" type="text/css" media="screen">
         <link rel="icon" type="image/png" href="img/favicon_sun.png">
 		
 <meta http-equiv="Refresh" content="600" />
 
-<title><? echo $LOGO[$lang_idx];?></title>
+<title><?=$LOGO[$lang_idx];?></title>
 <style>
     
 #main_cellphone_container::before{
@@ -90,12 +90,12 @@ else
      font-weight:bold;
  }
  .inparamdiv{
-     width:500px;
+     width:12em;
      height:380px
  }
  #latestnow
  {
-     padding: 2em 0.2em 1em 0.2em;
+     padding: 0.5em 0.2em 1em 0.2em;
      margin: 0 auto;
     
  }
@@ -103,12 +103,12 @@ else
      width:100%;top:0.2em;
  }
  #statusline{
-     font-size: 1.8em;margin-top:-3.9em;font-weight:bold;
+     font-size: 1.8em;margin-top:-3.9em;font-weight:bold;width:700px
  }
  #laundryidx{
      position:absolute;
-    left: 9.2em;
-    top: 6.9em;
+    left: 7.2em;
+    top: 2.9em;
  }
  #laundryidx img{
      width:120px;height:120px
@@ -116,9 +116,9 @@ else
  .smalllogo
  {
      height:50px;margin-top: 0.6em;
-     <? if (!$current->is_light()||isRaining()) { ?>
+     <?php   if (!$current->is_light()||isRaining()) { ?>
     color:#ffffff
-    <?}?>
+    <?php }?>
  }
  #date
  {
@@ -126,7 +126,8 @@ else
      margin-top: 0.1em; 
  }
  #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw, #itfeels_thw, #itfeels{
-    position: initial;
+    position: absolute;
+    top:4.2em;
     font-size: 1.6em;
  }
  .wind_icon{
@@ -148,34 +149,34 @@ else
      
     height: 90px;
     background-size: 90px;
-    margin-<?echo get_s_align();?>: 395px;
-    margin-top: 0.3em;
-    padding-top: 0.35em;
-     width:45%;
+    margin-<?php echo get_s_align();?>: 395px;
+    margin-top: 0.5em;
+    padding-top: 0.15em;
+     width:50%;
      position:relative;
      text-align: center;
      display: inline-block;
      font-family: nextexitfotlight;
      font-size: 1.8em;
     
-      background-position: <?echo get_s_align();?> 0px top;
+      background-position: <?php echo get_s_align();?> 0px top;
  }
  #currentinfo_container
  {
      margin-top: -1.5em;
-     margin: auto 9em;
+     margin: auto 7em;
  }
  #what_is_h{
-     font-size: 1.5em;
+     font-size: 1.2em;
      line-height: 1em;
-     margin-<?=get_s_align()?>:-250px;
-     top: -190px;
-     width:50%;
+     margin-<?=get_s_align()?>:-210px;
+     top: -250px;
+     width:40%;
      font-weight: bold;
      position: absolute;
-    <? if (!$current->is_light()||isRaining()) { ?>
+    <?php   if (!$current->is_light()||isRaining()) { ?>
     color:#ffffff
-    <?}?>
+    <?php }?>
      
  }
  .paramunit{
@@ -188,11 +189,11 @@ else
     font-weight: normal;
     font-family: nextexitfotlight;
     font-size:6.5em;
-    margin-top: -20px;
+    margin-top: -80px;
 }
 #heatindex
 {
-    margin-top:140px;
+    margin-top:180px;
 }
 #windy
 {
@@ -206,15 +207,15 @@ else
 }   
 #shortforecast
 {
-    width: 33%;
+    width: 29%;
     position:absolute;
     font-family:nextexitfotlight;
     font-size: 1.3em;
-    <?=get_inv_s_align()?>:-30px;
-    margin-top: -410px;
-    <? if (!$current->is_light()||isRaining()) { ?>
+    <?=get_inv_s_align()?>:10px;
+    margin-top: -380px;
+    <?php   if (!$current->is_light()||isRaining()) { ?>
     color:#ffffff
-    <?}?>
+    <?php }?>
 }
 #shortforecast .nav li{
     width: auto;
@@ -232,82 +233,88 @@ else
 <!-- SNOW EFFECT-->
 <canvas id="canvas"></canvas>
 <canvas id="toimage"></canvas>
-<div style="width:<?=$width?>" <? if (isheb()) echo "dir=\"rtl\""; ?> id="main_cellphone_container">
+<div style="width:<?=$width?>" <?php   if (isheb()) echo "dir=\"rtl\""; ?> id="main_cellphone_container">
 
 <div class="smalllogo" id="logo">
 <span id="date">
-<? if (isHeb()) echo $dateInHeb; else echo $date;?>
+<?php   if (isHeb()) echo $dateInHeb; else echo $date;?>
 </span>
 </div>
-<? if ($_GET['section'] != "") { ?>
-<div id="tohome" class="invfloat topbase"><a href="<? echo BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?lang=".$lang_idx;?>"  title="<? echo $HOME_PAGE[$lang_idx];?>" class="hlink">
-	<? echo $HOME_PAGE[$lang_idx];?>
+<?php   if ($_GET['section'] != "") { ?>
+<div id="tohome" class="invfloat topbase"><a href="<?= BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?lang=".$lang_idx;?>"  title="<?= $HOME_PAGE[$lang_idx];?>" class="hlink">
+	<?= $HOME_PAGE[$lang_idx];?>
 	</a>
 </div>
-<? include($_GET['section']);}
+<?php   include($_GET['section']);}
 else {?>
 <div id="currentinfo_container">
 <div id="latestnow" class="inparamdiv">
+<div id="tempdivvalue">
+<a href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=temp.php&amp;profile=<?= $profile;?>&amp;lang=<?= $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"><?= $current->get_temp()."<div class=\"paramunit\">&#176;</div><div class=\"param\">".$current->get_tempunit()."</div></a>"; ?>
+</div>
 <div id="itfeels">
- <?$itfeels = array();
+ <?php $itfeels = array();
    $itfeels = $current->get_itfeels();
    if ($current->is_sun()) { ?>
-    <? echo $IT_FEELS[$lang_idx]; ?>
-     <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
+    <?= $IT_FEELS[$lang_idx]; ?>
+     
            
-            <span dir="ltr" class="high" title="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span>
-     </a><img src="images/shadow.png" width="15" title="<? echo $IN_THE_SUN[$lang_idx]."/".$SHADE[$lang_idx]; ?>" alt="<? echo $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" /><? }
+            <span dir="ltr" title="<?=$THSW[$lang_idx]?>"><?= $current->get_thsw();  ?></span>
+     <img src="images/shadow.png" width="48" title="<?= $IN_THE_SUN[$lang_idx]."/".$SHADE[$lang_idx]; ?>" alt="<?= $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" />
+     <?php   }
 else if (!empty($itfeels[0]))
     echo $IT_FEELS[$lang_idx]; 
 if ($itfeels[0] == "windchill" ){ ?>
-     <a title="<?=$WIND_CHILL[$lang_idx]?>" href="<? echo $_SERVER['SCRIPT_NAME']; ?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-            <span dir="ltr" class="low" title="<?=$WIND_CHILL[$lang_idx]?>"><? echo $itfeels[1]; ?></span> 
-     </a>
-<? } 
+     
+            <span dir="ltr" title="<?=$WIND_CHILL[$lang_idx]?>"><?= $itfeels[1]; ?></span> 
+     
+<?php   } 
 else if ($itfeels[0] == "heatindex"){ ?>
-<a title="<?=$HEAT_IDX[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-<span dir="ltr" class="high" title="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1];  ?></span> 
-</a>
 
-<?}else if ($itfeels[0] == "thw"){?>
-                                <a title="<?=$THW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=thw.php&amp;profile=1&amp;lang=<?=$lang_idx?>"> 
-                                <span id="itfeels_thw" dir="ltr" class="value" title="<?=$THW[$lang_idx]?>"><? echo $itfeels[1];  ?></span> 
-                                </a>
-                              <?}?>
+<span dir="ltr" title="<?=$HEAT_IDX[$lang_idx]?>"><?= $itfeels[1];  ?></span> 
+
+
+<?php }else if ($itfeels[0] == "thw"){?>
+                                
+                                <span id="itfeels_thw" dir="ltr" class="value" title="<?=$THW[$lang_idx]?>"><?= $itfeels[1];  ?></span> 
+                                
+                              <?php }?>
     </div>
-<div id="tempdivvalue">
-<a href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=temp.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"><? echo $current->get_temp()."<div class=\"paramunit\">&#176;</div><div class=\"param\">".$current->get_tempunit()."</div></a>"; ?>
-</div>
+
 
 <div id="statusline">
         <div  id="windy">
-        <? echo getWindStatus($lang_idx);?>
+        <?= getWindStatus($lang_idx);?>
         </div>
         <div  id="coldmeter">
-        <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx;?>"><span id="current_feeling_link" title="<?=$HOTORCOLD_T[$lang_idx]?> - <?=$COLD_METER[$lang_idx]?>">...</span>
-        </a> 
+        
+    <?php 
+    $_REQUEST['lang'] = $lang_idx;
+    $_REQUEST['coldmetersize'] = 40;
+    include_once BASE_URL."/coldmeter_service.php";?>
+        
         </div>
 </div>
-<? if (count($sig) > 1) { ?>
-<div id="what_is_h"><? echo "{$sig[0]['sig'][$lang_idx]}"; ?><br /><? echo $sig[0]['extrainfo'][$lang_idx][0];?></div>
-<?}?>
+<?php   if (count($sig) > 1) { ?>
+<div id="what_is_h"><?= "{$sig[0]['sig'][$lang_idx]}"; ?><br /><?= $sig[0]['extrainfo'][$lang_idx][0];?></div>
+<?php }?>
 <!--<div id="more_info_btn">	
-<a href="javascript:void(0)" title="<? echo $HUMIDITY[$lang_idx];?>&nbsp;<? echo $WIND[$lang_idx];?>&nbsp;<? echo $RAIN[$lang_idx];?>" onclick="toggle('latestnow');toggle('extendedInfo');">
- <? echo $MORE_INFO[$lang_idx];?>&nbsp;<?=get_arrow()?>	
+<a href="javascript:void(0)" title="<?= $HUMIDITY[$lang_idx];?>&nbsp;<?= $WIND[$lang_idx];?>&nbsp;<?= $RAIN[$lang_idx];?>" onclick="toggle('latestnow');toggle('extendedInfo');">
+ <?= $MORE_INFO[$lang_idx];?>&nbsp;<?=get_arrow()?>	
 </a>
 </div>-->
 </div>
 <div id="shortforecast">
     <ul class="nav">
         <li style="border:none">
-            <? $firstDay = reset($forecastDaysDB);$secondDay = array_slice($forecastDaysDB, 1, 1)[0];?>
-            <?echo "".replaceDays($firstDay['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$firstDay['date'];?><br/><br/><br/>
-            <img src="<? echo "images/icons/day/".$firstDay['icon']; ?>" width="80" height="80" alt="<? echo "images/icons/day/".$firstDay['icon']; ?>" /><br/><br/><br/>
+            <?php   $firstDay = reset($forecastDaysDB);$secondDay = array_slice($forecastDaysDB, 1, 1)[0];?>
+            <?php echo "".replaceDays($firstDay['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$firstDay['date'];?><br/><br/><br/>
+            <img src="<?= "images/icons/day/".$firstDay['icon']; ?>" width="80" height="80" alt="<?= "images/icons/day/".$firstDay['icon']; ?>" /><br/><br/><br/>
             <?=c_or_f($firstDay['TempLow'])?>&nbsp;-&nbsp;<?=c_or_f($firstDay['TempHigh'])?>
         </li>
         <!--<li>
-            <?echo "".replaceDays($secondDay['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$secondDay['date'];?><br/><br/><br/>
-            <img src="<? echo "images/icons/day/".$secondDay['icon']; ?>" width="80" height="80" alt="<? echo "images/icons/day/".$secondDay['icon']; ?>" /><br/><br/><br/>
+            <?php echo "".replaceDays($secondDay['day_name']." ")."&nbsp;&nbsp;&nbsp;&nbsp;".$secondDay['date'];?><br/><br/><br/>
+            <img src="<?= "images/icons/day/".$secondDay['icon']; ?>" width="80" height="80" alt="<?= "images/icons/day/".$secondDay['icon']; ?>" /><br/><br/><br/>
             <?=c_or_f($secondDay['TempLow'])?>&nbsp;-&nbsp;<?=c_or_f($secondDay['TempHigh'])?>
         </li>-->
         
@@ -323,48 +330,48 @@ else if ($itfeels[0] == "heatindex"){ ?>
                     <div id="bg2-1" class="cloud3"><div class="cloud3-more"></div></div>
 
 
-<? if ($current->get_cloudiness() > 2) {?>
+<?php   if ($current->get_cloudiness() > 2) {?>
                     <div id="bg2-3" class="cloud2"><div class="cloud2-more"></div></div>
                     <div id="bg2-2" class="cloud4"><div class="cloud4-more"></div></div>
                     <div id="bg2-4" class="cloud1"><div class="cloud1-more"></div></div>
                     <div id="bg2-5" class="cloud-big"><div class="cloud-big-more"></div></div>
                      <div id="bg2-6" class="cloud4"><div class="cloud4-more"></div></div>
 
-                    <?}?>
-                    <? if ($current->get_cloudiness() > 5) {?>
+                    <?php }?>
+                    <?php   if ($current->get_cloudiness() > 5) {?>
                     <div id="bg2-7" class="cloud2"><div class="cloud2-more"></div></div>
                     <div id="bg2-8" class="cloud-big"><div class="cloud-big-more"></div></div>
-                    <?}?>
-                    <? if ($current->get_cloudiness() > 6) {?>
+                    <?php }?>
+                    <?php   if ($current->get_cloudiness() > 6) {?>
                     <div id="bg2-9" class="cloud-big"><div class="cloud-big-more"></div></div>
                     <div id="bg2-10" class="cloud-big"><div class="cloud-big-more"></div></div>
-                    <?}?>
+                    <?php }?>
                         
                         
 	</div>
-	<? if (($current->is_light())&&($current->get_cloudiness() > 6)) {?>
+	<?php   if (($current->is_light())&&($current->get_cloudiness() > 6)) {?>
         <link rel="stylesheet" href="css/cloudy.css" type="text/css" media="screen">
-        <? }?>
+        <?php   }?>
 	<!-- Parallax  background clouds -->
 	<div id="parallax-bg1">
                         
 
-<? if ($current->get_cloudiness() > 2) {?>
+<?php   if ($current->get_cloudiness() > 2) {?>
                         <div id="bg1-2" class="cloud3"><div class="cloud3-more"></div></div>
                         <div id="bg1-3" class="cloud4"><div class="cloud4-more"></div></div>
                         <div id="bg1-4" class="cloud-big"><div class="cloud-big-more"></div></div>
                         <div id="bg1-5" class="cloud3"><div class="cloud3-more"></div></div>
                         <div id="bg1-6" class="cloud2"><div class="cloud2-more"></div></div>
-                        <?}?>
-                        <? if ($current->get_cloudiness() > 5) {?>
+                        <?php }?>
+                        <?php   if ($current->get_cloudiness() > 5) {?>
                         <div id="bg1-1" class="cloud4"><div class="cloud4-more"></div></div>
                         <div id="bg1-7" class="cloud-big"><div class="cloud-big-more"></div></div>
                         <div id="bg1-8" class="cloud-big"><div class="cloud-big-more"></div></div>
-                        <?}?>
-                        <? if ($current->get_cloudiness() > 6) {?>
+                        <?php }?>
+                        <?php   if ($current->get_cloudiness() > 6) {?>
                         <div id="bg1-9" class="cloud-big"><div class="cloud-big-more"></div></div>
                         <div id="bg1-10" class="cloud-big"><div class="cloud-big-more"></div></div>
-                        <?}?>
+                        <?php }?>
 						
                         
                    
@@ -372,18 +379,18 @@ else if ($itfeels[0] == "heatindex"){ ?>
 	</div>
 </div>
 
-<?}// end  homepage?>
-<? if ((!isSnowing())&&(isRaining())) { ?>
+<?php }// end  homepage?>
+<?php   if ((!isSnowing())&&(isRaining())) { ?>
 <script src="js/rain.js"></script>
-<? }?>
-<? if (isSnowing()||(stristr($template_routing, 'snow'))) { ?>
+<?php   }?>
+<?php   if (isSnowing()||(stristr($template_routing, 'snow'))) { ?>
 <script src="js/snow.js"></script>
-<? }?>
+<?php   }?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"  type="text/javascript"></script>
 <script src="footerScripts250320.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
 <script type="text/javascript">
 var coldmeter_size = 40;
-startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
+//startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
 function refreshContent(){
         $.ajax({
         type: "GET",
@@ -405,4 +412,4 @@ function refreshContent(){
 </script>
 </body>
 </html>
-<? if ($_GET['debug'] == '') include "end_caching.php"; ?>
+<?php   if ($_GET['debug'] == '') include "end_caching.php"; ?>

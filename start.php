@@ -1,8 +1,9 @@
 <?php
 //redirectToSite(get_url());
 //ini_set("display_errors","On");	
-include_once("lang.php");
-include_once("include.php"); 
+include_once($_SERVER['DOCUMENT_ROOT']."/lang.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/include.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/ini.php");  
 session_start();
 define("YEST_NIGHT_TEMP", "YestNightTemp");
 define("YEST_MORNING_TEMP", "YestMorningTemp");
@@ -14,6 +15,14 @@ define("SUNSHINE_HOURS", "SunshineHours");
 define("LAST_7DAYS_DAILY_RAIN", "last7daysDailyRain");
 define("PREV_MONTH_RAINY_DAYS", "prevMonthRainyDays");
 define("THIS_MONTH_RAINY_DAYS", "thisMonthRainyDays");
+if(!function_exists("get_url")) { 
+function get_url() {
+    if ($_SERVER["QUERY_STRING"] != "")
+        return ("https://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"]);
+    else
+        return ("https://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"]);
+}
+}
 function retrieveTemp2()
 {
     global $current, $min15, $min30;
@@ -157,7 +166,8 @@ $today->set_hightemp2($ary_parsed_file['HITEMP2'],$ary_parsed_file['HITEMP2TIME'
 $today->set_lowtemp2($ary_parsed_file['LOWTEMP2'],$ary_parsed_file['LOWTEMP2TIME']);
 $today->set_hightemp3($ary_parsed_file['HITEMP3'],$ary_parsed_file['HITEMP3TIME']);
 $today->set_lowtemp3($ary_parsed_file['LOWTEMP3'],$ary_parsed_file['LOWTEMP3TIME']);
-$current->set_hum($ary_parsed_file['HUMIDITY']);    
+$current->set_hum($ary_parsed_file['HUMIDITY']);
+$current->set_hum2($ary_parsed_file['HUMIDITY2']);     
 $today->set_highhum($ary_parsed_file['HIHUMIDITY'],$ary_parsed_file['HIHUMTIME']);    
 $today->set_lowhum($ary_parsed_file['LOWHUMIDITY'],$ary_parsed_file['LOWHUMTIME']);
 $today->set_highdew($ary_parsed_file['HIDEWPOINT'],$ary_parsed_file['HIDEWPOINTTIME']);    

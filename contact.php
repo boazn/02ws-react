@@ -48,7 +48,7 @@ $ABOUT_ME = array("I have built this site from my own interest in weather and in
 				<br/>
                                 <br/>
 				<a href="spgm-1.3.2/index.php?spgmGal=GivaatCanada&spgmFilters=t" title="pictures תמונות" class="box">
-				<img src="https://www.02ws.co.il/spgm-1.3.2/gal/Old%20Station%20Pics/_thb_RainGauge.JPG" />
+				<img src="https://www.02ws.co.il/images/rain_gauge_1.jpg" alt="rain_gauge" /><img src="https://www.02ws.co.il/images/mountain_station.jpg" alt="mountain station"/><img src="https://www.02ws.co.il/images/station_snow.jpg" alt="rain_gauge_snow"/>
 				</a>
 				<br/>
 				<a href="spgm-1.3.2/index.php?spgmGal=GivaatCanada&spgmFilters=t" title="pictures תמונות" class="box">

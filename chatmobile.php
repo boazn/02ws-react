@@ -37,16 +37,10 @@ function getNextPage($addToPage)
 <div id="chat_entire_div">
 <div id="chatWrapper">
 	<div id="chat_title" class="big slogan">
-	  <a href="javascript:void" onclick="startup(<?=$lang_idx?>, <?=$limitLines?>, '')">
+	  <a href="javascript:void(0)" onclick="startup(<?=$lang_idx?>, <?=$limitLines?>, '')">
 		<?=$CHAT_TITLE[$lang_idx]?>&nbsp;
 	   </a>
 	</div>
-	<? if (stristr($_SERVER["PHP_SELF"], "station.php")){?>
-	<div id="chat_explain" class="float">
-			<?=$MAN_EXP[$lang_idx]?>
-	</div>
-	
-	<?}?>
 	<div id="chat_filter">
 		
 	</div>

@@ -7,7 +7,7 @@
   $cachedir = 'cache'; // Directory to cache files in (keep outside web root)
   $cachetime = 300; // Seconds to cache files for
   $cacheext = 'cache'; // Extension to give cached files (usually cache, htm, txt)
-  ini_set("display_errors","On"); 
+  //ini_set("display_errors","On"); 
   // Ignore List
   $ignore_list = array(
 	'reports',
@@ -78,7 +78,8 @@
 	//}
         //if ($res_page)
         //    logger "/* cached: cachefile_created=".$cachefile_created." time=".time()."*/";
-	ob_start('ob_gzhandler');
+        if (extension_loaded('zlib')){ ob_end_clean(); ob_start('ob_gzhandler');}
+	
     
     if (FILE_CACHE == "APC")
         echo $mem->get($path);

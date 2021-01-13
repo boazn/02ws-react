@@ -3,12 +3,12 @@ $basename = "webCamera";
 $imagefile = $_GET['section'];
 
 $latestPics = array();
-$path_to_files = "images/alldaypics";
+$path_to_files = $_SERVER['DOCUMENT_ROOT']."/images/alldaypics";
 //echo $path_to_files;
 $latestPics = getfilesFromdir($path_to_files);
 
 if (!file_exists($imagefile))
-	$imagefile = "images/".$imagefile;
+	$imagefile = BASE_URL."images/".$imagefile;
 // FTP don't work good.
 //if (stristr($imagefile, "webCamera.jpg"))
 //{
@@ -52,10 +52,10 @@ if (stristr($imagefile, "Z"))
 	
 
 <!-- ///////////// pic animation -->
-<script type="text/javascript" src="sprintf2.js"></script>
+<script type="text/javascript" src="/sprintf2.js"></script>
 <script language="JavaScript" type="text/javascript"> 
 ////////////// pic animation
-var file_template = "phpThumb.php?src=images/webCamera%d.jpg&w=360";
+var file_template = "phpThumb.php?src=/images/webCamera%d.jpg&w=360";
 var numOfPics = 10;
 var normal_delay = 60;
 var dwell_multipler = 20;
@@ -63,7 +63,7 @@ var lowindex = 0;
 var pic_id = 'latestpics';
 //////////////
 </script>
-<script type="text/javascript" src="picanimation.js"></script>
+<script type="text/javascript" src="/picanimation.js"></script>
 <script language="JavaScript" type="text/javascript"> 
 	launch();
 </script>

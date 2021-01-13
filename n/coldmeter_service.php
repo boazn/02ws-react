@@ -151,7 +151,7 @@ $temp_from = $current->get_temp() - 0.5;
 $temp_to = $current->get_temp() + 0.5;
 $query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, '{$pgender}');";
 //echo $query_verdict;
-db_init("");
+db_init("", "");
 $result = mysqli_query($link, $query_verdict) ;
 $row_verdict = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $current_feeling = get_name($row_verdict["field_name"]);

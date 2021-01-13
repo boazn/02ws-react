@@ -8,9 +8,12 @@ body{background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 20%, #7480bb 40%, #
 .forcast_title_btns.for_active:hover{
     color: #fff;
 }
-#slogan, #forcast_days, .contentbox, #forecastnextdays table, #messages_box, #date, #forcast_hours_table, #for24_hours, #forcast_hours_table .nav li{
+#slogan, #forcast_days, .contentbox, #forecastnextdays table, #messages_box, #date, #forcast_hours_table, #for24_hours, #forcast_hours_table .nav li, #for24_hours .nav li{
     color: #fff;
 }
 .white_box2, .chosenreply{
     background: rgba(255, 255, 255, 0.1);
+}
+#startinfo_container .invhigh{
+    color:white
 }

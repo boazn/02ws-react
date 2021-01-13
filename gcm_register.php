@@ -6,7 +6,13 @@ class DB_Functions {
     private $db;
  
       
- 
+    public function get_user_from_email($email){
+        $query = "select user_login, u_pswd, user_status, display_name, user_rememberme, user_nicename, user_icon, priority, locked, admin, MsgCount, MsgStart, classification, PersonalColdMeter, SeasonPref, VoteCount  from users where email=?";
+        $result = db_init($query, $email);
+        $line = mysqli_fetch_array($result["result"]);
+        $_SESSION['isAdmin'] = $line['admin'];
+        return $line;
+    }
     /**
      * Storing new user
      * returns user details
@@ -37,17 +43,22 @@ class DB_Functions {
             
             if (!empty($email)){
                 $query = "update `Subscriptions` set reg_id='".$gcm_regid."', UpdatedAt=now() where Email='".$email."'";
-                
-                $key = base64_encode(random_bytes(20)); // 
-                $pass = md5($email);
-                $parts = explode("@", $email);
-                $user = $parts[0];
-                $query = "call saveUser ('$email','$user', '$pass', '$user', '$key', '$user', '')";
-                db_init($query, "");
-                // approve user
-                $query = "update users set user_status=1 where email='$email'";
-                db_init($query, "");
-                //logger($query);
+                logger($query);
+                $line = $this->get_user_from_email($email);
+                if ($line['user_status'] != 1){
+                    $key = base64_encode(random_bytes(20)); // 
+                    $pass = md5($email);
+                    $parts = explode("@", $email);
+                    $user = $parts[0];
+                    $query = "call saveUser ('$email','$user', '$pass', '$user', '$key', '$user', '')";
+                    db_init($query, "");
+                    // approve user
+                    $query = "update users set user_status=1 where email='$email'";
+                    db_init($query, "");
+                    //logger($query);
+                }
+                else
+                    logger("user ".$email." has already saved and signed in with ".$gcm_regid);
                 // Be sure to store the $key value in your database
                 setcookie("rememberme", $key, time()+3600*24*360); // Set the cookie to expire after 360 days
                 $_SESSION['loggedin'] = "true";
@@ -65,7 +76,7 @@ class DB_Functions {
      * Getting all users
      */
     public function getAllUsers() {
-        $result = db_init("select * FROM gcm_users");
+        $result = db_init("select * FROM gcm_users", "");
         return $result;
     }
  

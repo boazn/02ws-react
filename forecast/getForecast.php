@@ -31,6 +31,11 @@ $locations = isset($_REQUEST['locations']) ? $_REQUEST['locations'] : "";
     #res_div{
 		text-align:center;width:315px;float:<?echo get_s_align();?>
 	}
+	@media only screen and (min-width: 1000px) {
+		#res_div{
+			width:930px;
+		}
+	}
 	ul.select {
    list-style: none;
    margin:  0;
@@ -40,8 +45,31 @@ $locations = isset($_REQUEST['locations']) ? $_REQUEST['locations'] : "";
 #forecastTable td{
 	font-size: 90%;
 }
+ul.select {
+   list-style: none;
+   margin:  0;
+   padding: 2px;
+   border: 1px solid grey;
+   height: 300px;
+    overflow-y: scroll;
+}
 
-       
+ul.select li {
+   padding: 2px 6px;
+}
+ul.select li:hover {
+   cursor: pointer;
+}
+ul.select li.selected {
+   background-color: blue;
+   color: white;
+}
+#city_name1{
+	text-align:center
+} 
+#forecastTable th.weatherField{
+	text-align:right
+}      
 </style>
 <?
 $CLIMATOLOGICAL_INFO = array("Climatological Information", "מידע אקלימי", "");
@@ -60,14 +88,16 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 
 	<div id="list_div" >
 		<form method="post" name="forecastSubmit">
-			<select name="locations[]" size="14" multiple align="center" 
-			  onchange="getForecastService<? if (@$_GET['region'] == 'isr') echo "";?>(this[this.selectedIndex].value)"  <? if (!isHeb()) echo "dir=\"ltr\" ";?>>
-					<? 
+		<input id="events" type="hidden" name="events" value="">
+
+		<ul class="select" name="locations[]" >
+		<? 
 					if (@$_GET['region'] == 'isr')
 						include "israel_list.php";
 					else
 						include "forecast_list.php";?>
-			</select>
+		</ul>
+			
 		</form>
 		<!--<div class="inv_plain_3_zebra" style="width: 60%;margin: 1em auto;padding:0.4em">
 		<a href="<? echo get_query_edited_url(get_url(), 'section', 'SendEmailForm.php');?>" >
@@ -84,27 +114,27 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 			<table cellpadding="0" cellspacing="0" width="100%" border="0">
 			<tr>
 				<td style="" valign="top">
-				<div id="city_name1" align="left"></div>
-				<div id="country_name2" align="left"></div>
-				<div id="website" align="left"></div>
-				<div id="current_local_time" align="left">
+				<div id="city_name1" ></div>
+				<div id="country_name2" ></div>
+				<div id="website" ></div>
+				<div id="current_local_time" >
 				<span id="localTime"></span>
 				</div>
-				<div id="tourism" align="left">
+				<div id="tourism" >
 				<span id="tourismInfo"></span>
 				</div>
 				
 				</td>
-				<td style="" valign="top" align="right">
+				<td style="" valign="top">
 									
-					<div id="map_instruction" align="left"></div>
+					<div id="map_instruction" ></div>
 				</td>
 			</tr>
 			</table>
 		</div>
 	
 		<div class="city_forecast_info">
-			<div id="issue_date" align="left"></div>
+			<div id="issue_date" ></div>
 			<div>
 				<div id="forecastDetails"></div>
 				<table id="forecastTable" cellpadding="5" cellspacing="0" border="0">
@@ -119,11 +149,11 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 		</div>
 		
 		<div class="city_climate_info">
-			<div class="item_title" align="left"><?=$CLIMATOLOGICAL_INFO[$lang_idx]?></div>
+			<div class="item_title" ><?=$CLIMATOLOGICAL_INFO[$lang_idx]?></div>
 			<div id="climateContainer"></div>
 			
 			<div id="climateTable"></div>
-			<div id="remark" align="left"></div>
+			<div id="remark" ></div>
 	
 			
 		</div>
@@ -163,8 +193,14 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/osm.js"></script>
         <style>
             .city_forecast_info, .city_climate_info, .city_info, #forecastTable, #climateContainer, #climateTable, .climateTable{
-                width: 318px;direction:ltr
+                width: 318px;
+				<? if (isHeb()) echo "direction:rtl";?>
             }
+			@media only screen and (min-width: 1000px) {
+				.city_forecast_info, .city_climate_info, .city_info, #forecastTable, #climateContainer, #climateTable, .climateTable{
+                width: 930px;
+            	}
+			}
         </style>
             
 			<script type="text/javascript">
@@ -574,7 +610,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 				},
 				yAxis: [],
 				tooltip: {
-										shared: true,
+						shared: true,
 					style: {
 						fontWeight: 'bold'
 					}
@@ -697,8 +733,8 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 					wxdesc = cityObj[0].forecast.forecastDay[i].wxdesc;
 				}
 								
-				forecast_row += '<td style="width: 80px;" align="left"><div style="margin-left: 45px;" class="img_set wxicon_div wxicon_' + icon + '" title="' + wxdesc + '"></div></td>';
-				forecast_row += '<td align="left">' + wxdesc + '</td>';
+				forecast_row += '<td style="width: 80px;" ><div style="margin-left: 45px;" class="img_set wxicon_div wxicon_' + icon + '" title="' + wxdesc + '"></div></td>';
+				forecast_row += '<td >' + wxdesc + '</td>';
 				
 				forecast_row += '</tr>';
 				$('#forecastTable tr:last').after(forecast_row);
@@ -843,7 +879,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 	//Use city id to get city info from JSON file
 	function ajax_get_city_info(cityId) {
 		$.ajax({
-			url: "forecast/getForecastService.php?location=https://worldweather.wmo.int/en/json/" + cityId + "_en.xml",
+			url: "<?=BASE_URL?>/forecast/getForecastService.php?location=https://worldweather.wmo.int/en/json/" + cityId + "_en.xml",
 			type: "GET",
 			dataType: "text",
 			success: function(Jdata) {
@@ -885,10 +921,22 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 		} else {
 		//	alert ('not_found');
 		}
-		
+
 		$('.add_fav_btn1').css({'margin-left': '160px'});
 		
 			});
+		$('ul.select li').click(function(e){
+		var item = $(e.target);
+		item.addClass('selected');
+		item.siblings().removeClass('selected');
+		$('#events').val(item.text());
+		<?if (@$_GET['region'] == 'isr'){?>
+			getForecastService(item.attr('value'));
+		<?}else{?>
+			getForecastService(item.attr('value'));
+		<?}?>
+		
+		});
 	</script>
         
         

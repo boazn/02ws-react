@@ -211,7 +211,7 @@ class phpthumb {
 	//////////////////////////////////////////////////////////////////////
 
 	// public: constructor
-	function phpThumb() {
+	public function __construct() {
 		$this->DebugTimingMessage('phpThumb() constructor', __FILE__, __LINE__);
 		$this->DebugMessage('phpThumb() v'.$this->phpthumb_version, __FILE__, __LINE__);
 		$this->config_max_source_pixels = round(max(intval(ini_get('memory_limit')), intval(get_cfg_var('memory_limit'))) * 1048576 * 0.20); // 20% of memory_limit
@@ -4068,7 +4068,7 @@ exit;
 
 	function phpThumb_tempnam() {
 		$this->InitializeTempDirSetting();
-		$tempnam = realpath(tempnam($this->config_temp_directory, 'pThumb'));
+		$tempnam = realpath(@tempnam($this->config_temp_directory, 'pThumb'));
 		$this->tempFilesToDelete[$tempnam] = $tempnam;
 		$this->DebugMessage('phpThumb_tempnam() returning "'.$tempnam.'"', __FILE__, __LINE__);
 		return $tempnam;

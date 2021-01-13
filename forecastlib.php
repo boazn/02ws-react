@@ -59,7 +59,7 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
                 echo "<br>";
                 echo "MAX_TIME=", $MAX_TIME;
                 echo "<br>MULTIPLE_FACTOR= ",$MULTIPLE_FACTOR;
-                echo "<br>time_at_day= ",$time_at_day;
+                echo "<br>time_at_day= <strong>".$time_at_day."</strong>";
                 echo "<br>current temp=".$current->get_temp();
                 echo "<br>today high temp=".$today->get_hightemp();
                 echo "<br>today low temp=".$today->get_lowtemp();
@@ -85,17 +85,17 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
         elseif ($time_at_day > 3 && $time_at_day < 7)
                 $tempHour = $forcastday->get_temp_morning();
 
-        elseif ($time_at_day >= 7 && $time_at_day <= $MAX_TIME - 2){
+        elseif ($time_at_day >= 7 && $time_at_day <= $MAX_TIME - 1){
                         $diff = $forcastday->get_temp_day() - $forcastday->get_temp_morning();
-                        $tempHour = round($forcastday->get_temp_morning() + (($time_at_day - ($MAX_TIME - 1 - 7))/($MAX_TIME - 1 - 7))*$diff*$MULTIPLE_FACTOR);
+                        $tempHour = round($forcastday->get_temp_morning() + (($time_at_day - ($MAX_TIME - 1 - ($MAX_TIME - 8)))/($MAX_TIME - 1 - ($MAX_TIME - 8)))*$diff*$MULTIPLE_FACTOR);
         }
-        elseif ($time_at_day >= ($MAX_TIME - 1) && $time_at_day <= ($MAX_TIME+1)){
+        elseif ($time_at_day == ($MAX_TIME)){
                 
                 $tempHour = round(($prev_temp + $forcastday->get_temp_day())/2);
         }
                
 
-        elseif ($time_at_day > $MAX_TIME+1 && $time_at_day <= 21){
+        elseif ($time_at_day >= $MAX_TIME+1 && $time_at_day <= 21){
                         $diff = $forcastday->get_temp_day() - $forcastday->get_temp_night();
                         $tempHour = round($forcastday->get_temp_day() - (($time_at_day - $MAX_TIME)/(20 - $MAX_TIME + 1))*$diff);
         }
@@ -116,22 +116,14 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
                $tempHour = round(($tempHour + $current->get_temp())/2);
       if ($_REQUEST['debug'] >= 1)
                 echo "<br><strong>tempHour</strong>=".$tempHour;
-        if ($tempHour == 9)
-        {
-                logger("tempHour = 9 : tsh - time()=".$tsh - time()." time_at_day=".$time_at_day." prev_temp=".$prev_temp." get_temp=".$current->get_temp());
-        }
+       
 
       return $tempHour;
  }
- function calcForecastHum($time_at_day, $forcastday)
+ function calcForecastHum($time_at_day, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR)
  {
         global $currentDay, $todayForecast, $passedMidnight, $threeHours, $nextTomorrowForecast, $tomorrowForecast, $fday, $todayForecast_date, $tommorrowForecast_day, $today, $current, $firstdayinforecast;
         
-        $MAX_TIME = 14;
-        $MULTIPLE_FACTOR = 0.9; //how quickly temp rise 0.9 - 1.2
-        if (GMT_TZ == 3) {$MAX_TIME = 15;$MULTIPLE_FACTOR = 1.1;}
-	//if ($passedMidnight && ($firstdayinforecast == $tommorrowForecast_day))
-        //		$forcastday = $todayForecast;
         $forcastday = new ForecastDay();
         $forcastday = $todayForecast;      
         
@@ -662,6 +654,12 @@ for ($i = 0; $i < count($taf_tokens); $i++)
     {
         list($yearF, $monthF, $dayF) = explode('/', $taf_tokens[$i]);
         list($fday, $fmonth, $fyear) = explode('/', $dayF."/".$monthF."/".$yearF);
+        $fday = $day;
+        $fmonth = $month;
+        $fyear = $year;
+        $dayF = $day;
+        $monthF = $month;
+        $yearF = $year;
         list($firstdayinforecast, $firstdayinforecast_month) = explode('/', $firstdayinforecast_l);
         $yest_date = @mktime (0, 0, 0, $fmonth, $fday-1 , $fyear);
         $todayForecast_date = date ("Y-m-d", @mktime (0, 0, 0, $fmonth, $fday , $fyear));
@@ -686,15 +684,17 @@ for ($i = 0; $i < count($taf_tokens); $i++)
          }
     }
     $dayC = $dayF;
-    if (stristr ($taf_tokens[$i], ":")) {
+    if ($i == 0) {
         
             $taf_pic = "clear.png";
             $title_pic = array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]");
             $current->set_cloudiness(0);
             $priority = 0;
             $new_line = true;
-            $timetaf = (int)$taf_tokens[$i];
+            //$timetaf = (int)$taf_tokens[$i];
+            $timetaf = $hour;
             $mem->set("timetaf", $timetaf);
+            $mem->set("datetaf", $dayC."/".$monthF."/".$yearF);
             if ($_REQUEST["debug"] >= 3)
                 echo "<br/>time of taf:".$timetaf;
             array_push($forecast_title, array("<span>".$GENERALLY[$EN]." "."</span>", "<span>".$GENERALLY[$HEB]." "."</span>"));
@@ -719,9 +719,12 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                $tempHour = calcForecastTemp($h, $currentDateTime, $prev_temp, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR); 
                $prev_temp = $tempHour;
                $clothHour = getCloth($tempHour);
-               $humHour = calcForecastHum($h, $forcastday);
-               if ($_REQUEST["debug"] >= 3)
-                    echo "<br/> forecastHour:".$hourindex." time=".$time." ".$currentDateTime." temp=".$tempHour." ".$clothHour;
+               $humHour = calcForecastHum($h, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR);
+               if ($_REQUEST["debug"] >= 3){
+                echo "<br/> forecastHour:".$hourindex." time=".$time." ".$currentDateTime." temp=".$tempHour." ".$clothHour;
+                echo "<br/>-------------------------------------------------------------------------------------------";
+               }
+                   
                array_push($forecastHour, array('id' => $hourindex, 'time' => $time, 'currentDateTime' => $currentDateTime, 'plusminus' => 0, 'change' => 0, 'temp' => $tempHour, 'wind' => 0, 'humidity' => $humHour ,'rain' => 0, 'icon' => "", 'title' => array(), 'cloth' => $clothHour, 'priority' => 0));
                $hourindex += 1;
         }
@@ -987,8 +990,15 @@ for ($i = 0; $i < count($forecast_title); $i++) {
     }
 }
 $forcastTicker = str_replace("\"", "'", $forcastTicker);
-
-$mem->set("forecasthour", $forecastHour);
+if ($forecastlib_origin != "hometable.php"){
+        $mem->set("forecasthour", $forecastHour, 60*60*24);
+        foreach ($forecastHour as $hour_f)
+        {
+        $strTemp .= $hour_f['temp']." ";
+        }
+       // logger("forecasthour saved:".$strTemp);
+}
+        
 $sigforecastHour = array();
 $i = 0;
 foreach ($forecastHour as $hour_f){
@@ -998,7 +1008,7 @@ foreach ($forecastHour as $hour_f){
     }
 $i++;
 }
-$mem->set("sigforecastHour", $sigforecastHour);
+$mem->set("sigforecastHour", $sigforecastHour, 60*60*24);
 
 
 $sigWindHour = array();
@@ -1010,6 +1020,6 @@ foreach ($forecastHour as $hour_f){
     }
 $i++;
 }
-$mem->set("sigWindHour", $sigWindHour);
+$mem->set("sigWindHour", $sigWindHour, 60*60*24);
 
 ?>

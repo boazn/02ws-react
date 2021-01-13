@@ -109,12 +109,13 @@ top:0px;
 }
 #forecastnextdays table .text
 {
-    padding: 0 0.45em;
+    padding: 0 0.45em 0.2em;
     line-height: 1.1em;
 }
 #latestalert .alerttime{
     display:inline;
     padding-<?echo get_s_align();?>: 0;
+    padding-<?echo get_inv_s_align();?>: 0.3em;
     font-weight: normal;
 }
 #latestalert .title{
@@ -130,9 +131,9 @@ top:0px;
 
 #latestalert .info .info{
     margin-top:-250px;
-    margin-<?echo get_s_align();?>:-75px;
+    margin-<?echo get_s_align();?>:-80px;
     background: rgba(238,238,238,0.9);
-    width: 310px;
+    width: 320px;
     
     box-shadow: none;
     color:black
@@ -142,9 +143,10 @@ top:0px;
 }
 #latestalert #alerttxt{
     text-shadow: none;
+    padding: 1em;
 }
 #latestalert #alertbg{
-    margin: 0 -6px;
+    margin: 0 -1px;
 }
 #startpage_con{
   
@@ -155,6 +157,27 @@ top:0px;
     width: 30%;
     margin-<?echo get_inv_s_align();?>: 70%;
 }
+#forcast_days.detailed .forcast_day, #forcast_days.detailed .forcast_date{
+   display:inline
+}
+#forcast_days.detailed li{
+    display: grid;
+    font-size:1.1em;
+}
+#forcast_days.detailed .forcast_morning, #forcast_days.detailed .forcast_noon, #forcast_days.detailed .forcast_night{
+    margin-top: 0.3em;
+    border-top: 5px solid;
+    width:90%
+}
+#forcast_days.detailed .forcast_morning div, #forcast_days.detailed .forcast_noon div, #forcast_days.detailed .forcast_night div{
+    padding: 0.25em 0;
+}
+#forcast_days.detailed .wind_icon{
+    font-size:0.9em
+}
+.wind_icon{
+    padding:0.6em 0;
+}
 #latestalert .info .info .title.txtindiv{
     color:white;
     text-align:<?echo get_s_align();?>;
@@ -164,7 +187,12 @@ top:0px;
 {
     text-decoration:underline;
 }
+#forecastnextdays .humidity a
+{
+    text-decoration:none;
+    font-size:2em
 
+}
 #forecastnextdays table a.info
 {
     text-decoration:none;
@@ -172,9 +200,8 @@ top:0px;
 #latestalert
 {
     visibility:hidden;
-    padding:0.2em;
     font-size:1.1em;
-    padding:0;font-size: 1.4em;margin:<? if (isHeb()) echo "0 30px 0 0"; else echo "0 0 0 30px" ?>;z-index: 99999;
+    padding:0.1em 0;font-size: 1.4em;margin:<? if (isHeb()) echo "0 30px 0 0"; else echo "0 0 0 30px" ?>;z-index: 99999;
     <? if (isHeb()) echo "direction:rtl"; ?>
 }
 .low{
@@ -225,7 +252,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 {
        padding:0.2em;width:auto;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>;margin:0.2em;cursor:pointer
 }
-#login, .register{
+#login, .register, .login, .register{
     font-size: 2em;width:100%
 }
 #updateprofile, #signout, #myvotes
@@ -234,6 +261,12 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #snowtable{
 width:320px;
+}
+#radarcontrols{
+    position: absolute;
+    right: -120px;
+    top:100px;
+    z-index:999;
 }
 .chatdate
 {
@@ -508,7 +541,7 @@ width:320px;
 {
     #startinfo_container
     {
-        padding: calc(12.8em - 10px) 0 5em;
+        padding: calc(12.8em - 10px) 0 8em;
     }
  }
  @media screen and (min-device-aspect-ratio: 9/18) 
@@ -516,7 +549,7 @@ width:320px;
     #startinfo_container
     {
         
-        padding: calc(9.8em - 10px) 0 5em;
+        padding: calc(9.8em - 10px) 0 8em;
     }
     
 }
@@ -525,7 +558,7 @@ width:320px;
     #startinfo_container
     {
         
-        padding: calc(5.9em - 10px) 0 5em;
+        padding: calc(5.9em - 10px) 0 8em;
     }
     
 }
@@ -533,7 +566,7 @@ width:320px;
 {
     #startinfo_container
     {
-        padding: calc(4.4em - 10px) 0 5em;
+        padding: calc(4.4em - 10px) 0 8em;
     }
     
 }
@@ -541,7 +574,7 @@ width:320px;
 {
     #startinfo_container
     {
-        padding: calc(3.2em - 10px) 0 5em;
+        padding: calc(3.2em - 10px) 0 8em;
     }
    
 }
@@ -552,7 +585,7 @@ width:320px;
 #startinfo_container .invhigh
 {
     background-color: transparent;
-    color:initial;
+    color:black;
     vertical-align: super;
     font-size: 0.55em;
     display:inline
@@ -569,6 +602,7 @@ width:320px;
      padding-top:1.2em;
      margin-bottom: 3px;
  }
+ 
 #windy
 {
 width:33%;left:4.5em;top:2.4em
@@ -667,7 +701,7 @@ border-radius: 0px;
 
 #statusline, #statuslinestart
 {
-    <? if (count($sig) > 1){?> <?}?>
+    <? if ($sig && count($sig) > 1){?> <?}?>
     
     font-size: <?  if (!isHeb()) echo "1"; else echo "1.2"; ?>em ;
     font-weight: normal;
@@ -734,6 +768,9 @@ border-radius: 0px;
 .timefh{
     width:3em
 }
+.nav .timefh, .nav .wind, .nav .forcast_icon{
+    width: 15%;
+}
 .forcast_title
 {
 width:90px;
@@ -750,6 +787,7 @@ text-align:<?=get_s_align()?>;
         margin-bottom:0px;
         font-weight: bold;
         background-color:rgba(0,0,0,0);
+        margin-<?=get_s_align()?>:0
 }
 .forcast_title_btns:hover
 {
@@ -760,6 +798,7 @@ text-align:<?=get_s_align()?>;
 .forcast_title_btns.for_active:hover
 {
     padding-<?=get_inv_s_align()?>:1px;
+    margin-<?=get_s_align()?>:0;
 }
 a.cboxElement {
 text-decoration: underline;
@@ -778,7 +817,7 @@ text-decoration: underline;
 font-family:nextexitfot_regularregular;
 letter-spacing: 0px;
 }
-#fornextdays_title, #for24h_title, #alerts_title, #now_title
+.fornextdays_title, .for24h_title, .alerts_title, .now_title
 {
 	margin:0;
      
@@ -834,7 +873,7 @@ color:#3D718E;
 padding:0.5em;
 position: absolute;
 z-index: 1000;
-top: 1em;
+top: 5em;
 width: 160px;
 <?=get_inv_s_align()?>: 0.8em;
 }
@@ -850,6 +889,7 @@ width: 160px;
     font-size: 5.8em;
     margin-top: 20px;
     z-index:99999;
+    direction:ltr;
    
 }
 #tempdivvaluestart
@@ -863,6 +903,7 @@ width: 160px;
 {
     padding:0.5em 0.3em 0em 0.3em;
     margin: auto;
+    font-size: 1.3em;
 }
 
 #more_info_btn
@@ -874,13 +915,13 @@ width: 160px;
 margin:auto;
 }
 #itfeels {
-    margin:0;top:7.2em;left:0;background: none;  width: 100%;    text-align: center;
+    margin:0;top:7.2em;left:0;background: none;  width: 100%;font-size: 18px;text-align: center;
 }
 #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
 top:0;position:relative; background: none;margin:auto
 }
 #heatindex{
-margin-top:4em;
+margin-top:4.4em;
 }
 .graphslink
 {
@@ -985,7 +1026,8 @@ color:#000;
 }
 #for24_hours .nav li .wind_icon, #forcast_hours_table .nav li .wind_icon
 {
-margin-top:0.5em
+margin-top:0.5em;
+padding: 0.6em 0 0;
 }
 .light_wind{
     background-position: -80px 0px;
@@ -1214,8 +1256,9 @@ display:block;z-index: 100;padding-top: 7px;width: 30px;
     padding: 0;
     width:100%
 }
-#startupdiv{
+#startupdiv, #register_suggest{
     top: 0; padding:55px 10px;left: 0;z-index:999999; position: absolute;background-color: #FFFFFF;
+    <? if (isHeb()) echo "direction:rtl"; ?>;
     
 }
 .removeadlink{
@@ -1245,7 +1288,7 @@ ul { list-style-type: none;}
 {
     height: 2em;
     width: 5em;
-    
+    margin:0.5em 0;
     font-weight: bold;
 }
 td
@@ -1562,9 +1605,9 @@ margin:5px 27px 11px 11px
     margin: 0.3em;
 }
 #graph_forcast{
-        height:205px;
-        width:1600px;
-        margin:0 auto;
+        height:160px;
+        margin: 5px 0 0 0;
+        
     }
 #graphForcastContainer
 {
@@ -1575,23 +1618,28 @@ margin:5px 27px 11px 11px
     top:25px;
     font-size:1.7em
 }
+#chartjs-tooltip .rainpercent{
+    margin: 0 90px;
+}
 #for24_hours
 {
     margin-top:10px;
 }
 #graph_forcastWrapper
 {
-    margin: 0 auto;
+    
+    text-align: justify;
     width:320px;
-    left: 0;
-    right: 0;
-    bottom: 0;
     -webkit-overflow-scrolling: touch;
     -webkit-transform: translateZ(0px);
     -webkit-transform: translate3d(0,0,0);
     -webkit-perspective: 1000;
     overflow-x: scroll;
     overflow-y: hidden;
+    <? if (isHeb()) echo "direction:rtl"; ?>
+}
+#legends li{
+    font-size: 1.2em;
 }
 .dotstyle ul {
 	position: relative;

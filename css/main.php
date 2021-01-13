@@ -292,12 +292,15 @@ width:125px;
 }
 .nav .forecasttemp
 {
+width:12%;
 direction:ltr important!
 }
 .nav .forecasttemp a{
 display:inline-block;
 }
-
+.nav .timefh, .nav .wind, .nav .forcast_icon{ 
+    width:10%;
+}
 /* ==========================================================================
 				     WHAT NOW 
    ========================================================================== */
@@ -391,7 +394,7 @@ position:absolute;
     background: url(../img/runwalk.png) 2px no-repeat;
     background-color: #eeeeee;
     opacity: 0.5;
-    margin-<?=get_inv_s_align()?>:-298px;
+    margin-<?=get_inv_s_align()?>:-294px;
     margin-top:228px;
     border-radius: 18px;
     background-size: 80%;
@@ -507,7 +510,7 @@ position:absolute;
     bottom: -200px;
     position: relative;
    width:280px;
-   padding: 0.3em 0.3em;
+   padding: 0.1em 0.5em 0.5em;
    font-size: 0.95em;
     line-height: 0.9em;
     text-shadow: 1px 1px 6px #000000;
@@ -516,6 +519,7 @@ position:absolute;
     margin-top:auto;
     position:relative;
     font-weight:bold;
+    padding: 0.2em 0.5em;
 }
 .alertspayment {
     position: absolute;
@@ -528,7 +532,7 @@ position:absolute;
 	width: 12px;
 	background-color: #eeeeee;
 }
-#alerts::-webkit-scrollbar-thumb, .contentbox::-webkit-scrollbar-thumb{
+#alerts::-webkit-scrollbar-thumb, .contentbox::-webkit-scrollbar-thumb, ul.select::-webkit-scrollbar-thumb{
     border-radius: 10px;
 	background-color: #82e2ff;
 	background-image: -webkit-linear-gradient(90deg,
@@ -543,7 +547,7 @@ position:absolute;
 #message .txtindiv, #messages_box .txtindiv, #latestalert span.info .txtindiv{
   color:white;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
-
+  bottom:-200px
 }
 
 #latest_picoftheday .txtindiv{
@@ -975,7 +979,7 @@ margin-top: 2px;
 
 #forcast_title {
     position: absolute;
-    <?=get_s_align()?>:10px;
+    <?=get_s_align()?>:20px;
     width: 100px;
     margin-top:60px;
     border-<?=get_inv_s_align()?>:solid;
@@ -996,13 +1000,13 @@ margin-top: 2px;
 .forcast_title_btns {
     border-top-<?=get_s_align()?>-radius:15px;
     border-bottom-<?=get_s_align()?>-radius:15px;
-    background-color:#6b89a2;
+    background-color:#485d6d;
     color:#FFF;
-    font-family:nextexitfotlight;
+    font-family: ezerblock_oe_regularregular;
     height:35px;
     margin-<?=get_s_align()?>:-20px;
     margin-bottom:10px;
-    font-size:20px;
+    font-size:18px;
     padding-<?=get_inv_s_align()?>:10px;
     display:block;
     line-height:35px;
@@ -1031,9 +1035,8 @@ padding-<?=get_inv_s_align()?>:10px;
 background-color:#ebe8ed;
 }
 #table24{
-    width: 100px;
-    float: right;
-    margin: 0px 50px;
+    width: 200px;
+    margin: 0px 550px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
 }
 
@@ -1112,7 +1115,7 @@ background-color:#ebe8ed;
 }
 
 #forcast_icons {
-    margin-<?=get_s_align()?>:<? if (isHeb()) echo "115px"; else echo "110px";?>;
+    margin-<?=get_s_align()?>:115px;
     margin-bottom:0px;
     text-align:<?=get_s_align()?>;
     <? if (isHeb()) echo "direction:rtl"; ?>
@@ -1150,8 +1153,8 @@ background-color:#ebe8ed;
 
 #forcast_main {
     margin-top:15px;
-    width:840px;
-    <?=get_s_align()?>:145px;
+    width:830px;
+    <?=get_s_align()?>:155px;
     position:absolute;
     text-align:right;
     <? if (isHeb()) echo "direction:rtl;"; ?>
@@ -1161,6 +1164,8 @@ background-color:#ebe8ed;
     #forcast_main {
         <?=get_s_align()?>:445px;
     }
+    #belowmainad {opacity:0}
+    
 }
 .contentbox-wrapper{
     position:relative;
@@ -1170,7 +1175,7 @@ background-color:#ebe8ed;
 }
 
 .contentbox{
-    width:830px;
+    width:820px;
     height:100%;
     float:<?=get_s_align()?>;
     padding:5px;
@@ -1194,8 +1199,54 @@ background-color:#ebe8ed;
     width: 655px;
 }
 
-#forcast_days {
+#forcast_days.detailed {
+    display: table;
+}
 
+#forcast_days.detailed li {
+    padding:0.9em;
+    display: table-cell;
+}
+#forcast_days.detailed .forcast_morning, #forcast_days.detailed .forcast_noon, #forcast_days.detailed .forcast_night {
+    width:18%
+}
+#forcast_days.detailed .forcast_morning div, #forcast_days.detailed .forcast_noon div, #forcast_days.detailed .forcast_night div {
+    display:block;
+    padding: 0.45em 0;
+}
+#forcast_days.detailed img{
+    vertical-align: baseline;
+}
+#forcast_days.detailed .title{
+    margin-bottom:1em
+}
+#forcast_days.detailed #night_icon_exp{
+    font-size: 0.5em;
+    line-height: 1em;
+}
+#forcast_days.detailed .forcast_day{
+    width:10px
+}
+#forcast_days.detailed .forcast_date{
+    width:10px;
+    font-size:1.2em
+}
+#forcast_days.detailed .forcast_text{
+    width:18%;
+    font-size:1.1em 
+}
+#forcast_days.detailed .cloth{
+    height: 5em;
+    font-size: 0.8em;
+    line-height: 0.7em;
+}
+#forcast_days.detailed .humidity{
+    height: 2em;
+    font-size: 1em;
+}
+.winddesc{
+    font-size: 0.6em;
+    line-height: 1em;
 }
 
 #forcast_hours, #forcast_hours_table {
@@ -1206,7 +1257,11 @@ background-color:#ebe8ed;
     overflow-y: auto;
 }
 
-#forcast_hours li, #forcast_hours_table li{
+
+#for24_graph_ng{
+    padding:0
+}
+#forcast_hours li, #forcast_hours_table li, #for24_graph_ng li {
     line-height:1.5em;
     list-style:none;
     display:inline-block;
@@ -1267,12 +1322,18 @@ float:<?=get_s_align()?>
     
 }
 #forcast_table .humidity {
-    font-size:0.8em
+    font-size:0.7em
     
 }
 #forcast_table .wind_icon, #forecastnextdays_table .wind_icon {
     margin-top: -5px;
+    font-size:0.7em;
+    background-position-y: bottom;
+    padding-bottom: 1em;
     
+}
+#forcast_table .wind_icon .small{
+    font-size: 0.6em;
 }
 .icon_day .wind_icon{
     position: absolute;
@@ -1291,6 +1352,7 @@ float:<?=get_s_align()?>
 .extra .forcast_morning, .extra .forcast_noon{
 margin:0;
 direction: ltr;
+line-height: 0.6em;
 }
 .forcast_each ul li
 {
@@ -1309,14 +1371,15 @@ height:auto
 .forcast_day {
     <? if (isHeb()) echo "font-size:40px;"; ?>
     margin-right:0px;
-    width:25px;
+    width:<? if (isHeb()) echo "15px;";else echo "30px"; ?>;
+    font-weight:bold;
 }
 .forecast_ad{
 margin-<?=get_s_align()?>:10px
 }
 .forcast_date {
     letter-spacing:1px;
-    width:45px;
+    width:20px;
     font-size: 0.8em;
 }
 
@@ -1332,7 +1395,7 @@ margin-<?=get_s_align()?>:10px
      margin-left:-3px;
       margin-top:-5px;
      padding-top:5px;
-     width:95px;
+     width:105px;
      font-size: 1.4em;
      line-height: 0.8em;
      /*display: inline-flex !important;
@@ -1346,7 +1409,7 @@ margin-<?=get_s_align()?>:10px
     margin-right:10px;
     font-family:Alef;
     font-size:0.8em;
-    width:345px;
+    width:<? if (isHeb()) echo "315px";else echo "290px"; ?>;
     line-height: 1.1em;
 	text-align:<?=get_s_align()?> !important;
 }
@@ -1457,6 +1520,12 @@ font-size:0.35em
     height: 21px;
     width: 23px;
 }
+#radarcontrols{
+    width:100px;<?echo get_s_align();?>:-100px;position:absolute;
+}
+#rainsummery .number{
+    font-size: 1.4em;
+}
 #slogan{
 <? if (isHeb()) echo "direction:rtl;"; ?>
 text-align:<?=get_s_align()?>;
@@ -1480,7 +1549,7 @@ margin-<?=get_s_align()?>:0.5em
 }
 @media only screen and (max-width: 1280px) {
     #mainadsense {
-        margin-top:-320px;
+        margin-top:-330px;
     }
 }
 #extrainfo{
@@ -1654,8 +1723,8 @@ text-align:<?=get_s_align()?>;
 }
 
 .white_box h2, .white_box p, .white_box .box_text  {
-    padding-right:20px;
-    padding-left:18px;
+    padding:10px 20px;
+    
 }
 
 .white_box h2 {
@@ -1793,24 +1862,32 @@ width:250px
 #did_you_know a, #about{
     text-decoration:underline;
 }
-
- 
+#gender_notice{
+    margin:10px 0;
+}
+#register_suggest_title{
+    margin:0 auto
+}
+#register_suggest_desc{
+    padding:1em
+}
 #alerts table,#alerts th, #alerts td, .box_text table, .box_text th, .box_text td{
     border: 1px solid black;
     cellpadding:0.2em
 }
 
-#alerts{
+#alerts, #mainstory{
     text-align:<?=get_s_align()?>;
-    max-height: 430px;
+    max-height: 280px;
     overflow-y: auto;
     width: 660px;
+    line-height: 1.2em;
 }
-#alerts.offset3 {
+#alerts.offset3, #mainstory.offset3 {
     margin-<?=get_s_align()?>: 200px;
 }
 @media only screen and (max-width: 1280px) {
-    #alerts.offset3 {
+    #alerts.offset3, #mainstory.offset3 {
         margin-<?=get_s_align()?>: 480px;
     }
 }
@@ -2766,7 +2843,7 @@ float: <?=get_s_align()?>;width:120%
     
    height:51px;
    width:51px;
-   margin-top:-81px;
+   margin-top:-98px;
    margin-bottom:30px;
    margin-right:27px;
 }
@@ -2845,9 +2922,9 @@ color: #fff;
 }
 
 #posts img{
-   max-width: 305px;
+   max-width: 285px;
    height: auto;
-   margin-right:8px;
+   margin-right:2px;
 }
 #forum_grass {
     background-image:url("../img/forum_grass.png");
@@ -3015,7 +3092,8 @@ color: #fff;
 
 .alerttime{
  font-weight: bold;
- padding:0.6em 0.2em 0;
+ padding:0.6em 0 0;
+ padding-<?=get_s_align()?>:0.5em
 }
 .comment_btn {
     color:#648395;
@@ -3111,7 +3189,7 @@ color: #fff;
 #hill5 {
     position:absolute;
     top:0px;
-    left:1500px;
+    left:1550px;
 }
 
 #hill6 {
@@ -3166,10 +3244,10 @@ color: #fff;
     margin-bottom:5px;
 }
 
-.now, .forum, .pics, .whatmore {
+.now, .forum, .pics, .whatmore, .forecast {
     letter-spacing:2px;
     font-family:ezerblock_oe_regularregular;
-    font-size:16px;
+    font-size:18px;
     color:#2C3A42;
     padding: 2px 10px;
     display:inline-block;
@@ -4137,7 +4215,7 @@ a.info:hover span.info
 .trendstable
 {
     position: absolute;
-    top: 110px;
+    top: 115px;
     width: 100%;    
 }
 #latestrain .trendstable
@@ -4171,7 +4249,7 @@ a.info:hover span.info
 }
 #latestradiation .trendstable
 {
-    top:130px
+    top:145px
 }
 @keyframes glowing {
   0% { text-shadow: 0 0 10px #0000FF, 0 0 10px #0000FF, 0 0 10px #0000FF, 0 0 10px #0000FF, 0 0 20px #0000FF, 0 0 10px #0000FF, 0 0 10px #0000FF; }
@@ -4190,7 +4268,7 @@ a.info:hover span.info
 .inparamdiv .highlows
 {
     position:absolute;
-    top:80px;
+    top:85px;
     border-top:1px solid;
     border-color: #829CAA;
     width: 90%;
@@ -4355,7 +4433,7 @@ margin:0 auto
 }
 #latestnow{
     z-index:9999;
-    font-size: 1.3em;
+    font-size: 1.45em;
 }
 #latestnow .currentcloth
 {
@@ -4374,17 +4452,17 @@ margin-top:89px;
 }
 #current_feeling_link
 {
-	font-size:100%
+	font-size:<? if (isHeb()) echo "100%"; else echo "80%"; ?>
 }
 #itfeels
 {
     <? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr";?>;
 	    position: absolute;
         width: 245px;
-        top: 8.1em;
+        top: 7.6em;
         padding: 0px 5px;
         text-align:center;
-        font-size: 18px;
+        font-size: 20px;
         line-height: 25px;
         border-radius: 15px;
         
@@ -4409,7 +4487,9 @@ margin-top:89px;
     font-family:nextexitfotlight;
     direction:ltr
 }
-
+.paramvalue .valley{
+    margin-top: -35px;
+}
 .paramunit, .param
 {
     font-size:0.35em;
@@ -4428,7 +4508,7 @@ margin-top:89px;
 .paramtrend
 {
     position:absolute;
-    top:130px;
+    top:140px;
     width:100%;
     margin:0 auto
 }
@@ -4564,7 +4644,7 @@ border-top:none; margin:0; padding:0;
 }
 .colmetercontainer{
     top:0px;
-    right:70px;    
+    right:80px;    
     position:absolute;
     
     
@@ -4574,7 +4654,7 @@ border-top:none; margin:0; padding:0;
    margin:0;
    display:block;
    border:none;
-    height: 19.5px;
+    height: 21.5px;
     color:#FFFFFF;
     cursor:pointer;
     text-align:right;
@@ -4662,9 +4742,10 @@ text-align:center;
 margin-<?=get_s_align()?>: 200px;
 }
 #legends li{
-    float:left;
-    padding:0 0.5em;
+    float:<?=get_s_align()?>;
+    padding:0 0.7em;
     color:#ffffff;
+    font-size: 1.1em;
 }
 #section h1, #section h2, #section h3
 {
@@ -4768,8 +4849,8 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 {
 	border: none;
 	background: rgba(255, 255, 255, 0.8);
-	-moz-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-	box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
    	color: #2C3A42;
 	padding: 5px 8px;
 	margin: 0;
@@ -4848,7 +4929,7 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 {
     color: #ffffff;
     background-color: #731f1f;
-    font-weight:bold;
+    
 }
 #now_stuff .invhigh{
     display:inline-block;
@@ -4916,7 +4997,302 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 {
 position:relative
 }
+#legends li {
+    cursor:pointer
+}
+#legends{
+  margin: 0 0 20px;
+    width: 315px;
+    height: 10px;
+}
+  
 
+#chart-1, #graph_forcast {
+  height: 190px;
+  width: 1980px;
+  color:white;
+    <?if (isHeb()) echo "direction:rtl;";?>
+
+}
+.metric-chart {
+  position: relative;
+  margin: 40px auto;
+}
+
+.x-axis-bar-list {
+  margin: 0;
+  
+}
+.y-axis,
+.x-axis {
+  position: absolute;
+  bottom: 50px;
+  left: 50px;
+}
+.y-axis {
+  top: 0;
+  right: auto;
+  width: 1px;
+  background-color: #434a54;
+}
+.x-axis {
+  top: auto;
+  right: 0;
+  height: 1px;
+  background-color: #434a54;
+}
+
+.y-axis-target,
+.x-axis-target {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 51px;
+  left: 51px;
+}
+.y-axis-target > .y-axis-target-line,
+.x-axis-target > .y-axis-target-line,
+.y-axis-target > .x-axis-target-line,
+.x-axis-target > .x-axis-target-line {
+  position: absolute;
+}
+.x-axis-target > .x-axis-target-line {
+  top: auto;
+  right: 0;
+  bottom: 170px;
+  left: 0;
+  height: 0;
+  border-bottom: 1px dashed #da4453;
+}
+.x-axis-target-line-label {
+  position: absolute;
+  top: -9px;
+  right: -50px;
+  width: 40px;
+  text-align: left;
+}
+.x-axis-target-line-label:after {
+  content: attr(data-label);
+  color: #da4453;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.x-axis-line-list {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  bottom: 51px;
+  left: 50px;
+}
+.x-axis-line-item {
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: 0;
+}
+
+.x-axis-line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  border-right: 1px solid #ccd1d9;
+}
+
+.x-axis-label-list {
+  position: absolute;
+  top: auto;
+  right: 5px;
+  bottom: 30px;
+}
+.h-bar-chart .x-axis-label-list {
+  right: 5px;
+  left: 56px;
+}
+.v-bar-chart .x-axis-label-list {
+  right: 10px;
+  left: 50px;
+}
+.x-axis-label-item {
+  display: block;
+  float: left;
+  width: 100%;
+}
+.x-axis-label {
+  position: relative;
+  display: block;
+  color: #656d78;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1;
+}
+.h-bar-chart .x-axis-label {
+  text-align: center;
+}
+.v-bar-chart .x-axis-label {
+  text-align: right;
+}
+.x-axis-bar-item {
+  width:45px;
+  bottom: 0;
+  
+}
+.x-axis-bar-item-container {
+}
+.x-axis-bar {
+   text-align:center;  
+   position:absolute;
+   bottom: 0;
+    display: block;
+    width:45px;
+  
+}
+.x-axis-bar.primary {
+    background:transparent;
+    line-height: 0.6em;
+    font-size: 0.8em;
+}
+.x-axis-bar.secondary {
+    z-index:999;
+  background-image: linear-gradient(to top, rgba(247,148,30,0.4) 0%, rgba(247,148,30,0.05) 75%, rgba(247,148,30,0.0) 100%);
+ }
+.x-axis-bar.secondaryalt {
+    z-index:999;
+   background-image: linear-gradient(to top, rgba(247,148,30,0.5) 0%, rgba(247,148,30,0.05) 75%, rgba(247,148,30,0.0) 100%);
+  
+}
+.x-axis-bar.rain {
+    background-image: linear-gradient(to top, rgba(228, 240, 242,0.4) 0%, rgba(228, 240, 242,0.0) 100%);
+}
+.x-axis-bar.humidity {
+    background-image: linear-gradient(to top, rgba(228, 240, 30,0.4) 0%, rgba(228, 240, 30,0.0) 100%);
+}
+.x-axis-bar.tertiary {
+    
+}
+.x-axis-bar.dashed {
+  border-color: #748298;
+  border-style: dashed;
+  border-bottom: none;
+  background-color: #fff;
+}
+.nested-bars .x-axis-bar:nth-of-type(1) {
+  right: 5px;
+  left: 5px;
+}
+.nested-bars .x-axis-bar:nth-of-type(2) {
+  right: 10px;
+  left: 10px;
+}
+.nested-bars .x-axis-bar:nth-of-type(3) {
+  right: 15px;
+  left: 15px;
+}
+.x-axis-bar-value {
+  
+  top: -5px;
+  left: 50%;
+  margin-left: -5px;
+  width: 10px;
+  height: 10px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: normal;
+  font-family: arial;
+  font-size:0.6em;
+  -webkit-transition: all 0.15s linear;
+  transition: all 0.15s linear;
+}
+.primary .x-axis-bar-value {
+    background:transparent;
+}
+.secondary .x-axis-bar-value, .secondaryalt .x-axis-bar-value {
+    background:transparent;
+}
+.tertiary .x-axis-bar-value {
+    background:transparent;
+}
+.dashed .x-axis-bar-value {
+  border-color: #748298;
+  background-color: #fff;
+}
+.x-axis-bar:hover{
+  opacity: 0.4;
+  background-color: #000;
+}
+.x-axis-bar-value:hover:after,
+.x-axis-bar-value:focus:after,
+.x-axis-bar-value:hover:before,
+.x-axis-bar-value:focus:before {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.15s linear;
+  transition: all 0.15s linear;
+}
+.x-axis-bar-value:after {
+  position: absolute;
+  top: -35px;
+  left: -20%;
+  z-index: 200;
+  visibility: hidden;
+  margin-left: -20px;
+  padding: 2px;
+  width: 100px;
+  border-radius: 3px;
+  background-color: #434a54;
+  color: #fff;
+  content: attr(data-value);
+  text-align: center;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 1.1;
+  opacity: 0;
+}
+.x-axis-bar-value:before {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  z-index: 200;
+  visibility: hidden;
+  margin-left: -6px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-top-color: #434a54;
+  content: '';
+  opacity: 0;
+}
+.uppervalue .x-axis-bar-value:after {
+    top: 35px;
+}
+.uppervalue .x-axis-bar-value:before {
+    top: 30px;
+}
+.x-axis-bullet-bar {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  bottom: 0;
+  left: 15px;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  -webkit-transition: all 0.15s linear;
+  transition: all 0.15s linear;
+}
+.x-axis-bar-target-line {
+  position: absolute;
+  top: auto;
+  right: 2px;
+  bottom: 0;
+  left: 2px;
+  height: 1px;
+  background-color: #1f2125;
+}
 .forcast_each .spriteB.up, .forcast_each .spriteB.down {
 position:absolute;
 margin:22px 40px 15px 15px;
@@ -4992,12 +5368,12 @@ height: 16px;
         #cboxLoadingOverlay{background:#fff;}
         #cboxTitle{position:absolute; top:-22px; <?echo get_s_align();?>:1em; color:#000; <? if (isHeb()) echo "direction:rtl"; ?> }
         #cboxCurrent{position:absolute; top:-22px; right:205px; text-indent:-9999px;}
-        #cboxSlideshow, #cboxPrevious, #cboxNext, #cboxClose{text-indent:-9999px; width:20px; height:20px; position:absolute; top:-20px; background:url(images/controls.png) 0 0 no-repeat;}
-        #cboxPrevious{background-position:-78px 0px; <?echo get_inv_s_align();?>:3em;}
+        #cboxSlideshow, #cboxPrevious, #cboxNext, #cboxClose{text-indent:-9999px; width:27px; height:27px; border:none;position:absolute; top:-32px; background:url(images/controls.png) 0 0 no-repeat;}
+        #cboxPrevious{background-position:-77px 0px; <?echo get_inv_s_align();?>:3.1em;}
         #cboxPrevious.hover{background-position:-78px -25px;}
-        #cboxNext{background-position:-50px 0px; <?echo get_inv_s_align();?>:4.2em;}
+        #cboxNext{background-position:-50px 0px; <?echo get_inv_s_align();?>:4.6em;}
         #cboxNext.hover{background-position:-50px -25px;}
-        #cboxClose, #cboxCloseMobileRedirect{background-image: url("../img/close.png");border:none;height: 32px;width: 32px; <?=get_inv_s_align()?>:5px;}
+        #cboxClose, #cboxCloseMobileRedirect, .close_icon{background-image: url("../img/close.png");border:none;height: 32px;width: 32px; <?=get_inv_s_align()?>:5px;position:absolute}
         #cboxClose.hover{}
         .cboxSlideshow_on #cboxPrevious, .cboxSlideshow_off #cboxPrevious{right:66px;}
         .cboxSlideshow_on #cboxSlideshow{background-position:-75px -25px; right:44px;}
@@ -5008,7 +5384,7 @@ height: 16px;
 		#cboxContent input[type="checkbox"]{width:auto}
 		#colorbox{border-radius:5px}
                  a.colorbox {position:relative;}
-                .colorbox span, .enlarge span{display:none; background-image:url(../images/enlarge_64.png); background-repeat:no-repeat; width:64px; height:64px; position:absolute; left:5px;}
+                .colorbox span, .enlarge span{display:none; background-image:url(../images/enlarge_64.png); background-repeat:no-repeat; width:64px; height:64px; position:absolute; <?=get_inv_s_align()?>:5px;}
                  a.colorbox:hover span, a.enlarge:hover span{display:block;}
 		
 body.mce-content-body { 
@@ -5067,11 +5443,14 @@ width:90%;clear:both;padding-<?=get_s_align()?>:70px
 }
 .forecasttimebox li
 {
-	height:25px;color:#<?= $forground->bg['-8'] ?>;text-align:<?echo get_s_align();?>;border-top:#<?= $forground->bg['0'] ?> 1px solid;border-<?echo get_s_align();?>:none;
+	height:25px;text-align:<?echo get_s_align();?>;border-<?echo get_s_align();?>:none;
 }
 #forecast24h
 {
 width:100%;height:470px;
+}
+.dateextreme{
+    font-size: 0.45em;
 }
 #waiting
 {
@@ -5103,10 +5482,7 @@ z-index:99999;
 position:absolute;
 }
 #graph_forcast{
-        position:relative;
-        height:400px;
-        direction:ltr;
-        width:810px;
+        
         overflow: hidden;
         background-color: rgba(255, 255, 255, 0);
     }
@@ -5120,7 +5496,8 @@ position:absolute;
       pointer-events: none;
       text-align: center;
       width: 100%;
-      margin-top:-100px
+      margin-top:-100px;
+      line-height:1.5em
       
     }
     #tooltipcirclespacer{
@@ -5170,12 +5547,22 @@ display:none
     margin-top: 1px;
 
 }
+#forcast_table .icon{
+    padding:0
+}
+#forcast_days .line{
+    padding: 0 0.1em;
+}
+.expand_plus{
+    width:10px;
+    padding-<?=get_inv_s_align()?>:30px
+}
 .open-close-button {
   display: inline-block;
   width: 1em;
   height: 1em;
   border: 0 solid #f4d6d7;
-  margin: -0.5em -0.2em;
+  margin: -0.5em 1.8em;
   font-size: 0.8em;
   border-radius: 50%;
   position: absolute;

@@ -2,16 +2,65 @@
 <?
 include_once("include.php"); 
 include_once("lang.php");
+require_once 'vendor/autoload.php';
+
+use Jose\Component\Core\AlgorithmManager;
+use Jose\Component\KeyManagement\JWKFactory;
+use Jose\Component\Signature\JWSBuilder;
+use Jose\Component\Signature\Algorithm\ES256;
+use Jose\Component\Signature\Serializer\JWSSerializerManager;
+use Jose\Component\Signature\Serializer\CompactSerializer;
+
+function getToken($cerPath, $secret, $teamId) {
+	// 1.
+	$algorithmManager = new AlgorithmManager([ 
+		new ES256() 
+	]);
+
+	// 2.
+	$jwk = JWKFactory::createFromKeyFile($cerPath);
+
+	// We instantiate our JWS Builder.
+	$jwsBuilder = new JWSBuilder(
+	    $algorithmManager
+	);
+
+	// 3.
+	$payload = json_encode([
+	    'iat' => time(),
+	    'iss' => $teamId,
+	]);
+
+	// 4.
+	$jws = $jwsBuilder
+	    ->create()                                                  // We want to create a new JWS
+	    ->withPayload($payload)                                     // We set the payload
+	    ->addSignature($jwk, ['alg' => 'ES256', 'kid' => $secret])  // We add a signature with a simple protected header
+	    ->build();                                                  // We build it
+
+    // The serializer manager. We only use the JWS Compact Serialization Mode.
+    $serializerManager = new JWSSerializerManager([
+        new CompactSerializer(),
+    ]);
+	
+    // 5.
+    $token = $serializerManager->serialize("jws_compact", $jws);
+	return $token;
+}
 function sendMessageToUser($reg_id)
 {
     if ($reg_id == "")
         return false;
     $registrationIDs = array();
     array_push($registrationIDs, $reg_id);
+    
     if (isAndroid($reg_id))
         callGCMSender(FCM_API_KEY, $registrationIDs, "Your picture is live now התמונה אושרה ועלתה לאוויר", "", "", "");
-    else
-        sendAPNToRegIDs($registrationIDs, "Your picture is live now התמונה אושרה ועלתה לאוויר", "", "", "");
+    else{
+        $token = getToken('AuthKey_669J3G9XB5.p8', '669J3G9XB5', 'SAPLRRD8P5');
+        sendAPNToRegIDs($registrationIDs, "Your picture is live now התמונה אושרה ועלתה לאוויר", "", "", "", $token);
+    }
+       
 }
 function isAndroid($reg_id){
     return (strlen($reg_id) == 152);

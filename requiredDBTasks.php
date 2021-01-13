@@ -39,8 +39,8 @@ function updateCachedVars(){
     $monthAverge->set_lowhum ($row["LowHum"],"");
     $monthAverge->set_rain($row["Rain"]);
     $monthAverge->set_rainydays($row["RainyDays"]);
-    $monthAverge->set_abshightemp($row["AbsHighTemp"]);
-    $monthAverge->set_abslowtemp($row["AbsLowTemp"]);
+    $monthAverge->set_abshightemp($row["AbsHighTemp"], $row["AbsHighTempDate"]);
+    $monthAverge->set_abslowtemp($row["AbsLowTemp"],$row["AbsLowTempDate"]);
     $monthAverge->set_absmaxrain($row["AbsMaxRain"]);
     $monthAverge->set_absminrain($row["AbsMinRain"]);
     $mem->set('monthAverage', $monthAverge);
@@ -133,7 +133,7 @@ if ($hour == 1) {
 	getNextWordWith($tok, "---");
 	$borderword = getNextWordWith($tok, "---");
 	if ($borderword != "")
-		$yearlyAnomaly = getNextWord($tok, 4);
+		$yearlyAnomaly = getNextWord($tok, 4, "year");
 	else
 		$yearlyAnomaly = 0;
 	//echo "anomaly = ".$yearlyAnomaly;
@@ -344,6 +344,7 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
 }
 
  $day_idx = 1;
+ $fmonth_l = "";
  foreach ($forecastDaysDB as &$line)  {
      // $todayForecast_date is the previous day from temp forecast
      
@@ -360,13 +361,14 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
            $todayForecast->set_hum_day($line["humDay"], null);
            $todayForecast->set_hum_night($line["humNight"], null);
            $todayForecastShortDate = $line["date"];
-           list($firstdayinforecast_l, $fmonth_l) = preg_split('[/.-]', $line["date"]);
+           list($firstdayinforecast_l, $fmonth_l) = preg_split('[./-]', $line["date"]);
            list($fday, $fmonth) = explode('/', $firstdayinforecast_l);
            $todayForecast_date = date (DATE_FORMAT, mktime (0, 0, 0, $fmonth, $fday , $year));
            $fyear = $year;
             if ($_REQUEST['debug'] >= 1)
                 {
-                    echo "todayForecast_date=".$todayForecast_date;
+                    echo "<br>date=".$line["date"];
+                    echo "<br>todayForecast_date=".$todayForecast_date;
                     echo "<br>firstdayinforecast_l=".$firstdayinforecast_l;
                     echo "<br>fmonth_l=".$fmonth_l;
                     echo "<br>fday=".$fday;

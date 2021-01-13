@@ -9,32 +9,13 @@
 <td>
 <form method="post" action="#rainSeasons">
 	<select NAME="seasons[]" size="23" multiple>
-	<option selected value="2019-2020">2019-2020</option>
-	<option selected value="2018-2019">2018-2019</option>
-        <option  value="2017-2018">2017-2018</option>
-        <option  value="2016-2017">2016-2017</option>
-        <option          value="2015-2016">2015-2016</option>
-        <option          value="2014-2015">2014-2015</option>
-        <option          value="2013-2014">2013-2014</option>
-	<option          value="2012-2013">2012-2013</option>
-	<option          value="2011-2012">2011-2012</option>
-	<option		 value="2010-2011">2010-2011</option>
-	<option		 value="2009-2010">2009-2010</option>
-	<option          value="2008-2009">2008-2009</option>
-	<option		 value="2007-2008">2007-2008</option>
-	<option		 value="2006-2007">2006-2007</option>
-	<option		 value="2005-2006">2005-2006</option>
-	<option		 value="2004-2005">2004-2005</option>
-	<option		 value="2003-2004">2003-2004</option>
-	<option          value="2002-2003">2002-2003</option>
-	<option          value="2001-2002">2001-2002</option>
-	<option          value="2000-2001">2000-2001</option>
-	<option          value="1999-2000">1999-2000</option>
-	<option          value="1998-1999">1998-1999</option>
-	<option          value="1997-1998">1997-1998</option>
-	<option          value="1996-1997">1996-1997</option>
-	<option          value="1995-1996">1995-1996</option>
-	<option          value="1994-1995">1994-1995</option>
+		<?
+		for ($year = 2020; $year >= 1847; $year--)
+		{
+			echo sprintf ("<option value=\"%04d-%04d\">%04d-%04d</option>",$year-1, $year , $year-1, $year);  
+		}
+		?>
+	
 	<option selected value="1980-2010">1980-2010</option>
 	<option		 value="1970-2000">1970-2000</option>  
 	<option		 value="1950-2001">1950-2001</option> 
@@ -64,26 +45,17 @@
 	 
         
 	/* Performing SQL query */
-	$query = "SELECT * FROM rainseason where season='2001-2002'";
+	
 	$result = db_init("", "");
-	$result = mysqli_query($link, $query) ;
-	/* Printing the head of table*/
-	print "<tr class=\"topbase\"><td></td>";
-
-	while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-		$month = $line["month"];
-		print "\t\t<td align=\"center\"><b>".getMonthName($month)."</b></td>\n";
-	}
-	print "\t\t<td align=\"center\">".$TOTAL_RAIN[$lang_idx]."</td>\n";	
-	print "</tr>";
-
+	
+	
 	/*******************************************/
 	/* Printing row from table*/
 	foreach ($_POST['seasons'] as $season){
 	$raintotal = 0;
 	$daystotal = 0;
 	print "\t<tr >\n";
-	$query = "SELECT * FROM rainseason where season='$season' order by year, month";
+	$query = "SELECT season, year, month, mm, RainyDays, Max(station) FROM rainseason where season='$season' group by year, month order by year, month";
 	$result = mysqli_query($link, $query) ;
 		if (mysqli_affected_rows($link) <= 0)
 		echo "couldn't get data : ".mysqli_error($link);
@@ -99,10 +71,10 @@
 		$days = $line["RainyDays"];
 		$raintotal += $rain;
 		$daystotal += $days;
-		 print "\t\t<td style=\"border: solid 1px\"><table style=\"width:100%\"><tr><td class=\"inv_plain_2\">$rain</td><td class=\"inv_plain_3_zebra\" align=\"center\">$days</td></tr></table></td>\n";
+		 print "\t\t<td style=\"border: solid 1px\"><table style=\"width:100%\"><tr class=\"topbase\"><td align=\"center\" colspan=2>".getMonthName($line["month"])."</td></tr><tr><td class=\"inv_plain_2\">$rain</td><td class=\"inv_plain_3_zebra\" align=\"center\">$days</td></tr></table></td>\n";
 		
 	}
-	 print "\t\t<td><table style=\"width:100%\"><tr align=\"center\" ><td class=\"inv_plain_2\">$raintotal</td><td align=\"center \" class=\"inv_plain_3_zebra\">$daystotal</td></tr></table></td>\n\t</tr>\n";
+	 print "\t\t<td><table style=\"width:100%\"><tr class=\"topbase\"><td align=\"center\">".$TOTAL_RAIN[$lang_idx]."</td></tr><tr align=\"center\" ><td class=\"inv_plain_2\">$raintotal</td><td align=\"center \" class=\"inv_plain_3_zebra\">$daystotal</td></tr></table></td>\n\t</tr>\n";
 	/*********************************************/
 	}
 	/* Free resultset */

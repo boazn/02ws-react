@@ -1,14 +1,4 @@
 <?php
-/************************************************************************/
-     /* checking if there is broken record ; first - year, second - month*/
-    $broken = false;
-    $period = "MIS";
-    $unit = "MIS";
-    $highorlow = "MIS";
-    $extdata = "mis";
-    $messageBroken = array();
-	$messageBrokenToSend = array();
-	$updateMessage = false;
     
 /************************************************************************/    
 function updateSigRunWeather ($picP, $sigW, $extrainfoP, $urlP)
@@ -64,12 +54,6 @@ $sigRun = array();
 $primarySig = array();
 $url= get_query_edited_url(get_url(), 'section', 'extended');
 $forecastHour = $mem->get('forecasthour');
-foreach ($forecastHour as $hour_f){
-	if (($hour_f['currentDateTime']) > time()){
-		$current->set_rainchance($hour_f['rain']);
-		break;
-	}
-}
 
 updateSigRunWeather(
     "", 

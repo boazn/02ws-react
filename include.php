@@ -2,7 +2,7 @@
 define("SEPERATOR", "");
 define("HIDDENSEPERATOR", "<!---->");
 define("PERSONAL_COLD_METER", "PersonalColdMeter");
-include_once ("ini.php");
+include_once ($_SERVER['DOCUMENT_ROOT']."/ini.php");
 ini_set("display_errors","Off");
 class FixedTime {
 
@@ -1128,9 +1128,13 @@ class TimeRange extends Period {
     var $rainperc;
     var $rainydaysdiffav;
     var $abslowtemp;
+    var $abslowtempdate;
     var $abshightemp;
+    var $abshightempdate;
     var $absminrain;
+    var $absminraindate;
     var $absmaxrain;
+    var $absmaxraindate;
 
     function get_rainperc() {
         return $this->rainperc;
@@ -1203,8 +1207,16 @@ class TimeRange extends Period {
         return c_or_f($this->abslowtemp);
     }
 
+    function get_abslowtempDate() {
+        return c_or_f($this->abslowtempdate);
+    }
+
     function get_abshightemp() {
         return c_or_f($this->abshightemp);
+    }
+
+    function get_abshightempDate() {
+        return c_or_f($this->abshightempdate);
     }
 
     function get_absminrain() {
@@ -1215,12 +1227,14 @@ class TimeRange extends Period {
         return $this->absmaxrain;
     }
 
-    function set_abslowtemp($abslowtemp) {
+    function set_abslowtemp($abslowtemp, $abslowtempdate) {
         $this->abslowtemp = c_or_f($abslowtemp);
+        $this->abslowtempdate = $abslowtempdate;
     }
 
-    function set_abshightemp($abshightemp) {
+    function set_abshightemp($abshightemp, $abshightempdate) {
         $this->abshightemp = c_or_f($abshightemp);
+        $this->abshightempdate = $abshightempdate;
     }
 
     function set_absminrain($absminrain) {
@@ -2230,7 +2244,7 @@ function user_login($user_id){
    $key = base64_encode(mcrypt_create_iv(100,MCRYPT_DEV_URANDOM)); // 
    // Be sure to store the $key value in your database
    setcookie("rememberme", $key, time()+3600*24*360); // Set the cookie to expire after 360 days
-   $result = db_init("update users set user_rememberme=$key where user_login=$user_id");
+   $result = db_init("update users set user_rememberme=$key where user_login=$user_id", "");
    @mysqli_free_result($result);
 }
 
@@ -2397,9 +2411,9 @@ function getRadioSondeLink()
 
 function get_url() {
     if ($_SERVER["QUERY_STRING"] != "")
-        return ("http://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"]);
+        return ("https://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"]);
     else
-        return ("http://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"]);
+        return ("https://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"]);
 }
 
 function replaceArgInIRL($url, $arg, $val) {
@@ -2477,7 +2491,7 @@ function update_action($action, $extrainfoS, $messageTitle) {
         "<div class=\" big\">" . $dateInHeb . "<br/>" . "</div><div class=\" big loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<br/> <strong>" . $messageTitle[$HEB] . "</strong><div class=\"loading  big\">&nbsp;{$extrainfoS[$HEB][0]}<br/><br/><img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$HEB]\" width=\"600px\" border=\"0\" /></div></div>");
     if (!isActionAlreadyActivated($action)) {
         $sent = 1;
-        $result = db_init("UPDATE sendmailsms SET Sent=$sent, lastSent=NOW() WHERE (Action='$action')");
+        $result = db_init("UPDATE sendmailsms SET Sent=$sent, lastSent=NOW() WHERE (Action='$action')", "");
         //echo "affected rows: ".mysql_affected_rows();
         array_push($messageAction, $message);
         $actionActive = $action;
@@ -2556,11 +2570,12 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
       at the first entry to the table the old record is moved to the old_record/old_time columns
      */
     if ($updateMessage) {
+        $extdata = str_replace(",", "", $extdata);
 		$new_extreme = array($record_col => $extdata, $date_col=>$datenotime, 'old_'.$highorlow => $old_date, 'old_'.$highorlow.'_record'=>$old_record);
-		$mem->set("extreme_".$param, $new_extreme);
-                $query = "UPDATE extremes SET $record_col='$extdata', $date_col='$datenotime', old_{$highorlow}_date='$old_date', old_{$highorlow}_record=$old_record WHERE (param='$param')";
-                if (!mysqli_query($link, $query))	
-                    logger(sprintf("updating in setBrokenData: %s ".$query, mysqli_error($link)));
+        $mem->set("extreme_".$param, $new_extreme);
+        $query = "UPDATE extremes SET $record_col='$extdata', $date_col='$datenotime', old_{$highorlow}_date='$old_date', old_{$highorlow}_record=$old_record WHERE (param='$param')";
+        db_init($query, "");
+        logger(sprintf("updating in setBrokenData: %s ".$query, mysqli_error($link)));
     }
     array_push($messageBroken, array("<div style=\"display:none;text-align:left;paddign:0.3em\" class=\"grad\">$LAST_RECORD[$EN]: <strong>$old_record</strong> <br />$ON[$EN] $old_date</div>",
         "<div style=\"display:none;text-align:right;padding:0.3em\" class=\"grad\">$LAST_RECORD[$HEB]: <strong>$old_record</strong> <br />$ON[$HEB] $old_date </div>"));
@@ -2727,8 +2742,8 @@ function getMonthName ($month)
 }
 function getUpdatedPic()
 {
-	$primary_pic = "images/webCameraB.jpg";
-	$secondary_image = "images/webCamera.jpg";
+	$primary_pic = $_SERVER['DOCUMENT_ROOT']."/images/webCameraB.jpg";
+	$secondary_image = $_SERVER['DOCUMENT_ROOT']."/images/webCamera.jpg";
 
 	if ((@filemtime($primary_pic) < @filemtime($secondary_image) - 900) || (!file_exists($primary_pic)))
 		return $secondary_image;
@@ -2827,13 +2842,13 @@ function checkAppleErrorResponse($fp, $regIDs) {
     
         $result .= 'Identifier is the rowID (index) in the database that caused the problem, and Apple will disconnect you from server. To continue sending Push Notifications, just start at the next rowID after this Identifier.<br>';
     
-        return $error_response['command']." ".$error_response['identifier']." ".$error_response['status_code'];
+        return $error_response['command']." ".$error_response['identifier']." ".$regIDs['apn_regid']." ".$error_response['status_code'];
     }
         return "";
 }
-function sendAPNToRegIDs($registrationIDs, $message, $picture_url, $embedded_url){
+function sendAPNToRegIDsOld($registrationIDs, $message, $picture_url, $embedded_url){
     //logger("sendingAPNMessage : ".count($registrationIDs)." ".$message);
-    $payload['aps'] = array('alert' => $message, 'badge' => 1, 'sound' => 'lighttrainshort.wav', 'content-available' => 1, 'category' => "share", 'EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
+    $payload['aps'] = array('alert' => $message, 'badge' => 1, 'sound' => 'lighttrainshort', 'content-available' => 1, 'category' => "share", 'EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
     $payload = json_encode($payload);
 
     $apnsHost = 'gateway.push.apple.com';
@@ -2860,23 +2875,91 @@ function sendAPNToRegIDs($registrationIDs, $message, $picture_url, $embedded_url
                     stream_context_set_option($streamContext, 'ssl', 'passphrase', "bn19za72");
                     $apns = stream_socket_client('ssl://' . $apnsHost . ':' . $apnsPort, $error, $errorString, 2, STREAM_CLIENT_CONNECT, $streamContext);
                     stream_set_blocking ($apns, 0);*/
-                    
-                
-           
-        
+                  
+                   // usleep(500000);
 		//logger($resultAPNs);
     }
     // Workaround to check if there were any errors during the last seconds of sending.
     // Pause for half a second. 
     // Note I tested this with up to a 5 minute pause, and the error message was still available to be retrieved
-    usleep(500000); 
+    usleep(5000); 
 
     $resultAPNs .= checkAppleErrorResponse($apns, "");
 
     $resultAPNs .= ' --- '.count($registrationIDs).' APNs Completed';
-    //logger($resultAPNs);
+    logger($resultAPNs);
     @socket_close($apns);
     fclose($apns);
+    return $errorString." ".$resultAPNs;
+}
+function sendNewAPNPush($curl, $deviceToken) {
+    global $errorMessage, $remove_ids;
+    // 1.
+	$path = '/3/device/'.$deviceToken;
+
+    curl_setopt($curl, CURLOPT_URL, "https://api.push.apple.com:443".$path);
+	$response = curl_exec($curl);
+    $res = json_decode($response,true);
+    $err = curl_error($curl);
+    $info = curl_getinfo($curl);
+	if ($err) {
+	  return "cURL Error #:" . $err;
+	} else {
+        if ($info['http_code'] != 200)
+            array_push($errorMessage, array('id' => $deviceToken, 'desc' => $response, 'idx' => null));
+       //array_push($remove_ids, $deviceToken);
+	  return array('res' => $response, 'code' => $info['http_code'], 'res_arr' => $res);
+	}
+}
+function sendAPNToRegIDs($registrationIDs, $title,  $body, $picture_url, $embedded_url, $authToken){
+    global $link;
+    logger("sendingAPNMessage : ".count($registrationIDs)." ".$title);
+    $payload['aps'] = array('alert' => ['title' => $title, 'body' => $body ], 'badge' => 1, 'sound' => 'lighttrain.wav', 'content-available' => 1, 'category' => "share", 'EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
+    $payload = json_encode($payload);
+    $resultAPNs = "";
+    $errorString = "";
+    $resultAPN = "";
+    db_init("", "");
+    $sent = 0;
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        // 2.
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        // 3.
+        CURLOPT_POSTFIELDS => $payload,
+        CURLOPT_HTTPHEADER => array(
+        "Content-Type: application/json",
+        "apns-expiration: 0",
+        "apns-topic: il.co.jws", // 4.
+        "authorization: bearer ".$authToken // 5.
+        ),
+    ));
+    
+    
+    foreach ($registrationIDs as $regID){
+        
+            $resultAPN = sendNewAPNPush($curl, $regID['apn_regid']);
+            $sent++;
+            //$resultAPNs .= " ".$resultAPN['res']." : ".$resultAPN['code'];
+            //logger($regID['apn_regid'].":".$resultAPN['res']);
+            if ($resultAPN['code'] != 200){
+                $query = "insert into InvalidTokens (regid, status, updated, system, reason) values('".$regID['apn_regid']."', ".$resultAPN['code'].", SYSDATE(), 2, '".$resultAPN['res']."')";
+                $resultUpdate = mysqli_query($link, $query);
+            }
+            
+            //$resultAPNs .= $resultAPN['code'];
+        if ($resultAPN['code'] == 403){
+           // break;
+        }
+    }
+    curl_close($curl);
+
+    $resultAPNs .= ' --- '.$sent.' APNs Completed';
+    logger($resultAPNs);
+        //saveInvalidTokens();
     return $errorString." ".$resultAPNs;
 }
 function cleanInvalidAPNTokens()
@@ -2892,12 +2975,13 @@ function cleanInvalidAPNTokens()
     }
     logger("cleanInvalidAPNTokens : ".count($registrationIDs)." ".$message);
     
-    $apnsHost = 'feedback.push.apple.com';
-    $apnsPort = 2196;
-    $apnsCert = 'ApplePush1218.pem';
+    $apnsHost = 'gateway.push.apple.com';
+    $apnsPort = 2195;
+    $apnsCert = 'ApplePush1219.pem';
        
     $streamContext = stream_context_create();
     stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
+    stream_context_set_option($streamContext, 'ssl', 'passphrase', "bn19za72");
     $apns = stream_socket_client('ssl://' . $apnsHost . ':' . $apnsPort, $error, $errorString, 2, STREAM_CLIENT_CONNECT, $streamContext);
     if(!$apns) {
         logger( "ERROR $errcode: $errstr\n");
@@ -2921,9 +3005,11 @@ function cleanInvalidAPNTokens()
     logger ("invalid feedback_tokens: ".$invalid_feedback_tokens);
     return $feedback_tokens;
 }
+$errorMessage = array();
+$remove_ids = array();
 function handleInvalidTokens($jsonArray, $registration_ids, $header_key){
-    $remove_ids = array();
-    $errorMessage = array();
+    global  $errorMessage, $remove_ids;
+    
     //logger("handleInvalidTokens: header_key(SenderID)=".$header_key." success:".$jsonArray["success"]." + failure:".$jsonArray["failure"]." = ".count($jsonArray["results"]));
      for($i=0; $i<count($jsonArray["results"]);$i++){
         if(isset($jsonArray["results"][$i]["error"])){
@@ -2934,7 +3020,11 @@ function handleInvalidTokens($jsonArray, $registration_ids, $header_key){
             }
         }
     }
-     global $link;
+    saveInvalidTokens();
+}
+function saveInvalidTokens() {
+    global $link, $errorMessage, $remove_ids;
+    
     foreach ($remove_ids as $id){
          //print_r($regIDs);
          //$query = "update gcm_users set ResponseCode='9', ResponseMessage='NotRegistered' where gcm_regid='".$id."'";
@@ -2945,9 +3035,65 @@ function handleInvalidTokens($jsonArray, $registration_ids, $header_key){
      foreach ($errorMessage as $err){
          //print_r($regIDs);
          $query = "update gcm_users set ResponseCode='5', ResponseMessage=".$err['desc']." where gcm_regid='".$err['id']."'";
-         //$resultUpdate = mysqli_query($link, $query);
-         //logger($err['idx'].". ".$query);
+         $query = "insert into InvalidTokens (regid, status, updated) values('".$err['id']."', 5, SYSDATE())";
+         $resultUpdate = mysqli_query($link, $query);
+         //logger($query.": ".$resultUpdate);
      }
+}
+
+function callAPNSender($key, $registrationIDs, $messageBody, $title, $picture_url, $embedded_url){
+     
+       // Set POST variables
+    $url = 'https://fcm.googleapis.com/fcm/send';
+
+    $fields = array(
+        'registration_ids' => $registrationIDs,
+        'data' => array( "message" => $messageBody, "title" => $title, "picture_url" => $picture_url, "embedded_url" => $embedded_url),
+    );
+        
+    $headers = array(
+        'Authorization: key=' . $key, 
+        'Content-Type: application/json'
+    );
+
+    // Open connection
+    $ch = curl_init();
+    //print_r($headers);
+    //print_r($registrationIDs);
+    // Set the URL, number of POST vars, POST data
+    curl_setopt( $ch, CURLOPT_URL, $url);
+    curl_setopt( $ch, CURLOPT_POST, true);
+    curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode( $fields));
+
+    // Execute post
+    $result = curl_exec($ch);
+    $resultHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    logger("sendGCMMessage res: ".$result);
+    // Close connection
+    curl_close($ch);
+    
+    switch ($resultHttpCode) {
+            case "200":
+                //All fine. Continue response processing.
+                break;
+
+            case "400":
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result);
+                break;
+
+            case "401":
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result);
+                break;
+
+            default:
+                //TODO: Retry-after
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result);
+                break;
+        }
+    return array($resultHttpCode, json_decode($result, true));
 }
 function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_url, $embedded_url){
      
@@ -3148,7 +3294,7 @@ function getClothName($current_feeling){
     else if ($current_feeling == $LHOT[$lang_idx])
     {$cloth_name = "tshirt_n3.png";}
     else if ($current_feeling == $COLDISH[$lang_idx])
-    {$cloth_name = "jacketlight_n3.png";}
+    {$cloth_name = "jacketlight_n2.png";}
     else if ($current_feeling == $NHOTNCOLD[$lang_idx])
     {$cloth_name = "longsleeves_n3.png";}
     else if ($current_feeling == $LCOLD[$lang_idx])
@@ -3167,7 +3313,7 @@ function getClothName($current_feeling){
 function getPageTitle()
 {
 	global $lang_idx, $HEB, $EN, $WEBSITE_TITLE;
-	include "lang.php";
+	include $_SERVER['DOCUMENT_ROOT']."/lang.php";
 
 	if (stristr($_GET['section'], 'globalwarm'))
 		$title .= $GLOBAL_WARMING[$lang_idx]." - ";
@@ -3253,15 +3399,15 @@ function getPageTitle()
 
 function getClothTitle($imagename, $temp)
 {
-	global $lang_idx, $HEB, $EN, $SUN_SHADE_CLOTH, $TSHIRT, $JACKET, $COAT, $RAINCOAT, $UMBRELLA, $SWEATER, $SWEATSHIRT, $SHORTS, $LONGSLEEVES, $LIGHTJACKET, $LIGHTCOAT,$LAYERS_BELOW, $LAYERS_BELOW2, $LAYERS_BELOW3, $LAYERS_BELOW3_PLUS, $current;
+	global $lang_idx, $HEB, $EN, $OR, $SUN_SHADE_CLOTH, $TSHIRT, $JACKET, $COAT, $RAINCOAT, $UMBRELLA, $SWEATER, $SWEATSHIRT, $SHORTS, $LONGSLEEVES, $LIGHTJACKET, $LIGHTCOAT,$LAYERS_BELOW, $LAYERS_BELOW2, $LAYERS_BELOW3, $LAYERS_BELOW3_PLUS, $current;
 	
 	if (stristr(strtolower($imagename), 'tshirt'))
 		$title = $TSHIRT[$lang_idx];
 	else if (stristr(strtolower($imagename), 'jacketlight'))
-		$title = $LIGHTJACKET[$lang_idx];
+		$title = $LIGHTJACKET[$lang_idx]." ".$OR[$lang_idx]." ".$SWEATER[$lang_idx];
 	else if (stristr(strtolower($imagename), 'jacket')){
 		$title = $JACKET[$lang_idx];
-                if ($temp < 12)
+                if ($temp < 13)
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
                  else if ($temp < 20)
                     $title .= ", ".$LAYERS_BELOW[$lang_idx];
@@ -3272,9 +3418,9 @@ function getClothTitle($imagename, $temp)
 		$title = $RAINCOAT[$lang_idx];
                  if ($temp < 5)
                     $title .= ", ".$LAYERS_BELOW3_PLUS[$lang_idx];
-                else if($temp < 9)
+                else if($temp < 10)
                     $title .= ", ".$LAYERS_BELOW3[$lang_idx];
-                else if ($temp < 12)
+                else if ($temp < 13)
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
                 else
                     $title .= ", ".$LAYERS_BELOW[$lang_idx];
@@ -3284,9 +3430,9 @@ function getClothTitle($imagename, $temp)
         
                  if ($temp < 5)
                     $title .= ", ".$LAYERS_BELOW3_PLUS[$lang_idx];
-                else if($temp < 9)
+                else if($temp < 10)
                     $title .= ", ".$LAYERS_BELOW3[$lang_idx];
-                else if ($temp < 12)
+                else if ($temp < 13)
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
                 else
                     $title .= ", ".$LAYERS_BELOW[$lang_idx];
@@ -3482,8 +3628,8 @@ function getCurrentChat($searchname, $filter_is_on, $startLine, $limitLines, $ti
             $fullbody = urldecode($line["body"]);
             if ($line["length"] > 3000){
                 $nodes = explode (HIDDENSEPERATOR, $fullbody);
-                $shortbody = $nodes[0]."...<a id=\"expandclick\" href=\"javascript:void()\" onclick=\"expand({$line["idx"]})\">המשך".get_arrow()."</a>";
-                print "\n\t\t<div style=\"display:none\" class=\"alternatebody\" >" . $fullbody . " <a id=\"contractclick\" href=\"javascript:void()\" onclick=\"contract({$line["idx"]})\"\">סגור</a></div>";
+                $shortbody = $nodes[0]."...<a id=\"expandclick\" href=\"javascript:void(0)\" onclick=\"expand({$line["idx"]})\">המשך".get_arrow()."</a>";
+                print "\n\t\t<div style=\"display:none\" class=\"alternatebody\" >" . $fullbody . " <a id=\"contractclick\" href=\"javascript:void(0)\" onclick=\"contract({$line["idx"]})\"\">סגור</a></div>";
                 $fullbody = $shortbody;
             }
             print "\n\t\t<div class=\"chatmainbody\" >" . $fullbody . "</div>";
@@ -3632,8 +3778,8 @@ function CalculateMoonPhases($Y) {
     //X Ken Slater, 2002-Feb-19 on advice of Pete Moore of Houston, TX
     $M0 = $K0 * 0.08084821133;
     $M0 = 360 * ($M0 - intval($M0)) + 359.2242;
-    $M0 -= 0.0000333 * T2;
-    $M0 -= 0.00000347 * T3;
+    $M0 -= 0.0000333 * $T2;
+    $M0 -= 0.00000347 * $T3;
     $M1 = $K0 * 0.07171366128;
     $M1 = 360 * ($M1 - intval($M1)) + 306.0253;
     $M1 += 0.0107306 * $T2;
@@ -3743,6 +3889,263 @@ function enoughSignificant($index)
          return false;
      return false;
  }
+ function get_laundry_index()
+{   
+    global $forecastHour, $nextSigForecast, $current, $lang_idx, $GOOD_LAUNDRY, $SOSO_LAUNDRY, $BAD_LAUNDRY, $START_IN;
+    if ((dustExistsNow())||(dustExistsIn24hf())||(rainExistsIn24hf())){
+		return array("no_L", $BAD_LAUNDRY[$lang_idx], $nextSigForecast['hrs']) ;
+	}
+    else if (bestLaundryConditions())
+        return array("good_L", $GOOD_LAUNDRY[$lang_idx], $nextSigForecast['hrs']);
+    else
+       return array("semiLgrey", $SOSO_LAUNDRY[$lang_idx], $nextSigForecast['hrs']);
+}
+    
+function bestLaundryConditions()
+{
+   global $forecastHour, $current, $min10;
+   $numberOfSoSO = 0;
+   
+    foreach ($forecastHour as $hour_f){
+        if (($hour_f['humidity'] > 80)&&($hour_f['wind'] < 10)&&($hour_f['temp'] < 19)&&($hour_f['currentDateTime']) > time()&&($hour_f['currentDateTime']) < (time()+(6*60*60))){
+            // logger("found :".$hour_f['humidity']." ".$hour_f['wind']);
+            $numberOfSoSO++;
+        }
+   }
+   if (($current->get_hum() < 40)&&($min10->get_windspd() > 3)&&($current->get_pm10() < 130 && $current->get_pm25() < 40))
+       return true;
+   //logger("current hum:".$current->get_hum());
+   if ($numberOfSoSO > 3)
+       return false;
+   return true; 
+}
+function averageLaundryConditions()
+{
+    global $forecastHour, $current;
+    foreach ($forecastHour as $hour_f){
+        if (($hour_f['humidity'] > 85)&&($hour_f['currentDateTime']) > time())
+            return false;
+    }
+    if ($current->get_hum() > 90)
+       return false;
+    return true;
+}
+// is rain coming in 6 hours
+function rainExistsIn24hf ()
+{
+    global $mem, $forecastHour, $nextSigForecast;
+    //logger("rainExistsIn24hf ".count($forecastHour));
+    foreach ($forecastHour as $hour_f){
+        
+       if (($hour_f['rain'] > 0)&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 21600)){
+			$nextSigForecast = array('rain' => $hour_f['rain'], 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => null);
+			$mem->set('nextSigForecast', $nextSigForecast);
+			return true;
+		}
+		else if (($hour_f['rain'] > 0)&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 44000)){
+			$nextSigForecast = array('rain' => $hour_f['rain'], 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => null);
+			$mem->set('nextSigForecast', $nextSigForecast);
+			return false;
+		} 
+    }
+    return false;
+}
+// high wind coming in 6 hours
+function highwindExistsIn24hf ()
+{
+    global $mem, $forecastHour, $nextSigForecast;
+    //logger("rainExistsIn24hf ".count($forecastHour));
+    foreach ($forecastHour as $hour_f){
+        
+       if (($hour_f['wind'] > 35)&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 21600)){
+			$nextSigForecast = array('rain' => $hour_f['rain'], 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => null, 'wind' => $hour_f['wind']);
+			$mem->set('nextSigForecast', $nextSigForecast);
+			return true;
+		}
+		else if (($hour_f['rain'] > 35)&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 44000)){
+			$nextSigForecast = array('rain' => $hour_f['rain'], 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => null, 'wind' => $hour_f['wind']);
+			$mem->set('nextSigForecast', $nextSigForecast);
+			return false;
+		} 
+    }
+    return false;
+}
+// is dust coming in 6 hours
+function dustExistsIn24hf ()
+{
+    global $mem, $forecastHour;
+    foreach ($forecastHour as $hour_f){
+         if (($hour_f['icon'] == "dust.png")&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 21600)){
+            $nextSigForecast = array('rain' => 0, 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => $hour_f['icon']);
+			$mem->set('nextSigForecast', $nextSigForecast);
+            return true;
+		 }
+		 else if (($hour_f['icon'] == "dust.png")&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 44600)){
+            $nextSigForecast = array('rain' => 0, 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => $hour_f['icon']);
+			$mem->set('nextSigForecast', $nextSigForecast);
+            return false;
+		 }
+    }
+    return false;
+}
+function dustExistsNow()
+{
+    global $current;
+    return (($current->get_pm10() > 250));
+}
+function checkAsterisk($row_verdict)
+{
+    global $CLOSE_TO, $lang_idx;
+    $close_to_sec_coldmeter = $CLOSE_TO[$lang_idx].get_name($row_verdict[1]["field_name"]);
+    if (count($row_verdict) < 2)
+        return "";
+    if ($row_verdict[0]["count"] < ($row_verdict[1]["count"] + 90))
+        return "<a href=\"javascript:void(0)\" id=\"asterisk\" class=\"info\" >&#x002A;<span class=\"info\">".$close_to_sec_coldmeter."</span></a>";
+}
+function get_heat_index($temp, $hum)
+{
+	global $EXTREME_HEAT_INDEX, $HEAVY_HEAT_INDEX, $MEDIUM_HEAT_INDEX, $LOW_HEAT_INDEX, $lang_idx;
+        
+	switch ($hum)
+	{
+		case ($hum <= 15):
+			switch ($temp)
+			{
+				case ($temp <= 30.5):
+					return "";
+				case ($temp <= 33):
+					return $LOW_HEAT_INDEX[$lang_idx];
+				case ($temp <= 38):
+					return $MEDIUM_HEAT_INDEX[$lang_idx];
+				case ($temp <= 42):
+					return $HEAVY_HEAT_INDEX[$lang_idx];
+				default:
+					return $EXTREME_HEAT_INDEX[$lang_idx];
+			}	
+			break;
+		case ($hum <= 25):
+			switch ($temp)
+			{
+				case ($temp <= 29):
+					return "";
+				case ($temp <= 31):
+					return $LOW_HEAT_INDEX[$lang_idx];
+				case ($temp <= 36):
+					return $MEDIUM_HEAT_INDEX[$lang_idx];
+				case ($temp <= 41):
+					return $HEAVY_HEAT_INDEX[$lang_idx];
+				default:
+					return $EXTREME_HEAT_INDEX[$lang_idx];
+			}
+			break;
+		case ($hum <= 35):
+			switch ($temp)
+			{
+				case ($temp <= 27.5):
+					return "";
+				case ($temp <= 30):
+					return $LOW_HEAT_INDEX[$lang_idx];
+				case ($temp <= 34.5):
+					return $MEDIUM_HEAT_INDEX[$lang_idx];
+				case ($temp <= 39):
+					return $HEAVY_HEAT_INDEX[$lang_idx];
+				default:
+					return $EXTREME_HEAT_INDEX[$lang_idx];
+			}
+			break;
+		case ($hum <= 45):
+			switch ($temp)
+			{
+				case ($temp <= 26.5):
+					return "";
+				case ($temp <= 29):
+					return $LOW_HEAT_INDEX[$lang_idx];
+				case ($temp <= 33):
+					return $MEDIUM_HEAT_INDEX[$lang_idx];
+				case ($temp <= 37.5):
+					return $HEAVY_HEAT_INDEX[$lang_idx];
+				default:
+					return $EXTREME_HEAT_INDEX[$lang_idx];
+			}
+			break;
+		case ($hum <= 55):
+			switch ($temp)
+			{
+				case ($temp <= 25.5):
+					return "";
+				case ($temp <= 28):
+					return $LOW_HEAT_INDEX[$lang_idx];
+				case ($temp <= 32):
+					return $MEDIUM_HEAT_INDEX[$lang_idx];
+				case ($temp <= 36.5):
+					return $HEAVY_HEAT_INDEX[$lang_idx];
+				default:
+					return $EXTREME_HEAT_INDEX[$lang_idx];
+			}
+			break;
+		case ($hum <= 65):
+			switch ($temp)
+			{
+				case ($temp <= 24.5):
+					return "";
+				case ($temp <= 27):
+					return $LOW_HEAT_INDEX[$lang_idx];
+				case ($temp <= 31):
+					return $MEDIUM_HEAT_INDEX[$lang_idx];
+				case ($temp <= 35.5):
+					return $HEAVY_HEAT_INDEX[$lang_idx];
+				default:
+					return $EXTREME_HEAT_INDEX[$lang_idx];
+			}
+			break;
+		case ($hum <= 75):
+			switch ($temp)
+			{
+				case ($temp <= 24):
+					return "";
+				case ($temp <= 26):
+					return $LOW_HEAT_INDEX[$lang_idx];
+				case ($temp <= 30):
+					return $MEDIUM_HEAT_INDEX[$lang_idx];
+				case ($temp <= 34.5):
+					return $HEAVY_HEAT_INDEX[$lang_idx];
+				default:
+					return $EXTREME_HEAT_INDEX[$lang_idx];
+			}
+			break;
+		case ($hum <= 85):
+			switch ($temp)
+			{
+				case ($temp <= 23):
+					return "";
+				case ($temp <= 25.5):
+					return $LOW_HEAT_INDEX[$lang_idx];
+				case ($temp <= 29.5):
+					return $MEDIUM_HEAT_INDEX[$lang_idx];
+				case ($temp <= 34):
+					return $HEAVY_HEAT_INDEX[$lang_idx];
+				default:
+					return $EXTREME_HEAT_INDEX[$lang_idx];
+			}
+			break;
+		case ($hum <= 95):
+			switch ($temp)
+			{
+				case ($temp <= 22.5):
+					return "";
+				case ($temp <= 24.5):
+					return $LOW_HEAT_INDEX[$lang_idx];
+				case ($temp <= 28.5):
+					return $MEDIUM_HEAT_INDEX[$lang_idx];
+				case ($temp <= 33):
+					return $HEAVY_HEAT_INDEX[$lang_idx];
+				default:
+					return $EXTREME_HEAT_INDEX[$lang_idx];
+			}
+			break;
+	}
+	
+}
 $lang_idx = 1;
 $lang_idx = @$_GET['lang'];
 $EN = 0;

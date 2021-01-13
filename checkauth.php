@@ -6,7 +6,7 @@ $CLICK_TO_CONFIRM = array("Click here to confirm your registration to 02ws.co.il
 $CLICK_TO_RESET = array("Click here to reset your password", "הקליקו כאן כדי לאפס ססמא לאתר ירושמיים", "Click here to reset your password");
 $CHECK_EMAIL_RESET_PASS = array("Go to your email for password reset", "יש לגשת אל האימייל שלך כדי לבצע איפוס ססמא", "Go to your email for password reset");
 $PROBLEM_USER_PASSWORD =  array("Problem with user or password", "סיסמא לא נכונה או משתמש לא קיים", "Problem with user or password");
-$NO_USER_EXIST = array("No user exists with", "אין משתמש עם", "No user exists with");
+$NO_USER_EXIST = array("No user exists like that", "אין משתמש כזה", "No user exists with");
 
 session_start();
 
@@ -87,7 +87,7 @@ function get_user(){
     if ($_SESSION['loggedin'] == "true")
     {
             $userJSON .= ",";
-            $userJSON .= "\"display\":"."\"".$line['display_name']."\"";
+            $userJSON .= "\"display\":"."\"".str_replace("\\", "", $line['display_name'])."\"";
             $userJSON .= ",";
             $userJSON .= "\"nicename\":"."\"".$line['user_nicename']."\"";
             $userJSON .= ",";
@@ -298,9 +298,9 @@ function set_new_password($email, $pass)
 	   
 	    $userJSON .= "\"loggedin\":false";
 	    $userJSON .= ",";
-	    $userJSON .= "\"display\":"."\"".$NO_USER_EXIST[$lang_idx]." ".$email." \"";
+	    $userJSON .= "\"display\":"."\"".$PROBLEM_USER_PASSWORD[$lang_idx]." ".$email." \"";
 	    $userJSON .= ",";
-            $userJSON .= "\"isrememberme\":".$isrememberme;
+            $userJSON .= "\"isrememberme\":\"".$isrememberme."\"";
 	    
 	    $userJSON .= "}";
 	    $userJSON .= "}";
@@ -316,7 +316,7 @@ function set_new_password($email, $pass)
 	    $userJSON .= ",";
 	    $userJSON .= "\"display\":"."\"".$CHECK_EMAIL[$lang_idx]."\"";
 	    $userJSON .= ",";
-            $userJSON .= "\"isrememberme\":".$isrememberme;
+            $userJSON .= "\"isrememberme\":\"".$isrememberme."\"";
 	    
 	    $userJSON .= "}";
 	    $userJSON .= "}";
@@ -349,7 +349,7 @@ function set_new_password($email, $pass)
 	    $userJSON .= ",";
 	    $userJSON .= "\"locked\":".$locked_value;
 	    $userJSON .= ",";
-	    $userJSON .= "\"display\":"."\"".$dbarray['display_name']."\"";
+	    $userJSON .= "\"display\":"."\"".str_replace("\\", "", $dbarray['display_name'])."\"";
 	    $userJSON .= ",";
             $userJSON .= "\"icon\":"."\"".$dbarray['user_icon']."\"";
 	    $userJSON .= ",";
@@ -468,7 +468,7 @@ function set_new_password($email, $pass)
 
 if ($_REQUEST['action']=="login"){
 
-   $return = confirmUserPass($_POST['email'], md5($_POST['password']), $_POST['isrememberme'] );
+   $return = confirmUserPass($_REQUEST['email'], md5($_REQUEST['password']), $_REQUEST['isrememberme'] );
    echo $return;
   
 }
@@ -476,25 +476,25 @@ else if ($_REQUEST['action']=="signout"){
 		signOut();
 }
 else if ($_REQUEST['action']=="register"){
-    $email_ok = check_email_address($_POST['email']);
+    $email_ok = check_email_address($_REQUEST['email']);
     if ($email_ok)
-        user_wants_to_register($_POST['email'], $_POST['username'], md5($_POST['password']), $_POST['user_nice_name'], $_POST['user_display_name'], $_POST['user_icon']);
+        user_wants_to_register($_REQUEST['email'], $_POST['username'], md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon']);
     else
         echo "Email not OK";
     
 }
 else if ($_REQUEST['action']=="forgotpass"){
-    forgot_password($_POST['email']);
+    forgot_password($_REQUEST['email']);
 }
 else if ($_REQUEST['action']=="newpass"){
-    set_new_password($_POST['email'], md5($_POST['password']));
+    set_new_password($_REQUEST['email'], md5($_REQUEST['password']));
 }
 else if ($_REQUEST['action']=="getuser"){
     get_user();
 }
 else if ($_REQUEST['action']=="updateprofile"){
     //echo $_POST['priority'];
-    user_wants_to_update_profile($_POST['email'], md5($_POST['password']), $_POST['user_nice_name'], $_POST['user_display_name'], $_POST['user_icon'], $_POST['priority'], $_POST['personal_coldmeter']);
+    user_wants_to_update_profile($_REQUEST['email'], md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon'], $_REQUEST['priority'], $_REQUEST['personal_coldmeter']);
     
 }
 else { echo "no action selected";}?>

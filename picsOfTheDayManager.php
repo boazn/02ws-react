@@ -86,7 +86,7 @@ class DB_Functions {
                 
 				
 			//$result = db_init("call SaveUserPic ('$name', '$comment', '$user', '$picname', '$x', '$y')");
-            $rs = db_init("INSERT INTO `PicOfTheDay` (name, comment0, comment1, uploadedAt, x, y, picname) VALUES('$name', '$comment0', '$comment1',SYSDATE(), '$x', '$y', '$name');");
+            $rs = db_init("INSERT INTO `PicOfTheDay` (name, comment0, comment1, uploadedAt, x, y, picname) VALUES('$name', '$comment0', '$comment1',SYSDATE(), '$x', '$y', '$name');", "");
 			// check for successful store
 			// get user details
             $id = $link->insert_id; // last inserted id

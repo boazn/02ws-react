@@ -87,20 +87,80 @@ $floated = false;
 				</div>
 				 
 			    
-			    
-                            <div id="graph_forcast" class="contentbox">
-                                <? echo($GIVEN[$lang_idx]." ".$AT[$lang_idx]." ".$timetaf.":00 ".$dayF."/".$monthF."/".$yearF);?>
-								<div id="legends"></div>
-                                <canvas id="graphForcastContainer" style="position: relative"></canvas>
-                                <div id="chartjs-tooltip" class="inv_plain_3_zebra"></div>
+						    <div id="forcast_hours" class="contentbox">
+							<div id="legends"><ul>
+                               <li><span id="legend1" style="" onclick="showHourlyParam('rain', 1)" ><?=$CHANCE_OF[$lang_idx]." ".$RAIN[$lang_idx]?></span></li>
+                               <li><span id="legend2" style="" onclick="showHourlyParam('humidity', 2)" ><?=$HUMIDITY[$lang_idx]?></span></li>
+                               <li><span id="legend0" style="text-decoration: underline;" onclick="showHourlyParam('temp', 0)" ><?=$TEMP[$lang_idx]?></span></li>
+                           		</ul></div>
+                            <div id="graph_forcast" class="metric-chart h-bar-chart">
                                 
-                            </div>
+								
+								   <ul class="for24_graph_ng x-axis-bar-list count-10">
+										<? 
+
+											$forecastHour = $mem->get('forecasthour');
+											//if ($_GET['debug'] > 0)
+											//   var_dump($forecastHour);
+											$nowIndex = $mem->get("nowHourIndex");
+											$max_temp = -10; $min_temp = 110;
+											$max_hum = -10; $min_hum = 110;
+											foreach ($forecastHour as $key => &$hour_f) {
+												if (($hour_f['currentDateTime'] - time() > 0)){
+													if ($hour_f['temp'] > $max_temp) $max_temp = $hour_f['temp']; 
+													if ($hour_f['temp'] < $min_temp) $min_temp = $hour_f['temp'];
+													if ($hour_f['humidity'] > $max_hum) $max_hum = $hour_f['humidity']; 
+													if ($hour_f['humidity'] < $min_hum) $min_hum = $hour_f['humidity'];
+													
+												}
+											}
+											$index_hr = 0;
+											$top = 100;
+											foreach ($forecastHour as $hour_f){
+												$index_hr++;
+												
+												if ($index_hr >= $nowIndex) {
+													echo "<li class=\"x-axis-bar-item\">";
+													$toptime =  ($index_hr % 4 == 0) ? replaceDays(date("D ", $hour_f['currentDateTime']))."</br>".$hour_f['time'].":00" : $hour_f['time'].":00";
+													echo "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('".$toptime."','".$hour_f['icon']."',".$hour_f['temp'].",".$hour_f['wind'].",'".$hour_f['cloth']."',".$hour_f['rain'].",".$hour_f['humidity'].")\">";
+													echo "<div class=\"x-axis-bar primary\" style=\"height: 100%\">".$toptime."</div>";
+													$bottom = 92;
+													echo "<div class=\"x-axis-bar tertiary icon\" style=\"height: ".$bottom."%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></div>";
+													$bottom = (($hour_f['temp']-$min_temp)*90)/($max_temp - $min_temp);
+													if ($bottom < 10) $bottom = 12;
+													else if ($bottom < 20) $bottom = $bottom + 3;
+
+													$tempclass = ($index_hr % 2 == 0) ? "secondary" : "secondaryalt";
+													echo "<div class=\"x-axis-bar ".$tempclass." temp\" style=\"height: ".$bottom."%;\"><span class=\"x-axis-bar-value\" data-value=\"".$hour_f['temp']."° ".$hour_f['humidity']."%\">".$hour_f['temp']."°</span></div>";
+													$bottom = 40;
+													if ($hour_f['plusminus'] > 0)
+														echo "<div class=\"x-axis-bar tertiary\" style=\"height: ".$bottom."%;\"><span class=\"x-axis-bar-value\" data-value="."&nbsp;&plusmn;".$hour_f['plusminus']."></span></div>";
+													$bottom = 82;
+													if ($index_hr == $nowIndex || ($hour_f['wind'] != $prev_wind))
+													echo "<div class=\"x-axis-bar tertiary wind\" style=\"height: ".$bottom."%;\"><div title=\"".getWindInfo($hour_f['wind'], $lang_idx)['windtitle']."\" class=\"wind_icon ".getWindInfo($hour_f['wind'], $lang_idx)['wind_class']." \"></div></div>";
+													$bottom = $hour_f['rain'];
+													if ($bottom > 0)
+														echo "<div class=\"x-axis-bar tertiary rain\" style=\"height: ".$bottom."%;\"><span class=\"x-axis-bar-value\" data-value=\"".$CHANCE_OF[$lang_idx]." ".$RAIN[$lang_idx]."\">".$hour_f['rain']."%</span></div>";
+													$bottom = $hour_f['humidity'];
+													echo "<div class=\"x-axis-bar tertiary humidity\" style=\"display:none;height: ".$bottom."%;\"><span class=\"x-axis-bar-value\" data-value=\"".$HUMIDITY[$lang_idx]."\">".$hour_f['humidity']."%</span></div>";
+													//echo "<span class=\"x-axis-bar-target-line\" style=\"bottom: ".$bottom."%;\"></span>";
+													echo "</div>";
+													echo "</li>";
+													$prev_wind = $hour_f['wind'];
+
+												}
+									}?>                                 
+									</ul>               
+                                
+							</div>
+								</div>
                               <div id="forcast_days" class="contentbox">
 				<ul id="forcast_icons">
 				    <li id="morning_icon" title="<? echo $EARLY_MORNING[$lang_idx];?>"></li>
 				    <li id="noon_icon" title="<? echo $NOON[$lang_idx];?>"></li>
 				    <li id="night_icon" title="<?=$NIGHT_TEMP_EXP[$lang_idx]?>"></li>
 				</ul>
+								
 				<ul id="forcast_table">
 					<? if  (count($forecastDaysDB) == 0) 
 						{
