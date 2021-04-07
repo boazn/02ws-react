@@ -289,7 +289,7 @@ function getForecastDay()
       }
       return $first_day;
 }
-function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $addon, $class, $messageType)
+function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $addon, $class, $messageType, $ttl)
 {
     global $mem, $ALERTS_PAYMENT, $PATREON_LINK;
     try
@@ -318,6 +318,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         $mem->set('latestalert'.$lang, $description);
         $mem->set('addonalert'.$lang, $addon);
         $mem->set('latestalerttime'.$lang, time());
+        $mem->set('latestalertttl', $ttl*60);
         $mem->set('latestalerttype', $messageType);
         $res = db_init($query, "" );
         // Free resultset 
@@ -417,14 +418,14 @@ if (empty($empty)) {
         $addon = array();
         $messageType = "";
         if ($_POST["short_range"]=="true"){
-            $addon[0] = $ALERTS_PAYMENT[0];
-            $addon[1] = $ALERTS_PAYMENT[1];
+            $addon[0] = $ALERTS_PAYMENT_FULL[0];
+            $addon[1] = $ALERTS_PAYMENT_FULL[1];
             $messageType = "short_range";
         }
         if ($_POST["alert_section"]=="1"){
             
-            updateMessageFromMessages ($msgToAlertSection[0], 1, 'LAlert', 0 ,'' ,'','', $addon[0], $class_alerttitle, $messageType);
-            updateMessageFromMessages ($msgToAlertSection[1], 1, 'LAlert', 1 ,'' ,'','', $addon[1], $class_alerttitle, $messageType);
+            updateMessageFromMessages ($msgToAlertSection[0], 1, 'LAlert', 0 ,'' ,'','', $addon[0], $class_alerttitle, $messageType, $_POST['ttl']);
+            updateMessageFromMessages ($msgToAlertSection[1], 1, 'LAlert', 1 ,'' ,'','', $addon[1], $class_alerttitle, $messageType, $_POST['ttl']);
     
           }
         } 

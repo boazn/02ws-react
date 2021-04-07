@@ -96,10 +96,10 @@ include_once("include.php");
 		<li class="<?=getCurrentClass("reports")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'reports.php');?>" class="hlink"><? echo $REPORTS[$lang_idx];?>...</a></li>
 		<li class="<?=getCurrentClass("climate")?>"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'climate.php');?>" title="<? echo $CLIMATE_TITLE[$lang_idx];?>" class="hlink"><? echo $CLIMATE[$lang_idx];?></a></li>
 		<li class="<?=getCurrentClass("browsedate")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'browsedate.php');?>" class="hlink"><? echo $ARCHIVE[$lang_idx];?>...</a></li>
-		<li class="<?=getCurrentClass("<?=FILE_THIS_MONTH?>")?> il_first" style="width:10%"><a OnClick="namosw_goto_byclick('<?=FILE_THIS_MONTH?>', 'reportdiv')" href="javascript:void(0)" ><? echo $monthInWord." ".$year; ?></a></li>
-		<li class="<?=getCurrentClass("<?=FILE_PREV_MONTH?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=FILE_PREV_MONTH?>', 'reportdiv')" href="javascript:void(0)" ><? echo $prevMonthInWord." ".getPrevMonthYear($month, $year);?></a></li>
-		<li class="<?=getCurrentClass("<?=FILE_THIS_YEAR?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=FILE_THIS_YEAR?>', 'reportdiv')" href="javascript:void(0)" ><? echo $year; ?></a></li>    
-		<li class="<?=getCurrentClass("<?=FILE_PREV_YEAR?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=FILE_PREV_YEAR?>', 'reportdiv')" href="javascript:void(0)" ><? echo $year-1; ?></a></li> 
+		<li class="<?=getCurrentClass("<?=FILE_THIS_MONTH?>")?> il_first" style="width:10%"><a OnClick="namosw_goto_byclick('<?=BASE_URL.substr(FILE_THIS_MONTH, strpos(FILE_THIS_MONTH,"/reports"))?>', 'reportdiv')" href="javascript:void(0)" ><? echo $monthInWord." ".$year; ?></a></li>
+		<li class="<?=getCurrentClass("<?=FILE_PREV_MONTH?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=BASE_URL.substr(FILE_PREV_MONTH, strpos(FILE_PREV_MONTH,"/reports"))?>', 'reportdiv')" href="javascript:void(0)" ><? echo $prevMonthInWord." ".getPrevMonthYear($month, $year);?></a></li>
+		<li class="<?=getCurrentClass("<?=FILE_THIS_YEAR?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=BASE_URL.substr(FILE_THIS_YEAR, strpos(FILE_THIS_YEAR,"/reports"))?>', 'reportdiv')" href="javascript:void(0)" ><? echo $year; ?></a></li>    
+		<li class="<?=getCurrentClass("<?=FILE_PREV_YEAR?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=BASE_URL.substr(FILE_PREV_YEAR, strpos(FILE_PREV_YEAR,"/reports"))?>', 'reportdiv')" href="javascript:void(0)" ><? echo $year-1; ?></a></li> 
 		
 </ul>
 

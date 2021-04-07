@@ -110,9 +110,10 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
 	 //test boazn1@gmail.com
 	 // test efrat
          if ($CloudMessageType == CloudMessageType::Fcm)
-            array_push ($registrationIDs1, "fJI49Oh9f00:APA91bH2cbod4ubjUVfx-QBlHsyc7iqJ0SQzsw1ncl2GMY54YBCbfxUYM1iCJ_KbkG1OLw33dx_mW_28gjXfXhta0WGHfWi33EOph33Z-UcfAQEqtJQp7ebIAYHsZtSsMoiEO1TrBLel");
-         else
-            array_push ($registrationIDs1, "d2Y_RLBmKGM:APA91bHCtyGWSLtRYdCW6E0RYCkHEBScvzkcVS5zza88k7RXnyelE9_HJ2shxjJKIJUl1Rw-LJg-rCFCK_RvndH0CP3coto3Ld9bPGcAN5ntj9SLlTYybkDYPwHqc8hDysXT2a4f7u_p");
+                                            
+            array_push ($registrationIDs1, "evd817pyPEQ:APA91bFnYtfu--Y3WwDec_KkNV_Xw76suJ67z2cjZUBR5ZICNetjx_vqWmNYr3DaT4qIRSMwcO7qe6rqEjGVUubIWp5IeVtOFnUwYdbVMT0YMUVBnDo3H6Hnh-EFS_SFd3Z1pMIurNgw");
+      //   else
+      //      array_push ($registrationIDs1, "d2Y_RLBmKGM:APA91bHCtyGWSLtRYdCW6E0RYCkHEBScvzkcVS5zza88k7RXnyelE9_HJ2shxjJKIJUl1Rw-LJg-rCFCK_RvndH0CP3coto3Ld9bPGcAN5ntj9SLlTYybkDYPwHqc8hDysXT2a4f7u_p");
          
      //
          

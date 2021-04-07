@@ -202,7 +202,7 @@ else
 topDiv.innerHTML='';
 currentdividxflag.value = parentDiv.id;}
 //document.getElementById('user_name').value = name;
-$(".href").colorbox({maxWidth:'95%', maxHeight:'95%', width:"35%", inline:true, href:"#href_dialog"});$("a[rel='external']").colorbox({maxWidth:'95%', maxHeight:'95%', iframe:true});$(".mood").colorbox({width:"35%", inline:true, href:"#moods_dialog"});}
+$(".href").colorbox({maxWidth:'95%', maxHeight:'95%', width:"35%", inline:true, href:"#href_dialog"});$("a[rel='external'], .forcast_text").colorbox({maxWidth:'95%', maxHeight:'95%', iframe:true});$(".mood").colorbox({width:"35%", inline:true, href:"#moods_dialog"});}
 function restoreTopDiv()
 {var topDiv=document.getElementById('new_post');var existingDiv=document.getElementById('replyInputsDiv');if(existingDiv)
 {topDiv.innerHTML=existingDiv.innerHTML;
@@ -2200,6 +2200,7 @@ function showcircleperhour(toptime, icon, temp, wind, cloth, rain, humidity){
         margin:'0 auto',
         marginTop:-102,
         padding: '4px 11px 18px',
+        lineheight:'1em'
     });
     $('#chartjs-tooltip').html( toptime + "<br/>&nbsp;<img src=\"images/clothes/" + cloth + "\" width=\"30.25\" height=\"25\" style=\"vertical-align: middle\">&nbsp;<img style=\"vertical-align: middle\" src=\"images/icons/day/" + icon + "\" height=\"25\" width=\"28\" alt=\""  + icon + "\">&nbsp;"  + temp + "°<br/>" + wind + " קמש<br/><br/><div class=\"rainpercent\">" + rain + "%</div><br/><?=$HUMIDITY[$lang_idx] ?>:" + humidity + "%" );
     change_circle('now_line', 'chartjs-tooltip');
@@ -2227,7 +2228,10 @@ $("#startpage_chb").click(function () {
     rememberCookie ('start_nodeid', current_nideid, 0.1);
     $("#startpage_chb").hide();
 });
-    
+$(".forcast_text, .forcast_night, .forcast_noon, .forcast_morning").click(function () {
+    var dayindex = parseInt($(this).prevAll('.expand_plus').find('.open-close-button').attr("index")) + 1;
+    $.colorbox({href:"dailydetailed.php?dayid=" + dayindex, width:"95%"});
+});    
 var view = $("#graphForcastContainer");
 var move = "100px";
 var sliderLimit = -500

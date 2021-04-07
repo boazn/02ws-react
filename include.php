@@ -614,7 +614,7 @@ class FixedTime {
             $itfeels_state = "";
             $itfeels = $temp_to_mompare_to;
         }
-        return array($itfeels_state, $itfeels);
+        return array($itfeels_state, $itfeels, date("Y-m-j h:i", time()));
     }
     
     function get_rainrate() {
@@ -645,7 +645,10 @@ class FixedTime {
         return $this->light;
     }
     function is_sun(){
-        return ($this->is_light()&&$this->get_thsw()!=""&&($this->get_thsw()>$this->get_heatidx())&&($this->get_thsw()>$this->get_windchill()));
+        return ($this->is_light()&&
+                $this->get_thsw()!=""&&
+                //($this->get_thsw()>$this->get_heatidx())&&
+                ($this->get_thsw()>$this->get_windchill()));
     }
 
     function is_sunset() {
@@ -1639,7 +1642,7 @@ function enum() {
         define($ArgV[$Int], $Int);
 }
 
-enum("ME", "ALL", "GroupA", "SPECIAL");
+enum("ME", "ALL", "GroupA", "SPECIAL", "HS");
 
 class Chance {
     const VLow = 0;
@@ -1752,7 +1755,7 @@ function isRaining()
             return false;
     if ($current->get_solarradiation() > 310)
         return false;
-	if (($current->get_rainrate() !== "0.0")&& ($current->get_rainrate() !== "")&& ($current->get_rainrate() > 0))
+	if (($current->get_rainrate2() !== "0.0")&& ($current->get_rainrate2() !== "")&& ($current->get_rainrate2() > 0))
     {
         $mem->set('lastSentRainStarted', date('Y-m-d'));
 		return true;
@@ -1764,7 +1767,7 @@ function isRaining()
 function isSnowing()
 {
 	global $current, $template_routing;
-	return (((isRaining())&&($current->get_temp('C') < 1.5))||(stristr($template_routing, 'snow'))||(IS_SNOWING == 1));
+	return (((isRaining())&&($current->get_temp('C') < 1.9))||(stristr($template_routing, 'snow'))||(IS_SNOWING == 1));
 }
 
 
@@ -2188,6 +2191,15 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
             $lines++;
             array_push($EmailsToSend, array('email' => $line["email"], 'lang' => $line["lang"]));
         }
+    } else if ($target == HS) {
+        $query = "SELECT * FROM `users` WHERE `HS` = 0 and `user_status` =1 order by `user_registered` DESC LIMIT 500";
+       //$query = "SELECT * FROM `users` WHERE `HS` = 0 and `user_status` =1 and email='boazn1@gmail.com'";
+        $res = mysqli_query($link, $query);
+        while ($line = mysqli_fetch_array($res, MYSQLI_ASSOC)) {
+            $lines++;
+            array_push($EmailsToSend, array('email' => $line["email"], 'lang' => $line["lang"]));
+        }
+
     } else if ($target === ME) {
         array_push($EmailsToSend, array('email' => EMAIL_ADDRESS, 'lang' => $HEB));
     } else {//target = email
@@ -2197,7 +2209,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     
        
     $textToSend = str_replace(array("display:none", "\n"), array("", "<br/>"), $textToSend);
-    
+    $emailsSent = 0;
     //logger("Sending mail: " . $source."(".$sourcename.")"." --> " . $target . " - " . implode(" / ", $subject). " lang:".$EmailsToSend[0]['lang']);
     foreach ($EmailsToSend as $email) {
         //echo "sending to $email...<br/>body=$textToSend<br/>Subject=$subject<br/>from=$source";
@@ -2218,10 +2230,16 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
         $mail->CharSet = "UTF-8";
         //$mail->AddStringAttachment("path/to/photo", "YourPhoto.jpg");
         //$mail->AddAttachment("c:/temp/11-10-00.zip", "new_name.zip");  // optional name
-        
+        $emailsSent++;
          if (!$mail->Send()) {
             mail("boazn1@gmail.com", "JWS mail failure", "failed sending to " . $email['email'], $headers);
             $result = "<br />failed sending to " . $email['email'] . " check your Email.";
+        }else if ($target == HS)
+        {
+            $query = "UPDATE `users` SET `HS` = 1 WHERE email='".$email['email']."'";
+            //logger("target=HS: ".$query);
+            $res = mysqli_query($link, $query);
+            
         }
         /*if (!mail($email['email'], $subjectToMail, $textToSend[$email['lang']], $headers)) {
             //ini_set("SMTP","mailgw.netvision.net.il");
@@ -2234,6 +2252,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
         $mail->ClearAttachments();
     }
     @mysqli_close($link);
+    $result .= " ->".$emailsSent." emails Sent";
     return $result;
 }
 
@@ -2892,6 +2911,24 @@ function sendAPNToRegIDsOld($registrationIDs, $message, $picture_url, $embedded_
     fclose($apns);
     return $errorString." ".$resultAPNs;
 }
+function sendNewAPNPushAsync($curl, $deviceToken) {
+    global $errorMessage, $remove_ids;
+    // 1.
+	$path = '/3/device/'.$deviceToken;
+
+    curl_setopt($curl, CURLOPT_URL, "https://api.push.apple.com:443".$path);
+	/*$res = json_decode($response,true);
+    $err = curl_error($curl);
+    $info = curl_getinfo($curl);
+	if ($err) {
+	  return "cURL Error #:" . $err;
+	} else {
+        if ($info['http_code'] != 200)
+            array_push($errorMessage, array('id' => $deviceToken, 'desc' => $response, 'idx' => null));
+       //array_push($remove_ids, $deviceToken);
+	  return array('res' => $response, 'code' => $info['http_code'], 'res_arr' => $res);
+	}*/
+}
 function sendNewAPNPush($curl, $deviceToken) {
     global $errorMessage, $remove_ids;
     // 1.
@@ -2961,6 +2998,57 @@ function sendAPNToRegIDs($registrationIDs, $title,  $body, $picture_url, $embedd
     logger($resultAPNs);
         //saveInvalidTokens();
     return $errorString." ".$resultAPNs;
+}
+function sendAPNToRegIDsAsync($mh, $registrationIDs, $title,  $body, $picture_url, $embedded_url, $authToken){
+    global $link;
+    logger("sendingAPNMessage : ".count($registrationIDs)." ".$title);
+    $payload['aps'] = array('alert' => ['title' => $title, 'body' => $body ], 'badge' => 1, 'sound' => 'lighttrain.wav', 'content-available' => 1, 'category' => "share", 'EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
+    $payload = json_encode($payload);
+    $resultAPNs = "";
+    $errorString = "";
+    $resultAPN = "";
+    db_init("", "");
+    $sent = 0;
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        // 2.
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        // 3.
+        CURLOPT_POSTFIELDS => $payload,
+        CURLOPT_HTTPHEADER => array(
+        "Content-Type: application/json",
+        "apns-expiration: 0",
+        "apns-topic: il.co.jws", // 4.
+        "authorization: bearer ".$authToken // 5.
+        ),
+    ));
+    
+    
+    foreach ($registrationIDs as $regID){
+        
+            $resultAPN = sendNewAPNPushAsync($curl, $regID['apn_regid']);
+            $sent++;
+            //$resultAPNs .= " ".$resultAPN['res']." : ".$resultAPN['code'];
+            //logger($regID['apn_regid'].":".$resultAPN['res']);
+            if ($resultAPN['code'] != 200){
+                $query = "insert into InvalidTokens (regid, status, updated, system, reason) values('".$regID['apn_regid']."', ".$resultAPN['code'].", SYSDATE(), 2, '".$resultAPN['res']."')";
+                $resultUpdate = mysqli_query($link, $query);
+            }
+            
+            //$resultAPNs .= $resultAPN['code'];
+        if ($resultAPN['code'] == 403){
+           // break;
+        }
+    }
+    
+
+    $resultAPNs .= ' --- '.$sent.' APNs Completed';
+    logger($resultAPNs);
+        
+    return $curl;
 }
 function cleanInvalidAPNTokens()
 {

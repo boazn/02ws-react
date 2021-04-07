@@ -164,7 +164,7 @@
                 @mysqli_free_result($result["result"]);
                 global $link;
                 mysqli_close($link);
-                logger($query." ".$id." ".$line['email']." approved:".$line['approved']);
+                logger("isApproved? ".$query." ".$id." ".$line['email']." approved:".$line['approved']);
                     //echo " status=".$line[0];
                 $userJSON = "{\"Subscription\":";
                 $userJSON .= "{";
@@ -214,7 +214,8 @@
 
                 //$userJSON .= "}";
                 //$userJSON .= "}";
-                //logger($userJSON);
+                if ($line['id'] != "")
+                    logger($regid." ".$userJSON);
                 return $userJSON;
                 
         } catch (Exception $ex) {
@@ -323,8 +324,8 @@ else if ($_REQUEST['action']=="getsubfromgui"){
 }
 else if ($_REQUEST['action']=="getsubfromregid"){
     $res_sub = $db->getSubFromRegId($_REQUEST["reg_id"]);
-    if (!empty($_SESSION['email'])) 
-    logger ($res_sub);
+    //if (!empty($_SESSION['email'])) 
+    //logger ($res_sub);
 }
 else if ($_REQUEST['action']=="storeSub"){
     $res_sub = $db->storeSub($_REQUEST["email"], $_REQUEST["status"], $_REQUEST["reg_id"]);

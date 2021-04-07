@@ -203,7 +203,7 @@ Upload.prototype.doUpload = function () {
 
     $.ajax({
         type: "POST",
-        url: "SendSpecialService.php",
+        url: "SendSpecialService2.php",
         xhr: function () {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
@@ -216,7 +216,7 @@ Upload.prototype.doUpload = function () {
             $(".loading").hide();
 
             $("#SendSpecialResult").text(data);
-            $("#SendButton").hide();
+            //$("#SendButton").hide();
         },
         error: function (error) {
             $("#SendSpecialResult").text(error);

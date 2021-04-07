@@ -31,6 +31,7 @@ function getNextPage($addToPage)
     #logo {
         float:<? echo get_s_align();?>
     }
+	
 </style>
 <a id="chat" ></a>
 <div id="forum">

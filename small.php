@@ -185,22 +185,22 @@ if (isRadarPage())
 <? if (mainPage()) {?>
 <div id="nextdays" style="visibility:hidden">
     <div id="for_title" class="float">
-        <div id="now_title" class="forcast_title_btns for_active">
+        <div id="now_title" class="now_title forcast_title_btns for_active">
         <a href="#main_cellphone_container" onclick="navMain('startinfo_container', $(this).parent().attr('id'), 'none')">
                 <? echo($NOW[$lang_idx]);?>
         </a>
         </div>
-        <div id="for24h_title" class="forcast_title_btns">
+        <div id="for24h_title" class="for24h_title forcast_title_btns">
         <a href="#main_cellphone_container" id="" onclick="navMain('forcast_hours_table', $(this).parent().attr('id'), 'none')">
                 <? echo($HOURLY[$lang_idx]); ?>
         </a>
         </div>
-        <div id="fornextdays_title" class="forcast_title_btns" >
+        <div id="fornextdays_title" class="fornextdays_title forcast_title_btns" >
         <a href="#main_cellphone_container" id="" onclick="navMain('forecastnextdays', $(this).parent().attr('id'), 'none')">
                 <? echo($FORECAST_4D[$lang_idx]); ?>
         </a>
         </div>
-        <div id="alerts_title" class="forcast_title_btns">
+        <div id="alerts_title" class="alerts_title forcast_title_btns">
         <a href="#main_cellphone_container" id="" onclick="navMain('messages_box', $(this).parent().attr('id'), 'none')">
                 <? echo($MESSAGES[$lang_idx]); ?>
         </a>
@@ -753,22 +753,21 @@ else {?>
     
    
     <div id="if3">
-		
-    <div>
-    <a href="https://traintheater.co.il/festival/2020/"><img src="images/yerushamaiim-tt.jpg" alt="tt" /></a>
-    </div>
+    
+
     </div>
     <div id="if4">
-    <div>
-    <a href="https://traintheater.co.il/festival/2020/"><img src="images/yerushamaiim-tt.jpg" alt="tt" /></a>
-    </div>
-		
-    </div>
-	<div id="if1">
     
+    </div>
+	<div id="if1">  
+        <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
+                <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? <a style="text-decoration:underline" href="https://www.dunsguide.co.il/Cb527356b9ff6af65b6cee3ec07a52692_%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%9C%D7%98%D7%95%D7%A8%D7%99%D7%9D/%D7%A1%D7%A7%D7%9C%D7%95%D7%98_%D7%9E%D7%99%D7%9B%D7%90%D7%9C/" target=_blank>050-8844422 מיכאל סקלוט שירותי מיזוג אוויר</a>, תיקונים ותחזוקה   </div>
+         </div>
     </div>
     <div id="if2">
-    
+        <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
+                <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? <a style="text-decoration:underline" href="https://www.dunsguide.co.il/Cb527356b9ff6af65b6cee3ec07a52692_%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%9C%D7%98%D7%95%D7%A8%D7%99%D7%9D/%D7%A1%D7%A7%D7%9C%D7%95%D7%98_%D7%9E%D7%99%D7%9B%D7%90%D7%9C/" target=_blank>050-8844422 מיכאל סקלוט שירותי מיזוג אוויר</a>, תיקונים ותחזוקה  </div>
+         </div>
     </div>
  <!-- small unit 2 -->
 <ins class="adsbygoogle"
@@ -1055,7 +1054,9 @@ Licensed MIT
                             if (!isUserAdApproved)
                             {
                                //$(".adunit").show();
-                                if (sessions % C_STARTUP_AD_INTERVAL == 0)
+                               var forceshow = false;
+                               <? if ($_REQUEST['section'] == "alerts.php") echo "forceshow=true;";?>
+                                if ((sessions % C_STARTUP_AD_INTERVAL == 0) || forceshow)
                                 {
                                     //$("#startupdiv").show();
                                     should_show_startupdiv = true;
@@ -1084,8 +1085,8 @@ Licensed MIT
                             }
 
                             if (isMobile.iOS()){
-                             //   $(".removeadlink a").attr("href", "https://www.patreon.com/02ws");
-                             //   $(".removeadlink a").attr("target", "_blank");
+                                $(".removeadlink a").attr("href", "https://www.patreon.com/02ws");
+                                $(".removeadlink a").attr("target", "_blank");
 
                             }
                                 
@@ -1162,7 +1163,8 @@ Licensed MIT
         $('#tempdivvalue, #tempdivvaluestart').html('<div class="shade">' + ((json.jws.current.islight == 1) ? "" : "") + '</div>' + c_or_f(json.jws.current.temp, tempunit)+'<div class="param">'+tempunit+'</div>');
         $('#tempdivvalue').css('visibility', 'visible');
         $('#tempdivvaluestart').fadeIn(30);
-        if (json.jws.Messages.passedts < 12000){
+        var ttl = (json.jws.Messages.latestalertttl == 0) ? 180*60 : json.jws.Messages.latestalertttl;
+        if (json.jws.Messages.passedts < (ttl)){
              $('#latestalert').html(latestalerttext);
         }
         else if (json.jws.LatestPicOfTheDay.passedts < 7200){
@@ -1193,7 +1195,7 @@ Licensed MIT
          {
                 $.ajax({
                 type: "GET",
-                url: 'coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size,
+                url: 'coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size + '&m=1',
                 beforeSend: function(){$(".loading").show();}
               }).done(function( jsonstr  ) {
                   
@@ -1551,10 +1553,10 @@ Licensed MIT
     }
     function navMain(tabcontainer, nodeid, dir){
         
-        $('#now_title').removeClass('for_active');
-        $('#for24h_title').removeClass('for_active');
-        $('#fornextdays_title').removeClass('for_active');
-        $('#alerts_title').removeClass('for_active');
+        $('.now_title').removeClass('for_active');
+        $('.for24h_title').removeClass('for_active');
+        $('.fornextdays_title').removeClass('for_active');
+        $('.alerts_title').removeClass('for_active');
         $('#forcast_hours_table').hide(0);
         $('#forcast_hours').hide(0);
         $('#forecastnextdays').hide(0);
@@ -1563,7 +1565,7 @@ Licensed MIT
         $('#messages_box').hide(0);
         rememberCookie ('last_container', tabcontainer, 0.1);
         rememberCookie ('last_nodeid', nodeid, 0.1);
-        $('#' + nodeid).addClass('for_active');
+        $('.' + nodeid).addClass('for_active');
         if (current_tab == undefined){
            $('#' + tabcontainer).show(0);
         }

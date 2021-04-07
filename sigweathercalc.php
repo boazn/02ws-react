@@ -171,7 +171,7 @@ if (($hour < 10)&&($dew_over_night))
 if (isRaining()||(IS_SNOWING == 1))
 {
 	$rainOrSnow = $ITS_RAINING;
-	if (($current->get_rainrate() > 20)||($current->get_windspd() > 26))
+	if (($current->get_rainrate2() > 20)||($current->get_windspd() > 26))
 		$rainOrSnow =  $STORMY;
 	if (isSnowing())
 		$rainOrSnow =  $ITS_SNOWING;
@@ -200,7 +200,7 @@ if (($today->get_highrainrate() !== "0.0") &&
 		 (!isRaining()) && 
 		 (!$dew_over_night)&&
 		 (($today->get_rain2() > 0.3)&&
-		 ($current->get_rainrate() == 0)))
+		 ($current->get_rainrate2() == 0)))
 {
 	updateSigWeather(
 		"profile1/rain.php?level=1&freq=1&amp;lang={$lang_idx}", 
@@ -258,7 +258,7 @@ if (($current->get_dew() > c_or_f(15))&&(true))
 		$extrainfoS, 
 		"?section=graph.php&amp;graph=dewpt.php&amp;profile=1");
 }
-if (($current->get_solarradiation() > 500)&&($current->get_temp('C') < 10)&&($min10->get_windspd() > 15))
+if (($current->get_solarradiation() > 450)&&($current->get_temp('C') < 10)&&($min10->get_windspd() > 12))
 {
   updateSigWeather(
     "cold.gif", 
@@ -267,7 +267,7 @@ if (($current->get_solarradiation() > 500)&&($current->get_temp('C') < 10)&&($mi
     "?section=graph.php&amp;graph=temp.php&amp;profile=1");
 
 }
-if (($current->get_solarradiation() > 500)&&($current->get_temp('C') < 14)&&($current->get_temp('C') > 10)&&($min10->get_windspd() > 15))
+if (($current->get_solarradiation() > 450)&&($current->get_temp('C') < 14)&&($current->get_temp('C') > 10)&&($min10->get_windspd() > 10))
 {
   updateSigWeather(
     "cold.gif", 

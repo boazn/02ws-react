@@ -1,11 +1,14 @@
 <style>
 #section{
-    width:800px
+ //   width:800px
+}
+#myVoteContainer .float{ width:320px
 }
 </style>
 <div id="personal_message" class="clear float box_text inv_plain_3_zebra white_box">
     
 </div>
+<div id="myVoteContainer">
 <div class="spacer" style="clear:both">&nbsp;</div>
 <?
         $result = db_init("","");
@@ -22,14 +25,16 @@
         if (!empty($itfeels[0]))
             $temp_to_cold_meter = $itfeels[1];
 	$temp_from = $temp_to_cold_meter - 0.5;
-	$temp_to = $temp_to_cold_meter + 0.5;
+    $temp_to = $temp_to_cold_meter + 0.5;
+    $temp_from2 = $temp_to_cold_meter - 0.5;
+	$temp_to2 = $temp_to_cold_meter + 0.5;
 	$title = $temp_from."&#176;C - ".$temp_to."&#176;C";
 	
-	$query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, '', '');";
-	$query_verdict_m = "call GetColdMeter({$temp_from}, {$temp_to}, 'm', '');";
-	$query_verdict_f = "call GetColdMeter({$temp_from}, {$temp_to}, 'f', '');";
-    $my_query_verdict_m = "call GetColdMeter({$temp_from}, {$temp_to}, 'm', '{$email}');";
-    $my_query_verdict_f = "call GetColdMeter({$temp_from}, {$temp_to}, 'f', '{$email}');";
+	$query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, {$temp_from2}, {$temp_to2},'', '');";
+	$query_verdict_m = "call GetColdMeter({$temp_from}, {$temp_to}, {$temp_from2}, {$temp_to2}, 'm', '');";
+	$query_verdict_f = "call GetColdMeter({$temp_from}, {$temp_to}, {$temp_from2}, {$temp_to2}, 'f', '');";
+    $my_query_verdict_m = "call GetColdMeter({$temp_from}, {$temp_to}, {$temp_from2}, {$temp_to2}, 'm', '{$email}');";
+    $my_query_verdict_f = "call GetColdMeter({$temp_from}, {$temp_to}, {$temp_from2}, {$temp_to2}, 'f', '{$email}');";
     
     
 	$query_verdict = "SELECT sf.field_name, count( * ) FROM surveyresult sr, surveyfields sf WHERE sr.value = sf.field_id AND sr.survey_id = sf.survey_id AND sf.survey_id =2 AND temp <={$temp_to} AND temp >={$temp_from} GROUP BY sf.field_name ORDER BY `count( * )` DESC";
@@ -76,8 +81,8 @@ if (!empty($_SESSION['email'])){
 <div class="spacer" style="clear:both">&nbsp;</div>
 <h3 class="inv_plain_2"><?=$MY_VOTES[$lang_idx]?></h3>
 <h2 class="inv_plain_2"><?=$MALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="big"><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="">(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
-<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&email=<?=$email?>&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&email=<?=$email?>&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
+<a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&email=<?=$email?>&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
+<img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&email=<?=$email?>&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
 </div>
 <?
@@ -92,8 +97,8 @@ if (!empty($_SESSION['email'])){
 <div class="spacer" style="clear:both">&nbsp;</div>
 <h3 class="inv_plain_2">כולם </h3>
 <h2 class="inv_plain_2"><?=$MALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="big"><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
-<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
+<a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
+<img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
 </div>
 <?
@@ -109,8 +114,8 @@ if (!empty($_SESSION['email'])){
 <h3 class="inv_plain_2"><?=$MY_VOTES[$lang_idx]?></h3>
 <h2 class="inv_plain_2"><?=$FEMALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="big"><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span></h2>
 <? if ($total > 0) {?>
-<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&email=<?=$email?>&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&email=<?=$email?>&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
+<a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&email=<?=$email?>&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
+<img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&email=<?=$email?>&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
 <?}?>
 </div>
@@ -126,9 +131,10 @@ if (!empty($_SESSION['email'])){
 <div class="float">
 <h3 class="inv_plain_2">כולם </h3>
 <h2 class="inv_plain_2"><?=$FEMALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="big"><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span></h2>
-<a class="enlarge" href="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
-<img src="imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
+<a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
+<img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
+</div>
 </div>
 <h3 class="clear inv_plain_2"><?=$MY_VOTES[$lang_idx]?> </h3>
 <table class="inv_plain_3_zebra float" style="width:330px;border:1px solid">

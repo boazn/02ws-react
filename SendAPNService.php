@@ -86,7 +86,10 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         $messageBody[1] = $TIP[1].": ".$messageBody[1];
     }
     
-    $reg_id = "64559e7a912254227033d04a8e347e5563e142a4519a61a937af2c188cba1f1e"; //d057506a9d09770900a09fbeb25c9e404829937bc1b3da0d34216f9cc57608e5//6d5c6ca8d3d36348ea4c52f6e0813e6713ef9b823a3da66a3714228e67146a10 
+    
+    //$reg_id = "64559e7a912254227033d04a8e347e5563e142a4519a61a937af2c188cba1f1e"; 
+    //array_push ($registrationIDs1,array('apn_regid' => $reg_id, 'id' => '8026'));
+    $reg_id = "8423b388b3bda7f8057544b2d080c9b30801c393372ba16ed7f4a38acdb15582"; //266bac92854f25196892ed0895ec96f13590069c74c9ef38857586eb11cbfa18//64559e7a912254227033d04a8e347e5563e142a4519a61a937af2c188cba1f1e 
     array_push ($registrationIDs1,array('apn_regid' => $reg_id, 'id' => '8025'));
    $query_extension = "";
         
@@ -117,17 +120,19 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
           }
     }*/
  $result = "";
- 
- $chunkedOfRegID1 = array_chunk($registrationIDs1, 10000);
+ $requests = array();
+ $mh = curl_multi_init();
+ $chunkedOfRegID1 = array_chunk($registrationIDs1, 2);
  foreach ($chunkedOfRegID1 as $regIDs1){
     $token = getToken('AuthKey_669J3G9XB5.p8', '669J3G9XB5', 'SAPLRRD8P5');
-    $result .= sendAPNToRegIDs($regIDs1, $title[1], date('H:i')." ".$messageBody[1], $picture_url, $embedded_url, $token);
+    $curl = sendAPNToRegIDsAsync($mh, $regIDs1, $title[1], date('H:i')." ".$messageBody[1], $picture_url, $embedded_url, $token);
  }
- $chunkedOfRegID0 = array_chunk($registrationIDs0, 10000);
+ $chunkedOfRegID0 = array_chunk($registrationIDs0, 2);
  foreach ($chunkedOfRegID0 as $regIDs0){
     $token = getToken('AuthKey_669J3G9XB5.p8', '669J3G9XB5', 'SAPLRRD8P5');
-    $result .= sendAPNToRegIDs($regIDs0, $title[0], date('H:i')." ".$messageBody[0], $picture_url, $embedded_url, $token);
+    $curl = sendAPNToRegIDsAsync($mh, $regIDs0, $title[0], date('H:i')." ".$messageBody[0], $picture_url, $embedded_url, $token);
  }
+ curl_multi_close($mh);
  return $result;
 
 }

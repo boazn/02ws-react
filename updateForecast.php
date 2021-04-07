@@ -154,9 +154,8 @@ function updateForecastMessage ($lang, $desc, $active)
 }
 function insertNewMessage ($day, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $active, $icon, $iconmorning, $iconnight)
 {
-	global $mem;	
-    $now = date('Y-m-d G:i:s', strtotime("-1 hours 0 minutes", time()));
-    //$now = getLocalTime(time());
+     $now = date('Y-m-d G:i:s', strtotime("-1 hours 0 minutes", time()));
+     //$now = getLocalTime(time());
     $lang0 = nl2br($lang0);
     $lang1 = nl2br($lang1);
     $query = "INSERT INTO forecast_days (day, day_name, date, TempLow, TempLowCloth, TempHigh, TempHighCloth, TempNight, TempNightCloth, humMorning, humDay, humNight, windMorning, windDay, windNight, lang0, lang1, active, icon, iconmorning, iconnight) VALUES('{$day}', '{$day_name}', '{$date}', '{$temp_low}', '{$temp_morning_cloth}', '{$temp_high}', '{$temp_high_cloth}', '{$temp_night}', '{$temp_night_cloth}', '{$humMorning}', '{$humDay}', '{$humNight}', '{$windMorning}', '{$windDay}', '{$windNight}', '{$lang0}', '{$lang1}', '{$active}', '{$icon}', '{$iconmorning}', '{$iconnight}');";
@@ -178,42 +177,47 @@ function insertNewMessage ($day, $day_name, $date, $temp_low, $temp_morning_clot
     // Free resultset 
     @mysqli_free_result($result);
     if ($active == 1){
-        $forecastDaysDB = $mem->get('forecastDaysDB');
-        $forecastDaysDB[$idx] = array('likes' => array(), 
-                                      'dislikes' => array(), 
-                                      'lang0' => urlencode($lang0), 
-                                      'lang1' => urlencode($lang1),
-                                      //'lang2' => translateText(urlencode($lang0), 'ru'),
-                                      //'lang3' => translateText(urlencode($lang0), 'fr'),
-                                      //'lang4' => translateText(urlencode($lang0), 'ar'),
-                                      'TempLow' => $temp_low, 
-                                      'TempHigh' => $temp_high, 
-                                      'date' => $date, 
-                                      'day_name' => $day_name, 
-                                      'icon' => $icon, 
-                                      'iconmorning' => $iconmorning, 
-                                      'iconnight' => $iconnight, 
-                                      'TempNight' => $temp_night, 
-                                      'TempLowCloth' => $temp_morning_cloth, 
-                                      'TempNightCloth' => $temp_night_cloth, 
-                                      'TempHighCloth' => $temp_high_cloth, 
-                                      'humMorning'=>$humMorning, 
-                                      'humDay'=>$humDay, 
-                                      'humNight'=>$humNight,
-                                      'windMorning'=>$windMorning, 
-                                      'windDay'=>$windDay, 
-                                      'windNight'=>$windNight
-                                    );
-        //var_dump($forecastDaysDB);
-        
-        $mem->set('forecastDaysDB',$forecastDaysDB);
-        apc_store('forecastDaysDB',$forecastDaysDB);	
+        saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight);
     }
 
 }
+function saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight){
+    global $mem;
+    $forecastDaysDB = $mem->get('forecastDaysDB');
+    $forecastDaysDB[$idx]['day_name'] = $day_name;
+    $forecastDaysDB[$idx]['date'] = $date;
+    $forecastDaysDB[$idx]['TempLow'] = $temp_low;
+    $forecastDaysDB[$idx]['TempLowCloth'] = $temp_morning_cloth;
+    $forecastDaysDB[$idx]['TempHigh'] = $temp_high;
+    $forecastDaysDB[$idx]['TempHighCloth'] = $temp_high_cloth;
+    $forecastDaysDB[$idx]['TempNight'] = $temp_night;
+    $forecastDaysDB[$idx]['TempNightCloth'] = $temp_night_cloth;
+    $forecastDaysDB[$idx]['TempDay'] = $temp_day;
+    $forecastDaysDB[$idx]['humMorning'] = $humMorning;
+    $forecastDaysDB[$idx]['humDay'] = $humDay;
+    $forecastDaysDB[$idx]['humNight'] = $humNight;
+    $forecastDaysDB[$idx]['windMorning'] = $windMorning;
+    $forecastDaysDB[$idx]['windDay'] = $windDay;
+    $forecastDaysDB[$idx]['windNight'] = $windNight;
+    $forecastDaysDB[$idx]['lang0'] = $lang0;
+    $forecastDaysDB[$idx]['lang1'] = $lang1;
+    //$forecastDaysDB[$idx]['lang2'] = translateText(urlencode($lang0), 'ru');
+    //$forecastDaysDB[$idx]['lang3'] = translateText(urlencode($lang0), 'fr');
+    //$forecastDaysDB[$idx]['lang4'] = translateText(urlencode($lang0), 'ar');
+    $forecastDaysDB[$idx]['active'] = $active;
+    $forecastDaysDB[$idx]['icon'] = $icon;
+    $forecastDaysDB[$idx]['iconmorning'] = $iconmorning;
+    $forecastDaysDB[$idx]['iconnight'] = $iconnight;
+    if (is_null($forecastDaysDB[$idx]['likes']))
+        $forecastDaysDB[$idx]['likes'] = array();
+    if (is_null($forecastDaysDB[$idx]['dislikes']))
+        $forecastDaysDB[$idx]['dislikes'] = array();
+    
+    $mem->set('forecastDaysDB',$forecastDaysDB);
+    //apc_store('forecastDaysDB',$forecastDaysDB);	
+}
 function updateForecastDay ($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $active, $icon, $iconmorning, $iconnight)
 {
-    global $mem;
     $now = date('Y-m-d G:i:s', strtotime("-1 hours 0 minutes", time()));
     //$now = getLocalTime(time());
     $lang0 = nl2br($lang0);
@@ -229,43 +233,31 @@ function updateForecastDay ($idx, $day_name, $date, $temp_low, $temp_morning_clo
     // Free resultset 
     @mysqli_free_result($result);
     if ($active == 1){
-        
-        $forecastDaysDB = $mem->get('forecastDaysDB');
-        $forecastDaysDB[$idx]['day_name'] = $day_name;
-        $forecastDaysDB[$idx]['date'] = $date;
-        $forecastDaysDB[$idx]['TempLow'] = $temp_low;
-        $forecastDaysDB[$idx]['TempLowCloth'] = $temp_morning_cloth;
-        $forecastDaysDB[$idx]['TempHigh'] = $temp_high;
-        $forecastDaysDB[$idx]['TempHighCloth'] = $temp_high_cloth;
-        $forecastDaysDB[$idx]['TempNight'] = $temp_night;
-        $forecastDaysDB[$idx]['TempNightCloth'] = $temp_night_cloth;
-        $forecastDaysDB[$idx]['TempDay'] = $temp_day;
-        $forecastDaysDB[$idx]['humMorning'] = $humMorning;
-        $forecastDaysDB[$idx]['humDay'] = $humDay;
-        $forecastDaysDB[$idx]['humNight'] = $humNight;
-        $forecastDaysDB[$idx]['windMorning'] = $windMorning;
-        $forecastDaysDB[$idx]['windDay'] = $windDay;
-        $forecastDaysDB[$idx]['windNight'] = $windNight;
-        $forecastDaysDB[$idx]['lang0'] = $lang0;
-        $forecastDaysDB[$idx]['lang1'] = $lang1;
-        //$forecastDaysDB[$idx]['lang2'] = translateText(urlencode($lang0), 'ru');
-        //$forecastDaysDB[$idx]['lang3'] = translateText(urlencode($lang0), 'fr');
-        //$forecastDaysDB[$idx]['lang4'] = translateText(urlencode($lang0), 'ar');
-        $forecastDaysDB[$idx]['active'] = $active;
-        $forecastDaysDB[$idx]['icon'] = $icon;
-        $forecastDaysDB[$idx]['iconmorning'] = $iconmorning;
-        $forecastDaysDB[$idx]['iconnight'] = $iconnight;
-        if (is_null($forecastDaysDB[$idx]['likes']))
-            $forecastDaysDB[$idx]['likes'] = array();
-        if (is_null($forecastDaysDB[$idx]['dislikes']))
-            $forecastDaysDB[$idx]['dislikes'] = array();
-        
-        $mem->set('forecastDaysDB',$forecastDaysDB);
-        apc_store('forecastDaysDB',$forecastDaysDB);	
+        saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight);
     }
 	
 }
+function updateAds ($active, $idx, $type, $command, $img_url, $href, $w, $h)
+{   
+    global $mem;
+    echo $active." ".$idx." ".$type." ".$command." ".$img_url." ".$href." ".$w." ".$h;
+    $Ads = $mem->get('Ads');
+    if ($active == "true")
+    {
+        $Ads[$idx]['img_url'] = $img_url;
+        $Ads[$idx]['href'] = $href;
+        $Ads[$idx]['w'] = $w;
+        $Ads[$idx]['h'] = $h;
+    }
+    else{
+        unset($Ads[$idx]);
+    }
+    $mem->set('Ads', $Ads);
+    echo "<pre>";
+    var_dump($Ads);
+    echo "</pre>";
 
+}
 function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $append)
 {
     global $forecastHour, $mem;
@@ -283,7 +275,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
     }
     $description_appended = $latestalert."\n</br>".$descriptionforecast;
     
-    //echo "append=".$append;
+    //echo "append=".$append."<br/>";
     if ($append==1){
         $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='forecast') and (lang=$lang)";
         $mem->set('descriptionforecast'.$lang, $description_appended);
@@ -299,9 +291,9 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
     }
     else{
         if ($lang < 0)
-        $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='$type')";
+        $query = "UPDATE `content_sections` SET Description='$description', active=$active, href='$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='$type')";
         else
-        $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='$type') and (lang=$lang)";
+        $query = "UPDATE `content_sections` SET Description='$description', active=$active, href='$href', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='$type') and (lang=$lang)";
         if ($type == 'LAlert'){
             $mem->set('latestalert'.$lang, $description);
             $mem->set('latestalerttime'.$lang, time());
@@ -318,7 +310,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
     }
     
         
-     // echo $query;
+      //echo "<br/>".$query;
     
     // Free resultset 
     @mysqli_free_result($result);
@@ -425,6 +417,10 @@ else if ((trim($_POST['command']) == "D") && ($_POST['idx'] != ""))
 {
 	deleteMessage($_POST['idx']);
 }
+else if ((trim($_POST['type']) == "ads"))
+{
+    updateAds ($_POST['active'], $_POST['idx'], $_POST['type'], $_POST['command'], ($_POST['img_url']), urldecode($_POST['href']), $_POST['w'], $_POST['h']);
+}
 else if ((trim($_POST['command']) == "U"))
 {
 	if ($_POST['idx'] != "")
@@ -451,11 +447,12 @@ else if ((trim($_POST['command']) == "U"))
                            $_POST['morning_icon'], 
                            $_POST['night_icon']);
      else
-		updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), $_POST['active'], $_POST['type'], $_POST['lang'],urldecode($_POST['href']) ,urldecode($_POST['img_src']),urldecode($_POST['title']), 0);
+		updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), 1, $_POST['type'], $_POST['lang'],urldecode($_POST['href']) ,urldecode($_POST['img_src']),urldecode($_POST['title']), 0);
 }
+
 else if ((trim($_POST['type']) == "LAlert"))
 {
-    updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), $_POST['active'], $_POST['type'], $_POST['lang'],urldecode($_POST['href']) ,urldecode($_POST['img_src']),urldecode($_POST['title']), 1);
+    updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), 1, $_POST['type'], $_POST['lang'],urldecode($_POST['href']) ,urldecode($_POST['img_src']),urldecode($_POST['title']), 1);
 }
 else if ($_POST['idx'] != "")
 {
@@ -950,11 +947,37 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	
 	
 </div>
+
 <?
 $mem->set('CurrentStory'.$line["lang"], htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8"));
 } ?>
 </div>
+
+<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell" style="float:left" id="ads">
+<?$Ads = $mem->get('Ads');echo "Ads<pre>"; var_dump($Ads);echo"</pre>";?>
+<div class="cell">
+idx<input id="ad_idx" name="ad_idx" size="18"  value="" style="width:80px;text-align:left"  /><br />
+href<input id="hrefads" name="hrefads" size="18"  value="" style="width:80px;text-align:left"  /><br />
+img<input id="imgads" name="imgads" size="18"  value="" style="width:80px;text-align:left"  /><br />
+width<input id="imgwidth" name="imgwidth" size="18"  value="" style="width:80px;text-align:left"  /><br />
+height<input id="imgheight" name="imgheight" size="18"  value="" style="width:80px;text-align:left"  /><br />
+        </div>
+		<div class="cell">
+		active
+		<input type="checkbox" id="adsactive" name="adsactive" value="" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
+		
+	</div>
+    <div class="cell btnsstart" style="width:20px">
+        <div class="cell" id="currstory_href_plugin" class="float btnsstart">
+                <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15" /></a>
+        </div>
+        <img src="images/plus.png" width="16px" onclick="getOneUFService(1, 'I', 'ads')" style="cursor:pointer" />
+		<img src="images/check.png" width="16px" onclick="getOneUFService(1, 'U',  'ads')" style="cursor:pointer" />
+	</div>
+</div>
+
 <div style="width:85%;float:<?echo get_s_align();?>;padding:0">
+<?$itfeels_array = $mem->get('itfeels_array');echo "itfeels_array<pre>"; var_dump($itfeels_array);echo"</pre>";?>
 <?include "forecastPrime.php";?>
 </div>
 <!-- <div style="clear:both;float:<?echo get_s_align();?>;padding:0.3em 1em 0em 0em">
@@ -1139,7 +1162,7 @@ function fillForecast(str)
         $(".temphigh").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
         $(".tempnight").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
         $(".href").colorbox({width:"35%", inline:true, href:"#href_dialog"});
-        $.getScript( "footerScripts250320.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>");
+        $.getScript( "footerScripts161120.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>");
         
 }
 
@@ -1152,13 +1175,18 @@ function getOneUFService(dayToSave, command, type)
             reload = 1;
         else
             reload = 0;
-	if (document.getElementById('active'+dayToSave).checked)
-		active = 1;
-	else
-		active = 0;
-	if (!document.getElementById('description'+dayToSave))
+	
+    if (type == "ads")
+    {
+        var postData = "idx=" + $("#ad_idx").val() + "&command=" + command + "&type=" + type + "&w=" + $("#imgwidth").val() + "&h=" + $("#imgheight").val() + "&img_url=" + $("#imgads").val() + "&href=" + $("#hrefads").val() + "&active=" + $("#adsactive").prop("checked");
+    }
+	else if (!document.getElementById('description'+dayToSave))
     {
             //alert('day');
+            if (document.getElementById('active'+dayToSave).checked)
+                active = 1;
+            else
+                active = 0;
             var idx = document.getElementById('idx'+dayToSave).value;
             var day;
             var date = document.getElementById('date'+dayToSave).value;

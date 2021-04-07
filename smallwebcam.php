@@ -1,3 +1,8 @@
+<style>
+	#user_info{
+		display:none
+	}
+</style>
 <?
 $basename = "webCamera";
 $imagefile = $_GET['section'];
@@ -30,13 +35,13 @@ if (stristr($imagefile, "Z"))
 		foreach ($latestPics as $lpic)
 		{
                         
-						
+			$image_href = BASE_URL.substr($lpic[1], strpos($lpic[1],"/images"));			
 			if (((($archwebcam < 100)&&((getLocalHour($lpic[0])>4)&&(getLocalHour($lpic[0])<20))))) 
 			{$archwebcam = $archwebcam + 1;
 			?>
 			
 			<div style="float:<?echo get_s_align();?>;padding:3px">
-				<a href="<?=$lpic[1]?>" title="<?echo getLocalTime($lpic[0]);?>" class="colorbox">
+				<a href="<?=$image_href?>" title="<?echo getLocalTime($lpic[0]);?>" class="colorbox">
 					<img src="phpThumb.php?src=<? echo $lpic[1]; ?>&amp;w=70" width="70px" title="<?echo getLocalTime($lpic[0]);?>" />
 					
 				</a>

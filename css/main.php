@@ -502,6 +502,7 @@ position:absolute;
     height: 200px;
     width: 320px;
     background-size: 100% 100%;
+    margin-top: -60px;
 }
 #alerttxt{
    
@@ -523,8 +524,11 @@ position:absolute;
 }
 .alertspayment {
     position: absolute;
-    margin: 0.6em 4.3em;
+    margin-top: -3.4em;
+    margin-<?=get_s_align()?>:5.8em;
+    font-size: 0.7em;
 }
+
 #latestalert .alertspayment{
     display:none
 }
@@ -547,9 +551,13 @@ position:absolute;
 #message .txtindiv, #messages_box .txtindiv, #latestalert span.info .txtindiv{
   color:white;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
-  bottom:-200px
+  bottom:-140px
 }
-
+#alerts_app_promo{
+    margin-<?=get_s_align()?>:20px;
+    float: <?=get_inv_s_align()?>;
+    margin-top: -30px;
+}
 #latest_picoftheday .txtindiv{
     margin-top: 5px;
     margin-<?=get_s_align()?>: 10px;
@@ -800,10 +808,12 @@ position:absolute;
 }
 .winddir{
 background-image:url("../img/wind_direction.png");
-width: 22px;
-height: 22px;
-background-repeat: no-repeat;
-margin-top: 2px;
+width: 33px;
+    height: 33px;
+    background-repeat: no-repeat;
+    margin-top: 2px;
+    background-size: 33px;
+
 }
 .W{
 -ms-transform:rotate(90deg);
@@ -1221,7 +1231,7 @@ background-color:#ebe8ed;
     margin-bottom:1em
 }
 #forcast_days.detailed #night_icon_exp{
-    font-size: 0.5em;
+    font-size: 0.6em;
     line-height: 1em;
 }
 #forcast_days.detailed .forcast_day{
@@ -1241,11 +1251,10 @@ background-color:#ebe8ed;
     line-height: 0.7em;
 }
 #forcast_days.detailed .humidity{
-    height: 2em;
     font-size: 1em;
 }
 .winddesc{
-    font-size: 0.6em;
+    font-size: 0.8em;
     line-height: 1em;
 }
 
@@ -1267,6 +1276,7 @@ background-color:#ebe8ed;
     display:inline-block;
     font-family: nextexitfot_regularregular;
     font-size: 1.3em;
+    padding-bottom:0.3em
 }
 #forcast_hours_table li .wind_icon{
     margin-top:4px
@@ -1337,7 +1347,8 @@ float:<?=get_s_align()?>
 }
 .icon_day .wind_icon{
     position: absolute;
-    margin-top: 5px !important;
+    margin-top: -13px !important;
+    background-size: 145px;
 }
 .forcast_each {
     float:<?=get_s_align()?>;
@@ -1345,6 +1356,10 @@ float:<?=get_s_align()?>
     <? if (isHeb()) echo "direction:rtl;"; ?>
     margin-bottom:15px;
     padding-top: 0.25em;
+}
+.forcast_each:hover 
+{
+    background:rgb(130, 226, 255);
 }
 .extra {
     line-height:1;
@@ -1411,7 +1426,8 @@ margin-<?=get_s_align()?>:10px
     font-size:0.8em;
     width:<? if (isHeb()) echo "315px";else echo "290px"; ?>;
     line-height: 1.1em;
-	text-align:<?=get_s_align()?> !important;
+    text-align:<?=get_s_align()?> !important;
+    cursor:pointer;
 }
 .forcast_text a{
 text-decoration:underline;
@@ -1550,6 +1566,9 @@ margin-<?=get_s_align()?>:0.5em
 @media only screen and (max-width: 1280px) {
     #mainadsense {
         margin-top:-330px;
+    }
+    #if1, #if2, #if3, #if4{
+        display:none
     }
 }
 #extrainfo{
@@ -1799,6 +1818,9 @@ a:visited h2{
 .box_text a{
     text-decoration: underline;
 }
+.alertspayment a {
+    text-decoration: none;
+}
 #personal_message{
     padding-top:8px;
 }
@@ -1872,7 +1894,7 @@ width:250px
     padding:1em
 }
 #alerts table,#alerts th, #alerts td, .box_text table, .box_text th, .box_text td{
-    border: 1px solid black;
+    border: 0;
     cellpadding:0.2em
 }
 
@@ -2566,6 +2588,10 @@ margin-<?=get_s_align()?>:96px;
 .chatmainbody
 {
 	margin:0.4em;width:96%;float:<?echo get_s_align();?>;line-height:18px;
+}
+.chatmainbody table
+{
+    width:100%;border: 1px solid;
 }
 .alternatebody{
 line-height:1em;
@@ -4584,7 +4610,7 @@ top: 36px;
 }
 #windspeed
 {
-    float:<?=get_s_align()?>;width:58%;<? if (isHeb()) echo "direction:rtl";?>
+    float:<?=get_s_align()?>;width:38%;<? if (isHeb()) echo "direction:rtl";?>
 }
 #windtrend
 {
@@ -4592,7 +4618,7 @@ top: 36px;
 }
 #winddir
 {
-	float:<?=get_s_align()?>;width:12%;margin-top: 1.55em;margin-<?=get_s_align()?>:15%
+	float:<?=get_s_align()?>;width:12%;margin-top: 1.55em;margin-<?=get_s_align()?>:25%
 }
 .wind_icon
 {
@@ -4743,7 +4769,7 @@ margin-<?=get_s_align()?>: 200px;
 }
 #legends li{
     float:<?=get_s_align()?>;
-    padding:0 0.7em;
+    padding:0 0.9em;
     color:#ffffff;
     font-size: 1.1em;
 }
@@ -5002,7 +5028,7 @@ position:relative
 }
 #legends{
   margin: 0 0 20px;
-    width: 315px;
+    width: 335px;
     height: 10px;
 }
   

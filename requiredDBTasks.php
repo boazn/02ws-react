@@ -368,13 +368,13 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
             if ($_REQUEST['debug'] >= 1)
                 {
                     echo "<br>date=".$line["date"];
-                    echo "<br>todayForecast_date=".$todayForecast_date;
-                    echo "<br>firstdayinforecast_l=".$firstdayinforecast_l;
                     echo "<br>fmonth_l=".$fmonth_l;
+                    echo "<br>firstdayinforecast_l=".$firstdayinforecast_l;
                     echo "<br>fday=".$fday;
                     echo "<br>fmonth=".$fmonth;
                     echo "<br>fyear=".$fyear;
-                    
+                    echo "<br>todayForecast_date=".$todayForecast_date."<br>";
+                   
                 }
 
     }

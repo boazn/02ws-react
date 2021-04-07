@@ -907,18 +907,13 @@ if ((strstr(strtolower($_GET['graph']), 'uv'))||
     <?}?>
     });
     </script>
-	<div id="sun" style="position:absolute;top:-150px;left:-100px;width:350px;padding:0.2em">
-			
-			
-				
-				<div s>
+	<div id="sun" style="position:absolute;left:-100px;width:350px;padding:0.2em">
 				<div>
-				<a href="http://www.gaisma.com/en/location/jerusalem.html" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>">	
+				<a href="http://www.gaisma.com/en/location/jerusalem.html" target="_blank" title="<? echo $MORE_INFO[$lang_idx];?>">	
 						<? echo $SUN_PHASE[$lang_idx]." ".$TODAY[$lang_idx]; ?>
 				</a>	
 				</div>
-				<img src="<? echo "images/icons/day/".$forecastDaysDB[0]['icon']; ?>" width="60" height="60" alt="<?=$forecastDaysDB[0]['date']?>" />
-				</div>
+			
 				<div>
 				<a href="http://www.sunrisesunset.com/calendar.asp?comb_city_info=Jerusalem,%20Israel;-35.25;31.75;2;9&amp;month=<?echo $month; ?>&amp;year=<?echo $year; ?>&amp;time_type=0" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>"><? echo $RISE[$lang_idx]; ?></a> 
 				&nbsp;<? echo $sunrise; ?><br />
@@ -927,7 +922,7 @@ if ((strstr(strtolower($_GET['graph']), 'uv'))||
 				 <? echo $today->get_sunshinehours()." ".$SUNSHINEHOURS[$lang_idx]." ".$TILL_NOW[$lang_idx];?>                                                                                
 				</div>
 				<div class="float">
-				<a href="http://www.timeanddate.com/worldclock/astronomy.html?n=110" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>">
+				<a href="http://www.timeanddate.com/worldclock/astronomy.html?n=110" target="_blank" title="<? echo $MORE_INFO[$lang_idx];?>">
 											<? echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
 				</a>
 				</div>

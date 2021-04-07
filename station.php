@@ -713,11 +713,11 @@ $sigforecastHour = $mem->get('sigforecastHour');
                             </div>
                             <div id="rainratevalue" class="paramvalue">
                                     <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rain.php&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;style=<?=$_GET["style"]?>" title="">
-                                            <? echo $current->get_rainrate()." <div class=\"param\">".$RAINRATE_UNIT[$lang_idx]."</div>";?>
+                                            <? echo $current->get_rainrate2()." <div class=\"param\">".$RAINRATE_UNIT[$lang_idx]."</div>";?>
                                     </a> 
                             </div>
                             <div class="highlows">
-                                <span><strong><div class="highparam"><? echo $today->get_highrainrate(); ?></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highrainrate_time()." "; ?></span>
+                                <span><strong><div class="highparam"><? echo $today->get_highrainrate2(); ?></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"><? echo $today->get_highrainrate2_time()." "; ?></span>
                             </div>
                             
                             <div class="trendstable">
@@ -1161,7 +1161,7 @@ else {  ?>
         }
         
 	echo "<footer class=\"footer footerinsection\">Designed by <a target=\"_blank\" href=\"https://www.behance.net/galizorea\">Gali Zorea</a>, <a target=\"_blank\" href=\"javascript:void()\">Efrat Shiloach</a><br/>";	 
-        echo "Icons made by <a href=\"https://www.flaticon.com/authors/alfredo-hernandez\" title=\"Alfredo Hernandez\">Alfredo Hernandez</a>, <a href=\"http://www.freepik.com/\" title=\"Freepik\">Freepik</a> from <a href=\"https://www.flaticon.com/\" title=\"Flaticon\"> www.flaticon.com</a>	";
+        echo "Icons made by <a href=\"https://www.flaticon.com/authors/alfredo-hernandez\" title=\"Alfredo Hernandez\">Alfredo Hernandez</a>, <a href=\"http://www.freepik.com/\" title=\"Freepik\">Freepik</a>, <a href=\"hhttps://creativemarket.com/eucalyp\" title=\"eucalyp\">eucalyp</a> from <a href=\"https://www.flaticon.com/\" title=\"Flaticon\"> www.flaticon.com</a>	";
         echo "</footer>";
         echo "</article>";	
 			
@@ -1226,10 +1226,11 @@ else {  ?>
             
         </div>
         <div id="mobile_redirect" class="big inv_plain_3_zebra" style="opacity:1;text-align:center;z-index:9999;display:none;position:absolute;top:50px;left:0px;width:400px;height:850px;margin:0 auto" >
-        <button type="button" id="cboxCloseMobileRedirect" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();">close</button>
-        <br /><br />
-        <h2 class="big inv_plain_2"><a   onclick="redirect_to_mobile(<?=$lang_idx?>)" id="mobile_redirect_submit" class="clear inv_plain_3" style="width:100%"><?=$MOBILE_REDIRECT[$lang_idx]?></a></h2><br/><br/><br/><br/><br/>      
+        <button type="button" id="cboxCloseMobileRedirect" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        <br /><br /><br /><br />
+        <h2 class="big inv_plain_2"><br /><a   onclick="redirect_to_mobile(<?=$lang_idx?>)" id="mobile_redirect_submit" class="clear inv_plain_3" style="width:100%"><?=$MOBILE_REDIRECT[$lang_idx].get_arrow()?></a><br /><br /></h2><br/><br/><br/>      
         <!--<h2 class="big inv_plain_2"><a   onclick="$( this ).parent().parent().hide();" class="clear inv_plain_3" style="width:100%"><?=$STAY[$lang_idx]?></a></h2><br/> <br/><br/><br/>-->  
+        
         <div>
                 <a href="https://play.google.com/store/apps/details?id=il.co.jws.app" target="_blank">
                         <img src="images/getitongp.svg" alt="Google play App" width="150" height="60"/>

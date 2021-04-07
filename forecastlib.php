@@ -189,9 +189,11 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
      global $link;
     $temp_from = $temp - 0.5;
     $temp_to = $temp + 0.5;
+    $temp_from2 = $temp - 0.5;
+    $temp_to2 = $temp + 0.5;
     $pgender = "";
      //logger("calling GetColdMeter in getCloth in forecastlib");
-     $query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, '{$pgender}', null);";
+     $query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, {$temp_from2}, {$temp_to2}, '{$pgender}', null);";
     db_init("", "");
     $result = mysqli_query($link, $query_verdict) ;
     $row_verdict = mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -700,7 +702,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
             array_push($forecast_title, array("<span>".$GENERALLY[$EN]." "."</span>", "<span>".$GENERALLY[$HEB]." "."</span>"));
             $passedMidnight = 0;
             $prev_temp = $current->get_temp();
-             for ($t=$timetaf + 1; $t <= $timetaf+39 ; $t++)
+             for ($t=$timetaf + 1; $t <= $timetaf+30 ; $t++)
              {
 
                 $h = $t % 24;

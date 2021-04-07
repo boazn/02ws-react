@@ -201,6 +201,7 @@
                                     </a>
                                 </li>
 								<li class="forcast_text">
+                                    
 									<? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);$textsum = $textsum + strlen(urldecode($forecastday[$dscpIdx]));?>
                                     <?if ($i < 5) {?>
                                                     <div id="divlikes<?=$key?>" class="likedislike">		
@@ -210,6 +211,7 @@
                                                             <span class="dislikes"><?=count($forecastDaysDB[$key]["dislikes"])?></span>
                                                     </div>
                                                     <?}?>
+                                                    
                                                     </li>
 							</ul>
 							 </li>
@@ -414,45 +416,56 @@
             </div> <!-- forcast_main -->
                      
 		    <div id="mainadsense" style="line-height: 0;">
-            <div id="bg3-1" class="cloud2" >
-            <a href="https://runnerswithoutborders.org/race/" style="line-height: 10px;
-    position: absolute;
-    margin-left: 20px;
-    margin-top: -5px;
-    z-index: 9999;">המרוץ שמנפץ את חומות השנאה</a>
-            <div class="cloud2-more">
-            
-            </div></div>
-            <hr id="leftline_cloud" /><hr id="rightline_cloud" />
-            <!-- Main Desktop -->
-            <ins class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-2706630587106567"
-                data-ad-slot="1816548745"
-                data-ad-format="rectangle"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-            
-            <div id="if1">
-            
-    
-            </div>
-            <div id="if4">
-            
-            </div>
-            <?if (isHeb()){?>
-            <div>
-            
-            </div>
-            <div id="belowmainad" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
-            <a href="https://runnerswithoutborders.org/race/" style="">המרוץ שמנפץ את חומות השנאה:
-קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2021 בירושלים</a>
-	        </div>
-            <?}?>                
+                <div id="bg3-1" class="cloud2" >
+                <a href="https://runnerswithoutborders.org/race/" style="line-height: 10px;
+        position: absolute;
+        margin-left: 20px;
+        margin-top: -5px;
+        z-index: 9999;">המרוץ שמנפץ את חומות השנאה</a>
+                <div class="cloud2-more">
+                
+                </div>
+                </div>
+                <hr id="leftline_cloud" /><hr id="rightline_cloud" />
+                <!-- Main Desktop -->
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-2706630587106567"
+                    data-ad-slot="1816548745"
+                    data-ad-format="rectangle"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+                <?if (isHeb()){?>
+                <div id="if1" >  
+                <div style="width:300px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
+                    <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? 050-8844422 מיכאל סקלוט שירותי מיזוג אוויר, תיקונים ותחזוקה  </div>
+                </div>
+                </div>
+                <div id="if2" style="display:none">
+                <div style="width:300px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
+                    <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? 050-8844422 מיכאל סקלוט שירותי מיזוג אוויר, תיקונים ותחזוקה  </div>
+                </div>
+                </div>
+                <div id="if3" style="width:300px">
+                
+
+                </div>
+                <div id="if4">
+                
+                </div>
+                
+                <div>
+                
+                </div>
+                <div id="belowmainad" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
+                <a href="https://runnerswithoutborders.org/race/" style="">המרוץ שמנפץ את חומות השנאה:
+    קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2021 בירושלים</a>
+                </div>
+                <?}?>                
                                
-			</div>
-                   
+			
+            </div>       
                          
             </div>
               <!-- row -->
@@ -461,52 +474,52 @@
             
 	    
 	    
-<article id="whatmore" style="<? if (($textsum >= 580)||(count($forecastDaysDB) > 6)) echo "top:820px";?>">
+<article id="whatmore" style="<? if (($textsum >= 580)||(count($forecastDaysDB) > 6)) echo "top:850px";?>">
 	    
 		
-		    <div class="row">
+	   <div class="row">
             <div class="now_messages">       
-		    <div id="alerts" class="span7 offset3 white_box">
-			<h2><? echo $MESSAGES[$lang_idx];?></h2>
-                        <div id="message" class="box_text"><? echo $latestalert."<br/>".$detailedforecast;?></div>
-                        <p id="personal_message" class="box_text"></p>
-                        <?php if (isHeb()) { ?>
-                        <a class="twitter-timeline" data-lang="he" href="https://twitter.com/YERU02WS?ref_src=twsrc%5Etfw">Tweets by YERU02WS</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                        <?php }?>
-              </div>
+                <div id="alerts" class="span7 offset3 white_box">
+                        <h2><? echo $MESSAGES[$lang_idx];?></h2>
+                            <div id="alerts_app_promo"><?=$ALERTS_TO_APP_PROMO[$lang_idx]?></div>
+                            <div id="message" class="box_text"><? echo $latestalert."<br/>".$detailedforecast;?></div>
+                            <p id="personal_message" class="box_text"></p>
+                            <?php if (isHeb()) { ?>
+                            <a class="twitter-timeline" data-lang="he" href="https://twitter.com/YERU02WS?ref_src=twsrc%5Etfw">Tweets by YERU02WS</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            <?php }?>
+                </div>
              
             </div>
-           <div class="span3">
+            <div class="span3">
            
 
 		    </div>
-		    </div>
+	   </div>
 			
 		    <div class="row" style="margin: 5px -20px">
 		    
-		    <div id="mainstory" class="span7 offset3 white_box">
-			<? if (isHeb()) { ?><h2><? echo $MainStory->get_title();?></h2>
-			<div class="box_text">
-                            
-			               <? echo mb_substr($MainStory->get_description(), 0, 200, "UTF-8");?>... 
-                           <?
-                             $box_img_src = $MainStory->get_img_src();$img_title = $MainStory->get_title();
-                             //echo "<img src=\"$box_img_src\" title=\"".$img_title."\" id=\"mainpic\" alt=\"".$img_title."\" width=\"40px\" />";
-                            ?>
-                            
-                            <a href="<? echo "station.php?section=mainstory.php&amp;lang=".$lang_idx;?>" class="invfloat">
-                                <?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
-                            </a>
-            </div>
-			<?}?>
-		    </div>
-                        
-                    <div id="adexternal" class="span2">
-                       <!--<a data-p1xtr="widget-button" data-p1xtr-image="https://www.02ws.co.il/img/logo_rain.svg"></a>-->
+                <div id="mainstory" class="span7 offset3 white_box">
+                
+                    <h2><?php echo $MainStory->get_title();?></h2>
+                    <div class="box_text">
+                                    
+                                <?php echo mb_substr($MainStory->get_description(), 0, 200, "UTF-8");?>... 
+                                <?php
+                                    $box_img_src = $MainStory->get_img_src();$img_title = $MainStory->get_title();
+                                    //echo "<img src=\"$box_img_src\" title=\"".$img_title."\" id=\"mainpic\" alt=\"".$img_title."\" width=\"40px\" />";
+                                    ?>
+                                    
+                                    <a href="<? echo "station.php?section=mainstory.php&amp;lang=".$lang_idx;?>" class="invfloat">
+                                        <?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
+                                    </a>
                     </div>
-                         
-		    
-		    </div>
+                
+                </div>
+                        
+                <div id="adexternal" class="span2">
+                    <!--<a data-p1xtr="widget-button" data-p1xtr-image="https://www.02ws.co.il/img/logo_rain.svg"></a>-->
+                </div>
+            </div>
 		    
 		    <div class="row more_stuff">
                         
@@ -553,7 +566,7 @@
 
                                </div>
                             </div>
-                            <?if (isHeb()) {?>
+                            <?php if (isHeb()) {?>
                             
                             <ul id="outside_links">
                                <li><a href="http://shabat.open.org.il/?fbclid=IwAR34It8gX-qQFVGGLmnHYlCiBhduy0y-XsHcw30rUjs3kCpFvO7NVMoBUX4" title='open02' target="_blank">פתוח בשבת</a></li>

@@ -170,10 +170,11 @@ top:0px;
     width:90%
 }
 #forcast_days.detailed .forcast_morning div, #forcast_days.detailed .forcast_noon div, #forcast_days.detailed .forcast_night div{
-    padding: 0.25em 0;
+    padding: 0.2em 0;
 }
 #forcast_days.detailed .wind_icon{
-    font-size:0.9em
+    font-size: 1em;
+    padding-top: 1em !important;
 }
 .wind_icon{
     padding:0.6em 0;
@@ -190,7 +191,7 @@ top:0px;
 #forecastnextdays .humidity a
 {
     text-decoration:none;
-    font-size:2em
+    font-size:3em
 
 }
 #forecastnextdays table a.info
@@ -385,6 +386,7 @@ float:<?echo get_s_align();?>;
 text-align:<?echo get_s_align();?>;
 padding:0;
 font-size: 1.2em;
+width:100%;
 line-height: 1.2em;
 <? if (isHeb()) echo "direction:rtl"; ?>
 }
@@ -531,7 +533,7 @@ width:320px;
     font-size: 2.2em;
     position: absolute;
     width: 100%;
-	margin-top: -0.7em;
+	margin-top: -0.4em;
 	z-index: -10;
 	display:none;
     animation: blink-animation 0.5s 0.2s ease 6 forwards;
@@ -541,7 +543,7 @@ width:320px;
 {
     #startinfo_container
     {
-        padding: calc(12.8em - 10px) 0 8em;
+        padding: calc(12.4em - 10px) 0 8em;
     }
  }
  @media screen and (min-device-aspect-ratio: 9/18) 
@@ -549,7 +551,7 @@ width:320px;
     #startinfo_container
     {
         
-        padding: calc(9.8em - 10px) 0 8em;
+        padding: calc(9em - 10px) 0 8em;
     }
     
 }
@@ -558,7 +560,7 @@ width:320px;
     #startinfo_container
     {
         
-        padding: calc(5.9em - 10px) 0 8em;
+        padding: calc(5.1em - 10px) 0 8em;
     }
     
 }
@@ -566,7 +568,7 @@ width:320px;
 {
     #startinfo_container
     {
-        padding: calc(4.4em - 10px) 0 8em;
+        padding: calc(3.8em - 10px) 0 8em;
     }
     
 }
@@ -574,7 +576,7 @@ width:320px;
 {
     #startinfo_container
     {
-        padding: calc(3.2em - 10px) 0 8em;
+        padding: calc(2.8em - 10px) 0 8em;
     }
    
 }
@@ -769,7 +771,7 @@ border-radius: 0px;
     width:3em
 }
 .nav .timefh, .nav .wind, .nav .forcast_icon{
-    width: 15%;
+    width: 14%;
 }
 .forcast_title
 {
@@ -873,9 +875,9 @@ color:#3D718E;
 padding:0.5em;
 position: absolute;
 z-index: 1000;
-top: 5em;
+top: 4.2em;
 width: 160px;
-<?=get_inv_s_align()?>: 0.8em;
+<?=get_inv_s_align()?>: 6em;
 }
 
 .inparamdiv
@@ -955,6 +957,9 @@ line-height: 0.7em;
 text-align:center;
 padding: 0.4em 0;
 }
+#forecastnextdays .tsfh .icon{
+    margin-top:10px;
+}
 #forecastnextdays .paramunit{
     display:none;
 }
@@ -1029,6 +1034,7 @@ color:#000;
 margin-top:0.5em;
 padding: 0.6em 0 0;
 }
+.wind_icon .small{ font-size:0.6em}
 .light_wind{
     background-position: -80px 0px;
 }
@@ -1040,7 +1046,7 @@ padding: 0.6em 0 0;
     padding-bottom:0;
 }
 #for24_hours .timefh, #forcast_hours_table .timefh{
-    padding:0.5em 0 0 0;
+    padding:0.5em 0.6em 0 0;
     direction:ltr
 }
 #forcast_hours_table{
@@ -1313,7 +1319,7 @@ td
 }
 #graphnav.nav li
 {
-    border:0;margin:0;float:none;padding:0.4em
+    border:0;margin:0;float:none;padding:0.5em;text-align: <?echo get_s_align();?>;
 }
 #graphmain{
     clear:both;width:100%;float:<?echo get_s_align();?>;margin:0 auto;padding:0
@@ -1365,10 +1371,14 @@ text-align:center;width:6%
     
 }
 #messages_box .box_text, #messages_box h2{
-    padding:0 25px
+    padding:0 18px
 }
 #messages_box #alertbg{
     margin: 0 -25px;
+    margin-top:-60px;
+}
+#messages_box .inv_plain_2{
+    padding:5px
 }
 #forcast_hours liabilities{
 padding:0.3em

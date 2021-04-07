@@ -19,9 +19,9 @@
 
 		<td width="180px">&nbsp;</td>
 
-		<td  title="accumulation in mm" class="inv_plain"><? echo($RAIN[$lang_idx]);?> (<?=$RAIN_UNIT[$lang_idx]?>)</td>
+		<td  title="accumulation in mm" class="inv_plain_3"><? echo($RAIN[$lang_idx]);?> (<?=$RAIN_UNIT[$lang_idx]?>)</td>
 
-		<td  title="number of rainy days" class="inv_plain"><? echo($RAINY_DAYS[$lang_idx]);?></td>
+		<td  title="number of rainy days" class="inv_plain_3"><? echo($RAINY_DAYS[$lang_idx]);?></td>
 
 		
 

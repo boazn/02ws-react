@@ -1,7 +1,6 @@
 <?
 header('Content-type: text/html; charset=utf-8');
 header("Access-Control-Allow-Origin: null");
-
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
 ini_set("display_errors","Off");
 include_once("include.php"); 
@@ -392,9 +391,13 @@ $JSON .= "\"hightemp_av\":"."\"".$monthAverge->get_hightemp()."\"";
 $JSON .= ",";
 $JSON .= "\"hightemp_ab\":"."\"".$monthAverge->get_abshightemp()."\"";
 $JSON .= ",";
+$JSON .= "\"hightemp_ab_date\":"."\"".$monthAverge->get_abshightempdate()."\"";
+$JSON .= ",";
 $JSON .= "\"lowtemp_av\":"."\"".$monthAverge->get_lowtemp()."\"";
 $JSON .= ",";
 $JSON .= "\"lowtemp_ab\":"."\"".$monthAverge->get_abslowtemp()."\"";
+$JSON .= ",";
+$JSON .= "\"lowtemp_ab_date\":"."\"".$monthAverge->get_abslowtempdate()."\"";
 $JSON .= ",";
 $JSON .= "\"rain\":"."\"".$thisMonth->get_rain()."\"";
 $JSON .= ",";
@@ -776,6 +779,8 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= ",";
     $JSON .= "\"humDay\":"."\"".$day_f['humDay']."\"";
     $JSON .= ",";
+    $JSON .= "\"visibility\":"."\"".$day_f['visibility']."\"";
+    $JSON .= ",";
     $JSON .= "\"windMorning\":"."\"".getWindInfo($day_f['windMorning'], 0)['wind_class']."\"";
     $JSON .= ",";
     $JSON .= "\"windDay\":"."\"".getWindInfo($day_f['windDay'], 0)['wind_class']."\"";
@@ -832,6 +837,8 @@ $JSON .= "\"addonalert1\":"."\"".urlencode($mem->get('addonalert1'))."\"";
 $JSON .= ",";
 $JSON .= "\"latestalerttype\":"."\"".$mem->get('latestalerttype')."\"";
 $JSON .= ",";
+$JSON .= "\"latestalertttl\":"."\"".$mem->get('latestalertttl')."\"";
+$JSON .= ",";
 $JSON .= "\"detailedforecast1\":"."\"".urlencode($mem->get('descriptionforecast1'))."\"";
 $JSON .= ",";
 $JSON .= "\"passedts\":"."\"".(time() - $mem->get('latestalerttime0'))."\"";
@@ -854,11 +861,27 @@ $JSON .= "}";
 
 $itfeels = array();
 $itfeels = $current->get_itfeels();
+$itfeels_array = $mem->get('itfeels_array');
+array_push($itfeels_array, $itfeels);
+if (count($itfeels_array) > 10)
+    array_shift($itfeels_array);
+$mem->set('itfeels_array', $itfeels_array);
+$index_if;
+$itfeels_sum;
+foreach ($itfeels_array as $if){
+    $index_if++;
+    if ($index_if > 5)
+        $itfeels_sum += $if[1];
+}
+$itfeels_avg = round($itfeels_sum/5, 1);
+
 $JSON .= ",\"feelslike\":";
 $JSON .= "{";
 $JSON .= "\"state\":"."\"".$itfeels[0]."\"";
 $JSON .= ",";
 $JSON .= "\"value\":"."\"".$itfeels[1]."\"";
+$JSON .= ",";
+$JSON .= "\"avg\":"."\"".$itfeels_avg."\"";
 $JSON .= "}";
 
 $JSON .= ",\"states\":";
@@ -1015,6 +1038,22 @@ $JSON .= ",";
 $JSON .= "\"yearF\":"."\"".$yearF."\"";
 $JSON .= "}";
 
+$ADS_JSON = ",\"Ads\":[";
+$Ads = $mem->get('Ads');
+foreach ($Ads as $ad){
+$ADS_JSON .= "{";
+$ADS_JSON .= "\"img_url\":"."\"".$ad['img_url']."\"";
+$ADS_JSON .= ",";
+$ADS_JSON .= "\"width\":"."\"".$ad['w']."\"";
+$ADS_JSON .= ",";
+$ADS_JSON .= "\"height\":"."\"".$ad['h']."\"";
+$ADS_JSON .= ",";
+$ADS_JSON .= "\"link\":"."\"".$ad['href']."\"";
+$ADS_JSON .= "},";
+}
+$ADS_JSON = rtrim($ADS_JSON, ",");
+$ADS_JSON .= "]";
+$JSON .= $ADS_JSON;
 $JSON .= ",\"desc\":";
 $JSON .= "{";
 $JSON .= "\"temp3_desc0\":"."\"".$ROAD_EXP[0]."\"";

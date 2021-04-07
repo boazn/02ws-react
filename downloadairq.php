@@ -1,3 +1,4 @@
+<pre>
 <?php
 require('phpQuery.php');
 // Function to calculate standard deviation (uses sd_square)    
@@ -32,8 +33,8 @@ function cleanGarbageStations(&$array){
     $sd = (float) sqrt($fVariance)/sqrt($size);
     return round($sd);
 }
-$url="https://www.svivaaqm.net/DynamicTable.aspx?G_ID=14";
-$local_file_path = "/home/boazn/public/02ws.com/public/cache/airq2.html";
+$url="https://www.svivaaqm.net/dynamicTabulars/TabularReportTable?id=14";
+$local_file_path = "/home/boazn/public/02ws.com/public/cache/airq2.txt";
 $output_airq_file_path = "/home/boazn/public/02ws.com/public/getAveragePM10.txt";
 $agent= 'Mozilla/4.0';
 
@@ -45,18 +46,25 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_USERAGENT, $agent);
 curl_setopt($ch, CURLOPT_URL,$url);
 $result=curl_exec($ch);
-echo  $result;
+//echo  $result;
 $file = fopen($local_file_path,"w");
 fwrite ($file, $result);
 fclose ($file);
 /***************** getAveragePM10 ***************/
-$doc = phpQuery::newDocumentHTML(file_get_contents($local_file_path));
+$doc = json_decode(file_get_contents($local_file_path), true);
+//$doc_converted = $doc["TabularList"];
+$doc_converted = str_replace('\"', '"', $doc["TabularList"]);
+
+$stations_array =  json_decode($doc_converted);
+print_r($stations_array);
+//echo $stations_array[0]->shortName." ".$stations_array[0]->monitors[0]["name"]." ".$stations_array[0]->monitors[0]["value"];
+
 // 8 is the td of PM10
-$efrata =  $doc["#C1WebGrid1 > tr:eq(2) > td:eq(8) > div"]->text();
-$bar_ilan = $doc["#C1WebGrid1 > tr:eq(3) > td:eq(8) > div"]->text();
-$safra =  $doc["#C1WebGrid1 > tr:eq(6) > td:eq(8) > div"]->text();
-$atarot = $doc["#C1WebGrid1 > tr:eq(7) > td:eq(8) > div"]->text();
-$merkazit = $doc["#C1WebGrid1 > tr:eq(9) > td:eq(8) > div"]->text();
+$efrata =  $stations_array[1]->monitors[7]->value;
+//$bar_ilan = $stations_array[1]["shortName"];
+$safra =  $stations_array[2]->monitors[5]->value;
+//$atarot = $stations_array[3]["shortName"];
+//$merkazit = $stations_array[4]["shortName"];
 
 
 $stations = array(intval($efrata), intval($safra));
@@ -67,14 +75,15 @@ cleanGarbageStations($stations);
 $averagedPM10 = round(array_sum($stations)/count($stations));
 $sdPM10 = standard_deviation($stations); 
 echo "<br />";
+echo "pm10 after:";
 print_r($stations);
 echo "<br />";
 
-$efrata =  $doc["#C1WebGrid1 > tr:eq(2) > td:eq(9) > div"]->text();
-$bar_ilan = $doc["#C1WebGrid1 > tr:eq(3) > td:eq(9) > div"]->text();
-$merkazit = $doc["#C1WebGrid1 > tr:eq(8) > td:eq(9) > div"]->text();
-$nayedet_merkazit = $doc["#C1WebGrid1 > tr:eq(9) > td:eq(9) > div"]->text();
-$dvora = $doc["#C1WebGrid1 > tr:eq(10) > td:eq(9) > div"]->text();
+$bar_ilan = $stations_array[0]->monitors[4]->value;
+$efrata =  $stations_array[1]->monitors[8]->value;
+$merkazit = $stations_array[3]->monitors[3]->value;
+$nayedet_merkazit = $stations_array[4]->monitors[0]->value;
+$dvora = $stations_array[6]->monitors[3]->value;
 
 $stations = array(intval($efrata), intval($nayedet_merkazit), intval($merkazit), intval($dvora));
 sort($stations);
@@ -83,7 +92,7 @@ print_r($stations);
 cleanGarbageStations($stations);
 $averagedPM25 = round(array_sum($stations)/count($stations));
 $sdPM25 = standard_deviation($stations);
-echo "<br />";
+echo "<br/>pm25 after:";
 print_r($stations);
 
 $file = fopen($output_airq_file_path,"w");
@@ -92,3 +101,4 @@ fwrite ($file, $averagedPM10.",".number_format($sdPM10, 1, '.', '').",".$average
 echo "<br /><br />".$averagedPM10.",".$sdPM10.",".$averagedPM25.",".$sdPM25;
 
 ?>
+</pre>

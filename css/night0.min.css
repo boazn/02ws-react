@@ -17,3 +17,7 @@ body{background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 20%, #7480bb 40%, #
 #startinfo_container .invhigh{
     color:white
 }
+.forcast_each:hover 
+{
+    background:#7480bb;
+}

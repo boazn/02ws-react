@@ -238,7 +238,7 @@ if (isRadarPage())
                               </div>
                               <div id="loggedin" style="display:none">
                                       <input id="updateprofile" class="button" title="<?=$UPDATE_PROFILE[$lang_idx]?>" value="<?=$UPDATE_PROFILE[$lang_idx]?>" /><br />
-                                      <input id="myvotes" class="button" title="<?=$MY_VOTES[$lang_idx]?>" value="<?=$MY_VOTES[$lang_idx]?>" onclick="redirect('<? echo substr(get_query_edited_url($url_cur, 'section', 'myVotes.php'), 1);?>')" /><br />
+                                      <input id="myvotes" class="button" title="<?=$MY_VOTES[$lang_idx]?>" value="<?=$MY_VOTES[$lang_idx]?>" onclick="redirect('<?=$_SERVER['SCRIPT_NAME']?>?section=myVotes.php&amp;lang=<?=$lang_idx?>')" /><br />
                                       <input value="<?=$SIGN_OUT[$lang_idx]?>" onclick="signout_from_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="signout" class="button"/>
                               </div>
                       </li>
@@ -268,7 +268,7 @@ else {?>
 </div>
 <div id="statuslinestart">
     <div  id="coldmeterstart">
-    <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=survey.php&amp;survey_id=2&amp;lang=<?=$lang_idx?>"> 
+    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>"> 
     <span id="current_feeling_link_start"><img src="img/loading.gif" alt="loading" width="32" height="32" /></span>
      </a>
     </div>
@@ -737,7 +737,9 @@ else {?>
 </div>
 <div id="messages_box" style="display:none">
     <h2><? echo $MESSAGES[$lang_idx];?></h2>
-    
+    <p id="promotion">
+
+    </p>
     <p class="box_text">
      
     </p>
@@ -755,24 +757,24 @@ else {?>
 </div>
 <div id="adunit2" class="adunit" style="display:none">
     
-   
-    <div id="if3">
-    <div>
-    
+    <div id="if1">  
+        <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
+                <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? <a style="text-decoration:underline" href="https://www.dunsguide.co.il/Cb527356b9ff6af65b6cee3ec07a52692_%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%9C%D7%98%D7%95%D7%A8%D7%99%D7%9D/%D7%A1%D7%A7%D7%9C%D7%95%D7%98_%D7%9E%D7%99%D7%9B%D7%90%D7%9C/" target=_blank >050-8844422 מיכאל סקלוט שירותי מיזוג אוויר</a>, תיקונים ותחזוקה   </div>
+         </div>
     </div>
+    <div id="if2">
+        <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
+                <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? <a style="text-decoration:underline" href="https://www.dunsguide.co.il/Cb527356b9ff6af65b6cee3ec07a52692_%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%9C%D7%98%D7%95%D7%A8%D7%99%D7%9D/%D7%A1%D7%A7%D7%9C%D7%95%D7%98_%D7%9E%D7%99%D7%9B%D7%90%D7%9C/" target=_blank>050-8844422 מיכאל סקלוט שירותי מיזוג אוויר</a>, תיקונים ותחזוקה   </div>
+         </div>
+    </div>
+    <div id="if3">
+    
 
     </div>
     <div id="if4">
-    <div>
-    
+     
     </div>
-    </div>
-	<div id="if1">
-    
-    </div>
-    <div id="if2">
-    
-    </div>
+	
  <!-- small unit 2 -->
 <ins class="adsbygoogle"
      style="display:inline-block;width:320px;height:50px"
@@ -1044,7 +1046,9 @@ Licensed MIT
                                     if (!isUserAdApproved)
                                     {   
                                     $(".adunit").show();
-                                        if (sessions % C_STARTUP_AD_INTERVAL == 0)
+                                    var forceshow = false;
+                                     <? if ($_REQUEST['section'] == "alerts.php") echo "forceshow=true;";?>
+                                        if ((sessions % C_STARTUP_AD_INTERVAL == 0) || forceshow)
                                         {
                                             $("#startupdiv").show();
                                         }
@@ -1060,7 +1064,9 @@ Licensed MIT
                             if (!isUserAdApproved)
                             {
                                //$(".adunit").show();
-                                if (sessions % C_STARTUP_AD_INTERVAL == 0)
+                               var forceshow = false;
+                               <? if ($_REQUEST['section'] == "alerts.php") echo "forceshow=true;";?>
+                                if ((sessions % C_STARTUP_AD_INTERVAL == 0) || forceshow)
                                 {
                                     //$("#startupdiv").show();
                                     should_show_startupdiv = true;
@@ -1168,7 +1174,9 @@ Licensed MIT
         $('#tempdivvalue, #tempdivvaluestart').html('<div class="shade">' + ((json.jws.current.islight == 1) ? "" : "") + '</div>' + c_or_f(json.jws.current.temp, tempunit)+'<div class="param">'+tempunit+'</div>');
         $('#tempdivvalue').css('visibility', 'visible');
         $('#tempdivvaluestart').fadeIn(30);
-        if (json.jws.Messages.passedts < 12000){
+        var ttl = (json.jws.Messages.latestalertttl == 0) ? 180*60 : json.jws.Messages.latestalertttl;
+
+        if (json.jws.Messages.passedts < (ttl)){
              $('#latestalert').html(latestalerttext);
         }
         else if (json.jws.LatestPicOfTheDay.passedts < 7200){
@@ -1199,7 +1207,7 @@ Licensed MIT
          {
                 $.ajax({
                 type: "GET",
-                url: '<?=BASE_URL?>/coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size,
+                url: '<?=BASE_URL?>/coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size + '&m=1',
                 beforeSend: function(){$(".loading").show();}
               }).done(function( jsonstr  ) {
                   
@@ -1341,7 +1349,7 @@ Licensed MIT
            forecastHours += "<ul class=\"forecasttimebox nav\" >";
            forecastHours += "<li class=\"tsfh currentts\" style=\"display:none\"><span>" + json.jws.sigforecastHours[i].currentDateTime + "</span></li>";
            forecastHours += "<li class=\"tsfh text timefh\"><span>" + json.jws.sigforecastHours[i].date + "</span></li>";
-           forecastHours += "<li class=\"tsfh forecasttemp\"><span>" + json.jws.sigforecastHours[i].time + ":00" + (json.jws.sigforecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.sigforecastHours[i].plusminus : "") +"</span></li>";
+           forecastHours += "<li class=\"tsfh forecasttemp timefh\"><span>" + json.jws.sigforecastHours[i].time + ":00" + (json.jws.sigforecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.sigforecastHours[i].plusminus : "") +"</span></li>";
            //forecastHours += "<li class=\"forecasttemp\" id=\"tempfh"+ json.jws.sigforecastHours[i].time + "\"><span>" + c_or_f(json.jws.sigforecastHours[i].temp, tempunit) + "<img style=\"vertical-align: middle\" src=\"images/clothes/"+json.jws.sigforecastHours[i].cloth+"\" height=\"15\" width=\"20\" /></span></li>";
            forecastHours += "<li style=\"padding:0;\"><div title=\"" + json.jws.sigforecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.sigforecastHours[i].wind_class+" \"></div></li>";
            forecastHours += "<li class=\"forcast_icon\"><span><img src=\"images/icons/day/"+json.jws.sigforecastHours[i].icon+"\" height=\"30\" width=\"30\" /></span></li>";
@@ -1491,9 +1499,9 @@ Licensed MIT
             else
                 link_for_yest = "";
             forecastDays += "<td class=\"date\" >"  + link_for_yest + json.jws.forecastDays[i].day_name<?=$lang_idx?> + "<div class=\"datetext\">" + json.jws.forecastDays[i].date + "<div></td><td class=\"plus\">" + "<div index=\"" + i + "\" id=\"" + i + "\" class='open-close-button'></div>" + "</td>";
-            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempLow, tempunit) + TempLowCloth +  "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humMorning + "%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"morning_icon" + i + "\">" + TempLowClothfull + "<img src=\"" + json.jws.forecastDays[i].morning_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].morning_icon +"\" /></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windMorning + "\">" + json.jws.forecastDays[i].windMorningSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
-            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempHigh, tempunit) + TempHighCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humDay +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"day_icon" + i + "\">" + TempHighClothfull + "<img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windDay + "\">" + json.jws.forecastDays[i].windDaySpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
-            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempNight, tempunit) + TempNightCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humNight +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"night_icon" + i + "\">" + TempNightClothfull + "<img src=\"" + json.jws.forecastDays[i].night_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].night_icon +"\" /></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windNight + "\">" + json.jws.forecastDays[i].windNightSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
+            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempLow, tempunit) + TempLowCloth +  "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humMorning + "%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"morning_icon" + i + "\">" + TempLowClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"" + json.jws.forecastDays[i].morning_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].morning_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windMorning + "\">" + json.jws.forecastDays[i].windMorningSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
+            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempHigh, tempunit) + TempHighCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humDay +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"day_icon" + i + "\">" + TempHighClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windDay + "\">" + json.jws.forecastDays[i].windDaySpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
+            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempNight, tempunit) + TempNightCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humNight +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"night_icon" + i + "\">" + TempNightClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"" + json.jws.forecastDays[i].night_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].night_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windNight + "\">" + json.jws.forecastDays[i].windNightSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
             forecastDays += "<td class=\"forcast_each icon_day\" >";
             if (i==0)
                 forecastDays += noon_value_change;
@@ -1633,8 +1641,8 @@ Licensed MIT
   
     function fillAllJson(jsonstr)
     {
-      try{var json = JSON.parse(jsonstr);} catch (e) {alert('parsing json: ' + e);}
-      try{loadData(json);} catch (e) {alert('extracting json to page: ' + e);}
+      try{var json = JSON.parse(jsonstr);} catch (e) {alert('שגיאה, נסו מאוחר יותר');}
+      try{loadData(json);} catch (e) {alert('שגיאה, נסו מאוחר יותר ' + e);}
       var last_container = getCookie('start_container');//or last_container
        var last_nodeid = getCookie('start_nodeid');//or last_nodeid
        if (last_container == ""){

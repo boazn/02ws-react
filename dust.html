@@ -44,19 +44,24 @@
 //********* SET UP THESE VARIABLES - MUST BE CORRECT!!!*********************
  
 modImages = new Array();
-modImages[0] = "http://forecast.uoa.gr/LINKS/DUST/dload/000.gif";
-modImages[1] = "http://forecast.uoa.gr/LINKS/DUST/dload/006.gif";
-modImages[2] = "http://forecast.uoa.gr/LINKS/DUST/dload/012.gif";
-modImages[3] = "http://forecast.uoa.gr/LINKS/DUST/dload/018.gif";
-modImages[4] = "http://forecast.uoa.gr/LINKS/DUST/dload/024.gif";
-modImages[5] = "http://forecast.uoa.gr/LINKS/DUST/dload/030.gif";
-modImages[6] = "http://forecast.uoa.gr/LINKS/DUST/dload/036.gif";
-modImages[7] = "http://forecast.uoa.gr/LINKS/DUST/dload/042.gif";
-modImages[8] = "http://forecast.uoa.gr/LINKS/DUST/dload/048.gif";
-modImages[9] = "http://forecast.uoa.gr/LINKS/DUST/dload/054.gif";
-modImages[10] = "http://forecast.uoa.gr/LINKS/DUST/dload/060.gif";
-modImages[11] = "http://forecast.uoa.gr/LINKS/DUST/dload/066.gif";
-modImages[12] = "http://forecast.uoa.gr/LINKS/DUST/dload/072.gif";
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+var today = yyyy + mm + (dd-1);
+modImages[0] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-00.gif";
+modImages[1] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-06.gif";
+modImages[2] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-12.gif";
+modImages[3] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-18.gif";
+modImages[4] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-24.gif";
+modImages[5] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-30.gif";
+modImages[6] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-36.gif";
+modImages[7] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-42.gif";
+modImages[8] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-48.gif";
+modImages[9] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-54.gif";
+modImages[10] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-60.gif";
+modImages[11] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-66.gif";
+modImages[12] = "https://dust.aemet.es/archive/NMMB-BSC/" + today +"12-3H_SDSWAS_NMMB-BSC-v2_OPER-OD550_DUST-72.gif";
 
 first_image = 1;
 last_image = 13;
