@@ -434,25 +434,21 @@
                     data-ad-slot="1816548745"
                     data-ad-format="rectangle"></ins>
                 <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({});  
                 </script>
                 <?if (isHeb()){?>
                 <div id="if1" >  
-                <div style="width:300px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
-                    <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? 050-8844422 מיכאל סקלוט שירותי מיזוג אוויר, תיקונים ותחזוקה  </div>
-                </div>
+                    <a href="https://www.traintheater.co.il/he/%D7%97%D7%95%D7%92%D7%92%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%95%D7%AA-%D7%A2%D7%9D-%D7%AA%D7%99%D7%90%D7%98%D7%A8%D7%95%D7%9F-%D7%94%D7%A7%D7%A8%D7%95%D7%9F-0"  target="_blank"><img src="images/haatzmaut.jpg" alt="תיאטרון הקרון" width="300" height="50"/></a>
                 </div>
                 <div id="if2" style="display:none">
-                <div style="width:300px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
-                    <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? 050-8844422 מיכאל סקלוט שירותי מיזוג אוויר, תיקונים ותחזוקה  </div>
-                </div>
+                    <a href="https://www.traintheater.co.il/he/%D7%97%D7%95%D7%92%D7%92%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%95%D7%AA-%D7%A2%D7%9D-%D7%AA%D7%99%D7%90%D7%98%D7%A8%D7%95%D7%9F-%D7%94%D7%A7%D7%A8%D7%95%D7%9F-0"  target="_blank"><img src="images/haatzmaut.jpg" alt="תיאטרון הקרון" width="300" height="50"/></a>
                 </div>
                 <div id="if3" style="width:300px">
-                
+                <a href="https://www.jerusalem-theatre.co.il/%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D/1298/%D7%94%D7%9E%D7%9C%D7%90%D7%9B%D7%99%D7%9D_%D7%A9%D7%9C_%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA"  target="_blank"><img src="images/mikro.gif" alt="תיאטרון מיקו" width="300" height="50"/></a>
 
                 </div>
-                <div id="if4">
-                
+                <div id="if4" style="display:none">
+                <a href="https://www.jerusalem-theatre.co.il/%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D/1298/%D7%94%D7%9E%D7%9C%D7%90%D7%9B%D7%99%D7%9D_%D7%A9%D7%9C_%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA"  target="_blank"><img src="images/mikro.gif" alt="תיאטרון מיקו" width="300" height="50"/></a>
                 </div>
                 
                 <div>

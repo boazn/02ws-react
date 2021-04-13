@@ -758,13 +758,21 @@ else {?>
 <div id="adunit2" class="adunit" style="display:none">
     
     <div id="if1">  
-        <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
+      <!--  <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
                 <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? <a style="text-decoration:underline" href="https://www.dunsguide.co.il/Cb527356b9ff6af65b6cee3ec07a52692_%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%9C%D7%98%D7%95%D7%A8%D7%99%D7%9D/%D7%A1%D7%A7%D7%9C%D7%95%D7%98_%D7%9E%D7%99%D7%9B%D7%90%D7%9C/" target=_blank >050-8844422 מיכאל סקלוט שירותי מיזוג אוויר</a>, תיקונים ותחזוקה   </div>
+         </div>-->
+         <div>
+         <img src="images/haatzmaut.jpg" alt="תיאטרון הקרון" width="320" height="50"/><br/>
+         <a style="width: 100%;display: block;height: 50px;margin-top: -45px;" href="https://www.traintheater.co.il/he/%D7%97%D7%95%D7%92%D7%92%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%95%D7%AA-%D7%A2%D7%9D-%D7%AA%D7%99%D7%90%D7%98%D7%A8%D7%95%D7%9F-%D7%94%D7%A7%D7%A8%D7%95%D7%9F-0"  target="_blank">לחצו כאן</a>
          </div>
     </div>
     <div id="if2">
-        <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
+      <!--   <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
                 <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? <a style="text-decoration:underline" href="https://www.dunsguide.co.il/Cb527356b9ff6af65b6cee3ec07a52692_%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%9C%D7%98%D7%95%D7%A8%D7%99%D7%9D/%D7%A1%D7%A7%D7%9C%D7%95%D7%98_%D7%9E%D7%99%D7%9B%D7%90%D7%9C/" target=_blank>050-8844422 מיכאל סקלוט שירותי מיזוג אוויר</a>, תיקונים ותחזוקה   </div>
+         </div> -->
+         <div>
+         <img src="images/haatzmaut.jpg" alt="תיאטרון הקרון" width="320" height="50"/><br/>
+         <a style="width: 100%;display: block;height: 50px;margin-top: -45px;" href="https://www.traintheater.co.il/he/%D7%97%D7%95%D7%92%D7%92%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%95%D7%AA-%D7%A2%D7%9D-%D7%AA%D7%99%D7%90%D7%98%D7%A8%D7%95%D7%9F-%D7%94%D7%A7%D7%A8%D7%95%D7%9F-0"  target="_blank">לחצו כאן</a>
          </div>
     </div>
     <div id="if3">

@@ -785,6 +785,8 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= ",";
     $JSON .= "\"windDay\":"."\"".getWindInfo($day_f['windDay'], 0)['wind_class']."\"";
     $JSON .= ",";
+    $JSON .= "\"visDay\":"."\"".$day_f['visDay']."\"";
+    $JSON .= ",";
     $JSON .= "\"windNight\":"."\"".getWindInfo($day_f['windNight'], 0)['wind_class']."\"";
     $JSON .= ",";
     $JSON .= "\"windMorningSpd\":"."\"".$day_f['windMorning']."\"";

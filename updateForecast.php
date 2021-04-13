@@ -152,13 +152,13 @@ function updateForecastMessage ($lang, $desc, $active)
 		
 	
 }
-function insertNewMessage ($day, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $active, $icon, $iconmorning, $iconnight)
+function insertNewMessage ($day, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $vidDay, $windNight, $lang0, $lang1, $active, $icon, $iconmorning, $iconnight)
 {
      $now = date('Y-m-d G:i:s', strtotime("-1 hours 0 minutes", time()));
      //$now = getLocalTime(time());
     $lang0 = nl2br($lang0);
     $lang1 = nl2br($lang1);
-    $query = "INSERT INTO forecast_days (day, day_name, date, TempLow, TempLowCloth, TempHigh, TempHighCloth, TempNight, TempNightCloth, humMorning, humDay, humNight, windMorning, windDay, windNight, lang0, lang1, active, icon, iconmorning, iconnight) VALUES('{$day}', '{$day_name}', '{$date}', '{$temp_low}', '{$temp_morning_cloth}', '{$temp_high}', '{$temp_high_cloth}', '{$temp_night}', '{$temp_night_cloth}', '{$humMorning}', '{$humDay}', '{$humNight}', '{$windMorning}', '{$windDay}', '{$windNight}', '{$lang0}', '{$lang1}', '{$active}', '{$icon}', '{$iconmorning}', '{$iconnight}');";
+    $query = "INSERT INTO forecast_days (day, day_name, date, TempLow, TempLowCloth, TempHigh, TempHighCloth, TempNight, TempNightCloth, humMorning, humDay, humNight, windMorning, windDay, visDay, windNight, lang0, lang1, active, icon, iconmorning, iconnight) VALUES('{$day}', '{$day_name}', '{$date}', '{$temp_low}', '{$temp_morning_cloth}', '{$temp_high}', '{$temp_high_cloth}', '{$temp_night}', '{$temp_night_cloth}', '{$humMorning}', '{$humDay}', '{$humNight}', '{$windMorning}', '{$windDay}', '{$visDay}', '{$windNight}', '{$lang0}', '{$lang1}', '{$active}', '{$icon}', '{$iconmorning}', '{$iconnight}');";
     //echo $query;
 
      $result = db_init($query, "");
@@ -177,11 +177,11 @@ function insertNewMessage ($day, $day_name, $date, $temp_low, $temp_morning_clot
     // Free resultset 
     @mysqli_free_result($result);
     if ($active == 1){
-        saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight);
+        saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $visDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight);
     }
 
 }
-function saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight){
+function saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $visDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight){
     global $mem;
     $forecastDaysDB = $mem->get('forecastDaysDB');
     $forecastDaysDB[$idx]['day_name'] = $day_name;
@@ -198,6 +198,7 @@ function saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth,
     $forecastDaysDB[$idx]['humNight'] = $humNight;
     $forecastDaysDB[$idx]['windMorning'] = $windMorning;
     $forecastDaysDB[$idx]['windDay'] = $windDay;
+    $forecastDaysDB[$idx]['visDay'] = $visDay;
     $forecastDaysDB[$idx]['windNight'] = $windNight;
     $forecastDaysDB[$idx]['lang0'] = $lang0;
     $forecastDaysDB[$idx]['lang1'] = $lang1;
@@ -216,7 +217,7 @@ function saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth,
     $mem->set('forecastDaysDB',$forecastDaysDB);
     //apc_store('forecastDaysDB',$forecastDaysDB);	
 }
-function updateForecastDay ($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $active, $icon, $iconmorning, $iconnight)
+function updateForecastDay ($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $visDay, $windNight, $lang0, $lang1, $active, $icon, $iconmorning, $iconnight)
 {
     $now = date('Y-m-d G:i:s', strtotime("-1 hours 0 minutes", time()));
     //$now = getLocalTime(time());
@@ -226,14 +227,14 @@ function updateForecastDay ($idx, $day_name, $date, $temp_low, $temp_morning_clo
     $lang1 = nl2br($lang1);
     $lang1 = str_replace("'", "`", $lang1);
     $lang1 = str_replace("\"", "``", $lang1);
-    $query = "UPDATE forecast_days SET TempLow='{$temp_low}', TempHigh='{$temp_high}', TempLowCloth='{$temp_morning_cloth}', TempHighCloth='{$temp_high_cloth}', TempNight='{$temp_night}', TempNightCloth='{$temp_night_cloth}', TempDay='{$temp_day}', humMorning='{$humMorning}', humDay='{$humDay}', humNight='{$humNight}', windMorning='{$windMorning}', windDay='{$windDay}', windNight='{$windNight}', lang0='{$lang0}', lang1='{$lang1}' , active={$active}, icon='{$icon}', iconmorning='{$iconmorning}', iconnight='{$iconnight}', date='{$date}', day_name='{$day_name}'  WHERE (idx=$idx)";
+    $query = "UPDATE forecast_days SET TempLow='{$temp_low}', TempHigh='{$temp_high}', TempLowCloth='{$temp_morning_cloth}', TempHighCloth='{$temp_high_cloth}', TempNight='{$temp_night}', TempNightCloth='{$temp_night_cloth}', TempDay='{$temp_day}', visDay='{$visDay}', humMorning='{$humMorning}', humDay='{$humDay}', humNight='{$humNight}', windMorning='{$windMorning}', windDay='{$windDay}', windNight='{$windNight}', lang0='{$lang0}', lang1='{$lang1}' , active={$active}, icon='{$icon}', iconmorning='{$iconmorning}', iconnight='{$iconnight}', date='{$date}', day_name='{$day_name}'  WHERE (idx=$idx)";
 
     //echo $query;
     $result = db_init($query, "");
     // Free resultset 
     @mysqli_free_result($result);
     if ($active == 1){
-        saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight);
+        saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $visDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight);
     }
 	
 }
@@ -438,7 +439,8 @@ else if ((trim($_POST['command']) == "U"))
                            $_POST['humDay'], 
                            $_POST['humNight'],
                            $_POST['windMorning'], 
-                            $_POST['windDay'], 
+                            $_POST['windDay'],
+                            $_POST['visDay'], 
                             $_POST['windNight'],  
                            $_POST['lang0'],  
                            urldecode($_POST['lang1']), 
@@ -470,7 +472,8 @@ else if ($_POST['idx'] != "")
                         $_POST['humDay'], 
                         $_POST['humNight'],
                         $_POST['windMorning'], 
-                        $_POST['windDay'], 
+                        $_POST['windDay'],
+                        $_POST['visDay'], 
                         $_POST['windNight'],  
                         $_POST['lang0'],  
                         urldecode($_POST['lang1']), 
@@ -609,7 +612,7 @@ else {
 
 <?
 
-$query = "SELECT d.active, d.idx, d.lang0, d.lang1, d.TempLow, d.TempLowCloth, d.TempHigh, d.date, d.day_name, d.icon, d.iconmorning, d.iconnight, d.TempNight, d.TempNightCloth, d.TempHighCloth, d.humMorning, d.humDay, d.humNight, d.windMorning, d.windDay, d.windNight, a.likes, a.dislikes From forecast_days d left join forecast_days_archive a on d.idx = a.idx ORDER BY d.idx";
+$query = "SELECT d.active, d.idx, d.lang0, d.lang1, d.TempLow, d.TempLowCloth, d.TempHigh, d.date, d.day_name, d.icon, d.iconmorning, d.iconnight, d.TempNight, d.TempNightCloth, d.TempHighCloth, d.humMorning, d.humDay, d.humNight, d.windMorning, d.windDay, d.visDay, d.windNight, a.likes, a.dislikes From forecast_days d left join forecast_days_archive a on d.idx = a.idx ORDER BY d.idx";
 if(!$stmt->prepare($query))
 {
     print "Failed to prepare statement\n";
@@ -742,6 +745,9 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 	</div>
     <div class="cell shrinked">
 		<input id="windDay<?=$line["idx"]?>" name="windDay<?=$line["idx"]?>" size="1"  value="<?=$line["windDay"]?>" style="width:20px;background-color:#DDA000" />
+	</div>
+    <div class="cell shrinked">
+		<input id="visDay<?=$line["idx"]?>" name="visDay<?=$line["idx"]?>" size="1"  value="<?=$line["visDay"]?>" style="width:20px;background-color:#5e86d7" />
 	</div>
 	<div class="cell">
 		<a class="temphigh" title="temphigh_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="temphigh_cloth<?=$line["idx"]?>"><img src="<? echo CLOTHES_PATH."/".$line["TempHighCloth"];?>" width="25px" height="25px" id="temphigh_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempHighCloth"]?>" /></a>
@@ -1202,6 +1208,7 @@ function getOneUFService(dayToSave, command, type)
             var humNight = document.getElementById('humNight'+dayToSave).value;
             var windMorning = document.getElementById('windMorning'+dayToSave).value;
             var windDay = document.getElementById('windDay'+dayToSave).value;
+            var visDay = document.getElementById('visDay'+dayToSave).value;
             var windNight = document.getElementById('windNight'+dayToSave).value;
             var temp_low = document.getElementById('templow'+dayToSave).value;
             var temp_high = document.getElementById('temphigh'+dayToSave).value;
@@ -1217,7 +1224,7 @@ function getOneUFService(dayToSave, command, type)
             //var temp_day = document.getElementById('tempday'+dayToSave).value;
             var lang1 = document.getElementById('lang1'+dayToSave).value;
             var lang0 = document.getElementById('lang0'+dayToSave).value;
-            var postData = "reload=" + reload + "&idx=" + idx + "&command=" + command + "&day=" + day + "&windMorning=" + windMorning + "&windDay=" + windDay + "&windNight=" + windNight + "&humMorning=" + humMorning + "&humDay=" + humDay + "&humNight=" + humNight + "&templow=" + temp_low + "&temphigh=" + temp_high + "&temp_morning_cloth=" + temp_morning_cloth + "&temphigh_cloth=" + temp_high_cloth + "&tempnight=" + temp_night + "&tempnight_cloth=" + temp_night_cloth + "&lang1=" + escape(encodeURI(lang1)) + "&lang0=" + lang0 + "&active=" + active + "&day_name=" + day_name + "&date=" + date +  "&day_icon=" + day_icon +  "&morning_icon=" + morning_icon +  "&night_icon=" + night_icon;
+            var postData = "reload=" + reload + "&idx=" + idx + "&command=" + command + "&day=" + day + "&windMorning=" + windMorning + "&windDay=" + windDay + "&visDay=" + visDay + "&windNight=" + windNight + "&humMorning=" + humMorning + "&humDay=" + humDay + "&humNight=" + humNight + "&templow=" + temp_low + "&temphigh=" + temp_high + "&temp_morning_cloth=" + temp_morning_cloth + "&temphigh_cloth=" + temp_high_cloth + "&tempnight=" + temp_night + "&tempnight_cloth=" + temp_night_cloth + "&lang1=" + escape(encodeURI(lang1)) + "&lang0=" + lang0 + "&active=" + active + "&day_name=" + day_name + "&date=" + date +  "&day_icon=" + day_icon +  "&morning_icon=" + morning_icon +  "&night_icon=" + night_icon;
     }
     else
     {
