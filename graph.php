@@ -909,20 +909,22 @@ if ((strstr(strtolower($_GET['graph']), 'uv'))||
     </script>
 	<div id="sun" style="position:absolute;left:-100px;width:350px;padding:0.2em">
 				<div>
-				<a href="http://www.gaisma.com/en/location/jerusalem.html" target="_blank" title="<? echo $MORE_INFO[$lang_idx];?>">	
+				<a href="https://www.gaisma.com/en/location/jerusalem.html" target="_blank" title="<? echo $MORE_INFO[$lang_idx];?>">	
 						<? echo $SUN_PHASE[$lang_idx]." ".$TODAY[$lang_idx]; ?>
+						
 				</a>	
 				</div>
 			
 				<div>
-				<a href="http://www.sunrisesunset.com/calendar.asp?comb_city_info=Jerusalem,%20Israel;-35.25;31.75;2;9&amp;month=<?echo $month; ?>&amp;year=<?echo $year; ?>&amp;time_type=0" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>"><? echo $RISE[$lang_idx]; ?></a> 
+				<? echo $RISE[$lang_idx]; ?>
 				&nbsp;<? echo $sunrise; ?><br />
-				<a href="http://www.sunrisesunset.com/calendar.asp?comb_city_info=Jerusalem,%20Israel;-35.25;31.75;2;9&amp;month=<?echo $month; ?>&amp;year=<?echo $year; ?>&amp;time_type=0" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>"><? echo $SET[$lang_idx]; ?></a> 
+				<? echo $SET[$lang_idx]; ?> 
 				&nbsp;<? echo $sunset; ?><br />
+				<a href="https://www.sunrisesunset.com/calendar.asp?comb_city_info=Jerusalem,%20Israel;-35.25;31.75;2;9&amp;month=<?echo $month; ?>&amp;year=<?echo $year; ?>&amp;time_type=0" rel="external" title="<? echo $MORE_INFO[$lang_idx];?>"><? echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></a> <br/>
 				 <? echo $today->get_sunshinehours()." ".$SUNSHINEHOURS[$lang_idx]." ".$TILL_NOW[$lang_idx];?>                                                                                
 				</div>
 				<div class="float">
-				<a href="http://www.timeanddate.com/worldclock/astronomy.html?n=110" target="_blank" title="<? echo $MORE_INFO[$lang_idx];?>">
+				<a href="https://www.timeanddate.com/worldclock/astronomy.html?n=110" target="_blank" title="<? echo $MORE_INFO[$lang_idx];?>">
 											<? echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
 				</a>
 				</div>

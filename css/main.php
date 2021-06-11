@@ -548,10 +548,15 @@ position:absolute;
 #latestalert .txtindiv{
      bottom: 0;
 }
-#message .txtindiv, #messages_box .txtindiv, #latestalert span.info .txtindiv{
+#message .txtindiv, #messages_box .txtindiv{
   color:white;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
   bottom:-140px
+}
+#latestalert span.info .txtindiv{
+   color:white;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
+  bottom:-200px
 }
 #alerts_app_promo{
     margin-<?=get_s_align()?>:20px;
@@ -1222,7 +1227,7 @@ background-color:#ebe8ed;
 }
 #forcast_days.detailed .forcast_morning div, #forcast_days.detailed .forcast_noon div, #forcast_days.detailed .forcast_night div {
     display:block;
-    padding: 0.45em 0;
+    padding: 0.4em 0;
 }
 #forcast_days.detailed img{
     vertical-align: baseline;
@@ -1233,6 +1238,9 @@ background-color:#ebe8ed;
 #forcast_days.detailed #night_icon_exp{
     font-size: 0.6em;
     line-height: 1em;
+    position: absolute;
+    width: 270px;
+    margin-top: -120px;
 }
 #forcast_days.detailed .forcast_day{
     width:10px
@@ -1254,7 +1262,7 @@ background-color:#ebe8ed;
     font-size: 1em;
 }
 .winddesc{
-    font-size: 0.8em;
+    font-size: 0.7em;
     line-height: 1em;
 }
 
@@ -1710,7 +1718,9 @@ text-align:<?=get_s_align()?>;
     margin-top:80px;
     line-height:1.2em
 }
-
+#windy_widget{
+    margin-<?=get_s_align()?>:120px
+}
 .white_box {
     background:rgba(255, 255, 255, 0.7);
     <? if (isHeb()) echo "direction:rtl;"; ?>
@@ -3346,7 +3356,7 @@ color: #fff;
 			}
 		#pics {
 			position: absolute;
-			top: 1530px;
+			top: 1560px;
 			z-index: 13;
 			}
 		#section {
@@ -4909,6 +4919,7 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     text-align: center;
 	margin: 0px;
 	border-radius: 5px;
+    <? if (isHeb()) echo "direction:rtl"; ?>
  
 }
 .topbase a

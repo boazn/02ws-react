@@ -421,7 +421,7 @@
         position: absolute;
         margin-left: 20px;
         margin-top: -5px;
-        z-index: 9999;">המרוץ שמנפץ את חומות השנאה</a>
+        z-index: 9999;"><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה<?}?></a>
                 <div class="cloud2-more">
                 
                 </div>
@@ -438,25 +438,26 @@
                 </script>
                 <?if (isHeb()){?>
                 <div id="if1" >  
-                    <a href="https://www.traintheater.co.il/he/%D7%97%D7%95%D7%92%D7%92%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%95%D7%AA-%D7%A2%D7%9D-%D7%AA%D7%99%D7%90%D7%98%D7%A8%D7%95%D7%9F-%D7%94%D7%A7%D7%A8%D7%95%D7%9F-0"  target="_blank"><img src="images/haatzmaut.jpg" alt="תיאטרון הקרון" width="300" height="50"/></a>
+                <div style="width:300px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/dudi.jfif') no-repeat 2px 2px ;background-size: 60px;">
+                            <div style="width:265px;float:right;padding:0.5em"> סיור גרפיטי ״50 גוונים של ירושלים״ 
+                        <a style="text-decoration:underline" href="https://www.jerusalemoutoftheframe.com/graffiti/?fbclid=IwAR0GUeawNnjlWbFA5GkSEbEHL42jRW-0Hn-inyKlAOV73KRx2TF_lnPOFx8" target=_blank >לינק להרשמה</a></div>
+                    </div>
                 </div>
                 <div id="if2" style="display:none">
-                    <a href="https://www.traintheater.co.il/he/%D7%97%D7%95%D7%92%D7%92%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%95%D7%AA-%D7%A2%D7%9D-%D7%AA%D7%99%D7%90%D7%98%D7%A8%D7%95%D7%9F-%D7%94%D7%A7%D7%A8%D7%95%D7%9F-0"  target="_blank"><img src="images/haatzmaut.jpg" alt="תיאטרון הקרון" width="300" height="50"/></a>
+                   
                 </div>
                 <div id="if3" style="width:300px">
-                <a href="https://www.jerusalem-theatre.co.il/%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D/1298/%D7%94%D7%9E%D7%9C%D7%90%D7%9B%D7%99%D7%9D_%D7%A9%D7%9C_%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA"  target="_blank"><img src="images/mikro.gif" alt="תיאטרון מיקו" width="300" height="50"/></a>
-
+               
                 </div>
                 <div id="if4" style="display:none">
-                <a href="https://www.jerusalem-theatre.co.il/%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D/1298/%D7%94%D7%9E%D7%9C%D7%90%D7%9B%D7%99%D7%9D_%D7%A9%D7%9C_%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA"  target="_blank"><img src="images/mikro.gif" alt="תיאטרון מיקו" width="300" height="50"/></a>
                 </div>
                 
                 <div>
                 
                 </div>
                 <div id="belowmainad" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
-                <a href="https://runnerswithoutborders.org/race/" style="">המרוץ שמנפץ את חומות השנאה:
-    קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2021 בירושלים</a>
+                <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
+    קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2021 בירושלים<?}?></a>
                 </div>
                 <?}?>                
                                
@@ -486,9 +487,10 @@
                 </div>
              
             </div>
-            <div class="span3">
-           
-
+            <div id="windy_widget" class="span4">
+            <h2><?=$SYNOP_TITLE[$lang_idx]?></h2>
+            <iframe width="300" height="180" src="https://embed.windy.com/embed2.html?lat=31.775&lon=35.156&detailLat=31.728&detailLon=34.942&width=300&height=180&zoom=7&level=850h&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=true&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>               
+            <?=$synop?>   
 		    </div>
 	   </div>
 			
@@ -513,7 +515,9 @@
                 </div>
                         
                 <div id="adexternal" class="span2">
-                    <!--<a data-p1xtr="widget-button" data-p1xtr-image="https://www.02ws.co.il/img/logo_rain.svg"></a>-->
+                  
+                   
+                  
                 </div>
             </div>
 		    

@@ -27,8 +27,8 @@ if ($current->get_temp() == "")
 $temp_to_cold_meter = $current->get_temp_to_coldmeter();
 $temp_from = $temp_to_cold_meter - 0.5;
 $temp_to = $temp_to_cold_meter + 0.5;
-$temp_from2 = $temp_to_cold_meter - 0.5;
-$temp_to2 = $temp_to_cold_meter + 0.5;
+$temp_from2 = $current->get_temp2_to_coldmeter() - 0.5;
+$temp_to2 = $current->get_temp2_to_coldmeter() + 0.5;
 $row_verdict = array();$row_comment = array();
 $is_personal = "";
 //logger("coldmeter_service:".$personal_coldmeter." ".$_SESSION['loggedin']." ".$_SESSION['email']." ".$temp_from." ".$temp_to);

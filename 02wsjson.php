@@ -99,6 +99,14 @@ $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"issunset\":"."\"".$current->is_sunset()."\"";
 $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"issunrise\":"."\"".$current->is_sunrise()."\"";
+$CURRENT_JSON .= ",\"recommendations\":[";
+foreach ($forecastDaysDB as $day_f){
+$CURRENT_JSON .= "{";
+$CURRENT_JSON .= "\"to_do\":"."\"".$day_f['currentDateTime']."\"";
+$CURRENT_JSON .= "},";
+}
+$CURRENT_JSON = trim($CURRENT_JSON, ",");
+$CURRENT_JSON .= "]";
 $CURRENT_JSON .= "}";
 
 $JSON .= $CURRENT_JSON;
@@ -712,6 +720,14 @@ $JSON .= "\"cloth_title0\":"."\"".getClothTitle($hour_f['cloth'], $hour_f['temp'
 $lang_idx = 1;
 $JSON .= ",";
 $JSON .= "\"cloth_title1\":"."\"".getClothTitle($hour_f['cloth'], $hour_f['temp'])."\"";
+$JSON .= ",\"recommendations\":[";
+foreach ($forecastDaysDB as $day_f){
+$JSON .= "{";
+$JSON .= "\"to_do\":"."\"".$day_f['currentDateTime']."\"";
+$JSON .= "},";
+}
+$JSON = trim($JSON, ",");
+$JSON .= "]";
 $JSON .= "},";
 }
 
@@ -821,6 +837,8 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= "},";
 }
 $random_did_you_know = rand(0, count($DID_YOU_KNOW_EX)-1);
+if (($month > 3) && ($month < 11))
+    $random_did_you_know = rand(0, count($DID_YOU_KNOW_SUMMER)-1);  
 $JSON = trim($JSON, ",");
 $JSON .= "]";
 $JSON .= ",\"Messages\":";
@@ -847,9 +865,15 @@ $JSON .= "\"passedts\":"."\"".(time() - $mem->get('latestalerttime0'))."\"";
 $JSON .= ",";
 $JSON .= "\"timeforecast1\":"."\"".replaceDays(getLocalTime(strtotime($mem->get('descriptionforecasttime1'))))."\"";
 $JSON .= ",";
-$JSON .= "\"tip0\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$EN]."\"";
+if (($month > 3) && ($month < 11))
+    $JSON .= "\"tip0\":"."\"".$DID_YOU_KNOW_SUMMER[$random_did_you_know][$EN]."\"";
+else
+    $JSON .= "\"tip0\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$EN]."\"";
 $JSON .= ",";
-$JSON .= "\"tip1\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$HEB]."\"";
+if (($month > 3) && ($month < 11))
+    $JSON .= "\"tip1\":"."\"".$DID_YOU_KNOW_SUMMER[$random_did_you_know][$HEB]."\"";
+else
+    $JSON .= "\"tip1\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$HEB]."\"";
 $JSON .= "}";
 
 $JSON .= ",\"windstatus\":";

@@ -758,29 +758,25 @@ else {?>
 <div id="adunit2" class="adunit" style="display:none">
     
     <div id="if1">  
-      <!--  <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
-                <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? <a style="text-decoration:underline" href="https://www.dunsguide.co.il/Cb527356b9ff6af65b6cee3ec07a52692_%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%9C%D7%98%D7%95%D7%A8%D7%99%D7%9D/%D7%A1%D7%A7%D7%9C%D7%95%D7%98_%D7%9E%D7%99%D7%9B%D7%90%D7%9C/" target=_blank >050-8844422 מיכאל סקלוט שירותי מיזוג אוויר</a>, תיקונים ותחזוקה   </div>
-         </div>-->
-         <div>
-         <img src="images/haatzmaut.jpg" alt="תיאטרון הקרון" width="320" height="50"/><br/>
-         <a style="width: 100%;display: block;height: 50px;margin-top: -45px;" href="https://www.traintheater.co.il/he/%D7%97%D7%95%D7%92%D7%92%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%95%D7%AA-%D7%A2%D7%9D-%D7%AA%D7%99%D7%90%D7%98%D7%A8%D7%95%D7%9F-%D7%94%D7%A7%D7%A8%D7%95%D7%9F-0"  target="_blank">לחצו כאן</a>
+        <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/dudi.jfif') no-repeat 2px 2px ;background-size: 120px 50px">
+                <div style="width:205px;float:right;padding:0.5em"> סיור גרפיטי ״50 גוונים של ירושלים״ <br/>
+            <a style="text-decoration:underline" href="https://www.jerusalemoutoftheframe.com/graffiti/?fbclid=IwAR0GUeawNnjlWbFA5GkSEbEHL42jRW-0Hn-inyKlAOV73KRx2TF_lnPOFx8" target=_blank >לינק להרשמה</a></div>
          </div>
+        
     </div>
     <div id="if2">
-      <!--   <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/electrician.png') no-repeat 2px 2px ;background-size: 40px;">
-                <div style="width:265px;float:right"> יש שמועה שהקיץ חוזר ובגדול. האם המזגן שלך מוכן ל <img src="images/icons/day/hot_tzirus_2.png" width="15" alt="sun"/> ? <a style="text-decoration:underline" href="https://www.dunsguide.co.il/Cb527356b9ff6af65b6cee3ec07a52692_%D7%90%D7%99%D7%A0%D7%A1%D7%98%D7%9C%D7%98%D7%95%D7%A8%D7%99%D7%9D/%D7%A1%D7%A7%D7%9C%D7%95%D7%98_%D7%9E%D7%99%D7%9B%D7%90%D7%9C/" target=_blank>050-8844422 מיכאל סקלוט שירותי מיזוג אוויר</a>, תיקונים ותחזוקה   </div>
-         </div> -->
-         <div>
-         <img src="images/haatzmaut.jpg" alt="תיאטרון הקרון" width="320" height="50"/><br/>
-         <a style="width: 100%;display: block;height: 50px;margin-top: -45px;" href="https://www.traintheater.co.il/he/%D7%97%D7%95%D7%92%D7%92%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%95%D7%AA-%D7%A2%D7%9D-%D7%AA%D7%99%D7%90%D7%98%D7%A8%D7%95%D7%9F-%D7%94%D7%A7%D7%A8%D7%95%D7%9F-0"  target="_blank">לחצו כאן</a>
+       <div style="width:320px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/dudi2.jfif') no-repeat 2px 2px ;background-size: 120px 50px">
+                <div style="width:205px;float:right;padding:0.5em"> סיור אל יפו שמאחורי הקלעים <br/>   
+            <a style="text-decoration:underline" href="https://www.beyafo.com/yaffo" target=_blank >לינק להרשמה</a></div>
          </div>
+        
     </div>
     <div id="if3">
-    
+        
 
     </div>
     <div id="if4">
-     
+        
     </div>
 	
  <!-- small unit 2 -->
@@ -934,8 +930,11 @@ else {?>
  </div>
  <?}?>
 <div id="startupdiv" style="display:none;" class role="dialog">
-<button type="button" id="cboxClose" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();"></button><br />
-
+<button type="button" id="cboxClose" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();"></button>
+<div style="width:300px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/dudi.jfif') no-repeat 2px 2px ;background-size: 100px 50px">
+                <div style="width:205px;float:right;padding:0.5em"> סיור גרפיטי ״50 גוונים של ירושלים״ <br/>
+            <a style="text-decoration:underline;color:black" href="https://www.jerusalemoutoftheframe.com/graffiti/?fbclid=IwAR0GUeawNnjlWbFA5GkSEbEHL42jRW-0Hn-inyKlAOV73KRx2TF_lnPOFx8" target=_blank >לינק להרשמה</a></div>
+         </div>
 <div class="removeadlink">&nbsp; 
 </div>
  <div class="removeadlink">
@@ -1395,8 +1394,8 @@ Licensed MIT
             }
         }
         
-       if (i == 6) {
-            //    forecastHoursD += "<ul class=\"nav forecasttimebox\" ><li class=\"forcast_each invfloat\" style=\"padding-left:2em\"><a href=\"http://shaon-horef.co.il\" target=_blank >שאון חורף > פעם אחרונה לטירוף של החורף!</a></li></ul>  ";
+       if (i == 4) {
+                forecastHoursD += "<ul class=\"nav \" ><li style=\"padding:0 10px 0 0\"><a style=\"text-decoration:none\" href=\"https://www.jerusalemoutoftheframe.com/graffiti/?fbclid=IwAR0GUeawNnjlWbFA5GkSEbEHL42jRW-0Hn-inyKlAOV73KRx2TF_lnPOFx8\" target=_blank >סיור גרפיטי ״50 גוונים של ירושלים״ <?=get_arrow();?> כאן</a></li></ul>  ";
         
         }
        }
@@ -1498,7 +1497,7 @@ Licensed MIT
             }
             <? if (isHeb()) {?>
              if (i == 4) {
-            //    forecastDays += "<tr class=\"adunit\"><td colspan=\"6\" style=\"padding:0 8px 0 0\"><a href=\"https://m.facebook.com/events/2354090778162660/\" target=_blank >וָאקוּם • פעולות אמנות בשכונה נסתרת</a></td><td><a href=\"https://m.facebook.com/events/2354090778162660/\" target=_blank ><img src=\"images/vacum.png\" width=\"32\" height=\"32\" alt=\"זאזא\" /></a></td></tr>  ";
+                //forecastDays += "<tr class=\"adunit\"><td colspan=\"6\" style=\"padding:0 8px 0 0\"><a style=\"text-decoration:none\" href=\"https://headstart.co.il/project/63080\" target=_blank >יש! אפליקציה חדשה לירושמיים<?=get_arrow();?></a></td></tr>  ";
                             }
                             <?}?>
              forecastDays += "<tr>";
@@ -1517,7 +1516,7 @@ Licensed MIT
                 wind_extra = "<div class=\"wind_icon high_wind\"></div>";
             else
                 wind_extra = "";                        
-            forecastDays += "<span class=\"icon extra" + i + "\" id=\"icon" + i + "\">" + wind_extra + "<img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"34\" height=\"34\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></span><div class=\"tsfh\"><div class=\"humidity icon extra" + i + "\"><a href=\"<?=BASE_URL?>/dailydetailed.php?m=1&dayid=" + (i+1) + "\" rel=\"external\" ><?=get_arrow();?></a></div></div>"+"</td>";
+            forecastDays += "<span class=\"icon extra" + i + "\" id=\"icon" + i + "\">" + wind_extra + "<img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"34\" height=\"34\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></span><div class=\"tsfh\"><div class=\"humidity icon extra" + i + "\"><a href=\"<?=BASE_URL?>/dailydetailed.php?m=1&dayid=" + (i+1) + "\" rel=\"external\" ><img src=\"images/enlarge_64.png\" width=\"35\" alt=\"enlarge\"/></a></div></div>"+"</td>";
             fulltextforecast = json.jws.forecastDays[i].lang<? echo $lang_idx;?>;
             containsanchor = fulltextforecast.indexOf("<a");
             partialtextlastindex = (containsanchor > 0) ? containsanchor - 1 : lastindex;

@@ -25,7 +25,7 @@ define("FCM_API_KEY", "AAAA9gsUJcw:APA91bGWiMagV4yTqG_0saibvybFuMFnuQr7TrdDmRAca
 define("MYSQL_DB","02ws");
 define("MYSQL_IP","localhost");	
 define("MYSQL_USER","boazn");	
-define("MYSQL_PASS","854456");
+define("MYSQL_PASS","Boaz1972");
 define("SENDMAIL_SLEEP_INTERVAL","42200");
 define ("SERVER_CLOCK_DIFF", "+0 hours 0 minutes");
 define ("GMT_TZ", "3");

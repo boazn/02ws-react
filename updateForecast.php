@@ -305,6 +305,9 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
             $mem->set('descriptionforecasttime'.$lang, time());
             echo "updateforecast".$lang."=".date('Y-m-d G:i D', $mem->get('descriptionforecasttime'.$lang));
         }
+        else if ($type == 'synop'){
+            $mem->set('synop'.$lang, $description);
+        }
            
         $res = db_init($query, "" );
         
@@ -599,7 +602,6 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 
 	
 </div>
-    
 <?
 if ($line["active"]==1)
     $mem->set('taf', preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]));
@@ -607,9 +609,24 @@ else {
     $mem->delete('taf');
 }
 } ?>
-
-
-
+<?
+$result = db_init("SELECT * FROM content_sections WHERE (TYPE='synop')", "");
+while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
+?>
+<div  class="float invcell <? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" class="cell" id="taf">
+<div class="cell" id="synop<?=$line["lang"]?>">synop
+        <input id="langsynop<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>" style="width:0"  />
+		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.id, 'U', 'synop')" style="cursor:pointer" />
+	</div>
+    <div class="cell" >
+		<input type="checkbox" id="activesynop" name="active<?=$line["lang"]?>"  value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
+	</div>
+    <div class="cell">
+		<textarea id="descriptionsynop<?=$line["lang"]?>" name="Descriptionsynop<?=$line["lang"]?>" rows="4" style="width:280px;font-size: 1.1em;  min-height: 15px;text-align:<?if ($line["lang"] == "1") echo "right"; else echo "left;direction:ltr";?>;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><? if ($line["active"] == 0) echo getUpdatedForecast(); else echo preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]);?></textarea>
+	</div>
+</div>
+<?}?>
+ 
 <?
 
 $query = "SELECT d.active, d.idx, d.lang0, d.lang1, d.TempLow, d.TempLowCloth, d.TempHigh, d.date, d.day_name, d.icon, d.iconmorning, d.iconnight, d.TempNight, d.TempNightCloth, d.TempHighCloth, d.humMorning, d.humDay, d.humNight, d.windMorning, d.windDay, d.visDay, d.windNight, a.likes, a.dislikes From forecast_days d left join forecast_days_archive a on d.idx = a.idx ORDER BY d.idx";
@@ -1186,6 +1203,12 @@ function getOneUFService(dayToSave, command, type)
     {
         var postData = "idx=" + $("#ad_idx").val() + "&command=" + command + "&type=" + type + "&w=" + $("#imgwidth").val() + "&h=" + $("#imgheight").val() + "&img_url=" + $("#imgads").val() + "&href=" + $("#hrefads").val() + "&active=" + $("#adsactive").prop("checked");
     }
+    if (type == "synop")
+    {
+        var lang = document.getElementById('lang'+dayToSave).value;
+        var description = document.getElementById('descriptionsynop'+lang).value;
+        var postData = "reload=" + reload + "&command=" + command + "&lang=" + lang + "&description=" + escape(encodeURI(description)) + "&title=" + escape(encodeURI(title)) + "&active=" + active + "&type=" + type + "&max_time=" + max_time + "&multiple_factor=" + multiple_factor + "&img_src=" + escape(encodeURI(img_src)) + "&href=" + escape(encodeURI(href));
+    }
 	else if (!document.getElementById('description'+dayToSave))
     {
             //alert('day');
@@ -1231,7 +1254,8 @@ function getOneUFService(dayToSave, command, type)
             //alert('message');
 
             var description = document.getElementById('description'+dayToSave).value;
-            var lang = document.getElementById('lang'+dayToSave).value;
+             var lang = document.getElementById('lang'+dayToSave).value;
+                           
             var img_src = document.getElementById('img'+dayToSave);
             var max_time = document.getElementById('max_time').value;
             var multiple_factor = document.getElementById('MULTIPLE_FACTOR').value;

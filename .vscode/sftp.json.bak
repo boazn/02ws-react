@@ -1,11 +1,10 @@
 {
     "protocol": "sftp",
     "host": "176.58.97.97",
-    "username": "root",
+    "username": "boazn",
     "password": "bn19za72",
     "remotePath": "/home/boazn/public/02ws.com/public/",
-    "promptForPass": false, 
-    "privateKey": "d:\\Users\\boaz.NEW-PC\\.ssh\\ssh_host_rsa_key",
+    "port": 22,
    
 
     "algorithms": {
@@ -17,7 +16,7 @@
         "diffie-hellman-group14-sha1",
         "diffie-hellman-group1-sha1",
         "diffie-hellman-group-exchange-sha1"
-        ],
+       ],
         "cipher": [
             "aes128-ctr","aes128-cbc","3des-cbc","blowfish-cbc","aes192-cbc","aes256-cbc"
         ],

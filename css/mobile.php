@@ -500,7 +500,7 @@ width:320px;
 #startinfo_container
 {
     float:<?echo get_s_align();?>;
-    padding: calc(15.5em - 10px) 0 0em;
+    padding: calc(14.5em - 10px) 0 8em;
     bottom:1em;
     margin:0;
     text-align:<?echo get_s_align();?>;

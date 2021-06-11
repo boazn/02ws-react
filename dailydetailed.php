@@ -67,7 +67,7 @@ foreach ($forecastDaysDB as $key => &$forecastday)
             <li class="forcast_morning">
             <div class="title"><? echo $EARLY_MORNING[$lang_idx];?></div>
             <div class="line">
-            <div class="number"><?=c_or_f($forecastday['TempLow'])?>°</div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempLowCloth?>" rel="external" ><img src="<? echo "images/clothes/".$forecastday['TempLowCloth']; ?>" width="50" height="46" /><?=getClothTitle($forecastday['TempLowCloth'], $forecastday['TempLow'])?></a></div>
+            <div class="number"><?=c_or_f($forecastday['TempLow'])?>°</div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempLowCloth?>" rel="external" ><img src="<? echo "images/clothes/".$forecastday['TempLowCloth']; ?>" width="50" height="46" /><br/><?=getClothTitle($forecastday['TempLowCloth'], $forecastday['TempLow'])?></a></div>
             <div class="icon humidity extra<?=$i?>"><?=$forecastday['humMorning']?>% <?=$HUMIDITY[$lang_idx]?></div>
             <div class="icon extra<?=$i?>" id="morning_icon<?=$i?>"><a href="legend.php" rel="external" ><img  src="images/icons/day/<?=c_or_f($forecastday['iconmorning'])?>" width="50" height="50" alt="images/icons/day/<?=c_or_f($forecastday['iconmorning'])?>"/></a></div>
             </div>
@@ -76,16 +76,16 @@ foreach ($forecastDaysDB as $key => &$forecastday)
             <li class="forcast_noon">
             <div class="title"><? echo $NOON[$lang_idx];?></div>
             <div class="line">
-            <div class="number"><?=c_or_f($forecastday['TempHigh'])?>°</div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" ><img src="<? echo "images/clothes/".$forecastday['TempHighCloth']; ?>" width="50" height="46" /><?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?></a></div>
+            <div class="number"><?=c_or_f($forecastday['TempHigh'])?>°</div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" ><img src="<? echo "images/clothes/".$forecastday['TempHighCloth']; ?>" width="50" height="46" /><br/><?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?></a></div>
             <div class="icon humidity extra<?=$i?>"><?=$forecastday['humDay']?>% <?=$HUMIDITY[$lang_idx]?></div>
              <div class="icon extra<?=$i?>" id="day_icon<?=$i?>"><a href="legend.php" rel="external" ><img  src="images/icons/day/<?=c_or_f($forecastday['icon'])?>" width="50" height="50" alt="images/icons/day/<?=c_or_f($forecastday['icon'])?>"/></a></div>
             </div>                                        
             <div class="icon extra<?=$i?>" ><div class="wind_icon <?echo getWindInfo($forecastday['windDay'], $lang_idx)['wind_class'];?>" title="<?echo getWindInfo($forecastday['windDay'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windDay'], $lang_idx)['winddesc'];?>"><?=$forecastday['windDay']." <span class=\"small\">".$KMH[$lang_idx]."</span>"?></div><div class="winddesc"><?echo getWindInfo($forecastday['windDay'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windDay'], $lang_idx)['winddesc'];?></div></div>
             </li>
             <li class="forcast_night">
-            <div class="title" id="night_icon_exp"><? echo $NIGHT_TEMP_EXP[$lang_idx];?></div>
-            <div class="line">
-            <div class="number"><?=c_or_f($forecastday['TempNight'])?>°</div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="50" height="46" /><?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?></a></div>
+            <div class="title" ><? echo $NIGHT[$lang_idx];?></div>
+            <div class="line"><div id="night_icon_exp"> <? echo $NIGHT_TEMP_EXP[$lang_idx];?></div>
+            <div class="number"><?=c_or_f($forecastday['TempNight'])?>°</div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="50" height="46" /><br/><?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?></a></div>
             <div class="icon humidity extra<?=$i?>" ><?=$forecastday['humNight']?>% <?=$HUMIDITY[$lang_idx]?></div>
             <div class="icon extra<?=$i?>" id="night_icon<?=$i?>"><a href="legend.php" rel="external" ><img  src="images/icons/day/<?=c_or_f($forecastday['iconnight'])?>" width="50" height="50" alt="images/icons/day/<?=c_or_f($forecastday['iconnight'])?>"/></a></div>
             </div> 

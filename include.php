@@ -467,6 +467,10 @@ class FixedTime {
             $temp_to_cold_meter = $itfeels[1];
         return $temp_to_cold_meter;
     }
+    function get_temp2_to_coldmeter(){
+        $temp_to_cold_meter = $this->get_thsw();
+        return $temp_to_cold_meter;
+    }
     function get_temp($temp_unit = "") {
          global $PRIMARY_TEMP, $current;
           if ($this->temp2 > 1000)

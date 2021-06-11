@@ -229,8 +229,10 @@ if ($hour == 1) {
 $detailedforecast = "";
 $forecastlevel = "";
 $taf_contents = "";
+$current_synop_desc = "";
 $detailedforecast = $mem->get('descriptionforecast'.$lang_idx);
 $latestalert = $mem->get('latestalert'.$lang_idx);
+$synop = $mem->get('synop'.$lang_idx);
 if ($detailedforecast){
     $_SESSION['detailedforecast'] = $detailedforecast;
     $_SESSION['latestalert'] = $latestalert;
@@ -254,6 +256,13 @@ else
         $latestalert = $line["Description"];
         $mem->set('latestalert'.$line["lang"], $line["Description"]);
         $mem->set('latestalerttime'.$line["lang"], strtotime($line["updatedTime"]));
+    }
+}
+if ($synop == ""){
+     $result = db_init("SELECT * FROM  `content_sections` WHERE TYPE =  'synop' and lang=?", $lang_idx);
+    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
+        $synop = $line["Description"];
+        $mem->set('synop'.$line["lang"], $line["Description"]);
     }
 }
 $detailedforecast = str_replace("\"", "'", $detailedforecast);

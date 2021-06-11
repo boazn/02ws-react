@@ -93,6 +93,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
 	<a href="#" title="close" onclick="toggle('topmessage')"><div class='sprite stop1'></div></a>
         </div>
         <![endif]-->
+        
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container row">

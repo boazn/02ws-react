@@ -23,6 +23,16 @@ include_once("start.php");
          height: 49%;
          float:left;margin:0.2em
       }
+      .map{
+        width: 50%;margin: 0 auto;
+        }
+
+        @media only screen and (max-width: 600px) {
+            #map-canvas, #map-canvas2, #map-canvas3, #map-canvas4{
+         width:99%;
+         
+            }
+        }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT71EmziBDNEFSl7t5J8wSBVonuG2gu9U"></script>
     <script>
@@ -432,6 +442,9 @@ function initialize() {
 google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
+    <style>
+    
+    </style>
   </head>
   <body>
       <div>&nbsp;</div>
@@ -441,13 +454,13 @@ google.maps.event.addDomListener(window, 'load', initialize);
       </div>
       <h1 style="margin: 0 auto;display:table">מסלולי ריצה</h1>
       <div>&nbsp;</div>
-      <div style="width: 50%;margin: 0 auto;"> Zion-Mormon</div>
+      <div class="map" > Zion-Mormon</div>
     <div id="map-canvas"></div>
-    <div style="width: 50%;margin: 0 auto;">Chalutz-GanSacker   חלוץ-גן-סאקר</div>
+    <div class="map">Chalutz-GanSacker   חלוץ-גן-סאקר</div>
     <div id="map-canvas2"></div>
-    <div style="width: 50%;margin: 0 auto;">Givaat Ram גבעת רם</div>
+    <div class="map">Givaat Ram גבעת רם</div>
     <div id="map-canvas3"></div>
-    <div style="width: 50%;margin: 0 auto;">Station-Zoo התחנה - גן-החיות</div>
+    <div class="map">Station-Zoo התחנה - גן-החיות</div>
     <div id="map-canvas4"></div>
     <div style="direction:rtl" class="inv_plain_3">
     <h1>עוד מסלולים</h1>

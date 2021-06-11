@@ -52,7 +52,15 @@ $ABOUT_ME = array("I have built this site from my own interest in weather and in
 				</a>
 				<br/>
 				<a href="spgm-1.3.2/index.php?spgmGal=GivaatCanada&spgmFilters=t" title="pictures תמונות" class="box">
-				<? if ($lang_idx == $EN) {?>and the station<?} else {?>והתחנה בכבודה ועצמה<?}?>
+				<? if ($lang_idx == $EN) {?>and the station<?} else {?>
+				והתחנה בכבודה ועצמה:<br/>
+				תחנה אלחוטית על הגג עם סנסורים של: 
+טמפרטורה, לחות, קרינה , יו וי, גשם ומאוורר שמערבל את האוויר.
+תחנת הר, תחנת עמק ותחנת כביש.
+מחשב ששואב את הנתונים ממקום האכסון ומשדר אותם לאתר כל דקה.
+
+
+				<?}?>
 				</a>
 			</td>
 		</tr>

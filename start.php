@@ -435,6 +435,7 @@ if (($current->get_temp()=="")||($current->get_hum() == ""))
 	$error_update = true;
 $hoursat = sprintf("%02d%02d", (($min > 45) || ($min < 15) ) ? $hour - 4 : $hour - 3, (($min > 45) || ($min < 15) ) ? 30 : 00);
 $sat_link="http://www.sat24.com/images.php?country=eu&sat=ir&type=large&rnd=866974";
+$current_synop_img = "https://www.wetterzentrale.de/maps/ECMOPEU00_0_1.png";
 $animation_link = "<img src=\"http://www.sat24.com/image.ashx?country=afis&amp;type=slide&amp;index=12&amp;time=&amp;sat=ir\" style=\"position: absolute; top: 0px; left: 0px; width: 640px; height: 480px; z-index: 12; opacity: 0; display: none; \">";
 
 ?>
