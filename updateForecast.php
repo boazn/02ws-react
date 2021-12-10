@@ -31,39 +31,44 @@ ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
         direction:rtl
     }
     .cell{
-        float:right;padding:0.3em 0.3em 0 0.3em
+        float:right;padding:1.2em 1.4em 0 1.5em
     }
     .invcell{
-        float:left;padding:5px 0.8em
+        float:left;padding:5px 1em
     }
     .shrinked{
-        padding:0.3em 0.2em 0em 0.2em
+        padding:0.3em 0.3em 0em 0.3em
     }
     .cellspace{
         padding:0.3em 0.5em 0 0.5em
     }
     textarea{
-        width:390px;
+        width:310px;
         height:35px;
     }
     textarea.floated{
-        width:390px;
+        width:310px;
         height:35px;
     }
-    .btnsstart, .tempstart{clear:both;}
+    .btnsstart, .temp_high, .temp_night, .tempstart, .textforecast, .synop{clear:both;}
     @media only screen and (min-width: 1000px) {
         textarea{
-            width:650px;
+            width:580px;
             height:12px;
         }
         textarea.floated{
             width:380px;
         
         }
-        .btnsstart, .tempstart{clear:none;}
+        .btnsstart, .temp_high, .temp_night, .tempstart, .textforecast, .synop{clear:none;}
         .cell{
             padding:1em
         }
+    }
+    @media only screen and (max-width: 500px) {
+        #section{ margin-top:-300px}
+        #logo, #slogan, #to_home{display:none}
+        .alert{clear:both}
     }
     
     input{border:0}
@@ -152,22 +157,22 @@ function updateForecastMessage ($lang, $desc, $active)
 		
 	
 }
-function insertNewMessage ($day, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $vidDay, $windNight, $lang0, $lang1, $active, $icon, $iconmorning, $iconnight)
+function insertNewMessage ($day, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $dustMorning, $dustDay, $dustNight, $windMorning, $windDay, $visDay, $uvmax, $rainFrom, $rainTo, $windNight, $lang0, $lang1, $active, $icon, $iconmorning, $iconnight)
 {
      $now = date('Y-m-d G:i:s', strtotime("-1 hours 0 minutes", time()));
      //$now = getLocalTime(time());
     $lang0 = nl2br($lang0);
     $lang1 = nl2br($lang1);
-    $query = "INSERT INTO forecast_days (day, day_name, date, TempLow, TempLowCloth, TempHigh, TempHighCloth, TempNight, TempNightCloth, humMorning, humDay, humNight, windMorning, windDay, visDay, windNight, lang0, lang1, active, icon, iconmorning, iconnight) VALUES('{$day}', '{$day_name}', '{$date}', '{$temp_low}', '{$temp_morning_cloth}', '{$temp_high}', '{$temp_high_cloth}', '{$temp_night}', '{$temp_night_cloth}', '{$humMorning}', '{$humDay}', '{$humNight}', '{$windMorning}', '{$windDay}', '{$visDay}', '{$windNight}', '{$lang0}', '{$lang1}', '{$active}', '{$icon}', '{$iconmorning}', '{$iconnight}');";
+    $query = "INSERT INTO forecast_days 
+                      (day,     day_name,      date,    TempLow,        TempLowCloth,             TempHigh,       TempHighCloth,          TempNight,      TempNightCloth,     humMorning,       humDay,   humNight,       dustMorning,        dustDay,    dustNight,      windMorning,        windDay,        visDay,     uvmax,      rainFrom,       rainTo,     windNight,      lang0,      lang1,      active,     icon,       iconmorning,        iconnight) 
+            VALUES('{$day}', '{$day_name}', '{$date}', '{$temp_low}', '{$temp_morning_cloth}', '{$temp_high}', '{$temp_high_cloth}', '{$temp_night}', '{$temp_night_cloth}', '{$humMorning}', '{$humDay}', '{$humNight}', '{$dustMorning}', '{$dustDay}', '{$dustNight}', '{$windMorning}', '{$windDay}', '{$visDay}', '{$uvmax}', '{$rainFrom}', '{$rainTo}', '{$windNight}', '{$lang0}', '{$lang1}', '{$active}', '{$icon}', '{$iconmorning}', '{$iconnight}');";
     //echo $query;
 
      $result = db_init($query, "");
      if   ($result["error"] != ""){
+        echo $result["error"];
         $active = 0;
         $day = $day + 1;
-        $query = "INSERT INTO forecast_days (day, day_name, date, TempLow, TempLowCloth, TempHigh, TempHighCloth, TempNight, TempNightCloth, humMorning, humDay, humNight, windMorning, windDay, windNight, lang0, lang1, active, icon) VALUES('{$day}', '{$day_name}', '{$date}', '{$temp_low}', '{$temp_morning_cloth}', '{$temp_high}', '{$temp_high_cloth}', '{$temp_night}', '{$temp_night_cloth}', '{$humMorning}', '{$humDay}', '{$humNight}', '{$windMorning}', '{$windDay}', '{$windNight}', '{$lang0}', '{$lang1}', '0', '{$icon}');";
-        $result = db_init($query, "");
-        
     }
     $query = "SELECT max(idx) idx FROM `forecast_days`";
     $result = db_init($query, "");
@@ -177,11 +182,65 @@ function insertNewMessage ($day, $day_name, $date, $temp_low, $temp_morning_clot
     // Free resultset 
     @mysqli_free_result($result);
     if ($active == 1){
-        saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $visDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight);
+        saveForecastDay($idx, 
+                        $day_name, 
+                        $date, 
+                        $temp_low, 
+                        $temp_morning_cloth, 
+                        $temp_high, 
+                        $temp_high_cloth, 
+                        $temp_night, 
+                        $temp_night_cloth, 
+                        $temp_day, 
+                        $humMorning, 
+                        $humDay, 
+                        $humNight, 
+                        $dustMorning, 
+                        $dustDay, 
+                        $dustNight, 
+                        $windMorning, 
+                        $windDay, 
+                        $visDay, 
+                        $uvmax, 
+                        $rainFrom, 
+                        $rainTo, 
+                        $windNight, 
+                        $lang0, 
+                        $lang1, 
+                        $icon, 
+                        $iconmorning, 
+                        $iconnight);
     }
 
 }
-function saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $visDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight){
+function saveForecastDay($idx, 
+                         $day_name, 
+                         $date, 
+                         $temp_low, 
+                         $temp_morning_cloth, 
+                         $temp_high, 
+                         $temp_high_cloth, 
+                         $temp_night, 
+                         $temp_night_cloth, 
+                         $temp_day, 
+                         $humMorning, 
+                         $humDay, 
+                         $humNight, 
+                         $dustMorning, 
+                         $dustDay, 
+                         $dustNight, 
+                         $windMorning, 
+                         $windDay, 
+                         $visDay, 
+                         $uvmax, 
+                         $rainFrom, 
+                         $rainTo, 
+                         $windNight, 
+                         $lang0, 
+                         $lang1, 
+                         $icon, 
+                         $iconmorning, 
+                         $iconnight){
     global $mem;
     $forecastDaysDB = $mem->get('forecastDaysDB');
     $forecastDaysDB[$idx]['day_name'] = $day_name;
@@ -196,9 +255,15 @@ function saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth,
     $forecastDaysDB[$idx]['humMorning'] = $humMorning;
     $forecastDaysDB[$idx]['humDay'] = $humDay;
     $forecastDaysDB[$idx]['humNight'] = $humNight;
+    $forecastDaysDB[$idx]['dustMorning'] = $dustMorning;
+    $forecastDaysDB[$idx]['dustDay'] = $dustDay;
+    $forecastDaysDB[$idx]['dustNight'] = $dustNight;
     $forecastDaysDB[$idx]['windMorning'] = $windMorning;
     $forecastDaysDB[$idx]['windDay'] = $windDay;
     $forecastDaysDB[$idx]['visDay'] = $visDay;
+    $forecastDaysDB[$idx]['uvmax'] = $uvmax;
+    $forecastDaysDB[$idx]['rainFrom'] = $rainFrom;
+    $forecastDaysDB[$idx]['rainTo'] = $rainTo;
     $forecastDaysDB[$idx]['windNight'] = $windNight;
     $forecastDaysDB[$idx]['lang0'] = $lang0;
     $forecastDaysDB[$idx]['lang1'] = $lang1;
@@ -217,7 +282,35 @@ function saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth,
     $mem->set('forecastDaysDB',$forecastDaysDB);
     //apc_store('forecastDaysDB',$forecastDaysDB);	
 }
-function updateForecastDay ($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $visDay, $windNight, $lang0, $lang1, $active, $icon, $iconmorning, $iconnight)
+function updateForecastDay ($idx, 
+                            $day_name, 
+                            $date, 
+                            $temp_low, 
+                            $temp_morning_cloth, 
+                            $temp_high, 
+                            $temp_high_cloth, 
+                            $temp_night, 
+                            $temp_night_cloth, 
+                            $temp_day, 
+                            $humMorning, 
+                            $humDay, 
+                            $humNight, 
+                            $dustMorning, 
+                            $dustDay, 
+                            $dustNight, 
+                            $windMorning, 
+                            $windDay, 
+                            $visDay, 
+                            $uvmax, 
+                            $rainFrom, 
+                            $rainTo, 
+                            $windNight, 
+                            $lang0, 
+                            $lang1, 
+                            $active, 
+                            $icon, 
+                            $iconmorning, 
+                            $iconnight)
 {
     $now = date('Y-m-d G:i:s', strtotime("-1 hours 0 minutes", time()));
     //$now = getLocalTime(time());
@@ -227,14 +320,70 @@ function updateForecastDay ($idx, $day_name, $date, $temp_low, $temp_morning_clo
     $lang1 = nl2br($lang1);
     $lang1 = str_replace("'", "`", $lang1);
     $lang1 = str_replace("\"", "``", $lang1);
-    $query = "UPDATE forecast_days SET TempLow='{$temp_low}', TempHigh='{$temp_high}', TempLowCloth='{$temp_morning_cloth}', TempHighCloth='{$temp_high_cloth}', TempNight='{$temp_night}', TempNightCloth='{$temp_night_cloth}', TempDay='{$temp_day}', visDay='{$visDay}', humMorning='{$humMorning}', humDay='{$humDay}', humNight='{$humNight}', windMorning='{$windMorning}', windDay='{$windDay}', windNight='{$windNight}', lang0='{$lang0}', lang1='{$lang1}' , active={$active}, icon='{$icon}', iconmorning='{$iconmorning}', iconnight='{$iconnight}', date='{$date}', day_name='{$day_name}'  WHERE (idx=$idx)";
+    $query = "UPDATE forecast_days SET 
+                    TempLow='{$temp_low}', 
+                    TempHigh='{$temp_high}', 
+                    TempLowCloth='{$temp_morning_cloth}', 
+                    TempHighCloth='{$temp_high_cloth}', 
+                    TempNight='{$temp_night}', 
+                    TempNightCloth='{$temp_night_cloth}', 
+                    TempDay='{$temp_day}', 
+                    visDay='{$visDay}', 
+                    uvmax='{$uvmax}', 
+                    rainFrom='{$rainFrom}', 
+                    rainTo='{$rainTo}', 
+                    humMorning='{$humMorning}', 
+                    humDay='{$humDay}', 
+                    humNight='{$humNight}', 
+                    dustMorning='{$dustMorning}', 
+                    dustDay='{$dustDay}', 
+                    dustNight='{$dustNight}', 
+                    windMorning='{$windMorning}', 
+                    windDay='{$windDay}', 
+                    windNight='{$windNight}', 
+                    lang0='{$lang0}', 
+                    lang1='{$lang1}' , 
+                    active={$active}, 
+                    icon='{$icon}', 
+                    iconmorning='{$iconmorning}', 
+                    iconnight='{$iconnight}', 
+                    date='{$date}', 
+                    day_name='{$day_name}'  
+                    WHERE (idx=$idx)";
 
     //echo $query;
     $result = db_init($query, "");
     // Free resultset 
     @mysqli_free_result($result);
     if ($active == 1){
-        saveForecastDay($idx, $day_name, $date, $temp_low, $temp_morning_cloth, $temp_high, $temp_high_cloth, $temp_night, $temp_night_cloth, $temp_day, $humMorning, $humDay, $humNight, $windMorning, $windDay, $visDay, $windNight, $lang0, $lang1, $icon, $iconmorning, $iconnight);
+        saveForecastDay($idx, 
+                        $day_name, 
+                        $date, 
+                        $temp_low, 
+                        $temp_morning_cloth, 
+                        $temp_high, 
+                        $temp_high_cloth, 
+                        $temp_night, 
+                        $temp_night_cloth, 
+                        $temp_day, 
+                        $humMorning, 
+                        $humDay, 
+                        $humNight, 
+                        $dustMorning, 
+                        $dustDay, 
+                        $dustNight, 
+                        $windMorning, 
+                        $windDay, 
+                        $visDay, 
+                        $uvmax, 
+                        $rainFrom, 
+                        $rainTo, 
+                        $windNight, 
+                        $lang0, 
+                        $lang1, 
+                        $icon, 
+                        $iconmorning, 
+                        $iconnight);
     }
 	
 }
@@ -262,7 +411,7 @@ function updateAds ($active, $idx, $type, $command, $img_url, $href, $w, $h)
 function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $append)
 {
     global $forecastHour, $mem;
-    $description = nl2br($description);
+    //$description = nl2br($description);
     $description = str_replace("'", "`", $description);
     $now = replaceDays(date('G:i D '));
      //$now = getLocalTime(time());
@@ -274,7 +423,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
     while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
         $latestalert = $line["Description"];
     }
-    $description_appended = $latestalert."\n</br>".$descriptionforecast;
+    $description_appended = $latestalert."\n".$descriptionforecast;
     
     //echo "append=".$append."<br/>";
     if ($append==1){
@@ -282,7 +431,8 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         $mem->set('descriptionforecast'.$lang, $description_appended);
         $res = db_init($query, "" );
         //echo $query;
-        $description = "<div class=\"alerttime\">".$now."</div><div class=\"title\">".$description."</div>";
+        //$description = "<div class=\"alerttime\">".$now."</div><div class=\"title\">".$description."</div>";
+        $description = $now."\n".$description;
         $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='$type') and (lang=$lang)";
         $mem->set('latestalert'.$lang, $description);
         $mem->set('latestalerttime'.$lang, time());
@@ -314,7 +464,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
     }
     
         
-      //echo "<br/>".$query;
+    //  echo "<br/>".$query;
     
     // Free resultset 
     @mysqli_free_result($result);
@@ -441,9 +591,15 @@ else if ((trim($_POST['command']) == "U"))
                            $_POST['humMorning'], 
                            $_POST['humDay'], 
                            $_POST['humNight'],
+                           $_POST['dustMorning'], 
+                           $_POST['dustDay'], 
+                           $_POST['dustNight'],
                            $_POST['windMorning'], 
                             $_POST['windDay'],
-                            $_POST['visDay'], 
+                            $_POST['visDay'],
+                            $_POST['uvmax'],
+                            $_POST['rainFrom'],
+                            $_POST['rainTo'], 
                             $_POST['windNight'],  
                            $_POST['lang0'],  
                            urldecode($_POST['lang1']), 
@@ -452,12 +608,26 @@ else if ((trim($_POST['command']) == "U"))
                            $_POST['morning_icon'], 
                            $_POST['night_icon']);
      else
-		updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), 1, $_POST['type'], $_POST['lang'],urldecode($_POST['href']) ,urldecode($_POST['img_src']),urldecode($_POST['title']), 0);
+		updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), 
+                                   1, 
+                                   $_POST['type'], 
+                                   $_POST['lang'],
+                                   urldecode($_POST['href']) ,
+                                   urldecode($_POST['img_src']),
+                                   urldecode($_POST['title']), 
+                                   0);
 }
 
 else if ((trim($_POST['type']) == "LAlert"))
 {
-    updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), 1, $_POST['type'], $_POST['lang'],urldecode($_POST['href']) ,urldecode($_POST['img_src']),urldecode($_POST['title']), 1);
+    updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), 
+                               1, 
+                               $_POST['type'], 
+                               $_POST['lang'],
+                               urldecode($_POST['href']) ,
+                               urldecode($_POST['img_src']),
+                               urldecode($_POST['title']), 
+                               1);
 }
 else if ($_POST['idx'] != "")
 {
@@ -474,9 +644,15 @@ else if ($_POST['idx'] != "")
                         $_POST['humMorning'], 
                         $_POST['humDay'], 
                         $_POST['humNight'],
+                        $_POST['dustMorning'], 
+                        $_POST['dustDay'], 
+                        $_POST['dustNight'],
                         $_POST['windMorning'], 
                         $_POST['windDay'],
-                        $_POST['visDay'], 
+                        $_POST['visDay'],
+                        $_POST['uvmax'],
+                        $_POST['rainFrom'],
+                        $_POST['rainTo'], 
                         $_POST['windNight'],  
                         $_POST['lang0'],  
                         urldecode($_POST['lang1']), 
@@ -559,40 +735,40 @@ $langp = 0;
 $result = db_init("SELECT * FROM content_sections WHERE (TYPE='taf') and (lang=?)", $langp);
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 ?>
-<div  class="invcell <? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" class="cell" id="taf">
+<div  class="invcell shrinked <? if ($line["active"]==1) echo "inv_plain_3_zebra";?>"  id="taf">
     <div style="position:absolute;top:3em;left: 450px;">
         <input type="checkbox" id="reloadf" name="reloadf"  value="<?=$_POST["reloadf"]?>" <? if ($_POST["reloadf"] == 1) echo "checked=\"checked\""; ?> />reloadF from DB
     </div>
-	<div class="cell">
+	<div class="cell shrinked">
         <input id="max_time" name="max_time" size="2"  value="<?=$mem->get('max_time')?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:40px;font-size:2em"/>
 	</div>
-	<div class="cell">
+	<div class="cell shrinked">
         <input id="MULTIPLE_FACTOR" name="MULTIPLE_FACTOR" size="3"  value="<?=$mem->get('MULTIPLE_FACTOR')?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:50px;font-size:2em"/>
 	</div>
-	<div class="cell" >
+	<div class="cell shrinked" >
 		
 		<input type="checkbox" id="activetaf" name="active<?=$line["day"]?>"  value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
 		
 	</div>
-	<div class="cell">
+	<div class="cell shrinked">
 		<span >taf</span>	 
 		<input id="langtaf" name="lang<?=$line["lang"]?>" size="1"  value="-1" style="width:0"  />
 		
 	</div>
-	
-	<div class="cell">
+	<div class="cell shrinked">
+    <span id="datetaf"><?=$mem->get('datetaf')?></span><br /><span id="timetaf"><?=$mem->get('timetaf')?>:00</span>
+    </div>
+	<div class="cell shrinked">
 		
 		<!-- <input id="commandtaf" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'taf')" style="cursor:pointer" />
 	</div>
-	<div class="cell">
+	<div class="cell shrinked">
 		
-		<textarea id="descriptiontaf" name="Description<?=$line["lang"]?>" rows="4" style="width:280px;font-size: 1.1em;  min-height: 50px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><? if ($line["active"] == 0) echo getUpdatedForecast(); else echo preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]);?></textarea>
+		<textarea id="descriptiontaf" name="Description<?=$line["lang"]?>" rows="4" style="width:260px;font-size: 1.1em;  min-height: 50px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><? if ($line["active"] == 0) echo getUpdatedForecast(); else echo preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]);?></textarea>
 		
 	</div>
-	<div class="cell">
-    <span id="datetaf"><?=$mem->get('datetaf')?></span><br /><span id="timetaf"><?=$mem->get('timetaf')?>:00</span>
-    </div>
+	
     
     
 	
@@ -613,15 +789,16 @@ else {
 $result = db_init("SELECT * FROM content_sections WHERE (TYPE='synop')", "");
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 ?>
-<div  class="float invcell <? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" class="cell" id="taf">
-<div class="cell" id="synop<?=$line["lang"]?>">synop
+<div class="synop float invcell shrinked <? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" id="taf">
+<div class="cell shrinked synop" >
+		<input type="checkbox" id="activesynop" name="active<?=$line["lang"]?>"  value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
+	</div>
+<div class="cell shrinked" id="synop<?=$line["lang"]?>">synop
         <input id="langsynop<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>" style="width:0"  />
 		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.id, 'U', 'synop')" style="cursor:pointer" />
 	</div>
-    <div class="cell" >
-		<input type="checkbox" id="activesynop" name="active<?=$line["lang"]?>"  value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
-	</div>
-    <div class="cell">
+    
+    <div class="cell shrinked">
 		<textarea id="descriptionsynop<?=$line["lang"]?>" name="Descriptionsynop<?=$line["lang"]?>" rows="4" style="width:280px;font-size: 1.1em;  min-height: 15px;text-align:<?if ($line["lang"] == "1") echo "right"; else echo "left;direction:ltr";?>;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><? if ($line["active"] == 0) echo getUpdatedForecast(); else echo preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]);?></textarea>
 	</div>
 </div>
@@ -629,7 +806,7 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
  
 <?
 
-$query = "SELECT d.active, d.idx, d.lang0, d.lang1, d.TempLow, d.TempLowCloth, d.TempHigh, d.date, d.day_name, d.icon, d.iconmorning, d.iconnight, d.TempNight, d.TempNightCloth, d.TempHighCloth, d.humMorning, d.humDay, d.humNight, d.windMorning, d.windDay, d.visDay, d.windNight, a.likes, a.dislikes From forecast_days d left join forecast_days_archive a on d.idx = a.idx ORDER BY d.idx";
+$query = "SELECT d.active, d.idx, d.lang0, d.lang1, d.TempLow, d.TempLowCloth, d.TempHigh, d.date, d.day_name, d.icon, d.iconmorning, d.iconnight, d.TempNight, d.TempNightCloth, d.TempHighCloth, d.humMorning, d.humDay, d.humNight, d.dustMorning, d.dustDay, d.dustNight, d.windMorning, d.windDay, d.visDay, d.uvmax, d.rainFrom, d.rainTo, d.windNight, a.likes, a.dislikes From forecast_days d left join forecast_days_archive a on d.idx = a.idx ORDER BY d.idx";
 if(!$stmt->prepare($query))
 {
     print "Failed to prepare statement\n";
@@ -665,12 +842,17 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
                                                       'TempNightCloth' => $line["TempNightCloth"], 
                                                       'TempLowCloth' => $line["TempLowCloth"], 
                                                       'TempHighCloth' => $line["TempHighCloth"],
+                                                      'visDay'=>$line["visDay"],
+                                                      'uvmax'=>$line["uvmax"], 
                                                       'windMorning'=>$line["windMorning"], 
                                                       'windDay'=>$line["windDay"], 
                                                       'windNight'=>$line["windNight"], 
                                                       'humMorning'=>$line["humMorning"], 
                                                       'humDay'=>$line["humDay"], 
-                                                      'humNight'=>$line["humNight"]);
+                                                      'humNight'=>$line["humNight"], 
+                                                      'dustMorning'=>$line["dustMorning"], 
+                                                      'dustDay'=>$line["dustDay"], 
+                                                      'dustNight'=>$line["dustNight"]);
                 for ($i = 0;$i < $line["likes"];$i++)
                 {
                     array_push($forecastDaysDB[$line["idx"]]["likes"], $i);
@@ -700,7 +882,7 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
     &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="cell">		
-			<img src="images/plus.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img src="images/plus.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecastd')" style="cursor:pointer" />
 			
     </div>
@@ -730,7 +912,7 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 		
     </div>
     
-	<div class="cell shrinked">
+	<div class="cell ">
 			<input id="date<?=$line["idx"]?>" name="date<?=$line["idx"]?>" size="3"  value="<?=$line["date"]?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:40px"/>
 	</div>
     
@@ -738,56 +920,75 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
     <input id="templow<?=$line["idx"]?>" name="templow<?=$line["idx"]?>" size="1"  value="<?=$line["TempLow"]?>" style="width:20px;background-color:#33CCFF" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
 		
 	</div>
-    <div class="cell shrinked">
+    <div class="cell ">
 		<input id="humMorning<?=$line["idx"]?>" name="humMorning<?=$line["idx"]?>" size="1"  value="<?=$line["humMorning"]?>" style="width:20px;background-color:#DDA0DD" />
 	</div>
-    <div class="cell shrinked">
+    <div class="cell ">
+		<input id="dustMorning<?=$line["idx"]?>" name="dustMorning<?=$line["idx"]?>" size="1"  value="<?=$line["dustMorning"]?>" style="width:20px;background-color:#DDD000" />
+	</div>
+    <div class="cell ">
 		<input id="windMorning<?=$line["idx"]?>" name="windMorning<?=$line["idx"]?>" size="1"  value="<?=$line["windMorning"]?>" style="width:20px;background-color:#DDA000" />
 	</div>
     <div class="cell">
 		<a class="templow" title="temp_morning_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="temp_morning_cloth<?=$line["idx"]?>"><img src="<? echo CLOTHES_PATH."/".$line["TempLowCloth"];?>" width="25px" height="25px" id="temp_morning_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempLowCloth"]?>" /></a>
 	</div>
     
-    <div class="cell shrinked">
+    <div class="cell ">
 		<a class="icon_forecast" title="morning_icon<?=$line["idx"]?>" href="javascript:void(0)" id="morning_icon<?=$line["idx"]?>"><img src="images/icons/day/<?=$line["iconmorning"]?>" width="30px"  height="30px" id="morning_icon<?=$line["idx"]?>_img" /></a>
     </div>
     <div class="cell cellspace ">
     &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
-	<div class="cell ">
+	<div class="cell temp_high">
 			<input id="temphigh<?=$line["idx"]?>" name="temphigh<?=$line["day"]?>" size="1"  value="<?=$line["TempHigh"]?>" style="width:20px;background-color:#FF3300" onclick="empty(this, '<?=$NAME[$lang_idx]?>');" />
 	</div>
-        <div class="cell shrinked">
+        <div class="cell ">
 		<input id="humDay<?=$line["idx"]?>" name="humDay<?=$line["idx"]?>" size="1"  value="<?=$line["humDay"]?>" style="width:20px;background-color:#DDA0DD" />
 	</div>
-    <div class="cell shrinked">
+    <div class="cell ">
+		<input id="dustDay<?=$line["idx"]?>" name="dustDay<?=$line["idx"]?>" size="1"  value="<?=$line["dustDay"]?>" style="width:20px;background-color:#DDD000" />
+	</div>
+    <div class="cell ">
 		<input id="windDay<?=$line["idx"]?>" name="windDay<?=$line["idx"]?>" size="1"  value="<?=$line["windDay"]?>" style="width:20px;background-color:#DDA000" />
 	</div>
-    <div class="cell shrinked">
-		<input id="visDay<?=$line["idx"]?>" name="visDay<?=$line["idx"]?>" size="1"  value="<?=$line["visDay"]?>" style="width:20px;background-color:#5e86d7" />
-	</div>
-	<div class="cell">
+    <div class="cell">
 		<a class="temphigh" title="temphigh_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="temphigh_cloth<?=$line["idx"]?>"><img src="<? echo CLOTHES_PATH."/".$line["TempHighCloth"];?>" width="25px" height="25px" id="temphigh_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempHighCloth"]?>" /></a>
 	</div>
-    <div class="cell shrinked">
+    <div class="cell ">
 		<a class="icon_forecast" title="day_icon<?=$line["idx"]?>" href="javascript:void(0)" id="day_icon<?=$line["idx"]?>"><img src="images/icons/day/<?=$line["icon"]?>" width="30px"  height="30px" id="day_icon<?=$line["idx"]?>_img" /></a>
     </div>
+    <div class="cell ">
+		<input id="visDay<?=$line["idx"]?>" name="visDay<?=$line["idx"]?>" size="1"  value="<?=$line["visDay"]?>" style="width:20px;background-color:#8aa6df" />
+	</div>
+    <div class="cell ">
+		<input id="uvmax<?=$line["idx"]?>" name="uvmax<?=$line["idx"]?>" size="1"  value="<?=$line["uvmax"]?>" style="width:20px;background-color:#9d83d2" />
+	</div>
+    <div class="cell ">
+		<input id="rainFrom<?=$line["idx"]?>" name="rainFrom<?=$line["idx"]?>" size="1"  value="<?=$line["rainFrom"]?>" style="width:20px;background-color:#5ee8d7" />
+	</div>
+    <div class="cell ">
+		<input id="rainTo<?=$line["idx"]?>" name="rainTo<?=$line["idx"]?>" size="1"  value="<?=$line["rainTo"]?>" style="width:20px;background-color:#5ee8d7" />
+	</div>
+	
     <div class="cell cellspace ">
     &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
-	<div class="cell ">
+	<div class="cell temp_night">
 		<input id="tempnight<?=$line["idx"]?>" name="tempnight<?=$line["idx"]?>" size="1"  value="<?=$line["TempNight"]?>" style="width:20px;background-color:#33CCFF;" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
 	</div>
-        <div class="cell shrinked">
+        <div class="cell ">
 		<input id="humNight<?=$line["idx"]?>" name="humNight<?=$line["idx"]?>" size="1"  value="<?=$line["humNight"]?>" style="width:20px;background-color:#DDA0DD" />
 	</div>
-    <div class="cell shrinked">
+    <div class="cell ">
+		<input id="dustNight<?=$line["idx"]?>" name="dustNight<?=$line["idx"]?>" size="1"  value="<?=$line["dustNight"]?>" style="width:20px;background-color:#DDD000" />
+	</div>
+    <div class="cell ">
 		<input id="windNight<?=$line["idx"]?>" name="windNight<?=$line["idx"]?>" size="1"  value="<?=$line["windNight"]?>" style="width:20px;background-color:#DDA000" />
 	</div>
-	<div class="cell shrinked">
+	<div class="cell ">
 			<a class="tempnight" title="tempnight_cloth<?=$line["idx"]?>" href="javascript:void(0)" id="tempnight_cloth<?=$line["idx"]?>"><img src="<?echo CLOTHES_PATH."/".$line["TempNightCloth"];?>" width="25px" height="25px" id="tempnight_cloth<?=$line["idx"]?>_img" alt="<?=$line["TempNightCloth"]?>" /></a>
 	</div>
-    <div class="cell shrinked">
+    <div class="cell ">
 		<a class="icon_forecast" title="night_icon<?=$line["idx"]?>" href="javascript:void(0)" id="night_icon<?=$line["idx"]?>"><img src="images/icons/day/<?=$line["iconnight"]?>" width="30px"  height="30px" id="night_icon<?=$line["idx"]?>_img" /></a>
     </div>
     
@@ -798,15 +999,15 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
         
        
 	
-    <div style="clear:both" class="cell shrinked">
+    <div class="cell shrinked textforecast">
 			
             <textarea id="lang1<?=$line["idx"]?>" name="lang1<?=$line["idx"]?>" size="80" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 215px;text-align:right;direction:rtl;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?></textarea>
         </div>
 		<div id="day_href_plugin<?=$line["idx"]?>" class="cell">
 			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
     </div>
-         <div style="clear:both" class="cell shrinked">
-        <textarea id="lang0<?=$line["idx"]?>" name="lang0<?=$line["idx"]?>" size="40" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif; width:340px; max-height: 215px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?></textarea>
+     <div  class="cell shrinked textforecast">
+        <textarea id="lang0<?=$line["idx"]?>" name="lang0<?=$line["idx"]?>" size="40" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif; max-height: 215px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?></textarea>
         <span style="font-size:2.1em"><?//=$forecastDaysDB[$line["idx"]]['lang2']?></span>
 	</div>
 	<div id="day_href_plugin<?=$line["idx"]?>" class="cell" >
@@ -816,6 +1017,7 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
         
         
 </div>
+<div style="clear:both"></div>
 <?
 }
 if ($_POST['reloadf'] == 1)
@@ -827,88 +1029,87 @@ $query = "SELECT * FROM  `content_sections` WHERE TYPE =  'LAlert'";
 $result = mysqli_query($link, $query);
 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
-<div  class="invcell <? if ($line["active"]==1) echo "inv_plain_3_zebra";?>" style="float:left" id="LAlert<?=$line["lang"]?>">
-	
-	<div class="cell">
-		
-		<input type="checkbox" id="activeLAlert<?=$line["lang"]?>" name="active<?=$line["day"]?>" value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
-		
-	</div>
-    <div class="cell" style="width:80px">
-		<span><?=date('Y-m-d G:i D ', $mem->get('latestalerttime'.$line["lang"]))?></span>
-		
-	</div>
-	<div class="cell" style="visibility:hidden;width:0">
-		<span >forecast<?=$line["lang"]?></span>	 
-		<input id="langLAlert<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>" readonly="readonly" style="width:0" />
-		
-	</div>
-	<div class="cell" >
-		
-		<textarea id="descriptionLAlert<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
-		
-	</div>
-    
-	<div id="forecast_href_plugin" class="float cell">
-			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
-	</div>
-	<div class="cell">
-			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'latestalert<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
-	</div>
-	<div class="cell btnsstart" style="width:20px">
+<div  class=" <? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell shrinked"  id="LAlert<?=$line["lang"]?>">
+<div class="invcell shrinked">
 		
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		
         <img src="images/plus.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'LAlert')" style="cursor:pointer" />&nbsp;&nbsp;
         <img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'LAlert')" style="cursor:pointer" />
 	</div>
+	<div class="cell shrinked" style="clear:both">
+		
+		<input type="checkbox" id="activeLAlert<?=$line["lang"]?>" name="active<?=$line["day"]?>" value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
+		
+	</div>
+    <div class="cell shrinked" style="width:80px">
+		<span><?=date('Y-m-d G:i D ', $mem->get('latestalerttime'.$line["lang"]))?></span>
+		
+	</div>
+	<div class="cell shrinked" style="visibility:hidden;width:0">
+		<span >forecast<?=$line["lang"]?></span>	 
+		<input id="langLAlert<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>" readonly="readonly" style="width:0" />
+		
+	</div>
+	<div class="cell shrinked" >
+		
+		<textarea id="descriptionLAlert<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
+		
+	</div>
+    
+	<div id="forecast_href_plugin" class="float cell shrinked">
+			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
+	</div>
+	<div class="cell shrinked">
+			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'latestalert<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
+	</div>
+	
 		
 	<!-- <div class="cell">
 		<input type="checkbox" id="forecast<?=$line["lang"]?>" value=""  onclick="disableOthers(this)" />
 	</div> -->
 </div>
+
 <?
 //apc_store('latestalert'.$line["lang"], $line["Description"]);
 //apc_store('latestalerttime'.$line["lang"], strtotime($line["updatedTime"]));
 } ?>
+
 <?
 $query = "SELECT * FROM  `content_sections` WHERE TYPE =  'forecast'";
 $result = mysqli_query($link, $query);
 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
-<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell" style="float:left" id="forecast<?=$line["lang"]?>">
+<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell alert"  id="forecast<?=$line["lang"]?>">
+<div id="forecast_href_plugin" class="invcell shrinked" >
+			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>&nbsp;&nbsp;
 	
-	<div class="cell">
+			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>&nbsp;&nbsp;
+			
+		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
+		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecast')" style="cursor:pointer" />
+	</div>
+	<div class="cell shrinked" style="clear:both">
 		
 		<input type="checkbox" id="activeforecast<?=$line["lang"]?>" name="active<?=$line["day"]?>" value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
 		
 	</div>
-    <div class="cell" style="width:80px">
+    <div class="cell shrinked" style="width:60px">
 		<span><?=date('Y-m-d G:i D ', $mem->get('descriptionforecasttime'.$line["lang"]))?></span>
 		
 	</div>
-	<div class="cell" style="visibility:hidden;width:0">
+	<div class="cell shrinked" style="visibility:hidden;width:0">
 		<span >forecast<?=$line["lang"]?></span>	 
 		<input id="langforecast<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>" readonly="readonly" style="width:0" />
 		
 	</div>
-	<div class="cell">
+	<div class="cell shrinked" >
 		
 		<textarea id="descriptionforecast<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
     
-	<div id="forecast_href_plugin" class="float btnsstart" style="padding:0.3em 0.3em 0em 0.3em">
-			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
-	</div>
-	<div class="cell">
-			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
-	</div>
-	<div class="cell btnsstart">
-		
-		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
-		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecast')" style="cursor:pointer" />
-	</div>
+	
 		
 	<!-- <div class="cell">
 		<input type="checkbox" id="forecast<?=$line["lang"]?>" value=""  onclick="disableOthers(this)" />
@@ -918,21 +1119,21 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 //apc_store('descriptionforecast'.$line["lang"], $line["Description"]);
 //apc_store('descriptionforecasttime'.$line["lang"], strtotime($line["updatedTime"]));
 } ?>
-
+<div style="clear:both"></div>
 <?
 
 $query = "call GetCurrentStory";
 $result = mysqli_query($link, $query) or die("Error mysqli_query: ".mysqli_error($link));
 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
-<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell" style="float:left" id="CurrStory<?=$line["lang"]?>">
+<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell CurrentStory"  id="CurrStory<?=$line["lang"]?>">
 	
 	<div style="float:<?echo get_s_align();?>;padding:1em 0.3em 0em 0.3em">
 		
 		<input id="activeCurrStory<?=$line["lang"]?>" name="active<?=$line["active"]?>" size="1"  type="checkbox" value="<?=$line["active"]?>" style="text-align:<?if ($line["lang"] == 1) echo "right"; else "left";?>"   <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> /><br /><br />link<br />img<br />Idx
 		
 	</div>
-	<div class="cell">
+	<div class="cell shrinked">
 		<input id="idxCurrStory<?=$line["lang"]?>" name="idx<?=$line["lang"]?>" size="2" style="width:50px" value="<?=$line["Idx"]?>"  /><span >CurrStory<?=$line["lang"]?></span><br />	 
 		<input id="langCurrStory<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>"  readonly="width:80px;readonly" style="width:8px" /><br />
 		<input id="titleCurrStory<?=$line["lang"]?>" name="title<?=$line["lang"]?>" size="18" value="<?=$line["Title"]?>" style="width:80px;text-align:<?if ($line["lang"] == 1) echo "right;direction:rtl"; else "left";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
@@ -942,7 +1143,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	</div>
 	
 	
-	<div class="cell">
+	<div class="cell shrinked">
 		
 		<textarea id="descriptionCurrStory<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" size="100"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?>" style="height:200px;font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 120px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
@@ -981,11 +1182,11 @@ $mem->set('CurrentStory'.$line["lang"], htmlentities (preg_replace('`<br(?: /)?>
 <div class="cell">
 idx<input id="ad_idx" name="ad_idx" size="18"  value="" style="width:80px;text-align:left"  /><br />
 href<input id="hrefads" name="hrefads" size="18"  value="" style="width:80px;text-align:left"  /><br />
-img<input id="imgads" name="imgads" size="18"  value="" style="width:80px;text-align:left"  /><br />
-width<input id="imgwidth" name="imgwidth" size="18"  value="" style="width:80px;text-align:left"  /><br />
-height<input id="imgheight" name="imgheight" size="18"  value="" style="width:80px;text-align:left"  /><br />
+img_url<input id="imgads" name="imgads" size="18"  value="" style="width:80px;text-align:left"  /><br />
+w<input id="imgwidth" name="imgwidth" size="18"  value="" style="width:80px;text-align:left"  /><br />
+h<input id="imgheight" name="imgheight" size="18"  value="" style="width:80px;text-align:left"  /><br />
         </div>
-		<div class="cell">
+		<div class="cell shrinked">
 		active
 		<input type="checkbox" id="adsactive" name="adsactive" value="" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
 		
@@ -1032,11 +1233,11 @@ height<input id="imgheight" name="imgheight" size="18"  value="" style="width:80
 <div style='display:none'>
 <div id='icons_dialog' >
 <? $forcast_icons = array(); $forcast_icons = getfilesFromdir(ICONS_PATH); foreach ($forcast_icons as $icon)
-	{ ?>
+	{ if (stristr($icon[1], "svg")) {?>
 <div class="float">
-	<img align="middle" src="<?=$icon[1]?>" width="50px" height="50px" onclick="addForecastIconToMessage(this)" style="cursor:pointer" alt="<?=$icon[1]?>" />
+	<img align="middle" src="<?=$icon[1]?>" alt="<?=$icon[1]?>" width="50px" height="50px" onclick="addForecastIconToMessage(this)" style="cursor:pointer" alt="<?=$icon[1]?>" />
 </div>
-<? }?>
+<? }}?>
 </div>
 </div>
 
@@ -1203,7 +1404,7 @@ function getOneUFService(dayToSave, command, type)
     {
         var postData = "idx=" + $("#ad_idx").val() + "&command=" + command + "&type=" + type + "&w=" + $("#imgwidth").val() + "&h=" + $("#imgheight").val() + "&img_url=" + $("#imgads").val() + "&href=" + $("#hrefads").val() + "&active=" + $("#adsactive").prop("checked");
     }
-    if (type == "synop")
+    else if (type == "synop")
     {
         var lang = document.getElementById('lang'+dayToSave).value;
         var description = document.getElementById('descriptionsynop'+lang).value;
@@ -1229,9 +1430,15 @@ function getOneUFService(dayToSave, command, type)
             var humMorning = document.getElementById('humMorning'+dayToSave).value;
             var humDay = document.getElementById('humDay'+dayToSave).value;
             var humNight = document.getElementById('humNight'+dayToSave).value;
+            var dustMorning = document.getElementById('dustMorning'+dayToSave).value;
+            var dustDay = document.getElementById('dustDay'+dayToSave).value;
+            var dustNight = document.getElementById('dustNight'+dayToSave).value;
             var windMorning = document.getElementById('windMorning'+dayToSave).value;
             var windDay = document.getElementById('windDay'+dayToSave).value;
             var visDay = document.getElementById('visDay'+dayToSave).value;
+            var uvmax = document.getElementById('uvmax'+dayToSave).value;
+            var rainFrom = document.getElementById('rainFrom'+dayToSave).value;
+            var rainTo = document.getElementById('rainTo'+dayToSave).value;
             var windNight = document.getElementById('windNight'+dayToSave).value;
             var temp_low = document.getElementById('templow'+dayToSave).value;
             var temp_high = document.getElementById('temphigh'+dayToSave).value;
@@ -1247,7 +1454,7 @@ function getOneUFService(dayToSave, command, type)
             //var temp_day = document.getElementById('tempday'+dayToSave).value;
             var lang1 = document.getElementById('lang1'+dayToSave).value;
             var lang0 = document.getElementById('lang0'+dayToSave).value;
-            var postData = "reload=" + reload + "&idx=" + idx + "&command=" + command + "&day=" + day + "&windMorning=" + windMorning + "&windDay=" + windDay + "&visDay=" + visDay + "&windNight=" + windNight + "&humMorning=" + humMorning + "&humDay=" + humDay + "&humNight=" + humNight + "&templow=" + temp_low + "&temphigh=" + temp_high + "&temp_morning_cloth=" + temp_morning_cloth + "&temphigh_cloth=" + temp_high_cloth + "&tempnight=" + temp_night + "&tempnight_cloth=" + temp_night_cloth + "&lang1=" + escape(encodeURI(lang1)) + "&lang0=" + lang0 + "&active=" + active + "&day_name=" + day_name + "&date=" + date +  "&day_icon=" + day_icon +  "&morning_icon=" + morning_icon +  "&night_icon=" + night_icon;
+            var postData = "reload=" + reload + "&idx=" + idx + "&command=" + command + "&day=" + day + "&windMorning=" + windMorning + "&windDay=" + windDay + "&visDay=" + visDay + "&uvmax=" + uvmax + "&rainTo=" + rainTo + "&rainFrom=" + rainFrom + "&windNight=" + windNight + "&humMorning=" + humMorning + "&humDay=" + humDay + "&humNight=" + humNight + "&dustMorning=" + dustMorning + "&dustDay=" + dustDay + "&dustNight=" + dustNight + "&templow=" + temp_low + "&temphigh=" + temp_high + "&temp_morning_cloth=" + temp_morning_cloth + "&temphigh_cloth=" + temp_high_cloth + "&tempnight=" + temp_night + "&tempnight_cloth=" + temp_night_cloth + "&lang1=" + escape(encodeURI(lang1)) + "&lang0=" + lang0 + "&active=" + active + "&day_name=" + day_name + "&date=" + date +  "&day_icon=" + day_icon +  "&morning_icon=" + morning_icon +  "&night_icon=" + night_icon;
     }
     else
     {

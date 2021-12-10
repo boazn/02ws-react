@@ -60,6 +60,25 @@ if (stristr($imagefile, "Z"))
 					</li>
 					
 </ul>-->
+<div style="padding:1em;clear:both;float:<?echo get_s_align();?>" dir="rtl">
+	<div><?=$CAMERA_LOOP[$lang_idx];?></div> 
+	 <img name="animation" id="latestpics" width="700px" height="394px" alt="<? echo getPageTitle();?>" />
+	 <a href="images/latestwebcam.gif" download><img src="images/download.png" width="60" alt="download" /></a> 
+	<br />
+	<!--
+	<a href="javascript: func()" onclick="incrementimage(++current_image)">
+	 <img src="images/forward.png" alt="forward קדימה"/>
+	</a>
+	&nbsp;&nbsp;
+	<a  href="javascript: func()" onclick="stop()">
+		<img src="images/stop.png" alt="stop עצור"/>
+	</a>
+	&nbsp;&nbsp;
+	<a href="javascript: func()" onclick="decrementimage(--current_image)">
+		 <img src="images/backward.png" alt="backward אחורה"/> 
+	</a>
+	-->
+</div>
 <div class="webcam_image" style="clear:both">
 	<div><?=$CAMERA[$lang_idx];?> 1 <? echo getLocalTime(filemtime("images/webCamera0.jpg"));?></div>
 	<a href="images/webCamera0.jpg" class="colorbox" title="<?=$LIVE_PICTURE[$lang_idx];?>">
@@ -84,8 +103,8 @@ if (stristr($imagefile, "Z"))
 	
 	<div class="inv_plain_3_zebra webcam_desc">
 		
-		<? if ($lang_idx == $EN) {?>This is high res zoomed view of small part from the pic of camera 1. It contains the city center, the old city and more.<?} ?>
-	   <? if ($lang_idx == $HEB) {?>זו תמונה ברזולוציה גבוהה של חלק קטן מתמונת מצלמה 1. רואים בה את מרכז העיר , העיר העתיקה והר הצופים ועוד.<?} ?>
+		<? if ($lang_idx == $EN) {?>This is high res zoomed view of small part from the pic of camera 1. It contains whole of the city from west to east, zooming at various places<?} ?>
+	   <? if ($lang_idx == $HEB) {?>זו תמונה ברזולוציה גבוהה של חלק קטן מתמונת מצלמה 1. המצלמה עושה סיבוב מערב-מזרח ומצלמת בתקריב כל מיני אתרים בעיר.<?} ?>
 	   
 	</div>
 </div>
@@ -110,25 +129,9 @@ if (stristr($imagefile, "Z"))
 			Latest pictures list
 		<? } ?>
 	</div> -->
-<? if  (stristr(strtolower($template_routing), 'webcam')) { ?>
+
  
- <div style="padding:1em;clear:both;float:<?echo get_s_align();?>" dir="rtl">
-	<div><a href="images/latestwebcam.gif" download><img src="images/download.png" width="20" alt="download" /></a><?=$CAMERA_LOOP[$lang_idx];?></div> 
-	 <img name="animation" id="latestpics" width="320px" height="240px" alt="<? echo getPageTitle();?>" /> 
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="javascript: func()" onclick="incrementimage(++current_image)">
-	 <img src="images/forward.png" alt="forward קדימה"/>
-	</a>
-	&nbsp;&nbsp;
-	<a  href="javascript: func()" onclick="stop()">
-		<img src="images/stop.png" alt="stop עצור"/>
-	</a>
-	&nbsp;&nbsp;
-	<a href="javascript: func()" onclick="decrementimage(--current_image)">
-		 <img src="images/backward.png" alt="backward אחורה"/> 
-	</a>
-</div>
+ 
 <div style="padding:1em" class="float">
 	<div><?=$LOCATION[$lang_idx];?></div>
 	<a href="images/webcam02ws.jpg" class="colorbox" title="<? if (isHeb()) { ?>
@@ -174,20 +177,9 @@ if (stristr($imagefile, "Z"))
 </div>
 <div style="clear:both"></div>
 <div style="padding:1em;float:<?echo get_s_align();?>" dir="rtl">
-<h2><? echo $LAST_DAY[$lang_idx];?><a href="http://www.wunderground.com/webcams/boazn1/1/video.html" class="invfloat"><?=$ARCHIVE[$lang_idx];?><?=get_arrow()?></a></h2>
-<div style="text-align:center" class="float"><object width="480" height="320" data="http://www.wunderground.com/swf/flowplayer.commercial-3.2.8.swf" type="application/x-shockwave-flash"><param name="movie" value="http://www.wunderground.com/swf/flowplayer.commercial-3.2.8.swf" /><param name="play" value="true"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="flashvars" value='config={"key":"#@8d339434b223613a374","clip":{"url":"http://icons.wunderground.com/webcamcurrent/b/o/boazn1/1/current.mp4","autoPlay":true,"autoBuffering":true},"plugins":{"controls":{"all":true,"mute":true,"play":true}},"playlist":[{"url":"http://icons.wunderground.com/webcamcurrent/b/o/boazn1/1/current.mp4","autoPlay":true,"autoBuffering":true}]}' /></object></div>
+<h2><? echo $LAST_DAY[$lang_idx];?></h2>
+<a name="windy-webcam-timelapse-player" data-id="1389696018" data-play="day" href="https://windy.com/webcams/1389696018" target="_blank"><? echo $LAST_DAY[$lang_idx];?></a><script async type="text/javascript" src="https://webcams.windy.com/webcams/public/embed/script/player.js"></script>
 </div>
-<!--
-<div style="padding:1em;float:<?echo get_s_align();?>" dir="rtl">
-<h2><? echo $LAST_DAY[$lang_idx];?><a href="http://www.wunderground.com/webcams/boazn1/2/video.html" class="invfloat"><?=$ARCHIVE[$lang_idx];?><?=get_arrow()?></a></h2>
-<div style="text-align:center" class="float"><object width="480" height="320" data="http://www.wunderground.com/swf/flowplayer.commercial-3.2.8.swf" type="application/x-shockwave-flash"><param name="movie" value="http://www.wunderground.com/swf/flowplayer.commercial-3.2.8.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="flashvars" value='config={"key":"#@8d339434b223613a374","clip":{"url":"http://icons.wunderground.com/webcamcurrent/b/o/boazn1/2/current.mp4","autoPlay":true,"autoBuffering":true},"plugins":{"controls":{"all":true,"mute":true,"play":true}},"playlist":[{"url":"http://icons.wunderground.com/webcamcurrent/b/o/boazn1/2/current.mp4","autoPlay":true,"autoBuffering":true}]}' /></object></div>
-</div>
--->
-<!--<h2><? echo $YESTERDAY[$lang_idx];?></h2>
-<video width="420" height="315" controls="controls" id="webcam_video_html5" tabindex="0"><source src="http://movies.webcams.travel/webcam/1169376864.mp4" type="video/mp4"></source><source src="http://movies.webcams.travel/webcam/1169376864.webm" type="video/webm"></source><source src="http://movies.webcams.travel/webcam/1169376864.ogg" type="video/ogg"></source><div id="webcam_video_player_flash"><img width="420" height="315" src="http://movies.webcams.travel/webcam/1169376864_preview.jpg" title="No video playback capabilities, please download the video below"></div></video></div> -->
-
-
-
 <div>
 <?
 		$archwebcam = 0;
@@ -200,6 +192,7 @@ if (stristr($imagefile, "Z"))
 			?>
 			
 			<div style="float:<?echo get_s_align();?>;padding:3px">
+				<label><?echo getLocalHourMin($lpic[0]);?></label>
 				<a href="<?=$lpic[1]?>" title="<?echo getLocalTime($lpic[0]);?>" class="colorbox">
 					<img src="phpThumb.php?src=<? echo $lpic[1]; ?>&amp;w=70" width="70px" title="<?echo getLocalTime($lpic[0]);?>" />
 					
@@ -219,8 +212,8 @@ if (stristr($imagefile, "Z"))
 <script type="text/javascript" src="sprintf2.js"></script>
 <script language="JavaScript" type="text/javascript"> 
 ////////////// pic animation
-var file_template = "phpThumb.php?src=images/webCamera%d.jpg&w=320";
-var numOfPics = 10;
+var file_template = "phpThumb.php?src=images/webCamera%d.jpg&w=700&fltr%5B%5D=gam%7C0.55";
+var numOfPics = 20;
 var normal_delay = 60;
 var dwell_multipler = 20;
 var lowindex = 0;
@@ -231,7 +224,7 @@ var pic_id = 'latestpics';
 <script language="JavaScript" type="text/javascript"> 
 	launch();
 </script>
-<? } ?>
+
 <!-- /////////////////////  -->
 	
 </div>

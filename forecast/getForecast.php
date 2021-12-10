@@ -50,7 +50,7 @@ ul.select {
    margin:  0;
    padding: 2px;
    border: 1px solid grey;
-   height: 300px;
+   height: 150px;
     overflow-y: scroll;
 }
 
@@ -81,7 +81,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 </SCRIPT>
 	<br />
 	<h2><? if (@$_GET['region'] == 'isr') echo $FORECAST_ISR[$lang_idx]; else echo $FORECAST_ABROD[$lang_idx]; ?></h2>
-	<h3><? if (@$_GET['region'] != 'isr') echo $TEMP[$lang_idx]." & ".$FORECAST[$lang_idx]." - ".$RELYABLE_FORACST[$lang_idx]; ?></h3>
+	<!--<h3><? if (@$_GET['region'] != 'isr') echo $TEMP[$lang_idx]." & ".$FORECAST[$lang_idx]." - ".$RELYABLE_FORACST[$lang_idx]; ?></h3>-->
 
 <div <? if (isHeb()) echo "dir=\"rtl\" ";?> style="width:100%;margin:0 auto;float:<?echo get_inv_s_align();?>" class="inv_plain_3">
 

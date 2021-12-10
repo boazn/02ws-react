@@ -22,7 +22,11 @@ $currentDay->set_temp_morning($today->get_lowtemp(), null);
 $currentDay->set_hum_day($today->get_hum_day(), null);
 $currentDay->set_hum_night($todayForecast->get_hum_night(), null);
 $currentDay->set_hum_morning($today->get_hum_morning(), null);
-logger("starting forecastlib...from ".$forecastlib_origin);
+$currentDay->set_dust_day($today->get_dust_day(), null);
+$currentDay->set_dust_night($todayForecast->get_dust_night(), null);
+$currentDay->set_dust_morning($today->get_dust_morning(), null);
+$currentDay->set_uvmax($today->get_uvmax(), null);
+logger("starting forecastlib...from ".$forecastlib_origin, 0, "lib", "Forecastlib", "Forecastlib");
 function getForecastDay($fday, $firstdayinforecast){
         global $todayForecast, $currentDay, $passedMidnight, $nextTomorrowForecast, $forcastday, $tomorrowForecast;
         
@@ -137,20 +141,20 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
         }
            
         
-        if ($time_at_day <= 3 ){
+        if ($time_at_day <= 4 ){
             
             $diff = $currentDay->get_hum_night() - $forcastday->get_hum_morning();
-             if ($diff < 0)
-                 $hourHum = round($forcastday->get_hum_morning() + ((3 - $time_at_day)/3)*$diff);
-             elseif ($diff > 0)
-                  $hourHum = round($currentDay->get_hum_night() - ((3 - $time_at_day)/3)*$diff);
+             if ($diff > 0)
+                 $hourHum = round($forcastday->get_hum_morning() + ((4 - $time_at_day)/4)*$diff);
+             elseif ($diff < 0)
+                  $hourHum = round($currentDay->get_hum_night() + ((4 - $time_at_day)/4)*$diff);
              else
                  $hourHum = $forcastday->get_hum_morning();
             
             
         }
                 
-        elseif ($time_at_day > 3 && $time_at_day < 7)
+        elseif ($time_at_day > 4 && $time_at_day < 7)
                 $hourHum = $forcastday->get_hum_morning();
 
         elseif ($time_at_day >= 7 && $time_at_day <= $MAX_TIME - 2){
@@ -182,6 +186,102 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
          }
       return $hourHum;
  }
+ function calcForecastDust($time_at_day, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR)
+ {
+        global $currentDay, $todayForecast, $passedMidnight, $threeHours, $nextTomorrowForecast, $tomorrowForecast, $fday, $todayForecast_date, $tommorrowForecast_day, $today, $current, $firstdayinforecast;
+        
+        $forcastday = new ForecastDay();
+        $forcastday = $todayForecast;      
+        
+        if ($_REQUEST['debug'] >= 1){
+                
+                echo "<br>get_dust_morning= ",$forcastday->get_dust_morning();
+                echo "<br>get_dust_day= ",$forcastday->get_dust_day();
+		echo "<br>get_dust_night= ",$forcastday->get_dust_night();
+                echo "<br>currentDay get_dust_night= ",$currentDay->get_dust_night();
+
+        }
+           
+        
+        if ($time_at_day <= 3 ){
+            
+            $diff = $currentDay->get_dust_night() - $forcastday->get_dust_morning();
+             if ($diff > 0)
+                 $hourdust = round($forcastday->get_dust_morning() + ((3 - $time_at_day)/3)*$diff);
+             elseif ($diff < 0)
+                  $hourdust = round($currentDay->get_dust_night() - ((3 - $time_at_day)/3)*$diff);
+             else
+                 $hourdust = $forcastday->get_dust_morning();
+            
+            
+        }
+                
+        elseif ($time_at_day > 3 && $time_at_day < 7)
+                $hourdust = $forcastday->get_dust_morning();
+
+        elseif ($time_at_day >= 7 && $time_at_day <= $MAX_TIME - 2){
+                        $diff = $forcastday->get_dust_day() - $forcastday->get_dust_morning();
+                        if ($diff > 0)
+                            $hourdust = round($forcastday->get_dust_day() + (($time_at_day - ($MAX_TIME - 1 - 7))/($MAX_TIME - 1 - 7))*$diff*$MULTIPLE_FACTOR);
+                        elseif ($diff < 0){
+                            $hourdust = round($forcastday->get_dust_morning() + (($time_at_day - ($MAX_TIME - 1 - 7))/($MAX_TIME - 1 - 7))*$diff*$MULTIPLE_FACTOR);
+                        }
+                        else {
+                            $hourdust = $forcastday->get_dust_morning();
+                        }
+        }
+        elseif ($time_at_day >= ($MAX_TIME - 1) && $time_at_day <= $MAX_TIME)
+                $hourdust = $forcastday->get_dust_day();
+
+        elseif ($time_at_day > $MAX_TIME && $time_at_day <= 21){
+                        $diff = $forcastday->get_dust_day() - $forcastday->get_dust_night();
+                        if ($diff > 0)
+                            $hourdust = round($forcastday->get_dust_night() - (($time_at_day - $MAX_TIME)/(20 - $MAX_TIME + 1))*$diff);
+                        else{
+                            $hourdust = round($forcastday->get_dust_day() - (($time_at_day - $MAX_TIME)/(20 - $MAX_TIME + 1))*$diff);
+                        }
+        }
+       elseif ($time_at_day >= 22 && $time_at_day <= 23)
+                $hourdust = $forcastday->get_dust_night();
+        if ($_REQUEST['debug'] >= 1){
+                 echo "<br>diff=".$diff;
+         }
+      return $hourdust;
+ }
+ function calcForecastUV($time_at_day, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR)
+ {
+        global $sunrise, $sunset, $currentDay, $todayForecast, $passedMidnight, $threeHours, $nextTomorrowForecast, $tomorrowForecast, $fday, $todayForecast_date, $tommorrowForecast_day, $today, $current, $firstdayinforecast;
+
+        $forcastday = new ForecastDay();
+        $forcastday = $todayForecast;      
+
+        if ($_REQUEST['debug'] >= 1){
+                
+                echo "<br>get_uv_max= ",$forcastday->get_uvmax();
+        }
+        if ($time_at_day <= $sunrise || $time_at_day > $sunset){
+                $hourUV = 0;
+                        
+        }
+        elseif ($time_at_day >= 7 && $time_at_day < $MAX_TIME - 2){
+                $diff = $forcastday->get_uvmax();
+                $hourUV = round(0 + (($time_at_day - ($MAX_TIME - 2 - 7))/($MAX_TIME - 2 - 7))*$diff*$MULTIPLE_FACTOR);
+                
+        }
+        elseif ($time_at_day >= ($MAX_TIME - 2) && $time_at_day <= ($MAX_TIME - 1))
+                $hourUV = $forcastday->get_uvmax();
+
+        elseif ($time_at_day >  ($MAX_TIME - 1) && $time_at_day <= $sunset){
+                $diff = $forcastday->get_uvmax();
+                $hourUV = round($forcastday->get_uvmax() - (($time_at_day - $MAX_TIME)/(($sunset) - $MAX_TIME + 1))*$diff);
+                        
+        }
+        if ($_REQUEST['debug'] >= 1){
+                        echo "<br>diff=".$diff;
+                        echo "<br>time_at_day=".$time_at_day." UV=".$hourUV;
+                }
+        return $hourUV;
+ }
  
  
  function getCloth($temp)
@@ -199,7 +299,7 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
     $row_verdict = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $current_feeling = get_name($row_verdict["field_name"]);
     //logger($current_feeling);
-     $cloth_name = getClothName($current_feeling);
+     $cloth_name = getClothName($current_feeling, "");
      $arCloth_name =  explode('_', $cloth_name);
     $prefCloth_name = $arCloth_name[0];
      return $cloth_name;
@@ -364,7 +464,8 @@ function extendValuesForPlusMinus(){
     //extend rain to plusminus values
     global $forecastHour;
     $index_hour = 0;
-    //logger("extend rain to plusminus values");
+    if ($_REQUEST["debug"] >= 3)
+    echo( "<br/>"."extend rain to plusminus values...");
     foreach ($forecastHour as &$hour_f){
                 if ($hour_f['plusminus'] > 0){
                         for ($i=1; $i <= $hour_f['plusminus'] ; $i++){
@@ -373,7 +474,7 @@ function extendValuesForPlusMinus(){
                                         if ($index_hour-$i > 0){
                                                 $forecastHour[$index_hour-$i]['rain'] = $hour_f['rain'];
                                                 if ($_REQUEST["debug"] >= 3)
-                                                echo( "<br/>".$forecastHour[$index_hour]['time'].": priority going up plusminus=".$hour_f['plusminus']." set forecast time=".$forecastHour[$index_hour-$i]['time']." into ".$hour_f['rain']." ".$hour_f['icon']." ".$hour_f['title'][0]." ".$hour_f['wind']);
+                                                echo( "<br/>".$forecastHour[$index_hour]['time'].": priority going up plusminus=".$hour_f['plusminus']." set forecast time=".$forecastHour[$index_hour-$i]['time']." into rain=".$hour_f['rain']);
                                       
                                          }
                                         
@@ -381,7 +482,7 @@ function extendValuesForPlusMinus(){
                                         if ($index_hour+$i < count($forecastHour)){
                                                //$forecastHour[$index_hour+$i]['rain'] = $hour_f['rain'];
                                               if ($_REQUEST["debug"] >= 3)
-                                              echo("<br/>".$forecastHour[$index_hour]['time'].": priority going down plusminus=".$hour_f['plusminus']." set forecast time=".$forecastHour[$index_hour+$i]['time']." into ".$hour_f['rain']." ".$hour_f['icon']." ".$hour_f['title'][0]." ".$hour_f['wind']);
+                                              echo("<br/>".$forecastHour[$index_hour]['time'].": priority going down, set nothing");
                                         
                                         }
         
@@ -431,7 +532,7 @@ function updateForecastHour($currentPri, $title, $icon){
               if (($icon != "") &&(($currentPri > $hour_f['priority'] )||($new_line))){
                         $forecast_img = $icon;
                         if (($currentPri <= 55)&&(($hour_f['time']>19)||($hour_f['time']<6)))
-                              $forecast_img =  ($currentPri < 30) ? "forcast_moon.png" : "moonpc.png";
+                              $forecast_img =  ($currentPri < 30) ? "n4_moon.svg" : "n4_moonpc2.svg";
                           $hour_f['icon'] = $forecast_img;
                         if ($_REQUEST["debug"] >= 3){
                                  echo " icon into ".$forecast_img;
@@ -688,7 +789,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
     $dayC = $dayF;
     if ($i == 0) {
         
-            $taf_pic = "clear.png";
+            $taf_pic = "n4_clear.svg";
             $title_pic = array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]");
             $current->set_cloudiness(0);
             $priority = 0;
@@ -722,12 +823,14 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                $prev_temp = $tempHour;
                $clothHour = getCloth($tempHour);
                $humHour = calcForecastHum($h, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR);
+               $dustHour = calcForecastDust($h, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR);
+               $uvHour = calcForecastUV($h, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR);
                if ($_REQUEST["debug"] >= 3){
                 echo "<br/> forecastHour:".$hourindex." time=".$time." ".$currentDateTime." temp=".$tempHour." ".$clothHour;
                 echo "<br/>-------------------------------------------------------------------------------------------";
                }
                    
-               array_push($forecastHour, array('id' => $hourindex, 'time' => $time, 'currentDateTime' => $currentDateTime, 'plusminus' => 0, 'change' => 0, 'temp' => $tempHour, 'wind' => 0, 'humidity' => $humHour ,'rain' => 0, 'icon' => "", 'title' => array(), 'cloth' => $clothHour, 'priority' => 0));
+               array_push($forecastHour, array('id' => $hourindex, 'time' => $time, 'currentDateTime' => $currentDateTime, 'plusminus' => 0, 'change' => 0, 'temp' => $tempHour, 'dust' => $dustHour, 'UV' => $uvHour, 'wind' => 0, 'humidity' => $humHour ,'rain' => 0, 'icon' => "", 'title' => array(), 'cloth' => $clothHour, 'priority' => 0));
                $hourindex += 1;
         }
         
@@ -753,24 +856,24 @@ for ($i = 0; $i < count($taf_tokens); $i++)
             $isProb = true;
             $prob_mag = Chance::Good;
     }
-    if (stristr ($taf_tokens[$i], "RASN"))      updateForecast(95, array("$RAIN[$EN] $SNOW[$EN]", "$RAIN[$HEB] $SNOW[$HEB]"), "rainSnow.png");
-     else if (stristr ($taf_tokens[$i], "SN"))  updateForecast(100, $SNOW, "snow.gif");
+    if (stristr ($taf_tokens[$i], "RASN"))      updateForecast(95, array("$RAIN[$EN] $SNOW[$EN]", "$RAIN[$HEB] $SNOW[$HEB]"), "n4_rainSnow.svg");
+     else if (stristr ($taf_tokens[$i], "SN"))  updateForecast(100, $SNOW, "n4_snow.svg");
 
     if ((stristr ($taf_tokens[$i], "GR"))||
-             (stristr ($taf_tokens[$i], "GS"))) updateForecast(90, $HAIL, "hail.gif");
+             (stristr ($taf_tokens[$i], "GS"))) updateForecast(90, $HAIL, "n4_hail.svg");
 
-    if (stristr ($taf_tokens[$i], "TSRA")) updateForecast(85, array($THUNDERSTORM[$EN].", ".$RAIN[$EN], $THUNDERSTORM[$HEB].", ".$RAIN[$HEB]), "TSRA.gif");
-    else if (stristr ($taf_tokens[$i], "TS")) updateForecast(80,$THUNDERSTORM, "TS.gif");
+    if (stristr ($taf_tokens[$i], "TSRA")) updateForecast(85, array($THUNDERSTORM[$EN].", ".$RAIN[$EN], $THUNDERSTORM[$HEB].", ".$RAIN[$HEB]), "n4_TSRA.svg");
+    else if (stristr ($taf_tokens[$i], "TS")) updateForecast(80,$THUNDERSTORM, "n4_TS.svg");
     else if ((stristr ($taf_tokens[$i], "-SHRA"))||
-            (stristr ($taf_tokens[$i], "-RA"))) updateForecast(75, $LIGHT_RAIN, "rainPC2.gif");
-    else if (stristr ($taf_tokens[$i], "RA")) updateForecast(78, $RAIN, "rain2.gif");
+            (stristr ($taf_tokens[$i], "-RA"))) updateForecast(75, $LIGHT_RAIN, "n4_sun_lightrain.svg");
+    else if (stristr ($taf_tokens[$i], "RA")) updateForecast(78, $RAIN, "n4_rain2.svg");
 
-    if (stristr ($taf_tokens[$i], "DZ")) updateForecast(68, $DRIZZLE, "rainPC.gif");
-    if (stristr ($taf_tokens[$i], "CB")) updateForecast(62, $SEVERE_CLOUDS, "mostlycloudy.png");
-    if (stristr ($taf_tokens[$i], "FG")) updateForecast(60, $FOG, "fog2.png");
-    if (stristr ($taf_tokens[$i], "SA")) updateForecast(55, $SANDSTORM, "dust.png");
-    if (stristr ($taf_tokens[$i], "DU")) updateForecast(50, $DUST, "dust.png");
-    if (stristr ($taf_tokens[$i], "TCU")) updateForecast(48, $SEVERE_CLOUDS, "mostlycloudy.png");
+    if (stristr ($taf_tokens[$i], "DZ")) updateForecast(68, $DRIZZLE, "n4_rainPC.svg");
+    if (stristr ($taf_tokens[$i], "CB")) updateForecast(62, $SEVERE_CLOUDS, "n4_mostlycloudy.svg");
+    if (stristr ($taf_tokens[$i], "FG")) updateForecast(60, $FOG, "n4_fog2.svg");
+    if (stristr ($taf_tokens[$i], "SA")) updateForecast(55, $SANDSTORM, "dust.svg");
+    if (stristr ($taf_tokens[$i], "DU")) updateForecast(50, $DUST, "dust.svg");
+    if (stristr ($taf_tokens[$i], "TCU")) updateForecast(48, $SEVERE_CLOUDS, "n4_mostlycloudy.svg");
     if (stristr ($taf_tokens[$i], "OVC"))   {
         $currentPri = 45;
 
@@ -784,12 +887,12 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                        if ($_REQUEST["debug"] >= 3)
                                echo "<br/>need to delete less important PC lines: removed ".$removed."<br/>";
                }
-               updateForecast(40, array("$CLOUDY[$EN]", "$CLOUDY[$HEB]"), "cloudy.png");
+               updateForecast(40, array("$CLOUDY[$EN]", "$CLOUDY[$HEB]"), "n4_cloudy.svg");
 
                if ($priority < $currentPri)
                {
                        $priority = $currentPri;
-                       $taf_pic = "cloudym2.png";
+                       $taf_pic = "n4_mostlycloud.svg";
                }
         }
     }
@@ -806,12 +909,12 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                        if ($_REQUEST["debug"] >= 3)
                                echo "<br/>need to delete less important PC lines: removed ".$removed."<br/>";
                }
-               updateForecast(40, array("$MOSTLY[$EN] $CLOUDY[$EN]", "$MOSTLY[$HEB] $CLOUDY[$HEB]"), "mostlycloudy.png");
+               updateForecast(40, array("$MOSTLY[$EN] $CLOUDY[$EN]", "$MOSTLY[$HEB] $CLOUDY[$HEB]"), "n4_mostlycloudy.svg");
 
                if ($priority < $currentPri)
                {
                        $priority = $currentPri;
-                       $taf_pic = "cloudym2.png";
+                       $taf_pic = "n4_mostlycloud.svg";
                }
         }
     }
@@ -826,22 +929,22 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                            echo "<br/>need to delete less important PC lines: removed ".$removed."<br/>";
            }
 
-            updateForecast(35, $PARTLY_CLOUDY, "partlycloudy.png");
+            updateForecast(35, $PARTLY_CLOUDY, "n4_partlycloudy.svg");
             $last_priority = $currentPri;
             if ($priority < $currentPri)
             {
                    $priority = $currentPri;
-                   $taf_pic = "partlycloudy.png";
+                   $taf_pic = "n4_partlycloudy.svg";
             }
 
        }
     }
-    if (stristr ($taf_tokens[$i], "FEW"))  updateForecast(25, $FEW_CLOUDS, "pcFew.png");	
-    if (stristr ($taf_tokens[$i], "CAVOK"))  updateForecast(20, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "clear.png");
-    if (stristr ($taf_tokens[$i], "NSC")) updateForecast(18, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "clear.png");
-    if (stristr ($taf_tokens[$i], "SKC")) updateForecast(15, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "clear.png");
+    if (stristr ($taf_tokens[$i], "FEW"))  updateForecast(25, $FEW_CLOUDS, "n4_pcFew.svg");	
+    if (stristr ($taf_tokens[$i], "CAVOK"))  updateForecast(20, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "n4_clear.svg");
+    if (stristr ($taf_tokens[$i], "NSC")) updateForecast(18, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "n4_clear.svg");
+    if (stristr ($taf_tokens[$i], "SKC")) updateForecast(15, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "n4_clear.svg");
     if (stristr ($taf_tokens[$i], "HZ"))  {/*			updateForecast(61, "$HAZE[$lang_idx]", "clear.png");*/}
-    if ((stristr ($taf_tokens[$i], "FU"))) updateForecast(62, $HAZE, "clear.png");
+    if ((stristr ($taf_tokens[$i], "FU"))) updateForecast(62, $HAZE, "n4_clear.svg");
     if ((stristr ($taf_tokens[$i], "BL"))) {/*			updateForecast(64, "$STRONG_WINDS[$lang_idx]", "");*/}
     if ((stristr ($taf_tokens[$i], "BR"))&&(!stristr ($taf_tokens[$i], "<"))) updateForecast(63, $FOG, "fogy.png");
 
@@ -947,7 +1050,7 @@ if ((stristr ($forecast_title[sizeof($forecast_title) - 1][0], $TO[0]))||(strist
 }
 if (count($forecast_title) == 1) // generally
 {
-    updateForecast(20, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "clear.png");
+    updateForecast(20, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "n4_clear.svg");
 }
 if ($_REQUEST["debug"] >= 3)
 {

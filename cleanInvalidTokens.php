@@ -16,7 +16,7 @@ function cleanInvalidAPNTokens()
              array_push ($registrationIDs, array('apn_regid' => $line["apn_regid"], 'id' => $line["id"]));
           }
     }
-    logger("cleanInvalidAPNTokens : ".count($registrationIDs)." ".$message);
+    logger("cleanInvalidAPNTokens : ".count($registrationIDs)." ".$message, 0, "APN", "Push", "cleanInvalidAPNTokens");
     
     $apnsHost = 'feedback.push.apple.com';
     $apnsPort = 2196;
@@ -26,7 +26,7 @@ function cleanInvalidAPNTokens()
     stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
     $apns = stream_socket_client('ssl://' . $apnsHost . ':' . $apnsPort, $error, $errorString, 2, STREAM_CLIENT_CONNECT, $streamContext);
     if(!$apns) {
-        logger( "cleanInvalidAPNTokens stream_socket_client: ERROR $errcode: $errstr\n");
+        logger( "cleanInvalidAPNTokens stream_socket_client: ERROR $errcode: $errstr\n"), 4, "APN", "Push", "cleanInvalidAPNTokens";
         return;
     }
 
@@ -44,7 +44,7 @@ function cleanInvalidAPNTokens()
     foreach ($feedback_tokens as $feedback_token){
         $invalid_feedback_tokens .= ",'".$feedback_token['devtoken']."'";
     }
-    logger ("invalid feedback_tokens: ".$invalid_feedback_tokens);
+    logger ("invalid feedback_tokens: ".$invalid_feedback_tokens, 0, "APN", "Push", "cleanInvalidAPNTokens");
     foreach ($feedback_tokens as $feedback_token){
         db_init("delete from `apn_users` WHERE apn_regid =  '{$feedback_token['devtoken']}' ", ""); 
     }

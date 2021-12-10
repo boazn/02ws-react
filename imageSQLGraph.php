@@ -72,7 +72,7 @@ $graph->SetScale("textlin");
 
 // Adjust the margin a bit to make more room for titles
 $graph->img->SetMargin(25,25,25,145);
-$graph->SetMarginColor("#6387B3");
+$graph->SetMarginColor("#ffffff");
 
 // Create a bar pot
 $bplot = new BarPlot($target);
@@ -94,10 +94,10 @@ $bplot->value->SetColor("#527094");
 //$graph->legend->Pos(0.02, 0.035, "left", "center");
 //$graph->legend->SetFont(FF_ARIAL,FS_BOLD);
 
-$bplot->SetFillGradient("#527094","white",GRAD_HOR);
+$bplot->SetFillGradient("#9eaec3","white",GRAD_HOR);
 $bplot->SetWidth(0.9);
 // Set color for the frame of each bar
-$bplot->SetColor("#527094");
+$bplot->SetColor("#9eaec3");
 
 $graph->Add($bplot);
 
@@ -106,19 +106,19 @@ $title=urldecode($_GET['title']);
 if (($lang_idx == 1)&&(!stristr($title,"C"))) { $title=utf8_strrev($title);}
 $graph->title->Set($title);
 $graph->title->SetFont(FF_ARIAL,FS_BOLD, 13);
-$graph->title->SetColor("white","white");
+$graph->title->SetColor("black","black");
 		
 $graph->yaxis->title->Set("%");
-$graph->yaxis->title->SetFont(FF_ARIAL,FS_BOLD, 14);
-$graph->yaxis->SetColor("white","white");
+$graph->yaxis->title->SetFont(FF_ARIAL,FS_BOLD, 13);
+$graph->yaxis->SetColor("black","black");
 $graph->yaxis->SetLabelAlign('center','top');
 $graph->yaxis->scale->SetGrace(10);
-$graph->ygrid->SetFill(true,'#E7F9FC@0.5','#CDD2DD@0.5');
+$graph->ygrid->SetFill(true,'#FFFFFF@0.5','#FFFFFF@0.5');
 
 $graph->xaxis->title->Set($_GET['Xtitle']);
-$graph->xaxis->title->SetColor("white","white");
+$graph->xaxis->title->SetColor("black","black");
 $graph->xaxis->SetFont(FF_ARIAL,FS_BOLD, 11);
-$graph->xaxis->SetColor("lightblue","white");
+$graph->xaxis->SetColor("black","black");
 $graph->xaxis->SetTickLabels($value);
 $graph->xaxis->SetLabelAlign('center','top');
 $graph->xaxis->SetLabelAngle(90);

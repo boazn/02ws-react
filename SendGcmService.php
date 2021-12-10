@@ -78,16 +78,16 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         $query_extension = " and fcm<>1";
     }
     if ((boolval($long_range))&&(boolval($short_range))){
-        $result = db_init("select * FROM gcm_users where active=1 or active_rain_etc=1".$query_extension, "");
+        $result = db_init("select * FROM fcm_users where active=1 or active_rain_etc=1".$query_extension, "");
     }
     else if (boolval($long_range)){
-        $result = db_init("select * FROM gcm_users where active=1".$query_extension, "");
+        $result = db_init("select * FROM fcm_users where active=1".$query_extension, "");
     }
     else if (boolval($short_range)){
-        $result = db_init("select * FROM gcm_users where active_rain_etc=1".$query_extension, "");
+        $result = db_init("select * FROM fcm_users where active_rain_etc=1".$query_extension, "");
     }
     else if (boolval($tip)){
-        $result = db_init("select * FROM gcm_users where active_tips=1".$query_extension, "");
+        $result = db_init("select * FROM fcm_users where active_tips=1".$query_extension, "");
     }
     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 	$lines++;
@@ -109,15 +109,16 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     
 	 //test boazn1@gmail.com
 	 // test efrat
-         if ($CloudMessageType == CloudMessageType::Fcm)
+     //    if ($CloudMessageType == CloudMessageType::Fcm)
                                             
-            array_push ($registrationIDs1, "evd817pyPEQ:APA91bFnYtfu--Y3WwDec_KkNV_Xw76suJ67z2cjZUBR5ZICNetjx_vqWmNYr3DaT4qIRSMwcO7qe6rqEjGVUubIWp5IeVtOFnUwYdbVMT0YMUVBnDo3H6Hnh-EFS_SFd3Z1pMIurNgw");
+        //    array_push ($registrationIDs1, "evd817pyPEQ:APA91bFnYtfu--Y3WwDec_KkNV_Xw76suJ67z2cjZUBR5ZICNetjx_vqWmNYr3DaT4qIRSMwcO7qe6rqEjGVUubIWp5IeVtOFnUwYdbVMT0YMUVBnDo3H6Hnh-EFS_SFd3Z1pMIurNgw");
       //   else
       //      array_push ($registrationIDs1, "d2Y_RLBmKGM:APA91bHCtyGWSLtRYdCW6E0RYCkHEBScvzkcVS5zza88k7RXnyelE9_HJ2shxjJKIJUl1Rw-LJg-rCFCK_RvndH0CP3coto3Ld9bPGcAN5ntj9SLlTYybkDYPwHqc8hDysXT2a4f7u_p");
          
      //
-         
-     logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1));
+
+     array_push ($registrationIDs1, $_REQUEST["reg_id"]);    
+     logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1), 0, "FCM", "sendingGCMMessage", "sendingGCMMessage");
      $result = "";
      $resultCall = array();
      $arrOfRegID0 = array_chunk($registrationIDs0, 1000);

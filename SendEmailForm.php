@@ -60,16 +60,18 @@ if (isset($_POST['SendButton'])) {
 		$msgBody = "{$insert_msgdate}\n"."<div class=\"float slogan\">".$name."</div>{$message}";
 		
 		$result = send_Email($msgBody, ME, $email, $name, "", array("New contact to 02WS", "הודעה חדשה לצרו קשר של ירושמיים"));
-		if ($result == "")
-			echo "<div class=\"alert-success inv_plain_3_zebra white-box\" style=\"margin:0 auto\"><h2>The Message was sent</h2><h2> ההודעה נשלחה</h2><h2>Thanks</h2><h2> תודה</h2></div>";
+		
+		if ($_GET['lang'] == 0)
+			echo "<div style=\"height:100px;text-align: center;\" class=\"alert-success white-box big\" ><p>Message was sent</p></div>";
 		else
-			echo "<fieldset class=\"high\"><strong>$result</strong></fieldset>";
+			echo "<div style=\"height:100px;text-align: center;\" class=\"alert-success white-box big\" ><p>ההודעה נשלחה</p><p>נחזור אליך בקרוב</p><p>תודה</p></div>";
+		
 	?>
 		<!-- <script type="text/javascript" src="ajaxEmail.js"></script>
 		<script language="JavaScript" type="text/javascript">
 			// startEmailService(message_from, message_subject, message_body, target , info_back)
 			var messageBody = escape(encodeURI("<?=$msgSpecial?>"));
-			<? echo "startEmailService(escape(encodeURI('".$email."')) , escape(encodeURI('mail from ".$name."')) , messageBody , 'ME' , true);"; ?>
+			<?// echo "startEmailService(escape(encodeURI('".$email."')) , escape(encodeURI('mail from ".$name."')) , messageBody , 'ME' , true);"; ?>
 		</script> -->
 	<?
 	}

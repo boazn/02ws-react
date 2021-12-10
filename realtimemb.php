@@ -149,7 +149,7 @@ if ($fp) {
     if ($SITE['debug']) {
         echo "UNABLE TO SAVE DATA - CHECK PERMISSIONS <br/>\n";
     }   
-    logger( "Unable to open file<br/>");
+    logger( "Unable to open file<br/>", 4, "realtimemb", "realtimemb", "realtimemb");
 }
 
 if ($SITE['debug']) {

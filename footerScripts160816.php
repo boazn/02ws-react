@@ -1078,8 +1078,9 @@ function attachEnter(){
 		title = "<?=$HELL[$lang_idx]?>";
 	return title;
 }
-function updateLikes(idx, command)
+function updateLikes(event, idx, command)
 {
+   event.preventDefault();
    $.ajax({
         type: "POST",
         url: "forecastlikes_service.php",

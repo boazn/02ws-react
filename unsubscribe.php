@@ -23,7 +23,7 @@ function make_user_unsubscribed($email){
     else
     {
        
-             logger("make_user_unsubscribed failed for ".$email.": error - ".mysqli_connect_errno ($link)." ".mysqli_error ($link)." ".$query);
+             logger("make_user_unsubscribed failed for ".$email.": error - ".mysqli_connect_errno ($link)." ".mysqli_error ($link)." ".$query, 0, "Subscriptions", "storeSub", "make_user_unsubscribed");
              return false;
         
     }

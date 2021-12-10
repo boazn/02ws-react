@@ -1,5 +1,5 @@
                                 <?
-$current_year = 2020;
+$current_year = 2021;
 $min_year = 1846;
 $tablestobeSearched = array();
 $where_clause_archivemin = array();

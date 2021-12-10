@@ -1,5 +1,5 @@
 #!/bin/bash
-convert -delay 5 -annotate +30+250 ' ' -font fixed -colors 256 /home/boazn/public/02ws.com/public/images/webCamera9.jpg  \
+convert -delay 6 -annotate +30+250 ' ' -font fixed -colors 256 /home/boazn/public/02ws.com/public/images/webCamera9.jpg  \
 							    /home/boazn/public/02ws.com/public/images/webCamera8.jpg \
 							    /home/boazn/public/02ws.com/public/images/webCamera7.jpg \
 							    /home/boazn/public/02ws.com/public/images/webCamera6.jpg \

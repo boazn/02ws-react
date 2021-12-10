@@ -23,7 +23,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
  // change that according to file
  //
  //
- $SITE['cvalues'] = array("date","rain", "raincode");
+ $SITE['cvalues'] = array("stationid","date", "rain","raincode");
  $key_split = "/,+/";
  function ret_value($lookup) {
 	global $SITE, $DATA;

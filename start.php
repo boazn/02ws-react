@@ -81,7 +81,7 @@ $url_cur = get_url();
 //$url_cur = get_query_edited_url($url_cur, 'hours', '');
 //$url_cur = get_query_edited_url($url_cur, 'level', '');
 //$url_cur = get_query_edited_url($url_cur, 'profile', '');
-$url_cur = get_query_edited_url($url_cur, 'graph', '');
+//$url_cur = @get_query_edited_url($url_cur, 'graph', '');
 //echo $url_cur;
 //
 $error_update = false;
@@ -329,7 +329,7 @@ if ($lang_idx == $EN)
 {
     if ($_GET['tempunit'] == 'F')
     {
-            $current->set_tempunit('&#176;F');
+            $current->set_tempunit('F');
     }
 	
 }

@@ -162,7 +162,7 @@ if ($fp) {
     }   
     echo "Unable to open file<br/>";
 }
-logger($info);
+logger($info, 0, "dailymbmysql", "dailymbmysql", "SaveArchiveDaily");
 db_init($info, "");
 
 if ($SITE['debug']) {

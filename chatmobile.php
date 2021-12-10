@@ -29,7 +29,7 @@ function getNextPage($addToPage)
 ?>
 <style>
     #logo {
-        float:<? echo get_s_align();?>
+      //  float:<? echo get_s_align();?>
     }
 	
 </style>

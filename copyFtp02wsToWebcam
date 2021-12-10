@@ -1,6 +1,6 @@
 #!/bin/bash
 find /home/ftp02ws/`date +%Y%m%d`/images/ -name *.jpg | sort -rn | head -n1 | while read fname; do cp -v "$fname"  /home/boazn/public/02ws.com/public/images/webCamera.jpg ; done
-find /home/ftp02ws/`date +%Y%m%d`/images/ -name *.jpg | sort -rn | head -n10 | while read fname; do cp -v "$fname" `printf /home/boazn/public/02ws.com/public/images/"webCamera%d" $num`.jpg ; let num=$num+1; done
+find /home/ftp02ws/`date +%Y%m%d`/images/ -name *.jpg | sort -rn | head -n20 | while read fname; do cp -v "$fname" `printf /home/boazn/public/02ws.com/public/images/"webCamera%d" $num`.jpg ; let num=$num+1; done
 find /home/ftp02ws2 -type f -printf "%T@ %p\n" | sort -n | cut -d' ' -f 2- | tail -n 1 | while read fname; do cp -v "$fname"  /home/boazn/public/02ws.com/public/images/webCameraB.jpg ; done
 find /home/ftp02ws2 -type f -printf "%T@ %p\n" | sort -n | cut -d' ' -f 2- | tail -n 10 | while read fname; do cp -v "$fname" `printf /home/boazn/public/02ws.com/public/images/"webCameraB%d" $num`.jpg ; let num=$num+1; done
 convert -resize 25% /home/boazn/public/02ws.com/public/images/webCamera0.jpg /home/boazn/public/02ws.com/public/images/webCamera0_r.jpg

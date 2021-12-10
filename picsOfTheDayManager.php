@@ -14,7 +14,7 @@ function insertNewMessage ($name, $icon, $body, $category, $p_alert)
     //$msg_total_count = $_SESSION['MsgCount'] + $_SESSION['MsgStart'];
     //$name .= "<div class=\"msgcount\">#".$msg_total_count."</div>";
     $query = "call InsertNewMsg ('$name','$icon', '$body', '$now', $category, '$p_email', '$p_alert')";
-    logger($query);
+    logger($query, 0, "picOfTheDayManager", "picOfTheDayManager", "insertNewMessage");
     $result = db_init($query, "");
     // Free resultset 
     @mysqli_free_result($result["result"]);

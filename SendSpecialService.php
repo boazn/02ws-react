@@ -97,12 +97,12 @@ function sendAPN($registrationIDs, $msg, $picture_url, $embedded_url){
 			// check for successful store
 			// get user details
 			$id = $link->insert_id; // last inserted id
-			logger("New pic user updated:".$id." ".$name." ".$comment." ".$user." ".$picname." ".$x." ".$y);
+			logger("New pic user updated:".$id." ".$name." ".$comment." ".$user." ".$picname." ".$x." ".$y, 0, "Push", "SendSpecialService", "storePic");
               //send_Email("New pic user updated:".$id." ".$name." ".$comment." ".$user." ".$picname." ".$x." ".$y." <a href=\"https://www.02ws.co.il/small.php?section=userPicsManager.php\">click here</a> ", ME, $email, $email, "", array('New pic user updated', 'תמונה חדשה נשלחה'));
 			$result = "https://".$_SERVER["HTTP_HOST"]."/".$file_path;  
 			return $result;
         } catch (Exception $ex) {
-            logger("New storePic exception:.".$name." ".$comment." ");
+            logger("New storePic exception:.".$name." ".$comment." ", 4, "Push", "SendSpecialService", "storePic");
         }
    
     }
@@ -142,7 +142,7 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     else if (boolval($dailyforecast)){
         $query = "select * FROM apn_users where dailyforecast=".date("H").$query_extension;
     }
-    logger($query);
+    logger($query, 0, "Push", "SendSpecialService", "sendAPNMessage");
      $result = db_init($query, "");   
     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
 	  if ($line["apn_regid"] != "")
@@ -194,26 +194,28 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     {
         $key = FCM_API_KEY;
         $query_extension = " and fcm=1";
+        $res_fcm = "FCMs";
     }
     else
     {
         $key = GOOGLE_API_KEY;
         $query_extension = " and fcm<>1";
+        $res_fcm = "GCMs";
     }
     if ((boolval($long_range))&&(boolval($short_range))){
-        $query = "select * FROM gcm_users where active=1 or active_rain_etc=1".$query_extension;
+        $query = "select * FROM fcm_users where active=1 or active_rain_etc=1".$query_extension;
     }
     else if (boolval($long_range)){
-        $query = "select * FROM gcm_users where active=1".$query_extension;
+        $query = "select * FROM fcm_users where active=1".$query_extension;
     }
     else if (boolval($short_range)){
-        $query = "select * FROM gcm_users where active_rain_etc=1 and approved=1".$query_extension;
+        $query = "select * FROM fcm_users where active_rain_etc=1".$query_extension;
     }
     else if (boolval($tip)){
-        $query = "select * FROM gcm_users where active_tips=1".$query_extension;
+        $query = "select * FROM fcm_users where active_tips=1".$query_extension;
     }
     else if (boolval($dailyforecast)){
-        $query = "select * FROM gcm_users where dailyforecast=".date("H").$query_extension;
+        $query = "select * FROM fcm_users where dailyforecast=".date("H").$query_extension;
     }
     $result = db_init($query, "");
     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
@@ -225,7 +227,7 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
             array_push ($registrationIDs1, $line["gcm_regid"]);
     }
     
-    logger($query);
+    logger($query, 0, "Push", "SendSpecialService", "sendGCMMessage");
     //logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1)." Pic:".$picture_url);
      
     /* test
@@ -248,9 +250,6 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
      foreach ($arrOfRegID0 as $regIDs){
         
         $resultCall = callGCMSender ($key, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
-        if ($CloudMessageType == CloudMessageType::Fcm){
-            logger($resultCall[1]);
-        }
         handleInvalidTokens($resultCall[1], $regIDs, $key);
       }
     
@@ -258,14 +257,13 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
      foreach ($arrOfRegID1 as $regIDs){
         
         $resultCall = callGCMSender ($key, $regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url);
-        //logger($resultCall[1]);
         handleInvalidTokens($resultCall[1], $regIDs, $key);
      }
     
      
-     $result .= '<br/> --- '.count($registrationIDs1).' GCMs Completed';
-     $result .= '<br/> --- '.count($registrationIDs0).' GCMs Completed';
-     logger($result);
+     $result .= '<br/> --- '.count($registrationIDs1).' '.$res_fcm.' Completed';
+     $result .= '<br/> --- '.count($registrationIDs0).' '.$res_fcm.' Completed';
+     logger($result, 0, "Push", "SendSpecialService", "sendGCMMessage");
     return $result;        
 }
 function getForecastDay()
@@ -296,7 +294,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
     {
         global $lang_idx;
         $lang_idx = $lang;
-        $description = nl2br($description);
+        //$description = nl2br($description);
         $now = replaceDays(date('D H:i'));
         $append = true;
         $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'forecast') and (lang=?)", $lang);
@@ -307,8 +305,9 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
             $latestalert = $line["Description"];
         }
-        $description_appended = $latestalert."\n</br>".$descriptionforecast;
-        $description = "<div class=\"alerttime ".$class."\">".$now."</div>".$description;
+        $description_appended = $latestalert."\n\n".$descriptionforecast;
+        //$description = "<div class=\"alerttime ".$class."\">".$now."</div>".$description;
+        $description = $now."\n".$description."\n";
         //$now = getLocalTime(time());
 
         $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='forecast') and (lang=$lang)";
@@ -316,6 +315,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         $res = db_init($query, "" );
         $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='$type') and (lang=$lang)";
         $mem->set('latestalert'.$lang, $description);
+        $mem->set('latestalert_img', $img_src);
         $mem->set('addonalert'.$lang, $addon);
         $mem->set('latestalerttime'.$lang, time());
         $mem->set('latestalertttl', $ttl*60);
@@ -414,6 +414,8 @@ if (empty($empty)) {
             $msgformat = "<div class=\"title".$class_alerttitle."\">%s</div> %s";
             $msgToAlertSection[0] = sprintf ($msgformat, $title[0], $msgToAlertSection[0]);
             $msgToAlertSection[1] = sprintf ($msgformat, $title[1], $msgToAlertSection[1]);
+            $msgToAlertSection[0] = $title[0]."\n".$message[0];
+            $msgToAlertSection[1] = $title[1]."\n".$message[1];
         }
         $addon = array();
         $messageType = "";
@@ -424,8 +426,8 @@ if (empty($empty)) {
         }
         if ($_POST["alert_section"]=="1"){
             
-            updateMessageFromMessages ($msgToAlertSection[0], 1, 'LAlert', 0 ,'' ,'','', $addon[0], $class_alerttitle, $messageType, $_POST['ttl']);
-            updateMessageFromMessages ($msgToAlertSection[1], 1, 'LAlert', 1 ,'' ,'','', $addon[1], $class_alerttitle, $messageType, $_POST['ttl']);
+            updateMessageFromMessages ($msgToAlertSection[0], 1, 'LAlert', 0 ,'' ,$picture_url,'', $addon[0], $class_alerttitle, $messageType, $_POST['ttl']);
+            updateMessageFromMessages ($msgToAlertSection[1], 1, 'LAlert', 1 ,'' ,$picture_url,'', $addon[1], $class_alerttitle, $messageType, $_POST['ttl']);
     
           }
         } 
@@ -434,7 +436,7 @@ if (empty($empty)) {
     }
     
     try{
-        logger("calling sendGCMMessage with ".$title[0]);
+        logger("calling sendGCMMessage with ".$title[0], 0, "Push", "SendSpecialService", "sendGCMMessage");
         $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"], CloudMessageType::Gcm);
         $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"], CloudMessageType::Fcm);
         //$result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);   
@@ -445,7 +447,7 @@ if (empty($empty)) {
 
 
     try{
-        logger("calling sendAPNMessage with ".$title[0]);
+        logger("calling sendAPNMessage with ".$title[0], 0, "Push", "SendSpecialService", "sendGCMMessage");
         $result .= sendAPNMessage($msgSpecial, $title, $picture_url, "alerts.php", $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"]);
     } 
     catch (Exception $ex) {

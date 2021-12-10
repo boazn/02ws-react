@@ -60,9 +60,9 @@
 			<div class="contentbox-wrapper">
 			    <div id="forcast_days" class="contentbox">
 				<ul id="forcast_icons">
-				    <li id="morning_icon" class="forcast_morning" title="<? echo $EARLY_MORNING[$lang_idx];?>"></li>
-				    <li id="noon_icon" class="forcast_noon" title="<? echo $NOON[$lang_idx];?>"></li>
-				    <li id="night_icon" class="forcast_night" title="<?=$NIGHT_TEMP_EXP[$lang_idx]?>"></li>
+				    <li id="morning_icon"  class="span-value forcast_morning" title="<? echo $EARLY_MORNING[$lang_idx];?>"><a class="info"><span class="info"><? echo $EARLY_MORNING[$lang_idx];?></span>&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+				    <li id="noon_icon" class="span-value forcast_noon" title="<? echo $NOON[$lang_idx];?>"><a class="info"><span class="info"><? echo $NOON[$lang_idx];?></span>&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+				    <li id="night_icon" class="span-value forcast_night" title="<?=$NIGHT_TEMP_EXP[$lang_idx]?>"><a class="info"><span class="info"><? echo $NIGHT_TEMP_EXP[$lang_idx];?></span>&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
 				</ul>
 				<ul id="forcast_table">
 					<? if  (count($forecastDaysDB) == 0) 
@@ -104,6 +104,9 @@
 								<li class="forcast_date">
 								<? echo $date_value;?>
 								</li>
+                                <li class="expand_plus">
+                                
+                                </li>
 								<li class="forcast_morning number">
 								<?=c_or_f($lowtemp_value)?>
 								</li>
@@ -160,7 +163,7 @@
                                	<li class="forcast_morning">
                                 
                                 <div class="line">
-                                <div class="number"><?=c_or_f($forecastday['TempLow'])?></div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempLowCloth?>" rel="external" ><img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastday['TempLowCloth']; ?>" width="28" height="25" title="<?=getClothTitle($forecastday['TempLowCloth'], $forecastday['TempLow'])?>" alt="<?=getClothTitle($forecastday['TempLowCloth'], $forecastday['TempLow'])?>" /></a></div>
+                                <div class="number"><?=c_or_f($forecastday['TempLow'])?></div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempLowCloth?>" rel="external" class="info"><span class="info"><?=getClothTitle($forecastday['TempLowCloth'], $forecastday['TempLow'])?></span><img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastday['TempLowCloth']; ?>" width="35" height="30" title="<?=getClothTitle($forecastday['TempLowCloth'], $forecastday['TempLow'])?>" alt="<?=getClothTitle($forecastday['TempLowCloth'], $forecastday['TempLow'])?>" /></a></div>
                                 <div class="icon humidity extra<?=$i?>" title="<?=$HUMIDITY[$lang_idx]?>" ><?=$forecastday['humMorning']?>%</div>
                                 </div>
                                 <div class="line">
@@ -171,25 +174,25 @@
                                 </li>
 								<li class="forcast_noon">
                                 <div class="line">
-								<div class="number"><?=c_or_f($forecastday['TempHigh'])?></div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" ><img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastday['TempHighCloth']; ?>" width="28" height="25" title="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" alt="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" /></a></div>
+								<div class="number"><?=c_or_f($forecastday['TempHigh'])?></div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" class="info"><span class="info"><?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?></span><img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastday['TempHighCloth']; ?>" width="35" height="30" title="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" alt="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" /></a></div>
 								<div class="icon humidity extra<?=$i?>" title="<?=$HUMIDITY[$lang_idx]?>"><?=$forecastday['humDay']?>%</div>
                                 </div>
                                 <div class="line">
                                 <div class="icon cloth extra<?=$i?>"><img style="vertical-align: middle" src="images/clothes/<?=$forecastday['TempHighCloth']?>" width="25" height="25" title="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" alt=""></div>
                                 <div class="icon extra<?=$i?>" id="day_icon<?=$i?>"><img src="images/icons/day/<?=c_or_f($forecastday['icon'])?>" width="28" height="28" alt="images/icons/day/<?=c_or_f($forecastday['icon'])?>"></div>
                                 </div>                                        
-                                <div class="icon extra<?=$i?>" ><div class="wind_icon <?echo getWindInfo($forecastday['windDay'], $lang_idx)['wind_class'];?>" title="<?echo getWindInfo($forecastday['windDay'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windDay'], $lang_idx)['winddesc'];?>"><?=$forecastday['windDay']." <span class=\"small\">".$KMH[$lang_idx]."</span>"?></div><div><a href="dailydetailed.php?dayid=<?=$i+1?>" rel="external" ><?=get_arrow();?></a></div></div>
+                                <div class="icon extra<?=$i?>" ><div class="wind_icon <?echo getWindInfo($forecastday['windDay'], $lang_idx)['wind_class'];?>" title="<?echo getWindInfo($forecastday['windDay'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windDay'], $lang_idx)['winddesc'];?>"><?=$forecastday['windDay']." <span class=\"small\">".$KMH[$lang_idx]."</span>"?></div><div></div></div>
                                 </li>
 								<li class="forcast_night">
                                 <div class="line">
-								<div class="number"><?=c_or_f($forecastday['TempNight'])?></div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="28" height="25" title="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" alt="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" /></a></div>
+								<div class="number"><?=c_or_f($forecastday['TempNight'])?></div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" class="info"><span class="info"><?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?></span><img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="35" height="30" title="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" alt="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" /></a></div>
                                 <div class="icon humidity extra<?=$i?>" title="<?=$HUMIDITY[$lang_idx]?>" ><?=$forecastday['humNight']?>%</div>
                                 </div>  
                                 <div class="line">
                                 <div class="icon cloth extra<?=$i?>"><img style="vertical-align: middle" src="images/clothes/<?=$forecastday['TempNightCloth']?>" width="25" height="25" title="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" alt=""></div>
                                 <div class="icon extra<?=$i?>" id="night_icon<?=$i?>"><img src="images/icons/day/<?=c_or_f($forecastday['iconnight'])?>" width="28" height="28" alt="images/icons/day/<?=c_or_f($forecastday['iconnight'])?>"></div>
                                 </div> 
-                                <div class="icon extra<?=$i?>" ><div class="wind_icon <?echo getWindInfo($forecastday['windNight'], $lang_idx)['wind_class'];?>" title="<?echo getWindInfo($forecastday['windNight'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windNight'], $lang_idx)['winddesc'];?>"><?=$forecastday['windNight']." <span class=\"small\">".$KMH[$lang_idx]."</span>"?></div><div><a href="dailydetailed.php?dayid=<?=$i+1?>" rel="external" ><?=get_arrow();?></a></div></div>
+                                <div class="icon extra<?=$i?>" ><div class="wind_icon <?echo getWindInfo($forecastday['windNight'], $lang_idx)['wind_class'];?>" title="<?echo getWindInfo($forecastday['windNight'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windNight'], $lang_idx)['winddesc'];?>"><?=$forecastday['windNight']." <span class=\"small\">".$KMH[$lang_idx]."</span>"?></div><div></div></div>
 								</li>
                                 <li class="icon_day"><?if ($i == 0) echo get_param_tag($forecastday['TempHigh'] - round($hightemp_value), true, "", false);?>
                                     <a href="legend.php" rel="external" >
@@ -205,9 +208,9 @@
 									<? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);$textsum = $textsum + strlen(urldecode($forecastday[$dscpIdx]));?>
                                     <?if ($i < 5) {?>
                                                     <div id="divlikes<?=$key?>" class="likedislike">		
-                                                            <img src="images/like_white.png" width="15px" height="15px" onclick="updateLikes(this.parentNode.parentNode.parentNode.parentNode.id, 'like')" style="cursor:pointer" />
+                                                            <a onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'like');"><img src="images/like_white.png" width="15px" height="15px"  style="cursor:pointer" /></a>
                                                             <span class="likes"><?=count($forecastDaysDB[$key]["likes"])?></span>&nbsp;
-                                                            <img src="images/dislike_white.png" width="15px" height="15px" onclick="updateLikes(this.parentNode.parentNode.parentNode.parentNode.id, 'dislike')" style="cursor:pointer" />
+                                                            <a onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'dislike');"><img src="images/dislike_white.png" width="15px" height="15px" style="cursor:pointer" /></a>
                                                             <span class="dislikes"><?=count($forecastDaysDB[$key]["dislikes"])?></span>
                                                     </div>
                                                     <?}?>
@@ -314,26 +317,26 @@
                                         echo "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('".$toptime."','".$hour_f['icon']."',".$hour_f['temp'].",".$hour_f['wind'].",'".$hour_f['cloth']."',".$hour_f['rain'].",".$hour_f['humidity'].")\">";
                                         echo "<div class=\"x-axis-bar primary\" style=\"height: 100%\">".$toptime."</div>";
                                         $bottom = 92;
-                                        echo "<div class=\"x-axis-bar tertiary icon\" style=\"height: ".$bottom."%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/".$hour_f['icon']."\" height=\"25\" width=\"28\" alt=\"".$hour_f['icon']."\" /></div>";
+                                        echo "<div class=\"x-axis-bar tertiary icon\" style=\"height: ".$bottom."%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/".$hour_f['icon']."\" height=\"40\" width=\"45\" alt=\"".$hour_f['icon']."\" /></div>";
                                         $bottom = (($hour_f['temp']-$min_temp)*85)/($max_temp - $min_temp);
                                          if ($bottom < 10) $bottom = 13;
                                          else if ($bottom < 20) $bottom = $bottom + 3;
                                          else if ($bottom > 60) 
                                             $addonclass = "uppervalue"; else $addonclass = "";
                                         $tempclass = ($index_hr % 2 == 0) ? "secondary" : "secondaryalt";
-                                        echo "<div class=\"x-axis-bar ".$tempclass." temp\" style=\"height: ".$bottom."%;\"><span class=\"x-axis-bar-value\" data-value=\"".$hour_f['temp']."° ".$hour_f['humidity']."%\">".$hour_f['temp']."°</span></div>";
-                                        echo "<div class=\"x-axis-bar tertiary cloth icon\" style=\"display:none;height: ".$bottom."%;\"><span class=\"x-axis-bar-value ".$addonclass."\" data-value=\"".getClothTitle($hour_f['cloth'], $hour_f['temp'])."\"><img style=\"vertical-align: middle\" src=\"images/clothes/".$hour_f['cloth']."\" height=\"30\" width=\"30\" /></span></div>";
+                                        echo "<div class=\"x-axis-bar ".$tempclass." temp\" style=\"height: ".$bottom."%;\"><span class=\"x-bar-value span-value\" data-value=\"".$hour_f['temp']."° ".$hour_f['humidity']."%\">".$hour_f['temp']."°</span></div>";
+                                        echo "<div class=\"x-axis-bar tertiary cloth icon\" style=\"display:none;height: ".$bottom."%;\"><span class=\"span-value ".$addonclass."\" data-value=\"".getClothTitle($hour_f['cloth'], $hour_f['temp'])."\"><img style=\"vertical-align: middle\" src=\"images/clothes/".$hour_f['cloth']."\" height=\"40\" width=\"40\" /></span></div>";
                                          $bottom = 40;
                                         if ($hour_f['plusminus'] > 0)
-                                            echo "<div class=\"x-axis-bar tertiary\" style=\"height: ".$bottom."%;\"><span class=\"x-axis-bar-value\" data-value="."&nbsp;&plusmn;".$hour_f['plusminus']."></span></div>";
+                                            echo "<div class=\"x-axis-bar tertiary\" style=\"height: ".$bottom."%;\"><span class=\"span-value x-bar-value\" data-value="."&nbsp;&plusmn;".$hour_f['plusminus']."></span></div>";
                                         $bottom = 82;
                                         if ($index_hr == $nowIndex || ($hour_f['wind'] != $prev_wind))
                                         echo "<div class=\"x-axis-bar tertiary wind\" style=\"height: ".$bottom."%;\"><div title=\"".getWindInfo($hour_f['wind'], $lang_idx)['windtitle']."\" class=\"wind_icon ".getWindInfo($hour_f['wind'], $lang_idx)['wind_class']." \"></div></div>";
                                         $bottom = $hour_f['rain'];
                                         if ($bottom > 0)
-                                            echo "<div class=\"x-axis-bar tertiary rain\" style=\"display:none;height: ".$bottom."%;\"><span class=\"x-axis-bar-value\" data-value=\"".$CHANCE_OF[$lang_idx]." ".$RAIN[$lang_idx]."\">".$hour_f['rain']."%</span></div>";
+                                            echo "<div class=\"x-axis-bar tertiary rain\" style=\"display:none;height: ".$bottom."%;\"><span class=\"span-value\" data-value=\"".$CHANCE_OF[$lang_idx]." ".$RAIN[$lang_idx]."\">".$hour_f['rain']."%</span></div>";
                                         $bottom = $hour_f['humidity'];
-                                        echo "<div class=\"x-axis-bar tertiary humidity\" style=\"display:none;height: ".($bottom-5)."%;\"><span class=\"x-axis-bar-value\" data-value=\"".$HUMIDITY[$lang_idx]."\">".$hour_f['humidity']."%</span></div>";
+                                        echo "<div class=\"x-axis-bar tertiary humidity\" style=\"display:none;height: ".($bottom-5)."%;\"><span class=\"span-value\" data-value=\"".$HUMIDITY[$lang_idx]."\">".$hour_f['humidity']."%</span></div>";
                                         //echo "<span class=\"x-axis-bar-target-line\" style=\"bottom: ".$bottom."%;\"></span>";
                                         echo "</div>";
                                         echo "</li>";
@@ -417,11 +420,11 @@
                      
 		    <div id="mainadsense" style="line-height: 0;">
                 <div id="bg3-1" class="cloud2" >
-                <a href="https://runnerswithoutborders.org/race/" style="line-height: 10px;
+                <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" style="line-height: 10px;
         position: absolute;
-        margin-left: 20px;
+        margin-left: 40px;
         margin-top: -5px;
-        z-index: 9999;"><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה<?}?></a>
+        z-index: 9999;"><?if (isHeb()){?>סופת הוצאות מתקרבת<?echo get_arrow();}?></a>
                 <div class="cloud2-more">
                 
                 </div>
@@ -438,18 +441,16 @@
                 </script>
                 <?if (isHeb()){?>
                 <div id="if1" >  
-                <div style="width:300px;height:50px;direction:rtl;font-size: 1em;line-height:1em;padding: 0.5em 0.1em;background: url('images/dudi.jfif') no-repeat 2px 2px ;background-size: 60px;">
-                            <div style="width:265px;float:right;padding:0.5em"> סיור גרפיטי ״50 גוונים של ירושלים״ 
-                        <a style="text-decoration:underline" href="https://www.jerusalemoutoftheframe.com/graffiti/?fbclid=IwAR0GUeawNnjlWbFA5GkSEbEHL42jRW-0Hn-inyKlAOV73KRx2TF_lnPOFx8" target=_blank >לינק להרשמה</a></div>
-                    </div>
+                    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100.png" alt="riseup" width="300" height="100" /></a>
                 </div>
                 <div id="if2" style="display:none">
-                   
+                    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100.png" alt="riseup" width="300" height="100" /></a>
                 </div>
                 <div id="if3" style="width:300px">
-               
+                  
                 </div>
                 <div id="if4" style="display:none">
+                   
                 </div>
                 
                 <div>
@@ -479,7 +480,7 @@
                 <div id="alerts" class="span7 offset3 white_box">
                         <h2><? echo $MESSAGES[$lang_idx];?></h2>
                             <div id="alerts_app_promo"><?=$ALERTS_TO_APP_PROMO[$lang_idx]?></div>
-                            <div id="message" class="box_text"><? echo $latestalert."<br/>".$detailedforecast;?></div>
+                            <div id="message" class="box_text"><? echo nl2br($latestalert)."<br/>".nl2br($detailedforecast);?></div>
                             <p id="personal_message" class="box_text"></p>
                             <?php if (isHeb()) { ?>
                             <a class="twitter-timeline" data-lang="he" href="https://twitter.com/YERU02WS?ref_src=twsrc%5Etfw">Tweets by YERU02WS</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -642,7 +643,7 @@
 					<h3><? echo $LIVE_PICTURE[$lang_idx];?></h3>
                                         <h4></h4>
 					<a href="<? echo "station.php?section=webCamera.jpg&amp;lang=".$lang_idx;?>"><p><? echo $PIC_DESC[$lang_idx];?><?=get_arrow()?></p>
-					<img title="שידור חי  - מצלמה 2" src="phpThumb.php?src=<?=getUpdatedPic()?>&amp;sx=550&amp;w=1550&amp;sy=250&amp;sw=850&amp;sh=550&amp;fltr%5B%5D=gam%7C0.8" alt="live pic" />
+					<img title="שידור חי  - מצלמה 2" src="phpThumb.php?src=<?=getUpdatedPic()?>&amp;sx=550&amp;w=1550&amp;sy=250&amp;sw=850&amp;sh=550&amp;fltr%5B%5D=gam%7C1.25" alt="live pic" />
 					</a>
 					
 				    </div>
@@ -656,7 +657,7 @@
 					<p><?=$comment[$lang_idx]?>&nbsp;- <?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></p>
 					</a>
                      <a href="<? echo "station.php?section=picoftheday.php&amp;lang=".$lang_idx;?>">                   
-					<img src="phpThumb.php?src=<?=$picname?>&amp;w=350&amp;fltr%5B%5D=gam%7C0.8" alt="<?=$comment[$lang_idx]?>" />
+					<img src="phpThumb.php?src=<?=$picname?>&amp;w=350&amp;fltr%5B%5D=gam%7C1.25" alt="<?=$comment[$lang_idx]?>" />
 					</a>
 				    </div>
 				    

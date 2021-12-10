@@ -30,11 +30,11 @@ class DB_Functions {
 			// check for successful store
 			// get user details
 			$id = $link->insert_id; // last inserted id
-			logger("New pic user updated:".$id." ".$name." ".$comment." ".$user." ".$picname." ".$x." ".$y);
-                        send_Email("New pic user updated:".$id." ".$name." ".$comment." ".$user." ".$picname." ".$x." ".$y." <a href=\"https://www.02ws.co.il/small.php?section=userPicsManager.php\">click here</a> ", ME, $email, $email, "", array('New pic user updated', 'תמונה חדשה נשלחה'));
+			logger("New pic user updated:".$id." ".$name." ".$comment." ".$user." ".$picname." ".$x." ".$y, 0, "userPic", "user_picture_reciever", "storePic");
+                        send_Email("New pic user updated:".$id." ".$name." ".$comment." ".$user." ".$picname." ".$x." ".$y." <a href=\"https://www.02ws.co.il/small.php?section=userPicsManager.php\">click here</a> ", ME, $email, $email, "", array('New pic user updated - '.$user, 'תמונה חדשה נשלחה'." - ".$user));
 			return $result;
         } catch (Exception $ex) {
-            logger("New storePic exception:.".$name." ".$comment." ");
+            logger("New storePic exception:.".$name." ".$comment." ", 4, "userPic", "user_picture_reciever", "storePic");
         }
    
     }
@@ -45,7 +45,8 @@ class DB_Functions {
 
 // response json
 $json = array();
- 
+$picJSON = "{\"result\":";
+$picJSON .= "{"; 
 /**
  * Registering a user device
  * Store reg id in users table
@@ -58,10 +59,11 @@ if (isset($_FILES["pic"])||isset($_POST["pic"])) {
     $base64 = $_POST["base64"];
     $user = $_POST["user"];
     $reg_id = $_POST["reg_id"];
-    $comment = $_POST["comment"]; // GCM Registration ID
+    $comment = $_POST["comment"]; 
     $db = new DB_Functions();
     $res = $db->storePic($name, $pic, $comment, $user, $picname, $x, $y, $base64, $reg_id);
-    echo ($res);
+    $picJSON .= "\"success\":true";
+    
 } else {
     
 	$res_post = "";
@@ -75,18 +77,23 @@ if (isset($_FILES["pic"])||isset($_POST["pic"])) {
 	   }
 	}
 	if (empty($empty)) {
-	   print "None of the POSTed values are empty, posted:\n";
-	   var_dump($post);
+	  // print "None of the POSTed values are empty, posted:\n";
+	  // var_dump($post);
+      $picJSON .= "\"success\":false";
 	   
 	} else {
 	   $result .= "We have " . count($empty) . " empty values\n";
-	   var_dump($empty);
+	//   var_dump($empty);
 	   $result .= "We have " . count($post) . " posted values\n";
-	   var_dump($post);
-	   echo $result;
-	   
+	//   var_dump($post);
+	//   echo $result;
+        $picJSON .= "\"success\":false";
 	}
 
-	logger( "user_picture_reciever: user details is missing; ".$res_post);
+	logger( "user_picture_reciever: pic is missing; ".$res_post, 0, "userPic", "user_picture_reciever", "user_picture_reciever");
 }
+
+$picJSON .= "}";
+$picJSON .= "}";
+echo $picJSON;
 ?>

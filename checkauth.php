@@ -21,7 +21,7 @@ function get_user_from_email($email){
 function getAdFreeSection() {
     if (($_GET['reg_id'] != "")&&($_GET['reg_id'] != "null")) {
         if (!empty($_SESSION['email']))
-            logger ($_GET['qs']." reg_id=".$_GET['reg_id']." email:".$_SESSION['email']);
+            logger ("getAdFreeSection: ".$_GET['qs']." reg_id=".$_GET['reg_id']." email:".$_SESSION['email'], 0, "auth", "db", "getAdFreeSection");
         $_REQUEST['action']="getsubfromregid";
         $_REQUEST["reg_id"] = $_GET['reg_id'];
         include 'subscription_reciever.php';
@@ -32,7 +32,8 @@ function getAdFreeSection() {
 }
 function get_user(){
     global $user_locked, $session, $cookie;
-    
+    $rememberme = empty($_REQUEST['rememberme']) ? $_COOKIE['rememberme'] : $_REQUEST['rememberme'];
+    $locked_value = "false";
     //logger($_SESSION['email']." ".$_COOKIE['rememberme']);
     $userJSON = "{\"user\":";
      if (!empty($_SESSION['email']) && is_valid_email($_SESSION['email'])) {
@@ -43,49 +44,48 @@ function get_user(){
         */
         $line = get_user_from_email($_SESSION['email']);
         //logger( $_SESSION['email']." authenticated with Session: "."\"display\":"."\"".$line['display_name']."\""." \"nicename\":"."\"".$line['user_nicename']."\""." \"priority\":".$line['priority']." \"admin\":".$line['admin']);
-        if (!$user_locked)
-            $_SESSION['loggedin'] = "true";
-        else
-            $_SESSION['loggedin'] = "false";
-        
-  
+        $_SESSION['loggedin'] = "true";
     }
     else {
         // This means the session file doesn't exist, is empty, or there is no valid userid
         // This is where we will check for a 'rememberme' cookie if one exists
-        if (!empty($_COOKIE['rememberme']) && is_valid_rememberme_cookie($_COOKIE['rememberme'])) {
+        if (!empty($rememberme)) {
             // The user has a valid rememberme cookie and the token matches a user in the database
             /* The session is already started so just generate the session data accordingly as if the user has already authenticated */
-            $line = get_user_from_key($_COOKIE['rememberme']);
-			$_SESSION['email'] = $line['email'];
-            //logger( $_SESSION['email']." authenticated with cookie {$_COOKIE['rememberme']}: "."\"display\":"."\"".$line['display_name']."\""." \"nicename\":"."\"".$line['user_nicename']."\""." \"priority\":".$line['priority']." \"admin\":".$line['admin']);
-			
-            if (!$user_locked)
+            $line = get_user_from_key($rememberme);
+            if (!empty($line[0])&&($line[0]==1))
+            {
                 $_SESSION['loggedin'] = "true";
+                $_SESSION['email'] = $line['email'];
+                //logger( $_SESSION['email']." authenticated with cookie {$_COOKIE['rememberme']}: "."\"display\":"."\"".$line['display_name']."\""." \"nicename\":"."\"".$line['user_nicename']."\""." \"priority\":".$line['priority']." \"admin\":".$line['admin']);
+	        }
             else
                 $_SESSION['loggedin'] = "false";
-        }else 
-        { 
-            $_SESSION['loggedin'] = "false";
-         } 
+        } else 
+           $_SESSION['loggedin'] = "false";
+          
     }
+    if ($user_locked)
+        $_SESSION['loggedin'] = "false";
     
-    $_SESSION['isAdmin'] = $line['admin'];
-    $_SESSION['user_icon'] = $line['user_icon'];
+    
     $userJSON .= "{";
     $userJSON .= "\"loggedin\":".$_SESSION['loggedin'];
     $userJSON .= ",";
     if ((empty($user_locked))||($user_locked == 0))
-      $locked_value = "false";
+        $userJSON .= "\"locked\":false";
     else
-      $locked_value = "true"; 
-    $userJSON .= "\"locked\":".$locked_value;
-    $_SESSION['MsgCount'] = $line['MsgCount'];
-    $_SESSION['MsgStart'] = $line['MsgStart'];
-    if ($line['PersonalColdMeter'] != $_COOKIE[PERSONAL_COLD_METER])
-        setcookie(PERSONAL_COLD_METER, $line['PersonalColdMeter'], time()+3600*24*360);
+        $userJSON .= "\"locked\":true";
+    
+   
     if ($_SESSION['loggedin'] == "true")
     {
+        if ($line['PersonalColdMeter'] != $_COOKIE[PERSONAL_COLD_METER])
+        setcookie(PERSONAL_COLD_METER, $line['PersonalColdMeter'], time()+3600*24*360);
+            $_SESSION['isAdmin'] = $line['admin'];
+            $_SESSION['user_icon'] = $line['user_icon'];
+            $_SESSION['MsgCount'] = $line['MsgCount'];
+            $_SESSION['MsgStart'] = $line['MsgStart'];
             $userJSON .= ",";
             $userJSON .= "\"display\":"."\"".str_replace("\\", "", $line['display_name'])."\"";
             $userJSON .= ",";
@@ -117,6 +117,7 @@ function get_user(){
     $userJSON .= getAdFreeSection();
     $userJSON .= "}";
     $userJSON .= "}";
+    //logger($userJSON);
     echo $userJSON;
     
  }
@@ -157,7 +158,7 @@ function get_user_from_key($key){
 
 function is_valid_rememberme_cookie($key){
     $line = get_user_from_key($key);
-	//logger("is_valid_rememberme_cookie:".$line[0]);
+	
     if (!empty($line[0])&&($line[0]==1))
         return true;
     return false;
@@ -168,7 +169,7 @@ function get_userid_from_key($key){
        return $line[1];
    return null;
 }
-function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_display_name, $user_icon){
+function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_display_name, $user_icon, $reg_id){
     // if is checked "remember me" when registaring
     global $CLICK_TO_CONFIRM, $lang_idx, $REGISTRATION_TO_02WS;
     $email = strtolower($email);
@@ -181,14 +182,14 @@ function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_dis
     $pass = $link->real_escape_string ($pass);
     $user_nice_name = $link->real_escape_string ($user_nice_name);
     $user_display_name = $link->real_escape_string ($user_display_name);
-    $query = "call saveUser ('$email','$user', '$pass', '$user_nice_name', '$key', '$user_display_name', '$user_icon')";
+    $query = "call saveUser ('$email','$user', '$pass', '$user_nice_name', '$key', '$user_display_name', '$user_icon', '$reg_id')";
     $link->query($query);
     
     if($link->affected_rows==1)
     {
       // now send_email with activation code
         $key = urlencode($key);
-        $href="https://www.02ws.co.il/regConfirm.php?k=$key&email=$email&user=$user&lang=$lang_idx";
+        $href="https://www.02ws.co.il/regConfirm.php?k=$key&email=$email&user=$user&lang=$lang_idx&reg_id=$reg_id";
         send_Email("<br /><br /><br /><h1><a href=\"$href\" >".$CLICK_TO_CONFIRM[$lang_idx]."</a></h1><br /><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array($REGISTRATION_TO_02WS[$lang_idx],$REGISTRATION_TO_02WS[$lang_idx]));
         echo "0";
     }
@@ -214,7 +215,7 @@ function user_wants_to_update_profile($email, $pass, $user_nice_name, $user_disp
     if($stmt->affected_rows==1)
     {
     	echo "0";
-        logger("user_wants_to_update_profile: succeed ".$email." ".$user_nice_name." ".$user_display_name." ".$user_icon." ".$personal_coldmeter);
+        logger("user_wants_to_update_profile: succeed ".$email." ".$user_nice_name." ".$user_display_name." ".$user_icon." ".$personal_coldmeter, 0, "auth", "db", "user_wants_to_update_profile");
     }
     else
     {
@@ -222,7 +223,7 @@ function user_wants_to_update_profile($email, $pass, $user_nice_name, $user_disp
         echo "0";
         else
         echo "error: ".mysqli_errno ($link).", ".mysqli_error ($link); 
-        logger("user_wants_to_update_profile mysqli_affected_rows=0: ".mysqli_errno ($link)." ".mysqli_error ($link).$email." ".$user_nice_name." ".$user_display_name." ".$user_icon);
+        logger("user_wants_to_update_profile mysqli_affected_rows=0: ".mysqli_errno ($link)." ".mysqli_error ($link).$email." ".$user_nice_name." ".$user_display_name." ".$user_icon, 0, "auth", "db", "user_wants_to_update_profile");
     }
     $stmt->close();
 }
@@ -257,7 +258,7 @@ function set_new_password($email, $pass)
     $stmt->execute();
     if($stmt->affected_rows<1){
         $stmt->close();
-       logger("set_new_password affected rows = 0: ".$query);
+       logger("set_new_password affected rows = 0: ".$query, 0, "auth", "db", "set_new_password");
         if (mysqli_connect_errno ($link) == 0)
              header("location:station.php");
         echo "<br />reset password failed";
@@ -266,7 +267,7 @@ function set_new_password($email, $pass)
       else
       {
           $stmt->close();
-          logger($query);
+          logger($query, 0, "auth", "db", "set_new_password");
           $_SESSION['email'] = $email;
         header("location:station.php");
       }
@@ -285,6 +286,7 @@ function set_new_password($email, $pass)
    function confirmUserPass($email, $password, $isrememberme){
       /* Add slashes if necessary (for query) */
      global $PROBLEM_USER_PASSWORD, $lang_idx, $link, $stmt, $NO_USER_EXIST, $CHECK_EMAIL, $cookie, $session;
+     $reg_id = $_REQUEST['reg_id'];
       $email = strtolower($email);
            
         
@@ -292,7 +294,7 @@ function set_new_password($email, $pass)
           
       if(is_null($dbarray)){
           //Indicates username failure
-          logger("email not found=".$email);
+          logger("email not found=".$email, 0, "auth", "db", "confirmUserPass");
          $userJSON = "{\"user\":";
 	    $userJSON .= "{";
 	   
@@ -308,7 +310,7 @@ function set_new_password($email, $pass)
       }
       else if ($dbarray['user_status'] == 0)
       {
-           logger("email found=".$email. " user status = 0");
+           logger("email found=".$email. " user status = 0", 0, "auth", "db", "confirmUserPass");
          $userJSON = "{\"user\":";
 	    $userJSON .= "{";
 	   
@@ -333,25 +335,28 @@ function set_new_password($email, $pass)
       /* Validate that password is correct */
       if($password == $dbarray['u_pswd']){
          $_SESSION['email'] = $email;
-	 $_SESSION['user_icon'] = $dbarray['user_icon'];
+	     $_SESSION['user_icon'] = $dbarray['user_icon'];
          $_SESSION['MsgCount'] = $dbarray['MsgCount'];
         $_SESSION['MsgStart'] = $dbarray['MsgStart'];
-         if ((empty($dbarray['locked']))||($dbarray['locked'] == 0))
-			$locked_value = "false";
-	    else
-			$locked_value = "true"; 
-        $userJSON = "{\"user\":";
+        $locked_value = ((empty($dbarray['locked']))||($dbarray['locked'] == 0)) ? false : true;
+	    $userJSON = "{\"user\":";
 	    $userJSON .= "{";
-	    if ($locked_value == "true")
-	    $userJSON .= "\"loggedin\":false";
-	    else
-	    $userJSON .= "\"loggedin\":true";
+	    if ($locked_value)
+            $userJSON .= "\"loggedin\":false";
+        else{
+            $userJSON .= "\"loggedin\":true";
+            $_SESSION['loggedin'] = "true";
+			setcookie(PERSONAL_COLD_METER, $dbarray['PersonalColdMeter'], time()+3600*24*360); // Set the cookie to expire after 360 days
+			if ($isrememberme){
+     			   setcookie("rememberme", $dbarray['user_rememberme'], time()+3600*24*360); // Set the cookie to expire after 360 days
+            }
+        }
 	    $userJSON .= ",";
-	    $userJSON .= "\"locked\":".$locked_value;
+	    $userJSON .= "\"locked\":\"".$locked_value."\"";
 	    $userJSON .= ",";
 	    $userJSON .= "\"display\":"."\"".str_replace("\\", "", $dbarray['display_name'])."\"";
 	    $userJSON .= ",";
-            $userJSON .= "\"icon\":"."\"".$dbarray['user_icon']."\"";
+        $userJSON .= "\"icon\":"."\"".$dbarray['user_icon']."\"";
 	    $userJSON .= ",";
 	    $userJSON .= "\"nicename\":"."\"".$dbarray['user_nicename']."\"";
 	    $userJSON .= ",";
@@ -359,40 +364,37 @@ function set_new_password($email, $pass)
 	    $userJSON .= ",";
 	    $userJSON .= "\"email\":"."\"".$_SESSION['email']."\"";
 	    $userJSON .= ",";
-            $userJSON .= "\"MsgCount\":".$dbarray['MsgCount'];
-            $userJSON .= ",";
-            $userJSON .= "\"MsgStart\":".$dbarray['MsgStart'];
-            $userJSON .= ",";
-            $userJSON .= "\"PersonalColdMeter\":".$dbarray['PersonalColdMeter'];
-            $userJSON .= ",";
-            $userJSON .= "\"SeasonPref\":".$dbarray['SeasonPref'];
-            $userJSON .= ",";
-            $userJSON .= "\"voteCount\":".$dbarray['VoteCount'];
-            $userJSON .= ",";
-            $userJSON .= "\"clss\":".$dbarray['classification'];
-            $userJSON .= ",";
+        $userJSON .= "\"MsgCount\":".$dbarray['MsgCount'];
+        $userJSON .= ",";
+        $userJSON .= "\"MsgStart\":".$dbarray['MsgStart'];
+        $userJSON .= ",";
+        $userJSON .= "\"PersonalColdMeter\":".$dbarray['PersonalColdMeter'];
+        $userJSON .= ",";
+        $userJSON .= "\"SeasonPref\":".$dbarray['SeasonPref'];
+        $userJSON .= ",";
+        $userJSON .= "\"voteCount\":".$dbarray['VoteCount'];
+        $userJSON .= ",";
+        $userJSON .= "\"clss\":".$dbarray['classification'];
+        $userJSON .= ",";
 	    $userJSON .= "\"admin\":".$dbarray['admin'];
 	    $userJSON .= ",";
 	    $userJSON .= "\"isrememberme\":".$isrememberme;
 	    
 	    $userJSON .= "}";
 	    $userJSON .= "}";
-        if ($locked_value != "true")  {
-                        $_SESSION['loggedin'] = "true";
-			logger( $userJSON." authenticated ");
-                        setcookie(PERSONAL_COLD_METER, $dbarray['PersonalColdMeter'], time()+3600*24*360); // Set the cookie to expire after 360 days
-			if ($isrememberme){
-     			   setcookie("rememberme", $dbarray['user_rememberme'], time()+3600*24*360); // Set the cookie to expire after 360 days
-                        }
-		}
-		$_SESSION['isAdmin'] = $dbarray['admin'];
-                $_SESSION['email'] = $email;
-                logger("confirmUserPass: ".$_SESSION['email']." ".$_SESSION['loggedin']." ".$_COOKIE[PERSONAL_COLD_METER]." ".$_COOKIE['rememberme']);
+        $_SESSION['isAdmin'] = $dbarray['admin'];
+        $_SESSION['email'] = $email;
+        logger("confirmUserPass: ".$_SESSION['email']." ".$_SESSION['loggedin']." ".$_COOKIE[PERSONAL_COLD_METER]." ".$_COOKIE['rememberme'], 0, "auth", "db", "confirmUserPass");
+        if (!empty($_GET['reg_id'])){
+            $reg_id = $_GET['reg_id'];
+            $result = db_init("INSERT INTO `Subscriptions` (guid, email, approved, reg_id) VALUES(UUID_SHORT(), '$email' ,0, '$reg_id');", "");
+            logger("After Activation - StoreSub:".$email." ".$reg_id." 0", 0, "auth", "db", "confirmUserPass");
+        }
          return $userJSON; //Success! Username and password confirmed
       }
       else{
           //Indicates password failure
-            logger("email=".$email." password=".$password." u_pswd=".$dbarray['u_pswd']);
+            logger("email=".$email." password=".$password." u_pswd=".$dbarray['u_pswd'], 0, "auth", "db", "confirmUserPass");
          $userJSON = "{\"user\":";
 	    $userJSON .= "{";
 	   
@@ -404,7 +406,7 @@ function set_new_password($email, $pass)
 	    
 	    $userJSON .= "}";
 	    $userJSON .= "}";
-            return $userJSON;
+        return $userJSON;
       }
    }
    
@@ -478,7 +480,7 @@ else if ($_REQUEST['action']=="signout"){
 else if ($_REQUEST['action']=="register"){
     $email_ok = check_email_address($_REQUEST['email']);
     if ($email_ok)
-        user_wants_to_register($_REQUEST['email'], $_POST['username'], md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon']);
+        user_wants_to_register($_REQUEST['email'], $_POST['username'], md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon'], $_REQUEST['reg_id']);
     else
         echo "Email not OK";
     

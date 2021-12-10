@@ -6,9 +6,10 @@
 <li   value="801">אורלנדו Orlando</li>
 <li   value="21">אוסלו Oslo</li>
 <li   value="177">אתונה Athens</li>
+<li   value="49">בודרום Bodrum</li>
+<li   value="273">בוסטון Boston</li>
 <li   value="200">בוקרשט Bucharest</li>
 <li   value="60">בודפשט Budapest</li>
-<li   value="49">בודרום Bodrum</li>
 <li	  value="237">בייג'ין Beijin</li>
 <li	  value="233">בנקוק Bangkok</li>
 <li	  value="191">בריסל Brussels</li>

@@ -85,11 +85,13 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         $messageBody[0] = $TIP[0].": ".$messageBody[0];
         $messageBody[1] = $TIP[1].": ".$messageBody[1];
     }
-    
+    $key = FCM_API_KEY;
     
     //$reg_id = "64559e7a912254227033d04a8e347e5563e142a4519a61a937af2c188cba1f1e"; 
     //array_push ($registrationIDs1,array('apn_regid' => $reg_id, 'id' => '8026'));
-    $reg_id = "8423b388b3bda7f8057544b2d080c9b30801c393372ba16ed7f4a38acdb15582"; //266bac92854f25196892ed0895ec96f13590069c74c9ef38857586eb11cbfa18//64559e7a912254227033d04a8e347e5563e142a4519a61a937af2c188cba1f1e 
+    
+    $reg_id = "64559e7a912254227033d04a8e347e5563e142a4519a61a937af2c188cba1f1e"; //266bac92854f25196892ed0895ec96f13590069c74c9ef38857586eb11cbfa18//64559e7a912254227033d04a8e347e5563e142a4519a61a937af2c188cba1f1e 
+    $reg_id = $_REQUEST["reg_id"];
     array_push ($registrationIDs1,array('apn_regid' => $reg_id, 'id' => '8025'));
    $query_extension = "";
         
@@ -124,8 +126,8 @@ function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $shor
  $mh = curl_multi_init();
  $chunkedOfRegID1 = array_chunk($registrationIDs1, 2);
  foreach ($chunkedOfRegID1 as $regIDs1){
-    $token = getToken('AuthKey_669J3G9XB5.p8', '669J3G9XB5', 'SAPLRRD8P5');
-    $curl = sendAPNToRegIDsAsync($mh, $regIDs1, $title[1], date('H:i')." ".$messageBody[1], $picture_url, $embedded_url, $token);
+    $resultCall = callAPNSender ($key, $regIDs1, $messageBody[1], $title[1], $picture_url, $embedded_url);
+    echo "result=".$resultCall[1];
  }
  $chunkedOfRegID0 = array_chunk($registrationIDs0, 2);
  foreach ($chunkedOfRegID0 as $regIDs0){
@@ -175,7 +177,7 @@ try{
     
     $result = sendAPNMessage($msgSpecial, $title, $picture_url, "alerts.php", "true", "true", "false", "false");   
 	//$result = cleanInvalidAPNTokens();
-    logger($result);
+    logger($result, 0, "APN", "sendAPNMessage", "sendAPNMessage");
     /*if (empty($_POST['title1']))
         $EmailSubject = array("02ws Update Service", "שירות עדכון ירושמיים");
     else {

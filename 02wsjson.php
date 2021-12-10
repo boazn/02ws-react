@@ -48,6 +48,8 @@ $CURRENT_JSON .= "\"hum\":"."\"".$current->get_hum()."\"";
 $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"hum2\":"."\"".$current->get_hum2()."\"";
 $CURRENT_JSON .= ",";
+$CURRENT_JSON .= "\"dew\":"."\"".$current->get_dew()."\"";
+$CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"pressure\":"."\"".$current->get_pressure()."\"";
 $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"winddir\":"."\"".$current->get_winddir()."\"";
@@ -94,15 +96,19 @@ $CURRENT_JSON .= "\"iswindy\":"."\"".($min10->get_windspd() > 30 ? true : false)
 $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"isdusty\":"."\"".($current->get_pm10() > 150 ? true : false)."\"";
 $CURRENT_JSON .= ",";
+$CURRENT_JSON .= "\"isheatwave\":"."\"".$isHeatWave."\"";
+$CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"issun\":"."\"".$current->is_sun()."\"";
 $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"issunset\":"."\"".$current->is_sunset()."\"";
 $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"issunrise\":"."\"".$current->is_sunrise()."\"";
 $CURRENT_JSON .= ",\"recommendations\":[";
-foreach ($forecastDaysDB as $day_f){
+foreach ($recommendations as $r){
 $CURRENT_JSON .= "{";
-$CURRENT_JSON .= "\"to_do\":"."\"".$day_f['currentDateTime']."\"";
+$CURRENT_JSON .= "\"activity\":"."\"".$r['activity']."\",";
+//$CURRENT_JSON .= "\"sig\":"."\"".$r['sig']."\",";
+$CURRENT_JSON .= "\"value\":"."\"".$r['value']."\"";
 $CURRENT_JSON .= "},";
 }
 $CURRENT_JSON = trim($CURRENT_JSON, ",");
@@ -175,6 +181,8 @@ $JSON .= "\"temp2\":"."\"".$min30->get_temp2()."\"";
 $JSON .= ",";
 $JSON .= "\"hum\":"."\"".$min30->get_hum()."\"";
 $JSON .= ",";
+$JSON .= "\"dew\":"."\"".$min30->get_dew()."\"";
+$JSON .= ",";
 $JSON .= "\"pm10\":"."\"".$min30->get_pm10()."\"";
 $JSON .= ",";
 $JSON .= "\"pm25\":"."\"".$min30->get_pm25()."\"";
@@ -207,6 +215,8 @@ $JSON .= "\"temp3change\":"."\"".$min30->get_temp3change().",".str_replace('"', 
 $JSON .= ",";
 $JSON .= "\"humchange\":"."\"".number_format($min30->get_humchange()).",".str_replace('"', '\"',get_img_tag($min30->get_humchange(), true)).",".str_replace('"', '\"',get_img_tag($min30->get_humchange(), true).abs($min30->get_humchange()))."\"";
 $JSON .= ",";
+$JSON .= "\"dewchange\":"."\"".number_format($min30->get_dewchange()).",".str_replace('"', '\"',get_img_tag($min30->get_dewchange(), true)).",".str_replace('"', '\"',get_img_tag($min30->get_dewchange(), true).abs($min30->get_dewchange()))."\"";
+$JSON .= ",";
 $JSON .= "\"rainratechange\":"."\"".number_format($min30->get_rainratechange()).",".str_replace('"', '\"',get_img_tag($min30->get_rainratechange(), true)).",".str_replace('"', '\"',get_img_tag($min30->get_rainratechange(), true).abs($min30->get_rainratechange()))."\"";
 $JSON .= ",";
 $JSON .= "\"tempunit\":"."\"".$min30->get_tempunit()."\"";
@@ -231,6 +241,8 @@ $JSON .= ",";
 $JSON .= "\"temp2\":"."\"".$oneHour->get_temp2()."\"";
 $JSON .= ",";
 $JSON .= "\"hum\":"."\"".$oneHour->get_hum()."\"";
+$JSON .= ",";
+$JSON .= "\"dew\":"."\"".$oneHour->get_dew()."\"";
 $JSON .= ",";
 $JSON .= "\"pressure\":"."\"".$oneHour->get_pressure()."\"";
 $JSON .= ",";
@@ -259,6 +271,8 @@ $JSON .= ",";
 $JSON .= "\"temp3change\":"."\"".$oneHour->get_temp3change().",".str_replace('"', '\"',get_img_tag($oneHour->get_temp3change(), true)).",".str_replace('"', '\"',get_param_tag($oneHour->get_temp3change(), true, ""))."\"";
 $JSON .= ",";
 $JSON .= "\"humchange\":"."\"".number_format($oneHour->get_humchange()).",".str_replace('"', '\"',get_img_tag($oneHour->get_humchange(), true)).",".str_replace('"', '\"',get_img_tag($oneHour->get_humchange(), true).abs($oneHour->get_humchange()))."\"";
+$JSON .= ",";
+$JSON .= "\"dewchange\":"."\"".number_format($oneHour->get_dewchange()).",".str_replace('"', '\"',get_img_tag($oneHour->get_dewchange(), true)).",".str_replace('"', '\"',get_img_tag($oneHour->get_dewchange(), true).abs($oneHour->get_dewchange()))."\"";
 $JSON .= ",";
 $JSON .= "\"tempunit\":"."\"".$oneHour->get_tempunit()."\"";
 $JSON .= ",";
@@ -328,6 +342,8 @@ $JSON .= "\"temp2\":"."\"".$yestsametime->get_temp2()."\"";
 $JSON .= ",";
 $JSON .= "\"hum\":"."\"".$yestsametime->get_hum()."\"";
 $JSON .= ",";
+$JSON .= "\"dew\":"."\"".$yestsametime->get_dew()."\"";
+$JSON .= ",";
 $JSON .= "\"pm10\":"."\"".$yestsametime->get_pm10()."\"";
 $JSON .= ",";
 $JSON .= "\"pm25\":"."\"".$yestsametime->get_pm25()."\"";
@@ -359,6 +375,8 @@ $JSON .= ",";
 $JSON .= "\"temp3change\":"."\"".$yestsametime->get_temp3change().",".str_replace('"', '\"', get_img_tag($yestsametime->get_temp3change(), true)).",".str_replace('"', '\"', get_param_tag($yestsametime->get_temp3change(), true, ""))."\"";
 $JSON .= ",";
 $JSON .= "\"humchange\":"."\"".number_format($yestsametime->get_humchange()).",".get_img_tag($yestsametime->get_humchange(), true).",".get_img_tag($yestsametime->get_humchange(), true).abs($yestsametime->get_humchange())."\"";
+$JSON .= ",";
+$JSON .= "\"dewchange\":"."\"".number_format($yestsametime->get_dewchange()).",".get_img_tag($yestsametime->get_dewchange(), true).",".get_img_tag($yestsametime->get_dewchange(), true).abs($yestsametime->get_dewchange())."\"";
 $JSON .= ",";
 $JSON .= "\"tempunit\":"."\"".$yestsametime->get_tempunit()."\"";
 $JSON .= ",";
@@ -532,7 +550,11 @@ $JSON .= "\"lowhum_time\":"."\"".$today->get_lowhum_time()."\"";
 $JSON .= ",";
 $JSON .= "\"highdew\":"."\"".$today->get_highdew()."\"";
 $JSON .= ",";
+$JSON .= "\"highdew_time\":"."\"".$today->get_highdew_time()."\"";
+$JSON .= ",";
 $JSON .= "\"lowdew\":"."\"".$today->get_lowdew()."\"";
+$JSON .= ",";
+$JSON .= "\"lowdew_time\":"."\"".$today->get_lowdew_time()."\"";
 $JSON .= ",";
 $JSON .= "\"highbar\":"."\"".$today->get_highbar()."\"";
 $JSON .= ",";
@@ -705,7 +727,7 @@ $JSON .= "\"hum\":"."\"".$hour_f['humidity']."\"";
 $JSON .= ",";
 $JSON .= "\"rain\":"."\"".$hour_f['rain']."\"";
 $JSON .= ",";
-$JSON .= "\"uv\":"."\"".$hour_f['uv']."\"";
+$JSON .= "\"uv\":"."\"".$hour_f['UV']."\"";
 $JSON .= ",";
 $JSON .= "\"dust\":"."\"".$hour_f['dust']."\"";
 $JSON .= ",";
@@ -721,9 +743,12 @@ $lang_idx = 1;
 $JSON .= ",";
 $JSON .= "\"cloth_title1\":"."\"".getClothTitle($hour_f['cloth'], $hour_f['temp'])."\"";
 $JSON .= ",\"recommendations\":[";
-foreach ($forecastDaysDB as $day_f){
+$hour_recommendations = getRecommendations(TimeFrame::Hourly, $hour_f['time'],  $hour_f['temp'], $hour_f['wind'], $hour_f['humidity'], $hour_f['rain'], $hour_f['dust'], $hour_f['uv']);
+foreach ($hour_recommendations as $r){
 $JSON .= "{";
-$JSON .= "\"to_do\":"."\"".$day_f['currentDateTime']."\"";
+$JSON .= "\"activity\":"."\"".$r['activity']."\",";
+//$JSON .= "\"sig\":"."\"".$r['sig']."\",";
+$JSON .= "\"value\":"."\"".$r['value']."\"";
 $JSON .= "},";
 }
 $JSON = trim($JSON, ",");
@@ -767,7 +792,15 @@ $JSON .= "},";
 $JSON = trim($JSON, ",");
 $JSON .= "]";
 $JSON .= ",\"forecastDays\":[";
+$surise_suset_json = getSunriseSunset($day_f['date']);
+$day_idx = 0;
 foreach ($forecastDaysDB as $day_f){
+    $daily_sunrise = $surise_suset_json->location->time[$day_idx]->sunrise->time;
+    $daily_sunset = $surise_suset_json->location->time[$day_idx]->sunset->time;
+    $daily_moonrise = $surise_suset_json->location->time[$day_idx]->moonrise->time;
+    $daily_moonset = $surise_suset_json->location->time[$day_idx]->moonset->time;
+    $daily_moonphase = $surise_suset_json->location->time[0]->moonphase->value;
+    $day_idx++;
     $lang_idx = 0;
     $JSON .= "{";
     $JSON .= "\"day_name0\":"."\"".$day_f['day_name']."\"";
@@ -825,6 +858,22 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= ",";
     $JSON .= "\"icon\":"."\""."images/icons/day/".$day_f['icon']."\"";
     $JSON .= ",";
+    $JSON .= "\"sunrise\":"."\"".$daily_sunrise."\"";
+    $JSON .= ",";
+    $JSON .= "\"sunset\":"."\"".$daily_sunset."\"";
+    $JSON .= ",";
+    $JSON .= "\"uvmax\":"."\"".$day_f['uvmax']."\"";
+    $JSON .= ",";
+    $JSON .= "\"moonrise\":"."\"".$daily_moonrise."\"";
+    $JSON .= ",";
+    $JSON .= "\"moonset\":"."\"".$daily_moonset."\"";
+    $JSON .= ",";
+    $JSON .= "\"moonphase\":"."\"".$daily_moonphase."\"";
+    $JSON .= ",";
+    $JSON .= "\"rainFrom\":"."\"".$day_f['rainFrom']."\"";
+    $JSON .= ",";
+    $JSON .= "\"rainTo\":"."\"".$day_f['rainTo']."\"";
+    $JSON .= ",";
     $JSON .= "\"morning_icon\":"."\""."images/icons/day/".$day_f['iconmorning']."\"";
     $JSON .= ",";
     $JSON .= "\"night_icon\":"."\""."images/icons/day/".$day_f['iconnight']."\"";
@@ -834,6 +883,17 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= "\"lang1\":"."\"".str_replace('"', '``',urldecode($day_f['lang1']))."\"";
      $JSON .= ",";
     $JSON .= "\"lang0\":"."\"".urldecode($day_f['lang0'])."\"";
+    $JSON .= ",\"recommendations\":[";
+    $day_recommendations = getRecommendations(TimeFrame::Daily, $day_idx, $day_f['TempHigh'], $day_f['windDay'], $day_f['humDay'], $day_f['rain'], 0, 0);
+    foreach ($hour_recommendations as $r){
+    $JSON .= "{";
+    $JSON .= "\"activity\":"."\"".$r['activity']."\",";
+    //$JSON .= "\"sig\":"."\"".$r['sig']."\",";
+    $JSON .= "\"value\":"."\"".$r['value']."\"";
+    $JSON .= "},";
+    }
+    $JSON = trim($JSON, ",");
+    $JSON .= "]";
     $JSON .= "},";
 }
 $random_did_you_know = rand(0, count($DID_YOU_KNOW_EX)-1);
@@ -849,9 +909,11 @@ $JSON .= "\"addonalert0\":"."\"".urlencode($mem->get('addonalert0'))."\"";
 $JSON .= ",";
 $JSON .= "\"detailedforecast0\":"."\"".urlencode($mem->get('descriptionforecast0'))."\"";
 $JSON .= ",";
-$JSON .= "\"timeforecast0\":"."\"".replaceDays(getLocalTime(strtotime($mem->get('descriptionforecasttime0'))))."\"";
+$JSON .= "\"timeforecast0\":"."\"".date('Y-m-d G:i D', $mem->get('descriptionforecasttime0'))."\"";
 $JSON .= ",";
 $JSON .= "\"latestalert1\":"."\"".urlencode($mem->get('latestalert1'))."\"";
+$JSON .= ",";
+$JSON .= "\"latestalert_img\":"."\"".$mem->get('latestalert_img')."\"";
 $JSON .= ",";
 $JSON .= "\"addonalert1\":"."\"".urlencode($mem->get('addonalert1'))."\"";
 $JSON .= ",";
@@ -863,7 +925,7 @@ $JSON .= "\"detailedforecast1\":"."\"".urlencode($mem->get('descriptionforecast1
 $JSON .= ",";
 $JSON .= "\"passedts\":"."\"".(time() - $mem->get('latestalerttime0'))."\"";
 $JSON .= ",";
-$JSON .= "\"timeforecast1\":"."\"".replaceDays(getLocalTime(strtotime($mem->get('descriptionforecasttime1'))))."\"";
+$JSON .= "\"timeforecast1\":"."\"".replaceDays(date('Y-m-d G:i D ', $mem->get('descriptionforecasttime1')))."\"";
 $JSON .= ",";
 if (($month > 3) && ($month < 11))
     $JSON .= "\"tip0\":"."\"".$DID_YOU_KNOW_SUMMER[$random_did_you_know][$EN]."\"";
@@ -887,19 +949,7 @@ $JSON .= "}";
 
 $itfeels = array();
 $itfeels = $current->get_itfeels();
-$itfeels_array = $mem->get('itfeels_array');
-array_push($itfeels_array, $itfeels);
-if (count($itfeels_array) > 10)
-    array_shift($itfeels_array);
-$mem->set('itfeels_array', $itfeels_array);
-$index_if;
-$itfeels_sum;
-foreach ($itfeels_array as $if){
-    $index_if++;
-    if ($index_if > 5)
-        $itfeels_sum += $if[1];
-}
-$itfeels_avg = round($itfeels_sum/5, 1);
+$itfeels_avg = $current->get_itfeels_avg();
 
 $JSON .= ",\"feelslike\":";
 $JSON .= "{";
@@ -1023,11 +1073,10 @@ $FORECASTCALC_JSON = rtrim($FORECASTCALC_JSON, ",");
 $FORECASTCALC_JSON .= "]";
 $JSON .= $FORECASTCALC_JSON; 
 
-
-$result = db_init("SELECT * FROM UserPicture where approved=1 order by uploadedAt DESC LIMIT 1","");
+$JSON .= ",\"LatestUserPic\":[";
+$result = db_init("SELECT * FROM UserPicture where approved=1 order by uploadedAt DESC LIMIT 7","");
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
     $picname = "images/userpic/".$line["picname"];
-    $JSON .= ",\"LatestUserPic\":";
     $JSON .= "{";
     $JSON .= "\"picname\":"."\"".$picname."\"";
     $JSON .= ",";
@@ -1036,12 +1085,14 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
     $JSON .= "\"name\":"."\"".str_replace('"', "&quot;", $line["name"])."\"";
     $JSON .= ",";
     $JSON .= "\"passedts\":"."\"".(time() - filemtime($picname))."\"";
-    $JSON .= "}";
+    $JSON .= "},";
 }
-
+$JSON = rtrim($JSON, ",");
+$JSON .= "]";
+$JSON .= ",\"LatestPicOfTheDay\":";
 $result = db_init("SELECT * FROM PicOfTheDay order by uploadedAt DESC LIMIT 1","");
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) { 
-$JSON .= ",\"LatestPicOfTheDay\":";
+
     $picname = "images/picOfTheDay/".$line["picname"];
     $JSON .= "{";
     $JSON .= "\"picurl\":"."\"".$picname."\"";
@@ -1053,6 +1104,7 @@ $JSON .= ",\"LatestPicOfTheDay\":";
     $JSON .= "\"passedts\":"."\"".(time() - filemtime($picname))."\"";
     $JSON .= "}";
 }
+
 $JSON .= ",\"TAF\":";
 $JSON .= "{";
 $JSON .= "\"timetaf\":"."\"".$mem->get("timetaf")."\"";

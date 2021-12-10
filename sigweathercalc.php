@@ -22,6 +22,191 @@ function updateSigWeather ($picP, $sigW, $extrainfoP, $urlP)
 
 	array_push($sig, array('sig' => $sigW, 'pic' => $picP, 'extrainfo' => $extrainfoP, 'url' => $urlP));
 }
+function CalcCarCleaning ($dust, $idx_check){
+	global $forecastDaysDB, $todayForecast, $tomorrowForecast, $nextTomorrowForecast;
+	
+	if ($dust > 300)
+		return false;
+	if ($todayForecast->get_rainTo() > 0)
+		return false;
+	$idx_f = 0;
+	foreach ($forecastDaysDB as $day_f){
+		if ($idx_f <= ($idx_check + CAR_CLEANING_WORTH)){
+			if ($day_f['dustDay'] > 300)
+				return false;
+			if ($day_f['rainTo'] > 0)
+				return false;
+		}
+		$idx_f++;
+	}
+	return true;
+}
+function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $rainperc, $dust, $uv)
+{
+	global $mem, $current, $todayForecast, $forecastHour, $hour, $forecastDaysDB, $HIGH_DUST, $VERY_HOT_HEAT_WAVE, $GOOD_TIME, $OPEN, $lang_idx, $HIGH_UV, $HOT_GROUND, $HIGH_ET, $LOW_RAD, $NO_WIND, $WINDY, $RAIN, $hour, $random_good_time, $sig;
+	$reco = array();
+	$is_now = false;
+	$is_sig_forecast = false;
+	$nextSigForecast = $mem->get('nextSigForecast');
+	if ((dustExistsNow())||(dustExistsIn24hf())||(rainExistsIn24hf()))
+		$is_sig_forecast = true;
+	if (($timeframe == TimeFrame::Hourly)&&(($idx == $hour)||($idx == $hour+1)))
+		$is_now = true;
+	if (($dust > (($timeframe == TimeFrame::Hourly) ? 250 : 300))||
+		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 50))){
+		array_push($reco, array('sig0' => $HIGH_DUST[0], 'sig1' => $HIGH_DUST[1], 'activity' => Activities::Sport, 'value' => Recommendations::No));
+	}
+		
+	if ($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 50)||
+		(($timeframe == TimeFrame::Hourly) ? ($dust > 300) : false)||
+		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["rainTo"] > 20) : false)){
+		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::Bicycle, 'value' => Recommendations::No));
+	}
+	else{
+		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::Bicycle, 'value' => Recommendations::Yes));
+	}
+		
+	if ((($rainperc > 10)&&($wind10min > 10))||
+		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["windNight"] > 15) : false)||
+		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["windMorning"] > 15) : false)||
+		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["rainTo"] > 2) : false)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Camping, 'value' => Recommendations::No));
+	}
+	else{
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Camping, 'value' => Recommendations::Yes));
+	}
+	
+	if ((($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["windNight"] > 10) : false)||
+		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["rainTo"] > 10) : false)){
+		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::DinnerAtBalcony, 'value' => Recommendations::No));
+	}
+	else if (($timeframe == TimeFrame::Daily)){
+		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::DinnerAtBalcony, 'value' => Recommendations::Yes));
+	}	
+
+	if (($rainperc > (($timeframe == TimeFrame::Hourly) ? 50 : 50))||
+		(($timeframe == TimeFrame::Hourly) ? (in_array($HOT_GROUND, $sig)) : false)||
+		($dust > (($timeframe == TimeFrame::Hourly) ? 350 : 300))){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Dog, 'value' => Recommendations::No));
+	}
+
+	if (($rainperc > 0)||
+		($dust > 100)||
+		($wind10min > (($timeframe == TimeFrame::Daily) ? 25 : 15))||
+		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CAMPFIRE, 'value' => Recommendations::No));
+	}
+
+	if (($rainperc > 0)||
+		($dust > 100)||
+		($wind10min > (($timeframe == TimeFrame::Daily) ? 30 : 20))||
+		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Picnic, 'value' => Recommendations::No));
+	}
+	else if ((($timeframe == TimeFrame::Hourly) ? (in_array($GOOD_TIME[$random_good_time], $sig)) : false)) {
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Picnic, 'value' => Recommendations::Yes));
+	}
+	
+
+	if (($rainperc > 30)||
+		(($timeframe == TimeFrame::Hourly) ? (in_array($HIGH_UV, $sig)) : false)||
+		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))||
+		($dust > 100)||
+		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CHILDRENS, 'value' => Recommendations::No));
+	}
+
+	if (($rainperc > 30)||
+		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))||
+		($dust > 500)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::EVENTOUTSIDE, 'value' => Recommendations::No));
+	}
+	else if (($rainperc < 10)&&
+	($wind10min < (($timeframe == TimeFrame::Daily) ? 25 : 15))&&
+	($dust < 130)) {
+		array_push($reco, array('sig0' => $NO_WIND[0], 'sig1' => $NO_WIND[1], 'activity' => Activities::EVENTOUTSIDE, 'value' => Recommendations::Yes));
+	}
+
+	if (($rainperc > 50)||
+		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))||
+		($dust > 300)||
+		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::GAZELLEPARK, 'value' => Recommendations::No));
+	}
+	else if (($rainperc < 50)&&
+	($wind10min < (($timeframe == TimeFrame::Daily) ? 40 : 35))&&
+	($dust < 100)) {
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::GAZELLEPARK, 'value' => Recommendations::Yes));
+	}
+	
+	if (($rainperc > 0)||($dust > 100)||
+	($nextSigForecast['hrs']<8&&$is_now&&$is_sig_forecast)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Laundry, 'value' => Recommendations::No));
+	}
+	else if ($humidity < 50){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Laundry, 'value' => Recommendations::Yes));
+	}
+		
+	if (($rainperc > 0)||($dust > 100)||($temp<22)||($temp>29)||
+	($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
+		array_push($reco, array('sig0' => $HIGH_DUST[0], 'sig1' => $HIGH_DUST[1], 'activity' => Activities::OpenWindow, 'value' => Recommendations::No));
+	}
+	else if (isOpenOrClose()==$OPEN[$lang_idx]) {
+		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::OpenWindow, 'value' => Recommendations::Yes));
+	}
+
+	if (($rainperc > 50)||
+		($dust > 500)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::TEDY, 'value' => Recommendations::No));
+	}
+
+	if (($rainperc > 50)||
+		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))||
+		($dust > 500)||
+		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::WESTERNWALL, 'value' => Recommendations::No));
+	}
+
+	if (($rainperc > 10)||
+		($wind10min > (($timeframe == TimeFrame::Daily) ? 25 : 15))||
+		($dust > 200)||
+		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::YOGA, 'value' => Recommendations::No));
+	}
+
+	if (($rainperc > 50)||
+		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::SACKER, 'value' => Recommendations::No));
+	}
+	
+	if ((($temp<17)&&($timeframe == TimeFrame::Hourly))&&
+		(in_array($LOW_RAD, $sig)&&($timeframe == TimeFrame::Hourly))){
+		array_push($reco, array('sig0' => $LOW_RAD[0], 'sig1' => $LOW_RAD[1], 'activity' => Activities::Boiler, 'value' => Recommendations::Yes));
+	}
+
+	if (($temp >= 35)||
+		($temp > 32)&&($humidity>50)||
+		($temp > 30)&&($humidity>65)){
+		array_push($reco, array('sig0' => $VERY_HOT_HEAT_WAVE[0], 'sig1' => $VERY_HOT_HEAT_WAVE[1], 'activity' => Activities::AC, 'value' => Recommendations::Yes));
+	}
+
+	if ($temp < 14){
+		array_push($reco, array('sig0' => $temp, 'sig1' => $temp, 'activity' => Activities::HEATER, 'value' => Recommendations::Yes));
+	}
+
+	if (in_array($HIGH_ET, $sig)&&($timeframe == TimeFrame::Hourly)){
+		array_push($reco, array('sig0' => $HIGH_ET[0], 'sig1' => $HIGH_ET[1], 'activity' => Activities::IRRIGATION, 'value' => Recommendations::Yes));
+	}
+	if (($timeframe == TimeFrame::Daily) && (!CalcCarCleaning($dust, $idx))){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CARCLEANING, 'value' => Recommendations::No));
+	}
+	return $reco;
+}
+function updateRecommendations($sigW, $r, $v)
+{
+	global $recommendations;
+	array_push($recommendations, array('sig' => $sigW, 'activity' => $r, 'value' => $v));
+}
 
 function notnull ()
 {
@@ -34,6 +219,7 @@ $messageAction = array();
 $EmailSubject = array();
 $pic = "lights2.jpg";
 $ALT = array();
+$recommendations = array();
 $extrainfo = array();
 $extrainfoS = array();
 $sig = array();
@@ -43,7 +229,7 @@ $isHeatWave = false;
 $url= get_query_edited_url(get_url(), 'section', 'extended');
 $forecastHour = $mem->get('forecasthour');
 foreach ($forecastHour as $hour_f){
-	if (($hour_f['currentDateTime']) > time()){
+	if (($hour_f['currentDateTime']) >= time()){
 		$current->set_rainchance($hour_f['rain']);
 		break;
 	}
@@ -224,20 +410,30 @@ if (($current->get_temp('C') < 2)&&($current->get_temp() != ""))
 }
 if ($current->get_pm10() > 130 || $current->get_pm25() > 38)
 {
-    updateSigWeather(
+    $DUST_ARR = $HIGH_DUST;
+	if ($current->isLowDust()) 
+		$DUST_ARR = array($HIGH_DUST[$EN]." ".$A_BIT[$EN], $HIGH_DUST[$HEB]." ".$A_BIT[$HEB]);
+	else
+		updateRecommendations($DUST_ARR, Activities::Sport , Recommendations::No);
+	updateSigWeather(
 		"dust.gif", 
-		$HIGH_DUST, 
+		$DUST_ARR, 
 		array(array($DUST[$EN].": ".$current->get_pm10()." µg/m3",$DUST[$EN].": ".$current->get_pm10()." µg/m3"), 
                       array($DUST[$HEB].": ".$current->get_pm10()." µg/m3",$DUST[$HEB].": ".$current->get_pm10()." µg/m3")), 
                      "?section=dust.html");
+		if ($current->isLowDust())
+			update_action (CustomAlert::Dust, $extrainfo, $ALT);
+		else
+			update_action (CustomAlert::HighDust, $extrainfo, $ALT);
+
 }
-if ($current->get_uv() > 9)
+if ($current->get_uv() > 8)
 {
 	updateSigWeather("hot.gif" , $HIGH_UV,
 	array(array($UV[$EN].": ".$current->get_uv(), $UV[$EN].": ".$current->get_uv()), 
               array($UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>",$UV[$HEB].": ".$current->get_uv())), 
                "?section=graph.php&amp;graph=UVHistory.gif&amp;profile=2");
-    //update_action ("UV", $extrainfo, $ALT);
+    update_action (CustomAlert::HighUV, $extrainfo, $ALT);
 }
 if (($current->get_dew() > c_or_f(15))&&(true))
 {
@@ -712,6 +908,7 @@ if (($current->get_windspd() > 30)&&($min10->get_windspd() > 30)){
 	$extrainfoS, 
 	"?section=graph.php&amp;graph=WindSpeedHistory.gif&amp;profile=1");
 	update_action ("Windy", $extrainfo, $ALT);
+	updateRecommendations($WINDY, Activities::Bicycle, Recommendations::No);
 }
 else if (($current->get_windspd() == 0)&&($min10->get_windspd() == 0))
 {
@@ -720,6 +917,8 @@ else if (($current->get_windspd() == 0)&&($min10->get_windspd() == 0))
 		$url = "?section=graph.php&amp;graph=wind.php&amp;profile=1";
 		$extrainfo = "";
 		updateSigWeather($pic, $NO_WIND, $extrainfo, $url);
+		updateRecommendations($WINDY, Activities::DinnerAtBalcony, Recommendations::Yes);
+		updateRecommendations($WINDY, Activities::Picnic, Recommendations::Yes);
 		//if ($hour > 6)
 		//	update_action ("NoWind", $extrainfo, $ALT);
 }
@@ -734,9 +933,9 @@ if ($today->get_et() > 7)
 			array($ET[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_et()." מ'מ",
                         $ET[$HEB]." ".$TILL_NOW[$HEB]." ".$today->get_et()." מ'מ")), 
 	"?section=graph.php&amp;graph=ETHistory.gif&amp;profile=1"); 
-        update_action ("HighET", $extrainfo, $ALT);
+        update_action (CustomAlert::HighET, $extrainfo, $ALT);
 }
-if ($hour > 15 && $today->get_sunshinehours() < 2.5 && $today->get_sunshinehours() != "")
+if ($hour > 15 && $today->get_sunshinehours() < 2.3 && $today->get_sunshinehours() != "")
 {
    updateSigWeather(
 	"cold.gif", 
@@ -747,7 +946,7 @@ if ($hour > 15 && $today->get_sunshinehours() < 2.5 && $today->get_sunshinehours
 			array($today->get_sunshinehours()." ".$SUNSHINEHOURS[$HEB]." ".$TILL_NOW[$HEB]." ",
 			$today->get_sunshinehours()." ".$SUNSHINEHOURS[$HEB]." ".$TILL_NOW[$HEB]." ")), 
 	"?section=graph.php&amp;graph=rad.php&amp;profile=1"); 
-        update_action ("LowRad", $extrainfo, $ALT);
+        update_action (CustomAlert::LowRadiation, $extrainfo, $ALT);
 }
 if (($lowtemp_diffFromAv > 2) 
 	&& ($hightemp_diffFromAv > 3) 
@@ -775,9 +974,10 @@ if ($current->get_temp3() > c_or_f(50))
    // update_action ("TEMP3", $extrainfo, $ALT);
 }
 if (($current->get_rainchance() == 0)&&
+	($current->get_pm10() < 80) &&
  ((($current->get_temp('C') > 14)&&($current->get_temp('C') <= 18)&&($min10->get_windspd() == 0))||
-        (($current->get_temp('C') > 18)&&($current->get_temp('C') <= 25)&&($min10->get_windspd() < 4))||
-        (($current->get_temp('C') > 25)&&($current->get_temp('C') < 28)&&($min10->get_windspd() > 7))))
+        (($current->get_temp('C') > 18)&&($current->get_temp('C') <= 24)&&($min10->get_windspd() < 4))||
+        (($current->get_temp('C') > 24)&&($current->get_temp('C') < 28)&&($min10->get_windspd() > 15))))
 {
   $random_good_time = rand(0, count($GOOD_TIME)-1);
   updateSigWeather(
@@ -786,6 +986,14 @@ if (($current->get_rainchance() == 0)&&
     array(array("",""),array("","")), 
     "?section=graph.php&amp;graph=temp.php&amp;profile=1");
 
+}
+if (isOpenOrClose() == $CLOSE[$lang_idx])
+{
+	updateRecommendations(isOpenOrClose(), Activities::OpenWindow, Recommendations::No);
+}
+else
+{
+	updateRecommendations(isOpenOrClose(), Activities::OpenWindow, Recommendations::Yes);
 }
 if (true) 
 {
@@ -802,18 +1010,58 @@ if (true)
 	($dep >= 0 ? "hot.gif" : "cold.jpg"), 
 	array($warmcold[$EN], $warmcold[$HEB]), 
 	($dep >= 0 ? (abs($dep) > 0 ?
-			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"high\">".abs($dep)."°"."</span>",
+			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"\">".abs($dep)."°"."</span>",
                                 $monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." ".abs($dep)."°"),
-			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"high\">".abs($dep)."°"."</span>",
+			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"\">".abs($dep)."°"."</span>",
                             $monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]." ".abs($dep)."°")) : array("", ""))
 			: 
-			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"low\">".abs($dep)."°"."</span>",
+			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"\">".abs($dep)."°"."</span>",
                             $monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." ".abs($dep)."°"),
-			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"low\">".abs($dep)."°"."</span>",
+			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"\">".abs($dep)."°"."</span>",
                             $monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]." ".abs($dep)."°"))), 
 	get_query_edited_url($url_cur, 'section', FILE_THIS_MONTH));
 }
 //update_action ("Warmer", $extrainfo, $ALT);
+
+
+
+
+
+/******** generating message to Email *********/
+$messageToSend = array();
+if (count($messageAction) > 0) {
+    foreach ($messageAction as $message) {
+        //logger ("messageAction:".implode(" || ",$message));
+        array_push ($messageToSend , $message);
+    }
+}
+
+
+for ($i=0 ; $i < count($messageBrokenToSend) ; $i++)
+{
+    logger("extracting messageBrokenToSend: ". implode(" || ",$messageBrokenToSend), 0, "sigweatherCalc", "sigweather", "messageBrokenToSend");
+    for ($j=0 ; $j < count($messageBrokenToSend[$i]) ; $j++)
+    {
+        array_push($messageToSend, $messageBrokenToSend[$i][$j]);//$messageBrokenToSend[$i][$j][$HEB]
+        logger("pushing messageBrokenToSend: ". implode(" || ",$messageBrokenToSend[$i][$j]), 0, "sigweatherCalc", "sigweather", "messageBrokenToSend");
+    }
+}
+
+if 	(count($EmailSubject) == 0)
+        $EmailSubject = array("02ws Update Service", "שירות עדכון ירושמיים");
+
+if (count($messageToSend) > 0) 
+{
+        logger("messageToSend count:".count($messageToSend), 0, "sigweatherCalc", "sigweather", "messageBrokenToSend");
+        foreach ($messageToSend as $message) {
+            $message = str_replace("\"", "'", $message);
+            logger ("messageToSend:".implode(" || ",$EmailSubject)." ".implode(" / ",$message), 0, "sigweatherCalc", "sigweather", "messageBrokenToSend");
+        }
+        send_Email($messageToSend, ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
+ 
+ } 
+	
+/************************************************************************/
 
 
 

@@ -7,15 +7,60 @@ if (!empty($_SESSION['email']))
 ?>
 <html>
 
-<head></head>
+<head>
+<style>
+h1 {
+	text-align:center
+}
+#feedbacktable td {
+	text-align: <? echo get_align(); ?>;
+}
+</style>
+</head>
 
 <body>
-<h1 align="center">
+<h1>
 <? if (isHeb()) echo "משוב על האתר"; else echo "Feedback about the site";?>	
 </h1>
 <?
+function verifyUserResponse ()
+{
+	$ch = curl_init();
+	global $recapcha_secret_key;
+	curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS,
+				"secret=".$recapcha_secret_key."&response=".$_POST["g-recaptcha-response"]);
+	// Receive server response ...
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+	$server_output = curl_exec($ch);
+	//print_r($server_output);
+	curl_close ($ch);
+	return json_decode($server_output);
+	
+}
+/*$empty = $post = array();
+foreach ($_POST as $varname => $varvalue) {
+   if (empty($varvalue)) {
+       $empty[$varname] = $varvalue;
+   } else {
+       $post[$varname] = $varvalue;
+   }
+}
+
+print "<pre>";
+if (empty($empty)) {
+   print "None of the POSTed values are empty, posted:\n";
+   var_dump($post);
+} else {
+   print "We have " . count($empty) . " empty values\n";
+   print "Posted:\n"; var_dump($post);
+   print "Empty:\n";  var_dump($empty);
+   //exit;
+}*/
 //include ("ini.php");
-if (isset($_POST['SendButton'])) {
+if (isset($_POST['message'])) {
 
 		$email = $_POST['email'];
 
@@ -27,6 +72,12 @@ if (isset($_POST['SendButton'])) {
 		}
 		else
 		{
+			$res_j = verifyUserResponse();
+			//print_r($res_j);
+			if (($res_j->success != 1) || ($res_j->score < 0.5)){
+				echo "I am robot";
+				exit;
+			}
 			$msgSpecial = "";
 								
 			if (isset( $_POST['sigweather']))
@@ -54,12 +105,12 @@ if (isset($_POST['SendButton'])) {
 			$msgSpecial = str_replace("\"", "''", $msgSpecial);
 			$msgSpecial = $msgSpecial."<br /><br />".$_POST['message'];
 			$result = send_Email($msgSpecial, ME, $email, $email, "", array('feedback to 02ws', 'משוב על ירושמיים'));
-		if ($result == ""){
-			echo "<div class=\"alert-success\"><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></div>";
+		//if ($result == ""){
+			echo "<div class=\"alert-success big\"><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></div>";
 			$sent = true;
-		}
-		else
-			echo "<fieldset class=\"high\"><strong>$result</strong></fieldset>";
+		//}
+		//else
+			//echo "<fieldset class=\"high\"><strong>$result</strong></fieldset>";
 			?>
 			<script type="text/javascript" src="ajaxEmail.js"></script>
 			<script language="JavaScript" type="text/javascript">
@@ -76,15 +127,15 @@ if (isset($_POST['SendButton'])) {
 
 ?>
 
-<form method="post">
+<form method="post" id="feedback_form">
 <div class="clear float" style="width:50%">
-<table width="100%" cellspacing="10" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
+<table id="feedbacktable" width="100%" cellspacing="10" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
 
-<tr  >
-	<td align="<? if (isHeb()) echo "left"; else echo "right";?>">
+<tr >
+	<td>
 		<? if (isHeb()) echo "העמוד הראשי הוא" ; else echo "The first page (02ws.co.il/station.php) is";?>
 	</td>
-	<td dir="ltr" <? echo get_align(); ?>>
+	<td <? echo get_align(); ?>>
 	
 	<select size="1" name="combofirstpage" id="combofirstpage" class="inv_plain_2" style="width:300px;font-size: 1.1em;<? if (isHeb()) echo "direction:rtl";?>">  
 		<option	 class="inv_plain_2"	 value=""><? if (isHeb()) echo "בחר" ; else echo "choose"; ?></option>
@@ -105,10 +156,10 @@ if (isset($_POST['SendButton'])) {
 
 <tr  >
 
-<td align="<? if (isHeb()) echo "left"; else echo "right";?>">
+<td>
 	<? if (isHeb()) echo "התחזית עצמה" ; else echo "The forecast is";?>
 	</td>
-<td  dir="ltr" <? echo get_align(); ?>>
+<td  <? echo get_align(); ?>>
 	
 	<select size="1" name="comboforecast" id="comboforecast" class="inv_plain_2" style="width:300px;font-size: 1.1em;<? if (isHeb()) echo "direction:rtl";?>">  
 		<option	 class="inv_plain_2"	 value=""><? if (isHeb()) echo "בחר" ; else echo "choose"; ?></option>
@@ -126,7 +177,7 @@ if (isset($_POST['SendButton'])) {
 </tr>
 
 <tr  >
-	<td align="<? if (isHeb()) echo "left"; else echo "right";?>">
+	<td>
 		<? if (isHeb()) echo "הגרפים של הטמפרטורה הלחות והגשם"; else echo "The graphs section";?>
 	</td>
 	<td  dir="ltr" <? echo get_align(); ?>>
@@ -147,10 +198,10 @@ if (isset($_POST['SendButton'])) {
 </tr>
 
 <tr  >
-	<td align="<? if (isHeb()) echo "left"; else echo "right";?>">
+	<td>
 		<? if (isHeb()) echo "החלק של ההיסטוריה והדוחות"; else echo "The history and archive reports section";?>
 	</td>
-	<td  dir="ltr" <? echo get_align(); ?>>
+	<td <? echo get_align(); ?>>
 	
 	<select size="1" name="comborecords" id="comborecords" class="inv_plain_2" style="width:300px;font-size: 1.1em;<? if (isHeb()) echo "direction:rtl";?>">  
 		<option	 class="inv_plain_2"	 value=""><? if (isHeb()) echo "בחר" ; else echo "choose"; ?></option>
@@ -167,10 +218,10 @@ if (isset($_POST['SendButton'])) {
 
 </tr>
 <tr  >
-	<td align="<? if (isHeb()) echo "left"; else echo "right";?>">
+	<td>
 		<? if (isHeb()) echo "מדד הקור"; else echo "The cold meter";?>
 	</td>
-	<td  dir="ltr" <? echo get_align(); ?>>
+	<td   <? echo get_align(); ?>>
 	
 	<select size="1" name="coldmeter" id="coldmeter" class="inv_plain_2" style="width:300px;font-size: 1.1em;<? if (isHeb()) echo "direction:rtl";?>">  
 		<option	 class="inv_plain_2"	 value=""><? if (isHeb()) echo "בחר" ; else echo "choose"; ?></option>
@@ -187,10 +238,10 @@ if (isset($_POST['SendButton'])) {
 
 </tr>
 <tr  >
-	<td align="<? if (isHeb()) echo "left"; else echo "right";?>">
+	<td>
 		<? if (isHeb()) echo "עמוד ההתחממות הגלובלית הוא"; else echo "The global warming section is";?>
 	</td>
-	<td  dir="ltr" <? echo get_align(); ?>>
+	<td  <? echo get_align(); ?>>
 	
 	<select size="1" name="combowarming" id="combowarming" class="inv_plain_2" style="width:300px;font-size: 1.1em;<? if (isHeb()) echo "direction:rtl";?>">  
 		<option	 class="inv_plain_2"	 value=""><? if (isHeb()) echo "בחר" ; else echo "choose"; ?></option>
@@ -207,10 +258,10 @@ if (isset($_POST['SendButton'])) {
 
 </tr>
 <tr  >
-	<td align="<? if (isHeb()) echo "left"; else echo "right";?>">
+	<td>
 		<? if (isHeb()) echo "הרדיוסונדה"; else echo "The radiosonde is";?>
 	</td>
-	<td  dir="ltr" <? echo get_align(); ?>>
+	<td   <? echo get_align(); ?>>
 	
 	<select size="1" name="comboradio" id="comboradio" class="inv_plain_2" style="width:300px;font-size: 1.1em;<? if (isHeb()) echo "direction:rtl";?>">  
 		<option	 class="inv_plain_2"	 value=""><? if (isHeb()) echo "בחר" ; else echo "choose"; ?></option>
@@ -242,9 +293,18 @@ Email:
 	<?} ?>
 	
 </div>
-<div class="float">
+<div class="invfloat">
 	<? if (!$sent) {?>
-	<input type="submit" name="SendButton" value="<? if (isHeb()) echo "שליחת הודעה"; else echo "Send";?>" style="width:300px;font-size: 1.5m;margin:0 1em;padding:0.3em 1.2em;cursor:pointer" class="base big inv"/>
+	<button
+		
+		id="SendButton" 
+		name="SendButton"
+		style="width:300px;font-size: 1.5m;margin:0 11em;padding:0.3em 1.2em;cursor:pointer" 
+		class="base big inv g-recaptcha" 
+        data-sitekey="6LcQXKMcAAAAADMZ52L6dJrMMzvnKaJzyT8RGnqO" 
+        data-callback='onSubmit' 
+        data-action='submit'><? if (isHeb()) echo "שליחת הודעה"; else echo "Send";?></button>
+
 	<?} ?>
 </div>
 </form>
@@ -258,6 +318,13 @@ if ($emailnotvalid)
 	echo("</script>");
 }
 ?>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+   function onSubmit(token) {
+     document.getElementById("feedback_form").submit();
+   }
+ </script>
+
 </body>
 
 </html>

@@ -539,33 +539,7 @@ if ($boolbroken)
 		echo $messageBroken[$i][$lang_idx];
 	}
 }
-/******** generating message to Email *********/
-	
-/*	$messageToSend = "{$messageAction}";
-	
-	for ($i=0 ; $i < count($messageBrokenToSend) ; $i++)
-	{
-		$messageToSend .= $messageBrokenToSend[$i][$HEB];
-	}
 
-	if 	(count($EmailSubject) == 0)
-		$EmailSubject = array("02ws Update Service", "שירות עדכון ירושמיים");
-
-	if ($messageToSend !== "") 
-	{
-		$messageToSend = str_replace("\"", "'", $messageToSend);
-		send_Email($messageToSend, ALL, EMAIL_ADDRESS, $EmailSubject[$HEB], "");
-		?>
-		
-		<!-- <script type="text/javascript" src="ajaxEmail.js"></script>
-		<script type="text/javascript">
-			// startEmailService(message_from, message_subject, message_body, target , info_back)
-			var messageBody = escape(encodeURI("<?=$messageToSend?>"));
-			var message_action = escape(encodeURI("<?=$actionActive?>"));
-			<? echo "startEmailService(escape(encodeURI('".EMAIL_ADDRESS."')) , escape(encodeURI('02ws Update Service')) , messageBody , 'ALL' , false, message_action);"; ?>
-		</script> -->
-		
-	<? } */
 	
 		
 /************************************************************************/

@@ -32,7 +32,7 @@
 		
             				
             //$result = db_init("call SaveUserPic ('$name', '$comment', '$user', '$picname', '$x', '$y')");
-            logger("StoreSub:".$email." ".$reg_id." ".$status);
+            logger("StoreSub:".$email." ".$reg_id." ".$status, 0, "Subscriptions", "storeSub", "storeSub");
             $result = db_init("INSERT INTO `Subscriptions` (guid, email, approved, reg_id) VALUES(UUID_SHORT(), '$email' ,$status, '$reg_id');", "");
 			// check for successful store
 			// get user details
@@ -51,11 +51,11 @@
                 exit; 
                
             if (isAndroid($reg_id))
-                $query = "update `gcm_users` set Approved=".$approved." where gcm_regid='".$reg_id."'";
+                $query = "update `fcm_users` set Approved=".$approved." where gcm_regid='".$reg_id."'";
                 else
                     $query = "update `apn_users` set Approved=".$approved." where apn_regid='".$reg_id."'";
                 db_init($query, "") ;
-                logger($query);
+                logger($query, 0, "Subscriptions", "storeSub", "storeSub");
         }
         
 							
@@ -104,22 +104,22 @@
                 $stmt->prepare($query);
                 $stmt->bind_param('s' , $guid);
                 $stmt->execute();
-                logger($query." ".$guid);
+                logger($query." ".$guid, 0, "Subscriptions", "storeSub", "UpdateRegId");
                 if ($isAdmin)
                 {
                     $query = "update `Subscriptions` set Approved=".$approved."  where guid='".$guid."'";
                     db_init($query, "") ;
-                    logger($query);
+                    logger($query, 0, "Subscriptions", "storeSub", "UpdateRegId");
                 }
                 $stmt->close();
                 
                 if ($guid!=""){
                     if (isAndroid($reg_id))
-                     $query = "update `gcm_users` set Approved=".$approved." where gcm_regid='".$reg_id."'";
+                     $query = "update `fcm_users` set Approved=".$approved." where gcm_regid='".$reg_id."'";
                     else
                         $query = "update `apn_users` set Approved=".$approved." where apn_regid='".$reg_id."'";
                     db_init($query, "") ;
-                    logger($query);
+                    logger($query, 0, "Subscriptions", "storeSub", "UpdateRegId");
                 }
                 mysqli_close($link);
                 $query = "select id, guid, email, approved from `Subscriptions` where guid=?";
@@ -147,7 +147,7 @@
                 
                    
         } catch (Exception $ex) {
-            logger("UpdateRegId: ".$reg_id." ".$ex." "." ");
+            logger("UpdateRegId: ".$reg_id." ".$ex." "." ", 4, "Subscriptions", "storeSub", "UpdateRegId");
         }
    
     }
@@ -164,7 +164,7 @@
                 @mysqli_free_result($result["result"]);
                 global $link;
                 mysqli_close($link);
-                logger("isApproved? ".$query." ".$id." ".$line['email']." approved:".$line['approved']);
+                logger("isApproved? ".$query." ".$id." ".$line['email']." approved:".$line['approved'], 0, "Subscriptions", "storeSub", "isApproved");
                     //echo " status=".$line[0];
                 $userJSON = "{\"Subscription\":";
                 $userJSON .= "{";
@@ -181,7 +181,7 @@
                 $userJSON .= "}";
                 return $userJSON;
         } catch (Exception $ex) {
-            logger("New isApproved:.".$id." ".$ex);
+            logger("New isApproved:.".$id." ".$ex, 4, "Subscriptions", "storeSub", "isApproved");
         }
    
     }
@@ -215,11 +215,11 @@
                 //$userJSON .= "}";
                 //$userJSON .= "}";
                 if ($line['id'] != "")
-                    logger($regid." ".$userJSON);
+                    logger($regid." ".$userJSON, 0, "subscriptions", "", "getSubFromRegId");
                 return $userJSON;
                 
         } catch (Exception $ex) {
-            logger("New getSubFromGUI:.".$gui." "." ");
+            logger("New getSubFromGUI:.".$gui." "." ", 0, "Subscriptions", "storeSub", "getSubFromRegId");
         }
    
     }
@@ -256,7 +256,7 @@
                 return $userJSON;
                 
         } catch (Exception $ex) {
-            logger("New getSubFromGUI:.".$gui." "." ");
+            logger("New getSubFromGUI:.".$gui." "." ", 0, "Subscriptions", "storeSub", "getSubFromGUI");
         }
    
     }
@@ -296,7 +296,7 @@
                 return $userJSON;
                 
         } catch (Exception $ex) {
-            logger("New getSubFromGUI:.".$gui." "." ");
+            logger("New getSubFromGUI:.".$gui." "." ", 4, "Subscriptions", "storeSub", "getSubFromEmail");
         }
    
     }

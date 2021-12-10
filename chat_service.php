@@ -43,7 +43,7 @@ function insertNewMessage ($name, $icon, $body, $category, $p_alert)
     
     if (empty($_SESSION['loggedin'])||($_SESSION['loggedin']=="false")){
         echo "צריך להתחבר";
-        logger("empty loggedin");
+        logger("empty loggedin", 0, "chat", "db", "insertNewMessage");
         return false;
     }
             
@@ -58,7 +58,7 @@ function insertNewMessage ($name, $icon, $body, $category, $p_alert)
     if (($category == "")||($category == "null"))
         $category = 0;
     $query = "call InsertNewMsg ('$name','$icon', '$body', '$now', $category, '$p_email', '$p_alert')";
-    logger($query);
+    logger($query, 0, "chat", "db", "insertNewMessage");
     $result = db_init($query, "");
     $_SESSION['MsgStart'] = $_SESSION['MsgStart'] + 1;
     // Free resultset 
@@ -73,7 +73,7 @@ function fixDiv ()
 {
     
     $query = "update `chat` set `body` = concat(`body`, '</div></div>') where MID(`body`, -6) <> '</div>' order by `date_chat` desc LIMIT 1";
-    logger($query);
+    logger($query, 0, "chat", "db", "fixDiv");
     $result = db_init($query, "");
     // Free resultset 
     @mysqli_free_result($result["result"]);
@@ -95,7 +95,7 @@ function updateMessage ($idx, $body, $isPartialDelete)
         //logger("last positions:".substr ($body, strlen($body)-strlen("</div>")));
         if (substr ($body, strlen($body)-strlen("</div>")) != "</div>")
         {
-            logger("missing </div>: ".substr ($body, strlen($body)-strlen("</div>"))." ".strlen($body)." ".strlen("</div>")." ".$body);
+            logger("missing </div>: ".substr ($body, strlen($body)-strlen("</div>"))." ".strlen($body)." ".strlen("</div>")." ".$body, 0, "chat", "db", "updateMessage");
             //$body = $body."</div></div>";
         }
         $query = "call UpdateMessage ($idx,'$body', '$now','$p_email')";
@@ -263,7 +263,7 @@ function msgManagement($name, $body, $mood)
 		fixDiv();
 	else if (isAdvancedCommand($body))
 	{
-            logger("advanced command");
+            logger("advanced command", 0, "chat", "db", "msgManagement");
 		$commands = explode(";", $body);
 		//var_dump ($commands);
 		if (trim($commands[0]) == "D")
@@ -331,7 +331,7 @@ else if((stristr($_SERVER['HTTP_REFERER'], "02ws.co") > -1 )||(stristr($_SERVER[
 					else if ($_SESSION['loggedin'] == "true")
 						AddToMessage ($name, $_SESSION['user_icon'], $body, $_REQUEST['idx'], $mood);
 								else
-									logger("message id ".$_REQUEST['idx']." ".$_SESSION['loggedin']." ".$body);
+									logger("message id ".$_REQUEST['idx']." ".$_SESSION['loggedin']." ".$body, 0, "chat", "db", "msgManagement");
 				}
 				else if ($_SESSION['loggedin'] == "true")
 				{
@@ -348,7 +348,7 @@ else if((stristr($_SERVER['HTTP_REFERER'], "02ws.co") > -1 )||(stristr($_SERVER[
 							logger("idx=".$_REQUEST['idx']." and not loggedin");
 						}
 		} catch (Exception $e) {
-			logger( 'Caught exception in new message for the forum: '.  $e->getMessage());
+			logger( 'Caught exception in new message for the forum: '.  $e->getMessage(), 4, "chat", "db", "forum");
 		}   
 	}
 }

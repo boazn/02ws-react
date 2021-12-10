@@ -1,4 +1,8 @@
-
+<Style>
+	body{ 
+		background:white; 
+	}
+</style>
 
 
 <div id="messages_box" class="">

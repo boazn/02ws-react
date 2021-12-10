@@ -20,7 +20,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>. 
 ################################################################################
+
 include_once('WUG-settings.php');
+ini_set("display_errors","Off");
 header('Content-Type: text/html; charset=utf-8');
 
 // set actual date

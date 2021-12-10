@@ -57,14 +57,17 @@ foreach ($forecastDaysDB as $key => &$forecastday)
         
         <ul>
                                           
-            <li class="forcast_day">
-            <? echo replaceDays($forecastday['day_name']." ");?><? if ($i >= TASHKIF_START) echo "<p>".$overlook_d."</p>";?>
+            <li class="forcast_day inv_plain_3">
+            <? echo replaceDays($forecastday['day_name']." ");?><? if ($i >= TASHKIF_START) echo "<p>".$overlook_d."</p>";?><br/><br/><? echo $forecastday['date'];?>
             </li>
-            <li class="forcast_date">
-            <? echo $forecastday['date'];?>
+            <li class="forcast_text inv_plain_3_zebra">
+                <? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);$textsum = $textsum + strlen(urldecode($forecastday[$dscpIdx]));?>
+                <br/>
+                <br/>
+                <div><?=$VISIBILITY[$lang_idx]?>:<?=$forecastday['visDay']." ".$KM[$lang_idx]?></div>
+                <div><?=$RAIN[$lang_idx]?>:<?=$forecastday['rainFrom']?> - <?=$forecastday['rainTo']?> mm</div>
             </li>
-            
-            <li class="forcast_morning">
+            <li class="forcast_morning inv_plain_3_zebra">
             <div class="title"><? echo $EARLY_MORNING[$lang_idx];?></div>
             <div class="line">
             <div class="number"><?=c_or_f($forecastday['TempLow'])?>°</div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempLowCloth?>" rel="external" ><img src="<? echo "images/clothes/".$forecastday['TempLowCloth']; ?>" width="50" height="46" /><br/><?=getClothTitle($forecastday['TempLowCloth'], $forecastday['TempLow'])?></a></div>
@@ -73,7 +76,7 @@ foreach ($forecastDaysDB as $key => &$forecastday)
             </div>
             <div class="icon extra<?=$i?>" ><div class="wind_icon <?echo getWindInfo($forecastday['windMorning'], $lang_idx)['wind_class'];?>" title="<?echo getWindInfo($forecastday['windMorning'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windMorning'], $lang_idx)['winddesc'];?>"><?=$forecastday['windMorning']." <span class=\"small\">".$KMH[$lang_idx]."</span>"?></div><div class="winddesc"><?echo getWindInfo($forecastday['windMorning'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windMorning'], $lang_idx)['winddesc'];?></div></div>
             </li>
-            <li class="forcast_noon">
+            <li class="forcast_noon inv_plain_3_zebra">
             <div class="title"><? echo $NOON[$lang_idx];?></div>
             <div class="line">
             <div class="number"><?=c_or_f($forecastday['TempHigh'])?>°</div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" ><img src="<? echo "images/clothes/".$forecastday['TempHighCloth']; ?>" width="50" height="46" /><br/><?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?></a></div>
@@ -82,19 +85,16 @@ foreach ($forecastDaysDB as $key => &$forecastday)
             </div>                                        
             <div class="icon extra<?=$i?>" ><div class="wind_icon <?echo getWindInfo($forecastday['windDay'], $lang_idx)['wind_class'];?>" title="<?echo getWindInfo($forecastday['windDay'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windDay'], $lang_idx)['winddesc'];?>"><?=$forecastday['windDay']." <span class=\"small\">".$KMH[$lang_idx]."</span>"?></div><div class="winddesc"><?echo getWindInfo($forecastday['windDay'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windDay'], $lang_idx)['winddesc'];?></div></div>
             </li>
-            <li class="forcast_night">
+            <li class="forcast_night inv_plain_3_zebra">
             <div class="title" ><? echo $NIGHT[$lang_idx];?></div>
-            <div class="line"><div id="night_icon_exp"> <? echo $NIGHT_TEMP_EXP[$lang_idx];?></div>
+            <div class="line"><div id="night_icon_exp"> <?// echo $NIGHT_TEMP_EXP[$lang_idx];?></div>
             <div class="number"><?=c_or_f($forecastday['TempNight'])?>°</div><div class="cloth extra<?=$i?>"><a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="50" height="46" /><br/><?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?></a></div>
             <div class="icon humidity extra<?=$i?>" ><?=$forecastday['humNight']?>% <?=$HUMIDITY[$lang_idx]?></div>
             <div class="icon extra<?=$i?>" id="night_icon<?=$i?>"><a href="legend.php" rel="external" ><img  src="images/icons/day/<?=c_or_f($forecastday['iconnight'])?>" width="50" height="50" alt="images/icons/day/<?=c_or_f($forecastday['iconnight'])?>"/></a></div>
             </div> 
             <div class="icon extra<?=$i?>" ><div class="wind_icon <?echo getWindInfo($forecastday['windNight'], $lang_idx)['wind_class'];?>" title="<?echo getWindInfo($forecastday['windNight'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windNight'], $lang_idx)['winddesc'];?>"><?=$forecastday['windNight']." <span class=\"small\">".$KMH[$lang_idx]."</span>"?></div><div class="winddesc"><?echo getWindInfo($forecastday['windNight'], $lang_idx)['windtitle']." - ".getWindInfo($forecastday['windNight'], $lang_idx)['winddesc'];?></div></div>
             </li>
-            <li class="forcast_text">
-                <? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);$textsum = $textsum + strlen(urldecode($forecastday[$dscpIdx]));?>
-                
-            </li>
+            
         </ul>
             </li>
 </ul>

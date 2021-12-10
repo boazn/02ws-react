@@ -2,7 +2,7 @@
 <head>
 <title>browse result</title>
 </head>
-<body onload=trMouseOver()>
+<body>
 <?php
 
 $current_year = $year;
@@ -333,7 +333,7 @@ function isYearSubmited($value_year){
 if ((isset( $_POST['submitdata'])||($_POST['browseday']!=""))){
 	//$start_time = (times)[0];
 	 
-	db_init("");
+	db_init("", "");
 	$virgin_condition = true;
 	$condition="";
 	$table="";

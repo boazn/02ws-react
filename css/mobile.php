@@ -131,9 +131,9 @@ top:0px;
 
 #latestalert .info .info{
     margin-top:-250px;
-    margin-<?echo get_s_align();?>:-80px;
+    margin-<?echo get_s_align();?>:-10px;
     background: rgba(238,238,238,0.9);
-    width: 320px;
+    width: 290px;
     
     box-shadow: none;
     color:black
@@ -158,7 +158,7 @@ top:0px;
     margin-<?echo get_inv_s_align();?>: 70%;
 }
 #forcast_days.detailed .forcast_day, #forcast_days.detailed .forcast_date{
-   display:inline
+  width:90%
 }
 #forcast_days.detailed li{
     display: grid;
@@ -175,6 +175,10 @@ top:0px;
 #forcast_days.detailed .wind_icon{
     font-size: 1em;
     padding-top: 1em !important;
+}
+#forcast_days.detailed .forcast_text
+{
+    width:90%
 }
 .wind_icon{
     padding:0.6em 0;
@@ -230,7 +234,11 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #coldmeter
 {
-          float:<?echo get_s_align();?>
+          float:<?echo get_s_align();?>;top: 6.4em;
+}
+#radio_toolbar_container
+{
+    margin:0em 1em;width:90%;text-align: center;
 }
 #current_feeling_link
 {
@@ -247,14 +255,17 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #loggedin, #notloggedin
 {
- clear:both;margin: 0 1em;
+ clear:both;margin: 0 1em;text-align: center;font-size: 2em;
+}
+#hello{
+
 }
 #forgotpass
 {
        padding:0.2em;width:auto;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>;margin:0.2em;cursor:pointer
 }
 #login, .register, .login, .register{
-    font-size: 2em;width:100%
+    font-size: 3em;width:100%
 }
 #updateprofile, #signout, #myvotes
 {
@@ -264,10 +275,21 @@ position:relative;float:none;width:auto;top:0;margin:0;
 width:320px;
 }
 #radarcontrols{
-    position: absolute;
-    right: -120px;
-    top:100px;
+     top:40px;
     z-index:999;
+}
+#playcontrol{
+    top:220px;
+    right:220px;
+    position:absolute;
+}
+#radarimg{
+    margin-<?echo get_s_align();?>:-60px;
+}
+#wrapper{
+    width: 570px;
+    margin: 0 -210px;
+    clear: both;
 }
 .chatdate
 {
@@ -339,7 +361,12 @@ width:auto
 	
 	float:<?echo get_s_align();?>;
 	clear:both;
+    background-color: blueviolet;
 	
+}
+body.mce-content-body
+{
+    background:white;
 }
 #msgDetails
 {
@@ -349,7 +376,7 @@ width:auto
  
 }
 #new_post_okay, #new_post_cancel {
-    background-color:#C0CE61;
+    background-color:blueviolet;
     color:#fff;
     width:60px;
     border-radius:5px;
@@ -500,7 +527,7 @@ width:320px;
 #startinfo_container
 {
     float:<?echo get_s_align();?>;
-    padding: calc(14.5em - 10px) 0 8em;
+    padding: calc(9.5em - 10px) 0 8em;
     bottom:1em;
     margin:0;
     text-align:<?echo get_s_align();?>;
@@ -510,6 +537,7 @@ width:320px;
 {
    position: absolute;
    margin-top: -1.2em;
+   left: 2.5em;
 }
 @keyframes blink-animation {
     0% {
@@ -543,7 +571,7 @@ width:320px;
 {
     #startinfo_container
     {
-        padding: calc(12.4em - 10px) 0 8em;
+        padding: calc(8.4em - 10px) 0 8em;
     }
  }
  @media screen and (min-device-aspect-ratio: 9/18) 
@@ -551,7 +579,7 @@ width:320px;
     #startinfo_container
     {
         
-        padding: calc(9em - 10px) 0 8em;
+        padding: calc(6em - 10px) 0 8em;
     }
     
 }
@@ -560,7 +588,7 @@ width:320px;
     #startinfo_container
     {
         
-        padding: calc(5.1em - 10px) 0 8em;
+        padding: calc(4.1em - 10px) 0 8em;
     }
     
 }
@@ -597,14 +625,14 @@ width:320px;
 	font-weight:normal;
 }
 #laundryidx{
-    left: 20px;
-    top: -7px;
+    eft: -40px;
+    top: -55px; 
 }
  .forcast_each{
      padding-top:1.2em;
      margin-bottom: 3px;
  }
- 
+
 #windy
 {
 width:33%;left:4.5em;top:2.4em
@@ -612,7 +640,7 @@ width:33%;left:4.5em;top:2.4em
 .open-close-button{
   width: 1.2em;
   height: 1.2em;
-  margin: -0.5em 0.5em;
+  margin: -0.6em -0.6em;
 }  
 #windystart
 {
@@ -714,7 +742,7 @@ border-radius: 0px;
 }
 #statuslinestart
 {
-    margin-top:-0.9em;
+    margin-top:-0.5em;
     padding:0 30px;
     font-size: 1.5em;
 }
@@ -748,6 +776,7 @@ border-radius: 0px;
    width:100%;
    left:0;
    position:relative;
+   background:white
 
 }
 #shortforecast
@@ -815,6 +844,11 @@ text-decoration: underline;
 .forcast_title_btns.for_active:hover{
     background-color:rgba(0,0,0,0);
 }
+.for_active
+{
+    border-bottom: black solid;
+    border-bottom-right-radius: 0px;
+}
 .timefh, .tsfh{
 font-family:nextexitfot_regularregular;
 letter-spacing: 0px;
@@ -869,15 +903,18 @@ width:100%;
 margin-left:0;
 clear:both
 }
-
+.icon_left, .icon_right{
+    margin-top: -28px;
+}
 #user_info{
 color:#3D718E;
 padding:0.5em;
 position: absolute;
 z-index: 1000;
-top: 4.2em;
+top: 0.5em;
 width: 160px;
-<?=get_inv_s_align()?>: 6em;
+<?=get_s_align()?>: 6.5em;
+
 }
 
 .inparamdiv
@@ -888,8 +925,8 @@ width: 160px;
 #tempdivvalue, #tempdivvaluestart
 {
     float:none;
-    font-size: 5.8em;
-    margin-top: 20px;
+    font-size: 3.8em;
+    margin-top: 60px;
     z-index:99999;
     direction:ltr;
    
@@ -917,7 +954,7 @@ width: 160px;
 margin:auto;
 }
 #itfeels {
-    margin:0;top:7.2em;left:0;background: none;  width: 100%;font-size: 18px;text-align: center;
+    margin:0;top:7.5em;left:7.2em;background: none;  width: 40%;font-size: 18px;text-align: center;
 }
 #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
 top:0;position:relative; background: none;margin:auto
@@ -927,7 +964,7 @@ margin-top:4.4em;
 }
 .graphslink
 {
-position:relative;<?=get_s_align()?>:0;top:0
+top:200px
 }
 #tohome
 {
@@ -936,8 +973,10 @@ position:relative;<?=get_s_align()?>:0;top:0
     
 }
 #tohome a{
-    display:inline-block;
-    padding:0.8em;
+    display: inline-block;
+padding: 0.1em 0.3em;
+font-size: 2.5em;
+line-height: 1em;
 }
 #replyInputsDiv
 {
@@ -968,7 +1007,7 @@ padding: 0.4em 0;
 }
 
 .humidity{
-    font-size:0.7em
+    font-size:0.8em
 }
 #forecastnextdays .date{
     font-family:nextexitfot_regularregular;
@@ -977,7 +1016,7 @@ padding: 0.4em 0;
     text-align:center;
     line-height:1em;
     width: 2em;
-}
+}index
 #forecastnextdays .datetext{
     font-size:0.8em;
 }
@@ -1061,24 +1100,32 @@ padding: 0.6em 0 0;
 }
 .inparamdiv .highlows
 {
-position:relative;
-border-top:0px;top:0;
+
+border-top:0px;top:95px;
+}
+#latestwindow .highlows
+{
+    top:40px;
 }
 #latestairq .highlows{
     top:0
 }
-#latestairq .trendstable{
-    top:0
+#latestradiation .paramtrend
+{
+    top: 90px;
 }
+#latestradiation .highlows
+{
+    top: 70px;
+}
+
 .dusttitle{
     font-size:0.9em
 }
 
-#latestradiation .trendstable{
-    top:0
-}
 #aqvalues{
-    margin-top: -0.5em;
+    margin-top: 1em;
+    position: absolute
 }
 #sigweather{
     position: absolute;
@@ -1092,6 +1139,9 @@ border-top:0px;top:0;
     border-radius: 15px;
     padding-bottom:10px;
     padding-right:10px
+}
+#xClose{
+    display:block;
 }
 #sigweather li{
     line-height: 30px;
@@ -1299,7 +1349,7 @@ ul { list-style-type: none;}
 }
 td
 {
-	border: none;text-align:<?echo get_s_align();?>;
+	border: none;
 }
 .small
 {
@@ -1487,7 +1537,7 @@ position: relative;
 }
 #more_stations_btn{
     margin-top: -113px;
-    margin-right: 278px;
+    margin-right: 270px;
 }
 #cold_btn{
     float: none;
@@ -1500,7 +1550,7 @@ position: relative;
     opacity: 1;
 }
 #runwalk_btn{
-    margin-right: 270px;
+    margin-right: 265px;
     margin-top: -72px;
 }
 
@@ -1515,9 +1565,23 @@ margin:auto;margin-top:-90px
 #latesttemp3 .graphslink{
     top:0;
     right:36px;
+    with:140px;
 }
-#latestotherstations .graphslink{
-    top:70px
+#latestrunwalk .exp
+{
+    position:absolute;margin-top: 30px;
+}
+#latestrain .paramtrend
+{
+    top: 100px;
+}
+#latestrain .highlows
+{
+    top: 80px;
+}
+#latestrain .trendstable
+{
+    top: 140px;
 }
 #valleytemp{
 font-size:0.5em;
@@ -1526,16 +1590,14 @@ font-size:0.5em;
 margin-top:0.75em
 }
 .paramvalue{
-position:relative;
-top:0;
+top:30px;
 }
 .trendstable
 {
-position:relative;
-top:0;
+top:120px;
 }
 .paramtrend{
-top:0
+top:180px
 }
 .trendstable td{
 text-align:center
@@ -1608,7 +1670,7 @@ clear:both
 margin:5px 27px 11px 11px
 }
 .rainpercent{
-    margin: -7.4em 3.5em;
+    margin: -5.1em 1.5em;
     position:absolute;
 }
 #0{

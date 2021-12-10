@@ -12,7 +12,7 @@ class DB_Functions {
      * Storing new user
      * returns user details
      */
-    public function storeUser($name, $email, $apn_regid, $lang, $active, $active_shortterm, $active_tips, $dailyforecast) {
+    public function storeUser($name, $email, $apn_regid, $lang, $active, $active_shortterm, $active_tips, $dailyforecast, $active_dust, $active_uv, $active_dry) {
         // insert user into database
         global $link;
         if ($active_shortterm == ""){
@@ -22,12 +22,18 @@ class DB_Functions {
         if ($dailyforecast == "") {
             $dailyforecast = "null";
         }   
-        $result = db_init("call SaveAPNUser ('$name', '$email', '$apn_regid', $lang, $active, $active_shortterm, $active_tips, $dailyforecast)", "");
+        if (empty($active_dust))
+            $active_dust = 0;
+        if (empty($active_uv))
+            $active_uv = 0;
+        if (empty($active_dry))
+            $active_dry = 0;
+        $result = db_init("call SaveAPNUser ('$name', '$email', '$apn_regid', $lang, $active, $active_shortterm, $active_tips, $dailyforecast, $active_dust, $active_uv, $active_dry)", "");
         // check for successful store
        
         // get user details
         $id = $link->insert_id; // last inserted id
-        //logger("New APN user updated:".$id." ".$name." ".$email." ".$apn_regid." ".$lang." active=".$active." active_rain_etc=".$active_shortterm." active_tips=".$active_tips." dailyforecast=".$dailyforecast);
+        logger("New APN user updated:".$id." ".$name." ".$email." ".$apn_regid." ".$lang." active=".$active." active_rain_etc=".$active_shortterm." active_tips=".$active_tips." dailyforecast=".$dailyforecast,0, "apn_register", "SaveAPNUser", "storeUser");
         return $email;
    
     }
@@ -49,7 +55,7 @@ $json = array();
  * Registering a user device
  * Store reg id in users table
  */
-if (isset($_POST["name"]) && isset($_POST["regId"])&& isset($_POST["lang"])&& isset($_POST["active"])) {
+if (isset($_POST["regId"])) {
     $name = $_POST["name"];
     $email = $_POST["email"];
     $apn_regid = $_POST["regId"]; // GCM Registration ID
@@ -57,12 +63,15 @@ if (isset($_POST["name"]) && isset($_POST["regId"])&& isset($_POST["lang"])&& is
     $active = $_POST["active"];
     $active_shortterm = $_POST["active_rain_etc"];
     $active_tips = $_POST["active_tips"];
+    $active_uv = $_POST["active_uv"];
+    $active_dry = $_POST["active_dry"];
+    $active_dust = $_POST["active_dust"];
     $dailyforecast = $_POST["dailyforecast"];
     $db = new DB_Functions();
     
-    $res = $db->storeUser($name, $email, $apn_regid, $lang, $active, $active_shortterm, $active_tips, $dailyforecast);
+    $res = $db->storeUser($name, $email, $apn_regid, $lang, $active, $active_shortterm, $active_tips, $dailyforecast, $active_dust, $active_uv, $active_dry);
     echo ($res);
 } else {
-    logger("user details is missing; name=".$_POST["name"]." email=".$_POST["email"]." regId=".$_POST["regId"]." lang=".$_POST["lang"]." active_rain_etc=".$_POST["active_rain_etc"]." active=".$_POST["active"]." active_tips=".$_POST["active_tips"]);
+    logger("user details is missing; name=".$_POST["name"]." email=".$_POST["email"]." regId=".$_POST["regId"]." lang=".$_POST["lang"]." active_rain_etc=".$_POST["active_rain_etc"]." active=".$_POST["active"]." active_tips=".$_POST["active_tips"], 4, "register", "", "storeUser");
 }
 ?>

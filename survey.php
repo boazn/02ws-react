@@ -1,18 +1,6 @@
-<style>
-#user_info{ 
-	<?=get_inv_s_align()?>: 1em;
-}
-</style>
-<div class="survey">
-<form method="post">
 <?
-$itfeels = array();
-$itfeels = $current->get_itfeels();
-$msgSent = false;
-header('Content-type: text/html; charset=utf-8');
-session_start();
-//ini_set("display_errors","On");
-
+include_once("include.php");
+include_once("start.php");
 function get_title ($field_name)
 {
 	global $lang_idx, $FSEASON_T, $HOTORCOLD_T, $itfeels;
@@ -58,7 +46,9 @@ function insertNewMessage ($survey_id, $value, $temp, $comments)
                 if (($survey_id != 1)&&($survey_id != 2))
                        return $ONLYONEVOTE[$lang_idx]; 
 		if (!validEntry())
+		{
 			return $ONLYONEVOTE[$lang_idx];
+		}
 		setcookie("gender", $_POST['gender'], strtotime( '+90 days' ));
                 $comments = str_replace('delete', '', $comments);
                 $comments = str_replace('select', '', $comments);
@@ -84,59 +74,156 @@ function insertNewMessage ($survey_id, $value, $temp, $comments)
                     //logger($query);
                     $result = db_init($query, $row['cnt']);
                 }
-                logger("Survey->insertNewMessage: ".$_SESSION['email']." ".$_SESSION['loggedin']." ".$_COOKIE[PERSONAL_COLD_METER]." ".$_COOKIE['rememberme']);
+                //logger("Survey->insertNewMessage: ".$_SESSION['email']." ".$_SESSION['loggedin']." ".$_COOKIE[PERSONAL_COLD_METER]." ".$_COOKIE['rememberme']);
 		// Free resultset 
 		@mysqli_free_result($result);
 		
 	//}
+}  
+if (isset($_REQUEST['SendSurveyButton'])&&($_REQUEST['survey']!='')) {
+
+	$msgSent = true;
+	$displayVotes = false;
+			$itfeels = array();
+			$itfeels = $current->get_itfeels();
+			$temp_to_cold_meter = $itfeels[1];
+			$result = insertNewMessage($_REQUEST['survey_id'], $_REQUEST['survey'], $temp_to_cold_meter, $_REQUEST['comments']);
+	
+	if (isset($_REQUEST['json_res'])) {
+				$surveyJSON = "{\"result\":";
+				$surveyJSON .= "{"; 
+				if ($result == ""){
+					$surveyJSON .= "\"success\":\"true\"";
+					$result = $VOTE_INSERTED[$lang_idx];
+				}
+				else
+					$surveyJSON .= "\"success\":\"".$result."\"";	
+				$surveyJSON .= ",";
+				$surveyJSON .= "\"value_inserted\":\"".$_REQUEST['survey']."\"";
+				$surveyJSON .= ",";
+				$surveyJSON .= "\"temp_to_cold_meter\":\"".$temp_to_cold_meter."\"";
+				$surveyJSON .= ",";
+				$surveyJSON .= "\"email\":\"".$_SESSION['email']."\"";
+				$surveyJSON .= ",";
+				$surveyJSON .= "\"message\":\"".$result."\"";
+				$surveyJSON .= "}";
+				$surveyJSON .= "}";
+				echo $surveyJSON;
+				exit;
+	}
+	
+	else if ($result == ""){
+		echo "<div class=\"alert-success big clear\">... תודה...</div>";
+		?>
+		<div id="voteAccepted">
+		<label id="voteInserted">
+			<?=$VOTE_INSERTED[$lang_idx]?>
+		</label>
+		<div style="clear:both;height:10px">&nbsp;</div>
+		<div style="clear:both;height:10px">&nbsp;</div>
+		<label id="coldmeter_exp_2">
+			<?=$PERSONAL_COLD_METER[$lang_idx]?>
+		</label>
+		<label id="coldmeter_exp">
+			<?=$DID_YOU_KNOW_SUMMER[1][$lang_idx]?>
+		</label>
+		<div style="clear:both;height:10px">&nbsp;</div>
+		<? if (isset($_SESSION['email'])){ ?>
+			
+			
+		<?} else {?>
+			<div class="float clear" >
+			<label id="newto02ws" class="float clear"><?=$NEW_TO_02WS[$lang_idx]?></label> <a href="<?=$_SERVER['DOCUMENT_ROOT']?>login_form.php?action=registerform" id="clicktoregister" class="float clear big"><?echo $REGISTER[$lang_idx].get_arrow();?></a>
+			</div>
+		<?}?>
+		<div style="clear:both;height:10px">&nbsp;</div>
+		<div style="clear:both;height:10px">&nbsp;</div>
+		<form method="post">
+		<div class="float clear" >
+		<input type="submit" class="slogan inv_plain_3_zebra big"  style="width: 280px;padding: 0.5em;" name="displayResultsButton" value="<? if (isHeb()) echo "צפייה בתוצאות"; else echo "Display Results"; ?>&nbsp;&#8250;&#8250;"/>
+		</div>
+		</form>
+	</div>
+		<?}
+	else
+		echo "<div class=\"inv_plain_3_zebra big\"><div class=\"text-error alert big clear\">$result</div></div>";
+	
+}
+else
+{
+	foreach ($_POST as $varname => $varvalue) {
+		if (empty($varvalue)) {
+			$empty[$varname] = $varvalue;
+			$res_post=$res_post." ".$varname."=".$varvalue;
+		} else {
+			$post[$varname] = $varvalue;
+			$res_post=$res_post." ".$varname."=".$varvalue;
+		}
+	 }
+	//logger("res_post=".$res_post);
 }
 
-if (isset($_POST['SendSurveyButton'])&&($_POST['survey']!='not')&&($_POST['survey']!='')) {
-
-		$msgSent = true;
-                $itfeels = array();
-                $itfeels = $current->get_itfeels();
-                $temp_to_cold_meter = $itfeels[1];
-                $result = insertNewMessage($_REQUEST['survey_id'], $_POST['survey'], $temp_to_cold_meter, $_POST['comments']);
-		if ($result == "")
-			echo "<div class=\"alert-success\">... תודה...</div>";
-		else
-			echo "<div class=\"text-error alert\">$result</div>";
-	
-	
+?>
+<style>
+	body{ 
+		background:white; 
+	}
+#user_info{ 
+	<?=get_s_align()?>: 2.8em;
 }
-else if ((isset($_POST['SendSurveyButton']))&&(($_POST['survey']=='not')||($_POST['survey']=='')))
+#coldmeter_exp, #voteInserted{
+	<? if (isHeb()) echo "direction:\"rtl\"";?>;
+	font-size:2em;
+}
+</style>
+<div class="survey">
+<form method="post">
+<?
+$itfeels = array();
+$itfeels = $current->get_itfeels();
+
+header('Content-type: text/html; charset=utf-8');
+session_start();
+//ini_set("display_errors","On");
+
+if ((isset($_POST['SendSurveyButton']))&&(($_POST['survey']=='not')||($_POST['survey']=='')))
     echo "<div class=\"high big\">יש לבחור ערך</div>";
-$result = getSurvey($_REQUEST['survey_id']);
+else if (isset($_POST['displayResultsButton'])) {
+	$displayVotes = true;
+	
+}
+$survey_id = isset($_REQUEST['survey_id']) ? $_REQUEST['survey_id']: 2;
+
+$result = getSurvey($survey_id);
 if (!$msgSent) {
 foreach ($result as $row) {
 	$lines++;
         if ($lines == 1){
             print "<h1 class=\"title\">".get_title($row['name'])."</h1><br/><br/>";
             print "<h2 class=\"question\" style=\"clear:both;direction:".getDirection()."\">".get_name($row['name'])."</h2>";
-            print "<div class=\" float\" style=\"margin:0em 1em;\" >";
+            print "<div id=\"radio_toolbar_container\" class=\"float\" >";
         }
         print "\n\t\t<div class=\"radio-toolbar color".$row["field_id"]."\"";
         if (isHeb()) echo "dir=\"rtl\"";
         echo " style=\"\">";
         print "\n\t\t<input type=\"radio\" name=\"survey\" id=\"idx".($row["field_id"])."\" value=\"".$row["field_id"]."\" ";
-        echo " />&nbsp;<label for=\"idx".($row["field_id"])."\">".get_name($row["field_name"])."</label>";
+        echo " /><label for=\"idx".($row["field_id"])."\">".get_name($row["field_name"])."</label>";
         print "\n\t\t</div>";
 }
 print "</div>";
 ?>
-    <div class="" style="float:<? echo get_s_align(); ?>;margin-<? echo get_s_align(); ?>:1em;width:179px;padding:1em;text-align:<? echo get_s_align(); ?>">
+    <div class="float survey_container" style="text-align:<? echo get_s_align(); ?>">
         <? if (isHeb()) echo "עוד משהו רציתי להגיד"; else echo "one more thing";?><br />
-        <textarea name="comments" rows="6" <?if (isHeb()) echo " dir=\"rtl\"";?>  value="" style="width:170px;font-size: 1.2em;"></textarea>
+        <textarea name="comments" rows="2" <?if (isHeb()) echo " dir=\"rtl\"";?>  value="" style="width:275px;font-size: 1.1em;"></textarea>
     </div>
-<div class="" style="float:<? echo get_s_align(); ?>;margin-<? echo get_s_align(); ?>:1em;padding:0.2em;text-align:<? echo get_s_align(); ?>">
-	<div class="radio-toolbar float big" id="genderchooseradio" style="padding: 1em;text-align:<? echo get_s_align(); ?>" <? if (isHeb()) echo "dir=\"rtl\""; ?>><?=$IM[$lang_idx];?> 
+<div class="float survey_container" style="text-align:<? echo get_s_align(); ?>">
+	<div class="radio-toolbar float big" id="genderchooseradio" style="padding: 0.1em 1em;text-align:<? echo get_s_align(); ?>" <? if (isHeb()) echo "dir=\"rtl\""; ?>><?=$IM[$lang_idx];?> 
         <input type="radio" value="m" name="gender" id="male"  /><label for="male"><?=$MALE[$lang_idx];?></label>
 	<input type="radio" value="f" name="gender" id="female" /><label for="female"><?=$FEMALE[$lang_idx];?></label>
 	<input type="radio" value="" name="gender" id="none" <? if (!isset($_POST['SendSurveyButton'])) echo "checked";?> /><label for="none"><?=$NOR_MALE_NOR_FEMALE[$lang_idx];?></label>
 	</div>
-	<div class="float clear" style="margin:0.2em 0em;width: 200px">
-	<input type="submit" class="slogan inv_plain_3_zebra big"  style="width: 200px;padding: 1em;" name="SendSurveyButton" value="<? if (isHeb()) echo "הצבעה"; else echo "Vote"; ?><?=get_arrow()?><?=get_arrow()?>"/>
+	<div class="float clear" >
+	<input type="submit" class="slogan inv_plain_3_zebra big"  style="width: 280px;padding: 0.5em;" name="SendSurveyButton" value="<? if (isHeb()) echo "הצבעה"; else echo "Vote"; ?>&nbsp;&#8250;&#8250;"/>
 	
 	</div>
 	
@@ -147,8 +234,8 @@ print "</div>";
         });*/
         
     </script>
-<? } 
-if (($msgSent) || (!validEntry()))
+<?}
+ if (($displayVotes) && (validEntry()))
 {
         if (isset($_SESSION['email'])){
             header("Location: https://www.02ws.co.il/".$_SERVER['SCRIPT_NAME']."?section=myVotes.php&lang=".$lang_idx."&survey_id=".$_REQUEST['survey_id']."&fullt=".$_GET['fullt']."&s=".$_GET['s']."&c=".$_GET['c']."\""); /* Redirect browser */

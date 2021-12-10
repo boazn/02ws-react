@@ -202,7 +202,7 @@ else
 topDiv.innerHTML='';
 currentdividxflag.value = parentDiv.id;}
 //document.getElementById('user_name').value = name;
-$(".href").colorbox({maxWidth:'95%', maxHeight:'95%', width:"35%", inline:true, href:"#href_dialog"});$("a[rel='external'], .forcast_text").colorbox({maxWidth:'95%', maxHeight:'95%', iframe:true});$(".mood").colorbox({width:"35%", inline:true, href:"#moods_dialog"});}
+$(".href").colorbox({maxWidth:'95%', maxHeight:'95%', width:"35%", inline:true, href:"#href_dialog"});$(".mood").colorbox({width:"35%", inline:true, href:"#moods_dialog"});}
 function restoreTopDiv()
 {var topDiv=document.getElementById('new_post');var existingDiv=document.getElementById('replyInputsDiv');if(existingDiv)
 {topDiv.innerHTML=existingDiv.innerHTML;
@@ -215,6 +215,8 @@ function fillMessage(str)
 {
 try {
 var msgDetails=document.getElementById('msgDetails');
+if (msgDetails == null)
+    return;
 var currentPosts = msgDetails.innerHTML;
 if ($('#current_forum_update_display').val() == 'R')
 {
@@ -242,7 +244,7 @@ msnry.layout();
 
 }
 catch (e){
-alert (e);
+//alert (e);
 }
 }
 
@@ -253,10 +255,9 @@ $(".href").colorbox({width:"35%", inline:true, href:"#href_dialog"});
 $(".imghref").colorbox({width:"35%", inline:true, href:"#href_img_dialog"});
 $(".mood").colorbox({width:"35%", inline:true, href:"#moods_dialog"});
 $(".user_icon").colorbox({width:"35%", inline:true, href:"#user_icon_dialog"});
-$("#login").colorbox({width:"290px", height:"290px", inline:true, top:"40px", href:"#loginform"});
+$("#login").colorbox({width:"290px", height:"290px", inline:true, top:"40px", fixed:true,href:"#loginform"});
 $(".register").colorbox({width:"290px", height:"420px", inline:true, top:"40px", fixed:true,href:"#registerform"});
-$("#forgotpass").colorbox({width:"290px", height:"200px", inline:true, top:"40px", fixed:true, href:"#passforgotform",onOpen:function(){}});
-$("#updateprofile").colorbox({width:"290px", inline:true, top:"40px",fixed:true, href:"#profileform"});
+$("#updateprofile").colorbox({width:"290px", height:"420px", top:"40px",inline:true, href:"#profileform"});
 $(".icon_forecast").colorbox({width:"35%", inline:true, href:"#icons_dialog"});
 $(".temphigh").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
 $(".tempnight").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
@@ -449,10 +450,67 @@ else
 
 
  function change_circle(line_id, info_id) {
-     if (info_id != "latestnow")
+     
+    
+    document.getElementById("runwalk_btn").style.opacity = 0.5;
+    document.getElementById("moon_btn").style.opacity = 0.5;
+    document.getElementById("more_stations_btn").style.opacity = 0.5;
+    document.getElementById("dew_btn").style.opacity = 0.5;
+    document.getElementById("window_btn").style.opacity = 0.5;
+    if (info_id == "latestdewpoint")
+        document.getElementById("dew_btn").style.opacity = 1;
+    if (info_id == "latestwindow")
+        document.getElementById("window_btn").style.opacity = 1;
+    if (info_id == "latestrunwalk")
+        document.getElementById("runwalk_btn").style.opacity = 1;
+    if (info_id == "latestotherstations")
+        document.getElementById("more_stations_btn").style.opacity =1;   
+    if (info_id == "latestmoon")
+        document.getElementById("moon_btn").style.opacity = 1;
+    if (info_id != "latestnow")
         document.getElementById("now_btn").style.backgroundPosition = "left";
      else
         document.getElementById("now_btn").style.backgroundPosition = "right";
+     if (info_id != "latestwind")
+        document.getElementById("wind_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("wind_btn").style.backgroundPosition = "right";
+     if (info_id != "latestrain")
+        document.getElementById("rain_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("rain_btn").style.backgroundPosition = "right";
+     if (info_id != "latestradiation")
+        document.getElementById("rad_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("rad_btn").style.backgroundPosition = "right";
+     if (info_id != "latestairq")
+        document.getElementById("aq_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("aq_btn").style.backgroundPosition = "right";
+     if (info_id != "latestpressure")
+        document.getElementById("air_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("air_btn").style.backgroundPosition = "right";
+     if (info_id != "latesttemp")
+        document.getElementById("temp2_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("temp2_btn").style.backgroundPosition = "right";
+     if (info_id != "latesttemp2")
+        document.getElementById("temp_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("temp_btn").style.backgroundPosition = "right";
+     if (info_id != "latesttemp3")
+        document.getElementById("temp3_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("temp3_btn").style.backgroundPosition = "right";
+    if (info_id != "latesthumidity")
+        document.getElementById("moist_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("moist_btn").style.backgroundPosition = "right";
+    if (info_id != "latestuv")
+        document.getElementById("uv_btn").style.backgroundPosition = "left";
+     else
+        document.getElementById("uv_btn").style.backgroundPosition = "right";
      document.getElementById("latestnow").style.display = "none";
      document.getElementById("latesttemp").style.display = "none";
      document.getElementById("latesttemp2").style.display = "none";
@@ -475,12 +533,12 @@ else
 	 if (desktop){
                 document.getElementById("coldmetersurvey").style.display = "none";
                  document.getElementById("fseasonsurvey").style.display = "none";
-		 document.getElementById("now_line").style.visibility = "hidden";
-                 document.getElementById("temp2_line").style.visibility = "hidden";
-                 document.getElementById("temp3_line").style.visibility = "hidden";
+		 /*document.getElementById("now_line").style.visibility = "hidden";
+         document.getElementById("temp2_line").style.visibility = "hidden";
+         document.getElementById("temp3_line").style.visibility = "hidden";
 		 document.getElementById("temp_line").style.visibility = "hidden";
 		 document.getElementById("moist_line").style.visibility = "hidden";
-                 document.getElementById("dew_line").style.visibility = "hidden";
+         document.getElementById("dew_line").style.visibility = "hidden";
 		 document.getElementById("wind_line").style.visibility = "hidden";
 		 document.getElementById("air_line").style.visibility = "hidden";
 		 document.getElementById("rain_line").style.visibility = "hidden";
@@ -493,10 +551,10 @@ else
          document.getElementById("moon_line").style.visibility = "hidden";
          document.getElementById("runwalk_line").style.visibility = "hidden";
          document.getElementById("otherstations_line").style.visibility = "hidden";
-		 document.getElementById(line_id).style.visibility = "visible";
+		 document.getElementById(line_id).style.visibility = "visible";*/
          
 	 }
-     document.getElementById(info_id).style.display = "block";
+     document.getElementById(info_id).style.display = "flex";
 
 
  }
@@ -711,8 +769,9 @@ function attachEnter(){
                 var PERSONAL_COLD_METER_VOTES_THRESHHOLD = 0;
         	var jsonT = JSON.parse( jsonstr  );
         	 $("#profileform_email").val(jsonT.user.email);
-                 $("#name").html(jsonT.user.display);updateprofile_to_server
+                 $("#name").html(jsonT.user.display);
                  $("#user_name").html(jsonT.user.display);
+                 $("#hello").html(jsonT.user.display);
                  $("#user_icon").addClass(jsonT.user.icon);
                  // chosen_user_icon should be the first - change_icon will update this to the DB value
                  $("#chosen_user_icon").val($("#user_icon_contentbox").children().first().children().first().attr('class'));
@@ -726,7 +785,9 @@ function attachEnter(){
                  if ((jsonT.user.voteCount >= PERSONAL_COLD_METER_VOTES_THRESHHOLD)&&(jsonT.user.PersonalColdMeter == 0)&&($("#personal_message")))
                     $("#personal_message").html('<?=$PERSONAL_COLD_METER_ALERT[$lang_idx]?>');
                  var nextClass = $("#profileform #user_icon_contentbox").children().first().children().first().attr('class');
-                 if ((jsonT.user.icon != "" )&& (jsonT.user.icon != "admin_avatar"))
+                 if ((jsonT.user.icon != "undefined" )
+                    &&(jsonT.user.icon != "" )
+                    &&(jsonT.user.icon != "admin_avatar"))
                     while (jsonT.user.icon != nextClass){
                        nextClass = change_icon('right', $("#profileform .icon_right"));
                     }
@@ -865,46 +926,46 @@ function attachEnter(){
                   beforeSend: function(){$(".loading").show();}
 		}).done(function( jsonstr  ) {
 		  try{
-                     $(".loading").hide();
-                     var jsonT = JSON.parse( jsonstr  );
-                     if (!jsonT.user.loggedin)
-                         {
-                             toggle('new_post_btn');
-                             if (jsonT.user.locked)
-                                $("#loginform_result").text('<?=$USER_LOCKED[$lang_idx]?>');
-                             else
-                                $("#loginform_result").text(jsonT.user.display);
-                             $("#loginform_result").addClass('high');
-                         }
-                       else {
-                         $("#cboxClose").click();
-                         $("#colorbox").hide();
-                         $("#cboxOverlay").hide();
-                         fillUserDetails (jsonstr );
-                         toggle('loggedin');
-                         toggle('notloggedin');
-                            if (document.getElementById('new_post_btn')){
-                                   $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
-                            }
-                          if (document.getElementById('forum'))
-							{                    
-							fillMessage('<img src="img/loading.gif" alt="loading" width="50" height="50"/>');
-                                                        $.ajax({
-                                                            type: "POST",
-                                                            headers: {  'Access-Control-Allow-Origin': '*' },
-                                                            url: "chat_service.php?lang="+lang+"&from="+limit+"&update="+update,
-                                                            data: {lang:lang, from:limit, update:update},
-                                                       }).done(function(str){fillMessage(str);});
-                                                        
-						 }
-                       }
-                                                         
-                 }
-                 catch (e) {
-                     
-                     alert(e);
-                     
-                  }
+                $(".loading").hide();
+                var jsonT = JSON.parse( jsonstr  );
+                if (!jsonT.user.loggedin)
+                    {
+                        toggle('new_post_btn');
+                        if (jsonT.user.locked)
+                        $("#loginform_result").text('<?=$USER_LOCKED[$lang_idx]?>');
+                        else
+                        $("#loginform_result").text(jsonT.user.display);
+                        $("#loginform_result").addClass('high');
+                    }
+                else {
+                    $("#cboxClose").click();
+                    $("#colorbox").hide();
+                    $("#cboxOverlay").hide();
+                    fillUserDetails (jsonstr );
+                    toggle('loggedin');
+                    toggle('notloggedin');
+                    if (document.getElementById('new_post_btn')){
+                            $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
+                    }
+                    if (document.getElementById('forum'))
+                    {                    
+                    fillMessage('<img src="img/loading.gif" alt="loading" width="50" height="50"/>');
+                                                $.ajax({
+                                                    type: "POST",
+                                                    headers: {  'Access-Control-Allow-Origin': '*' },
+                                                    url: "chat_service.php?lang="+lang+"&from="+limit+"&update="+update,
+                                                    data: {lang:lang, from:limit, update:update},
+                                                }).done(function(str){fillMessage(str);});
+                                                
+                    }
+                }
+                                                    
+            }
+            catch (e) {
+                
+                alert(e);
+                
+            }
 		    
 		});
         }
@@ -924,11 +985,11 @@ function attachEnter(){
                  	return false;
                  }
                  
-                  if ($("#profileform_nicename").val().length == 0){
+                  /*if ($("#profileform_nicename").val().length == 0){
                  	alert('<?=$NICE_NAME[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
                  	$("#profileform_nicename").focus();
                  	return false;
-                 }
+                 }*/
                    
         	$.ajax({
 		  type: "POST",
@@ -950,6 +1011,8 @@ function attachEnter(){
 		      toggle('profileform_submit');
 		      toggle('profileform_OK');
 		      $("#profileform_OK").addClass("text-success");
+              if (document.getElementById('cboxClose')==null)
+                 parent.jQuery.colorbox.close();
 		      
 		   }
 		  else
@@ -987,11 +1050,11 @@ function attachEnter(){
                  	return false;
                  }
                  
-                  if ($("#registerform_nicename").val().length == 0){
+                /*  if ($("#registerform_nicename").val().length == 0){
                  	alert('<?=$NICE_NAME[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
                  	$("#registerform_nicename").focus();
                  	return false;
-                 }
+                 }*/
                  
                  if ($("#registerform_password").val() != $("#registerform_password_verif").val()){
                  	alert('Passwords do not match סיסמאות לא זהות');
@@ -1099,8 +1162,9 @@ function attachEnter(){
 		title = "<?=$HELL[$lang_idx]?>";
 	return title;
 }
-function updateLikes(idx, command)
+function updateLikes(event, idx, command)
 {
+   event.preventDefault();
    $.ajax({
         type: "POST",
         url: "forecastlikes_service.php",
@@ -1149,6 +1213,34 @@ function fillLikes(jsonstr)
 			$('#what_is_h, #what_is_h_start').show();
             $('#current_feeling_link_start').html(cur_feel_link.innerHTML);
 			}
+    }
+    function fillcoldmeter_fromjson(json)
+    {
+        console.log("fillcoldmeter_fromjson json from fetch:" + JSON.stringify(json));
+        $('#cm_current').val(json.coldmeter.current_value);
+    }
+    function vote_cm_like()
+    {
+        $('#survey_id').val(2);
+        var gender = getCookie('gender');
+        var SendSurveyButton = "1";
+        var cm_value = $('#cm_current').val();
+        console.assert(cm_value!="");
+        let _data = {
+            SendSurveyButton: 1,
+            json_res: 1,
+            survey: cm_value, 
+            survey_id:2
+        }
+        /*fetch('survey.php', {
+        method: "POST",
+        body: JSON.stringify(_data),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+        })*/  
+        fetch("survey.php?SendSurveyButton=1&json_res=1&survey="+cm_value + "&survey_id=1")    
+        .then(response => response.json())
+        .then(data => {console.log(data);alert(data.message);})
+        .catch(error => console.log("vote_cm_like error:" + error));
     }
      function expand(idx)
     {
@@ -1206,139 +1298,140 @@ function fillLikes(jsonstr)
         if (mq.matches) {
          
           $("#latestnow").animate({
-    marginLeft: "-600px",
-    marginTop: "-100px"
+    left: "-800px",
+    top: "-100px"
         }, 1500 );
         
         $("#latesttemp").animate({
-    marginLeft: "-400px",
-    marginTop: "-100px"
+    left: "-400px",
+    top: "-100px"
         }, 1600 );
         
         $("#latesttemp2").animate({
-    marginLeft: "-200px",
-    marginTop: "-100px"
+    left: "-800px",
+    top: "400px"
         }, 2000 );
         $("#latesttemp3").animate({
-    marginLeft: "400px",
-    marginTop: "100px"
+    left: "-800px",
+    top: "150px"
         }, 1800 );
         
         $("#latesthumidity").animate({
-    marginLeft: "0px",
-    marginTop: "-100px"
+    left: "0px",
+    top: "-100px"
         }, 1700 );
         
         $("#latestpressure").animate({
-    marginLeft: "200px",
-    marginTop: "-100px"
+    left: "350px",
+    top: "-100px"
         }, 2000 );
         
         $("#latestwind").animate({
-    marginLeft: "400px",
-    marginTop: "-100px"
+    left: "300px",
+    top: "400px"
         }, 1400 );
         
         $("#latestrain").animate({
-    marginLeft: "600px",
-    marginTop: "-100px"
+    left: "700px",
+    top: "-100px"
         }, 1800 );
         
         $("#latestradiation").animate({
-    marginLeft: "600px",
-    marginTop: "100px"
+    left: "700px",
+    top: "150px"
         }, 1200 );
         
         $("#latestuv").animate({
-    marginLeft: "600px",
-    marginTop: "300px"
+    left: "700px",
+    top: "400px"
         }, 1400 );
         
         $("#latestairq").animate({
-    marginLeft: "600px",
-    marginTop: "500px"
+    left: "700px",
+    top: "600px"
         }, 1900 );
        $("#latestrunwalk").animate({
-    marginLeft: "200px",
-    marginTop: "100px"
+    left: "0",
+    top: "150px"
         }, 1500 );
         $("#latestdewpoint").animate({
-    marginLeft: "0px",
-    marginTop: "100px"
+    left: "350px",
+    top: "150px"
         }, 1000 );
         }
         //small screen
         else{
          $("#now_stuff").animate({
-    marginLeft: "-60px",
-    marginTop: "65px"
+    left: "-60px",
+    top: "-65px"
         }, 1500 );
         $("#latestnow").animate({
-    marginLeft: "-400px",
-    marginTop: "-100px"
+    left: "-400px",
+    top: "-100px"
         }, 2000 );
         
         $("#latesttemp").animate({
-    marginLeft: "-200px",
-    marginTop: "-100px"
+    left: "-200px",
+    top: "-100px"
         }, 1800 );
         
         $("#latesttemp2").animate({
-    marginLeft: "-0px",
-    marginTop: "-100px"
+    left: "-400px",
+    top: "150px"
         }, 1900 );
         
         $("#latesthumidity").animate({
-    marginLeft: "200px",
-    marginTop: "-100px"
+    left: "200px",
+    top: "-100px"
         }, 1700 );
         
         $("#latestpressure").animate({
-    marginLeft: "400px",
-    marginTop: "-100px"
+    left: "400px",
+    top: "-100px"
         }, 1600 );
         
         $("#latestwind").animate({
-    marginLeft: "-400px",
-    marginTop: "100px"
+    left: "700px",
+    top: "800px"
         }, 1500 );
         
         $("#latestrain").animate({
-    marginLeft: "-200px",
-    marginTop: "100px"
+    left: "-200px",
+    top: "100px"
         }, 2000 );
         
         $("#latestradiation").animate({
-    marginLeft: "0px",
-    marginTop: "100px"
+    left: "0px",
+    top: "100px"
         }, 1400 );
         
         $("#latestuv").animate({
-    marginLeft: "200px",
-    marginTop: "100px"
+    left: "200px",
+    top: "100px"
         }, 1200 );
         
         $("#latestairq").animate({
-    marginLeft: "400px",
-    marginTop: "100px"
+    left: "400px",
+    top: "100px"
         }, 1000 );
 
         $("#latestrunwalk").animate({
-    marginLeft: "200px",
-    marginTop: "420px"
+    left: "200px",
+    top: "420px"
         }, 2000 ).css("z-index", "99999");
-        }
         $("#latestdewpoint").animate({
-    marginLeft: "0px",
-    marginTop: "100px"
+    left: "0px",
+    top: "100px"
         }, 1000 ).css("z-index", "99999");
+        }
+       
          
    }
    function closeAllCircles()
    {
     $("#latestnow, #latestairq, #latestdewpoint, #latestuv, #latestradiation, #latestrain, #latestwind, #latestpressure, #latesthumidity, #latesttemp2, #latesttemp, #latesttemp3, #latestnow, #latestrunwalk").animate({
-    marginLeft: "0",
-    marginTop: "0"
+    left: "0",
+    top: "0"
         }, 2000 , function() {
             $(".inparamdiv").css({"background": "rgba(255,255,255,0.6)"});
         $(".inparamdiv").css({"position": "relative"});
@@ -1373,64 +1466,66 @@ function startup(lang, from, update)
        $("#current_forum_filter").attr('data-key',$("#forum_filter").children().first().attr('data-key'));
        var cur_feel_link=document.getElementById('current_feeling_link');
        if (typeof coldmeter_size == 'undefined') 
-          coldmeter_size = 25;
+          coldmeter_size = 60;
        if (cur_feel_link)
        {
-               var ajax = new Ajax();
-               ajax.setHandlerBoth(fillcoldmeter);
-               ajax.url = 'coldmeter_service.php?lang='+lang + '&coldmetersize=' + coldmeter_size;
-               ajax.doReq();
-               
-              
-                
-       }
-        
-                $.ajax({
-                  type: "GET",
-                  headers: {  'Access-Control-Allow-Origin': 'https://www.02ws.co.il' },
-                  url: "checkauth.php?action=getuser&lang=" + lang +"&guid=<?=$_GET['guid']?>"
-                }).done(function( jsonstr ) {
-                  try{
+            $.ajax({
+                type: "GET",
+                headers: {  'Access-Control-Allow-Origin': 'https://www.02ws.co.il' },
+                url: "coldmeter_service.php?lang="+lang + "&coldmetersize=" + coldmeter_size + "&cloth_type=e"
+            })
+            .done(function( jsonstr ) {
+                fillcoldmeter(jsonstr);
+            });   
 
-                     var jsonT = JSON.parse( jsonstr  );
-                     if (jsonT.user.approved == 1)
-                        isUserAdApproved = true;
-                     if (!jsonT.user.loggedin)
-                         {
-                            toggle('notloggedin');
-                            $("#user_name").html('<?=$LOGIN[$lang_idx]?>/<?=$REGISTER[$lang_idx]?>');
-                            $("#chosen_user_icon").val($("#user_icon_contentbox").children().first().children().first().attr('class'));
-                            if (jsonT.user.locked)
-                                $("#user_name").html('<?=$USER_LOCKED[$lang_idx]?>');
-                         }
-                       else {
-                         toggle('loggedin'); 
-                         fillUserDetails (jsonstr );
-                        if (document.getElementById('new_post_btn')){
-                               $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
-                        }
-                       }
-                    if (document.getElementById('forum'))
-                    {
+            fetch("coldmeter_service.php?lang="+lang + "&coldmetersize=" + coldmeter_size + "&json=1&cloth_type=e")
+                .then(response => response.json())
+                .then(data => fillcoldmeter_fromjson(data))
+                .catch(error => console.log("error:" + error))
+                
+         }
+        
+        $.ajax({
+            type: "GET",
+            headers: {  'Access-Control-Allow-Origin': 'https://www.02ws.co.il' },
+            url: "checkauth.php?action=getuser&lang=" + lang +"&reg_id=<?=$_GET['reg_id']?>"
+        })
+        .done(function( jsonstr ) {
+            try{
+                var jsonT = JSON.parse( jsonstr  );
+                if (jsonT.user.approved == 1)
+                    isUserAdApproved = true;
+                if (!jsonT.user.loggedin){
+                    toggle('notloggedin');
+                    $("#user_name").html('<?=$LOGIN[$lang_idx]?>/<?=$REGISTER[$lang_idx]?>');
+                    $("#chosen_user_icon").val($("#user_icon_contentbox").children().first().children().first().attr('class'));
+                    if (jsonT.user.locked)
+                        $("#user_name").html('<?=$USER_LOCKED[$lang_idx]?>');
+                }
+                else {
+                    toggle('loggedin'); 
+                    fillUserDetails (jsonstr );
+                    if (document.getElementById('new_post_btn')){
+                            $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
+                    }
+                }
+                if (document.getElementById('forum')){
                     fillMessage('<img src="img/loading.gif" alt="loading" width="50" height="50"/>');
                     $.ajax({
                         type: "POST",
                         crossDomain: true,
-                         headers: {  'Access-Control-Allow-Origin': '*' },
+                            headers: {  'Access-Control-Allow-Origin': '*' },
                         url: "chat_service.php?lang="+lang+"&from="+from+"&update="+update,
                         data: {lang:lang, from:from, update:update},
-                   }).done(function(str){fillMessage(str);});
-                   }
-                    
-
+                    })
+                    .done(function(str){fillMessage(str);});
                 }
-                catch (e) {
-                    alert("error:" + e);
-
-                 }
-                });
-                attachEnter();
-                 
+            }
+            catch (e) {
+                console.log("error:" + e);
+            }
+        });
+        attachEnter();
      }
 
 
@@ -1734,13 +1829,13 @@ Licensed MIT
             tempunit = 'F';
         else if (tempunit.indexOf("C") > 0)
             tempunit = 'C';
-        $('#date').html(json.jws.current.date<?=$lang_idx?>).addClass('glow');
+        
         var latestalerttext = decodeURIComponent(json.jws.Messages.latestalert<?=$lang_idx?>).replace(/\+/g, ' ');
-        var latest_user_pic = "<a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=userPics.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestUserPic.picname + "\" width=\"320\" title=\"userpic\" /></br>" + decodeURIComponent(json.jws.LatestUserPic.name.replace(/\+/g, " ")) + ": " + decodeURIComponent(json.jws.LatestUserPic.comment.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";      
+        var latest_user_pic = "<a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=userPics.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestUserPic[0].picname + "\" width=\"320\" title=\"userpic\" /></br>" + decodeURIComponent(json.jws.LatestUserPic[0].name.replace(/\+/g, " ")) + ": " + decodeURIComponent(json.jws.LatestUserPic[0].comment.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";      
         var latest_pic_of_the_day = "<div class=\"txtindiv\"><?=$PIC_OF_THE_DAY[$lang_idx]?>" + "<br/>" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")) + "</div><a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=picoftheday.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"320\" title=\"pic of the day\" /></a>";
         var latest_pic_of_the_day_text = "<a href=\"javascript:void(0)\" class=\"info\" ><div class=\"title\">" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")).substring(0, 30) + "...</div>" + "<span class=\"info\"> <div class=\"\"><?=$PIC_OF_THE_DAY[$lang_idx]?>: " + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")) + "</div><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"320\" title=\"pic of the day\" /></span></a>";
 
-        $('#alerts').children('#message').html(decodeURIComponent(json.jws.Messages.latestalert<?=$lang_idx?>+json.jws.Messages.detailedforecast<?=$lang_idx?>).replace(/\+/g, ' '));
+        $('#alerts').children('#message').html(decodeURIComponent(json.jws.Messages.latestalert<?=$lang_idx?>.replace(/(\r\n|\r|\n)/g, '<br/>')+json.jws.Messages.detailedforecast<?=$lang_idx?>).replace(/\+/g, ' ').replace(/(\r\n|\r|\n)/g, '<br/>'));
         $('#tempdivvalue, #tempdivvaluestart').html('<div class="shade">' + ((json.jws.current.islight == 1) ? "" : "") + '</div>' + c_or_f(json.jws.current.temp, tempunit)+'<div class="param">'+tempunit+'</div>').removeClass('glow');
         $('#tempdivvalue').css('visibility', 'visible').addClass('glow');
         $('#tempdivvaluestart').fadeIn(30);
@@ -1774,12 +1869,12 @@ Licensed MIT
       
        var cur_feel_link=document.getElementById('current_feeling_link');
        if (typeof coldmeter_size == 'undefined') 
-                coldmeter_size = 20;
+                coldmeter_size = 40;
          if (cur_feel_link)
          {
                 $.ajax({
                 type: "GET",
-                url: '<?=BASE_URL?>/coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size,
+                url: '<?=BASE_URL?>/coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size + '&cloth_type=e',
                 beforeSend: function(){$(".loading").show();}
               }).done(function( jsonstr  ) {
                   
@@ -1801,9 +1896,9 @@ Licensed MIT
         $('.rainpercent').html((json.jws.current.rainchance > 0 ? (json.jws.current.rainchance + '%') : ''));
         if (json.jws.states.sigweather.length > 1)
         $('#what_is_h, #what_is_h_start ').html(json.jws.states.sigweather[0].sigtitle<? echo $lang_idx;?>+
-                                 '&nbsp;<div class=\"invhigh\">&nbsp;' + 
+                                 '&nbsp;<div class=\"high number\">&nbsp;' + 
                                   (json.jws.states.sigweather.length - 1) + 
-                                  '&nbsp;</div>'
+                                  '</div>&nbsp;<span class=\"arrow_down\">&#9660;</span>'
                                    + '<div class="rainpercent">' + (json.jws.current.rainchance > 0 ? (json.jws.current.rainchance + '%') : '') + '</div>');
         $('#what_is_h').css('visibility', 'visible');                          
         var title_temp;
@@ -1856,7 +1951,7 @@ Licensed MIT
             $("#temp3_desc").html(json.jws.desc.temp3_desc<?=$lang_idx?>);
         else
             $("#temp3_desc").html(json.jws.desc.temp3_night_desc<?=$lang_idx?>);
-        $("#latesthumidity .paramvalue").html(json.jws.current.hum+'&nbsp;<div class="param">%</div><div class="small valley"><?=$VALLEY[$lang_idx]?>:' + json.jws.current.hum2 + '%</div>');
+        $("#latesthumidity .paramvalue").html(json.jws.current.hum+'&nbsp;<div class="param">%</div><div class="param small valley"><?=$VALLEY[$lang_idx]?>:' + json.jws.current.hum2 + '%</div>');
         $("#latesthumidity .highlows .highparam").html('<strong>' + json.jws.today.highhum + '</strong>');
         $("#latesthumidity .highlows .high_time").html(json.jws.today.highhum_time);
         $("#latesthumidity .highlows .lowparam").html('<strong>' + json.jws.today.lowhum + '</strong>');
@@ -1865,6 +1960,14 @@ Licensed MIT
         $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.humchange.split(",")[2]);
         $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.humchange.split(",")[2]);
         $("#latesthumidity .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.humchange.split(",")[2]+"%");
+        $("#latestdewpoint .paramvalue").html(c_or_f(json.jws.current.dew, tempunit));
+        $("#latestdewpoint .highlows .highparam").html('<strong>' + json.jws.today.highdew + '</strong>');
+        $("#latestdewpoint .highlows .high_time").html(json.jws.today.highdew_time);
+        $("#latestdewpoint .highlows .lowparam").html('<strong>' + json.jws.today.lowdew + '</strong>');
+        $("#latestdewpoint .highlows .low_time").html(json.jws.today.lowdew_time);
+        $("#latestdewpoint .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.dewchange.split(",")[2]);
+        $("#latestdewpoint .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.dewchange.split(",")[2]);
+        $("#latestdewpoint .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.dewchange.split(",")[2]);
         $("#latestwind .paramvalue").html("<div id=\"winddir\" class=\"paramunit\"><div class=\"winddir\"></div></div><div id=\"windspeed\">" + json.jws.current.windspd + " <div class=\"param\"><?=$WIND_UNIT[$lang_idx]?></div></div>");
         $("#latestwind .winddir").addClass(json.jws.current.winddir);
         $("#latestwind .highlows .highparam").html('<strong>' + json.jws.today.highwind + '</strong>');
@@ -1877,8 +1980,11 @@ Licensed MIT
         $("#latestrain .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min15.rainratechange.split(",")[2]);
         $("#latestrain .paramvalue").html(json.jws.current.rainrate+'<div class="param">' + " <?=$RAINRATE_UNIT[$lang_idx]?>" +'</div>');
         $("#latestrain .paramtrend").html("<?=$DAILY_RAIN[$lang_idx]?>:&nbsp;" + json.jws.today.rain + " " + "&nbsp;&nbsp;" + "<?=$TOTAL_RAIN[$lang_idx]?>:&nbsp;" + json.jws.seasonTillNow.rain + " <?=$RAIN_UNIT[$lang_idx]?>");
-		$("#latestairq .paramvalue").html(json.jws.current.pm10 + '<div class=\"param\">&plusmn;' + json.jws.current.pm10sd + '&nbsp;µg/m3&nbsp;(PM10)</div><br />' + 
-                             json.jws.current.pm25  + '<div class=\"param\">&plusmn;'+ json.jws.current.pm25sd + '&nbsp;µg/m3&nbsp;(PM2.5)</div>');
+		$("#latestairq #aqvalues").html("<ul><li class=\"line\"><ul><li></li><li></li><li class=\"dustexp\"><?=$DUST_THRESHOLD1[$lang_idx]?></li><li class=\"dustexp\"><?=$DUST_THRESHOLD2[$lang_idx]?></li></ul></li>" +
+                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm10sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM10[$lang_idx]?></li><li><span class=\"number\">" + json.jws.current.pm10 + "</span>&nbsp;<span class=\"small\">µg/m3</span></li><li>+130</li><li>+300</li></ul></li>" +
+                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm25sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM25[$lang_idx]?></li><li><span class=\"number\">" + json.jws.current.pm25 + "</span>&nbsp;<span class=\"small\">µg/m3</span></li><li>+38</li><li>+100</li></ul></li>" +
+                             "<li ><?=$DUST_THRESHOLD3[$lang_idx]?></li>" +
+                             "</ul>");
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.pm10change.split(",")[2]);
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.pm10change.split(",")[2]);
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.pm10change.split(",")[2]);
@@ -1952,33 +2058,33 @@ Licensed MIT
         }
        }
        var prev_wind, bottom, tempclass, addonclass;
-       for (i = 0; i< json.jws.forecastHours.length; i++){
+       for (i = 1; i< json.jws.forecastHours.length; i++){
         if (i >= json.jws.states.nowHourIndex)
         {
             forecastHoursNG += "<li class=\"x-axis-bar-item\">";
-            toptime =  (json.jws.forecastHours[i].time % 4 == 0) ? json.jws.forecastHours[i].day<? echo $lang_idx;?>+"</br>"+json.jws.forecastHours[i].time+":00" : json.jws.forecastHours[i].time + ":00";
+            toptime =  (json.jws.forecastHours[i].time % 4 == 0) ? json.jws.forecastHours[i].day<? echo $lang_idx;?>+"&nbsp;"+json.jws.forecastHours[i].time+":00" : json.jws.forecastHours[i].time + ":00";
             forecastHoursNG += "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('"+toptime+"','"+json.jws.forecastHours[i].icon+"',"+ json.jws.forecastHours[i].temp+","+json.jws.forecastHours[i].wind+",'"+json.jws.forecastHours[i].cloth.substring(json.jws.forecastHours[i].cloth.split('/', 2).join('/').length)+"',"+json.jws.forecastHours[i].rain+","+json.jws.forecastHours[i].hum+")\">";
             forecastHoursNG += "<div class=\"x-axis-bar primary\" style=\"height: 100%\">"+toptime+"</div>";    
             bottom = 92;
-            forecastHoursNG += "<div class=\"x-axis-bar tertiary icon\" style=\"height: "+ bottom +"%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"25\" width=\"28\" alt=\""+json.jws.forecastHours[i].icon+"\" /></div>";
+            forecastHoursNG += "<div class=\"x-axis-bar tertiary icon\" style=\"height: "+ bottom +"%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"30\" width=\"35\" alt=\""+json.jws.forecastHours[i].icon+"\" /></div>";
             bottom = ((json.jws.forecastHours[i].temp-min_temp)*80)/(max_temp - min_temp);
             if (bottom < 10) bottom = 13;
             else if (bottom < 20) bottom = bottom + 3;
             else if (bottom > 60) addonclass = "uppervalue"; else addonclass = "";
             tempclass = (i % 2 == 0) ? "secondary" : "secondaryalt";
-            forecastHoursNG += "<div class=\"x-axis-bar "+ tempclass + " " + addonclass+" temp\" style=\"height: "+bottom+"%;\"><span class=\"x-axis-bar-value\" data-value=\""+ json.jws.forecastHours[i].temp +"° "+json.jws.forecastHours[i].hum+"%\">"+ c_or_f(json.jws.forecastHours[i].temp, tempunit) + "°</span></div>";
-            forecastHoursNG += "<div class=\"x-axis-bar tertiary cloth icon "+ addonclass + "\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"x-axis-bar-value "+ addonclass + "\" data-value=\"" + json.jws.forecastHours[i].cloth_title<?=$lang_idx;?> +  "\"><img style=\"vertical-align: middle\" src=\""+json.jws.forecastHours[i].cloth+"\" height=\"30\" width=\"30\" /></span></div>";
+            forecastHoursNG += "<div class=\"x-axis-bar "+ tempclass + " " + addonclass+" temp\" style=\"height: "+bottom+"%;\"><span class=\"span-value\" data-value=\""+ json.jws.forecastHours[i].temp +"° "+json.jws.forecastHours[i].hum+"%\">"+ c_or_f(json.jws.forecastHours[i].temp, tempunit) + "°</span></div>";
+            forecastHoursNG += "<div class=\"x-axis-bar tertiary cloth icon "+ addonclass + "\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"span-value "+ addonclass + "\" data-value=\"" + json.jws.forecastHours[i].cloth_title<?=$lang_idx;?> +  "\"><img style=\"vertical-align: middle\" src=\""+json.jws.forecastHours[i].cloth+"\" height=\"30\" width=\"30\" /></span></div>";
             bottom = 40;
             if (json.jws.forecastHours[i].plusminus > 0)
-                forecastHoursNG += "<div class=\"x-axis-bar tertiary\" style=\"height: "+ bottom +"%;\"><span class=\"x-axis-bar-value\" data-value=\""+"&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus+"\"></span></div>";
+                forecastHoursNG += "<div class=\"x-axis-bar tertiary\" style=\"height: "+ bottom +"%;\"><span class=\"span-value\" data-value=\""+"&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus+"\"></span></div>";
             bottom = 82;
             if (i == json.jws.states.nowHourIndex || (json.jws.forecastHours[i].wind != prev_wind))
                 forecastHoursNG += "<div class=\"x-axis-bar tertiary wind\" style=\"height: "+ bottom +"%;\"><div title=\""+json.jws.forecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.forecastHours[i].wind_class+" \"></div></div>";
             bottom = json.jws.forecastHours[i].rain;
             if (bottom > 0)
-                forecastHoursNG += "<div class=\"x-axis-bar tertiary rain\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"x-axis-bar-value\" data-value=\"\">"+json.jws.forecastHours[i].rain+"%</span></div>";
+                forecastHoursNG += "<div class=\"x-axis-bar tertiary rain\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"span-value\" data-value=\"\">"+json.jws.forecastHours[i].rain+"%</span></div>";
             bottom = json.jws.forecastHours[i].hum;
-            forecastHoursNG += "<div class=\"x-axis-bar tertiary humidity\" style=\"display:none;height: "+ (bottom-5) +"%;\"><span class=\"x-axis-bar-value\" data-value=\"<?=$HUMIDITY[$lang_idx]?>\">"+json.jws.forecastHours[i].hum+"%</span></div>";
+            forecastHoursNG += "<div class=\"x-axis-bar tertiary humidity\" style=\"display:none;height: "+ (bottom-5) +"%;\"><span class=\"span-value\" data-value=\"<?=$HUMIDITY[$lang_idx]?>\">"+json.jws.forecastHours[i].hum+"%</span></div>";
             forecastHoursNG += "</div>";
             forecastHoursNG += "</li>";
             prev_wind = json.jws.forecastHours[i].wind;
@@ -1989,6 +2095,7 @@ Licensed MIT
        $('#for24_graph_ng, .for24_graph_ng').html(forecastHoursNG);
        $('#forcast_hours_table').html(forecastHoursD);
        $('#for24_hours').html(forecastHours);
+       $('#date').html(json.jws.current.date<?=$lang_idx?>).addClass('glow');
         /*
         var forecastDays;
        var fulltextforecast;
@@ -2196,13 +2303,13 @@ function showcircleperhour(toptime, icon, temp, wind, cloth, rain, humidity){
     $('#chartjs-tooltip').css({
         opacity: 1,
         width:'250px',
-        fontSize: '2em',
+        fontSize: '1.9em',
         margin:'0 auto',
-        marginTop:-102,
+        top:-102,
         padding: '4px 11px 18px',
         lineheight:'1em'
     });
-    $('#chartjs-tooltip').html( toptime + "<br/>&nbsp;<img src=\"images/clothes/" + cloth + "\" width=\"30.25\" height=\"25\" style=\"vertical-align: middle\">&nbsp;<img style=\"vertical-align: middle\" src=\"images/icons/day/" + icon + "\" height=\"25\" width=\"28\" alt=\""  + icon + "\">&nbsp;"  + temp + "°<br/>" + wind + " קמש<br/><br/><div class=\"rainpercent\">" + rain + "%</div><br/><?=$HUMIDITY[$lang_idx] ?>:" + humidity + "%" );
+    $('#chartjs-tooltip').html( toptime + "<br/>&nbsp;<img src=\"images/clothes/" + cloth + "\" width=\"30.25\" height=\"25\" style=\"vertical-align: middle\">&nbsp;<img style=\"vertical-align: middle\" src=\"images/icons/day/" + icon + "\" height=\"30\" width=\"35\" alt=\""  + icon + "\">&nbsp;"  + temp + "°<br/>" + wind + " קמש<br/><div class=\"rainpercent\">" + rain + "%</div><br/><?=$HUMIDITY[$lang_idx] ?>:" + humidity + "%" );
     change_circle('now_line', 'chartjs-tooltip');
     
 }
@@ -2228,9 +2335,10 @@ $("#startpage_chb").click(function () {
     rememberCookie ('start_nodeid', current_nideid, 0.1);
     $("#startpage_chb").hide();
 });
-$(".forcast_text, .forcast_night, .forcast_noon, .forcast_morning").click(function () {
+$(".forcast_text, .forcast_night, .forcast_noon, .forcast_morning").click(function (event) {
+    if (event.isDefaultPrevented()) return;
     var dayindex = parseInt($(this).prevAll('.expand_plus').find('.open-close-button').attr("index")) + 1;
-    $.colorbox({href:"dailydetailed.php?dayid=" + dayindex, width:"95%"});
+    $.colorbox({href:"dailydetailed.php?dayid=" + dayindex, width:"95%", height:"95%"});
 });    
 var view = $("#graphForcastContainer");
 var move = "100px";

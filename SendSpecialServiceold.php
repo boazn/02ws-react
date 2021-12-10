@@ -99,19 +99,19 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
         $query_extension = " and fcm<>1";
     }
     if ((boolval($long_range))&&(boolval($short_range))){
-        $query = "select * FROM gcm_users where active=1 or active_rain_etc=1".$query_extension;
+        $query = "select * FROM fcm_users where active=1 or active_rain_etc=1".$query_extension;
     }
     else if (boolval($long_range)){
-        $query = "select * FROM gcm_users where active=1".$query_extension;
+        $query = "select * FROM fcm_users where active=1".$query_extension;
     }
     else if (boolval($short_range)){
-        $query = "select * FROM gcm_users where active_rain_etc=1 and approved=1".$query_extension;
+        $query = "select * FROM fcm_users where active_rain_etc=1 and approved=1".$query_extension;
     }
     else if (boolval($tip)){
-        $query = "select * FROM gcm_users where active_tips=1".$query_extension;
+        $query = "select * FROM fcm_users where active_tips=1".$query_extension;
     }
     else if (boolval($dailyforecast)){
-        $query = "select * FROM gcm_users where dailyforecast=".date("H").$query_extension;
+        $query = "select * FROM fcm_users where dailyforecast=".date("H").$query_extension;
     }
     $result = db_init($query, "");
     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {

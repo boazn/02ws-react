@@ -95,6 +95,16 @@ function get_deg ($deg)
     font-style: normal;
 
 }
+@font-face {
+    font-family: 'ploni-yad-regular';
+    src: url('fonts/ploni-yad-regular-aaa.eot');
+    src: url('fonts/ploni-yad-regular-aaa.woff2') format('woff2'),
+         url('fonts/ploni-yad-regular-aaa.woff') format('woff'),
+         url('fonts/ploni-yad-regular-aaa.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
 /* ==========================================================================
 				    GENERAL
    ========================================================================== */
@@ -299,7 +309,7 @@ direction:ltr important!
 display:inline-block;
 }
 .nav .timefh, .nav .wind, .nav .forcast_icon{ 
-    width:10%;
+    width:10%;direction:ltr
 }
 /* ==========================================================================
 				     WHAT NOW 
@@ -308,6 +318,7 @@ display:inline-block;
 .main_info {
     text-align:center;
     margin-top:-10px;
+    margin-<?=get_s_align()?>: 212px;
 }
 @media only screen and (max-width: 1024px) {
     #main_info {
@@ -322,6 +333,56 @@ display:inline-block;
     padding-right:0px;
     position:absolute;
     margin-top:25px;
+}
+#info_circle_new {
+    font-size:1.2em;
+    text-align:center;
+    padding-right:0px;
+    position:relative;
+    margin-top:5px;
+}
+#currentrow{
+    display: flex;
+    <? if (isHeb()) echo "direction:rtl;"; ?> 
+}
+#current_info{
+
+}
+#topbar{
+    height:40px;
+    width:420px;
+    margin: 3px;
+}
+#sidebar{
+    width:40px;
+    height:320px;
+    margin: 3px;
+    
+}
+#bottombar li, #topbar li, #sidebar li{
+    margin:3px;
+    list-style: none;
+}
+#sidebar li {
+    margin-top:6px
+}
+#bottombar li, #topbar li{
+    margin-<?=get_s_align()?>:4px
+}
+#topbar li{
+    margin-bottom:5px;
+}
+#bottombar li{
+    margin-top:5px;
+}
+#current_info .inparamdiv{
+   width:420px;
+   height:260px;
+   border-radius:40px;
+}
+#seker_btns{
+    margin: 0.4em;
+    
 }
 
 .info_btns {
@@ -491,7 +552,11 @@ position:absolute;
     margin-right:248px;
     margin-top: -84px;
  }
- 
+ #currentrow #window_btn, #currentrow #webcam_btn, #currentrow #all_btn, #currentrow #moon_btn, #currentrow #runwalk_btn, #currentrow #dew_btn, #currentrow #more_stations_btn, #currentrow #aq_btn, #currentrow #uv_btn, #currentrow #rain_btn, #currentrow #wind_btn, #currentrow #temp_btn, #currentrow #temp2_btn, #currentrow #temp3_btn, #currentrow #now_btn, #currentrow #moist_btn, #currentrow #air_btn, #currentrow #rad_btn, #currentrow #wind_btn{
+    position: relative;
+    width: 35px;
+    height: 35px;
+ }
 .window_open {
     background-image:url("../img/window-open.png");
 }
@@ -616,7 +681,7 @@ position:absolute;
    width:14px;
    opacity:0.7;
    margin-top:17px;
-   <?=get_s_align()?>:<?if (isHeb()) echo "601"; else echo "611";?>px;
+   <?=get_s_align()?>:<?if (isHeb()) echo "411"; else echo "421";?>px;
     -ms-transform:rotate(<?=get_deg(110)?>deg); 
     -moz-transform:rotate(<?=get_deg(110)?>deg); 
     -webkit-transform:rotate(<?=get_deg(110)?>deg);
@@ -629,7 +694,7 @@ position:absolute;
    width:14px;
    opacity:0.7;
    margin-top:43px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "527"; else echo "543"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "337"; else echo "353"; ?>px;
     -webkit-transform:rotate(<? if (isHeb()) echo "130"; else echo "225"; ?>deg);
     visibility:hidden;
 }
@@ -639,7 +704,7 @@ position:absolute;
    width:14px;
    opacity:0.7;
    margin-top:25px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "562"; else echo "575"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "372"; else echo "385"; ?>px;
     -ms-transform:rotate(130deg); 
     -moz-transform:rotate(130deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "130"; else echo "240"; ?>deg);
@@ -650,7 +715,7 @@ position:absolute;
     position:absolute;width: 12px;
     opacity: 0.7;
     margin-top: 18px;
-    right: <? if (isHeb()) echo "637"; else echo "612"; ?>px;
+    right: <? if (isHeb()) echo "447"; else echo "422"; ?>px;
     -ms-transform: rotate(80deg);
     -moz-transform: rotate(80deg);
     -webkit-transform: rotate(80deg);
@@ -662,7 +727,7 @@ position:absolute;
    width:16px;
    opacity:0.7;
    margin-top:70px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "500"; else echo "514"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "310"; else echo "324"; ?>px;
     -ms-transform:rotate(145deg); 
     -moz-transform:rotate(145deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "145"; else echo "215"; ?>deg);
@@ -674,7 +739,7 @@ position:absolute;
    width:16px;
    opacity:0.7;
    margin-top:98px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "484"; else echo "500"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "294"; else echo "310"; ?>px;
     -ms-transform:rotate(<? if (isHeb()) echo "165"; else echo "190"; ?>deg); 
     -moz-transform:rotate(<? if (isHeb()) echo "165"; else echo "190"; ?>deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "165"; else echo "190"; ?>deg);
@@ -687,7 +752,7 @@ position:absolute;
    width:16px;
    opacity:0.7;
    margin-top:132px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "476"; else echo "494"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "286"; else echo "304"; ?>px;
     -ms-transform:rotate(180deg); 
     -moz-transform:rotate(180deg); 
     -webkit-transform:rotate(180deg);
@@ -700,7 +765,7 @@ position:absolute;
    width:16px;
    opacity:0.7;
    margin-top:200px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "492"; else echo "508"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "302"; else echo "318"; ?>px;
     -ms-transform:rotate(<? if (isHeb()) echo "205"; else echo "155"; ?>deg); 
     -moz-transform:rotate(<? if (isHeb()) echo "205"; else echo "155"; ?>deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "205"; else echo "155"; ?>deg);
@@ -712,7 +777,7 @@ position:absolute;
    width:15px;
    opacity:0.7;
    margin-top:165px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "479"; else echo "495"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "289"; else echo "305"; ?>px;
     -ms-transform:rotate(<? if (isHeb()) echo "20"; else echo "170"; ?>deg); 
     -moz-transform:rotate(<? if (isHeb()) echo "20"; else echo "170"; ?>deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "20"; else echo "170"; ?>deg);
@@ -724,7 +789,7 @@ position:absolute;
    width:15px;
    opacity:0.7;
    margin-top:232px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "514"; else echo "533"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "324"; else echo "333"; ?>px;
     -ms-transform:rotate(<? if (isHeb()) echo "50"; else echo "145"; ?>deg); 
     -moz-transform:rotate(<? if (isHeb()) echo "50"; else echo "145"; ?>deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "50"; else echo "145"; ?>deg);
@@ -736,7 +801,7 @@ position:absolute;
    width:15px;
    opacity:0.7;
    margin-top:252px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "545"; else echo "565"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "375"; else echo "375"; ?>px;
     -ms-transform:rotate(<? if (isHeb()) echo "65"; else echo "125"; ?>deg); 
     -moz-transform:rotate(<? if (isHeb()) echo "65"; else echo "125"; ?>deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "65"; else echo "125"; ?>deg);
@@ -748,7 +813,7 @@ position:absolute;
    width:15px;
    opacity:0.7;
    margin-top:264px;
-   <?=get_s_align()?>:<? if (isHeb()) echo "577"; else echo "597"; ?>px;
+   <?=get_s_align()?>:<? if (isHeb()) echo "387"; else echo "407"; ?>px;
    -ms-transform: rotate(<? if (isHeb()) echo "85"; else echo "105"; ?>deg);
 	-moz-transform: rotate(<? if (isHeb()) echo "85"; else echo "105"; ?>deg);
 	-webkit-transform: rotate(<? if (isHeb()) echo "85"; else echo "105"; ?>deg);
@@ -773,7 +838,7 @@ position:absolute;
    width:17px;
    opacity:0.7;
    margin-top: 253px;
-    right: <? if (isHeb()) echo "686"; else echo "562"; ?>px;
+    right: <? if (isHeb()) echo "506"; else echo "372"; ?>px;
     -ms-transform:rotate(<? if (isHeb()) echo "125"; else echo "230"; ?>deg); 
     -moz-transform:rotate(<? if (isHeb()) echo "125"; else echo "230"; ?>deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "125"; else echo "230"; ?>deg);
@@ -784,7 +849,7 @@ position:absolute;
     width: 15px;
     opacity: 0.7;
     margin-top: 264px;
-    right: <? if (isHeb()) echo "652"; else echo "596"; ?>px;
+    right: <? if (isHeb()) echo "462"; else echo "406"; ?>px;
     -ms-transform:rotate(<? if (isHeb()) echo "105"; else echo "80"; ?>deg); 
     -moz-transform:rotate(<? if (isHeb()) echo "105"; else echo "80"; ?>deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "105"; else echo "80"; ?>deg);
@@ -795,7 +860,7 @@ position:absolute;
     width: 19px;
     opacity: 0.7;
     margin-top: 225px;
-    right: <? if (isHeb()) echo "716"; else echo "529"; ?>px;
+    right: <? if (isHeb()) echo "526"; else echo "339"; ?>px;
    -ms-transform:rotate(<? if (isHeb()) echo "125"; else echo "220"; ?>deg); 
     -moz-transform:rotate(<? if (isHeb()) echo "125"; else echo "220"; ?>deg); 
     -webkit-transform:rotate(<? if (isHeb()) echo "125"; else echo "220"; ?>deg);
@@ -805,7 +870,7 @@ position:absolute;
     position:absolute;width: 15px;
     opacity: 0.7;
     margin-top: 266px;
-    right: <? if (isHeb()) echo "615"; else echo "635"; ?>px;
+    right: <? if (isHeb()) echo "425"; else echo "445"; ?>px;
     -ms-transform:rotate(90deg); 
     -moz-transform:rotate(90deg); 
     -webkit-transform:rotate(90deg);
@@ -923,24 +988,23 @@ width: 33px;
    <? if (!isHeb()) echo "direction:rtl;"; ?>
 }
 
-.seker_btns li {
+.seker_btns li, #seker_btns li {
     font-family:nextexitfotlight;
-    width:90px;
     text-align:<?=get_s_align()?>;
-    border-radius:15px;
+    border-radius:10px;
     list-style:none;
-    background:rgba(255, 255, 255, 0.6);
-    padding:3px 5px;
-    font-size:18px;
-    margin-bottom:10px;
+    background:rgba(255, 255, 255, 0.5);
+    padding:6px 5px;
+    font-size:1.1em;
+    margin-bottom:1px;
 }
 
-.seker_btns li:hover {
+.seker_btns li:hover, #seker_btns li:hover {
     background:rgba(255, 255, 255, 1);
     cursor:pointer;
     
 }
-.seker_btns a:hover {
+.seker_btns a:hover, #seker_btns a:hover {
     text-decoration:none;
 }
 
@@ -1323,7 +1387,7 @@ float:<?=get_s_align()?>
 
 #forcast_days ul{
     font-family:nextexitfotlight;
-    font-size:20px;
+    font-size:<? if (isHeb()) echo "21px"; else echo "20px";?>
 }
 
 #forcast_table {
@@ -1545,10 +1609,16 @@ font-size:0.35em
     width: 23px;
 }
 #radarcontrols{
-    width:100px;<?echo get_s_align();?>:-100px;position:absolute;
+    <?echo get_s_align();?>:-90px;position:absolute;top:30px
 }
-#rainsummery .number{
-    font-size: 1.4em;
+#radarimg{
+    width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:170px;
+}
+#wrapper{
+    width:120%
+}
+#rainsummery, #mouseover{
+    font-size: 1.3em;
 }
 #slogan{
 <? if (isHeb()) echo "direction:rtl;"; ?>
@@ -1585,10 +1655,13 @@ margin-<?=get_s_align()?>:0.5em
 #sigweather{
     display:none;
     top: 1.8em;
-    <?=get_s_align()?>: 1.4em;
+    <?=get_s_align()?>: 1em;
     position: absolute;
     width:300px;
     border-radius: 15px;
+}
+#xClose{
+    display:none;
 }
 #sigweather .li{
     border-radius: 15px;
@@ -1607,6 +1680,7 @@ margin-<?=get_s_align()?>:0.5em
 }
 #what_is_h{
     padding-top: 0.1em;
+    font-size:1.4em
 }
 #now_stuff a{
     color:#000
@@ -1631,7 +1705,7 @@ padding:0 0.4em;
 
 #now_stuff li ul li{
 width:300px;
-padding:0.4em;
+padding:0.5em;
 }
 #now_stuff liabilities{
 text-align:<?=get_s_align()?>;
@@ -1719,7 +1793,8 @@ text-align:<?=get_s_align()?>;
     line-height:1.2em
 }
 #windy_widget{
-    margin-<?=get_s_align()?>:120px
+    margin-<?=get_s_align()?>:120px;
+    <? if (isHeb()) echo "direction:rtl;"; ?>
 }
 .white_box {
     background:rgba(255, 255, 255, 0.7);
@@ -3858,7 +3933,10 @@ color:#3D718E;
 }
 #graphnav li{
     font-size: 1.3em;
-    padding: 0.4em;
+    padding: 0.6em;
+}
+#graphsportal{
+    margin:1.2em 0.2em;
 }
 #registerinput{
 margin-bottom:10px;
@@ -3871,6 +3949,7 @@ margin-bottom:10px;
 
 #login, #forgotpass, #register{
     padding:0.9em;
+    color:black;
 }
 #user_icon, #profileform_user_icon {
     float: <?=get_s_align()?>;  
@@ -4208,10 +4287,10 @@ a.info:hover span.info
 {
     display: block;
     font-size: 0.8em;
-    <?echo get_s_align();?>: 2em;
+    <?echo get_s_align();?>: -1em;
     width: 10em;
     position: absolute;
-    top: -5px;
+    top: 1.5em;
     text-align: center;
     padding: 0.7em;
     text-decoration: none;
@@ -4225,7 +4304,7 @@ a.info:hover span.info
 .inparamdiv
 {
     font-family: nextexitfotlight;
-    background:rgba(255, 255, 255, 0.6);
+    background:linear-gradient(to top,rgba(255, 255, 255, 0),rgba(255, 255, 255, 0.3));
     text-align:center;
    -moz-border-radius: 999px;
     border-radius: 999px;
@@ -4233,7 +4312,7 @@ a.info:hover span.info
     width: 255px;
     height: 235px;
     color:#2C3A42;
-    font-size: 17px;
+    font-size: 1.4em;
   <? if (isHeb()) echo "direction:rtl"; ?>
 }
 .inparamdiv a
@@ -4251,7 +4330,7 @@ a.info:hover span.info
 .trendstable
 {
     position: absolute;
-    top: 115px;
+    top: 5.4em;
     width: 100%;    
 }
 #latestrain .trendstable
@@ -4268,7 +4347,8 @@ a.info:hover span.info
 #latestwindow .exp{
     line-height: 0.9em;
     width: 90%;
-    margin: 0 auto;
+    margin: 3em auto;
+    position: absolute;
 }
 .exp li{
   list-style: none;
@@ -4285,7 +4365,7 @@ a.info:hover span.info
 }
 #latestradiation .trendstable
 {
-    top:145px
+    top:7.0em
 }
 @keyframes glowing {
   0% { text-shadow: 0 0 10px #0000FF, 0 0 10px #0000FF, 0 0 10px #0000FF, 0 0 10px #0000FF, 0 0 20px #0000FF, 0 0 10px #0000FF, 0 0 10px #0000FF; }
@@ -4304,7 +4384,7 @@ a.info:hover span.info
 .inparamdiv .highlows
 {
     position:absolute;
-    top:85px;
+    top:4em;
     border-top:1px solid;
     border-color: #829CAA;
     width: 90%;
@@ -4320,7 +4400,7 @@ font-size: 0.95em;
 top:85px
 }
 #latestairq .trendstable{
-    top:146px
+    top:7.2em
 }
 .highlows img
 {
@@ -4332,21 +4412,32 @@ top:85px
 .graphslink{
 	position:absolute;
 	<?=get_s_align()?>: 112px;
-    top: 195px;
+    top: 215px;
+}
+#currentrow .graphslink{
+    <?=get_s_align()?>: 200px;
 }
 #latesttemp3 .graphslink, #latestdewpoint .graphslink{
-	width:140px;
+	width:270px;
 	<?=get_s_align()?>: 62px;
-    top: 168px;
+    top: 200px;
     line-height: 12px;
     font-size:0.9em
+}
+#latestparam{
+    display:none;
+}
+@media only screen and (max-width: 600px) {
+#latestparam{
+    display:block;
+}
 }
 .paramtitle
 {
    font-size: 1em;
     padding-top: 6px;
     margin:0 auto;
-    width:100px;
+    width:200px;
 }
 #paramsdiv
 {
@@ -4363,7 +4454,7 @@ top:85px
 	border:none;
 }
 #WUNowRes_short, #ImsNowRes_short{
-    line-height:1em;padding-top:1em;
+    line-height:1em;padding-top:1em;width: 100%;position: absolute;
 }
 .WUNowRes .foreach, #ImsNowRes .foreach{
     float:<?=get_s_align()?>;
@@ -4405,19 +4496,21 @@ top:85px
 	font-weight: normal;
 	margin-left: 11px;
 	color: #2C3A42;
-	padding-top: 0.25em;
-	font-size: 5.4em;
-        direction:ltr
+	padding-top: 0.15em;
+	font-size: 5em;
+    width: 48%;
+    direction:ltr
 	
 }
 .rainpercent{
-  background: url('../images/icons/day/rain.png') no-repeat 25px;
+  background: url('../images/icons/day/rain.png') no-repeat 35px;
   background-size: 22px;
-  width: 60px;
-  margin: -25px auto;
-  font-size: 0.7em;
+  width: 28%;
+  margin: 50px auto;
+  font-size: 1em;
   font-weight: bold;
   text-align: left;
+  position: absolute;
   
 }
 #laundryidx
@@ -4436,10 +4529,14 @@ top:85px
   <?  if (!isHeb()) echo "left:-10em"; else "right:3em"; ?>;
   opacity:1 
 }
-
+#currentrow #laundryidx
+{
+    <?=get_inv_s_align()?>: <?  if (!isHeb()) echo "-35px"; else echo "12px";?>;
+    top: -65px;
+}
 #windy
 {
-          margin: 0 auto;position: absolute;font-size:0.95em;width: 30%;z-index: 100;top: 2.3em;<?=get_inv_s_align()?>: 2em;
+          margin: 0 auto;position: absolute;font-size:0.95em;width: 50%;z-index: 100;top: 1.3em;<?=get_inv_s_align()?>: 10em;
 }
 #windy .wind_title
 {
@@ -4451,13 +4548,29 @@ margin:0 auto
 }
 #status
 {
-    position: absolute;
-    top: 3em;
-    width: 100%;
+    margin-top: 0.2em;
+    width: 48%;
     color: #2C3A42;
     font-family: nextexitfotlight;
     font-size: 1.1em;
     line-height: 18px;
+    height:95%;
+    border-radius: 40px;
+    border: 1px solid #1dc6ff; 
+}
+#cm_dislike
+{
+    position: absolute;
+    top: 4.2em;
+    left: -0.4em;
+    cursor: pointer;
+}
+#cm_like
+{
+    position: absolute;
+    top: 4.2em;
+    left: 7.2em;
+    cursor: pointer;
 }
 #status .wind_title
 {
@@ -4470,15 +4583,20 @@ margin:0 auto
 #latestnow{
     z-index:9999;
     font-size: 1.45em;
+    display:flex
 }
 #latestnow .currentcloth
 {
-   position: absolute;
-   margin-top: -1.2em;
+   display: block;
+   margin-top: 0.5em;
+   
 }
 #coldmeter
 {
-          
+    text-align: center;
+    width: 48%;
+    top: 3.1em;
+    position: absolute;      
 }
 .color9{
     font-size: 0.6em;
@@ -4488,21 +4606,26 @@ margin-top:89px;
 }
 #current_feeling_link
 {
-	font-size:<? if (isHeb()) echo "100%"; else echo "80%"; ?>
+	font-size:<? if (isHeb()) echo "110%"; else echo "90%"; ?>
 }
 #itfeels
 {
     <? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr";?>;
 	    position: absolute;
         width: 245px;
-        top: 7.6em;
+        top: 6em;
         padding: 0px 5px;
         text-align:center;
-        font-size: 20px;
+        font-size: 1.2em;
         line-height: 25px;
         border-radius: 15px;
         
         
+}
+#currentrow #itfeels
+{
+    width: 45%;
+    height: 100px;
 }
 #itfeels img{
     <? if (isHeb()) echo ""; else echo "transform: rotate(180deg);";?>;
@@ -4541,10 +4664,13 @@ margin-top:89px;
   vertical-align: baseline;
   margin-left: -0.2em;
 }
+.param.valley{
+    margin-left: -8.2em;
+}
 .paramtrend
 {
     position:absolute;
-    top:140px;
+    top:8.8em;
     width:100%;
     margin:0 auto
 }
@@ -4566,7 +4692,7 @@ margin-top:89px;
 }
 #aqvalues{
     line-height:1em;
-    margin-top: 1em;
+    margin-top: 0em;
 }
 
 #aqvalues ul{
@@ -4605,6 +4731,9 @@ top: 36px;
 {
     display:none;
 }
+#latesttemp2 .param.valley{
+    margin-left: -13.2em;position:absolute;font-size:0.3em;margin-top:1em;width: 5em;line-height: 1em;
+}
 .firstlinerunwalk
 {
     margin-top:1em
@@ -4628,7 +4757,7 @@ top: 36px;
 }
 #winddir
 {
-	float:<?=get_s_align()?>;width:12%;margin-top: 1.55em;margin-<?=get_s_align()?>:25%
+	float:<?=get_s_align()?>;width:10%;margin-top: 2.45em;margin-<?=get_s_align()?>:30%
 }
 .wind_icon
 {
@@ -4669,10 +4798,10 @@ border-top:none; margin:0; padding:0;
     width:65%;
     float:right;
     position:absolute;
-    top:90px;
+    top:120px;
     line-height: 18px;
-    font-size: 18px;
-    right:-30px;    
+    font-size: 26px;
+    right:-80px;    
     transform: rotate(90deg);
     -ms-transform: rotate(90deg); /* IE 9 */
     -webkit-transform: rotate(90deg); /* Safari and Chrome */ 
@@ -4686,70 +4815,123 @@ border-top:none; margin:0; padding:0;
     
 }
 .inparamdiv .coldmeterline{
-   opacity:0.7;
+   opacity:0.6;
    margin:0;
    display:block;
    border:none;
-    height: 21.5px;
+    height: 0.83em;
     color:#FFFFFF;
     cursor:pointer;
     text-align:right;
-    font-size:0.7em;
+    font-size:1.2em;
+    background: no-repeat;
+    font-family: nextexitfotlight;
+    width: 11em;
 }
 .inparamdiv .coldmeterline:hover{
    opacity:1;  
 }
+
 .radio-toolbar{
-    margin-bottom:0.2em
+    margin-bottom:0.2em;
+    border-radius: 8px;
+    background-size: 7%; 
+    background-position-x: 96%;
+    background-position-y: 50%;
+    background-repeat: no-repeat;
+    font-family: 'ploni-yad-regular', Alef;
+    
 }
 .radio-toolbar.color0, .colmetercontainer .color0{
-    background-color:#3C708E;
+    background-color:#5F55D0 ;
+    background-image:url(../images/clothes/cold_b.svg);
+    
 }
 .radio-toolbar.color1, .colmetercontainer .color1{
-    background-color:#638394;
+    background-color:#0F6ADB ;
+    background-image:url(../images/clothes/gloves_b.svg);
+    
 }
 .radio-toolbar.color2, .colmetercontainer .color2{
-    background-color:#829CAA;
+    background-color:#15A3DC ;
+    background-image:url(../images/clothes/coat_b_n4.svg);
+    
 }
 .radio-toolbar.color3, .colmetercontainer .color3{
-    background-color:#8BAE91;
+    background-color:#00D5F2 ;
+    background-image:url(../images/clothes/jacket_b_n4.svg);
+    
 }
 .radio-toolbar.color4, .colmetercontainer .color4{
-    background-color:#B0BD5A;
+    background-color:#5AEAAD ;
+    background-image:url(../images/clothes/lightjacket_b_n4.svg);
+    
 }
 .radio-toolbar.color5, .colmetercontainer .color5{
-    background-color:#F5C736;
+    background-color:#98DD71 ;
+    background-image:url(../images/clothes/longsleeves_b_n4.svg);
+   
 }
 .radio-toolbar.color6, .colmetercontainer .color6{
-    background-color:#F59B36;
+    background-color:#F2D227 ;
+    background-image:url(../images/clothes/tshirt_b_n4.svg);
 }
 .radio-toolbar.color7, .colmetercontainer .color7{
-    background-color:#FA7952;
+    background-color:#FFAC30 ;
+    background-image:url(../images/clothes/shorts_b_n4.svg);
 }
 .radio-toolbar.color8, .colmetercontainer .color8{
-    background-color:#E6666A;
+    background-color:#FF7324 ;
+    background-image:url(../images/clothes/singlet_b_n4.svg);
 }
 .radio-toolbar.color9, .colmetercontainer .color9{
-    background-color:#FF0000;
+    background-color:#FF3E3E ;
+    background-image:url(../images/clothes/singlet_b_n4.svg);
 }
 .radio-toolbar label{
     display:inline-block;
-    padding:5px;
-    color:white;
+    padding:7px;
+    color:black;
     font-size:15px;
-    margin: 0.1em;
+    margin: 0em;
     font-weight: bold;
+    width: 96.5%;
+    text-align: <? echo get_s_align(); ?>;
+    padding-<? echo get_s_align(); ?>: 40px;
+    opacity:0.35;
+}
+.radio-toolbar label:hover
+{
+     opacity:1;
+
 }
 .radio-toolbar input[type="radio"] {
     display:none;
 }
-
+#voteAccepted{
+    margin:0.5em;
+    <?if (isHeb()) echo "direction:rtl;";?>
+}
+.survey_container{
+    margin-<? echo get_s_align(); ?>:1em;
+    width:280px;padding:0.5em 0.2em
+}
 #genderchooseradio label {
     display:block;
     margin: 0.3em 0.2em;
 }
+.radio-toolbar input[type="radio"]:checked
+{
+    width: 86.5%;
+}
 .radio-toolbar input[type="radio"]:checked + label {
-    background-color:#bbb;
+    opacity:1;
+    width: 50%;
+}
+#latestrunwalk .exp{
+    position: absolute;
+    width: 100%;
+    margin-top: 20px;
 }
 #pm10value
 {
@@ -4761,7 +4943,7 @@ border-top:none; margin:0; padding:0;
 }
 #genderchoose
 {
-position:absolute;top:-20px;width:430px;z-index:500;
+position:absolute;top:0px;width:430px;z-index:500;<?=get_s_align()?>:500px
 }
 #graphmain
 {
@@ -4954,13 +5136,13 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 .clear {
 	clear: both;
 }
-.high, .highparam
+.high
 {
 	color: #ff0000;
-        display:inline-block
+    display:inline-block
 }
 .highparam, .lowparam 
-{display:inline-block}
+{display:inline-block;font-weight: bold;}
 
 .invhigh
 {
@@ -4968,9 +5150,11 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     background-color: #731f1f;
     
 }
-#now_stuff .invhigh{
+#now_stuff .high{
     display:inline-block;
-    line-height:0.8em
+    line-height: 0.4em;
+    vertical-align: top;
+    
 }
 .low, .lowparam
 {
@@ -5078,7 +5262,14 @@ position:relative
   height: 1px;
   background-color: #434a54;
 }
-
+.x-axis-bar .span-value
+{
+    width:100%
+}
+.temp
+{
+    direction:ltr
+}
 .y-axis-target,
 .x-axis-target {
   position: absolute;
@@ -5154,6 +5345,11 @@ position:relative
   right: 10px;
   left: 50px;
 }
+.x-bar-value{
+    width:100%;
+    direction:ltr;
+    font-size:1.3em
+}
 .x-axis-label-item {
   display: block;
   float: left;
@@ -5174,7 +5370,7 @@ position:relative
   text-align: right;
 }
 .x-axis-bar-item {
-  width:45px;
+  width:65px;
   bottom: 0;
   
 }
@@ -5185,13 +5381,15 @@ position:relative
    position:absolute;
    bottom: 0;
     display: block;
-    width:45px;
+    width:65px;
+    font-size: 1.2em;
+}
   
 }
 .x-axis-bar.primary {
     background:transparent;
     line-height: 0.6em;
-    font-size: 0.8em;
+    font-size: 1em;
 }
 .x-axis-bar.secondary {
     z-index:999;
@@ -5229,32 +5427,24 @@ position:relative
   right: 15px;
   left: 15px;
 }
-.x-axis-bar-value {
-  
-  top: -5px;
-  left: 50%;
-  margin-left: -5px;
-  width: 10px;
-  height: 10px;
-  border: 1px solid transparent;
+
+.span-value {
+    
   border-radius: 50%;
   cursor: pointer;
-  font-weight: normal;
-  font-family: arial;
-  font-size:0.6em;
-  -webkit-transition: all 0.15s linear;
-  transition: all 0.15s linear;
+  margin:0
+  
 }
-.primary .x-axis-bar-value {
+.primary .span-value {
     background:transparent;
 }
-.secondary .x-axis-bar-value, .secondaryalt .x-axis-bar-value {
+.secondary .span-value, .secondaryalt .span-value {
     background:transparent;
 }
-.tertiary .x-axis-bar-value {
+.tertiary .span-value {
     background:transparent;
 }
-.dashed .x-axis-bar-value {
+.dashed .span-value {
   border-color: #748298;
   background-color: #fff;
 }
@@ -5262,35 +5452,35 @@ position:relative
   opacity: 0.4;
   background-color: #000;
 }
-.x-axis-bar-value:hover:after,
-.x-axis-bar-value:focus:after,
-.x-axis-bar-value:hover:before,
-.x-axis-bar-value:focus:before {
+.span-value:hover:after,
+.span-value:focus:after,
+.span-value:hover:before,
+.span-value:focus:before {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.15s linear;
   transition: all 0.15s linear;
 }
-.x-axis-bar-value:after {
+.span-value:after {
   position: absolute;
-  top: -35px;
+  top: -22px;
   left: -20%;
   z-index: 200;
   visibility: hidden;
   margin-left: -20px;
   padding: 2px;
-  width: 100px;
+  width: 120px;
   border-radius: 3px;
-  background-color: #434a54;
-  color: #fff;
+  background-color: #fff;
+  color: #434a54;
   content: attr(data-value);
   text-align: center;
   font-weight: normal;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.1;
   opacity: 0;
 }
-.x-axis-bar-value:before {
+.span-value:before {
   position: absolute;
   top: -3px;
   left: 50%;
@@ -5300,14 +5490,14 @@ position:relative
   width: 0;
   height: 0;
   border: 6px solid transparent;
-  border-top-color: #434a54;
+  border-top-color: #fff;
   content: '';
   opacity: 0;
 }
-.uppervalue .x-axis-bar-value:after {
+.uppervalue .span-value:after {
     top: 35px;
 }
-.uppervalue .x-axis-bar-value:before {
+.uppervalue .span-value:before {
     top: 30px;
 }
 .x-axis-bullet-bar {
@@ -5332,7 +5522,7 @@ position:relative
 }
 .forcast_each .spriteB.up, .forcast_each .spriteB.down {
 position:absolute;
-margin:22px 40px 15px 15px;
+margin:12px 40px 15px 15px;
 background-size: 12px;
 width: 12px;
 height: 16px;
@@ -5487,7 +5677,7 @@ width:90%;clear:both;padding-<?=get_s_align()?>:70px
 width:100%;height:470px;
 }
 .dateextreme{
-    font-size: 0.45em;
+    font-size: 0.5em;
 }
 #waiting
 {
@@ -5646,7 +5836,7 @@ display:none
 }
 
 .forecasttimebox .open-close-button{
-    margin:0.3em -1.2em
+    margin:0.3em -1.9em
 }
 <? if (in_array("sunset", $css_comp)) { ?>
 <!-- sunset -->

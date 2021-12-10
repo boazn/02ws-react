@@ -55,7 +55,7 @@ function updateCachedVars(){
     $result = mysqli_query($link, $query) ;
     $row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
     $mem->set('avganomaly', $row['avg(anomaly)']);
-    logger("updateCachedVars...done.");
+    logger("updateCachedVars...done.", 0, "DB", "requiredDBTaska", "updateCachedVars");
     return true;
 }
 if ($_GET['debug'] >= 1)
@@ -116,7 +116,7 @@ if (($hour == 2)&&($min<10)) {
     }
     }
 catch (Exception $e){
-    logger("set_rainydays:".$e->getMessage());
+    logger("set_rainydays:".$e->getMessage(), 4, "DB", "requiredDBTaska", "set_rainydays");
 }
 
 //reset mail/sms every day if 24 hours passed since last sent
@@ -315,7 +315,7 @@ $forecastDaysDB = $mem->get('forecastDaysDB');
 
 if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
 {
-    $results = db_init("SELECT d.active, d.idx, d.lang0, d.lang1, d.TempLow, d.TempLowCloth, d.TempHigh, d.date, d.day_name, d.icon, d.iconmorning, d.iconnight, d.TempNight, d.TempNightCloth, d.TempHighCloth, d.humMorning, d.humDay, d.humNight, a.likes, a.dislikes From forecast_days d left join forecast_days_archive a on d.idx = a.idx ORDER BY d.idx", "");
+    $results = db_init("SELECT d.active, d.idx, d.lang0, d.lang1, d.TempLow, d.TempLowCloth, d.TempHigh, d.date, d.day_name, d.icon, d.visDay, d.uvmax, d.rainFrom, d.rainTo, d.iconmorning, d.iconnight, d.TempNight, d.TempNightCloth, d.TempHighCloth, d.humMorning, d.humDay, d.humNight, d.dustMorning, d.dustDay, d.dustNight, a.likes, a.dislikes From forecast_days d left join forecast_days_archive a on d.idx = a.idx ORDER BY d.idx", "");
     $forecastDaysDB = array();
     while ($line = $results["result"]->fetch_array(MYSQLI_ASSOC)) {
           
@@ -330,6 +330,10 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
                                                     'date' => $line["date"], 
                                                     'day_name' => $line["day_name"], 
                                                     'icon' => $line["icon"], 
+                                                    'visDay' => $line["visDay"],
+                                                    'uvmax' => $line["uvmax"], 
+                                                    'rainFrom' => $line["rainFrom"], 
+                                                    'rainTo' => $line["rainTo"], 
                                                     'iconmorning' => $line["iconmorning"], 
                                                     'iconnight' => $line["iconnight"], 
                                                     'TempNight' => $line["TempNight"], 
@@ -338,7 +342,10 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
                                                     'TempHighCloth' => $line["TempHighCloth"], 
                                                     'humMorning'=>$line["humMorning"], 
                                                     'humDay'=>$line["humDay"], 
-                                                    'humNight'=>$line["humNight"]);
+                                                    'humNight'=>$line["humNight"], 
+                                                    'dustMorning'=>$line["dustMorning"], 
+                                                    'dustDay'=>$line["dustDay"], 
+                                                    'dustNight'=>$line["dustNight"]);
                 for ($i = 0;$i < $line["likes"];$i++)
                 {
                     array_push($forecastDaysDB[$line["idx"]]["likes"], $i);
@@ -369,6 +376,12 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
            $todayForecast->set_hum_morning($line["humMorning"], null);
            $todayForecast->set_hum_day($line["humDay"], null);
            $todayForecast->set_hum_night($line["humNight"], null);
+           $todayForecast->set_dust_morning($line["dustMorning"], null);
+           $todayForecast->set_dust_day($line["dustDay"], null);
+           $todayForecast->set_dust_night($line["dustNight"], null);
+           $todayForecast->set_uvmax($line["uvmax"], null);
+           $todayForecast->set_rainFrom($line["rainFrom"], null);
+           $todayForecast->set_rainTo($line["rainTo"], null);
            $todayForecastShortDate = $line["date"];
            list($firstdayinforecast_l, $fmonth_l) = preg_split('[./-]', $line["date"]);
            list($fday, $fmonth) = explode('/', $firstdayinforecast_l);
@@ -399,6 +412,12 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
            $tomorrowForecast->set_hum_morning($line["humMorning"], null);
            $tomorrowForecast->set_hum_day($line["humDay"], null);
            $tomorrowForecast->set_hum_night($line["humNight"], null);
+           $tomorrowForecast->set_dust_morning($line["dustMorning"], null);
+           $tomorrowForecast->set_dust_day($line["dustDay"], null);
+           $tomorrowForecast->set_dust_night($line["dustNight"], null);
+           $tomorrowForecast->set_uvmax($line["uvmax"], null);
+           $tomorrowForecast->set_rainFrom($line["rainFrom"], null);
+           $tomorrowForecast->set_rainTo($line["rainTo"], null);
 
     }
     else if ($day_idx == 3)
@@ -413,6 +432,12 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
            $nextTomorrowForecast->set_hum_morning($line["humMorning"], null);
            $nextTomorrowForecast->set_hum_day($line["humDay"], null);
            $nextTomorrowForecast->set_hum_night($line["humNight"], null);
+           $nextTomorrowForecast->set_dust_morning($line["dustMorning"], null);
+           $nextTomorrowForecast->set_dust_day($line["dustDay"], null);
+           $nextTomorrowForecast->set_dust_night($line["dustNight"], null);
+           $nextTomorrowForecast->set_uvmax($line["uvmax"], null);
+           $nextTomorrowForecast->set_rainFrom($line["rainFrom"], null);
+           $nextTomorrowForecast->set_rainTo($line["rainTo"], null);
 
     }
    $day_idx = $day_idx + 1;

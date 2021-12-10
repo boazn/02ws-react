@@ -1,5 +1,15 @@
 #!/bin/bash
-convert -delay 6 -annotate +30+250 ' ' -font fixed -colors 256 /home/boazn/public/02ws.com/public/images/webCamera9.jpg  \
+convert -delay 6 -annotate +30+250 ' ' -font fixed -colors 256 /home/boazn/public/02ws.com/public/images/webCamera19.jpg  \
+							     /home/boazn/public/02ws.com/public/images/webCamera18.jpg \
+							     /home/boazn/public/02ws.com/public/images/webCamera17.jpg \
+							     /home/boazn/public/02ws.com/public/images/webCamera16.jpg \
+							     /home/boazn/public/02ws.com/public/images/webCamera15.jpg \
+							     /home/boazn/public/02ws.com/public/images/webCamera14.jpg \
+							     /home/boazn/public/02ws.com/public/images/webCamera13.jpg \
+							     /home/boazn/public/02ws.com/public/images/webCamera12.jpg \
+							     /home/boazn/public/02ws.com/public/images/webCamera11.jpg \
+							     /home/boazn/public/02ws.com/public/images/webCamera10.jpg \
+							     /home/boazn/public/02ws.com/public/images/webCamera9.jpg \
 							    /home/boazn/public/02ws.com/public/images/webCamera8.jpg \
 							    /home/boazn/public/02ws.com/public/images/webCamera7.jpg \
 							    /home/boazn/public/02ws.com/public/images/webCamera6.jpg \

@@ -199,6 +199,7 @@ function buildImageArray(rounded){
       	   theImages[0].src = imagepath;
 	         imageNum[0] = true;
             document.images['animation'].src = imagepath;
+            toggle('play');
          }
             
          console.log("putting: " + imagepath);
@@ -869,73 +870,74 @@ function imgError(image) {
   <body onload="startup">
 
 
-<div style="width:120%;">
-<h1><?=$RAIN_RADAR[$lang_idx]?></h1>
+<div id="wrapper">
+
 
 <div id="waiting" class="topbase" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="display:none;">
 <? if (isHeb()) echo "טוען..."; else echo "Loading...";?>&nbsp;
 <img src="images/loading.gif" alt="loading" width="32" height="32"/>
 </div>
-<div  id="wrapper" >
+
+<div  id="imsradar" class="float" >
+<div style="display:none;margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:-110px;top:370px;position:absolute" id="downloadStatus"></div>
+<div id="radarimg" >
 <div id="radarcontrols" >                        
-<a href="javascript: func()" onclick="launch();toggle('play')">
-	<img id="play" width="80" height="80" src="images/play.png" alt="start התחל"/>
+<a href="javascript: func()" onclick="launch();toggle('play');toggle('fasterslowercontrols');" id="playcontrol">
+	<img id="play" width="60" height="60" src="images/play.png" alt="start התחל" style="display:none;"/>
 </a>
-<br/>
+<br/><!--
 <a href="javascript: func()" onclick="incrementimage(++current_image)">
 	<img src="images/forward.png" alt="forward קדימה"/>
 </a>
 &nbsp;&nbsp;
-<a  href="javascript: func()" onclick="stop()">
-	<img src="images/stop.png" alt="stop עצור" width="20px"/>
-</a>
+-->
+
+<!--
 &nbsp;&nbsp;
 <a href="javascript: func()" onclick="decrementimage(--current_image)">
 	<img src="images/backward.png" alt="backward אחורה"/>
-</a>
-<br/>
-<br/>
+</a>-->
+
 <div id="imagedownloaded_wrapper" style="">
 	<div id="imagedownloaded" style="display:inline">
 	</div>
 </div>
- <div id="run_title" style="display:none" class="inv_plain_3_zebra">
+ <div id="run_title" style="display:none" class="inv_plain_3">
  <a href="javascript: func()" onclick="change_mode(2);fwd()">
 	<? if (isHeb()) echo "הרצה"; else echo "Play"; ?>
 </a><?=get_arrow()?><?=get_arrow()?>
 </div>
-<div style="margin:0 0.5em;padding: 2em 0.5em;" class="inv_plain_3_zebra">
+<div id="fasterslowercontrols" style="display:none;width:500px">
+<a  href="javascript: func()" onclick="stop();toggle('play');">
+	<img src="images/stop.png" alt="stop עצור" width="20px"/>
+</a>
+<div style="margin:0 0.5em;padding: 0.5em;display:inline" class="inv_plain_3 big">
 <a href="javascript: func()" onclick="change_speed(delay_step)">
 	<? if (isHeb()) echo "לאט יותר"; else echo "slower"; ?>
-</a><?=get_arrow()?>
+</a>
 </div>
-<div style="margin:0 0.5em;padding: 2em 0.5em;" class="inv_plain_3_zebra">
+<div style="margin:0 0.5em;padding: 0.5em;display:inline" class="inv_plain_3 big">
 <a href="javascript: func()" onclick="change_speed(-delay_step)" >
 	<? if (isHeb()) echo "מהר יותר"; else echo "faster"; ?>
-</a><?=get_arrow()?>
+</a>
 </div>
-<div style="width:100px;float:<?echo get_s_align();?>;padding:0.2em 0 0 0;z-index:50">
-
-</div>
-<div style="clear:both;<? if (isHeb()) echo "direction:rtl"; ?>"><span id="speedinterval"></span><? if (isHeb()) echo " פריים לשנייה "; else echo " frame per sec"; ?></div>
-<br/>
+<div id="speedintervalwrapper" class="inv_plain_2" style="display:inline;<? if (isHeb()) echo "direction:rtl"; ?>"><span id="speedinterval"></span><? if (isHeb()) echo " פריים לשנייה "; else echo " frame per sec"; ?></div>
+<div class="float" style="display:inline">
 <form method="post" name="profileChanger" action="" style="background:transparent;" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
-				<? echo "# ".$PICS[$lang_idx];?>
+				
 				<select size="1" id="profile" name="profile" class="inv_plain_2" onchange="changeNumOfPics(this.options[this.selectedIndex].value)" <? if (isHeb()) echo "dir=\"rtl\""; ?>> 
-						<option	<? if ($_REQUEST['pics'] == "10") echo " selected ";?> value="10">10</option>
-						<option	<? if ($_REQUEST['pics'] == "15") echo " selected ";?> value="15">15</option>
-						<option	<? if ($_REQUEST['pics'] == "20") echo " selected ";?> value="20">20</option>
+						<option	<? if ($_REQUEST['pics'] == "10") echo " selected ";?> value="10">10 <?=$PICS[$lang_idx];?></option>
+						<option	<? if ($_REQUEST['pics'] == "15") echo " selected ";?> value="15">15 <?=$PICS[$lang_idx];?></option>
+						<option	<? if ($_REQUEST['pics'] == "20") echo " selected ";?> value="20">20 <?=$PICS[$lang_idx];?></option>
 						
 				</select>
     <input type="hidden" name="myPHPvar" id="hiddenPics" value="" />
     </form>
 </div>
-<div style="display:none;margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:-110px;top:370px;position:absolute" id="downloadStatus">
-
 </div>
-<div style="width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:100px;" id="radarimg" >
- <div id="frametime" class="topbase"></div>
- <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="" width="570px" height="570px" alt="IMS radar" style="z-index:0"/>
+</div>
+ <div id="frametime" class="topbase" style="position:absolute"></div>
+ <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="" width="520px" height="520px" alt="IMS radar" style="z-index:0"/>
  
  
  <div style="margin:0.5em">
@@ -943,11 +945,11 @@ function imgError(image) {
 </div>
 </div><!-- id="wrapper" -->
 </div>
-<div style="float:<?echo get_s_align();?>;margin-<?echo get_inv_s_align();?>:0px">
+<div id="geshemspace" class="float" style="margin-<?echo get_s_align();?>:0px">
 <iframe src="https://geshem.space/" width="420px" height="640px" scrolling="auto" id="iframegeshem" class="base" allowtransparency="true" marginHeight="0" marginWidth="0" frameborder="0" ></iframe>
    
  </div>
- <div style="float:<?echo get_s_align();?>;margin-<?echo get_s_align();?>:0px">
+ <div id="rainviewer" class="float" style="margin-<?echo get_s_align();?>:0px">
  <iframe src="https://www.rainviewer.com/map.html?loc=32.147,33.7281,7&oFa=0&oC=0&oU=0&oCS=1&oF=0&oAP=0&rmt=4&c=1&o=83&lm=0&th=0&sm=1&sn=1" width="420px" frameborder="0" style="border:0;height:63vh;" allowfullscreen></iframe>
    </div>
 <div style="clear:both;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
