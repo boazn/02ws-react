@@ -32,7 +32,7 @@ function make_user_active($email, $user_id, $key, $reg_id){
     @mysqli_free_result($result);
      $_SESSION['email'] = $email;
     	$_SESSION['loggedin'] = "true";
-        echo "<div class=\"success\"  style=\"margin:1em;padding:1em\"><h1>".$DONE[$lang_idx];
+        echo "<div class=\"big success\"  style=\"margin:1em;padding:1em\"><h1>".$DONE[$lang_idx];
         echo "</h1>";
         echo "</div></div>";
 }	
@@ -66,11 +66,11 @@ else
 {
     ?>
 
-<div id="loginform" style="padding:10em" class="inv_plain_3_zebra float">
+<div id="loginform" style="padding:10em" class="inv_plain_3_zebra float big">
 <form action="checkauth.php?action=newpass" method="post">
         <?=$EMAIL[$lang_idx]?>:<input type="text" name="email" value="<?=$_GET['email']?>" readonly="readonly" size="30" /><br />
-        <?=$NEW_PASSWORD[$lang_idx]?>:<input type="password" name="password" value="" />
-        <input type="submit" value="<?=$SEND[$lang_idx]?>" />
+        <?=$NEW_PASSWORD[$lang_idx]?>:<input type="password" name="password" value="" /><br /><br />
+        <input type="submit" value="<?=$SEND[$lang_idx]?>" class="inv_plain_3 big info" />
     </form>
 </div>
 <?

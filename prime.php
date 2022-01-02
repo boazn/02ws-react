@@ -28,15 +28,15 @@
                             "images/midragexterminator.png", 
                             "images/midragexterminator.png", 
                             "images/midragrenovation.png");
-        $MIDRAG_L = array($_SERVER['SCRIPT_NAME']."?section=midrag.php", 
-                            $_SERVER['SCRIPT_NAME']."?section=midrag.php", 
-                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&serviceId=284&cityId=515&areaId=2", 
-                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&serviceId=284&cityId=515&areaId=2",
-                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&ntla=ZN7C2105U243N7IU6LE28",
-                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&ntla=ZN7C2105U243N7IU6LE28", 
-                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&ntla=W7531M9Q921301NJ28M03TT24B40503", 
-                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&serviceId=202&cityId=515&areaId=2", 
-                            $_SERVER['SCRIPT_NAME']."?section=midrag.php&serviceId=202&cityId=515&areaId=2");
+        $MIDRAG_L = array(BASE_URL."?section=midrag.php", 
+                            BASE_URL."/?section=midrag.php", 
+                            BASE_URL."/?section=midrag.php&serviceId=284&cityId=515&areaId=2", 
+                            BASE_URL."/?section=midrag.php&serviceId=284&cityId=515&areaId=2",
+                            BASE_URL."/?section=midrag.php&ntla=ZN7C2105U243N7IU6LE28",
+                            BASE_URL."/?section=midrag.php&ntla=ZN7C2105U243N7IU6LE28", 
+                            BASE_URL."/?section=midrag.php&ntla=W7531M9Q921301NJ28M03TT24B40503", 
+                            BASE_URL."/?section=midrag.php&serviceId=202&cityId=515&areaId=2", 
+                            BASE_URL."/?section=midrag.php&serviceId=202&cityId=515&areaId=2");
         $random_midrag = rand(0,count($MIDRAG_T)-1);
         $random_did_you_know = rand(0, count($DID_YOU_KNOW_EX)-1);
         $DID_YOU_KNOW_LINK = array(get_query_edited_url($url_cur, 'section', 'allTimeRecords.php'), get_query_edited_url($url_cur, 'section', 'myVotes.php'), get_query_edited_url($url_cur, 'section', '2weeks.php'), get_query_edited_url($url_cur, 'section', 'snow.php'));
@@ -49,10 +49,10 @@
 		    <div id="forcast_title">
 			<div class="forcast_title_btns for_active" onClick="change_main('#forcast_days', this, '<?=$lang_idx?>');"><? echo($FORECAST_4D[$lang_idx]); ?></div>
 			<div class="forcast_title_btns" onClick="change_main('#forcast_hours', this, '<?=$lang_idx?>');"><? echo($HOURLY[$lang_idx]);?></div>
-            <div class="forcast_title_btns"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a></div>		
-            <div class="forcast_title_btns"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a></div>
-            <div class="forcast_title_btns"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;lang=<? echo $lang_idx;?>&amp;survey_id=1" title="<?=$FSEASON[$lang_idx]?>"><?=$FSEASON_T[$lang_idx]?></a></div>
-            <div class="forcast_title_btns"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=ForecasterJob.php&amp;lang=<? echo $lang_idx;?>" title="<?=$WHAT_IS_FORECAST?>"><?=$FORECASTER_JOB[$lang_idx]?></a></div>
+            <div class="forcast_title_btns"><a href="<?=BASE_URL;?>/?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a></div>		
+            <div class="forcast_title_btns"><a href="<?=BASE_URL;?>/?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a></div>
+            <div class="forcast_title_btns"><a href="<?=BASE_URL;?>/?section=survey.php&amp;lang=<? echo $lang_idx;?>&amp;survey_id=1" title="<?=$FSEASON[$lang_idx]?>"><?=$FSEASON_T[$lang_idx]?></a></div>
+            <div class="forcast_title_btns"><a href="<?=BASE_URL;?>/?section=ForecasterJob.php&amp;lang=<? echo $lang_idx;?>" title="<?=$WHAT_IS_FORECAST?>"><?=$FORECASTER_JOB[$lang_idx]?></a></div>
         </div>
 		    
 		    <div id="forcast_main">
@@ -199,7 +199,7 @@
                                     <? if (getWindInfo($forecastday['windDay'], $lang_idx)['wind_class'] == "high_wind") { ?>
                                     <div class="wind_icon <?echo getWindInfo($forecastday['windDay'], $lang_idx)['wind_class'];?>"></div>
                                     <?}?>
-                                    <img src="<? echo "images/icons/day/".$forecastday['icon']; ?>" width="40" height="40" alt="<?=$forecastday['date']?>" />
+                                    <img src="<? echo "images/icons/day/".$forecastday['icon']; ?>" width="45" height="45" alt="<?=$forecastday['date']?>" />
                                     
                                     </a>
                                 </li>
@@ -316,7 +316,7 @@
                                         $toptime =  ($index_hr % 4 == 0) ? replaceDays(date("D ", $hour_f['currentDateTime']))."</br>".$hour_f['time'].":00" : $hour_f['time'].":00";
                                         echo "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('".$toptime."','".$hour_f['icon']."',".$hour_f['temp'].",".$hour_f['wind'].",'".$hour_f['cloth']."',".$hour_f['rain'].",".$hour_f['humidity'].")\">";
                                         echo "<div class=\"x-axis-bar primary\" style=\"height: 100%\">".$toptime."</div>";
-                                        $bottom = 92;
+                                        $bottom = 88;
                                         echo "<div class=\"x-axis-bar tertiary icon\" style=\"height: ".$bottom."%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/".$hour_f['icon']."\" height=\"40\" width=\"45\" alt=\"".$hour_f['icon']."\" /></div>";
                                         $bottom = (($hour_f['temp']-$min_temp)*85)/($max_temp - $min_temp);
                                          if ($bottom < 10) $bottom = 13;
@@ -441,10 +441,10 @@
                 </script>
                 <?if (isHeb()){?>
                 <div id="if1" >  
-                    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100.png" alt="riseup" width="300" height="100" /></a>
+                    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100_3.png" alt="riseup" width="300" height="100" /></a>
                 </div>
                 <div id="if2" style="display:none">
-                    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100.png" alt="riseup" width="300" height="100" /></a>
+                    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100_3.png" alt="riseup" width="300" height="100" /></a>
                 </div>
                 <div id="if3" style="width:300px">
                   
@@ -472,7 +472,7 @@
             
 	    
 	    
-<article id="whatmore" style="<? if (($textsum >= 580)||(count($forecastDaysDB) > 6)) echo "top:850px";?>">
+<article id="whatmore" style="<? if (($textsum >= 580)||(count($forecastDaysDB) > 6)) echo "top:900px";?>">
 	    
 		
 	   <div class="row">
@@ -561,8 +561,8 @@
                                     <?if (isHeb()){?>
                                     <a id="myths" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'myths.php');?>" class="hlink"><? echo $MYTHS[$lang_idx];?></a>
                                     <?}?>
-                                    <a id="weather_hul" class="more_icons" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a>
-                                    <a id="weather_israel" class="more_icons" href="<?=$_SERVER['SCRIPT_NAME'];?>?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a>
+                                    <a id="weather_hul" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a>
+                                    <a id="weather_israel" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a>
                                     <a id="likeddislikedforecasts" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'forecastDays.php');?>"><? echo $LIKED_FORECAST[$lang_idx];?></a>
 
                                </div>
@@ -626,7 +626,7 @@
 			
 			<div class="row" id="pic_stuff">
 			    <div id="album"><a href="ubergallery/index.php"  title="<?=$ALBUM_DESC[$lang_idx]?>" target="_blank"><? echo $PICTURES[$lang_idx];?></a></div>
-                            <div id="userpic"><a href="<?=$_SERVER['SCRIPT_NAME']?>?section=userPics.php&amp;lang=<?=$lang_idx?>"  title="<?=$USERS_PICS[$lang_idx]?>"><? echo $USERS_PICS[$lang_idx];?></a></div>		    
+                            <div id="userpic"><a href="<?=BASE_URL?>?section=userPics.php&amp;lang=<?=$lang_idx?>"  title="<?=$USERS_PICS[$lang_idx]?>"><? echo $USERS_PICS[$lang_idx];?></a></div>		    
 			    <div id="pic_empty"></div>
 			    
 			    <div id="map_thumbs">

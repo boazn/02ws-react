@@ -1905,10 +1905,25 @@ function isRaining()
         $mem->set('lastSentRainStarted', date('Y-m-d'));
 		return true;
     }
-	if (($now->get_rain() != "0.00")&& ($now->get_rain() != "")&& ($now->get_rain() > 0) && ($current->get_windspd() > 0))	return true;
+	if (($now->get_rain() != "0.00")&& ($now->get_rain() != "")&& ($now->get_rain() > 0)&& ($current->get_windspd() > 0))	return true;
 	return false;
 }
-
+function getStormRain()
+{
+    global $mem;
+    $DailyRain = $mem->get(LAST_7DAYS_DAILY_RAIN);
+    $stormrain = 0;
+    foreach ($DailyRain as $key => &$day) 
+    {
+        //echo $day['Date']." ";
+        if ($day['DailyRain'] != 0)
+            $stormrain = $stormrain + $day['DailyRain'];
+        else
+            return $stormrain;
+    }
+    return $stormrain;
+    
+}
 function isSnowing()
 {
 	global $current, $template_routing;
@@ -4312,9 +4327,9 @@ function enoughSignificant($index)
          return true;
      return false;
  }
- function get_laundry_index()
+ function get_laundry_index($lang_idx)
 {   
-    global $forecastHour, $nextSigForecast, $current, $lang_idx, $GOOD_LAUNDRY, $SOSO_LAUNDRY, $BAD_LAUNDRY, $START_IN;
+    global $forecastHour, $nextSigForecast, $current, $GOOD_LAUNDRY, $SOSO_LAUNDRY, $BAD_LAUNDRY, $START_IN;
     if ((dustExistsNow())||(dustExistsIn24hf())||(rainExistsIn24hf())){
 		return array("no_L", $BAD_LAUNDRY[$lang_idx], $nextSigForecast['hrs']) ;
 	}

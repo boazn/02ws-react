@@ -50,8 +50,8 @@ margin-bottom:0px;
 {
 	text-align:center;
     position: relative;
-    width: 215px;
-    height: 215px;
+    width: 100%;
+    height: 235px;
     z-index:200;
 	<? if (isHeb()) echo "direction:rtl"; ?>
 }
@@ -234,7 +234,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #coldmeter
 {
-          float:<?echo get_s_align();?>;top: 6.4em;
+          float:<?echo get_s_align();?>;top: 5em;
 }
 #radio_toolbar_container
 {
@@ -255,7 +255,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #loggedin, #notloggedin
 {
- clear:both;margin: 0 1em;text-align: center;font-size: 2em;
+ clear:both;margin: 0 0.5em;text-align: center;font-size: 1.5em;width:210px;height:200px;
 }
 #hello{
 
@@ -265,11 +265,31 @@ position:relative;float:none;width:auto;top:0;margin:0;
        padding:0.2em;width:auto;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>;margin:0.2em;cursor:pointer
 }
 #login, .register, .login, .register{
-    font-size: 3em;width:100%
+    font-size: 2em;width:100%
 }
-#updateprofile, #signout, #myvotes
+#profileform, #registerform
 {
-  padding:0.5em;margin:0.5em 0em;cursor:pointer;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>; width: 110px;
+    padding:1.2em;
+    font-size:1.4em;
+    text-align:<?echo get_s_align();?>;
+}
+#updateprofile, #signout, #myvotes, #clicktoregister, #clicktoregister, #loginform_submit, #forgotpass, #clicktogetvotes, #clicktoupdate, #profileform_submit, #passforgotform_submit, #registerform_submit
+{
+  padding:0.4em;margin:0.6em 0em;cursor:pointer;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>; width: 260px;
+}
+#registerinput, #profileform
+{
+    line-height:2.2em
+}
+#clicktoupdate
+{
+    margin-top:2em
+}
+#loginform input[type="text"], #profileform input[type="text"], #registerform input[type="text"], #profileform input[type="password"], #loginform input[type="password"]
+{
+    height:1.5em;
+    font-size: 1em;
+    width:280px
 }
 #snowtable{
 width:320px;
@@ -425,7 +445,8 @@ line-height: 1.2em;
     min-height: 50px;
 }
 #livepic_box{
-margin:0
+margin:0 auto;
+width: 100%;
 }
 #livepic_box h3{
 margin-top:0
@@ -536,8 +557,12 @@ width:320px;
 #currentinfo_container .currentcloth
 {
    position: absolute;
-   margin-top: -1.2em;
-   left: 2.5em;
+   margin-top: -1.6em;
+  
+}
+#currentinfo_container .inparamdiv
+{
+    font-size: 1.7em;
 }
 @keyframes blink-animation {
     0% {
@@ -625,8 +650,8 @@ width:320px;
 	font-weight:normal;
 }
 #laundryidx{
-    eft: -40px;
-    top: -55px; 
+    left: -12px;
+    top: 31px; 
 }
  .forcast_each{
      padding-top:1.2em;
@@ -635,7 +660,7 @@ width:320px;
 
 #windy
 {
-width:33%;left:4.5em;top:2.4em
+width:33%;left:12em;top:3.4em
 } 
 .open-close-button{
   width: 1.2em;
@@ -646,7 +671,7 @@ width:33%;left:4.5em;top:2.4em
 {
     position: absolute;
     <?echo get_s_align();?>: 3.5em;
-    margin-top: 1.5em;
+    
 }
 #morning, #noon, #night
 {
@@ -750,7 +775,7 @@ border-radius: 0px;
 {
 	font-size:1.1em;
 	margin-top:0.2em;
-    width: 82%;
+    width: 70%;
     margin: 5.7em auto 0;
     line-height:16px;
 }
@@ -919,21 +944,22 @@ width: 160px;
 
 .inparamdiv
 {
-    padding:0.3em;
+    padding:0.1em;
     background: rgba(255,255,255,0.0);
 }
 #tempdivvalue, #tempdivvaluestart
 {
     float:none;
     font-size: 3.8em;
-    margin-top: 60px;
+    margin-top: 50px;
     z-index:99999;
     direction:ltr;
    
 }
 #tempdivvaluestart
 {
-    padding-<?=get_s_align()?>: 0.3em;
+    margin-top: 20px;
+    margin-<?=get_s_align()?>:0.4em
 }
 .shade{
     <? if (isHeb()) echo "margin: 4.5em 0 0 0.8em;"; else echo "margin: 4.5em 0 0 0.6em;";?>; 
@@ -954,7 +980,7 @@ width: 160px;
 margin:auto;
 }
 #itfeels {
-    margin:0;top:7.5em;left:7.2em;background: none;  width: 40%;font-size: 18px;text-align: center;
+    margin:0;top:7.5em;background: none;  width: 40%;font-size: 18px;text-align: center;
 }
 #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
 top:0;position:relative; background: none;margin:auto
@@ -964,7 +990,9 @@ margin-top:4.4em;
 }
 .graphslink
 {
-top:200px
+top:215px;
+width:100%;
+<?=get_s_align()?>:0
 }
 #tohome
 {
@@ -1100,8 +1128,8 @@ padding: 0.6em 0 0;
 }
 .inparamdiv .highlows
 {
-
-border-top:0px;top:95px;
+    width:100%;
+border-top:0px;top:95px;margin:0
 }
 #latestwindow .highlows
 {
@@ -1112,13 +1140,15 @@ border-top:0px;top:95px;
 }
 #latestradiation .paramtrend
 {
-    top: 90px;
+    top: 4.8em;
 }
 #latestradiation .highlows
 {
-    top: 70px;
+    top: 3.8em;width:100%
 }
-
+#latestairq .trendstable{
+    top:7em
+}
 .dusttitle{
     font-size:0.9em
 }
@@ -1397,8 +1427,8 @@ input:focus::-webkit-input-placeholder
 direction: rtl;
 float: none;
 margin: auto auto -40px;
-top: 140px;
-width: 320px;
+top: 0px;
+width: 315px;
 padding-right: 0;
 z-index:10;
 }
@@ -1458,62 +1488,52 @@ padding:0.1em 0.5em
     text-align:center;width:7%
 }
 #now_btn{
-    margin-top: -160px;
-    margin-right: 54px;
+    margin:4px;
     position: relative;
 }
 #temp_btn{
-    margin-right: 25px;
-    margin-top: -5px;
+    margin:4px;
     position: relative;
     
 }
 #temp2_btn{
-    margin-right: 10px;
-    margin-top: 1px;
+    margin:4px;
     position: relative;
 }
 #temp3_btn{
-    margin-right: 248px;
-    margin-top: -55px;
+    margin:4px;
     position: relative;
 }
 #moist_btn{
-    margin-right: 5px;
-margin-top: 6px;
-position: relative;
+    margin:4px;   
+    position: relative;
 }
 #rain_btn{
-    margin-right: 10px;
-margin-top: 4px;
-position: relative;
+    margin:4px;
+    position: relative;
 }
 #wind_btn{
-    margin-right: 25px;
-margin-top: 2px;
-position: relative;
+    margin:4px;
+    position: relative;
 }
 #uv_btn{
-	margin-right: 135px;
-    margin-top: -28px;
+	margin-right: 35px;
+    margin-top: -228px;
     position: absolute;
-    width: 26px;
-    height: 26px;
-    background-size: 195%;
+    width: 35px;
+    height: 35px;
+    background-size: 210%;
 }
 #aq_btn{
-	margin-right: 54px;
-    margin-top: -8px;
+	margin:4px;
     position: relative;
 }
 #rad_btn{
-    margin-right: 92px;
-margin-top: -20px;
-position: relative;
+    margin:4px;
+    position: relative;
 }
 #window_btn{
-    margin-right: 133px;
-    margin-top: -30px;
+    margin:4px;
     position: relative;
 }
 #webcam_btn, #cold_btn{
@@ -1526,9 +1546,8 @@ position: relative;
     line-height: 0.8em;
     font-size: 1.05em;
     font-family: nextexitfotlight;
-    margin-right: 174px;
     font-weight:bold;
-    margin-top: -40px;
+    margin:4px;
 }
 #webcam_btn{
     background:url("../img/urban.png") 8px no-repeat;
@@ -1536,22 +1555,21 @@ position: relative;
     background-color: #eeeeee;
 }
 #more_stations_btn{
-    margin-top: -113px;
-    margin-right: 270px;
+    margin:4px;
+    position: relative;
 }
 #cold_btn{
-    float: none;
     width:36px;
-    margin-right: 212px;
-    margin-top: -50px;
-    <? if (!isHeb()) echo "margin-left:0px"; ?>
+    margin:4px;
+    position: relative;
+    
 }
 #cold_btn:hover{
     opacity: 1;
 }
 #runwalk_btn{
-    margin-right: 265px;
-    margin-top: -72px;
+    margin:4px;
+    position: relative;
 }
 
 #latesttemp, #latestrain, #latesthumidity,#latestwind, #latesttemp2, #latesttemp3, #latestairq, #latestnow, #latestuv, #latestradiation, #latestwindow, #latestrunwalk, #latestotherstations, #latestwebcam  {
@@ -1560,12 +1578,13 @@ margin:auto;margin-top:-90px
 #latestwebcam{
     overflow: hidden;
     padding: 0em 0.1em 0em 0.1em;
-    margin-bottom:0.6em
+    margin-bottom:0.6em;
+    border-radius:0
 }
 #latesttemp3 .graphslink{
-    top:0;
-    right:36px;
-    with:140px;
+    top:10.5em;
+    <?=get_s_align()?>:0;
+    width: 100%;
 }
 #latestrunwalk .exp
 {
@@ -1573,15 +1592,16 @@ margin:auto;margin-top:-90px
 }
 #latestrain .paramtrend
 {
-    top: 100px;
+    top: 105px;
 }
 #latestrain .highlows
 {
-    top: 80px;
+    top: 86px;
+    width:100%
 }
 #latestrain .trendstable
 {
-    top: 140px;
+    top: 7em;
 }
 #valleytemp{
 font-size:0.5em;
@@ -1591,6 +1611,15 @@ margin-top:0.75em
 }
 .paramvalue{
 top:30px;
+}
+.paramvalue .valley
+{
+    margin-top: -35px;
+    font-size: 0.5em;
+}
+.param.valley
+{
+    margin-left: -5.5em;
 }
 .trendstable
 {
@@ -1636,7 +1665,7 @@ background: rgba(255,255,255,0.4);
 -moz-user-select: -moz-none; 
 -ms-user-select: none; 
 user-select: none; 
-    
+float:<?=get_s_align()?>   
 }
 
 #rain_line{

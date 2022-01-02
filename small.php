@@ -278,25 +278,27 @@ else {?>
 </div>
 <div style="clear:both;height:10px">&nbsp;</div>
 
-</div>
-<div id="currentinfo_container" style="display:none">
+</div><div id="currentinfo_container" style="display:none">
 <ul class="info_btns" style="display:none">
     <li id="now_btn" onclick="change_circle('now_line', 'latestnow')"></li>
-   <li id="temp_btn" onclick="change_circle('temp_line', 'latesttemp')" title=""></li>
-   <li id="temp2_btn" onclick="change_circle('temp_line', 'latesttemp2')" title=""></li>
-   <li id="moist_btn" onclick="change_circle('moist_line', 'latesthumidity')" title=""></li>
+   <li id="temp_btn" onclick="change_circle('temp_line', 'latesttemp2')" title=""></li>
+   <li id="temp2_btn" onclick="change_circle('temp_line', 'latesttemp')" title=""></li>
+   <li id="temp3_btn" onclick="change_circle('temp_line', 'latesttemp3')" title=""></li>
+    </li>
    <li id="rain_btn" onclick="change_circle('rain_line', 'latestrain')" title=""></li>
    <li id="wind_btn" onclick="change_circle('wind_line', 'latestwind')" title=""></li>
    <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title=""></li>
    <li id="rad_btn" onclick="change_circle('rad_line', 'latestradiation')" title=""></li>
    <li id="window_btn" onclick="change_circle('window_line', 'latestwindow')" title=""></li>
+   <li id="moon_btn" onclick="change_circle('window_line', 'latestmoon')" title="" style="display:none"></li>
+   <li id="dew_btn" onclick="change_circle('window_line', 'latestdewpoint')" title="" style="display:none"></li>
+   <li id="air_btn" onclick="change_circle('window_line', 'latestpressure')" title="" style="display:none"></li>
    <li id="webcam_btn" onclick="change_circle('window_line', 'latestwebcam')" title="<?=$LIVE_PICTURE[$lang_idx]?>"></li>
    <li id="cold_btn">
     <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" onclick="showLoading()">
     <?=$HOTORCOLD_T[$lang_idx]?>
     </a>
-    <li id="temp3_btn" onclick="change_circle('temp_line', 'latesttemp3')" title=""></li>
-    </li>
+    <li id="moist_btn" onclick="change_circle('moist_line', 'latesthumidity')" title=""></li>
     <li id="runwalk_btn" onclick="change_circle('runwalk_line', 'latestrunwalk')" title=""></li>
     </li>
     <li id="more_stations_btn" onclick="change_circle('otherstations_line', 'latestotherstations');getLatest('ראש-צורים', '77', 'IMS');getLatest('צובה', '188', 'IMS');getLatest('חוף מערבי', '178', 'IMS');getLatest('עין גדי','211', 'IMS');getLatest('מעלה אדומים', '218', 'IMS');" title=""></li>
@@ -352,7 +354,7 @@ else {?>
                  <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
                  <div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div> 
-         <div class="paramtrend relative">
+         <div class="paramtrend">
              <div class="innertrendvalue">
                 <? echo " ".($MINTS[$lang_idx]).": "; ?>
              </div>
@@ -372,7 +374,7 @@ else {?>
          </table>
     </div>
     <div class="graphslink">
-                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
     </div>
  </div>
 <div id="latesttemp2" class="inparamdiv" style="display:none;">
@@ -386,7 +388,7 @@ else {?>
                  <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
                  <div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div> 
-         <div class="paramtrend relative">
+         <div class="paramtrend">
              <div class="innertrendvalue">
                 <? echo " ".($MINTS[$lang_idx]).": "; ?>
              </div>
@@ -406,7 +408,7 @@ else {?>
          </table>
     </div>
     <div class="graphslink">
-                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp<?if ($PRIMARY_TEMP == 1) echo "LatestArchive";?>.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp<?if ($PRIMARY_TEMP == 1) echo "LatestArchive";?>.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
     </div>
 </div>
 <div id="latesthumidity" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
@@ -420,7 +422,7 @@ else {?>
             <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
             &nbsp;&nbsp;&nbsp;&nbsp;<div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div>
-       <div class="paramtrend relative">
+       <div class="paramtrend">
             <div class="innertrendvalue">
             
             </div>
@@ -440,14 +442,14 @@ else {?>
         </table>
         </div>
         <div class="graphslink">
-                <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=humwind.php&amp;level=1&amp;freq=2&amp;datasource=downld02&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+                <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=humwind.php&amp;level=1&amp;freq=2&amp;datasource=downld02&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>" title="" onclick="showLoading()"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
    </div>
 </div>
 <div id="latestpressure" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
 </div>
 <div id="latestwebcam" class="inparamdiv" style="display:none;overflow: hidden;">
     <div id="livepic_box" class="" style="display:none">
-    <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=smallwebcam.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" title="<? echo($LIVE_PICTURE[$lang_idx]);?>" onclick="showLoading()"><img src="phpThumb.php?src=images/webCameraB.jpg&w=600&fltr%5B%5D=gam%7C0.9" width="280" height="285" alt="<? echo($LIVE_PICTURE[$lang_idx]);?>" /></a>
+    <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=smallwebcam.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" title="<? echo($LIVE_PICTURE[$lang_idx]);?>" onclick="showLoading()"><img src="<?=BASE_URL?>/phpThumb.php?src=images/webCameraB.jpg&w=600&fltr%5B%5D=gam%7C0.9" width="280" height="285" alt="<? echo($LIVE_PICTURE[$lang_idx]);?>" /></a>
     </div>
 </div>
 <div id="latestmoon" class="inparamdiv" style="display:none;">
@@ -466,7 +468,7 @@ else {?>
     <div class="highlows">
             <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
     </div>
-    <div class="paramtrend relative">
+    <div class="paramtrend">
             <div class="">  
               
             </div>
@@ -486,7 +488,7 @@ else {?>
       </table>
     </div>
     <div class="graphslink">
-                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>" ><img src="img/graph_icon.png" alt="to graphs"/></a>
+                    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=wind.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>" ><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
     </div>
 </div>
 <div id="latestrain" class="inparamdiv" style="display:none" <? if (isHeb()) echo "dir=\"rtl\" ";?> title="">
@@ -498,7 +500,7 @@ else {?>
 <div class="highlows">
     <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/><span class="high_time"></span>
 </div>
-<div class="paramtrend relative">
+<div class="paramtrend">
     <? echo $DAILY_RAIN[$lang_idx]; ?>:&nbsp;<span id="dailyrain"></span><br/>
 <? echo $TOTAL_RAIN[$lang_idx]; ?>:&nbsp;<span id="totalrain"></span>
 </div>
@@ -517,7 +519,7 @@ else {?>
 </table>
 </div>
     <div class="graphslink">
-            <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=RainRateHistory.gif&amp;profile=1&amp;lang=<? echo $lang_idx;?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+            <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=RainRateHistory.gif&amp;profile=1&amp;lang=<? echo $lang_idx;?>" title="" onclick="showLoading()"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
     </div>
 </div>  
 <div id="latestradiation" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
@@ -529,7 +531,7 @@ else {?>
     <div class="highlows">
             <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
     </div>
-    <div class="paramtrend relative">
+    <div class="paramtrend">
             <div class="innertrendvalue">
             
             </div>
@@ -549,7 +551,7 @@ else {?>
       </table>
     </div>
     <div class="graphslink">
-      <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rad.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>" ><img src="img/graph_icon.png" alt="to graphs"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rad.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>" ><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>&nbsp;&nbsp;&nbsp;&nbsp;
       <div id="uv_btn" onclick="change_circle('rad_line', 'latestuv')" title=""></div>
     </div>
 </div>
@@ -578,7 +580,7 @@ else {?>
          </table>
     </div>
     <div class="graphslink">
-        <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=UVHistory.gif&amp;profile=1&amp;lang=<? echo $lang_idx;?>" title=""><img src="img/graph_icon.png" alt="to graphs"/></a>
+        <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=UVHistory.gif&amp;profile=1&amp;lang=<? echo $lang_idx;?>" title=""><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
     </div>
 </div>
 <div id="latestairq" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
@@ -589,7 +591,7 @@ else {?>
 		 
 	</div>
 	    
-	<div class="paramtrend relative"></div>
+	<div class="paramtrend"></div>
     <div class="trendstable">
         <table>
         <tr class="trendstitles">
@@ -605,10 +607,52 @@ else {?>
         </table>
     </div>
     <div class="graphslink">
-		<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=dust.html&amp;lang=<? echo $lang_idx;?>" title="to graph"><img src="img/graph_icon.png" alt="to graphs"/></a>
+		<a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=dust.php&amp;lang=<? echo $lang_idx;?>" title="to graph"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
 	</div>
 </div>
 <div id="latestdewpoint" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
+<div class="paramtitle slogan">
+        <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $DEW[$lang_idx];?></a>
+</div>
+<div class="paramvalue">
+        <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"  class="info"></a>
+</div>
+<div class="highlows">
+            <span><strong><div class="highparam"></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span><strong><div class="lowparam"></div></strong>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/></span>&nbsp;<span class="low_time"></span>
+    </div>
+<!--<div class="paramtrend">
+    <div class="innertrendvalue">
+    
+    </div>
+</div>-->
+<div class="trendstable">
+<table>
+<tr class="trendstitles">
+        <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+        <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour"/></td>
+        <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+</tr>
+    <tr class="trendsvalues">
+        <td><div class="trendvalue"><div class="innertrendvalue">
+            
+            </div></div>
+        </td>
+        <td><div class="trendvalue"><div class="innertrendvalue">
+               
+        </div></div>
+        </td>
+        <td><div class="trendvalue"><div class="innertrendvalue">
+           
+        </div></div>
+    </td>
+</tr>
+</table>
+</div>
+<div class="graphslink">
+                            <?=$DEW_DESC[$lang_idx]?><br/>
+    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
+</div>
 </div>
 <div id="latesttemp3" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
     <div class="paramtitle slogan">
@@ -621,7 +665,7 @@ else {?>
                  <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
                  <div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div> 
-         <div class="paramtrend relative">
+         <div class="paramtrend">
              <div class="innertrendvalue">
                 <? echo " ".($MINTS[$lang_idx]).": "; ?>
              </div>
@@ -641,8 +685,8 @@ else {?>
          </table>
     </div>
     <div class="graphslink">
-            <span id="temp3_desc"></span>
-                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp3LatestArchive.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><img src="img/graph_icon.png" width="35" height="18" alt="to graphs"/></a>
+            <span id="temp3_desc"></span><br/>
+                 <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=temp3LatestArchive.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" title="" onclick="showLoading()"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
     </div>
 </div>
 <div id="latestwindow" class="inparamdiv" style="display:none">
@@ -658,9 +702,7 @@ else {?>
     
 </div>
 <div id="latestotherstations" class="inparamdiv">
-<div class="paramtitle slogan">
-        
-</div>
+
 <div class="WUNowRes" id="WUNowRes_short"></div>
 <div class="ImsNowRes" id="ImsNowRes_short"></div>
 
@@ -679,7 +721,7 @@ else {?>
             <a href="<? echo getUrl("runwalk.php")?>" title="more"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
         </div>
 </div>    
-<div style="clear:both;height:55px">&nbsp;</div>
+<div id="spacer1" style="clear:both;height: 2px;">&nbsp;</div>
 <div id="for24_given">
 							
 	</div>
@@ -704,9 +746,10 @@ else {?>
         </div>
         
         </div>
-        <div style="clear:both;height:10px">&nbsp;</div>
+        <div id="spacer2" style="clear:both;height:10px">&nbsp;</div>
         
         <div id="adunit3" class="adunit" style="">
+        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem"><img src="images/riseup_banner_100_3.png" alt="riseup" width="320" height="100" /></a>
             <!-- Large Mobile Banner 1 -->
            <ins class="adsbygoogle"
                 style="display:inline-block;width:320px;height:50px"
@@ -716,9 +759,9 @@ else {?>
             (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
         </div>
-        <div style="clear:both;height:10px">&nbsp;</div>
+        <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
         <div id="for24_hours"></div>
-        <div style="clear:both;height:15px">&nbsp;</div>
+        <div id="spacer4" style="clear:both;height:15px">&nbsp;</div>
         
  </div>
 
@@ -761,10 +804,10 @@ else {?>
     
     </div>
 	<div id="if1">  
-    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100.png" alt="riseup" width="320" height="100" /></a>
+    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100_3.png" alt="riseup" width="320" height="100" /></a>
     </div>
     <div id="if2">
-    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100.png" alt="riseup" width="320" height="100" /></a>   
+    <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" target=_blank><img src="images/riseup_banner_100_3.png" alt="riseup" width="320" height="100" /></a>   
     </div>
  <!-- small unit 2 -->
 <ins class="adsbygoogle"
@@ -1012,12 +1055,12 @@ Licensed MIT
             return temp;
         return temp + '<div class="paramunit">°</div>' ;
     }
-	function loadPostData(jsonstr)
+	function loadPostData(jsonstr, coldmeter_size)
 	{
             var C_STARTUP_AD_INTERVAL = 2;
-		 $.getScript( "footerScripts250320.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>" , function( data, textStatus, jqxhr) {
+		 $.getScript( "footerScripts011221.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>" , function( data, textStatus, jqxhr) {
 							if (jsonstr  != undefined)
-								fillcoldmeter(jsonstr);
+								fillcoldmeter_fromjson(jsonstr, coldmeter_size);
                              $('#latestalert').css('visibility', 'visible');
 							 $('#arrowdown').show();
 							 
@@ -1187,18 +1230,14 @@ Licensed MIT
        var cur_feel_link=document.getElementById('current_feeling_link');
        if (typeof coldmeter_size == 'undefined') 
                 coldmeter_size = 20;
-         if (cur_feel_link)
+          if (cur_feel_link)
          {
-                $.ajax({
-                type: "GET",
-                url: 'coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size + '&m=1',
-                beforeSend: function(){$(".loading").show();}
-              }).done(function( jsonstr  ) {
-                  
-                    loadPostData(jsonstr);
-              });
-        }else
-			loadPostData();
+            $(".loading").show();
+            fetch("coldmeter_service.php?lang="+<? echo $lang_idx;?> + "&json=1")
+                .then(response => response.json())
+                .then(data => loadPostData(data, coldmeter_size))
+                .catch(error => console.log("error:" + error))
+        } else loadPostData();
         
         if (json.jws.current.issun == 1)
         {
@@ -1486,7 +1525,7 @@ Licensed MIT
                 wind_extra = "<div class=\"wind_icon high_wind\"></div>";
             else
                 wind_extra = "";                        
-            forecastDays += "<span class=\"icon extra" + i + "\" id=\"icon" + i + "\">" + wind_extra + "<img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"34\" height=\"34\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></span>"+"</td>";
+            forecastDays += "<span class=\"icon extra" + i + "\" id=\"icon" + i + "\">" + wind_extra + "<img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"34\" height=\"34\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></span><div class=\"tsfh\"><div class=\"humidity icon extra" + i + "\"><a href=\"<?=BASE_URL?>/dailydetailed.php?m=1&dayid=" + (i+1) + "\" rel=\"external\" ><img src=\"images/enlarge_64.png\" width=\"35\" alt=\"enlarge\"/></a></div></div>"+"</td>";
             fulltextforecast = json.jws.forecastDays[i].lang<? echo $lang_idx;?>;
             containsanchor = fulltextforecast.indexOf("<a");
             partialtextlastindex = (containsanchor > 0) ? containsanchor - 1 : lastindex;
@@ -1691,7 +1730,7 @@ Licensed MIT
 </script>
 <? if (!isFastPage()) { ?>
 <script src="js/tinymce/tinymce.min.07032017.js" type="text/javascript"></script>
-<script src="footerScripts250320.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>
+<script src="footerScripts011221.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>
 <script type="text/javascript">
 startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
 </script>

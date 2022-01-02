@@ -22,9 +22,9 @@ include_once("start.php");
 </style>
 </head>
 <body >
-<?if ($_GET['action'] == 'profileform'){?>
-<div id="profileform" style="padding:0.5em" >
-	<div class="float">
+
+<div id="profileform"  style="display:none" >
+	<div class="float big">
 
 	
 	<input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" readonly="readonly" id="profileform_email" size="30"/><br />
@@ -54,54 +54,56 @@ include_once("start.php");
 	
 	<div id="profileform_result" class="float"></div>
 	<div style="clear:both;height:20px">&nbsp;</div>
-	<input type="submit" value="<?=$SEND[$lang_idx]?>" onclick="updateprofile_to_server(<?=$lang_idx?>)" id="profileform_submit" class=" clear inv_plain_3_zebra"/>
+	<input type="submit" value="<?=$END[$lang_idx]?>" onclick="updateprofile_to_server(<?=$lang_idx?>)" id="profileform_submit" class="float clear inv_plain_3_zebra big"/>
 	<input type="submit" value="<?=$DONE[$lang_idx]?>" onclick="$('#cboxClose').click();window.location.reload()" id="profileform_OK" class="info  inv_plain_3" style="display:none"/>
 
 
 	</div>
-	<?} if ($_GET['action'] == 'loginform'){?>
-<div id="loginform" style="padding:1em">
+	
+<div id="loginform" style="padding:1em" >
 							<div id="notloggedin" style="display:none">
 								<div class="float clear big"><?=$LOGIN[$lang_idx]?> </div>
 								<div style="clear:both;height:10px">&nbsp;</div>
+								<div id="login_greeting" class="float clear big"><?=$LOGIN_GREETING[$lang_idx]?> </div>
+								<div style="clear:both;height:30px">&nbsp;</div>
 								<div class="float clear">
-								<input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="loginform_email" size="30" tabindex="1" style="direction:ltr"/><br /><br />
+								<input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="loginform_email" size="30" tabindex="1"/><br /><br />
 								<input type="password" placeholder="<?=$PASSWORD[$lang_idx]?>" name="password" value="" id="loginform_password" tabindex="2" size="15"/><br />&nbsp;&nbsp;
-								<input type="checkbox" name="rememberme" value="" id="loginform_rememberme"/><?=$REMEMBER_ME[$lang_idx]?><br /><br />
+								<input type="checkbox" name="rememberme" value="" id="loginform_rememberme"/><?=$REMEMBER_ME[$lang_idx]?>
 								<div style="clear:both;height:10px">&nbsp;</div>
 								</div>
 								<div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32"/></div>
 								<div id="loginform_result" class="float"></div>
-								<input type="submit" value="<?=$SEND[$lang_idx]?>" class="float clear inv_plain_3 big" onclick="login_to_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="loginform_submit"/>
-								<input type="submit" value="Success!" onclick="$('#cboxClose').click();window.location.reload();" id="loginform_OK" class="info float big" style="display:none"/>
+							    <input type="submit" value="Success!" onclick="$('#cboxClose').click();window.location.reload();" id="loginform_OK" class="info float big" style="display:none"/>
 								<div style="clear:both;height:10px">&nbsp;</div>
-								<a href="<?=BASE_URL?>/login_form.php?action=passforgotform" id="forgotpass" title="<?=$FORGOT_PASS[$lang_idx]?>" ><?echo $FORGOT_PASS[$lang_idx].get_arrow();?></a>
+								<a href="javascript:void()" id="forgotpass" onclick="toggle('loginform');toggle('passforgotform');" title="<?=$FORGOT_PASS[$lang_idx]?>"><?echo $FORGOT_PASS[$lang_idx].get_arrow();?></a>
 								<div style="clear:both;height:10px">&nbsp;</div>
-								<label id="newto02ws" class="float clear"><?=$NEW_TO_02WS[$lang_idx]?></label> <a href="<?=BASE_URL?>/login_form.php?action=profileform" id="clicktoregister" class="float clear"><?echo $REGISTER[$lang_idx].get_arrow();?></a>
+								<a href="javascript:void()" id="clicktoregister" onclick="toggle('loginform');toggle('registerform');" class="float"><?=$NEW_TO_02WS[$lang_idx]?>&nbsp;<?echo $REGISTER[$lang_idx].get_arrow();?></a>
+								<input type="submit" value="<?=$END[$lang_idx]?>" class="float clear inv_plain_3_zebra big" onclick="login_to_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="loginform_submit"/>
 								
 							</div>
 							<div id="loggedin" style="display:none">
-								<label id="hello" class="clear big"></label> <?=$HELLO[$lang_idx]?><br />
-								<a href="login_form.php?action=profileform&lang=<?=$lang_idx?>" id="clicktoregister" class="float clear inv_plain_3 big"><?echo $UPDATE_PROFILE[$lang_idx];?></a>
+								<label id="hello" class="clear big float"></label> <?=$HELLO[$lang_idx]?>,<br />
+								<a href="login_form.php?action=profileform&lang=<?=$lang_idx?>" id="clicktoupdate" class=" float clear inv_plain_3_zebra big"><?echo $UPDATE_PROFILE[$lang_idx];?></a>
 								<div style="clear:both;height:10px">&nbsp;</div>
-								<a href="index.php?section=myVotes.php&lang=<?=$lang_idx?>" id="clicktoregister" class="float clear inv_plain_3 big"><?echo $MY_VOTES[$lang_idx];?></a>
+								<a href="index.php?section=myVotes.php&lang=<?=$lang_idx?>" id="clicktogetvotes" class=" float clear inv_plain_3_zebra big"><?echo $MY_VOTES[$lang_idx];?></a>
 								<div style="clear:both;height:10px">&nbsp;</div>
-								<input value="<?=$SIGN_OUT[$lang_idx]?>" onclick="signout_from_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="signout" class="button inv_plain_3_zebra clear big"/>
+								<input value="<?=$SIGN_OUT[$lang_idx]?>" onclick="signout_from_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="signout" class="float inv_plain_3_zebra clear big"/>
 							</div>
 		
 
 </div>
-<?} if ($_GET['action'] == 'registerform'){?>
-<div id="registerform" style="padding:0.5em">
-	<div class="float clear big"><?=$REGISTER[$lang_idx]?> </div>
+
+<div id="registerform" style="display:none" >
+	<div class="clear big"><?=$REGISTER[$lang_idx]?> </div>
 	<div style="clear:both;height:10px">&nbsp;</div>
-	<div id="registerinput" class="float clear">
+	<div id="registerinput" class=" clear">
 	<table>
-	<tr><td></td><td><input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="registerform_email" size="30" tabindex="3" style="direction:ltr"/></td></tr>
+	<tr><td></td><td><input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="registerform_email" size="30" tabindex="3" /></td></tr>
 	<tr><td></td><td><input type="password" placeholder="<?=$PASSWORD[$lang_idx]?>" name="password" value="" id="registerform_password" tabindex="4"/></td></tr>
 	<tr><td></td><td><input type="password" placeholder="<?=$PASSWORD_VERIFICATION[$lang_idx]?>" name="password_verif" value="" id="registerform_password_verif" tabindex="5"/></td></tr>
 	<!--<tr><td></td><td><input type="text" name="username" placeholder="<?=$USER_ID[$lang_idx]?>" value="" id="registerform_userid" tabindex="6"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$USER_ID_EXP[$lang_idx]?></span></a></td></tr>-->
-	<tr><td></td><td><?=$USER_ICON[$lang_idx]?>:<div style="display:inline-block"><div class="user_icon_frame">
+	<tr><td></td><td><?=$USER_ICON[$lang_idx]?>:<div style="display:inline"><div class="user_icon_frame">
 	<div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir("img/user_icon")); foreach ($user_icons as $user_icon)
 				{ ?>
 		<div class="contentbox">
@@ -114,35 +116,55 @@ include_once("start.php");
 	<div class="icon_right" onclick="change_icon('right', this); return false"></div>
 				</div>
 	</td></tr>
-	<tr><td></td><td><input type="text" placeholder="<?=$DISPLAY_NAME[$lang_idx]?>" name="user_display_name" value="" id="registerform_displayname" tabindex="7"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$DISPLAY_NAME_EXP[$lang_idx]?></span></a></td></tr>
+	<tr><td></td><td><input type="text" placeholder="<?=$DISPLAY_NAME[$lang_idx]?>" name="user_display_name" value="" id="registerform_displayname" tabindex="7" style="margin-top: 15px;"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$DISPLAY_NAME_EXP[$lang_idx]?></span></a></td></tr>
 	<!--<tr><td></td><td><input type="text" placeholder="<?=$NICE_NAME[$lang_idx]?>" name="user_nice_name" value="" id="registerform_nicename" tabindex="8"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$NICENAME_EXP[$lang_idx]?></span></a></td></tr>-->
 	</table>
 	<input type="checkbox" name="priority" value="" id="registerform_priority"/><?=$GET_UPDATES[$lang_idx]?><br />
-	<input type="checkbox" name="personal_coldmeter" value="" id="registerform_personal_coldmeter" disabled/><?=$PERSONAL_COLD_METER[$lang_idx]?><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$PERSONAL_COLD_METER_EXP[$lang_idx]?></span></a>
+	<input type="checkbox" name="personal_coldmeter" value="" id="registerform_personal_coldmeter" /><?=$PERSONAL_COLD_METER[$lang_idx]?><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$PERSONAL_COLD_METER_EXP[$lang_idx]?></span></a>
 	</div>
-	<div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
-	<div id="registerform_result" class="float">
+	<div style="display:none" class=" loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
+	<div id="registerform_result" class="">
 	</div>
-	<input type="submit" value="<?=$REGISTER[$lang_idx]?>" class="invfloat clear inv_plain_3" onclick="register_to_server(<?=$lang_idx?>)" id="registerform_submit"/>
-	<input type="submit" value="Success!" onclick="$('#cboxClose').click();" id="registerform_OK" class="info invfloat" style="display:none"/>
+	<input type="submit" value="<?=$END[$lang_idx]?>" class="clear inv_plain_3_zebra big" onclick="register_to_server(<?=$lang_idx?>)" id="registerform_submit"/>
+	<input type="submit" value="בוצע!" onclick="$('#cboxClose').click();" id="registerform_OK" class="info invfloat" style="display:none"/>
 
 </div>
-<?} if ($_GET['action'] == 'passforgotform'){?>
-<div id="passforgotform" style="padding:1em">
+
+<div id="passforgotform" class="big"  style="padding:1em;display:none">
 	<div><?=$FORGOT_PASS_REQ[$lang_idx]?></div>
 	<input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="passforgotform_email" size="30" style="direction:ltr"/><br /><br />
 	<div id="passforgotform_result" class="big"></div>
-	<input type="submit" value="<?=$SEND[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit" class="info invfloat"/>
+	<input type="submit" value="<?=$END[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit" class="inv_plain_3_zebra big info"/>
 	
 		
  </div>
-<?}?>
+
+<input type="hidden" id="chosen_user_icon" value=""/>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
-<script>!window.jQuery && document.write('<script src="/js/jquery-1.6.1.min.js"><\/script>')</script>
-<script src="footerScripts161120.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&reg_id=<?=$_GET['reg_id']?>"  type="text/javascript"></script>
+
+<script
+			  src="https://code.jquery.com/jquery-3.6.0.min.js"
+			  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+			  crossorigin="anonymous"></script>
+<script src="footerScripts161120.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&reg_id=<?=(empty($_GET['reg_id']))? $_GET['regId'] : $_GET['reg_id']?>"  type="text/javascript"></script>
 <script>
-	startup(<?=$lang_idx?>, 10, "");
+	
+        fetch("checkauth.php?action=getuser&lang=" + <?=$lang_idx?> +"&reg_id=<?=(empty($_GET['reg_id']))? $_GET['regId'] : $_GET['reg_id']?>")    
+        .then(response => response.json())
+		.then(jsonT => {console.log(jsonT);
+						if (!jsonT.user.loggedin){
+							toggle('notloggedin');
+							$("#user_name").html('<?=$LOGIN[$lang_idx]?>/<?=$REGISTER[$lang_idx]?>');
+							$("#chosen_user_icon").val($("#user_icon_contentbox").children().first().children().first().attr('class'));
+							if (jsonT.user.locked)
+								$("#user_name").html('<?=$USER_LOCKED[$lang_idx]?>');
+						}
+						else {
+							toggle('loggedin'); 
+							fillUserDetails (jsonT );
+						}
+                       })
+        .catch(error => console.error("error:" + error));
 
 </script>
 </html>

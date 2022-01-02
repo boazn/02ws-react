@@ -31,7 +31,7 @@ ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
         direction:rtl
     }
     .cell{
-        float:right;padding:1.2em 1.4em 0 1.5em
+        float:right;padding:1.2em 1.6em 0 1.6em
     }
     .invcell{
         float:left;padding:5px 1em
@@ -59,6 +59,9 @@ ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
         textarea.floated{
             width:380px;
         
+        }
+        .cell{
+            float:right;padding:1.2em 1.4em 0 1.5em
         }
         .btnsstart, .temp_high, .temp_night, .tempstart, .textforecast, .synop{clear:none;}
         .cell{
@@ -696,13 +699,14 @@ echo $_POST['command'];
         //$_REQUEST['debug'] = 3;    
         include_once ("start.php");
         $mem->delete('taf');
-        //$_REQUEST['debug'] = 3;    
+           
         include_once ("requiredDBTasks.php");
         include_once ("sigweathercalc.php");
         $mem->set('max_time', $_POST['max_time']);
         $mem->set('MULTIPLE_FACTOR', $_POST['multiple_factor']);
         $_REQUEST['MAX_TIME'] = $_POST['max_time'];
         $_REQUEST['MULTIPLE_FACTOR'] = $_POST['multiple_factor']; //how quickly temp rise 0.9 - 1.2
+        //$_REQUEST['debug'] = 3; 
         include("forecastlib.php");
         $local_file_path = "/home/boazn/public/02ws.com/public/css/mobile0.css";
         if (is_writable($local_file_path))
@@ -879,11 +883,11 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'lang1<?=$line["idx"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
     </div>
     <div class="cell cellspace ">
-    &nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="cell">		
-			<img src="images/plus.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecastd')" style="cursor:pointer" />
+			<img src="images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img src="images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecastd')" style="cursor:pointer" />
 			
     </div>
     <div class="cell cellspace ">
@@ -1034,8 +1038,8 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		
-        <img src="images/plus.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'LAlert')" style="cursor:pointer" />&nbsp;&nbsp;
-        <img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'LAlert')" style="cursor:pointer" />
+        <img src="images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'LAlert')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'LAlert')" style="cursor:pointer" />
 	</div>
 	<div class="cell shrinked" style="clear:both">
 		
@@ -1162,8 +1166,8 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             <a href="javascript: void(0)" onclick="additalic(getSelText(), 'descriptionCurrStory<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
         </div>
 		<!-- <input id="commandCurrStory<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" style="text-align:<?if ($line["lang"] == 1) echo "right"; else "left";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
-		<img src="images/plus.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'ISTORY', 'mainstory')" style="cursor:pointer" />
-		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'USTORY',  'mainstory')" style="cursor:pointer" />
+		<img src="images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'ISTORY', 'mainstory')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<img src="images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'USTORY',  'mainstory')" style="cursor:pointer" />
 	</div>
 	<!-- <div class="cell">
 		<input type="checkbox" id="CurrStory<?=$line["lang"]?>" value=""  onclick="disableOthers(this)" />
@@ -1195,8 +1199,8 @@ h<input id="imgheight" name="imgheight" size="18"  value="" style="width:80px;te
         <div class="cell" id="currstory_href_plugin" class="float btnsstart">
                 <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15" /></a>
         </div>
-        <img src="images/plus.png" width="16px" onclick="getOneUFService(1, 'I', 'ads')" style="cursor:pointer" />
-		<img src="images/check.png" width="16px" onclick="getOneUFService(1, 'U',  'ads')" style="cursor:pointer" />
+        <img src="images/plus.png" width="18px" onclick="getOneUFService(1, 'I', 'ads')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<img src="images/check.png" width="18px" onclick="getOneUFService(1, 'U',  'ads')" style="cursor:pointer" />
 	</div>
 </div>
 

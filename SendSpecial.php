@@ -30,7 +30,7 @@
   position: relative;
   height: 30px;
   border-radius: 3px;
-  margin: 10px;
+  margin: 0;
   text-align: left;
   background: #fff;
   box-shadow: inset 1px 3px 6px rgba(0, 0, 0, 0.12);
@@ -52,8 +52,13 @@
   color: #000000;
 }
 select{
-    height:25px
+    height:28px;margin-top:2px
 }
+#combos{text-align:left}
+#combos label{width: 50px;
+display: inline-block;
+margin-left: 10px;}
+#tohome{ display:none}
 </style>
 <input type='file' onchange="readURL(this);" accept="video/*,image/*,video/mp4,video/x-m4v" name="imagefile" id="imagefile"   size="60"  style="float:left;width:150px"/><br />
 <img id="localimg" src="#" alt="your image" width="300"/><br />
@@ -62,6 +67,7 @@ select{
 </video>
 <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
 <div id="SendSpecialResult"></div>
+<div id="combos">
 <label for="subject">subject:</label>
 <select name="subject" id="subject">
   <option value=""></option>
@@ -82,7 +88,7 @@ select{
   <option value="45">45</option>
   <option value="60">60</option>
   <option value="90">90</option>
-</select>
+</select><br/>
 <label for="rainminto">to:</label>
 <select name="rainminto" id="rainminto">
     <option value=""></option>
@@ -93,6 +99,12 @@ select{
   <option value="90">90</option>
   <option value="120">120</option>
 </select><br/>
+<label for="words">hr/min:</label>
+<select name="words" id="words">
+   <option value=""></option>
+  <option value="min">min</option>
+  <option value="hours">hours</option>
+</select><br/>   
 <label for="rainpart">part:</label>
 <select name="rainpart" id="rainpart">
    <option value=""></option>
@@ -101,12 +113,6 @@ select{
   <option value="south">south</option>
   <option value="east">east</option>
 </select><br/>
-<label for="words">hr/min:</label>
-<select name="words" id="words">
-   <option value=""></option>
-  <option value="min">min</option>
-  <option value="hours">hours</option>
-</select>   
 <label for="ttl">ttl:</label>
 <select name="ttl" id="ttl">
    <option value=""></option>
@@ -115,26 +121,28 @@ select{
    <option value="120">120</option>
    <option value="180">180</option>
    <option value="240">240</option>
-</select>   
-<div class="inv_plain_3" style="margin:0 auto;padding:0.5em;width:300px;text-align:right">
-	<strong>Your message</strong><br/>
-        <textarea id="message0" name="message0" cols="3   0" rows="3"  value="<? echo $message; ?>" style="text-align:left;font-size: 1em;width:290px"><? echo $message; ?></textarea><br/>
-        title<input id="title0" name="title0" size="18"  value="" style="width:250px;"  /><br />
+</select>
 </div>
 <div class="inv_plain_3" style="margin:0 auto;padding:0.5em;width:300px;text-align:right">
-	<strong>כאן כתוב את הודעתך</strong><br/>
+	    <input id="title1" name="title1" size="18"  value="" style="width:290px;direction:rtl"  placeholder="כותרת"/>
         <textarea id="message1" name="message1" cols="3   0" rows="3" value="<? echo $message; ?>" style="direction:rtl;font-size: 1em;width:290px"><? echo $message; ?></textarea><br/>
-        title<input id="title1" name="title1" size="18"  value="" style="width:250px;direction:rtl"  /><br />
-	picture url<input id="picture_url" name="picture_url1" size="20"  value="https://www.02ws.co.il/images/webCamera0_r.jpg" style="width:225px;text-align:left"  /><br />
+</div>   
+<div class="inv_plain_3" style="margin:0 auto;padding:0.5em;width:300px;text-align:left">
+	
+         <input id="title0" name="title0" size="18"  value="" style="width:290px;" placeholder="title" /><br />
+        <textarea id="message0" name="message0" cols="3   0" rows="3"  value="<? echo $message; ?>" style="text-align:left;font-size: 1em;width:290px"><? echo $message; ?></textarea><br/>
+ </div>
+<div class="inv_plain_3" style="margin:0 auto;padding:0.5em;width:300px;text-align:right">
+      	picture url<input id="picture_url" name="picture_url1" size="20"  value="https://www.02ws.co.il/images/webCamera0_r.jpg" style="width:225px;text-align:left"  /><br />
 	external url<input id="embedded_url" name="embedded_url1" size="20"  value="" style="width:225px;text-align:left"  /><br /><br />
         <div style="text-align: left">
-        <input type="checkbox" id="short_range" name="short_range" value="" style="width:20px"/>short range&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="checkbox" id="long_range" name="long_range" value="" style="width:20px"/>long range&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="checkbox" id="tip" name="tip" value="" style="width:20px"/>tip
+        <input type="checkbox" id="short_range" name="short_range" value="" style="width:25px"/>short range&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="long_range" name="long_range" value="" style="width:25px"/>long range&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tip" name="tip" value="" style="width:25px"/>tip
         </div>
         <div style="text-align: left">
-        <input type="checkbox" id="social" name="tip" value="" style="width:20px"/>social
-        <input type="checkbox" id="is_video" name="tip" value="" style="width:20px"/>video
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="social" name="tip" value="" style="width:35px"/>social&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="is_video" name="tip" value="" style="width:30px"/>video
         </div>
 		
 </div>
@@ -143,9 +151,9 @@ select{
     <div class="status">0%</div>
 </div>
 
-<div class="inv_plain_3" style="margin:0 auto;clear:both;text-align:center;padding:1em;width:50%">
-    <input type="submit" id="togglewebcamurl" name="togglewebcamurl" value="togglewebcam" onClick="javascript:togglewebcam(1);" style="font-size: 1em;width:80%"/>
-	<input type="submit" id="SendButton" name="SendButton" value="Go" onClick="javascript:SendSpecial(1);" style="font-size: 2em;width:80%"/>
+<div class="inv_plain_3" style="margin:0 auto;clear:both;text-align:center;padding:0.5em;width:90%">
+    <input type="submit" id="togglewebcamurl" name="togglewebcamurl" value="togglewebcam" onClick="javascript:togglewebcam(1);" style="font-size: 1em;width:70%;margin-bottom:10px"/>
+	<input type="submit" id="SendButton" name="SendButton" value="Go" onClick="javascript:SendSpecial(1);" style="font-size: 2em;width:70%"/>
 	
 </div>
 
@@ -342,8 +350,8 @@ Upload.prototype.progressHandling = function (event) {
         $("#message0").append(" within "+($("#rainminfrom").val())+" ");
     });
     $("#rainminto").change(function(){
-        $("#message1").append("עד "+($("#rainminto").val())+" דק");
-        $("#message0").append(" to "+($("#rainminto").val())+" min ");
+        $("#message1").append("עד "+($("#rainminto").val())+" ");
+        $("#message0").append(" to "+($("#rainminto").val())+" ");
     });
     $("#words").change(function(){
         var heb_side;

@@ -33,7 +33,7 @@ class DB_Functions {
        
         // get user details
         $id = $link->insert_id; // last inserted id
-        logger("New APN user updated:".$id." ".$name." ".$email." ".$apn_regid." ".$lang." active=".$active." active_rain_etc=".$active_shortterm." active_tips=".$active_tips." dailyforecast=".$dailyforecast,0, "apn_register", "SaveAPNUser", "storeUser");
+        logger("New APN user updated:".$id." name=".$name." email=".$email." regId".$apn_regid." lang=".$lang." active=".$active." active_rain_etc=".$active_shortterm." active_tips=".$active_tips." active_dust=".$active_dust." active_uv=".$active_uv." active_dry=".$active_dry." dailyforecast=".$dailyforecast,0, "apn_register", "SaveAPNUser", "storeUser");
         return $email;
    
     }

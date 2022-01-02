@@ -42,15 +42,15 @@ class DB_Functions {
             $approved = (empty($approved)? 'null' : $approved);
             $query = "call SaveGCMUser ('$name', '$email', '$gcm_regid', $lang, $active, $active_rain_etc, $active_tips, $active_dust, $active_uv,  $active_dry, $approved, '$billingtoken', '$billingDate', $dailyforecast, '$oldregid')";
             $result = db_init($query, "");
-            logger("New FC user updated:".$name." ".$email." ".$gcm_regid." ".$lang." active=".$active." active_rain_etc=".$active_rain_etc." active_tips=".$active_tips." dailyforecast=".$dailyforecast,0, "gcm_register", "SaveGCMUser", "storeUser");
+            logger("New FCM user updated:".$name." ".$email." ".$gcm_regid." ".$lang." active=".$active." active_rain_etc=".$active_rain_etc." active_tips=".$active_tips." active_dust=".$active_dust." active_uv=".$active_uv." active_dry=".$active_dry." dailyforecast=".$dailyforecast,0, "gcm_register", "SaveGCMUser", "storeUser");
             // check for successful store
         
             // get user details
             $id = $link->insert_id; // last inserted id
             
             if (!empty($email)){
-                $query = "update `Subscriptions` set reg_id='".$gcm_regid."', UpdatedAt=now() where Email='".$email."'";
-                db_init($query, "");
+                //$query = "update `Subscriptions` set reg_id='".$gcm_regid."', UpdatedAt=now() where Email='".$email."'";
+                //db_init($query, "");
                 //logger($query, 0, "lib", "Forecastlib", "Forecastlib");
                 $line = $this->get_user_from_email($email);
                 if ($line['user_status'] != 1){
@@ -76,7 +76,7 @@ class DB_Functions {
             
             return $email;
         } catch (Exception $ex) {
-            logger("New GCM user updated exception:.".$ex." ".$id." ".$email." ".$lang." active=".$active." active_rain_etc=".$active_rain_etc, 4, "FCM", "storeUser", "storeUser");
+            logger("New FCM user updated exception:.".$ex." ".$id." ".$email." ".$lang." active=".$active." active_rain_etc=".$active_rain_etc, 4, "FCM", "storeUser", "storeUser");
         }
    
     }

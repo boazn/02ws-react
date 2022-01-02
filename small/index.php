@@ -62,6 +62,7 @@ $TILL_NOW = array("till now", "עד עכשיו", "До настоящего вр
 $CHOOSE_STARTPAGE = array("choose this page as start page", "בחירת דף זה כדף פתיחה", "выберите эту страницу в качестве стартовой");
 $RISE = array("Rise", "זריחה", "Восход");
 $SET = array("Set", "שקיעה", "Закат");
+$DESKTOP_REDIRECT = array("To website", "לאתר", "website");
 
 function mainPage()
 {
@@ -238,12 +239,12 @@ if (isRadarPage())
     <li><div id="user_icon"></div><p id="user_name"></p><span class="arrow_down">▼</span>
                 <ul style="<?echo get_s_align();?>: -2em;">
                       <li>
-                              <div id="notloggedin" style="display:none">
+                              <div id="notloggedin" style="display:none" class="inv_plain_3_zebra">
                                       <div class="clear"><a href="javascript: void(0)" class="button" id="login" title="<?=$LOGIN[$lang_idx]?>" ><?=$LOGIN[$lang_idx]?></a></div>
                                       <div class="clear"><a href="javascript: void(0)" class="button register" id="register" title="<?=$REGISTER[$lang_idx]?>"><?=$REGISTER[$lang_idx]?></a></div>
 
                               </div>
-                              <div id="loggedin" style="display:none">
+                              <div id="loggedin" style="display:none" class="inv_plain_3_zebra">
                                       <input id="updateprofile" class="button" title="<?=$UPDATE_PROFILE[$lang_idx]?>" value="<?=$UPDATE_PROFILE[$lang_idx]?>" /><br />
                                       <input id="myvotes" class="button" title="<?=$MY_VOTES[$lang_idx]?>" value="<?=$MY_VOTES[$lang_idx]?>" onclick="redirect('<?=$_SERVER['SCRIPT_NAME']?>?section=myVotes.php&amp;lang=<?=$lang_idx?>')" /><br />
                                       <input value="<?=$SIGN_OUT[$lang_idx]?>" onclick="signout_from_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="signout" class="button"/>
@@ -294,22 +295,22 @@ else {?>
     <li id="now_btn" onclick="change_circle('now_line', 'latestnow')"></li>
    <li id="temp_btn" onclick="change_circle('temp_line', 'latesttemp2')" title=""></li>
    <li id="temp2_btn" onclick="change_circle('temp_line', 'latesttemp')" title=""></li>
-   <li id="moist_btn" onclick="change_circle('moist_line', 'latesthumidity')" title=""></li>
+   <li id="temp3_btn" onclick="change_circle('temp_line', 'latesttemp3')" title=""></li>
+    </li>
    <li id="rain_btn" onclick="change_circle('rain_line', 'latestrain')" title=""></li>
    <li id="wind_btn" onclick="change_circle('wind_line', 'latestwind')" title=""></li>
    <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title=""></li>
    <li id="rad_btn" onclick="change_circle('rad_line', 'latestradiation')" title=""></li>
    <li id="window_btn" onclick="change_circle('window_line', 'latestwindow')" title=""></li>
-   <li id="moon_btn" onclick="change_circle('window_line', 'latestwindow')" title="" style="display:none"></li>
-   <li id="dew_btn" onclick="change_circle('window_line', 'latestwindow')" title="" style="display:none"></li>
-   <li id="air_btn" onclick="change_circle('window_line', 'latestwindow')" title="" style="display:none"></li>
+   <li id="moon_btn" onclick="change_circle('window_line', 'latestmoon')" title="" style="display:none"></li>
+   <li id="dew_btn" onclick="change_circle('window_line', 'latestdewpoint')" title="" style="display:none"></li>
+   <li id="air_btn" onclick="change_circle('window_line', 'latestpressure')" title="" style="display:none"></li>
    <li id="webcam_btn" onclick="change_circle('window_line', 'latestwebcam')" title="<?=$LIVE_PICTURE[$lang_idx]?>"></li>
    <li id="cold_btn">
     <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" onclick="showLoading()">
     <?=$HOTORCOLD_T[$lang_idx]?>
     </a>
-    <li id="temp3_btn" onclick="change_circle('temp_line', 'latesttemp3')" title=""></li>
-    </li>
+    <li id="moist_btn" onclick="change_circle('moist_line', 'latesthumidity')" title=""></li>
     <li id="runwalk_btn" onclick="change_circle('runwalk_line', 'latestrunwalk')" title=""></li>
     </li>
     <li id="more_stations_btn" onclick="change_circle('otherstations_line', 'latestotherstations');getLatest('ראש-צורים', '77', 'IMS');getLatest('צובה', '188', 'IMS');getLatest('חוף מערבי', '178', 'IMS');getLatest('עין גדי','211', 'IMS');getLatest('מעלה אדומים', '218', 'IMS');" title=""></li>
@@ -622,6 +623,48 @@ else {?>
 	</div>
 </div>
 <div id="latestdewpoint" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
+<div class="paramtitle slogan">
+        <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $DEW[$lang_idx];?></a>
+</div>
+<div class="paramvalue">
+        <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"  class="info"></a>
+</div>
+<div class="highlows">
+            <span><strong><div class="highparam"></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span><strong><div class="lowparam"></div></strong>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/></span>&nbsp;<span class="low_time"></span>
+    </div>
+<!--<div class="paramtrend">
+    <div class="innertrendvalue">
+    
+    </div>
+</div>-->
+<div class="trendstable">
+<table>
+<tr class="trendstitles">
+        <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+        <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour"/></td>
+        <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+</tr>
+    <tr class="trendsvalues">
+        <td><div class="trendvalue"><div class="innertrendvalue">
+            
+            </div></div>
+        </td>
+        <td><div class="trendvalue"><div class="innertrendvalue">
+               
+        </div></div>
+        </td>
+        <td><div class="trendvalue"><div class="innertrendvalue">
+           
+        </div></div>
+    </td>
+</tr>
+</table>
+</div>
+<div class="graphslink">
+                            <?=$DEW_DESC[$lang_idx]?><br/>
+    <a  href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>" title=""><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
+</div>
 </div>
 <div id="latesttemp3" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
     <div class="paramtitle slogan">
@@ -690,7 +733,7 @@ else {?>
             <a href="<? echo getUrl("runwalk.php")?>" title="more"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
         </div>
 </div>    
-<div id="spacer1" style="clear:both;height:40px">&nbsp;</div>
+<div id="spacer1" style="clear:both;height: 2px;">&nbsp;</div>
 <div id="for24_given">
 							
 	</div>
@@ -718,7 +761,7 @@ else {?>
         <div id="spacer2" style="clear:both;height:10px">&nbsp;</div>
         
         <div id="adunit3" class="adunit" style="">
-        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem"><img src="images/riseup.jpg" alt="riseup" width="320" height="50" /></a>
+        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem"><img src="images/riseup_banner_100_3.png" alt="riseup" width="320" height="100" /></a>
             <!-- Large Mobile Banner 1 -->
            <ins class="adsbygoogle"
                 style="display:inline-block;width:320px;height:50px"
@@ -773,10 +816,10 @@ else {?>
 <div id="adunit2" class="adunit" style="display:none">
     
     <div id="if1"> 
-        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem"><img src="images/riseup_banner_100.png" alt="riseup" width="320" height="100" /></a>
+        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem"><img src="images/riseup_banner_100_3.png" alt="riseup" width="320" height="100" /></a>
     </div>
     <div id="if2">
-        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" ><img src="images/riseup_banner_100.png" alt="riseup" width="320" height="100" /></a>
+        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" ><img src="images/riseup_banner_100_3.png" alt="riseup" width="320" height="100" /></a>
     </div>
     <div id="if3">
         
@@ -883,7 +926,7 @@ else {?>
     
 <div id="loginform" style="padding:1em">
 	<div class="float">
-        <input type="text" name="email" value="" placeholder="<?=$EMAIL[$lang_idx]?>" id="loginform_email" size="30" tabindex="1" style="direction:ltr"/><br /><br />
+        <input type="text" name="email" value="" placeholder="<?=$EMAIL[$lang_idx]?>" id="loginform_email" size="30" tabindex="1" /><br /><br />
         <input type="password" name="password" placeholder="<?=$PASSWORD[$lang_idx]?>" value="" id="loginform_password" tabindex="2" size="15"/><br /><br />
         </div>
         <div class="clear float big" style="padding:1em 0">
@@ -891,9 +934,9 @@ else {?>
         </div>  
 	<div style="display:none" class="float loading"><img src="images/loading.gif" alt="loading" width="32" height="32"/></div>
         <div id="loginform_result" class="float"></div>
-	<input type="submit" value="<?=$LOGIN[$lang_idx]?>" class="invfloat clear inv_plain_3 big" onclick="login_to_server(<?=$lang_idx?>)" id="loginform_submit"/>
+	<input type="submit" value="<?=$LOGIN[$lang_idx]?>" class="float clear inv_plain_3_zebra big" onclick="login_to_server(<?=$lang_idx?>)" id="loginform_submit"/>
         <input type="submit" value="Success!" onclick="$('#colorbox').hide();window.location.reload();" id="loginform_OK" class="info invfloat" style="display:none"/>
-        <div class="clear float big" style="margin-top:0.8em"><a href="javascript: void(0)" id="forgotpass" title="<?=$FORGOT_PASS[$lang_idx]?>"><?=$FORGOT_PASS[$lang_idx]?></a></div>
+        <div class="clear inv_plain_3_zebra float big" style="margin-top:0.8em"><a href="javascript: void(0)" id="forgotpass" title="<?=$FORGOT_PASS[$lang_idx]?>"><?=$FORGOT_PASS[$lang_idx]?></a></div>
  	
 </div>
 <div id="registerform" style="padding:0.5em">
@@ -938,6 +981,21 @@ else {?>
  </div>
  </div>
  <?}?>
+ <div id="mobile_redirect" class="big inv_plain_3_zebra" style="display:none;" class role="dialog">
+        <button type="button" id="cboxCloseMobileRedirect" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        <br /><br />
+        <h2 class="big inv_plain_2"><br /><a   onclick="redirect_to_desktop(<?=$lang_idx?>)" id="mobile_redirect_submit" class="clear inv_plain_3 big" style="width:100%"><?=$DESKTOP_REDIRECT[$lang_idx].get_arrow()?></a><br /><br /></h2><br/><br/><br/>      
+                <div>
+                <a href="https://play.google.com/store/apps/details?id=il.co.jws.app" target="_blank">
+                        <img src="images/getitongp.svg" alt="Google play App" width="150" height="60"/>
+                </a>
+                </div>
+                <div>
+                <a href="https://itunes.apple.com/us/app/yrwsmyym/id925504632?ls=1&mt=8" target="_blank">
+                        <img src="images/Available_on_the_App_Store.svg" alt="App Store App" width="150" height="60"/>
+                </a>
+                </div>
+</div>
 <div id="startupdiv" style="display:none;" class role="dialog">
 <button type="button" id="cboxClose" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();"></button>
 
@@ -946,6 +1004,7 @@ else {?>
  <div class="removeadlink">
             <?=$REMOVE_ADS[$lang_idx];?><a href="#opensettings.png"><img src="images/opensettings.png" width="35" /></a>
  </div>
+ 
  <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem"><img src="images/riseup_banner_100.png" alt="riseup" width="320" height="100" /></a>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- startup mobile -->
@@ -1037,12 +1096,12 @@ Licensed MIT
             return temp;
         return temp + '<div class="paramunit">°</div>' ;
     }
-	function loadPostData(jsonstr)
+	function loadPostData(jsonstr, coldmeter_size)
 	{
             var C_STARTUP_AD_INTERVAL = 2;
 		 $.getScript( "<?=BASE_URL?>/footerScripts011221.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>" , function( data, textStatus, jqxhr) {
 							if (jsonstr  != undefined)
-								fillcoldmeter(jsonstr);
+								fillcoldmeter_fromjson(jsonstr, coldmeter_size);
                              $('#latestalert').css('visibility', 'visible');
 							 $('#arrowdown').show();
 							 
@@ -1112,7 +1171,10 @@ Licensed MIT
                              //   $(".removeadlink a").attr("target", "_blank");
 
                             }
-                                
+                            if (isMobile.iOS()||(isMobile.Android()&&!isMobile.AndroidWV()))
+                            {
+                                 $('#mobile_redirect').show();
+                            }   
 							
                     });
 	}
@@ -1215,19 +1277,15 @@ Licensed MIT
       
        var cur_feel_link=document.getElementById('current_feeling_link');
        if (typeof coldmeter_size == 'undefined') 
-                coldmeter_size = 30;
+                coldmeter_size = 40;
          if (cur_feel_link)
          {
-                $.ajax({
-                type: "GET",
-                url: '<?=BASE_URL?>/coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size + '&m=1',
-                beforeSend: function(){$(".loading").show();}
-              }).done(function( jsonstr  ) {
-                  
-                    loadPostData(jsonstr);
-              });
-        }else
-			loadPostData();
+            $(".loading").show();
+            fetch("<?=BASE_URL?>/coldmeter_service.php?lang="+<? echo $lang_idx;?> + "&json=1")
+                .then(response => response.json())
+                .then(data => loadPostData(data, coldmeter_size))
+                .catch(error => console.log("error:" + error))
+        } else loadPostData();
         
         if (json.jws.current.issun == 1)
         {
@@ -1413,9 +1471,9 @@ Licensed MIT
             toptime =  (json.jws.forecastHours[i].time % 4 == 0) ? json.jws.forecastHours[i].day<?=$lang_idx;?>+"&nbsp;"+json.jws.forecastHours[i].time+":00" : json.jws.forecastHours[i].time + ":00";
             forecastHoursNG += "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('"+toptime+"','"+json.jws.forecastHours[i].icon+"',"+ json.jws.forecastHours[i].temp+","+json.jws.forecastHours[i].wind+",'"+json.jws.forecastHours[i].cloth.substring(json.jws.forecastHours[i].cloth.split('/', 2).join('/').length)+"',"+json.jws.forecastHours[i].rain+","+json.jws.forecastHours[i].hum+")\">";
             forecastHoursNG += "<div class=\"x-axis-bar primary\" style=\"height: 100%\">"+toptime+"</div>";    
-            bottom = 92;
+            bottom = 88;
             forecastHoursNG += "<div class=\"x-axis-bar tertiary icon\" style=\"height: "+ bottom +"%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"25\" width=\"28\" alt=\""+json.jws.forecastHours[i].icon+"\" /></div>";
-            bottom = ((json.jws.forecastHours[i].temp-min_temp)*85)/(max_temp - min_temp);
+            bottom = ((json.jws.forecastHours[i].temp-min_temp)*78)/(max_temp - min_temp);
             if (bottom < 10) bottom = 15;
             else if (bottom < 20) bottom = bottom + 3;
             else if (bottom > 60) addonclass = "uppervalue"; else addonclass = "";
@@ -1720,6 +1778,7 @@ Licensed MIT
     });
 	
    <?}else{?> $(".loading").hide(); <?}?>
+
 //-->
 </script>
 <? if (!isFastPage()) { ?>
@@ -1730,7 +1789,7 @@ startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['upd
 </script>
 <?} if (!isset($_GET['c'])){ ?>
 <div style="clear:both;height:10px">&nbsp;</div>
-<div id="toforum" class="float inv_plain_3_zebra big">
+<div id="toforum" class="float inv_plain_3_zebra big" style="display:none">
 <a href="<? echo BASE_URL.substr(strrchr($_SERVER["PHP_SELF"], "/"), 0)."?section=chatmobile.php&lang=".$lang_idx."&amp;tempunit=".$_GET['tempunit']."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>"  title="<? echo $HOME_PAGE[$lang_idx];?>" class="hlink">
 <? echo $CHAT_TITLE[$lang_idx];?>
 </a>

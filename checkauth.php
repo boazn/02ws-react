@@ -385,11 +385,16 @@ function set_new_password($email, $pass)
         $_SESSION['isAdmin'] = $dbarray['admin'];
         $_SESSION['email'] = $email;
         logger("confirmUserPass: ".$_SESSION['email']." ".$_SESSION['loggedin']." ".$_COOKIE[PERSONAL_COLD_METER]." ".$_COOKIE['rememberme'], 0, "auth", "db", "confirmUserPass");
-        if (!empty($_GET['reg_id'])){
-            $reg_id = $_GET['reg_id'];
+        
+        $reg_id = $_GET['reg_id'];
+        if (!empty($reg_id)){
             $result = db_init("INSERT INTO `Subscriptions` (guid, email, approved, reg_id) VALUES(UUID_SHORT(), '$email' ,0, '$reg_id');", "");
             logger("After Activation - StoreSub:".$email." ".$reg_id." 0", 0, "auth", "db", "confirmUserPass");
         }
+        else
+            logger("After Activation no regID:".$email." ".$reg_id." 0", 0, "auth", "db", "confirmUserPass");
+            
+        
          return $userJSON; //Success! Username and password confirmed
       }
       else{

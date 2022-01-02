@@ -22,7 +22,16 @@
 	}
 	#latestrain .trendstable
 	{
-		top: 150px;
+		top: 6.5em
+	}
+	#latestrain .paramtrend
+	{
+		top: 5.7em;
+		font-size: 0.8em;
+	}
+	#latestrain .highlows
+	{
+		top:3.6em
 	}
 	.graphslink
 	{
@@ -83,25 +92,7 @@ function changeProfile (inprofile)
 
 		return $trendID;
 	}
-        
-        function getStormRain()
-        {
-			global $mem;
-            $DailyRain = $mem->get(LAST_7DAYS_DAILY_RAIN);
-            $stormrain = 0;
-            foreach ($DailyRain as $key => &$day) 
-            {
-                //echo $day['Date']." ";
-                if ($day['DailyRain'] != 0)
-                    $stormrain = $stormrain + $day['DailyRain'];
-                else
-                    return $stormrain;
-            }
-            return $stormrain;
-            
-        }
-        
-
+ 
 function getLatestMaxMinTemp(){
 	global $lang_idx;
 	$query = "call getLatestMaxMinTemp()";
@@ -637,7 +628,6 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
 if ((strstr(strtolower($_GET['graph']), 'temp'))||
 	(strstr(strtolower($_GET['graph']), 'windchill'))||
 	(strstr(strtolower($_GET['graph']), 'heatindex'))||
-	(strstr(strtolower($_GET['graph']), 'dew'))||
 	(strstr(strtolower($_GET['graph']), 'thw'))||
         (strstr(strtolower($_GET['graph']), 'thsw'))||
 	(strstr(strtolower($_GET['graph']), 'airdensity')))
@@ -650,11 +640,7 @@ if ((strstr(strtolower($_GET['graph']), 'temp'))||
 		include_once ("requiredDBTasks.php");
 	}
 ?>
-<script type="text/javascript">
-    $(document).ready(function() {
-    $('#temp_btn').click();
-    });
-</script>
+
 <? }
 if (strstr(strtolower($_GET['graph']), 'temp'))
 {	 ?>
@@ -715,11 +701,7 @@ if (strstr(strtolower($_GET['graph']), 'hum')){
 		include_once ("requiredDBTasks.php");
 	}
 	?>
-        <script type="text/javascript">
-    $(document).ready(function() {
-    $('#moist_btn').click();
-    });
-    </script>
+       
 	<div class="float" style="margin:1em;<? if (isHeb()) echo "direction:rtl"; ?>" class="inv_plain_2_zebra">
 	<table <? if (isHeb()) echo "dir=\"rtl\""; ?> id="mouseover" cellpadding="4">
 	<tr>
@@ -780,11 +762,7 @@ if ((strstr(strtolower($_GET['graph']), 'wind'))&&(!strstr(strtolower($_GET['gra
 	if (isset($_POST['button']))
 		$windDisH = $_POST['WindDistHours'];
 ?>
-<script type="text/javascript">
-    $(document).ready(function() {
-    $('#wind_btn').click();
-    });
-    </script>
+
 <a name="windd"></a>
 <div class="topbase" style="margin:1em;width:145px;position:absolute;" <? if (isHeb()) echo "dir=\"rtl\""; ?> id="highWind"><? echo $HIGH[$lang_idx]." ".$TODAY[$lang_idx].": ".$today->get_highwind()." ".$KMH[$lang_idx]." ".$ON[$lang_idx]." ".$today->get_highwind_time(); ?><br/><br/>
 <? echo "1 ".$KNOTS[$lang_idx]." = "."1.8 ".$KMH[$lang_idx];?>
@@ -834,11 +812,7 @@ if (strstr(strtolower($_GET['graph']), 'rain'))
 <img name="rainDailyGraph" id="rainDailyGraph" src="dailyRainGraph.php?datasource=RainDaily" alt="rain-average" style="padding:0;margin:0"/>
 </a>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
-    $('#rain_btn').click();
-    });
-    </script>
+
 <div class="inv_plain_2 float " id="highRainRate" style="margin:0em;padding:0.1em;width:315px;clear:both" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
 	
 	   
@@ -972,14 +946,7 @@ if ((strstr(strtolower($_GET['graph']), 'uv'))||
         (strstr(strtolower($_GET['graph']), 'rad'))||
 	(strstr(strtolower($_GET['graph']), 'eth')))
 { $forecastDaysDB = $mem->get('forecastDaysDB');?>
-<script type="text/javascript">
-    $(document).ready(function() {
-    $('#rad_btn').click();
-    <? if (strstr(strtolower($_GET['graph']), 'uv')) {?>
-           $('#uv_btn').click(); 
-    <?}?>
-    });
-    </script>
+
 	<div id="sun" style="position: relative;left: -20px;width: 300px;padding: 0.2em;">
 				<div>
 				<a href="https://www.gaisma.com/en/location/jerusalem.html" target="_blank" title="<? echo $MORE_INFO[$lang_idx];?>">	
@@ -1068,3 +1035,45 @@ $('#currentinfo_container').css("margin-top", "7em").show();
 $('#spacer1, #spacer2, #spacer3, #spacer4').hide();
 
 </script>
+
+<?
+if (strstr(strtolower($_GET['graph']), 'dew')){
+	$btn = "dew_btn";
+}
+else if (strstr(strtolower($_GET['graph']), 'hum')){
+	$btn = "moist_btn";
+}
+else if (strstr(strtolower($_GET['graph']), 'uv')){
+	$btn = "uv_btn";
+}
+else if (strstr(strtolower($_GET['graph']), 'rain')){
+	$btn = "rain_btn";
+}
+else if (strstr(strtolower($_GET['graph']), 'wind')){
+	$btn = "wind_btn";
+}
+else if (strstr(strtolower($_GET['graph']), 'solar')){
+	$btn = "rad_btn";
+}
+else if (strstr(strtolower($_GET['graph']), 'temp.php')){
+	$btn = "temp_btn";
+}
+else if (strstr(strtolower($_GET['graph']), 'temp3')){
+	$btn = "temp3_btn";
+}
+else if (strstr(strtolower($_GET['graph']), 'dust')){
+	$btn = "aq_btn";
+}
+else if (strstr(strtolower($_GET['graph']), 'baro')){
+	$btn = "air_btn";
+}
+else{
+	$btn = "temp2_btn";
+}
+?>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('#<?=$btn?>').click();
+    });
+</script>
+

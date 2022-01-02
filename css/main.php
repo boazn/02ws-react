@@ -112,7 +112,7 @@ body {
      /*background-image:url("../img/bg_blue.png");
      background-repeat: repeat;
      background-attachment:fixed;*/
-     background: linear-gradient(180deg, #00bfff 0%, #00bfff 4%, #00bfff 8%, #82e2ff 90%, #C9F6FF 100%); /* #1e528e #2d91c2 #246fa8 #57c1eb #00bfff*/
+     background: linear-gradient(180deg, #00bfff 0%, #00bfff 4%, #1ca1cd  8%, #82e2ff 90%, #C9F6FF 100%); /* #1e528e #2d91c2 #246fa8 #57c1eb #00bfff*/
      font-family:Alef;
      overflow-y: scroll;
     overflow-x: hidden;
@@ -1496,7 +1496,7 @@ margin-<?=get_s_align()?>:10px
     margin-right:10px;
     font-family:Alef;
     font-size:0.8em;
-    width:<? if (isHeb()) echo "315px";else echo "290px"; ?>;
+    width:<? if (isHeb()) echo "315px";else echo "285px"; ?>;
     line-height: 1.1em;
     text-align:<?=get_s_align()?> !important;
     cursor:pointer;
@@ -2409,7 +2409,7 @@ padding:2px;
 {
     width:36px;
     overflow: hidden;
-    margin-<?=get_s_align()?>:40px;
+    margin-<?=get_s_align()?>:90px;
 }
 #user_icon_contentbox
 {
@@ -2431,14 +2431,14 @@ padding:2px;
     background-repeat:no-repeat;
     height:26px;
     width:13px;
-	margin-<?=get_s_align()?>: 6px;
+	margin-<?=get_s_align()?>: 46px;
     position:absolute;
     margin-top: -30px;   
 }
 
 .icon_left {
     background-image:url("../img/pic_left.png");
-    <?if (isHeb()){?>margin-right:76px;<?}?>;
+    <?if (isHeb()){?>margin-right:136px;<?}?>;
     padding-left: 10px;
 }
 
@@ -2813,7 +2813,7 @@ margin-<?echo get_s_align();?>:150px
     font-size:23px;
     line-height:20px;
     font-family:nextexitfotlight;
-    color:#fff;
+    color:#000000;
     padding-bottom:50px;
     text-align:center;
     margin-<?=get_s_align()?>:20px;
@@ -3950,6 +3950,7 @@ margin-bottom:10px;
 #login, #forgotpass, #register{
     padding:0.9em;
     color:black;
+    font-size:1.2em
 }
 #user_icon, #profileform_user_icon {
     float: <?=get_s_align()?>;  
@@ -4300,7 +4301,10 @@ a.info:hover span.info
     color: #2C3A42;
 
 }
-
+.currentcloth span.info
+{
+    margin-top: 2.5em;
+}
 .inparamdiv
 {
     font-family: nextexitfotlight;
@@ -4588,7 +4592,8 @@ margin:0 auto
 #latestnow .currentcloth
 {
    display: block;
-   margin-top: 0.5em;
+   margin: 0.2em auto;
+   width:90%
    
 }
 #coldmeter
@@ -5607,7 +5612,7 @@ height: 16px;
         .cboxSlideshow_on #cboxSlideshow.hover{background-position:-100px -25px;}
         .cboxSlideshow_off #cboxSlideshow{background-position:-100px 0px; right:44px;}
         .cboxSlideshow_off #cboxSlideshow.hover{background-position:-75px -25px;}
-		#cboxContent input{width:155px}
+		#cboxContent input{width:185px}
 		#cboxContent input[type="checkbox"]{width:auto}
 		#colorbox{border-radius:5px}
                  a.colorbox {position:relative;}
@@ -5742,6 +5747,25 @@ position:absolute;
       display: inline-block;
       width: 10px;
       height: 10px;
+    }
+    #chartjs-tooltip .rainpercent, #chartjs-tooltip .temp, #chartjs-tooltip .wind, #chartjs-tooltip .cloth, #chartjs-tooltip .humidity{
+        position:absolute;
+
+    }
+    #chartjs-tooltip .rainpercent{
+        top:150px;
+    }
+    #chartjs-tooltip .temp{
+        top:60px;
+    }
+    #chartjs-tooltip .wind{
+        top:90px;
+    }
+    #chartjs-tooltip .cloth{
+        top:30px;
+    }
+    #chartjs-tooltip .humidity{
+        top:120px;
     }
     .tooltipline{
       width:100%;

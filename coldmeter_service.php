@@ -159,14 +159,14 @@ if ($current_heat_index != "")
 
 
 $laundry_con = array();
-$laundry_con = get_laundry_index();
+$laundry_con = get_laundry_index($lang_idx);
 $json_res .= ",\"laundryidx\":";
 $json_res .= "{";
-    $json_res .= "\"laundry_con_img\":"."\"".$laundry_con[0]." \"";
+    $json_res .= "\"laundry_con_img\":"."\"".$laundry_con[0]."\"";
     $json_res .= ",";
-    $json_res .= "\"laundry_con_title\":"."\"".$laundry_con[1]." \"";
+    $json_res .= "\"laundry_con_title\":"."\"".$laundry_con[1]."\"";
     $json_res .= ",";
-    $json_res .= "\"laundry_con_limit\":"."\"".$laundry_con[2]." \"";
+    $json_res .= "\"laundry_con_limit\":"."\"".$laundry_con[2]."\"";
 $json_res .= "}"; 
 $json_res .= "}"; 
 if ($is_jason == 1)

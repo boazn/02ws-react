@@ -124,16 +124,19 @@ if (isset($_REQUEST['SendSurveyButton'])&&($_REQUEST['survey']!='')) {
 		<label id="coldmeter_exp_2">
 			<?=$PERSONAL_COLD_METER[$lang_idx]?>
 		</label>
-		<label id="coldmeter_exp">
-			<?=$DID_YOU_KNOW_SUMMER[1][$lang_idx]?>
-		</label>
+		
 		<div style="clear:both;height:10px">&nbsp;</div>
 		<? if (isset($_SESSION['email'])){ ?>
 			
-			
 		<?} else {?>
+			<label id="coldmeter_suggest">
+				<?=$PERSONAL_COLD_METER_SUGG[$lang_idx]?>
+			</label>
+			<label id="coldmeter_exp">
+				<?=$DID_YOU_KNOW_SUMMER[1][$lang_idx]?>
+			</label>
 			<div class="float clear" >
-			<label id="newto02ws" class="float clear"><?=$NEW_TO_02WS[$lang_idx]?></label> <a href="<?=$_SERVER['DOCUMENT_ROOT']?>login_form.php?action=registerform" id="clicktoregister" class="float clear big"><?echo $REGISTER[$lang_idx].get_arrow();?></a>
+			<label id="newto02ws" class="float clear"><?=$NEW_TO_02WS[$lang_idx]?></label> <a href="<?=BASE_URL?>/login_form.php?action=registerform" id="clicktoregister" class="float clear big"><?echo $REGISTER[$lang_idx].get_arrow();?></a>
 			</div>
 		<?}?>
 		<div style="clear:both;height:10px">&nbsp;</div>
@@ -141,6 +144,7 @@ if (isset($_REQUEST['SendSurveyButton'])&&($_REQUEST['survey']!='')) {
 		<form method="post">
 		<div class="float clear" >
 		<input type="submit" class="slogan inv_plain_3_zebra big"  style="width: 280px;padding: 0.5em;" name="displayResultsButton" value="<? if (isHeb()) echo "צפייה בתוצאות"; else echo "Display Results"; ?>&nbsp;&#8250;&#8250;"/>
+		<input type="hidden" id="survey_id" name="survey_id" value="<?=$_REQUEST['survey_id']?>"/>
 		</div>
 		</form>
 	</div>
@@ -171,9 +175,9 @@ else
 #user_info{ 
 	<?=get_s_align()?>: 2.8em;
 }
-#coldmeter_exp, #voteInserted{
+#coldmeter_exp, #coldmeter_exp_2, #voteInserted{
 	<? if (isHeb()) echo "direction:\"rtl\"";?>;
-	font-size:2em;
+	font-size:1.8em;
 }
 </style>
 <div class="survey">
@@ -195,7 +199,7 @@ else if (isset($_POST['displayResultsButton'])) {
 $survey_id = isset($_REQUEST['survey_id']) ? $_REQUEST['survey_id']: 2;
 
 $result = getSurvey($survey_id);
-if (!$msgSent) {
+if ((!$msgSent)&&(!$displayVotes)) {
 foreach ($result as $row) {
 	$lines++;
         if ($lines == 1){
@@ -235,7 +239,7 @@ print "</div>";
         
     </script>
 <?}
- if (($displayVotes) && (validEntry()))
+ if ($displayVotes)
 {
         if (isset($_SESSION['email'])){
             header("Location: https://www.02ws.co.il/".$_SERVER['SCRIPT_NAME']."?section=myVotes.php&lang=".$lang_idx."&survey_id=".$_REQUEST['survey_id']."&fullt=".$_GET['fullt']."&s=".$_GET['s']."&c=".$_GET['c']."\""); /* Redirect browser */
@@ -283,26 +287,28 @@ print "</div>";
 	$total = $row["count( * )"];
 	$result = mysqli_query($link, $query_verdict_m);
 	$row_verdict = @mysqli_fetch_array($result, MYSQLI_ASSOC);
-	
+	if ($total > 0){
 ?>
 <div class="spacer" style="clear:both">&nbsp;</div>
-<h2><?=$MALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span></h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span>
+<h2><?=$MALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span></h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><br/>(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span>
 <a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_m)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_m)?>&total=<?=$total?>&width=320" /><br/>
 </a>
 <?
+	}
 	$result = mysqli_query($link, $query_total_f);
 	$row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
 	$total = $row["count( * )"];
 	$result = mysqli_query($link, $query_verdict_f);
 	$row_verdict = @mysqli_fetch_array($result, MYSQLI_ASSOC);
-	
+	if ($total > 0){
 	?>
-<h2><?=$FEMALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> </h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?>>(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span>
+<h2><?=$FEMALE[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> </h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?>><br/>(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span>
 <a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_f)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query_f)?>&total=<?=$total?>&width=320" /><br/>
 </a>
     <?
+	}
 	$result = mysqli_query($link, $query_total);
 	$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 	$total = $row["count( * )"];
@@ -311,7 +317,7 @@ print "</div>";
 	
 	?>
 
-<h2><?=$GENERAL[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span> </h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span>
+<h2><?=$GENERAL[$lang_idx]." - ".$MOST_POPULAR[$lang_idx];?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span> </h2><span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><br/>(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span>
 <a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query)?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&query=<?=urlencode($query)?>&total=<?=$total?>&width=320" /><br/>
 </a>

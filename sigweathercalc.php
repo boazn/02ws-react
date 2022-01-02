@@ -52,6 +52,53 @@ function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $ra
 		$is_sig_forecast = true;
 	if (($timeframe == TimeFrame::Hourly)&&(($idx == $hour)||($idx == $hour+1)))
 		$is_now = true;
+
+	if (($rainperc > 0)||($dust > 100)||
+		($nextSigForecast['hrs']<8&&$is_now&&$is_sig_forecast)){
+			array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Laundry, 'value' => Recommendations::No));
+	}
+	else {
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Laundry, 'value' => Recommendations::Yes));
+	}
+
+	if (($timeframe == TimeFrame::Daily) && (!CalcCarCleaning($dust, $idx))){
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CARCLEANING, 'value' => Recommendations::No));
+	}
+
+	if ((($temp<17)&&($timeframe == TimeFrame::Hourly))&&
+		(in_array($LOW_RAD, $sig)&&($timeframe == TimeFrame::Hourly))){
+		array_push($reco, array('sig0' => $LOW_RAD[0], 'sig1' => $LOW_RAD[1], 'activity' => Activities::Boiler, 'value' => Recommendations::Yes));
+	}
+
+	if (($temp >= 35)||
+		($temp > 32)&&($humidity>50)||
+		($temp > 30)&&($humidity>65)){
+		array_push($reco, array('sig0' => $VERY_HOT_HEAT_WAVE[0], 'sig1' => $VERY_HOT_HEAT_WAVE[1], 'activity' => Activities::AC, 'value' => Recommendations::Yes));
+	}
+
+	if ($temp < 14){
+		array_push($reco, array('sig0' => $temp, 'sig1' => $temp, 'activity' => Activities::HEATER, 'value' => Recommendations::Yes));
+	}
+
+	if (in_array($HIGH_ET, $sig)&&($timeframe == TimeFrame::Hourly)){
+		array_push($reco, array('sig0' => $HIGH_ET[0], 'sig1' => $HIGH_ET[1], 'activity' => Activities::IRRIGATION, 'value' => Recommendations::Yes));
+	}
+
+	if (($timeframe == TimeFrame::Hourly) && 
+		(($rainperc > 50) ||
+	   (in_array($HOT_GROUND, $sig))||
+	   ($dust > 350 ))){
+	   array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Dog, 'value' => Recommendations::No));
+   	}
+
+	if (($rainperc > 0)||($dust > 100)||($temp<22)||($temp>29)||
+		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
+			array_push($reco, array('sig0' => $HIGH_DUST[0], 'sig1' => $HIGH_DUST[1], 'activity' => Activities::OpenWindow, 'value' => Recommendations::No));
+	}
+	else if (isOpenOrClose()==$OPEN[$lang_idx]) {
+		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::OpenWindow, 'value' => Recommendations::Yes));
+	}
+	
 	if (($dust > (($timeframe == TimeFrame::Hourly) ? 250 : 300))||
 		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 50))){
 		array_push($reco, array('sig0' => $HIGH_DUST[0], 'sig1' => $HIGH_DUST[1], 'activity' => Activities::Sport, 'value' => Recommendations::No));
@@ -62,7 +109,7 @@ function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $ra
 		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["rainTo"] > 20) : false)){
 		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::Bicycle, 'value' => Recommendations::No));
 	}
-	else{
+	else if ($timeframe == TimeFrame::Daily){
 		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::Bicycle, 'value' => Recommendations::Yes));
 	}
 		
@@ -83,12 +130,6 @@ function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $ra
 	else if (($timeframe == TimeFrame::Daily)){
 		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::DinnerAtBalcony, 'value' => Recommendations::Yes));
 	}	
-
-	if (($rainperc > (($timeframe == TimeFrame::Hourly) ? 50 : 50))||
-		(($timeframe == TimeFrame::Hourly) ? (in_array($HOT_GROUND, $sig)) : false)||
-		($dust > (($timeframe == TimeFrame::Hourly) ? 350 : 300))){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Dog, 'value' => Recommendations::No));
-	}
 
 	if (($rainperc > 0)||
 		($dust > 100)||
@@ -139,21 +180,7 @@ function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $ra
 		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::GAZELLEPARK, 'value' => Recommendations::Yes));
 	}
 	
-	if (($rainperc > 0)||($dust > 100)||
-	($nextSigForecast['hrs']<8&&$is_now&&$is_sig_forecast)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Laundry, 'value' => Recommendations::No));
-	}
-	else if ($humidity < 50){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Laundry, 'value' => Recommendations::Yes));
-	}
-		
-	if (($rainperc > 0)||($dust > 100)||($temp<22)||($temp>29)||
-	($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
-		array_push($reco, array('sig0' => $HIGH_DUST[0], 'sig1' => $HIGH_DUST[1], 'activity' => Activities::OpenWindow, 'value' => Recommendations::No));
-	}
-	else if (isOpenOrClose()==$OPEN[$lang_idx]) {
-		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::OpenWindow, 'value' => Recommendations::Yes));
-	}
+	
 
 	if (($rainperc > 50)||
 		($dust > 500)){
@@ -179,27 +206,8 @@ function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $ra
 		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::SACKER, 'value' => Recommendations::No));
 	}
 	
-	if ((($temp<17)&&($timeframe == TimeFrame::Hourly))&&
-		(in_array($LOW_RAD, $sig)&&($timeframe == TimeFrame::Hourly))){
-		array_push($reco, array('sig0' => $LOW_RAD[0], 'sig1' => $LOW_RAD[1], 'activity' => Activities::Boiler, 'value' => Recommendations::Yes));
-	}
-
-	if (($temp >= 35)||
-		($temp > 32)&&($humidity>50)||
-		($temp > 30)&&($humidity>65)){
-		array_push($reco, array('sig0' => $VERY_HOT_HEAT_WAVE[0], 'sig1' => $VERY_HOT_HEAT_WAVE[1], 'activity' => Activities::AC, 'value' => Recommendations::Yes));
-	}
-
-	if ($temp < 14){
-		array_push($reco, array('sig0' => $temp, 'sig1' => $temp, 'activity' => Activities::HEATER, 'value' => Recommendations::Yes));
-	}
-
-	if (in_array($HIGH_ET, $sig)&&($timeframe == TimeFrame::Hourly)){
-		array_push($reco, array('sig0' => $HIGH_ET[0], 'sig1' => $HIGH_ET[1], 'activity' => Activities::IRRIGATION, 'value' => Recommendations::Yes));
-	}
-	if (($timeframe == TimeFrame::Daily) && (!CalcCarCleaning($dust, $idx))){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CARCLEANING, 'value' => Recommendations::No));
-	}
+	
+	
 	return $reco;
 }
 function updateRecommendations($sigW, $r, $v)

@@ -255,9 +255,9 @@ $(".href").colorbox({width:"35%", inline:true, href:"#href_dialog"});
 $(".imghref").colorbox({width:"35%", inline:true, href:"#href_img_dialog"});
 $(".mood").colorbox({width:"35%", inline:true, href:"#moods_dialog"});
 $(".user_icon").colorbox({width:"35%", inline:true, href:"#user_icon_dialog"});
-$("#login").colorbox({width:"290px", height:"290px", inline:true, top:"40px", fixed:true,href:"#loginform"});
-$(".register").colorbox({width:"290px", height:"420px", inline:true, top:"40px", fixed:true,href:"#registerform"});
-$("#updateprofile").colorbox({width:"290px", height:"420px", top:"40px",inline:true, href:"#profileform"});
+$("#login").colorbox({width:"310px", height:"480px", inline:true, top:"40px", fixed:true,href:"#loginform"});
+$(".register").colorbox({width:"310px", height:"600px", inline:true, top:"40px", fixed:true,href:"#registerform"});
+$("#updateprofile").colorbox({width:"310px", height:"600px", top:"40px",inline:true, href:"#profileform"});
 $(".icon_forecast").colorbox({width:"35%", inline:true, href:"#icons_dialog"});
 $(".temphigh").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
 $(".tempnight").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
@@ -266,8 +266,14 @@ var isMobile = {
     Android: function() {
         return ((navigator.userAgent.match(/Android/i))&&(navigator.userAgent.match(/mobile/i))) ? true : false;
     },
+    AndroidWV: function() {
+        return navigator.userAgent.includes ('wv') ? true : false;
+    },
     BlackBerry: function() {
         return navigator.userAgent.match(/BlackBerry/i) ? true : false;
+    },
+    safari: function() {
+        return navigator.userAgent.match(/safari|Safari/i) ? true : false;
     },
     iOS: function() {
         return navigator.userAgent.match(/iPhone|iPod/i) ? true : false;
@@ -764,10 +770,10 @@ function attachEnter(){
 		   }
 		   });
        }	
-        function fillUserDetails (jsonstr )
+        function fillUserDetails (jsonT )
         {
                 var PERSONAL_COLD_METER_VOTES_THRESHHOLD = 0;
-        	var jsonT = JSON.parse( jsonstr  );
+        	
         	 $("#profileform_email").val(jsonT.user.email);
                  $("#name").html(jsonT.user.display);
                  $("#user_name").html(jsonT.user.display);
@@ -785,7 +791,9 @@ function attachEnter(){
                  if ((jsonT.user.voteCount >= PERSONAL_COLD_METER_VOTES_THRESHHOLD)&&(jsonT.user.PersonalColdMeter == 0)&&($("#personal_message")))
                     $("#personal_message").html('<?=$PERSONAL_COLD_METER_ALERT[$lang_idx]?>');
                  var nextClass = $("#profileform #user_icon_contentbox").children().first().children().first().attr('class');
-                 if ((jsonT.user.icon != "undefined" )
+                 console.assert(nextClass != undefined);
+                 if ((jsonT.user.icon != undefined )
+                    &&(nextClass != undefined )
                     &&(jsonT.user.icon != "" )
                     &&(jsonT.user.icon != "admin_avatar"))
                     while (jsonT.user.icon != nextClass){
@@ -921,7 +929,7 @@ function attachEnter(){
                    
         	$.ajax({
 		  type: "POST",
-		  url: "<?=BASE_URL?>/checkauth.php?action=login&lang="+lang+"&email="+$("#loginform_email").val() + "&password=" + $("#loginform_password").val() + "&isrememberme=" + ($("#loginform_rememberme").is(':checked') ? 1 : 0),
+		  url: "<?=BASE_URL?>/checkauth.php?action=login&lang="+lang+"&reg_id=<?=$_GET['reg_id']?>&email="+$("#loginform_email").val() + "&password=" + $("#loginform_password").val() + "&isrememberme=" + ($("#loginform_rememberme").is(':checked') ? 1 : 0),
 		  data: { email: $("#loginform_email").val(), password: $("#loginform_password").val(), isrememberme:$("#loginform_rememberme").is(':checked') ? 1 : 0 },
                   beforeSend: function(){$(".loading").show();}
 		}).done(function( jsonstr  ) {
@@ -941,9 +949,9 @@ function attachEnter(){
                     $("#cboxClose").click();
                     $("#colorbox").hide();
                     $("#cboxOverlay").hide();
-                    fillUserDetails (jsonstr );
+                    fillUserDetails (JSON.parse( jsonstr  ) );
                     toggle('loggedin');
-                    toggle('notloggedin');
+                    
                     if (document.getElementById('new_post_btn')){
                             $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
                     }
@@ -963,7 +971,7 @@ function attachEnter(){
             }
             catch (e) {
                 
-                alert(e);
+                console.error(e);
                 
             }
 		    
@@ -1214,10 +1222,19 @@ function fillLikes(jsonstr)
             $('#current_feeling_link_start').html(cur_feel_link.innerHTML);
 			}
     }
-    function fillcoldmeter_fromjson(json)
+    function fillcoldmeter_fromjson(json, coldmeter_size)
     {
         console.log("fillcoldmeter_fromjson json from fetch:" + JSON.stringify(json));
         $('#cm_current').val(json.coldmeter.current_value);
+        const clothimage = json.coldmeter.cloth_name;
+        const clothtitle = json.coldmeter.clothtitle;
+        const coldmeter_title = json.coldmeter.current_feeling;
+        const laundrytitle = json.laundryidx.laundry_con_title;
+        const laundryimage = json.laundryidx.laundry_con_img;
+        const coldmetersize = coldmeter_size
+        const output = `<a href="javascript:void(0)" class="info currentcloth" ><span class="info">${clothtitle}</span><img src="images/clothes/${clothimage}" height="${coldmeter_size}" style="vertical-align: middle" /></a><a class="info" id="coldmetertitle" href="javascript:void(0)" ><span class="info" style="cursor: default;" onclick="redirect('https://www.02ws.co.il?section=survey.php&amp;survey_id=2&amp;lang=1&amp;email=')">לא מסכימים? הצביעו!</span>${coldmeter_title}</a> <div id="laundryidx"><a href="javascript:void(0)" class="info" ><img src="images/laundry/${laundryimage}.svg" width="36" height="36" alt="laundry" title="${laundrytitle}" /><span class="info">${laundrytitle}</span></a><div><strong></strong></div></div>`;
+        fillcoldmeter(output);
+
     }
     function vote_cm_like()
     {
@@ -1472,18 +1489,9 @@ function startup(lang, from, update)
           coldmeter_size = 60;
        if (cur_feel_link)
        {
-            $.ajax({
-                type: "GET",
-                headers: {  'Access-Control-Allow-Origin': 'https://www.02ws.co.il' },
-                url: "coldmeter_service.php?lang="+lang + "&coldmetersize=" + coldmeter_size + "&cloth_type=e"
-            })
-            .done(function( jsonstr ) {
-                fillcoldmeter(jsonstr);
-            });   
-
-            fetch("coldmeter_service.php?lang="+lang + "&coldmetersize=" + coldmeter_size + "&json=1&cloth_type=e")
+              fetch("coldmeter_service.php?lang="+lang + "&json=1&cloth_type=e")
                 .then(response => response.json())
-                .then(data => fillcoldmeter_fromjson(data))
+                .then(data => fillcoldmeter_fromjson(data, coldmeter_size))
                 .catch(error => console.log("error:" + error))
                 
          }
@@ -1507,7 +1515,7 @@ function startup(lang, from, update)
                 }
                 else {
                     toggle('loggedin'); 
-                    fillUserDetails (jsonstr );
+                    fillUserDetails (JSON.parse( jsonstr  ) );
                     if (document.getElementById('new_post_btn')){
                             $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
                     }
@@ -1634,19 +1642,23 @@ function startup(lang, from, update)
        
 function redirect_to_mobile(lang){
     var loc = document.URL;
-    top.location.href="small.php?size=l&lang="+lang;
+    top.location.href="small/?lang="+lang;
+}
+function redirect_to_desktop(lang){
+    var loc = document.URL;
+    top.location.href="<?=BASE_URL?>/station.php?section=frommobile&lang="+lang;
 }
 function isOnMobilePage(){
     var loc = document.URL;
     return(loc.indexOf('small') > 0);
 }
 
-function loadPostData(jsonstr)
+function loadPostData(jsonstr, coldmeter_size)
 	{
             var C_STARTUP_AD_INTERVAL = 5;
 		
         if (jsonstr  != undefined)
-            fillcoldmeter(jsonstr);
+            fillcoldmeter_fromjson(jsonstr, coldmeter_size);
             $('#latestalert').css('visibility', 'visible');
             $('#arrowdown').show();
             
@@ -1872,19 +1884,15 @@ Licensed MIT
       
        var cur_feel_link=document.getElementById('current_feeling_link');
        if (typeof coldmeter_size == 'undefined') 
-                coldmeter_size = 40;
+                coldmeter_size = 80;
          if (cur_feel_link)
          {
-                $.ajax({
-                type: "GET",
-                url: '<?=BASE_URL?>/coldmeter_service.php?lang='+<?=$lang_idx?> + '&coldmetersize=' + coldmeter_size + '&cloth_type=e',
-                beforeSend: function(){$(".loading").show();}
-              }).done(function( jsonstr  ) {
-                  
-                    loadPostData(jsonstr);
-              });
-        }else
-			loadPostData();
+            $(".loading").show();
+            fetch("coldmeter_service.php?lang="+<? echo $lang_idx;?> + "&json=1&cloth_type=e")
+                .then(response => response.json())
+                .then(data => loadPostData(data, coldmeter_size))
+                .catch(error => console.log("error:" + error))
+        } else loadPostData();
         
         if (json.jws.current.issun == 1)
         {
@@ -2242,10 +2250,10 @@ Licensed MIT
     function fillAllJson(jsonstr)
     {
       try{var json = JSON.parse(jsonstr);} catch (e) {
-          //alert('parsing json: ' + e);
+          console.error('parsing json: ' + e);
           }
       try{loadData(json);} catch (e) {
-          //alert('extracting json to page: ' + e);
+        console.error('extracting json to page: ' + e);
           }
       
    }
@@ -2271,11 +2279,11 @@ trMouseOver();
       //  top.location.href="stationo.php?lang="+<?=$lang_idx?>;
     }
 }(jQuery));
-if ((isMobile.any())&&(!isOnMobilePage())&&((window.location.href.indexOf("updateForecast") < 0))){
+if ((isMobile.any())&&(!isOnMobilePage())&&((window.location.href.indexOf("updateForecast") < 0))&&((window.location.href.indexOf("frommobile") < 0))){
     
     //$.colorbox({href:"#mobile_redirect"});
-    $("#mobile_redirect").show();
-    //redirect_to_mobile(<?=$lang_idx?>);
+    //$("#mobile_redirect").show();
+    redirect_to_mobile(<?=$lang_idx?>);
 }
 function toggleForecastDay(index){
     $('.extra' + index).toggle(0);
@@ -2305,14 +2313,14 @@ function showcircleperhour(toptime, icon, temp, wind, cloth, rain, humidity){
     
     $('#chartjs-tooltip').css({
         opacity: 1,
-        width:'250px',
+        width:'310px',
         fontSize: '1.9em',
         margin:'0 auto',
-        top:-102,
+        top:'30px',
         padding: '4px 11px 18px',
         lineheight:'1em'
     });
-    $('#chartjs-tooltip').html( toptime + "<br/>&nbsp;<img src=\"images/clothes/" + cloth + "\" width=\"30.25\" height=\"25\" style=\"vertical-align: middle\">&nbsp;<img style=\"vertical-align: middle\" src=\"images/icons/day/" + icon + "\" height=\"30\" width=\"35\" alt=\""  + icon + "\">&nbsp;"  + temp + "°<br/>" + wind + " קמש<br/><div class=\"rainpercent\">" + rain + "%</div><br/><?=$HUMIDITY[$lang_idx] ?>:" + humidity + "%" );
+    $('#chartjs-tooltip').html( toptime + "<br/><div class=\"cloth\">&nbsp;<img src=\"images/clothes/" + cloth + "\" width=\"30.25\" height=\"25\" style=\"vertical-align: middle\">&nbsp;<img style=\"vertical-align: middle\" src=\"images/icons/day/" + icon + "\" height=\"30\" width=\"35\" alt=\""  + icon + "\"></div>&nbsp;<div class=\"temp\">"  + temp + "°<br/></div><div class=\"wind\">" + wind + " קמש<br/></div><div class=\"rainpercent\">" + rain + "%</div><div class=\"humidity\"><?=$HUMIDITY[$lang_idx] ?>:" + humidity + "%</div>" );
     change_circle('now_line', 'chartjs-tooltip');
     
 }

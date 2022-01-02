@@ -328,11 +328,11 @@ document.layers[object].visibility='hidden';}
 function toggle(id)
 {if(document.getElementById(id))
 {if(document.getElementById(id).style.display=='none')
-{$('#'+id).show("slow");}
+{$('#'+id).show("fast");}
 else
-$('#'+ id).hide("slow");}}
-function show(id){$('#'+id).show("slow");}
-function hide(id){$('#'+id).hide("slow");}
+$('#'+ id).hide("fast");}}
+function show(id){$('#'+id).show("fast");}
+function hide(id){$('#'+id).hide("fast");}
 function IncludeJavaScript(jsFile)
 {document.write('<script language="javascript" type="text/javascript" src="'
 +jsFile+'"></script>');}
@@ -764,10 +764,10 @@ function attachEnter(){
 		   }
 		   });
        }	
-        function fillUserDetails (jsonstr )
+        function fillUserDetails (jsonT )
         {
                 var PERSONAL_COLD_METER_VOTES_THRESHHOLD = 0;
-        	var jsonT = JSON.parse( jsonstr  );
+        	
         	 $("#profileform_email").val(jsonT.user.email);
                  $("#name").html(jsonT.user.display);
                  $("#user_name").html(jsonT.user.display);
@@ -785,7 +785,9 @@ function attachEnter(){
                  if ((jsonT.user.voteCount >= PERSONAL_COLD_METER_VOTES_THRESHHOLD)&&(jsonT.user.PersonalColdMeter == 0)&&($("#personal_message")))
                     $("#personal_message").html('<?=$PERSONAL_COLD_METER_ALERT[$lang_idx]?>');
                  var nextClass = $("#profileform #user_icon_contentbox").children().first().children().first().attr('class');
+                 console.assert(nextClass != "undefined");
                  if ((jsonT.user.icon != "undefined" )
+                    &&(nextClass != "undefined" )
                     &&(jsonT.user.icon != "" )
                     &&(jsonT.user.icon != "admin_avatar"))
                     while (jsonT.user.icon != nextClass){
@@ -921,7 +923,7 @@ function attachEnter(){
                    
         	$.ajax({
 		  type: "POST",
-		  url: "<?=BASE_URL?>/checkauth.php?action=login&lang="+lang+"&email="+$("#loginform_email").val() + "&password=" + $("#loginform_password").val() + "&isrememberme=" + ($("#loginform_rememberme").is(':checked') ? 1 : 0),
+		  url: "<?=BASE_URL?>/checkauth.php?action=login&lang="+lang+"&reg_id=<?=$_GET['reg_id']?>" +"&email="+$("#loginform_email").val() + "&password=" + $("#loginform_password").val() + "&isrememberme=" + ($("#loginform_rememberme").is(':checked') ? 1 : 0),
 		  data: { email: $("#loginform_email").val(), password: $("#loginform_password").val(), isrememberme:$("#loginform_rememberme").is(':checked') ? 1 : 0 },
                   beforeSend: function(){$(".loading").show();}
 		}).done(function( jsonstr  ) {
@@ -941,7 +943,7 @@ function attachEnter(){
                     $("#cboxClose").click();
                     $("#colorbox").hide();
                     $("#cboxOverlay").hide();
-                    fillUserDetails (jsonstr );
+                    fillUserDetails (JSON.parse( jsonstr  ) );
                     toggle('loggedin');
                     toggle('notloggedin');
                     if (document.getElementById('new_post_btn')){
@@ -963,7 +965,7 @@ function attachEnter(){
             }
             catch (e) {
                 
-                alert(e);
+                console.error(e);
                 
             }
 		    
@@ -1022,11 +1024,11 @@ function attachEnter(){
         function register_to_server(lang)
         {
         	$("#registerform_result").html("");
-                 if ($("#registerform_userid").val().length == 0){
+            /*   if ($("#registerform_userid").val().length == 0){
                  	alert('<?=$USER_ID[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
                  	$("#registerform_userid").focus();
                  	return false;
-                 }
+                 }*/
                  if ($("#registerform_email").val().length == 0){
                  	alert('<?=$EMAIL[$lang_idx]?> <?=$EMPTY[$lang_idx]?>');
                  	$("#registerform_email").focus();
@@ -1064,7 +1066,7 @@ function attachEnter(){
                    
         	$.ajax({
 		  type: "POST",
-		  url: "checkauth.php?action=register&lang="+lang+"&username="+$("#registerform_userid").val()+"&email=" + $("#registerform_email").val()+"&password="+$("#registerform_password").val()+"&user_display_name="+$("#registerform_displayname").val()+"&user_icon="+$("#chosen_user_icon").val()+"&user_nice_name="+$("#registerform_nicename").val()+"&priority="+($("#registerform_priority").is(':checked') ? 1 : 0),
+		  url: "checkauth.php?action=register&lang="+lang+"&username="+$("#registerform_displayname").val()+"&email=" + $("#registerform_email").val()+"&username=" + $("#registerform_email").val().split("@")[0] + "&password="+$("#registerform_password").val()+"&user_display_name="+$("#registerform_displayname").val()+"&user_icon="+$("#chosen_user_icon").val()+"&user_nice_name="+$("#registerform_displayname").val()+"&priority="+($("#registerform_priority").is(':checked') ? 1 : 0),
                   beforeSend: function(){$(".loading").show();},
 		  data: { username:$("#registerform_userid").val(),
 		  	  email: $("#registerform_email").val(), 
@@ -1083,13 +1085,17 @@ function attachEnter(){
 		  	$("#registerform_result").html("<div class=\"high\"><?=$DISPLAY_NAME[$lang_idx]." ".$IS_TAKEN[$lang_idx]?></div>");
 		  	$("#registerform_displayname").focus();
 		  }
+          else if (msg.indexOf("Not") > 0){
+		  	$("#registerform_result").html("<div class=\"high\">" + msg + "</div>");
+		  	$("#registerform_email").focus();
+		  }
 		  else if (msg==0){
 		  	 toggle('registerform_submit');
 		  	 toggle('registerform_OK');
-                         toggle('registerinput');
+                         toggle('registerform_submit');
                          $("#registerform_result").html("<?=$CHECK_EMAIL[$lang_idx]?>");
                          $("#registerform_result").addClass("text-success");
-		  	 $("#registerform_OK").val("<?=$CLOSE[$lang_idx]?>");
+		  	 //$("#registerform_OK").val("<?=$CLOSE[$lang_idx]?>");
 		  }
 		  else
 		      $("#registerform_result").html( msg );
@@ -1504,7 +1510,7 @@ function startup(lang, from, update)
                 }
                 else {
                     toggle('loggedin'); 
-                    fillUserDetails (jsonstr );
+                    fillUserDetails (JSON.parse( jsonstr  ) );
                     if (document.getElementById('new_post_btn')){
                             $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
                     }

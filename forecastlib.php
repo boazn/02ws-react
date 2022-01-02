@@ -746,7 +746,8 @@ $taf_contents = str_replace("/>", " ", $taf_contents);
 $taf_contents = str_replace("<br", " ", $taf_contents);
 $MAX_TIME = $_REQUEST['MAX_TIME'];
 $MULTIPLE_FACTOR = $_REQUEST['MULTIPLE_FACTOR'];
-
+if (empty($MAX_TIME)) {$MAX_TIME = 14;}
+if (empty($MULTIPLE_FACTOR)) {$MULTIPLE_FACTOR = 1.0;}
 $taf_tokens = tokenizeQuoted($taf_contents);
 //print_r($taf_tokens);
 for ($i = 0; $i < count($taf_tokens); $i++)
@@ -887,7 +888,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                        if ($_REQUEST["debug"] >= 3)
                                echo "<br/>need to delete less important PC lines: removed ".$removed."<br/>";
                }
-               updateForecast(40, array("$CLOUDY[$EN]", "$CLOUDY[$HEB]"), "n4_cloudy.svg");
+               updateForecast(40, array("$CLOUDY[$EN]", "$CLOUDY[$HEB]"), "n4_cloudy2.svg");
 
                if ($priority < $currentPri)
                {

@@ -80,7 +80,7 @@ if (!empty($_SESSION['email'])){
 <div class="float">
 <div class="spacer" style="clear:both">&nbsp;</div>
 <h3 class="inv_plain_2"><?=$MY_VOTES[$lang_idx]?></h3>
-<h2 class="inv_plain_2"><?=$MALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class="">(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
+<h2 class="inv_plain_2"><?=$MALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?>><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> class=""><br/>(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
 <a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&email=<?=$email?>&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&email=<?=$email?>&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
@@ -96,7 +96,7 @@ if (!empty($_SESSION['email'])){
 <div class="float">
 <div class="spacer" style="clear:both">&nbsp;</div>
 <h3 class="inv_plain_2">כולם </h3>
-<h2 class="inv_plain_2"><?=$MALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
+<h2 class="inv_plain_2"><?=$MALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><br/>(<? echo $TOTAL_VOTERS[$lang_idx].": ".$total;?>)</span></h2>
 <a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=m&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
@@ -110,9 +110,10 @@ if (!empty($_SESSION['email'])){
     $row_verdict = @mysqli_fetch_array($result, MYSQLI_ASSOC);
 
     ?>
-<div class="clear float">
+<div class="float">
+<div class="spacer" style="clear:both">&nbsp;</div>
 <h3 class="inv_plain_2"><?=$MY_VOTES[$lang_idx]?></h3>
-<h2 class="inv_plain_2"><?=$FEMALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span></h2>
+<h2 class="inv_plain_2"><?=$FEMALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><br/>(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span></h2>
 <? if ($total > 0) {?>
 <a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&email=<?=$email?>&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&email=<?=$email?>&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
@@ -129,8 +130,9 @@ if (!empty($_SESSION['email'])){
 
     ?>
 <div class="float">
+<div class="spacer" style="clear:both">&nbsp;</div>
 <h3 class="inv_plain_2">כולם </h3>
-<h2 class="inv_plain_2"><?=$FEMALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> >(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span></h2>
+<h2 class="inv_plain_2"><?=$FEMALE[$lang_idx]?>: <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><? echo get_name($row_verdict["field_name"]);?></span> <span <? if (isHeb()) echo "dir=\"rtl\""; ?> ><br/>(<? echo $TOTAL_VOTERS_FEMALE[$lang_idx].": ".$total;?>)</span></h2>
 <a class="enlarge" href="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=1000" target="_system" title="click to enlarge">
 <img src="<?=BASE_URL?>/imageSQLGraph.php?title=<?=urlencode($title)?>&survey_id=<?=$_REQUEST['survey_id']?>&g=f&temp_from=<?=$temp_from?>&temp_to=<?=$temp_to?>&Xtitle=&Ytitle=&lang_idx=<?=$lang_idx?>&total=<?=$total?>&width=320" /><br/>
 </a>
