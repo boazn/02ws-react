@@ -19,6 +19,23 @@ include_once("start.php");
 	{
 		text-decoration: none;
 	}
+	#loginform input[type="text"], #loginform input[type="password"]{
+		height: 2.2em;
+	}
+	@media only screen and (min-width: 1000px) {
+		#loginform input[type="text"], #profileform input[type="text"], #registerform input[type="text"], #registerinput input[type="password"], #loginform input[type="password"]
+		{
+			height: 2em;
+			font-size: 1em;
+			width: 280px;
+		}
+    }
+	input[type="checkbox"]{
+		margin-<?=get_s_align()?>: 10px;
+	}
+	#registerform_priority, #registerform_personal_coldmeter{
+		width:40px
+	}
 </style>
 </head>
 <body >
@@ -68,18 +85,19 @@ include_once("start.php");
 								<div style="clear:both;height:30px">&nbsp;</div>
 								<div class="float clear">
 								<input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="loginform_email" size="30" tabindex="1"/><br /><br />
-								<input type="password" placeholder="<?=$PASSWORD[$lang_idx]?>" name="password" value="" id="loginform_password" tabindex="2" size="15"/><br />&nbsp;&nbsp;
+								<input type="password" placeholder="<?=$PASSWORD[$lang_idx]?>" name="password" value="" id="loginform_password" tabindex="2" size="15"/><br /><br />&nbsp;&nbsp;
 								<input type="checkbox" name="rememberme" value="" id="loginform_rememberme"/><?=$REMEMBER_ME[$lang_idx]?>
-								<div style="clear:both;height:10px">&nbsp;</div>
+								<div style="clear:both;height:0px">&nbsp;</div>
 								</div>
 								<div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32"/></div>
-								<div id="loginform_result" class="float"></div>
+								
 							    <input type="submit" value="Success!" onclick="$('#cboxClose').click();window.location.reload();" id="loginform_OK" class="info float big" style="display:none"/>
-								<div style="clear:both;height:10px">&nbsp;</div>
+								<div style="clear:both;height:0px">&nbsp;</div>
 								<a href="javascript:void()" id="forgotpass" onclick="toggle('loginform');toggle('passforgotform');" title="<?=$FORGOT_PASS[$lang_idx]?>"><?echo $FORGOT_PASS[$lang_idx].get_arrow();?></a>
-								<div style="clear:both;height:10px">&nbsp;</div>
-								<a href="javascript:void()" id="clicktoregister" onclick="toggle('loginform');toggle('registerform');" class="float"><?=$NEW_TO_02WS[$lang_idx]?>&nbsp;<?echo $REGISTER[$lang_idx].get_arrow();?></a>
+								<div id="loginform_result" class="float"></div>
 								<input type="submit" value="<?=$END[$lang_idx]?>" class="float clear inv_plain_3_zebra big" onclick="login_to_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="loginform_submit"/>
+								<div style="clear:both;height:0px">&nbsp;</div>
+								<a href="javascript:void()" id="clicktoregister" onclick="toggle('loginform');toggle('registerform');" class="float"><?=$NEW_TO_02WS[$lang_idx]?>&nbsp;<?echo $REGISTER[$lang_idx].get_arrow();?></a>
 								
 							</div>
 							<div id="loggedin" style="display:none">
@@ -97,7 +115,7 @@ include_once("start.php");
 <div id="registerform" style="display:none" >
 	<div class="clear big"><?=$REGISTER[$lang_idx]?> </div>
 	<div style="clear:both;height:10px">&nbsp;</div>
-	<div id="registerinput" class=" clear">
+	<div id="registerinput" class="float clear">
 	<table>
 	<tr><td></td><td><input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="registerform_email" size="30" tabindex="3" /></td></tr>
 	<tr><td></td><td><input type="password" placeholder="<?=$PASSWORD[$lang_idx]?>" name="password" value="" id="registerform_password" tabindex="4"/></td></tr>
@@ -116,10 +134,11 @@ include_once("start.php");
 	<div class="icon_right" onclick="change_icon('right', this); return false"></div>
 				</div>
 	</td></tr>
-	<tr><td></td><td><input type="text" placeholder="<?=$DISPLAY_NAME[$lang_idx]?>" name="user_display_name" value="" id="registerform_displayname" tabindex="7" style="margin-top: 15px;"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$DISPLAY_NAME_EXP[$lang_idx]?></span></a></td></tr>
+	<tr><td></td><td><input type="text" placeholder="<?=$DISPLAY_NAME[$lang_idx]?>" name="user_display_name" value="" id="registerform_displayname" tabindex="7" style="margin-top: 15px;"/><!--<a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$DISPLAY_NAME_EXP[$lang_idx]?></span></a>--></td></tr>
 	<!--<tr><td></td><td><input type="text" placeholder="<?=$NICE_NAME[$lang_idx]?>" name="user_nice_name" value="" id="registerform_nicename" tabindex="8"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$NICENAME_EXP[$lang_idx]?></span></a></td></tr>-->
 	</table>
-	<input type="checkbox" name="priority" value="" id="registerform_priority"/><?=$GET_UPDATES[$lang_idx]?><br />
+	<br />
+	<input type="checkbox" name="priority" value="" id="registerform_priority"/><?=$GET_UPDATES[$lang_idx]?><br /><br />
 	<input type="checkbox" name="personal_coldmeter" value="" id="registerform_personal_coldmeter" /><?=$PERSONAL_COLD_METER[$lang_idx]?><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?echo get_s_align();?>:-100px"><?=$PERSONAL_COLD_METER_EXP[$lang_idx]?></span></a>
 	</div>
 	<div style="display:none" class=" loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
@@ -131,8 +150,8 @@ include_once("start.php");
 </div>
 
 <div id="passforgotform" class="big"  style="padding:1em;display:none">
-	<div><?=$FORGOT_PASS_REQ[$lang_idx]?></div>
-	<input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="passforgotform_email" size="30" style="direction:ltr"/><br /><br />
+	<div><?=$FORGOT_PASS_REQ[$lang_idx]?></div><br />
+	<input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="passforgotform_email" size="30" /><br /><br />
 	<div id="passforgotform_result" class="big"></div>
 	<input type="submit" value="<?=$END[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit" class="inv_plain_3_zebra big info"/>
 	
@@ -146,10 +165,10 @@ include_once("start.php");
 			  src="https://code.jquery.com/jquery-3.6.0.min.js"
 			  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 			  crossorigin="anonymous"></script>
-<script src="footerScripts161120.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&reg_id=<?=(empty($_GET['reg_id']))? $_GET['regId'] : $_GET['reg_id']?>"  type="text/javascript"></script>
+<script src="footerScripts180422.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&reg_id=<?=(empty($_REQUEST['reg_id']))? $_REQUEST['regId'] : $_REQUEST['reg_id']?>"  type="text/javascript"></script>
 <script>
 	
-        fetch("checkauth.php?action=getuser&lang=" + <?=$lang_idx?> +"&reg_id=<?=(empty($_GET['reg_id']))? $_GET['regId'] : $_GET['reg_id']?>")    
+        fetch("checkauth.php?action=getuser&lang=" + <?=$lang_idx?> +"&reg_id=<?=(empty($_REQUEST['reg_id']))? $_REQUEST['regId'] : $_REQUEST['reg_id']?>")    
         .then(response => response.json())
 		.then(jsonT => {console.log(jsonT);
 						if (!jsonT.user.loggedin){
@@ -166,5 +185,8 @@ include_once("start.php");
                        })
         .catch(error => console.error("error:" + error));
 
+			 <? if ($_GET['action'] == "passforgotform") {?>
+		toggle('loginform');toggle('passforgotform');
+		<?}?>
 </script>
 </html>

@@ -1,11 +1,11 @@
 <?  
 header('Content-type: text/html; charset=utf-8');
-if ($_GET['debug'] == '')
-	include "begin_caching.php";
 include_once("include.php"); 
-include "start.php";
-include_once ("requiredDBTasks.php");
-include "sigweathercalc.php";
+include_once("start.php");
+include_once("requiredDBTasks.php");
+include_once "sigweathercalc.php";
+include_once "runwalkcalc.php";
+$sigforecastHour = $mem->get('sigforecastHour');
 
 $size = $_REQUEST['size'];
 if ($size == 's')
@@ -103,7 +103,7 @@ else
      width:100%;top:0.2em;
  }
  #statusline{
-     font-size: 1.8em;margin-top:-3.9em;font-weight:bold;width:700px
+     font-size: 1.1em;margin-top:-8.9em;font-weight:bold;width:700px;position:absolute
  }
  #laundryidx{
      position:absolute;
@@ -128,7 +128,12 @@ else
  #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw, #itfeels_thw, #itfeels{
     position: absolute;
     top:4.2em;
-    font-size: 1.6em;
+    font-size: 1.1em;
+    width:50%
+ }
+ #latestnow
+ {
+    display:block
  }
  .wind_icon{
  background-size: 390%;
@@ -188,8 +193,8 @@ else
 {
     font-weight: normal;
     font-family: nextexitfotlight;
-    font-size:6.5em;
-    margin-top: -80px;
+    font-size:4em;
+    margin-top: -60px;
 }
 #heatindex
 {
@@ -386,8 +391,8 @@ else if ($itfeels[0] == "heatindex"){ ?>
 <?php   if (isSnowing()||(stristr($template_routing, 'snow'))) { ?>
 <script src="js/snow.js"></script>
 <?php   }?>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"  type="text/javascript"></script>
-<script src="footerScripts250320.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
+<script src="footerScripts18042022.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
 <script type="text/javascript">
 var coldmeter_size = 40;
 //startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
@@ -412,4 +417,3 @@ function refreshContent(){
 </script>
 </body>
 </html>
-<?php   if ($_GET['debug'] == '') include "end_caching.php"; ?>

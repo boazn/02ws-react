@@ -247,10 +247,10 @@ $floated = false;
 								<?=c_or_f($forecastday['TempLow'])?>
 								</li>
 								<li class="forcast_noon">
-								<?=c_or_f($forecastday['TempHigh'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" ><img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastday['TempHighCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" alt="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'])?>" /></a>
+								<?=c_or_f($forecastday['TempHigh'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempHighCloth?>" rel="external" ><img style="vertical-align: middle" src="<? echo "images/clothes/".$forecastday['TempHighCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'], $forecastday['windDay'], $forecastday['humDay'])?>" alt="<?=getClothTitle($forecastday['TempHighCloth'], $forecastday['TempHigh'], $forecastday['windDay'], $forecastday['humDay'])?>" /></a>
 								</li>
 								<li class="forcast_night">
-								<?=c_or_f($forecastday['TempNight'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" alt="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'])?>" /></a>
+								<?=c_or_f($forecastday['TempNight'])?>&nbsp;<a href="WhatToWear.php#<?=$prefTempNightCloth?>" rel="external" ><img style="vertical-align: middle"  src="<? echo "images/clothes/".$forecastday['TempNightCloth']; ?>" width="24.3" height="20" title="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'], $forecastday['windNight'], $forecastday['humNight'])?>" alt="<?=getClothTitle($forecastday['TempNightCloth'], $forecastday['TempNight'], $forecastday['windNight'], $forecastday['humNight'])?>" /></a>
 								</li>
                                                                 <li><a href="legend.php" rel="external" ><img src="<? echo "images/icons/day/".$forecastday['icon']; ?>" width="40" height="40" alt="<?=$forecastday['date']?>" /></a></li>
 								<li class="forcast_text">

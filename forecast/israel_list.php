@@ -1,4 +1,4 @@
-<li	dir="ltr" value="44">Tel-aviv תל-אביב</li>
+<li	dir="ltr" value="44">Tel-aviv העיר שליד רכבת מרכז</li>
 <li	dir="ltr" value="1931">Haifa חיפה</li>
 <li	dir="ltr" value="1930">Beer-Sheva באר-שבע</li>
 <li	dir="ltr" value="45">Tiberias טבריה</li>

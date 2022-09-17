@@ -187,13 +187,13 @@
     }
     public function getSubFromRegId($regid) {
         // insert user into database
-        
-        $guid = trim($guid);
+        global  $userJSON;
+        $regid = trim($regid);
         global $link;
 		try{
 							
 		
-                $query = "select id, email, approved from `Subscriptions` where reg_id='{$regid}'";
+                $query = "select id, email, guid, approved from `Subscriptions` where reg_id='{$regid}'";
                  
                 $result = db_init($query, "");
                 $line = mysqli_fetch_array($result["result"]);
@@ -206,20 +206,52 @@
 
                 $userJSON .= "\"id\":"."\"".$line['id']."\"";
                 $userJSON .= ",";
-                $userJSON .= "\"guid\":"."\"".$guid."\"";
-                $userJSON .= ",";
-                $userJSON .= "\"email\":"."\"".$line['email']."\"";
+                $userJSON .= "\"guid\":"."\"".$line['guid']."\"";
                 $userJSON .= ",";
                 $userJSON .= "\"approved\":"."\"".$line['approved']."\"";
 
                 //$userJSON .= "}";
                 //$userJSON .= "}";
                 if ($line['id'] != "")
-                    logger($regid." ".$userJSON, 0, "subscriptions", "", "getSubFromRegId");
+                    logger($_SESSION['email']." ".$regid." ".$userJSON, 0, "subscriptions", "", "getSubFromRegId");
                 return $userJSON;
                 
         } catch (Exception $ex) {
-            logger("New getSubFromGUI:.".$gui." "." ", 0, "Subscriptions", "storeSub", "getSubFromRegId");
+            logger("New getSubFromRegId:.".$regid." "." ", 0, "Subscriptions", "storeSub", "getSubFromRegId");
+        }
+   
+    }
+    public function getGenderFromRegId($regid) {
+        // insert user into database
+        global  $userJSON;
+        $regid = trim($regid);
+        global $link;
+		try{
+							
+		
+                $query = "select gender from `fcm_users` where gcm_regid='{$regid}'";
+                 
+                $result = db_init($query, "");
+                $line = mysqli_fetch_array($result["result"]);
+                @mysqli_free_result($result["result"]);
+                global $link;
+                mysqli_close($link);
+                if ($line['gender'] == '')
+                {
+                    $query = "select gender from `apn_users` where apn_regid='{$regid}'";
+                    $result = db_init($query, "");
+                    $line = mysqli_fetch_array($result["result"]);
+                    @mysqli_free_result($result["result"]);
+                    global $link;
+                    mysqli_close($link);
+                }
+
+                $userJSON .= "\"gender\":"."\"".$line['gender']."\"";
+                $userJSON .= ",";
+                return $userJSON;
+                
+        } catch (Exception $ex) {
+            logger("New getSubFromRegId:.".$regid." "." ", 0, "Subscriptions", "storeSub", "getGenderFromRegId");
         }
    
     }
@@ -228,6 +260,7 @@
         
         $guid = trim($guid);
         global $link;
+        global  $userJSON;
 		try{
 							
 		
@@ -256,7 +289,7 @@
                 return $userJSON;
                 
         } catch (Exception $ex) {
-            logger("New getSubFromGUI:.".$gui." "." ", 0, "Subscriptions", "storeSub", "getSubFromGUI");
+            logger("New getSubFromGUI:.".$guid." "." ", 0, "Subscriptions", "storeSub", "getSubFromGUI");
         }
    
     }
@@ -264,7 +297,7 @@
     public function getSubFromEmail($email) {
         // insert user into database
         
-        $guid = trim($guid);
+        $email = trim($email);
         global $link;
 		try{
 							
@@ -296,7 +329,7 @@
                 return $userJSON;
                 
         } catch (Exception $ex) {
-            logger("New getSubFromGUI:.".$gui." "." ", 4, "Subscriptions", "storeSub", "getSubFromEmail");
+            logger("New getSubFromEmail:.".$email." "." ", 4, "Subscriptions", "storeSub", "getSubFromEmail");
         }
    
     }
@@ -323,7 +356,8 @@ else if ($_REQUEST['action']=="getsubfromgui"){
     //echo ($res_sub);
 }
 else if ($_REQUEST['action']=="getsubfromregid"){
-    $res_sub = $db->getSubFromRegId($_REQUEST["reg_id"]);
+    $res_sub = $db->getGenderFromRegId($_REQUEST["reg_id"]);
+    $res_sub .= $db->getSubFromRegId($_REQUEST["reg_id"]);
     //if (!empty($_SESSION['email'])) 
     //logger ($res_sub);
 }

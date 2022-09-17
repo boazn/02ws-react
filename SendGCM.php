@@ -33,7 +33,7 @@
             //$("#SendButton").hide();
                 $.ajax({
           type: "POST",
-          url: "SendGcmService.php",
+          url: "<?=BASE_URL?>/SendGcmService.php",
           data: { short_range:$("#short_range").is(":checked") , long_range:$("#long_range").is(":checked") , tip:$("#tip").is(":checked") , title1: $("#title1").val(), picture_url: $("#picture_url").val(), embedded_url: $("#embedded_url1").val(), message1: $("#message1").val() ,
                 title0: $("#title0").val(),message0: $("#message0").val()},
             beforeSend: function(){$(".loading").show();}

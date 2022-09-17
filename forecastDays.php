@@ -45,7 +45,7 @@
        var json = JSON.parse(jsonstr);
        var forecastDays;
        forecastDays = "<table style=\"border-spacing:4px;width:100%\">";
-       forecastDays += "<tr style=\"height:2em\">";
+       forecastDays += "<tr class=\"inv_plain_3_zebra\" style=\"height:2em\">";
        forecastDays += "<th></th>";
        forecastDays += "<th id=\"morning_icon\"></th>";
        forecastDays += "<th id=\"noon_icon\"></td>";
@@ -58,7 +58,7 @@
        for (i = 0; i< json.jws.forecastDays.length; i++){
             TempHighCloth = '&nbsp;<a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastDays[i].TempHighCloth+'\" width=\"20\" height=\"15\" title=\"'+json.jws.forecastDays[i].TempHighClothTitle<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastDays[i].TempHighClothTitle<? echo $lang_idx;?>+'</span></a>';
             TempNightCloth = '&nbsp;<a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastDays[i].TempNightCloth+'\" width=\"20\" height=\"15\" title=\"'+json.jws.forecastDays[i].TempNightClothTitle<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastDays[i].TempNightClothTitle<? echo $lang_idx;?>+'</span></a>';
-            forecastDays += "<tr style=\"height:4em\">";
+            forecastDays += "<tr class=\"inv_plain_3_zebra\" style=\"height:4em\">";
             link_for_yest = "";
             forecastDays += "<td class=\"tsfh\" style=\"text-align:center;line-height: 0.9em;\">" + link_for_yest + json.jws.forecastDays[i].day_name<?=$lang_idx?> + "<br />" + json.jws.forecastDays[i].date + '/'+ json.jws.forecastDays[i].updated_at +"</td>";
             forecastDays += "<td class=\"tsfh\" style=\"text-align:center;direction:ltr\">" + c_or_f(json.jws.forecastDays[i].TempLow, tempunit) +"</td>";

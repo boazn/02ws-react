@@ -152,8 +152,14 @@ class ForecastRestHandler extends SimpleRest {
 	}
 	
 	public function encodeJson($responseData) {
+		$CURRENT_JSON = "";
+		//$CURRENT_JSON = "{\"jws\":";
+		//$CURRENT_JSON .= "{\"current\":";
 		$jsonResponse = json_encode($responseData);
-		return $jsonResponse;		
+		$CURRENT_JSON .= $jsonResponse;
+		//$CURRENT_JSON .= "}";
+		//$CURRENT_JSON .= "}";
+		return $CURRENT_JSON;		
 	}
 	
 	public function encodeXml($responseData) {

@@ -66,13 +66,45 @@ $(document).ready(function() {
     getLatest("מצוקי דרגות", "210", "IMS");
     getLatest("מעלה אדומים", "218", "IMS");
     getLatest("נחשון", "259", "IMS");
-    //getLatest("בית-דגן", "54", "IMS");// fix order
-    //getLatest("יבנה", "74", "IMS");
-    //getLatest("בית שמש", "75", "IMS");
-    //getLatest("גת", "236", "IMS");
-    //getLatest("שערי תקוה", "270", "IMS");
-    //getLatest("הכפר הירוק", "275", "IMS");
-    //getLatest("City", "ALL", "IMS");
+    getLatest("מעלה גלבוע", "224", "IMS");
+    getLatest("גמלא", "227", "IMS");
+    
+    getLatest("עין כרמל", "44", "IMS");
+    
+    
+    getLatest("גת", "236", "IMS");
+    getLatest("כפר גלעדי", "241", "IMS");
+    getLatest("חרשים", "269", "IMS");
+    
+    
+    
+    
+    getLatest("יבנה", "74", "IMS");
+    getLatest("אילון", "73", "IMS");
+    getLatest("בית שמש", "75", "IMS");
+    
+    getLatest("נגבה", "82", "IMS");
+    getLatest("מצפה רמון", "379", "IMS");
+    
+    
+    getLatest("תבור", "13", "IMS");
+    getLatest("בית-דגן", "54", "IMS2");
+    getLatest("יבנה", "74", "IMS2");
+    //getLatest("בית שמש", "75", "IMS2");
+    //getLatest("גת", "236", "IMS2");
+   // getLatest("עפולה", "16", "IMS2");
+    //getLatest("שערי תקוה", "270", "IMS2");
+    //getLatest("הכפר הירוק", "275", "IMS2");
+    //getLatest("נתיב הל''ה", "25", "IMS2");
+    //getLatest("אילת", "64", "IMS2");
+    //getLatest("צפת", "62", "IMS2");
+    //getLatest("עבדת", "271", "IMS2");
+    //getLatest("זכרון יעקב", "45", "IMS2");
+    //getLatest("חיפה", "43", "IMS2");
+   // getLatest("באר-שבע", "59", "IMS2");
+   // getLatest("חדרה", "46", "IMS2");
+    //getLatest("City", "ALL", "IMS2");
+    //getLatest("דורות", "79", "IMS2");
 });
 
 

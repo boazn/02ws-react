@@ -911,17 +911,17 @@ function imgError(image) {
 <a  href="javascript: func()" onclick="stop();toggle('play');">
 	<img src="images/stop.png" alt="stop עצור" width="20px"/>
 </a>
-<div style="margin:0 0.5em;padding: 0.5em;display:inline" class="inv_plain_3 big">
+<div style="margin:0 0.5em;padding: 0.7em;display:inline" class="inv_plain_3 big">
 <a href="javascript: func()" onclick="change_speed(delay_step)">
 	<? if (isHeb()) echo "לאט יותר"; else echo "slower"; ?>
 </a>
 </div>
-<div style="margin:0 0.5em;padding: 0.5em;display:inline" class="inv_plain_3 big">
+<div style="margin:0 0.5em;padding: 0.7em;display:inline" class="inv_plain_3 big">
 <a href="javascript: func()" onclick="change_speed(-delay_step)" >
 	<? if (isHeb()) echo "מהר יותר"; else echo "faster"; ?>
 </a>
 </div>
-<div id="speedintervalwrapper" class="inv_plain_2" style="display:inline;<? if (isHeb()) echo "direction:rtl"; ?>"><span id="speedinterval"></span><? if (isHeb()) echo " פריים לשנייה "; else echo " frame per sec"; ?></div>
+<div id="speedintervalwrapper" class="inv_plain_2 big" style="display:inline;<? if (isHeb()) echo "direction:rtl"; ?>"><span id="speedinterval"></span><? if (isHeb()) echo " פריים לשנייה "; else echo " frame per sec"; ?></div>
 <div class="float" style="display:inline">
 <form method="post" name="profileChanger" action="" style="background:transparent;" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
 				

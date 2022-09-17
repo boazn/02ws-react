@@ -1,4 +1,11 @@
 <style>
+	.trendstable
+	{
+		top:150px;
+	}
+	.paramvalue{
+		font-size: 2.3em;
+	}
     #baseGraph, #rainDailyGraph, .imgresponsive, iframe {
             width:315px
         }
@@ -8,10 +15,10 @@
         }
     }
     #moregraphs{ 
-		list-style-type: bullet;float:<?=get_s_align();?>;margin-<?=get_s_align();?>:2em
+		list-style-type: bullet;float:<?=get_s_align();?>;margin-<?=get_s_align();?>:2em;margin-top:1em
 	}
 	#relatedgraphs{ 
-		list-style-type: bullet;width: 180px;margin-<?=get_s_align();?>:3em
+		list-style-type: bullet;width: 180px;margin-<?=get_s_align();?>:3em;;margin-top:1em
 	}
 	#currentinfo_container
 	{
@@ -37,8 +44,16 @@
 	{
 		visibility:hidden;
 	}
-        
-    
+    .inparamdiv{
+		height:280px;
+	}    
+    #graphnav li a:hover{
+		text-decoration: underline
+
+	}
+	#moregraphs li{
+		line-height: 30px
+	}
     
     
 </style>
@@ -464,10 +479,10 @@ if ((strstr(strtolower($_GET['graph']), 'temp'))||
 	echo "<li".getBorder("tempLatestArchive.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'tempLatestArchive.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$TEMP[$lang_idx]." ".$MOUNTAIN[$lang_idx].": <span dir=\"ltr\" >".$current->get_temp()."&#176; </span>"."</a></li>";
 	echo "<li".getBorder("temp3.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'temp3.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$TEMP[$lang_idx]." ".$ROAD[$lang_idx].": <span dir=\"ltr\" >".$current->get_temp3()."&#176;</span>"."</a></li>";
 	if (($current->get_temp2() <= 16)||($current->get_temp() <= 16))
-            echo "  <li".getBorder("tempwchill.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'tempwchill.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$WIND_CHILL[$lang_idx].": <span dir=\"ltr\" >".$current->get_windchill()."&#176;"."</span>"."</a></li>";
+            echo "  <li".getBorder("tempwchill.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'tempwchill.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$WIND_CHILL[$lang_idx]." ".$VALLEY[$lang_idx].": <span dir=\"ltr\" >".$current->get_windchill()."&#176;"."</span>"."</a></li>";
 	if (($current->get_temp2() > 23)||($current->get_temp() > 23))
             echo "  <li".getBorder("tempheat.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'tempheat.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$HEAT_IDX[$lang_idx].": <span dir=\"ltr\" >".$current->get_HeatIdx()."&#176;"."</span>"."</a></li>";
-	echo "  <li id=\"thwtab\" ".getBorder("THWHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'THWHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$THW[$lang_idx].": <span dir=\"ltr\" >".$current->get_thw()."&#176;"."</span>"."</a></li>";
+	echo "  <li id=\"thwtab\" ".getBorder("THWHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'THWHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$THW[$lang_idx]." ".$VALLEY[$lang_idx].": <span dir=\"ltr\" >".$current->get_thw()."&#176;"."</span>"."</a></li>";
         echo "  <li id=\"thswtab\" ".getBorder("THSWHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'THSWHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$THSW[$lang_idx].": <span dir=\"ltr\" >".$current->get_thsw()."&#176;"."</span>"."</a></li>";
 	echo "  <li".getBorder("dewptLatestArchive.php")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'dewptLatestArchive.php')."\" title=\"".$GRAPH[$lang_idx]."\">".$DEW[$lang_idx].": <span dir=\"ltr\" >".$current->get_dew()."&#176;"."</span>"."</a></li>";
 	echo "  <li".getBorder("AirDensityHistory.gif")." ><a href=\"".get_query_edited_url(get_url(), 'graph', 'AirDensityHistory.gif')."\" title=\"".$GRAPH[$lang_idx]."\">".$AIR_DENSITY[$lang_idx]."</a></li>";
@@ -513,7 +528,7 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
 }
 ?>
  
-<div id="graphmain"  class="inv_plain_2">
+<div id="graphmain"  class="<?if ($_GET["graph"] != "AirDensityHistory.gif") echo "inv_plain_2"; ?>">
 <hr id="graphs_line" style="display:none" />
 <div id="exp" class="float exp inv_plain_3_zebra" style="width:95%;">
 		<? echo getExp();?>
@@ -597,7 +612,7 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
             else
             { $alternategraph = "OutsideTempHistory.gif"; $alternategraphtitle=$TEMP[$lang_idx];}
             ?>
-            <div class="float" id="additionalgraphs" style="padding:0 1em">
+            <div class="float" id="additionalgraphs" style="padding:1em 1em">
                     <a href="images/profile<? echo $_REQUEST['profile']."/".$alternategraph;?>" class='colorbox' title="<?=$alternategraphtitle?>">
                     <img name="alternateGraph" id="alternateGraph" src="./images/profile<? echo $_REQUEST['profile']."/".$alternategraph;?>" width="290" alt="<?=$alternategraphtitle?>" style="padding:0;margin:0"/>
                     </a>
@@ -657,19 +672,19 @@ if (strstr(strtolower($_GET['graph']), 'temp'))
 	
 	<tr class="inv_plain_2">
 		<td><a href="<? echo get_query_edited_url(get_url(), 'section', 'averages');?>"  class="hlink" target="_self" title="<? echo $AVERAGE[$lang_idx];?>"><? echo($NORMAL[$lang_idx])." - ".$monthInWord;?></a></td>
-		<td class="high number"><? if (!$error_db) echo $monthAverge->get_hightemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
-		<td class="low number"><?  if (!$error_db) echo $monthAverge->get_lowtemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
+		<td class=" number"><? if (!$error_db) echo $monthAverge->get_hightemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
+		<td class=" number"><?  if (!$error_db) echo $monthAverge->get_lowtemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
 	</tr>
 	<tr class="inv_plain_2">
 		
 		<td><? echo($TODAY[$lang_idx]);?></td>
-        <td class="high number"><? echo toLeft($today->get_hightemp()); ?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div> <? echo " [".$today->get_hightemp_time()."] "; ?></td>
-		<td class="low number"><? echo toLeft($today->get_lowtemp()); ?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div><? echo " [".$today->get_lowtemp_time()."] "; ?></td>
+        <td class=" number"><? echo toLeft($today->get_hightemp()); ?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div><br/> <? echo " [".$today->get_hightemp_time()."] "; ?></td>
+		<td class=" number"><? echo toLeft($today->get_lowtemp()); ?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div><br/><? echo " [".$today->get_lowtemp_time()."] "; ?></td>
 	</tr>
 	<tr class="inv_plain_2">
 		<td><a href="<? echo get_query_edited_url($url_cur, 'section', 'reports/downld02.txt');?>" class="hlink" target="_self" title="temp today compared to its month's average"><? echo($YESTERDAY[$lang_idx]);?></a></td>
-        <td class="high number"><?echo $yest->get_hightemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
-		<td class="low number"> <?echo $yest->get_lowtemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
+        <td class=" number"><?echo $yest->get_hightemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
+		<td class=" number"> <?echo $yest->get_lowtemp();?><div class="paramunit">&#176;</div><div class="param"><? echo $current->get_tempunit(); ?></div></td>
 		
 		</tr>
 		
@@ -764,9 +779,7 @@ if ((strstr(strtolower($_GET['graph']), 'wind'))&&(!strstr(strtolower($_GET['gra
 ?>
 
 <a name="windd"></a>
-<div class="topbase" style="margin:1em;width:145px;position:absolute;" <? if (isHeb()) echo "dir=\"rtl\""; ?> id="highWind"><? echo $HIGH[$lang_idx]." ".$TODAY[$lang_idx].": ".$today->get_highwind()." ".$KMH[$lang_idx]." ".$ON[$lang_idx]." ".$today->get_highwind_time(); ?><br/><br/>
-<? echo "1 ".$KNOTS[$lang_idx]." = "."1.8 ".$KMH[$lang_idx];?>
-</div>
+
 <script language="JavaScript" type="text/javascript">
 		var expDiv = document.getElementById('exp');
 		var highWind = document.getElementById('highWind');

@@ -190,32 +190,24 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     }
     $messageBody[0] = date('H:i')." ".$messageBody[0];
     $messageBody[1] = date('H:i')." ".$messageBody[1];
-    if ($CloudMessageType == CloudMessageType::Fcm)
-    {
-        $key = FCM_API_KEY;
-        $query_extension = " and fcm=1";
-        $res_fcm = "FCMs";
-    }
-    else
-    {
-        $key = GOOGLE_API_KEY;
-        $query_extension = " and fcm<>1";
-        $res_fcm = "GCMs";
-    }
+    $key = FCM_API_KEY;
+    $query_extension = "";
+    $res_fcm = "FCMs";
+   
     if ((boolval($long_range))&&(boolval($short_range))){
-        $query = "select * FROM fcm_users where active=1 or active_rain_etc=1".$query_extension;
+        $query = "select lang, gcm_regid  FROM fcm_users where active=1 or active_rain_etc=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active=1 or active_rain_etc=1".$query_extension;
     }
     else if (boolval($long_range)){
-        $query = "select * FROM fcm_users where active=1".$query_extension;
+        $query = "select lang, gcm_regid FROM fcm_users where active=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active=1".$query_extension;
     }
     else if (boolval($short_range)){
-        $query = "select * FROM fcm_users where active_rain_etc=1".$query_extension;
+        $query = "select lang, gcm_regid FROM fcm_users where active_rain_etc=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_rain_etc=1".$query_extension;
     }
     else if (boolval($tip)){
-        $query = "select * FROM fcm_users where active_tips=1".$query_extension;
+        $query = "select lang, gcm_regid FROM fcm_users where active_tips=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_tips=1".$query_extension;
     }
     else if (boolval($dailyforecast)){
-        $query = "select * FROM fcm_users where dailyforecast=".date("H").$query_extension;
+        $query = "select lang, gcm_regid FROM fcm_users where dailyforecast=".date("H")." UNION select lang, apn_regid FROM apn_users where dailyforecast=".date("H").$query_extension;
     }
     $result = db_init($query, "");
     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
@@ -278,57 +270,16 @@ function getForecastDay()
         if (((date("H")<11)&&($idx == 1))||((date("H")>17)&&($line["date"])!=date("d/n")))
             {
                 $lang_idx=0;
-                $first_day0 = replaceDays($line["day_name"]." ").$line["date"]."\n".$line["lang0"]."\n".$NOW[$EN].": ".$current->get_temp()."°\n".$NOON[$EN].": ".$line["TempHigh"]."° - ".getClothTitle($line["TempHighCloth"], $line["TempHigh"])."\n".$NIGHT[$EN].": ".$line["TempNight"]."° - ".getClothTitle($line["TempNightCloth"], $line["TempNight"]);
+                $first_day0 = replaceDays($line["day_name"]." ").$line["date"]."\n".$line["lang0"]."\n".$NOW[$EN].": ".$current->get_temp()."°\n".$NOON[$EN].": ".$line["TempHigh"]."° - ".getClothTitle($line["TempHighCloth"], $line["TempHigh"],$line['WindDay'], $line['HumDay'])."\n".$NIGHT[$EN].": ".$line["TempNight"]."° - ".getClothTitle($line["TempNightCloth"], $line["TempNight"],$line['WindNight'], $line['HumNight']);
                 $lang_idx=1;
-                $first_day1 = replaceDays($line["day_name"]." ").$line["date"]."\n".$line["lang1"]."\n".$NOW[$HEB].": ".$current->get_temp()."°\n".$NOON[$HEB].": ".$line["TempHigh"]."° - ".getClothTitle($line["TempHighCloth"], $line["TempHigh"])."\n".$NIGHT[$HEB].": ".$line["TempNight"]."° - ".getClothTitle($line["TempNightCloth"], $line["TempNight"]); 
+                $first_day1 = replaceDays($line["day_name"]." ").$line["date"]."\n".$line["lang1"]."\n".$NOW[$HEB].": ".$current->get_temp()."°\n".$NOON[$HEB].": ".$line["TempHigh"]."° - ".getClothTitle($line["TempHighCloth"], $line["TempHigh"],$line['WindDay'], $line['HumDay'])."\n".$NIGHT[$HEB].": ".$line["TempNight"]."° - ".getClothTitle($line["TempNightCloth"], $line["TempNight"],$line['WindNight'], $line['HumNight']); 
                 $first_day = array($first_day0, $first_day1);
                 break;
             }
       }
       return $first_day;
 }
-function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $addon, $class, $messageType, $ttl)
-{
-    global $mem, $ALERTS_PAYMENT, $PATREON_LINK;
-    try
-    {
-        global $lang_idx;
-        $lang_idx = $lang;
-        //$description = nl2br($description);
-        $now = replaceDays(date('D H:i'));
-        $append = true;
-        $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'forecast') and (lang=?)", $lang);
-        while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
-            $descriptionforecast = $line["Description"];
-        }
-        $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'LAlert') and (lang=?)", $lang);
-        while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
-            $latestalert = $line["Description"];
-        }
-        $description_appended = $latestalert."\n\n".$descriptionforecast;
-        //$description = "<div class=\"alerttime ".$class."\">".$now."</div>".$description;
-        $description = $now."\n".$description."\n";
-        //$now = getLocalTime(time());
 
-        $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='forecast') and (lang=$lang)";
-        $mem->set('descriptionforecast'.$lang, $description_appended);
-        $res = db_init($query, "" );
-        $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='$type') and (lang=$lang)";
-        $mem->set('latestalert'.$lang, $description);
-        $mem->set('latestalert_img', $img_src);
-        $mem->set('addonalert'.$lang, $addon);
-        $mem->set('latestalerttime'.$lang, time());
-        $mem->set('latestalertttl', $ttl*60);
-        $mem->set('latestalerttype', $messageType);
-        $res = db_init($query, "" );
-        // Free resultset 
-        @mysqli_free_result($res);
-    }
-    catch (Exception $ex) {
-        $result .= " exception:".$ex->getMessage();
-    }   
-	
-}
 $empty = $post = array();
 foreach ($_POST as $varname => $varvalue) {
    if (empty($varvalue)) {
@@ -418,16 +369,19 @@ if (empty($empty)) {
             $msgToAlertSection[1] = $title[1]."\n".$message[1];
         }
         $addon = array();
-        $messageType = "";
+        $messageType = "long_range";
         if ($_POST["short_range"]=="true"){
             $addon[0] = $ALERTS_PAYMENT_FULL[0];
             $addon[1] = $ALERTS_PAYMENT_FULL[1];
             $messageType = "short_range";
         }
+        else if ($_POST["tip"]=="true"){
+            $messageType = "tip";
+        }
         if ($_POST["alert_section"]=="1"){
             
-            updateMessageFromMessages ($msgToAlertSection[0], 1, 'LAlert', 0 ,'' ,$picture_url,'', $addon[0], $class_alerttitle, $messageType, $_POST['ttl']);
-            updateMessageFromMessages ($msgToAlertSection[1], 1, 'LAlert', 1 ,'' ,$picture_url,'', $addon[1], $class_alerttitle, $messageType, $_POST['ttl']);
+            updateMessageFromMessages ($message[0], 1, 'LAlert', 0 ,'' ,$picture_url, $title[0], $addon[0], $class_alerttitle, $messageType, $_POST['ttl']);
+            updateMessageFromMessages ($message[1], 1, 'LAlert', 1 ,'' ,$picture_url, $title[1], $addon[1], $class_alerttitle, $messageType, $_POST['ttl']);
     
           }
         } 
@@ -437,7 +391,6 @@ if (empty($empty)) {
     
     try{
         logger("calling sendGCMMessage with ".$title[0], 0, "Push", "SendSpecialService", "sendGCMMessage");
-        $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"], CloudMessageType::Gcm);
         $result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"], CloudMessageType::Fcm);
         //$result .= sendGCMMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"]);   
         
@@ -447,8 +400,8 @@ if (empty($empty)) {
 
 
     try{
-        logger("calling sendAPNMessage with ".$title[0], 0, "Push", "SendSpecialService", "sendGCMMessage");
-        $result .= sendAPNMessage($msgSpecial, $title, $picture_url, "alerts.php", $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"]);
+      //  logger("calling sendAPNMessage with ".$title[0], 0, "Push", "SendSpecialService", "sendGCMMessage");
+      //  $result .= sendAPNMessage($msgSpecial, $title, $picture_url, "alerts.php", $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"]);
     } 
     catch (Exception $ex) {
         $result .= " exception sendAPNMessage:".$ex->getMessage();
@@ -464,7 +417,7 @@ if (empty($empty)) {
         else {
         $EmailSubject = array($title[0], $title[1]);
         }
-        // $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
+         $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
         }
        } 
     catch (Exception $ex) {

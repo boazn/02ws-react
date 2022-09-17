@@ -98,7 +98,7 @@ top:0px;
 }
 #forecastnextdays table
 {	
-	border-spacing: 1px 1px;
+	border-spacing: 0px 8px;
 	padding:0em 0.1em;
 	width:100%;
 	height:50px;
@@ -107,10 +107,79 @@ top:0px;
 	border-top:0 none;
 	<? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr";?>
 }
+#forecastnextdays td
+{
+    
+}
+#forecastnextdays tr
+{
+    margin-top:0.2em
+}
+#forecastnextdays .plus{
+    background:#eeeeee
+}
+
 #forecastnextdays table .text
 {
-    padding: 0 0.45em 0.2em;
+    padding: 0 0.75em 0.2em;
     line-height: 1.1em;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background:#eeeeee;
+    font-size:1.1em
+}
+#forecastnextdays .tsfh .icon{
+    margin-top:10px;
+}
+#forecastnextdays .paramunit{
+    display:none;
+}
+#forecastnextdays .average{
+    font-size:1.40em  
+}
+#forecastnextdays .date{
+    font-family:nextexitfot_regularregular;
+    letter-spacing: 0px;
+    font-size:1.2em;
+    text-align:center;
+    line-height:1em;
+    width: 2em;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background:#eeeeee
+}
+#forecastnextdays .datetext{
+    font-size:0.8em;
+}
+#forecastnextdays .datef{
+    text-align:center;line-height: 0.9em;width:2em
+}
+#forecastnextdays table a
+{
+    text-decoration:underline;
+}
+#forecastnextdays .humidity a
+{
+    text-decoration:none;
+    font-size:3em
+
+}
+#forecastnextdays table a.info
+{
+    text-decoration:none;
+}
+#forecastnextdays .tsfh{
+font-size:1.60em;
+line-height: 0.7em;
+text-align:center;
+padding: 0.4em 0;
+background:#eeeeee
+}
+#forecastnextdays .enlarge{
+    margin: 4.2em 0px;
+}
+#forecastnextdays_table .icon_day{
+    background:#eeeeee 
 }
 #latestalert .alerttime{
     display:inline;
@@ -128,9 +197,12 @@ top:0px;
 .title.txtindiv{
     font-weight: bold;
 }
-
+.paramtitle
+{
+    margin-top: -0.5em;
+}
 #latestalert .info .info{
-    margin-top:-250px;
+    margin-top:-150px;
     margin-<?echo get_s_align();?>:-10px;
     background: rgba(238,238,238,0.9);
     width: 290px;
@@ -157,8 +229,12 @@ top:0px;
     width: 30%;
     margin-<?echo get_inv_s_align();?>: 70%;
 }
+#forcast_days.detailed
+{
+    padding:0
+}
 #forcast_days.detailed .forcast_day, #forcast_days.detailed .forcast_date{
-  width:90%
+  width:90%;
 }
 #forcast_days.detailed li{
     display: grid;
@@ -188,25 +264,12 @@ top:0px;
     text-align:<?echo get_s_align();?>;
     
 }
-#forecastnextdays table a
-{
-    text-decoration:underline;
-}
-#forecastnextdays .humidity a
-{
-    text-decoration:none;
-    font-size:3em
 
-}
-#forecastnextdays table a.info
-{
-    text-decoration:none;
-}
 #latestalert
 {
     visibility:hidden;
     font-size:1.1em;
-    padding:0.1em 0;font-size: 1.4em;margin:<? if (isHeb()) echo "0 30px 0 0"; else echo "0 0 0 30px" ?>;z-index: 99999;
+    padding:0.1em 0;font-size: 1.4em;z-index: 99999;
     <? if (isHeb()) echo "direction:rtl"; ?>
 }
 .low{
@@ -251,7 +314,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #loginform_result, #registerform_result, #passforgotform_result, #profileform_result
 {
-	width:8em;margin:1em
+	width:100%;margin:0.2em 1em
 }
 #loggedin, #notloggedin
 {
@@ -275,7 +338,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #updateprofile, #signout, #myvotes, #clicktoregister, #clicktoregister, #loginform_submit, #forgotpass, #clicktogetvotes, #clicktoupdate, #profileform_submit, #passforgotform_submit, #registerform_submit
 {
-  padding:0.4em;margin:0.6em 0em;cursor:pointer;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>; width: 260px;
+  padding:0.4em;margin:0.8em 0em;cursor:pointer;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>; width: 280px;
 }
 #registerinput, #profileform
 {
@@ -285,11 +348,25 @@ position:relative;float:none;width:auto;top:0;margin:0;
 {
     margin-top:2em
 }
-#loginform input[type="text"], #profileform input[type="text"], #registerform input[type="text"], #profileform input[type="password"], #loginform input[type="password"]
+#loginform input[type="text"], #profileform input[type="text"], #registerform input[type="text"], #registerinput input[type="password"], #loginform input[type="password"]
 {
     height:1.5em;
     font-size: 1em;
     width:280px
+}
+.icon_right
+{
+    padding: 0 20px;
+    margin-right: -50px;    
+}
+.icon_left
+{
+    margin-right: 146px;
+    padding: 0 30px;    
+}
+.user_icon_frame
+{
+    margin-right: 120px;
 }
 #snowtable{
 width:320px;
@@ -381,7 +458,7 @@ width:auto
 	
 	float:<?echo get_s_align();?>;
 	clear:both;
-    background-color: blueviolet;
+    background-color: white;
 	
 }
 body.mce-content-body
@@ -554,6 +631,10 @@ width:320px;
     text-align:<?echo get_s_align();?>;
     width: 100%;
 }
+#currentinfo_container
+{
+    width:100%
+}
 #currentinfo_container .currentcloth
 {
    position: absolute;
@@ -562,7 +643,7 @@ width:320px;
 }
 #currentinfo_container .inparamdiv
 {
-    font-size: 1.7em;
+    font-size: 1.8em;
 }
 @keyframes blink-animation {
     0% {
@@ -655,22 +736,22 @@ width:320px;
 }
  .forcast_each{
      padding-top:1.2em;
-     margin-bottom: 3px;
+     margin-bottom: 0px;
  }
 
 #windy
 {
-width:33%;left:12em;top:3.4em
+width:33%;left:10em;top:3.4em
 } 
 .open-close-button{
   width: 1.2em;
   height: 1.2em;
-  margin: -0.6em -0.6em;
+  margin: -0.6em -0.1em;
 }  
 #windystart
 {
     position: absolute;
-    <?echo get_s_align();?>: 3.5em;
+    <?echo get_s_align();?>: 5.5em;
     
 }
 #morning, #noon, #night
@@ -776,7 +857,7 @@ border-radius: 0px;
 	font-size:1.1em;
 	margin-top:0.2em;
     width: 70%;
-    margin: 5.7em auto 0;
+    margin: 1em auto 0;
     line-height:16px;
 }
 #what_is_h_start
@@ -930,6 +1011,7 @@ clear:both
 }
 .icon_left, .icon_right{
     margin-top: -28px;
+    width: 50px;
 }
 #user_info{
 color:#3D718E;
@@ -950,11 +1032,37 @@ width: 160px;
 #tempdivvalue, #tempdivvaluestart
 {
     float:none;
-    font-size: 3.8em;
+    font-size: 3.4em;
     margin-top: 50px;
     z-index:99999;
     direction:ltr;
+    margin-left:0;
+    
    
+}
+#activities_yes_con, #activities_no_con{
+    width: 315px;
+    height: auto;
+    
+}
+#activities_yes li, #activities_no li{
+    width: 26px;
+    height: 26px;
+    margin:4px
+}
+#activities_yes, #activities_no{
+    width:315px;
+    padding:0
+}
+#cm_dislike
+{
+    left: 1.7em;
+    top: 5.8em;
+}
+#cm_like
+{
+    left:3.4em;
+    top: 5.8em;
 }
 #tempdivvaluestart
 {
@@ -980,7 +1088,7 @@ width: 160px;
 margin:auto;
 }
 #itfeels {
-    margin:0;top:7.5em;background: none;  width: 40%;font-size: 18px;text-align: center;
+    margin:0;top:5.5em;background: none;  width: 40%;font-size: 28px;text-align: center;padding: 0 10px;
 }
 #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
 top:0;position:relative; background: none;margin:auto
@@ -1018,39 +1126,12 @@ z-index: -10;
 height: 220px;
 width:100%
 }
-#forecastnextdays .tsfh{
-font-size:1.60em;
-line-height: 0.7em;
-text-align:center;
-padding: 0.4em 0;
-}
-#forecastnextdays .tsfh .icon{
-    margin-top:10px;
-}
-#forecastnextdays .paramunit{
-    display:none;
-}
-#forecastnextdays .average{
-    font-size:1.40em  
-}
+
 
 .humidity{
     font-size:0.8em
 }
-#forecastnextdays .date{
-    font-family:nextexitfot_regularregular;
-    letter-spacing: 0px;
-    font-size:1.2em;
-    text-align:center;
-    line-height:1em;
-    width: 2em;
-}index
-#forecastnextdays .datetext{
-    font-size:0.8em;
-}
-#forecastnextdays .datef{
-    text-align:center;line-height: 0.9em;width:2em
-}
+
 #forcast_hours li, #forcast_hours_table li{
     font-size:1.1em
 }
@@ -1154,7 +1235,7 @@ border-top:0px;top:95px;margin:0
 }
 
 #aqvalues{
-    margin-top: 1em;
+    margin-top: -0.3em;
     position: absolute
 }
 #sigweather{
@@ -1340,7 +1421,8 @@ display:block;z-index: 100;padding-top: 7px;width: 30px;
     clear: both;
     float: <?=get_s_align()?>;
     padding: 0;
-    width:100%
+    width:100%;
+    background-color: #eeeeee;
 }
 #startupdiv, #register_suggest{
     top: 0; padding:55px 10px;left: 0;z-index:999999; position: absolute;background-color: #FFFFFF;
@@ -1517,12 +1599,8 @@ padding:0.1em 0.5em
     position: relative;
 }
 #uv_btn{
-	margin-right: 35px;
-    margin-top: -228px;
-    position: absolute;
-    width: 35px;
-    height: 35px;
-    background-size: 210%;
+	margin: 4px;
+    position: relative;
 }
 #aq_btn{
 	margin:4px;
@@ -1572,9 +1650,7 @@ padding:0.1em 0.5em
     position: relative;
 }
 
-#latesttemp, #latestrain, #latesthumidity,#latestwind, #latesttemp2, #latesttemp3, #latestairq, #latestnow, #latestuv, #latestradiation, #latestwindow, #latestrunwalk, #latestotherstations, #latestwebcam  {
-margin:auto;margin-top:-90px
-}
+
 #latestwebcam{
     overflow: hidden;
     padding: 0em 0.1em 0em 0.1em;
@@ -1582,7 +1658,7 @@ margin:auto;margin-top:-90px
     border-radius:0
 }
 #latesttemp3 .graphslink{
-    top:10.5em;
+    top:9.5em;
     <?=get_s_align()?>:0;
     width: 100%;
 }
@@ -1601,7 +1677,16 @@ margin:auto;margin-top:-90px
 }
 #latestrain .trendstable
 {
-    top: 7em;
+    top: 6.3em;
+    
+}
+#section input
+{
+    width: 60px;
+}
+.comment_btn
+{
+    font-size: 1.1em;
 }
 #valleytemp{
 font-size:0.5em;
@@ -1630,6 +1715,9 @@ top:180px
 }
 .trendstable td{
 text-align:center
+}
+.trendstitles, .trendsvalues{
+    line-height: 0.6em;
 }
 #temp_line{
 left: 37px;
@@ -1738,6 +1826,16 @@ margin:5px 27px 11px 11px
     overflow-x: scroll;
     overflow-y: hidden;
     <? if (isHeb()) echo "direction:rtl"; ?>
+}
+.detailed #activities_yes .span-value:before, .detailed #activities_no .span-value:before, .detailed #bottombar .span-value:before{
+    
+    left: 41%;
+    top: 190px;
+}
+.detailed #activities_yes .span-value:after, .detailed #activities_no .span-value:after, .detailed #bottombar .span-value:after{
+    
+    left: 40%;
+    top: 170px;
 }
 #legends li{
     font-size: 1.2em;

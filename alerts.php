@@ -6,10 +6,16 @@
 
 
 <div id="messages_box" class="">
+
     <h2><? echo $MESSAGES[$lang_idx];?></h2>
+	
     <p class="box_text" style="font-size: 1.2em;padding:0.5em">
      
     </p>
+	<div id="alerts" style="width:auto"> 
+	 <div id="message">
+	 </div>
+	 </div>
 	<div id="adunit3" class="adunit" style="display:none">
         
 	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -25,6 +31,8 @@
      <p id="personal_message">
      
      </p>
+	 
 </div>
+
 
 

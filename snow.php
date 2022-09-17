@@ -63,9 +63,9 @@ $SNOW_ARCHIVE = array ("<h2>Snow Archive</h2>From the archive of newspapers from
 <h2><? echo $SNOW_ARCHIVE[$lang_idx]; ?></h2>
 <table class="inv_plain_3 float" style="padding:0.5em;width:100%" cellpadding="4" cellspacing="0">
     <tr>
-    <th class="inv inv_plain_3 " style="width:10%;text-align:center"><? echo $WINTER[$lang_idx];?></th>
+    <!--<th class="inv inv_plain_3 " style="width:10%;text-align:center"><? echo $WINTER[$lang_idx];?></th>-->
     <th class="inv inv_plain_3 " style="width:10%;text-align:center"><? echo $DAY[$lang_idx];?></th>
-    <th class="inv inv_plain_3 " style="width:5%;text-align:center"><? echo $DAYS[$lang_idx];?></th>
+    <!--<th class="inv inv_plain_3 " style="width:5%;text-align:center"><? echo $DAYS[$lang_idx];?></th>-->
     <th class="inv inv_plain_3 " style="width:5%;text-align:center"><? echo $FROM[$lang_idx];?><br/> (<? echo $SNOW_UNIT[$lang_idx];?>)</th>
     <th class="inv inv_plain_3 " style="width:5%;text-align:center"><? echo $TO[$lang_idx];?><br/> (<? echo $SNOW_UNIT[$lang_idx];?>)</th>
     <th class="inv inv_plain_3 " style="width:25%;text-align:center"><? echo $COMMENTS[$lang_idx];?></th>
@@ -89,12 +89,11 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
                              print "</td>\n</tr>\n";
 			 $winterEndingYear = $line['WinterBeginningYear']+1;
 			 $snowdate = new DateTime($line['SnowDate'], new DateTimeZone('Asia/Jerusalem'));
-                         print "<tr>";
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".$line['WinterBeginningYear']."-".$winterEndingYear."</td>\n";
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".replaceDays(date_format($snowdate, " D "))."<br />".date_format($snowdate, "j/m")."<br />".date_format($snowdate, "Y")."</td>\n";
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\" >".$line['StormDays']."</div>\n";                 
-			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\"><strong>".$line['DepthMin']."</strong></td>\n";
-			 print "\t\t<td class=\" inv_plain_3 borderfull\" style=\"text-align:center\"><strong>".$line['DepthMax']."</strong></td>\n";
+             print "<tr>";
+			 $days_ext = ($line['StormDays'] > 1) ? $line['StormDays']." ".$DAYS[$lang_idx] : "";
+			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".replaceDays(date_format($snowdate, " D "))."<br />".date_format($snowdate, "j/m")."<br />".date_format($snowdate, "Y")." <br/>".$days_ext."</td>\n";
+			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\"><span class=\"number\">".$line['DepthMin']."</span></td>\n";
+			 print "\t\t<td class=\" inv_plain_3 borderfull\" style=\"text-align:center\"><span class=\"number\">".$line['DepthMax']."</span></td>\n";
 			 $commentsColName = "Comments".$lang_idx;
 			 $sourceColName = "Source".$lang_idx;
 			 print "\t\t<td class=\"inv_plain_3 borderfull\" style=\"text-align:center\">".$line[$commentsColName]."</td>\n";
@@ -125,8 +124,8 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 	?>
 <div style="clear:both"></div>
 </table>
-<div  class="inv float">
-<table class="inv float" style="padding:1em;" cellpadding="4" cellspacing="2">
+<div  class="inv_plain_3 float">
+<table class="inv_plain_3 float" style="padding:1em;" cellpadding="4" cellspacing="2">
 <tr class="inv big">
     <td><? echo $WINTER[$lang_idx];?></td>
     
@@ -142,7 +141,7 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 		print "\t<tr class=\"inv_plain_3\">\n";
 		 
 		 $winterEndingYear = $line['WinterBeginningYear']+1;
-		 print "\t\t<td class=\"inv_plain\" style=\"height:2em\" <strong>".$line['WinterBeginningYear']."-".$winterEndingYear."</strong></td>\n";
+		 print "\t\t<td class=\"inv_plain_3_zebra\" style=\"height:2em\" <strong>".$line['WinterBeginningYear']."-".$winterEndingYear."</strong></td>\n";
 		 print "\t\t<td class=\"\" style=\"height:2em\" ><strong>".$line['snowdays']."</strong></td>\n";
 
         	foreach ($line as $col_value) {
@@ -156,8 +155,8 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 ?>
 </table>
 </div>
-<div class="inv float">
-<table class="inv float" style="padding:1em;margin:1em" cellpadding="4" cellspacing="2">
+<div class="inv_plain_3 float">
+<table class="inv_plain_3 float" style="padding:1em;margin:1em" cellpadding="4" cellspacing="2">
 <tr class="inv big">
     <td><? echo $WINTER[$lang_idx];?></td>
     
@@ -174,7 +173,7 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 		print "\t<tr class=\"inv_plain_3\">\n";
 		 
 		 $winterEndingYear = $line['WinterBeginningYear']+1;
-		 print "\t\t<td class=\"inv_plain\" style=\"height:2em\" ><strong>".$line['WinterBeginningYear']."-".$winterEndingYear."</strong></td>\n";
+		 print "\t\t<td class=\"inv_plain_3_zebra\" style=\"height:2em\" ><strong>".$line['WinterBeginningYear']."-".$winterEndingYear."</strong></td>\n";
 		 print "\t\t<td class=\"\" style=\"height:2em\" <strong>".$line['snowamount']."</strong></td>\n";
 
         	foreach ($line as $col_value) {
@@ -190,7 +189,7 @@ left outer join SnowMedia sm on s.`SnowDate` = sm.`SnowDate`  order by `SnowDate
 <?
 @mysqli_free_result($result);
 ?>
-<div class="inv float big" style="padding:1em;width:25%">
+<div class="inv_plain_3 float big" style="padding:1em;width:25%">
 <a href="<? echo get_query_edited_url($url_cur, 'section', 'SendEmailForm.php');?>" title="<?=$MANAGER[$lang_idx]?>">
  אשמח לקבל הערות ותוספות כמו תמונות  לארכיון השלג כאן...
 </a>
@@ -200,7 +199,7 @@ I would be happy to get more info for this archive
 </a>
 </div>
 <div  style="padding:1em;" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
-    <div  class="inv float big" style="padding:1em;">
+    <div  class="inv_plain_3 float big" style="padding:1em;">
 		
 		<a href="https://docs.google.com/present/edit?id=0AZRuefvBe4zMZGRucm56c2hfMTBkZGhxZ3BncQ" target="blank">תרגיל על שלג</a>
 

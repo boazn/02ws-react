@@ -225,10 +225,10 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 <form method="post" action="small.php?section=picsOfTheDayManager.php" enctype="multipart/form-data">
 <input type='file' onchange="readURL(this);" accept="image/*" name="imagefile" id="imagefile"   size="120"  style="float:left;width:150px"/><br />
 <img id="localimg" src="#" alt="your image" width="300"/><br />
-comment0<br />
-<textarea name="comment0" id="comment0" size="30" style="height: 3em;width:310px" wrap="soft"></textarea><br />
 comment1<br />
 <textarea  name="comment1" id="comment1" size="30" style="height: 3em;width:310px" dir="rtl" wrap="soft"></textarea><br />
+comment0<br />
+<textarea name="comment0" id="comment0" size="30" style="height: 3em;width:310px" wrap="soft"></textarea><br />
 <input type='button' class="button" name='upload_btn' value='upload' onclick="javascript:postToServer();" style="float:left;padding: 2em;width:150px" size="60"/>
 </form>
 <progress></progress> 

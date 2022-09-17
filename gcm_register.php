@@ -29,24 +29,23 @@ class DB_Functions {
             $active_dry = 0;
         try {
             //$active_rain_etc = $_POST["active_rain_etc"];
-            if ($active_rain_etc == "")
-            {
-                $active_rain_etc = $active;
-                
-            }
-            if ($active_tips == "")
-            {
-                $active_tips = $active;
-            }
+      
+            $active_rain_etc = (empty($active_rain_etc)? '0' : $active_rain_etc);
+            $active_tips = (empty($active_tips)? '0' : $active_tips);
+            $active = (empty($active)? '0' : $active);
             $dailyforecast = (empty($dailyforecast)? 'null' : $dailyforecast);
+            $active_dust = (empty($active_dust)? '0' : $active_dust);
+            $active_uv = (empty($active_uv)? '0' : $active_uv);
+            $active_dry = (empty($active_dry)? '0' : $active_dry);
             $approved = (empty($approved)? 'null' : $approved);
-            $query = "call SaveGCMUser ('$name', '$email', '$gcm_regid', $lang, $active, $active_rain_etc, $active_tips, $active_dust, $active_uv,  $active_dry, $approved, '$billingtoken', '$billingDate', $dailyforecast, '$oldregid')";
+            $lang = (empty($lang)? 'null' : $lang);
+            $query = "call SaveGCMUser ('$name', '$email', '$gcm_regid', $lang, $active, $active_rain_etc, $active_tips, $approved, $active_dust, $active_uv,  $active_dry, '$billingtoken', '$billingDate', '$oldregid', $dailyforecast, 0)";
             $result = db_init($query, "");
-            logger("New FCM user updated:".$name." ".$email." ".$gcm_regid." ".$lang." active=".$active." active_rain_etc=".$active_rain_etc." active_tips=".$active_tips." active_dust=".$active_dust." active_uv=".$active_uv." active_dry=".$active_dry." dailyforecast=".$dailyforecast,0, "gcm_register", "SaveGCMUser", "storeUser");
+            //logger($query,0, "gcm_register", "SaveGCMUser", "storeUser");
             // check for successful store
         
             // get user details
-            $id = $link->insert_id; // last inserted id
+            //$id = $link->insert_id; // last inserted id
             
             if (!empty($email)){
                 //$query = "update `Subscriptions` set reg_id='".$gcm_regid."', UpdatedAt=now() where Email='".$email."'";

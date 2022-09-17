@@ -193,7 +193,7 @@ if (isRadarPage())
 <div id="nextdays" style="visibility:hidden">
     <div id="for_title" class="float">
         <div id="now_title" class="now_title forcast_title_btns for_active">
-        <a href="#main_cellphone_container" onclick="navMain('startinfo_container', $(this).parent().attr('id'), 'none')">
+        <a href="#main_cellphone_container" onclick="navMain('currentinfo_container', $(this).parent().attr('id'), 'none')">
                 <? echo($NOW[$lang_idx]);?>
         </a>
         </div>
@@ -281,9 +281,8 @@ else {?>
      </a>
     </div>
 </div>
-<div id="what_is_h_start" style="display:none"></div>
-<div id="latestalert" >
-</div>
+
+
 <div id="arrowdown" onclick="navMain('currentinfo_container', 'now_title', 'down');">
 &#x2304;
 </div>
@@ -291,31 +290,7 @@ else {?>
 
 </div>
 <div id="currentinfo_container" style="display:none">
-<ul class="info_btns" style="display:none">
-    <li id="now_btn" onclick="change_circle('now_line', 'latestnow')"></li>
-   <li id="temp_btn" onclick="change_circle('temp_line', 'latesttemp2')" title=""></li>
-   <li id="temp2_btn" onclick="change_circle('temp_line', 'latesttemp')" title=""></li>
-   <li id="temp3_btn" onclick="change_circle('temp_line', 'latesttemp3')" title=""></li>
-    </li>
-   <li id="rain_btn" onclick="change_circle('rain_line', 'latestrain')" title=""></li>
-   <li id="wind_btn" onclick="change_circle('wind_line', 'latestwind')" title=""></li>
-   <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title=""></li>
-   <li id="rad_btn" onclick="change_circle('rad_line', 'latestradiation')" title=""></li>
-   <li id="window_btn" onclick="change_circle('window_line', 'latestwindow')" title=""></li>
-   <li id="moon_btn" onclick="change_circle('window_line', 'latestmoon')" title="" style="display:none"></li>
-   <li id="dew_btn" onclick="change_circle('window_line', 'latestdewpoint')" title="" style="display:none"></li>
-   <li id="air_btn" onclick="change_circle('window_line', 'latestpressure')" title="" style="display:none"></li>
-   <li id="webcam_btn" onclick="change_circle('window_line', 'latestwebcam')" title="<?=$LIVE_PICTURE[$lang_idx]?>"></li>
-   <li id="cold_btn">
-    <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" onclick="showLoading()">
-    <?=$HOTORCOLD_T[$lang_idx]?>
-    </a>
-    <li id="moist_btn" onclick="change_circle('moist_line', 'latesthumidity')" title=""></li>
-    <li id="runwalk_btn" onclick="change_circle('runwalk_line', 'latestrunwalk')" title=""></li>
-    </li>
-    <li id="more_stations_btn" onclick="change_circle('otherstations_line', 'latestotherstations');getLatest('ראש-צורים', '77', 'IMS');getLatest('צובה', '188', 'IMS');getLatest('חוף מערבי', '178', 'IMS');getLatest('עין גדי','211', 'IMS');getLatest('מעלה אדומים', '218', 'IMS');" title=""></li>
-    </li>
-</ul>
+
 <div id="latestnow" class="inparamdiv">
  <div  id="windy">
 
@@ -324,7 +299,7 @@ else {?>
 <? echo $IT_FEELS[$lang_idx]; ?>
  <span class="" id="itfeels_thsw" style="display:none;">
     <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>"> 
-    <span dir="ltr" class="high value" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1];  ?></span> 
+    <span dir="ltr" class="value" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1];  ?></span> 
     </a></span>
     <span class="sunshade" style="display:none;"><img src="images/shadow.png" width="15" alt="<? echo $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" /></span>
 <span id="itfeels_windchill" style="display:none;"> 
@@ -339,21 +314,25 @@ else {?>
 </span>
 <span class="" id="itfeels_heatidx" style="display:none;">
 <a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" onclick="showLoading()"> 
- <span dir="ltr" class="high value" title="<?=$HEAT_IDX[$lang_idx]?>"></span> 
+ <span dir="ltr" class="value" title="<?=$HEAT_IDX[$lang_idx]?>"></span> 
  </a> 
 </span>
 </div>
 <div id="tempdivvalue" style="visibility:hidden">
 
 </div>
+<div id="heatindex"></div>
 <div id="statusline" style="visibility:hidden">
     <div  id="coldmeter">
     <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=survey.php&amp;survey_id=2&amp;lang=<?=$lang_idx?>&amp;email=<?=$_SESSION['email']?>"> 
     <span id="current_feeling_link">&nbsp;</span>
      </a>
     </div>
+    <div id="cm_dislike"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" onclick="showLoading()"> <img src="images/icons/cm_dislike.svg" width="50" height="50"></a></div>
+    <div id="cm_like"><a onclick="vote_cm_like()" class="info"><span class="info"><?=$COLD_METER_YES[$lang_idx]?></span> <img src="images/icons/cm_like.svg" width="50" height="50"></a></div>
+    <div id="cm_result" style="display:none"><div id="cm_result_msg"></div><div><input type="button" value="<?=$DONE[$lang_idx]?>" onclick="$('#cboxClose').click();" id="cm_result_OK" class="info  inv_plain_3 button" /></div></div>
+
 </div>
-<div id="what_is_h" style="visibility:hidden"></div>
 </div>
 <div id="latesttemp" class="inparamdiv" style="display:none;">
         <div class="paramtitle slogan">
@@ -366,20 +345,18 @@ else {?>
                  <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
                  <div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div> 
-         <div class="paramtrend">
-             <div class="innertrendvalue">
-                <? echo " ".($MINTS[$lang_idx]).": "; ?>
-             </div>
-         </div>  
+        
    <div class="trendstable"> 
-        <table>
+            <table>
                  <tr class="trendstitles">
                          <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
                          <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
                          <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                         <td  class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                  </tr>
                  <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                     <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                      <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                      <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                  </tr>
@@ -400,20 +377,18 @@ else {?>
                  <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
                  <div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div> 
-         <div class="paramtrend">
-             <div class="innertrendvalue">
-                <? echo " ".($MINTS[$lang_idx]).": "; ?>
-             </div>
-         </div>  
+         
    <div class="trendstable"> 
         <table>
                  <tr class="trendstitles">
                          <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
                          <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
                          <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                         <td  class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                  </tr>
                  <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                     <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                      <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                      <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                  </tr>
@@ -434,20 +409,18 @@ else {?>
             <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
             &nbsp;&nbsp;&nbsp;&nbsp;<div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div>
-       <div class="paramtrend">
-            <div class="innertrendvalue">
-            
-            </div>
-        </div>
+       
         <div class="trendstable">
         <table>
         <tr class="trendstitles">
                 <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
                 <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
                 <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                <td  class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
         </tr>
          <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                     <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                      <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                      <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
        </tr>
@@ -563,8 +536,7 @@ else {?>
       </table>
     </div>
     <div class="graphslink">
-      <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=rad.php&amp;profile=1&amp;lang=<? echo $lang_idx;?>" ><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>&nbsp;&nbsp;&nbsp;&nbsp;
-      <div id="uv_btn" onclick="change_circle('rad_line', 'latestuv')" title=""></div>
+      
     </div>
 </div>
 <div id="latestuv" class="inparamdiv" <? if (isHeb()) echo "dir=\"rtl\" ";?> style="display:none">
@@ -633,11 +605,7 @@ else {?>
             <span><strong><div class="highparam"></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"></span>
             &nbsp;&nbsp;&nbsp;&nbsp;<span><strong><div class="lowparam"></div></strong>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/></span>&nbsp;<span class="low_time"></span>
     </div>
-<!--<div class="paramtrend">
-    <div class="innertrendvalue">
-    
-    </div>
-</div>-->
+
 <div class="trendstable">
 <table>
 <tr class="trendstitles">
@@ -677,21 +645,19 @@ else {?>
                  <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
                  <div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div> 
-         <div class="paramtrend">
-             <div class="innertrendvalue">
-                <? echo " ".($MINTS[$lang_idx]).": "; ?>
-             </div>
-         </div>  
+         
    <div class="trendstable"> 
         <table>
                  <tr class="trendstitles">
                          <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
                          <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
                          <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                         <td  class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                  </tr>
                  <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
-                     <td ><div clas s="trendvalue"><div class="innertrendvalue"></div></div></td>
+                     <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
+                     <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                      <td ><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
                  </tr>
          </table>
@@ -732,8 +698,148 @@ else {?>
         <div class="graphslink">
             <a href="<? echo getUrl("runwalk.php")?>" title="more"><? echo $MORE_INFO[$lang_idx].get_arrow();?></a>
         </div>
-</div>    
+</div>
+<div id="latest_laundry" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_ac" class="inparamdiv">
+<div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_bicycle" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_campfire" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_camping" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_car" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_children" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_dinneratbalcony" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_dog" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_eventoutside" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_gazellepark" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_heater" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_irrigation" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_openwindow" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_picnic" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_sport" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_westernwall" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_yoga" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<div id="latest_sacker" class="inparamdiv">
+    <div class="paramtitle slogan">
+    </div>
+    <div class="exp">
+    </div>
+</div>
+<ul class="info_btns" style="display:none">
+    <li id="now_btn" onclick="change_circle('now_line', 'latestnow')"></li>
+   <li id="temp_btn" onclick="change_circle('temp_line', 'latesttemp2')" title=""></li>
+   <li id="temp2_btn" onclick="change_circle('temp_line', 'latesttemp')" title=""></li>
+   <li id="temp3_btn" onclick="change_circle('temp_line', 'latesttemp3')" title=""></li>
+    </li>
+   <li id="rain_btn" onclick="change_circle('rain_line', 'latestrain')" title=""></li>
+   <li id="wind_btn" onclick="change_circle('wind_line', 'latestwind')" title=""></li>
+   <li id="aq_btn" onclick="change_circle('aq_line', 'latestairq')" title=""></li>
+   <li id="rad_btn" onclick="change_circle('rad_line', 'latestradiation')" title=""></li>
+   <li id="uv_btn" onclick="change_circle('rad_line', 'latestuv')" title=""></li>
+   <li id="window_btn" onclick="change_circle('window_line', 'latestwindow')" title=""></li>
+   <li id="moon_btn" onclick="change_circle('window_line', 'latestmoon')" title="" style="display:none"></li>
+   <li id="dew_btn" onclick="change_circle('window_line', 'latestdewpoint')" title="" style="display:none"></li>
+   <li id="air_btn" onclick="change_circle('window_line', 'latestpressure')" title="" style="display:none"></li>
+   <li id="webcam_btn" onclick="change_circle('window_line', 'latestwebcam')" title="<?=$LIVE_PICTURE[$lang_idx]?>"></li>
+    <li id="moist_btn" onclick="change_circle('moist_line', 'latesthumidity')" title=""></li>
+    <li id="runwalk_btn" onclick="change_circle('runwalk_line', 'latestrunwalk')" title=""></li>
+    </li>
+    <li id="more_stations_btn" onclick="change_circle('otherstations_line', 'latestotherstations');getLatest('ראש-צורים', '77', 'IMS');getLatest('צובה', '188', 'IMS');getLatest('חוף מערבי', '178', 'IMS');getLatest('עין גדי','211', 'IMS');getLatest('מעלה אדומים', '218', 'IMS');" title=""></li>
+    </li>
+    <li id="activities_yes_con"><ul id="activities_yes"></ul></li>
+    <li id="activities_no_con"><ul id="activities_no" ></ul></li>
+</ul>    
 <div id="spacer1" style="clear:both;height: 2px;">&nbsp;</div>
+<div id="what_is_h"></div>
+<div id="latestalert"></div>
 <div id="for24_given">
 							
 	</div>
@@ -761,7 +867,7 @@ else {?>
         <div id="spacer2" style="clear:both;height:10px">&nbsp;</div>
         
         <div id="adunit3" class="adunit" style="">
-        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem"><img src="images/riseup_banner_100_3.png" alt="riseup" width="320" height="100" /></a>
+        
             <!-- Large Mobile Banner 1 -->
            <ins class="adsbygoogle"
                 style="display:inline-block;width:320px;height:50px"
@@ -775,11 +881,33 @@ else {?>
         <div id="for24_hours"></div>
         <div id="spacer4" style="clear:both;height:15px">&nbsp;</div>
         
+    <table id="nextdays_table" class="forecastnextdays" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="width:100%">
+            
+    </table> 
  </div>
 
 </div>
 <div style="clear:both;height:1px">&nbsp;</div>
 <div style="display:none;padding:0.1em 0.4em" id="forcast_hours_table">
+</div>
+<div id="genderchoose" style="display:none">
+    <form method="post" action="<?=BASE_URL;?>?section=survey.php&amp;lang=<? echo $lang_idx;?>">
+        <div class="inv_plain_3_zebra float" style="margin:0em;width:200px;padding:1em">
+            <? if (isHeb()) echo "עוד משהו רציתי להגיד"; else echo "one more thing";?><br />
+            <textarea name="comments" rows="4" <?if (isHeb()) echo " dir=\"rtl\"";?>  style="width:180px;height:50px"></textarea>
+        </div>
+    <div class="inv_plain_3_zebra float" style="padding: 1em;" <? if (isHeb()) echo "dir=\"rtl\""; ?>><?=$GENDER[$lang_idx];?>: 
+        <input type="radio" value="m" name="gender" checked /><?=$MALE[$lang_idx];?>
+        <input type="radio" value="f" name="gender" /><?=$FEMALE[$lang_idx];?>
+        <input type="radio" value="" name="gender" /><?=$NOR_MALE_NOR_FEMALE[$lang_idx];?>
+        </div>
+        <div class="float clear" style="padding: 0.5em;margin:0em 2.5em;">
+        <input type="submit" class="slogan inv_plain_3_zebra big button"  style="padding: 0.5em;" name="SendSurveyButton" value="<? if (isHeb()) echo "הצבעה"; else echo "Vote"; ?>"/>
+        <input type="hidden" id="votechosen" name="survey" />
+        <input type="hidden" id="cm_current" name="cm_current" />
+        <input type="hidden" id="survey_id" name="survey_id" />
+        </div>
+        </form>
 </div>
 <div style="display:none" id="forecastnextdays">
         <table id="forecastnextdays_table" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="width:100%">
@@ -816,19 +944,16 @@ else {?>
 <div id="adunit2" class="adunit" style="display:none">
     
     <div id="if1"> 
-        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem"><img src="images/riseup_banner_100_3.png" alt="riseup" width="320" height="100" /></a>
+        
     </div>
     <div id="if2">
-        <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem" ><img src="images/riseup_banner_100_3.png" alt="riseup" width="320" height="100" /></a>
+      
     </div>
     <div id="if3">
-        
-      
-
+       
     </div>
     <div id="if4">
-       
-         
+      
     </div>
 	
  <!-- small unit 2 -->
@@ -1002,10 +1127,9 @@ else {?>
 <div class="removeadlink">&nbsp; 
 </div>
  <div class="removeadlink">
-            <?=$REMOVE_ADS[$lang_idx];?><a href="#opensettings.png"><img src="images/opensettings.png" width="35" /></a>
+            
  </div>
  
- <a href="https://www.riseup.co.il/riseupjerusalem?utm_source=jerusalem&utm_medium=site&utm_content=banner&utm_campaign=riseup_jerusalem"><img src="images/riseup_banner_100.png" alt="riseup" width="320" height="100" /></a>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- startup mobile -->
 
@@ -1017,7 +1141,7 @@ else {?>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
  <div class="removeadlink">
-            <?=$REMOVE_ADS[$lang_idx];?><a href="#opensettings.png"><img src="images/opensettings.png" width="35" /></a>
+         
     </div>
 </div>
 </div>
@@ -1096,15 +1220,21 @@ Licensed MIT
             return temp;
         return temp + '<div class="paramunit">°</div>' ;
     }
-	function loadPostData(jsonstr, coldmeter_size)
+	function loadPostData(jsonstr, coldmeter_size, all_json)
 	{
             var C_STARTUP_AD_INTERVAL = 2;
-		 $.getScript( "<?=BASE_URL?>/footerScripts011221.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>" , function( data, textStatus, jqxhr) {
-							if (jsonstr  != undefined)
-								fillcoldmeter_fromjson(jsonstr, coldmeter_size);
+		 $.getScript( "<?=BASE_URL?>/footerScripts180422.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>" , function( data, textStatus, jqxhr) {
+							if (jsonstr  != undefined){
+                                fillcoldmeter_fromjson(jsonstr, coldmeter_size);
+                                 fetch("https://www.02ws.co.il/activities.json")
+                                .then(response => response.json())
+                                .then(data => fillactivities(data, all_json))
+                                .catch(error => console.log("error fetching activities:" + error))
+                            }
+								
                              $('#latestalert').css('visibility', 'visible');
 							 $('#arrowdown').show();
-							 
+                            
 							 $(".loading").hide();
                             <?if ($_GET['reg_id'] != "") {?>
                             $.ajax({
@@ -1152,17 +1282,17 @@ Licensed MIT
                             $("#nextdays").css('visibility', 'visible');
                             if (sessions % 2 == 0)
                             {
-                                $("#if1").show();
+                               /* $("#if1").show();
                                 $("#if2").hide();
                                 $("#if3").show();
-                                $("#if4").hide();
+                                $("#if4").hide();*/
                             }
                             else 
                             {
-                                $("#if1").hide();
+                               /* $("#if1").hide();
                                 $("#if2").show();
                                 $("#if3").hide();
-                                $("#if4").show();
+                                $("#if4").show();*/
                                 
                             }
 
@@ -1193,7 +1323,7 @@ Licensed MIT
                 cssstyle_str += ",cloudy"; 
                 loadCSS("css/cloudy.min.css", document.getElementById('loadGA'));
         }
-       if (json.jws.current.pm10 > 300) { 
+       if (json.jws.current.isdusty == 'true') { 
                 cssstyle_str += ",dust"; 
                 loadCSS("css/dust.min.css", document.getElementById('loadGA'));
         } 
@@ -1251,10 +1381,7 @@ Licensed MIT
         $('#tempdivvaluestart').fadeIn(30);
         var ttl = (json.jws.Messages.latestalertttl == 0) ? 180*60 : json.jws.Messages.latestalertttl;
 
-        if (json.jws.Messages.passedts < (ttl)){
-             $('#latestalert').html(latestalerttext);
-        }
-        else if (json.jws.LatestPicOfTheDay.passedts < 7200){
+        if (json.jws.LatestPicOfTheDay.passedts < 7200){
             $('#latestalert').html(latest_pic_of_the_day_text);
         }
         else if (json.jws.sigForecastCalc.length > 0){
@@ -1264,7 +1391,7 @@ Licensed MIT
                                          '&nbsp;</div>');
         }
         else{
-            $('#latestalert').html(latest_tip_of_the_day);
+          //  $('#latestalert').html(latest_tip_of_the_day);
         }
         
         if (json.jws.LatestUserPic.passedts < 7200){
@@ -1281,9 +1408,9 @@ Licensed MIT
          if (cur_feel_link)
          {
             $(".loading").show();
-            fetch("<?=BASE_URL?>/coldmeter_service.php?lang="+<? echo $lang_idx;?> + "&json=1")
+            fetch("<?=BASE_URL?>/coldmeter_service.php?lang="+<? echo $lang_idx;?> + "&json=1&cloth_type=e")
                 .then(response => response.json())
-                .then(data => loadPostData(data, coldmeter_size))
+                .then(data => loadPostData(data, coldmeter_size, json))
                 .catch(error => console.log("error:" + error))
         } else loadPostData();
         
@@ -1326,7 +1453,8 @@ Licensed MIT
         $("#latesttemp .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.tempchange.split(",")[2]);
         $("#latesttemp .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.tempchange.split(",")[2]);
         $("#latesttemp .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.tempchange.split(",")[2]);
-        $("#latesttemp .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.tempchange.split(",")[2]);
+        $("#latesttemp .trendstable .trendsvalues .innertrendvalue").eq(3).html(json.jws.min15.tempchange.split(",")[2]);
+        
         $("#latesttemp2 .paramvalue").html(c_or_f(json.jws.current.temp2, tempunit)+'<div class="param">'+tempunit+'</div>' + '&nbsp;<span id=\"valleytemp\" title=\"\">'+ title_temp2 + '</span>');
         $("#latesttemp2 .highlows .highparam").html('<strong>' + c_or_f(json.jws.today.hightemp2, tempunit) + '</strong>');
         $("#latesttemp2 .highlows .high_time").html(json.jws.today.hightemp2_time);
@@ -1335,7 +1463,8 @@ Licensed MIT
         $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.temp2change.split(",")[2]);
         $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.temp2change.split(",")[2]);
         $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.temp2change.split(",")[2]);
-        $("#latesttemp2 .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.temp3change.split(",")[2]);
+        $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(3).html(json.jws.min15.temp2change.split(",")[2]);
+       
         $("#latestradiation .paramvalue").html(json.jws.current.solarradiation+'<span class="paramunit">'+'W/m2' + '</span>');
         $("#latestradiation .highlows .highparam").html('<strong>' + json.jws.today.highradiation + '</strong>');
         $("#latestradiation .highlows .high_time").html(json.jws.today.highradiation_time);
@@ -1352,7 +1481,8 @@ Licensed MIT
         $("#latesttemp3 .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.temp3change.split(",")[2]);
         $("#latesttemp3 .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.temp3change.split(",")[2]);
         $("#latesttemp3 .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.temp3change.split(",")[2]);
-        $("#latesttemp3 .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.temp3change.split(",")[2]);
+        $("#latesttemp3 .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min15.temp3change.split(",")[2]);
+        
         if (json.jws.current.islight == 1)
             $("#temp3_desc").html(json.jws.desc.temp3_desc<?=$lang_idx?>);
         else
@@ -1365,7 +1495,8 @@ Licensed MIT
         $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.humchange.split(",")[2]);
         $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.humchange.split(",")[2]);
         $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.humchange.split(",")[2]);
-        $("#latesthumidity .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.humchange.split(",")[2]+"%");
+        $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(3).html(json.jws.min15.humchange.split(",")[2]);
+       
         $("#latestwind .paramvalue").html("<div id=\"winddir\" class=\"paramunit\"><div class=\"winddir\"></div></div><div id=\"windspeed\">" + json.jws.current.windspd + " <div class=\"param\"><?=$WIND_UNIT[$lang_idx]?></div></div>");
         $("#latestwind .winddir").addClass(json.jws.current.winddir);
         $("#latestwind .highlows .highparam").html('<strong>' + json.jws.today.highwind + '</strong>');
@@ -1577,7 +1708,7 @@ Licensed MIT
                 wind_extra = "<div class=\"wind_icon high_wind\"></div>";
             else
                 wind_extra = "";                        
-            forecastDays += "<span class=\"icon extra" + i + "\" id=\"icon" + i + "\">" + wind_extra + "<img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"34\" height=\"34\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></span><div class=\"tsfh\"><div class=\"humidity icon extra" + i + "\"><a href=\"<?=BASE_URL?>/dailydetailed.php?m=1&dayid=" + (i+1) + "\" rel=\"external\" ><img src=\"images/enlarge_64.png\" width=\"35\" alt=\"enlarge\"/></a></div></div>"+"</td>";
+            forecastDays += "<span class=\"icon extra" + i + "\" id=\"icon" + i + "\">" + wind_extra + "<img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"34\" height=\"34\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></span><div class=\"tsfh\"><div class=\"enlarge icon extra" + i + "\"><a href=\"<?=BASE_URL?>/dailydetailed.php?m=1&dayid=" + (i+1) + "\" rel=\"external\" ><img src=\"images/enlarge_64.png\" width=\"35\" alt=\"enlarge\"/></a></div></div>"+"</td>";
             fulltextforecast = json.jws.forecastDays[i].lang<? echo $lang_idx;?>;
             containsanchor = fulltextforecast.indexOf("<a");
             partialtextlastindex = (containsanchor > 0) ? containsanchor - 1 : lastindex;
@@ -1597,6 +1728,12 @@ Licensed MIT
        forecastDays += "<tr><td style=\"text-align:center\">" + json.jws.desc.month_in_word<?=$lang_idx?> + " <?=$AVERAGE[$lang_idx]?></td><td></td><td class=\"tsfh average\" style=\"text-align:center\">" + c_or_f(json.jws.thisMonth.lowtemp_av, tempunit) + "</td><td class=\"tsfh average\" style=\"text-align:center\">" + c_or_f(json.jws.thisMonth.hightemp_av, tempunit) + "</td><td></td><td></td><td></td></tr>";
        forecastDays += "</table>";
       
+       var ad_html, ad_container;
+       for (i = 0; i< json.jws.Ads.length; i++){
+        ad_html = "<a href='"+json.jws.Ads[i].link+"' >" + "<img src=\"" + json.jws.Ads[i].img_url + "\" width=\"" + json.jws.Ads[i].width  + "\" height=\"" + json.jws.Ads[i].height  +  "\" /></a>";
+        ad_container = '#if'+(i+1);
+        $(ad_container).html(ad_html);
+       }
        if (json.jws.current.cloudiness > 1){
            $('#cloudiness4bg2').show();
           
@@ -1612,9 +1749,9 @@ Licensed MIT
         $(".info_btns").show();
         $("#shortforecast").show();
        $('#logo').show();
-       $('#startinfo_container').show();
+       //$('#startinfo_container').show();
        $('#livepic_box').show();
-       $('#forecastnextdays_table').html(forecastDays);
+       $('#forecastnextdays_table, .forecastnextdays').html(forecastDays);
        var cclass, sigRunWalkweatherstates = "";
        for (i = 1; i< json.jws.sigRunWalkweather.length; i++){
         if (i == 1) cclass = "class=\"windhumsituation\""; else cclass = "";  
@@ -1706,7 +1843,7 @@ Licensed MIT
     function getCookie(cookieName){for(var x=0;x<document.cookie.split("; ").length;x++){var oneCookie=document.cookie.split("; ")[x].split("=");if(oneCookie[0]==escape(cookieName)){return unescape(oneCookie[1]);}}
         return'';}
     function rememberCookie(cookieName,cookieValue, cookieLife){document.cookie=escape(cookieName)+'='+escape(cookieValue)+(cookieLife?';expires='+new Date((new Date()).getTime()+(cookieLife*86400000)).toGMTString():'')+';path=/';}
-  
+    
     function fillAllJson(jsonstr)
     {
       try{var json = JSON.parse(jsonstr);} catch (e) {alert('שגיאה, נסו מאוחר יותר');}
@@ -1714,14 +1851,14 @@ Licensed MIT
       var last_container = getCookie('start_container');//or last_container
        var last_nodeid = getCookie('start_nodeid');//or last_nodeid
        if (last_container == ""){
-        last_container = 'startinfo_container';
+        last_container = 'currentinfo_container';
         last_nodeid = 'now_title';
         
        }
       <?if ($_REQUEST['section'] == "alerts.php") echo "last_container = 'messages_box';";?>
 	   navMain(last_container, last_nodeid, 'none');
-       if (last_container == 'startinfo_container')
-            $('#currentinfo_container').show();
+      // if (last_container == 'startinfo_container')
+       //     $('#currentinfo_container').show();
 		$('#logo').show();
    }
    function showNextDays()
@@ -1741,6 +1878,9 @@ Licensed MIT
        $('#navbar').hide();
     }
     
+   }
+   if (window.location.href.indexOf("http://") > -1) {
+       redirect('<?=BASE_URL?>/small');
    }
    var should_show_startupdiv = false;
    var current_tab, current_nideid;
@@ -1787,6 +1927,11 @@ Licensed MIT
 <script type="text/javascript">
 startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
 </script>
+<style>
+    body{
+        background:white;
+    }
+</style>
 <?} if (!isset($_GET['c'])){ ?>
 <div style="clear:both;height:10px">&nbsp;</div>
 <div id="toforum" class="float inv_plain_3_zebra big" style="display:none">

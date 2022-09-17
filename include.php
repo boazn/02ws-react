@@ -475,6 +475,8 @@ class FixedTime {
     }
     function get_temp2_to_coldmeter(){
         $temp_to_cold_meter = $this->get_thsw();
+        if (empty($temp_to_cold_meter))
+            $temp_to_cold_meter = $this->get_temp_to_coldmeter();
         return $temp_to_cold_meter;
     }
     function get_temp($temp_unit = "") {
@@ -1756,7 +1758,7 @@ class Activities {
     const CAMPFIRE = "CAMPFIRE";
     const EVENTOUTSIDE = "EVENTOUTSIDE";
     const YOGA = "YOGA";
-    const CHILDRENS = "CHILDRENS";
+    const CHILDRENS = "CHILDREN";
     const WESTERNWALL = "WESTERNWALL";
     const GAZELLEPARK = "GAZELLEPARK";
     const IRRIGATION = "IRRIGATION";
@@ -1793,6 +1795,7 @@ class TimeFrame {
 Class CustomAlert {
     const HighUV = "UV";
     const HighET = "HighET";
+    const Dry = "Dry";
     const LowRadiation = "LowRad";
     const Dust = "Dust";
     const HighDust = "HighDust";
@@ -2274,6 +2277,9 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     $mail->IsHTML(true);
     $mail->Sender = $source;
     $mail->AddReplyTo($source, $sourcename);
+    $mail->SMTPDebug  = 1;  
+    //$mail->SMTPAuth   = TRUE;
+    //$mail->SMTPSecure = "tls";
 
     if ((stristr($source, "mymail-in.net")) || (stristr($source, "list.ru")) || (stristr($source, "trasteembable")) || (stristr($source, "76up.com"))|| (stristr($target, "email.tst")))
         return false;
@@ -2283,16 +2289,16 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     $headers = "MIME-Version: 1.0\r\n";
     $headers .= "Subject: =?UTF-8?Q?".base64_encode($sourcename)."?=";
     //$headers .= "Content-Language: he\r\n";
-    $headers .= "From: {$source}\r\n";
-    $headers .= "Reply-To: {$source}\r\n";
+    //$headers .= "From: {$source}\r\n";
+   // $headers .= "Reply-To: {$source}\r\n";
     $headers .= "Return-Path: {$source}\r\n";
     $headers .= "Organization: 02WS\r\n";
-    $headers .= "Message-ID: <" . md5(uniqid(time())) . "@{$_SERVER['SERVER_NAME']}>";
+    //$headers .= "Message-ID: <" . md5(uniqid(time())) . "@{$_SERVER['SERVER_NAME']}>";
     $headers .= "X-MSmail-Priority: Normal";
     $headers .= "X-Priority: 3\r\n";
     $headers .= "X-Mailer: PHP" . phpversion() . "\r\n";
     $headers .= "X-AntiAbuse: This is a solicited email for 02WS.co.il website\r\n";
-    $headers .= "X-AntiAbuse: Servername - {$_SERVER['SERVER_NAME']}\r\n";
+   // $headers .= "X-AntiAbuse: Servername - {$_SERVER['SERVER_NAME']}\r\n";
     $headers .= "Content-type: text/html; charset=UTF-8\r\n";
     $headers .= "Content-Transfer-Encoding: quoted-printable\r\n";
 
@@ -2320,7 +2326,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     if (($source !== EMAIL_ADDRESS) || (isHeb()))
         $genTxtToBuild .= " dir=\"rtl\" ";
     $genTxtToBuild .= "><head><style>.inv_plain_3_zebra     {        border: 1px solid #2C3A42; 	        background: rgba(228, 249, 251, 0.4);        color: #2C3A42;        padding: 12px;        margin: 0;        -webkit-border-radius: 8px;        border-radius: 8px;          
-    }</style><link href=\"" . BASE_URL . "/main.php?lang=%d\" rel=\"stylesheet\" type=\"text/css\"> </head><body class=\"mailbody\" style=\"width:500px;margin:0 auto\"><img src=\"" . BASE_URL . "/" . $header_pic . "\" /><h1 style=\"padding:1em;width:400px;margin:0 auto\" class=\"mailheader\">%s</h1><p class=\"mailcontainer\"><div style=\"padding:1em\" class=\"clear inv_plain_3_zebra\">%s</div></p>";
+    }</style><link href=\"" . BASE_URL . "/main.php?lang=%d\" rel=\"stylesheet\" type=\"text/css\"> </head><body class=\"mailbody\" style=\"width:500px;margin:0 auto\"><img src=\"" . BASE_URL . "/" . $header_pic . "\" /><h3 style=\"padding:1em;width:400px;margin:0 auto\" class=\"mailheader\">%s</h3><p class=\"mailcontainer\"><div style=\"padding:1em\" class=\"clear inv_plain_3_zebra\">%s</div></p>";
     
     array_push($textToSend, sprintf($genTxtToBuild, $EN, $WEBSITE_TITLE[$EN], is_array($messageBody) ? $multiLangBody[$EN] : $messageBody ));
     array_push($textToSend, sprintf($genTxtToBuild, $HEB, $WEBSITE_TITLE[$HEB], is_array($messageBody) ? $multiLangBody[$HEB] : $messageBody));
@@ -2883,7 +2889,7 @@ function isOpenOrClose ()
 {
 	
     global $lang_idx, $current, $OPEN, $CLOSE, $PIVOT_TEMP;
-    if (($current->get_rainchance()>0)||($current->get_pm10() > 150))
+    if (($current->get_rainchance()>0)||($current->get_pm10() > 100)||($current->get_temp()>29)||($current->get_temp()<22))
         return $CLOSE[$lang_idx];
 	if ($current->get_intemp() > $current->get_temp())
 	{
@@ -3237,7 +3243,7 @@ function cleanInvalidAPNTokens()
              array_push ($registrationIDs, array('apn_regid' => $line["apn_regid"], 'id' => $line["id"]));
           }
     }
-    logger("cleanInvalidAPNTokens : ".count($registrationIDs)." ".$message);
+    //logger("cleanInvalidAPNTokens : ".count($registrationIDs)." ".$message);
     
     $apnsHost = 'gateway.push.apple.com';
     $apnsPort = 2195;
@@ -3305,6 +3311,73 @@ function saveInvalidTokens() {
      }
 }
 
+function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $addon, $class, $messageType, $ttl)
+{
+    global $mem, $ALERTS_PAYMENT, $PATREON_LINK;
+    if (empty($ttl))
+    {
+        $ttl = 360;
+    }
+    $messageType = "long_range";
+    if ($_POST["short_range"]=="true"){
+        $messageType = "short_range";
+    }
+    else if ($_POST["tip"]=="true"){
+        $messageType = "tip";
+    }
+    try
+    {
+        global $lang_idx;
+        $lang_idx = $lang;
+        //$description = nl2br($description);
+        $description = trim($description);
+        $description = str_replace("'", "`", $description);
+        $description = str_replace("\"", "``", $description);
+        $now = replaceDays(date('D H:i'));
+        $append = true;
+        $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'forecast') and (lang=?)", $lang);
+        while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
+            $descriptionforecast = $line["Description"];
+            $descriptionforecast_title = $line["Title"];
+        }
+        $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'LAlert') and (lang=?)", $lang);
+        while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
+            $latestalert = $line["Description"];
+            $latestalert_title = $line["Title"];
+            $latestalert_time = replaceDays(date('D H:i', $mem->get('latestalerttime'.$lang)));
+        }
+        $description_appended = $latestalert_time."\n".trim($latestalert)."\n".trim($descriptionforecast);
+        //$description = "<div class=\"alerttime ".$class."\">".$now."</div>".$description;
+        if (!empty($description))
+            $description = $description."\n";
+        //$now = getLocalTime(time());
+
+        $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='forecast') and (lang=$lang)";
+        $mem->set('descriptionforecast'.$lang, $description_appended);
+        $mem->set('descriptionforecast_title'.$lang, $latestalert_title);
+        $res = db_init($query, "" );
+        $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='$type') and (lang=$lang)";
+        $mem->set('latestalert'.$lang, $description);
+        $mem->set('latestalert_title'.$lang, $title);
+        $mem->set('latestalert_img', $img_src);
+        $mem->set('addonalert'.$lang, $addon);
+        $mem->set('latestalerttime'.$lang, time());
+        $mem->set('latestalertttl', $ttl*60);
+        $mem->set('latestalerttype', $messageType);
+        $res = db_init($query, "" );
+        if (!empty(trim($description))&&($type=='LAlert')){
+            $query = "INSERT INTO  `AlertsArchive` (Description, active, href,  img_src, Title, updatedTime, lang) Values('{$description}', '$active', '$href', '$img_src', '{$title}', SYSDATE(),  $lang)";
+            $res = db_init($query, "" );
+        }
+       
+        // Free resultset 
+        @mysqli_free_result($res);
+    }
+    catch (Exception $ex) {
+        $result .= " exception:".$ex->getMessage();
+    }   
+	
+}
 function callAPNSender($key, $registrationIDs, $messageBody, $title, $picture_url, $embedded_url){
      
        // Set POST variables
@@ -3367,8 +3440,13 @@ function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_ur
     $url = 'https://fcm.googleapis.com/fcm/send';
 
     $fields = array(
+        'priority' => 10,
+        'apns' => array( "headers" => array( "apns-priority" => "5")),
+        'android' => array("priority" => "high" ),
+        'aps' => array("sound" => "default" ),
         'registration_ids' => $registrationIDs,
-        'data' => array( "message" => $messageBody, "title" => $title, "picture_url" => $picture_url, "embedded_url" => $embedded_url),
+        'notification' => array( "body" => $messageBody, "title" => $title, "picture_url" => $picture_url, "embedded_url" => $embedded_url, "sound" => "default", "channelId"=>"default"),
+        'data' => array( "body" => $messageBody, "title" => $title, "embedded_url" => $embedded_url, "sound" => "default", "channelId"=>"default"),
     );
         
     $headers = array(
@@ -3401,16 +3479,16 @@ function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_ur
                 break;
 
             case "400":
-                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result, 0, "APN", "", "callGCMSender");
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result, 0, "FCM", "", "callGCMSender");
                 break;
 
             case "401":
-                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result, 0, "APN", "", "callGCMSender");
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result, 0, "FCM", "", "callGCMSender");
                 break;
 
             default:
                 //TODO: Retry-after
-                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result, 0, "APN", "", "callGCMSender");
+                logger("curl_getinfo GCM: ".$resultHttpCode." ".$result, 0, "FCM", "", "callGCMSender");
                 break;
         }
     return array($resultHttpCode, json_decode($result, true));
@@ -3421,14 +3499,15 @@ function callCustomAlertSender($messageBody, $title, $picture_url, $embedded_url
     ////////////////////// Android //////////////////////////////////////
     $registrationIDs0 = array();$registrationIDs1 = array();$lines = 0;
     $query_extension = "";
-    if ($customAlert == CustomAlert::Dust){
-        $query = "select * FROM fcm_users where active_dust=1".$query_extension;
+    if (($customAlert == CustomAlert::Dust)||($customAlert == CustomAlert::HighDust)){
+        $query = "select lang, gcm_regid  FROM fcm_users where active_dust=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_dust=1".$query_extension;
+        
     }
-    else if ($customAlert == CustomAlert::HighET){
-        $query = "select * FROM fcm_users where active_dry=1".$query_extension;
+    else if (($customAlert == CustomAlert::HighET)||($customAlert == CustomAlert::Dry)){
+        $query = "select lang, gcm_regid  FROM fcm_users where active_dry=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_dry=1".$query_extension;
     }
     else if ($customAlert == CustomAlert::HighUV){
-        $query = "select * FROM fcm_users where active_uv=1".$query_extension;
+        $query = "select lang, gcm_regid  FROM fcm_users where active_uv=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_uv=1".$query_extension;
     }
       
     $result = db_init($query, "");
@@ -3444,52 +3523,16 @@ function callCustomAlertSender($messageBody, $title, $picture_url, $embedded_url
      $resultCall = array();
      $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
      foreach ($arrOfRegID0 as $regIDs){
-        
         $resultCall = callGCMSender (FCM_API_KEY, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
-        handleInvalidTokens($resultCall[1], $regIDs, FCM_API_KEY);
+        //handleInvalidTokens($resultCall[1], $regIDs, FCM_API_KEY);
       }
     
      $arrOfRegID1 = array_chunk($registrationIDs1, 1000);
      foreach ($arrOfRegID1 as $regIDs){
-        
         $resultCall = callGCMSender (FCM_API_KEY, $regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url);
-        //logger($resultCall[1]);
-        handleInvalidTokens($resultCall[1], $regIDs, FCM_API_KEY);
+        //handleInvalidTokens($resultCall[1], $regIDs, FCM_API_KEY);
      }
-    ////////////////////// APN //////////////////////////////////////
-    $registrationIDs0 = array();$registrationIDs1 = array();
-    $query_extension = "";
-    if ($customAlert == CustomAlert::Dust){
-        $query = "select * FROM apn_users where active_dust=1".$query_extension;
-    }
-    else if ($customAlert == CustomAlert::HighET){
-        $query = "select * FROM apn_users where active_dry=1".$query_extension;
-    }
-    else if ($customAlert == CustomAlert::HighUV){
-        $query = "select * FROM apn_users where active_uv=1".$query_extension;
-    }
-    $result = db_init($query, "");   
-    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
-	  if ($line["apn_regid"] != "")
-          {
-              if ($line["lang"] == 0)
-            array_push ($registrationIDs0, array('apn_regid' => $line["apn_regid"], 'id' => $line["id"]));
-            elseif ($line["lang"] == 1)
-            array_push ($registrationIDs1, array('apn_regid' => $line["apn_regid"], 'id' => $line["id"]));
-          }
-    }
-    $chunkedOfRegID1 = array_chunk($registrationIDs1, 10000);
-    foreach ($chunkedOfRegID1 as $regIDs1){
-        $token = getToken('AuthKey_669J3G9XB5.p8', '669J3G9XB5', 'SAPLRRD8P5');
-        $result .= sendAPNToRegIDs($regIDs1, $title[1], date('H:i')." ".$messageBody[1], $picture_url, $embedded_url, $token);
-     }
-     $chunkedOfRegID0 = array_chunk($registrationIDs0, 10000);
-     foreach ($chunkedOfRegID0 as $regIDs0){
-        $token = getToken('AuthKey_669J3G9XB5.p8', '669J3G9XB5', 'SAPLRRD8P5');
-        $result .= sendAPNToRegIDs($regIDs0, $title[0], date('H:i')." ".$messageBody[0], $picture_url, $embedded_url, $token);
-     }
-
-     
+     logger($query." number of lines:".$lines." count:".count($arrOfRegID1)." "." Completed", 0, "FCM", "", "callCustomAlertSender"); 
      return $result;
 
 }
@@ -3829,7 +3872,7 @@ function getPageTitle()
 
 }
 
-function getClothTitle($imagename, $temp)
+function getClothTitle($imagename, $temp, $wind, $hum)
 {
 	global $lang_idx, $HEB, $EN, $OR, $SUN_SHADE_CLOTH, $TSHIRT, $JACKET, $COAT, $RAINCOAT, $UMBRELLA, $SWEATER, $SWEATSHIRT, $SHORTS, $LONGSLEEVES, $LIGHTJACKET, $LIGHTCOAT,$LAYERS_BELOW, $LAYERS_BELOW2, $LAYERS_BELOW3, $LAYERS_BELOW3_PLUS, $current;
 	
@@ -4090,14 +4133,14 @@ function getCurrentChat($searchname, $filter_is_on, $startLine, $limitLines, $ti
 }
 function getWindInfo($windspeed, $lang_idx){
     global $WEAK_WINDS, $MODERATE_WINDS, $STRONG_WINDS, $EXTREME_WINDS, $WEAK_WINDS_DESC, $MODERATE_WINDS_DESC, $STRONG_WINDS_DESC, $EXTREME_WINDS_DESC, $NO_WIND, $WINDY, $min10;
-    if ($windspeed > 60){
+    if ($windspeed > 45){
                $windtitle=$EXTREME_WINDS[$lang_idx];
                $winddesc = $EXTREME_WINDS_DESC[$lang_idx];
                $wind_class="high_wind";
                $windimg = "wind2.svg";
       }
 
-     else if ($windspeed > 35){
+     else if ($windspeed > 30){
                $windtitle=$STRONG_WINDS[$lang_idx];
                $winddesc = $STRONG_WINDS_DESC[$lang_idx];
                $wind_class="high_wind";
@@ -4165,31 +4208,7 @@ function check_email_address($email) {
         return false;
     else
         return true;
-    // First, we check that there's one @ symbol, and that the lengths are right
-  if (!preg_match("[^@]{1,64}@[^@]{1,255}", $email)) {
-    // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
-    return false;
-  }
-  // Split it into sections to make life easier
-  $email_array = explode("@", $email);
-  $local_array = explode(".", $email_array[0]);
-  for ($i = 0; $i < sizeof($local_array); $i++) {
-     if (!preg_match ("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
-      return false;
-    }
-  }  
-  if (!preg_match("^\[?[0-9\.]+\]?$", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
-    $domain_array = explode(".", $email_array[1]);
-    if (sizeof($domain_array) < 2) {
-        return false; // Not enough parts to domain
-    }
-    for ($i = 0; $i < sizeof($domain_array); $i++) {
-      if (!preg_match ("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$", $domain_array[$i])) {
-        return false;
-      }
-    }
-  }
-  return true;
+    
 }
 //
 //         moon calculator
@@ -4313,6 +4332,8 @@ function windSignificant($index)
         return true;
      if ($forecastHour[$index]['priority'] != $forecastHour[$index - 1]['priority'])
          return true;
+    if (($forecastHour[$index]['rain'] != $forecastHour[$index - 1]['rain']))
+         return true;
      return false;
  }
 function enoughSignificant($index)
@@ -4321,6 +4342,8 @@ function enoughSignificant($index)
      if ($index == 0)
         return true;
      if (($forecastHour[$index]['title'] != $forecastHour[$index - 1]['title']))
+         return true;
+     if (($forecastHour[$index]['rain'] != $forecastHour[$index - 1]['rain']))
          return true;
      if (($forecastHour[$index]['title'] == $forecastHour[$index - 1]['title']) &&
           ($forecastHour[$index]['wind'] != $forecastHour[$index - 1]['wind']))
@@ -4413,12 +4436,12 @@ function dustExistsIn24hf ()
 {
     global $mem, $forecastHour;
     foreach ($forecastHour as $hour_f){
-         if (($hour_f['icon'] == "dust.png")&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 21600)){
+         if ((strstr($hour_f['icon'], "dust"))&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 21600)){
             $nextSigForecast = array('rain' => 0, 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => $hour_f['icon']);
 			$mem->set('nextSigForecast', $nextSigForecast);
             return true;
 		 }
-		 else if (($hour_f['icon'] == "dust.png")&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 44600)){
+		 else if ((strstr($hour_f['icon'], "dust"))&&($hour_f['currentDateTime'] - time() > 0)&&($hour_f['currentDateTime'] - time() < 44600)){
             $nextSigForecast = array('rain' => 0, 'hrs' => (round(($hour_f['currentDateTime'] - time())/3600)), 'dust' => $hour_f['icon']);
 			$mem->set('nextSigForecast', $nextSigForecast);
             return false;

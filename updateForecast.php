@@ -30,8 +30,12 @@ ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
     {
         direction:rtl
     }
+    #reload_container
+    {
+        position:absolute;top:3em;left:30em;width:100px
+    }
     .cell{
-        float:right;padding:1.2em 1.6em 0 1.6em
+        float:right;padding:1.2em 1.2em 0 1.2em
     }
     .invcell{
         float:left;padding:5px 1em
@@ -43,7 +47,7 @@ ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
         padding:0.3em 0.5em 0 0.5em
     }
     textarea{
-        width:310px;
+        width:290px;
         height:35px;
     }
     textarea.floated{
@@ -69,9 +73,12 @@ ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
         }
     }
     @media only screen and (max-width: 500px) {
-        #section{ margin-top:-300px}
+       
         #logo, #slogan, #to_home{display:none}
         .alert{clear:both}
+        .contentbox-wrapper{display:none}
+        #ads, #forcast_title, .contentbox{display:none}
+        #reload_container{top:2em;width: 20px;left:0}
     }
     
     input{border:0}
@@ -411,20 +418,24 @@ function updateAds ($active, $idx, $type, $command, $img_url, $href, $w, $h)
     echo "</pre>";
 
 }
-function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $append)
+function updateMessages ($description, $active, $type, $lang, $href, $img_src, $title, $append)
 {
     global $forecastHour, $mem;
     //$description = nl2br($description);
     $description = str_replace("'", "`", $description);
-    $now = replaceDays(date('G:i D '));
+    $description = str_replace("\"", "``", $description);
+    $now = replaceDays(date('D H:i'));
+    $ttl = 360;
      //$now = getLocalTime(time());
     $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'forecast') and (lang=?)", $lang);
     while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
         $descriptionforecast = $line["Description"];
+        $descriptionforecast_title = $line["Title"];
     }
     $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'LAlert') and (lang=?)", $lang);
     while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
         $latestalert = $line["Description"];
+        $alertTitle = $line["Title"];
     }
     $description_appended = $latestalert."\n".$descriptionforecast;
     
@@ -440,8 +451,8 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         $mem->set('latestalert'.$lang, $description);
         $mem->set('latestalerttime'.$lang, time());
         $res = db_init($query, "" );
-        
-        
+       
+         
     }
     else{
         if ($lang < 0)
@@ -451,11 +462,15 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         if ($type == 'LAlert'){
             $mem->set('latestalert'.$lang, $description);
             $mem->set('latestalerttime'.$lang, time());
+            $mem->set('latestalertttl', $ttl*60);
+            $mem->set('latestalerttype', $messageType);
+            $mem->set('descriptionforecast_title'.$lang, $alertTitle);
             echo "updateLAlert".$lang."=".date('Y-m-d G:i D', $mem->get('latestalerttime'.$lang));
         }   
         else if ($type == 'forecast'){
             $mem->set('descriptionforecast'.$lang, $description);
             $mem->set('descriptionforecasttime'.$lang, time());
+            $mem->set('descriptionforecast_title'.$lang, $alertTitle);
             echo "updateforecast".$lang."=".date('Y-m-d G:i D', $mem->get('descriptionforecasttime'.$lang));
         }
         else if ($type == 'synop'){
@@ -463,7 +478,11 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         }
            
         $res = db_init($query, "" );
-        
+     }
+
+    if (($type != 'synop')&&($type != 'taf')){
+        $query = "INSERT INTO  `AlertsArchive` (Description, active, href,  img_src, Title, updatedTime, lang) Values('{$description}', '{$active}', '{$href}', '{$img_src}', '{$title}', SYSDATE(),  $lang)";
+        $res = db_init($query, "" );
     }
     
         
@@ -547,8 +566,8 @@ include_once("include.php");
 include_once("lang.php");
 $mem = new Memcached();
 $mem->addServer('localhost', 11211);
-$icons = get_Fromdir(ICONS_PATH);
-$clothes = get_Fromdir(CLOTHES_PATH);
+$icons = get_Fromdir($_SERVER['DOCUMENT_ROOT']."/".ICONS_PATH);
+$clothes = get_Fromdir($_SERVER['DOCUMENT_ROOT']."/".CLOTHES_PATH);
 $empty = $post = array();
 foreach ($_POST as $varname => $varvalue) {
    if (empty($varvalue)) {
@@ -611,7 +630,7 @@ else if ((trim($_POST['command']) == "U"))
                            $_POST['morning_icon'], 
                            $_POST['night_icon']);
      else
-		updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), 
+     updateMessages (html_entity_decode(urldecode($_POST['description'])), 
                                    1, 
                                    $_POST['type'], 
                                    $_POST['lang'],
@@ -623,7 +642,7 @@ else if ((trim($_POST['command']) == "U"))
 
 else if ((trim($_POST['type']) == "LAlert"))
 {
-    updateMessageFromMessages (html_entity_decode(urldecode($_POST['description'])), 
+    updateMessages (html_entity_decode(urldecode($_POST['description'])), 
                                1, 
                                $_POST['type'], 
                                $_POST['lang'],
@@ -740,7 +759,7 @@ $result = db_init("SELECT * FROM content_sections WHERE (TYPE='taf') and (lang=?
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 ?>
 <div  class="invcell shrinked <? if ($line["active"]==1) echo "inv_plain_3_zebra";?>"  id="taf">
-    <div style="position:absolute;top:3em;left: 450px;">
+    <div id="reload_container">
         <input type="checkbox" id="reloadf" name="reloadf"  value="<?=$_POST["reloadf"]?>" <? if ($_POST["reloadf"] == 1) echo "checked=\"checked\""; ?> />reloadF from DB
     </div>
 	<div class="cell shrinked">
@@ -769,7 +788,7 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 	</div>
 	<div class="cell shrinked">
 		
-		<textarea id="descriptiontaf" name="Description<?=$line["lang"]?>" rows="4" style="width:260px;font-size: 1.1em;  min-height: 50px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><? if ($line["active"] == 0) echo getUpdatedForecast(); else echo preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]);?></textarea>
+		<textarea id="descriptiontaf" name="Description<?=$line["lang"]?>" rows="4" style="width:260px;font-size: 1.1em;  min-height: 75px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><? if ($line["active"] == 0) echo getUpdatedForecast(); else echo preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]);?></textarea>
 		
 	</div>
 	
@@ -1046,7 +1065,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		<input type="checkbox" id="activeLAlert<?=$line["lang"]?>" name="active<?=$line["day"]?>" value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
 		
 	</div>
-    <div class="cell shrinked" style="width:80px">
+    <div class="cell shrinked latestalerttime" style="width:80px">
 		<span><?=date('Y-m-d G:i D ', $mem->get('latestalerttime'.$line["lang"]))?></span>
 		
 	</div>
@@ -1134,22 +1153,22 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	
 	<div style="float:<?echo get_s_align();?>;padding:1em 0.3em 0em 0.3em">
 		
-		<input id="activeCurrStory<?=$line["lang"]?>" name="active<?=$line["active"]?>" size="1"  type="checkbox" value="<?=$line["active"]?>" style="text-align:<?if ($line["lang"] == 1) echo "right"; else "left";?>"   <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> /><br /><br />link<br />img<br />Idx
+		<input id="activeCurrStory<?=$line["lang"]?>" name="active<?=$line["active"]?>" size="1"  type="checkbox" value="<?=$line["active"]?>" style="text-align:<?if ($line["lang"] == 1) echo "right"; else "left";?>"   <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> /><br /><br />title<br />img<br />href
 		
 	</div>
 	<div class="cell shrinked">
-		<input id="idxCurrStory<?=$line["lang"]?>" name="idx<?=$line["lang"]?>" size="2" style="width:50px" value="<?=$line["Idx"]?>"  /><span >CurrStory<?=$line["lang"]?></span><br />	 
-		<input id="langCurrStory<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>"  readonly="width:80px;readonly" style="width:8px" /><br />
-		<input id="titleCurrStory<?=$line["lang"]?>" name="title<?=$line["lang"]?>" size="18" value="<?=$line["Title"]?>" style="width:80px;text-align:<?if ($line["lang"] == 1) echo "right;direction:rtl"; else "left";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
-		<input id="hrefCurrStory<?=$line["lang"]?>" name="href<?=$line["lang"]?>" size="18"  value="<?=$line["href"]?>" style="width:80px;text-align:left" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
-		<input id="imgCurrStory<?=$line["lang"]?>" name="img<?=$line["lang"]?>" size="18"  value="<?=$line["img_src"]?>" style="width:80px;text-align:left" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
+		<input id="idxCurrStory<?=$line["lang"]?>" name="idx<?=$line["lang"]?>" size="2" style="width:20px" value="<?=$line["Idx"]?>"  /><span >CurrStory<?=$line["lang"]?></span><br />	 
+		<input id="langCurrStory<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>"  readonly="width:120px;readonly" style="width:8px" /><br />
+		<input id="titleCurrStory<?=$line["lang"]?>" name="title<?=$line["lang"]?>" size="18" value="<?=$line["Title"]?>" style="width:180px;text-align:<?if ($line["lang"] == 1) echo "right;direction:rtl"; else "left";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
+		<input id="hrefCurrStory<?=$line["lang"]?>" name="href<?=$line["lang"]?>" size="18"  value="<?=$line["href"]?>" style="width:180px;text-align:left" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
+		<input id="imgCurrStory<?=$line["lang"]?>" name="img<?=$line["lang"]?>" size="18"  value="<?=$line["img_src"]?>" style="width:180px;text-align:left" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /><br />
 		
 	</div>
 	
 	
 	<div class="cell shrinked">
 		
-		<textarea id="descriptionCurrStory<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" size="100"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?>" style="height:200px;font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 120px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
+		<textarea id="descriptionCurrStory<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" size="90"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?>" style="height:200px;font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 120px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
 	
@@ -1390,7 +1409,7 @@ function fillForecast(str)
         $(".temphigh").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
         $(".tempnight").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
         $(".href").colorbox({width:"35%", inline:true, href:"#href_dialog"});
-        $.getScript( "footerScripts161120.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>");
+        $.getScript( "footerScripts180422.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>");
         
 }
 
@@ -1495,7 +1514,7 @@ function getOneUFService(dayToSave, command, type)
     ajax.postData = postData;
     ajax.setHandlerBoth(fillForecast);
     fillForecast('<img src="images/loading.gif" alt="loading" />');
-    ajax.url = 'updateForecast.php';
+    ajax.url = '<?=BASE_URL?>/updateForecast.php';
     ajax.doReq();
     
                 
@@ -1640,4 +1659,5 @@ function htmlentities (string, quote_style) {
 
 </div>
 </div>
+<div><a href="arcMinGen.php" target="_blank">arcMinGen.php</a></div>
 					

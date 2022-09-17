@@ -21,7 +21,10 @@ define("FILE_XML_MONTHLY_YEARLY",$_SERVER['DOCUMENT_ROOT']."/monthlyyearlymb.xml
 define("FILE_CACHE","APC");
 define("EMAIL_ADDRESS","02ws.yerushamaim@gmail.com");
 define("GOOGLE_API_KEY", "AIzaSyA6nyCsWgrwXuh2tbsisPopkdgVRjQcTeQ");
-define("FCM_API_KEY", "AAAA9gsUJcw:APA91bGWiMagV4yTqG_0saibvybFuMFnuQr7TrdDmRAcaFpEKRfWIDjsgkM_MfF5guyMmrgFnBEIf0kjLbP9nvF5ToemJBPxXS96jnCWGpLoMxKAWXA-83sC9spXbAD18U45CuCe3ZL0");//AIzaSyCmSolZFAUmCnkVpY85bNp4ntzFZgz6fo4
+define("FCM_API_KEY", "AAAAM0yT7d4:APA91bEwbOz3O68Co8T38Jj7N_A1fIoYJIPGNRI83RfRNwdaG6TxEFs4Nw6aoLjd1B90nNIebV6kg1TcmcHoGDORb5-H-p9z5kCws3LxLiooivyXOpkroMqYtyCGEIDJ38E3IaNKRYSW");
+//AAAA9gsUJcw:APA91bGWiMagV4yTqG_0saibvybFuMFnuQr7TrdDmRAcaFpEKRfWIDjsgkM_MfF5guyMmrgFnBEIf0kjLbP9nvF5ToemJBPxXS96jnCWGpLoMxKAWXA-83sC9spXbAD18U45CuCe3ZL0
+//AAAAJtcpURM:APA91bHa5_OrxIjKMr2P07pcBYjJytkoTnjtmKsdVCACrlouLucehSPFDmSgq6E00S80ej7t8_6Jes5gCMQULoff_8uR9jaR2hRvMgnPyq1TUmAGzDZaTqnc73R_bqlMjF2jEWSDVnlc
+//AAAAM0yT7d4:APA91bEwbOz3O68Co8T38Jj7N_A1fIoYJIPGNRI83RfRNwdaG6TxEFs4Nw6aoLjd1B90nNIebV6kg1TcmcHoGDORb5-H-p9z5kCws3LxLiooivyXOpkroMqYtyCGEIDJ38E3IaNKRYSW
 define("active_notification_key", "APA91bENtneEEOGI14MDUQY2LXX_sSqMdxVXYMaGLbf1uSddpX5xdb9qCMsQAoKITC6cYHVdmYFGKGJdbQ4xo_HdoqSgKqyHrABLF72pz5SONBrwEwIzf8g");
 define("active_rain_etc_notification_key", "APA91bHeh6crYlUpYFcHqtPYbJROq_4ZVIGJ2qaH8L85-2cGKvLwLTCDQ5LeWQcaWhg-bYKdsVly_aDdV59hsX7gV7-r_mVINx46XlGQhwszOnNP0MKVt0NhNHhZ3J-28WieL2-1xN3b");
 define("active_tips_notification_key", "APA91bEQzwEwUf_S4p5Y5Bu1P8c8DoPG76cA4fPDyn0Xr7aYaw0I9q1feJzxr82XnEsTrDVEmD1GDecLjJ67Q8u3uelTnqjp-oI8uRb1L15gFwrrpGcAF34");
@@ -34,7 +37,7 @@ define("MYSQL_USER","boazn");
 define("MYSQL_PASS","Boaz1972");
 define("SENDMAIL_SLEEP_INTERVAL","42200");
 define ("SERVER_CLOCK_DIFF", "+0 hours 0 minutes");
-define ("GMT_TZ", "2");
+define ("GMT_TZ", "3");
 define ("TASHKIF_START", "5");
 define ("IS_SNOWING", 0);
 define ("SNOW_IS_MELTING", 0);

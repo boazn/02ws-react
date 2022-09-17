@@ -26,7 +26,7 @@ function cleanInvalidAPNTokens()
     stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
     $apns = stream_socket_client('ssl://' . $apnsHost . ':' . $apnsPort, $error, $errorString, 2, STREAM_CLIENT_CONNECT, $streamContext);
     if(!$apns) {
-        logger( "cleanInvalidAPNTokens stream_socket_client: ERROR $errcode: $errstr\n"), 4, "APN", "Push", "cleanInvalidAPNTokens";
+        logger( "cleanInvalidAPNTokens stream_socket_client: ERROR $errcode: $errstr", 4, "APN", "Push", "cleanInvalidAPNTokens");
         return;
     }
 

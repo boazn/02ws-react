@@ -7,16 +7,16 @@
 </head>
 <body <? if (isHeb()) echo "style=\"direction:rtl\""; ?>>
 <div class="float" style="width:20%">
-<div><img align="absmiddle" src="images/clothes/singlet.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/singlet.png", $current->get_temp())?></div>
-<div><img align="absmiddle" src="images/clothes/shorts_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/shorts.png", $current->get_temp())?></div>
-<div><img align="absmiddle" src="images/clothes/tshirt_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/tshirt.png", $current->get_temp())?></div>
-<div><img align="absmiddle" src="images/clothes/longsleeves_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/longsleeves.png", $current->get_temp())?></div>
-<div><img align="absmiddle" src="images/clothes/jacketlight_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/jacketlight.png", $current->get_temp())?></div>
-<div><img align="absmiddle" src="images/clothes/jacket_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/jacket.png", $current->get_temp())?></div>
-<div><img align="absmiddle" src="images/clothes/coat_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/coat.png", $current->get_temp())?></div>
-<div><img align="absmiddle" src="images/clothes/coatrain_n4.svg" width="50px" height="50px" ><?=getClothTitle("images/clothes/coatrain.png", $current->get_temp())?></div>
-<div><img align="absmiddle" src="images/clothes/gloves.svg" width="50px" height="50px" ><?=getClothTitle("images/clothes/gloves.svg", $current->get_temp())?></div>
-<div><img align="absmiddle" src="images/clothes/cold.svg" width="50px" height="50px" ><?=getClothTitle("images/clothes/cold.svg", $current->get_temp())?></div>
+<div><img align="absmiddle" src="images/clothes/singlet.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/singlet.png", $current->get_temp(), 0, 0)?></div>
+<div><img align="absmiddle" src="images/clothes/shorts_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/shorts.png", $current->get_temp(), 0, 0)?></div>
+<div><img align="absmiddle" src="images/clothes/tshirt_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/tshirt.png", $current->get_temp(), 0, 0)?></div>
+<div><img align="absmiddle" src="images/clothes/longsleeves_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/longsleeves.png", $current->get_temp(), 0, 0)?></div>
+<div><img align="absmiddle" src="images/clothes/jacketlight_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/jacketlight.png", $current->get_temp(), 0, 0)?></div>
+<div><img align="absmiddle" src="images/clothes/jacket_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/jacket.png", $current->get_temp(), 0, 0)?></div>
+<div><img align="absmiddle" src="images/clothes/coat_n4.svg" width="50px" height="50px"><?=getClothTitle("images/clothes/coat.png", $current->get_temp(), 0, 0)?></div>
+<div><img align="absmiddle" src="images/clothes/coatrain_n4.svg" width="50px" height="50px" ><?=getClothTitle("images/clothes/coatrain.png", $current->get_temp(), 0, 0)?></div>
+<div><img align="absmiddle" src="images/clothes/gloves.svg" width="50px" height="50px" ><?=getClothTitle("images/clothes/gloves.svg", $current->get_temp(), 0, 0)?></div>
+<div><img align="absmiddle" src="images/clothes/cold.svg" width="50px" height="50px" ><?=getClothTitle("images/clothes/cold.svg", $current->get_temp(), 0, 0)?></div>
 </div>
 
 <div class="float" style="width:30%">

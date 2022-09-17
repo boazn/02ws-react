@@ -35,16 +35,20 @@ function make_user_unsubscribed($email){
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<link title="Default Colors" href="main.php<?echo "?lang=".$lang_idx; ?>" rel="stylesheet" type="text/css" media="screen" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+<link rel="stylesheet" href="css/bootstrap<?=$lang_idx; ?>.css" type="text/css" >
+<link rel="stylesheet"  href="css/main<?=$lang_idx;?>.css" type="text/css">
+<link rel="stylesheet" href="<?=BASE_URL?>/css/mobile<?=$lang_idx;?>.css" type="text/css" />
 </head>
 <body>
 
 
 <? 
     if (make_user_unsubscribed($_GET['email']))
-        echo "<h1>".$_GET['email']." Removed!</h1>";
+        echo "<h2>".$_GET['email']." Removed!</h2>";
     else
-        echo "<h1>done but with errors</h1>";
+        echo "<h2>".$_GET['email']." - done but with errors</h2>";
 ?>
 
 

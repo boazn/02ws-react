@@ -211,7 +211,7 @@ Upload.prototype.doUpload = function () {
 
     $.ajax({
         type: "POST",
-        url: "SendSpecialService.php",
+        url: "<?=BASE_URL?>/SendSpecialService.php",
         xhr: function () {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
@@ -300,10 +300,10 @@ Upload.prototype.progressHandling = function (event) {
                 $("#message1").append("גשם צפוי להגיע");
             break;
             case "will stop":
-                $("#title0").val("rain is coming");
+                $("#title0").val("break is coming");
                 $("#title1").val("הגשם ייפסק");
                 $("#message0").append("The rain is expected to pass" );
-                $("#message1").append("הגשם צפוי להיפסק");
+                $("#message1").append("הפוגה צפויה להגיע");
                
             break;
             case "sunset":
@@ -350,8 +350,8 @@ Upload.prototype.progressHandling = function (event) {
         $("#message0").append(" within "+($("#rainminfrom").val())+" ");
     });
     $("#rainminto").change(function(){
-        $("#message1").append("עד "+($("#rainminto").val())+" ");
-        $("#message0").append(" to "+($("#rainminto").val())+" ");
+        $("#message1").append("עד "+($("#rainminto").val()));
+        $("#message0").append("to "+($("#rainminto").val()));
     });
     $("#words").change(function(){
         var heb_side;

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl --data "dailyforecast=1&email=0&alert_section=0&buffer=&short_range=0&long_range=0&tip=0" http://www.02ws.co.il/SendSpecialService.php

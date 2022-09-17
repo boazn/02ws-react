@@ -53,14 +53,8 @@ function sendMessageToUser($reg_id)
         return false;
     $registrationIDs = array();
     array_push($registrationIDs, $reg_id);
-    
-    if (isAndroid($reg_id))
-        callGCMSender(FCM_API_KEY, $registrationIDs, "Your picture is live now התמונה אושרה ועלתה לאוויר", "", "", "");
-    else{
-        $token = getToken('AuthKey_669J3G9XB5.p8', '669J3G9XB5', 'SAPLRRD8P5');
-        sendAPNToRegIDs($registrationIDs, "Your picture is live now התמונה אושרה ועלתה לאוויר", "", "", "", $token);
-    }
-       
+    $result = callGCMSender(FCM_API_KEY, $registrationIDs, "Your picture is live now התמונה אושרה ועלתה לאוויר", "", "", "");
+    return $result;
 }
 function isAndroid($reg_id){
     return (strlen($reg_id) == 152);
@@ -87,7 +81,8 @@ function updateApproved($approved, $idx , $reg_id){
     
     $result = db_init("UPDATE UserPicture SET approved='{$approved}', approvedAt=now() WHERE idx={$idx}","");
     @mysqli_free_result($result);
-    sendMessageToUser($reg_id);
+    $result = sendMessageToUser($reg_id);
+    echo $result;
 }
 $empty = $post = array();
 foreach ($_POST as $varname => $varvalue) {
@@ -130,14 +125,14 @@ $latestPics = getfilesFromdir($path_to_files);
 			
 			<div style="float:<?echo get_s_align();?>;padding:3px">
 				<a href="<?=$lpic[1]?>" title="<?echo getLocalTime($lpic[0]);?>" class="colorbox">
-					<? echo $lpic[1]; ?>
+					<?// echo $lpic[1]; ?>
 					
 				</a>
 			</div>
                         <? }
 		}
 
-$result = db_init("SELECT * FROM UserPicture order by uploadedAt DESC LIMIT 30","");
+$result = db_init("SELECT * FROM UserPicture order by uploadedAt DESC LIMIT 60","");
 $pic_number = 0;
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
         $picaname = "images/userpic/".$line["picname"];
@@ -182,7 +177,7 @@ function getOnePicService(picToSave, command)
     $.ajax({
         type: "POST",
         mimeType:"text/html",
-        url: "userPicsManager.php",
+        url: "<?=BASE_URL?>/userPicsManager.php",
         data: {idx:idx,command:command, approved:approved, reg_id:reg_id, picname:picname},
    }).done(function(str){
        fillPage(str);

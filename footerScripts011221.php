@@ -5,6 +5,7 @@
     ini_set("display_errors","Off");
     ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
     include_once('lang.php');
+    
     $mem = new Memcached();
     $mem->addServer('localhost', 11211);
 $lang_idx = @$_GET['lang'];
@@ -458,109 +459,63 @@ else
  function change_circle(line_id, info_id) {
      
     
-    document.getElementById("runwalk_btn").style.opacity = 0.5;
-    document.getElementById("moon_btn").style.opacity = 0.5;
-    document.getElementById("more_stations_btn").style.opacity = 0.5;
-    document.getElementById("dew_btn").style.opacity = 0.5;
-    document.getElementById("window_btn").style.opacity = 0.5;
+    $('#runwalk_btn, #moon_btn, #more_stations_btnm, #dew_btn').css('opacity','0.5');
+        
     if (info_id == "latestdewpoint")
-        document.getElementById("dew_btn").style.opacity = 1;
-    if (info_id == "latestwindow")
-        document.getElementById("window_btn").style.opacity = 1;
+        $('#dew_btn').css('opacity','1');
     if (info_id == "latestrunwalk")
-        document.getElementById("runwalk_btn").style.opacity = 1;
+        $('#runwalk_btn').css('opacity','1');
     if (info_id == "latestotherstations")
-        document.getElementById("more_stations_btn").style.opacity =1;   
+        $('#more_stations_btn').css('opacity','1');   
     if (info_id == "latestmoon")
-        document.getElementById("moon_btn").style.opacity = 1;
+        $('#moon_btn').css('opacity','1');
     if (info_id != "latestnow")
-        document.getElementById("now_btn").style.backgroundPosition = "left";
+        $('#now_btn').css('background-position', 'left');
      else
-        document.getElementById("now_btn").style.backgroundPosition = "right";
+        $('#now_btn').css('background-position', 'right');
      if (info_id != "latestwind")
-        document.getElementById("wind_btn").style.backgroundPosition = "left";
+        $('#wind_btn').css('background-position', 'left');
      else
-        document.getElementById("wind_btn").style.backgroundPosition = "right";
+        $('#wind_btn').css('background-position', 'right');
      if (info_id != "latestrain")
-        document.getElementById("rain_btn").style.backgroundPosition = "left";
+        $('#rain_btn').css('background-position', 'left');
      else
-        document.getElementById("rain_btn").style.backgroundPosition = "right";
+        $('#rain_btn').css('background-position', 'right');
      if (info_id != "latestradiation")
-        document.getElementById("rad_btn").style.backgroundPosition = "left";
+        $('#rad_btn').css('background-position', 'left');
      else
-        document.getElementById("rad_btn").style.backgroundPosition = "right";
+        $('#rad_btn').css('background-position', 'right');
      if (info_id != "latestairq")
-        document.getElementById("aq_btn").style.backgroundPosition = "left";
+        $('#aq_btn').css('background-position', 'left');
      else
-        document.getElementById("aq_btn").style.backgroundPosition = "right";
+        $('#aq_btn').css('background-position', 'right');
      if (info_id != "latestpressure")
-        document.getElementById("air_btn").style.backgroundPosition = "left";
+        $('#air_btn').css('background-position', 'left');
      else
-        document.getElementById("air_btn").style.backgroundPosition = "right";
+        $('#air_btn').css('background-position', 'right');
      if (info_id != "latesttemp")
-        document.getElementById("temp2_btn").style.backgroundPosition = "left";
+        $('#temp2_btn').css('background-position', 'left');
      else
-        document.getElementById("temp2_btn").style.backgroundPosition = "right";
+        $('#temp2_btn').css('background-position', 'right');
      if (info_id != "latesttemp2")
-        document.getElementById("temp_btn").style.backgroundPosition = "left";
+        $('#temp_btn').css('background-position', 'left');
      else
-        document.getElementById("temp_btn").style.backgroundPosition = "right";
+        $('#temp_btn').css('background-position', 'right');
      if (info_id != "latesttemp3")
-        document.getElementById("temp3_btn").style.backgroundPosition = "left";
+        $('#temp3_btn').css('background-position', 'left');
      else
-        document.getElementById("temp3_btn").style.backgroundPosition = "right";
+        $('#temp3_btn').css('background-position', 'right');
     if (info_id != "latesthumidity")
-        document.getElementById("moist_btn").style.backgroundPosition = "left";
+        $('#moist_btn').css('background-position', 'left');
      else
-        document.getElementById("moist_btn").style.backgroundPosition = "right";
+        $('#moist_btn').css('background-position', 'right');
     if (info_id != "latestuv")
-        document.getElementById("uv_btn").style.backgroundPosition = "left";
+        $('#uv_btn').css('background-position', 'left');
      else
-        document.getElementById("uv_btn").style.backgroundPosition = "right";
-     document.getElementById("latestnow").style.display = "none";
-     document.getElementById("latesttemp").style.display = "none";
-     document.getElementById("latesttemp2").style.display = "none";
-     document.getElementById("latesttemp3").style.display = "none";
-     document.getElementById("latestpressure").style.display = "none";
-     document.getElementById("latesthumidity").style.display = "none";
-     document.getElementById("latestuv").style.display = "none";
-     document.getElementById("latestdewpoint").style.display = "none";
-     document.getElementById("latestradiation").style.display = "none";
-     document.getElementById("latestrain").style.display = "none";
-     document.getElementById("latestwind").style.display = "none";
-     document.getElementById("latestairq").style.display = "none";
-     document.getElementById("latestwindow").style.display = "none";
-     document.getElementById("latestwebcam").style.display = "none";
-     document.getElementById("latestmoon").style.display = "none";
-     document.getElementById("latestotherstations").style.display = "none";
-     document.getElementById("latestrunwalk").style.display = "none";
-     document.getElementById("chartjs-tooltip").style.display = "none";
-	 var desktop = document.getElementById("now_line");
-	 if (desktop){
-                document.getElementById("coldmetersurvey").style.display = "none";
-                 document.getElementById("fseasonsurvey").style.display = "none";
-		 /*document.getElementById("now_line").style.visibility = "hidden";
-         document.getElementById("temp2_line").style.visibility = "hidden";
-         document.getElementById("temp3_line").style.visibility = "hidden";
-		 document.getElementById("temp_line").style.visibility = "hidden";
-		 document.getElementById("moist_line").style.visibility = "hidden";
-         document.getElementById("dew_line").style.visibility = "hidden";
-		 document.getElementById("wind_line").style.visibility = "hidden";
-		 document.getElementById("air_line").style.visibility = "hidden";
-		 document.getElementById("rain_line").style.visibility = "hidden";
-		 document.getElementById("rad_line").style.visibility = "hidden";
-		 document.getElementById("uv_line").style.visibility = "hidden";
-		 document.getElementById("cold_line").style.visibility = "hidden";
-		 document.getElementById("aq_line").style.visibility = "hidden";
-		 document.getElementById("fseason_line").style.visibility = "hidden";
-         document.getElementById("window_line").style.visibility = "hidden";
-         document.getElementById("moon_line").style.visibility = "hidden";
-         document.getElementById("runwalk_line").style.visibility = "hidden";
-         document.getElementById("otherstations_line").style.visibility = "hidden";
-		 document.getElementById(line_id).style.visibility = "visible";*/
-         
-	 }
-     document.getElementById(info_id).style.display = "flex";
+        $('#uv_btn').css('background-position', 'right');
+     $('#latestnow, #latesttemp, #latesttemp2, #latesttemp3, #latestpressure, #latesthumidity, #latestuv, #latestdewpoint, #latestradiation, #latestrain, #latestwind, #latestairq, #latestwindow, #latestwebcam, #latestmoon, #latestotherstations, #latestrunwalk, #chartjs-tooltip, #latest_laundry,#latest_ac,#latest_bicycle,#latest_campfire,#latest_camping,#latest_car,#latest_children,#latest_dinneratbalcony,#latest_dog,#latest_eventoutside,#latest_gazellepark,#latest_heater,#latest_irrigation,#latest_openwindow,#latest_picnic,#latest_sport,#latest_sacker,#latest_westernwall,#latest_yoga').hide();
+     var desktop = document.getElementById("now_line");
+	 $('#' + info_id).css('display', 'flex');
 
 
  }
@@ -1254,11 +1209,11 @@ function fillLikes(jsonstr)
         body: JSON.stringify(_data),
         headers: {"Content-type": "application/json; charset=UTF-8"}
         })*/  
-        fetch("survey.php?SendSurveyButton=1&json_res=1&survey="+cm_value + "&survey_id=2")    
+        fetch("<?=BASE_URL?>/survey.php?SendSurveyButton=1&json_res=1&survey="+cm_value + "&survey_id=2")    
         .then(response => response.json())
         .then(data => {console.log(data);
                        $('#cm_result_msg').html(data.result.message);
-                       $.colorbox({html:"<div class=\"white_box big\">"+data.result.message+"</div>"});
+                       $.colorbox({html:"<div style=\"width:320px\" class=\"white_box big\">"+data.result.message+"</div>"});
                        })
         .catch(error => console.log("vote_cm_like error:" + error));
     }
@@ -1611,11 +1566,48 @@ function startup(lang, from, update)
         var arr = sel.options[index].value.split("/");
         var month = arr[0]; var year = arr[1]; 
         var category = localStorage.getItem("category");
-         getMessageService('01' + month.toString() + year.toString(), '31' + month.toString() + year.toString(), 0, 0,  <?=$lang_idx?>,category);
+         getMessageService('01' + month.toString() + year.toString(), '31' + month.toString() + year.toString(), 0, 0,  <?=$lang_idx?>,'');
         }
         else {}
      }
-     
+     function getActivityTitle(activity, lang, act_json){
+        for (j = 0; j< act_json.jws.Activities.length; j++){
+            if (act_json.jws.Activities[j].name == activity){
+                if (lang == 0)
+                    return act_json.jws.Activities[j].title0;
+                else
+                    return act_json.jws.Activities[j].title1;
+            }
+
+        }
+       
+     }
+     function getActivityDesc(activity, lang, act_json){
+        for (j = 0; j< act_json.jws.Activities.length; j++){
+            if (act_json.jws.Activities[j].name == activity){
+                if (lang == 0)
+                    return act_json.jws.Activities[j].lang0;
+                else
+                    return act_json.jws.Activities[j].lang1;
+            }
+
+        }
+       
+     }
+     function fillactivities(act_json, all_json){
+        var activities_yes = "", activities_no = "";
+       for (i = 0; i< all_json.jws.current.recommendations.length; i++){
+        var act_container = 'latest_' + all_json.jws.current.recommendations[i].activity.toLowerCase();
+        $('#' + act_container).html(getActivityDesc(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json));
+          if (all_json.jws.current.recommendations[i].value == 1)
+            activities_yes += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"span-value\" data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json) + "\"  onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\" width=\"25\" height=\"25\" /></li>" ;
+         else
+            activities_no += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"no span-value\" data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json) + "\" onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\"  width=\"25\" height=\"25\" /></li>"  ;
+       }
+      // $('#bottombar').html(activities_yes+activities_no);
+        $('#activities_yes').html(activities_yes);
+        $('#activities_no').html(activities_no);
+     }
      function getWindInfo(windspeed){
         var wind_class = "";
         var wind_img = "";
@@ -1705,17 +1697,17 @@ function loadPostData(jsonstr, coldmeter_size)
         $("#nextdays").css('visibility', 'visible');
         if (sessions % 2 == 0)
         {
-            $("#if1").show();
+           /* $("#if1").show();
             $("#if2").hide();
             $("#if3").show();
-            $("#if4").hide();
+            $("#if4").hide();*/
         }
         else 
         {
-            $("#if1").hide();
+          /*  $("#if1").hide();
             $("#if2").show();
             $("#if3").hide();
-            $("#if4").show();
+            $("#if4").show();*/
             
         }
 
@@ -1894,12 +1886,12 @@ Licensed MIT
                 .catch(error => console.log("error:" + error))
         } else loadPostData();
         
+        $("#itfeels").show();$("#itfeels_thsw").hide();$("#itfeels_windchill").hide();$("#itfeels_heatidx").hide();
         if (json.jws.current.issun == 1)
         {
-            $("#itfeels").show();$("#itfeels_thsw").show();$("#itfeels_thsw .value").html(c_or_f(json.jws.current.thsw, tempunit) + "");$(".sunshade").show();
+            $("#itfeels_thsw").show();$("#itfeels_thsw .value").html(c_or_f(json.jws.current.thsw, tempunit) + "");$(".sunshade").show();
         }
-        else
-            $("#itfeels").show();
+        
         if (json.jws.feelslike.state == "windchill")
         {$("#itfeels_windchill").show();$("#itfeels_windchill .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "")}
         else if (json.jws.feelslike.state == "heatindex")
@@ -1931,7 +1923,8 @@ Licensed MIT
         $("#latesttemp .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.tempchange.split(",")[2]);
         $("#latesttemp .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.tempchange.split(",")[2]);
         $("#latesttemp .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.tempchange.split(",")[2]);
-        $("#latesttemp .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.tempchange.split(",")[2]);
+        $("#latesttemp .trendstable .trendsvalues .innertrendvalue").eq(3).html(json.jws.min15.tempchange.split(",")[2]);
+        //$("#latesttemp .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.tempchange.split(",")[2]);
         $("#latesttemp2 .paramvalue").html(c_or_f(json.jws.current.temp2, tempunit)+'<div class="param">'+tempunit+'</div>' + '&nbsp;<div class="param"><span id=\"valleytemp\" title=\"\">'+ title_temp2 + '</span></div>');
         $("#latesttemp2 .highlows .highparam").html('<strong>' + c_or_f(json.jws.today.hightemp2, tempunit) + '</strong>');
         $("#latesttemp2 .highlows .high_time").html(json.jws.today.hightemp2_time);
@@ -1940,7 +1933,8 @@ Licensed MIT
         $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.temp2change.split(",")[2]);
         $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.temp2change.split(",")[2]);
         $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.temp2change.split(",")[2]);
-        $("#latesttemp2 .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.temp3change.split(",")[2]);
+        $("#latesttemp2 .trendstable .trendsvalues .innertrendvalue").eq(3).html(json.jws.min15.temp2change.split(",")[2]);
+        //$("#latesttemp2 .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.temp3change.split(",")[2]);
         $("#latestradiation .paramvalue").html(json.jws.current.solarradiation+'<span class="paramunit">'+'W/m2' + '</span>');
         $("#latestradiation .highlows .highparam").html('<strong>' + json.jws.today.highradiation + '</strong>');
         $("#latestradiation .highlows .high_time").html(json.jws.today.highradiation_time);
@@ -1970,7 +1964,8 @@ Licensed MIT
         $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.humchange.split(",")[2]);
         $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.humchange.split(",")[2]);
         $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.humchange.split(",")[2]);
-        $("#latesthumidity .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.humchange.split(",")[2]+"%");
+        $("#latesthumidity .trendstable .trendsvalues .innertrendvalue").eq(3).html(json.jws.min15.humchange.split(",")[2]);
+        //$("#latesthumidity .paramtrend .innertrendvalue").html(json.jws.min15.minutes + " " + "<?=$MINTS[$lang_idx]?>: " + json.jws.min15.humchange.split(",")[2]+"%");
         $("#latestdewpoint .paramvalue").html(c_or_f(json.jws.current.dew, tempunit));
         $("#latestdewpoint .highlows .highparam").html('<strong>' + json.jws.today.highdew + '</strong>');
         $("#latestdewpoint .highlows .high_time").html(json.jws.today.highdew_time);
@@ -1999,7 +1994,6 @@ Licensed MIT
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.pm10change.split(",")[2]);
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.pm10change.split(",")[2]);
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min30.pm10change.split(",")[2]);
-        $("#window_btn").addClass(json.jws.states.window_class);
         $("#latestwindow .paramtitle").html(json.jws.states.windowtitle<?=$lang_idx?>);
         $("#latestwindow .highlows").html(json.jws.states.windowdesc<?=$lang_idx?>);
         var sigweatherstates = "";
@@ -2011,7 +2005,7 @@ Licensed MIT
         var cclass, sigRunWalkweatherstates = "";
        for (i = 1; i< json.jws.sigRunWalkweather.length; i++){
         if (i == 1) cclass = "class=\"windhumsituation\""; else cclass = "";  
-            sigRunWalkweatherstates += "<li " + cclass + "><a href=\"" + json.jws.sigRunWalkweather[i].url + "\" >" + json.jws.sigRunWalkweather[i].sigtitle<?=$lang_idx?> + "  " +  json.jws.sigRunWalkweather[i].sigext<?=$lang_idx?> + '' + "</a></li>";
+            sigRunWalkweatherstates += "<li " + cclass + "><a href=\"" + json.jws.sigRunWalkweather[i].url + "\" >" + json.jws.sigRunWalkweather[i].sigtitle<?=$lang_idx?> + " <br/> " +  json.jws.sigRunWalkweather[i].sigext<?=$lang_idx?> + '' + "</a></li>";
         }
         var firstlinerunwalk = "";
         if (json.jws.current.solarradiation < 50)
@@ -2038,14 +2032,14 @@ Licensed MIT
        var max_temp = -10; var min_temp = 110;
        var max_hum = -10; var min_hum = 110;
         for (i = 0; i< json.jws.forecastHours.length; i++){
-        if (i >= json.jws.states.nowHourIndex){
+        //if (i >= json.jws.states.nowHourIndex){
             if (parseInt(json.jws.forecastHours[i].temp) > max_temp) max_temp = json.jws.forecastHours[i].temp; 
             if (parseInt(json.jws.forecastHours[i].temp) < min_temp) min_temp = json.jws.forecastHours[i].temp;
             if (json.jws.forecastHours[i].hum > max_hum) max_hum = json.jws.forecastHours[i].hum; 
             if (json.jws.forecastHours[i].hum < min_hum) min_hum = json.jws.forecastHours[i].hum;
             if ((json.jws.forecastHours[i].time % 3 == 0) || (json.jws.forecastHours[i].plusminus > 0))
             {
-                var  TempCloth = '&nbsp;<a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastHours[i].cloth+'\" width=\"20\" height=\"15\" title=\"'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'</span></a>';
+                var  TempCloth = '&nbsp;<a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastHours[i].cloth+'\" width=\"22\" height=\"22\" title=\"'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'</span></a>';
                 forecastHoursD += "<li class=\"nav forecasttimebox\" index=\"" + i + "\" ><ul>";
                 forecastHoursD += "<li class=\"plus\"><div class=\"open-close-button\" index=\"" + i + "\"></div></li>";
                 forecastHoursD += "<li class=\"tsfh currentts text\" style=\"display:none\"><span>" + json.jws.forecastHours[i].currentDateTime + "</span></li>";
@@ -2061,7 +2055,7 @@ Licensed MIT
                 forecastHoursD += "</ul></li>";
                 
             }
-        }
+       // }
         
        if (i == 6) {
             //    forecastHoursD += "<ul class=\"nav forecasttimebox\" ><li class=\"forcast_each invfloat\" style=\"padding-left:2em\"><a href=\"http://shaon-horef.co.il\" target=_blank >שאון חורף > פעם אחרונה לטירוף של החורף!</a></li></ul>  ";
@@ -2083,7 +2077,7 @@ Licensed MIT
             else if (bottom < 20) bottom = bottom + 3;
             else if (bottom > 60) addonclass = "uppervalue"; else addonclass = "";
             tempclass = (i % 2 == 0) ? "secondary" : "secondaryalt";
-            forecastHoursNG += "<div class=\"x-axis-bar "+ tempclass + " " + addonclass+" temp\" style=\"height: "+bottom+"%;\"><span class=\"span-value\" data-value=\""+ json.jws.forecastHours[i].temp +"° "+json.jws.forecastHours[i].hum+"%\">"+ c_or_f(json.jws.forecastHours[i].temp, tempunit) + "°</span></div>";
+            forecastHoursNG += "<div class=\"x-axis-bar "+ tempclass + " " + addonclass+" temp\" style=\"height: "+bottom+"%;\"><span class=\"span-value\" data-value=\""+ json.jws.forecastHours[i].temp +"° "+json.jws.forecastHours[i].hum+"%\">"+ c_or_f(json.jws.forecastHours[i].temp, tempunit) + "</span></div>";
             forecastHoursNG += "<div class=\"x-axis-bar tertiary cloth icon "+ addonclass + "\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"span-value "+ addonclass + "\" data-value=\"" + json.jws.forecastHours[i].cloth_title<?=$lang_idx;?> +  "\"><img style=\"vertical-align: middle\" src=\""+json.jws.forecastHours[i].cloth+"\" height=\"30\" width=\"30\" /></span></div>";
             bottom = 40;
             if (json.jws.forecastHours[i].plusminus > 0)
@@ -2101,12 +2095,20 @@ Licensed MIT
             prev_wind = json.jws.forecastHours[i].wind;
         }
        }
+       
+      
        //$('#for24_given').html('<? echo $GIVEN[$lang_idx]." ".$AT[$lang_idx]." ";?>' + json.jws.TAF.timetaf + ':00 ' + json.jws.TAF.dayF + '/' + json.jws.TAF.monthF + '/' + json.jws.TAF.yearF);
+
        $('#for24_hours_s').html(forecastHours);
        $('#for24_graph_ng, .for24_graph_ng').html(forecastHoursNG);
        $('#forcast_hours_table').html(forecastHoursD);
        $('#for24_hours').html(forecastHours);
        $('#date').html(json.jws.current.date<?=$lang_idx?>).addClass('glow');
+       fetch("https://www.02ws.co.il/activities.json")
+                .then(response => response.json())
+                .then(data => fillactivities(data, json))
+                .catch(error => console.log("error fetching activities:" + error))
+      
         /*
         var forecastDays;
        var fulltextforecast;
@@ -2202,6 +2204,13 @@ Licensed MIT
        forecastDays += "<li><ul><li style=\"text-align:center\">" + json.jws.desc.month_in_word<?=$lang_idx?> + " <?=$AVERAGE[$lang_idx]?></li><li></li><li class=\"tsfh average\" style=\"text-align:center\">" + json.jws.thisMonth.lowtemp_av + "</li><li class=\"tsfh average\" style=\"text-align:center\">" + json.jws.thisMonth.hightemp_av + "</li><li></li><li></li><li></li></ul></li>";
        
        */
+
+      var ad_html, ad_container;
+       for (i = 0; i< json.jws.Ads.length; i++){
+        ad_html = "<a href='"+json.jws.Ads[i].link+"' >" + "<img src=\"" + json.jws.Ads[i].img_url + "\" width=\"" + json.jws.Ads[i].width  + "\" height=\"" + json.jws.Ads[i].height  +  "\" /></a>";
+        ad_container = '#if'+(i+1);
+        $(ad_container).html(ad_html);
+       }
 
             $("#bg2-1").hide();$("#bg2-4").hide();$("#bg2-6").hide();$("#bg2-7").hide();$("#bg1-3").hide();$("#bg1-4").hide();$("#bg1-5").hide();$("#bg1-6").hide();$("#bg2-2").hide();$("#bg2-8").hide();$("#bg1-1").hide();$("#bg1-2").hide();$("#bg1-7").hide();$("#bg1-8").hide();$("#bg2-5").hide();$("#bg2-9").hide();$("#bg2-10").hide();$("#bg1-9").hide();$("#bg1-10").hide();     
        if (json.jws.current.cloudiness > 2){
@@ -2349,7 +2358,7 @@ $("#startpage_chb").click(function () {
 $(".forcast_text, .forcast_night, .forcast_noon, .forcast_morning").click(function (event) {
     if (event.isDefaultPrevented()) return;
     var dayindex = parseInt($(this).prevAll('.expand_plus').find('.open-close-button').attr("index")) + 1;
-    $.colorbox({href:"dailydetailed.php?dayid=" + dayindex, width:"95%", height:"95%"});
+    $.colorbox({href:"<?=BASE_URL?>/dailydetailed.php?dayid=" + dayindex, width:"95%", height:"95%"});
 });    
 var view = $("#graphForcastContainer");
 var move = "100px";

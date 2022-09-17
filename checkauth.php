@@ -3,7 +3,7 @@
 include ("include.php");
 include ("lang.php");
 $CLICK_TO_CONFIRM = array("Click here to confirm your registration to 02ws.co.il and make your user active", "הקליקו כאן כדי לאשר הרשמה לאתר ירושמיים", "Click here to confirm your registration to 02ws.co.il and make your user active");
-$CLICK_TO_RESET = array("Click here to reset your password", "הקליקו כאן כדי לאפס ססמא לאתר ירושמיים", "Click here to reset your password");
+$CLICK_TO_RESET = array("Click here to reset your password", "כאן ירושמיים. לא נורא ששכחתם את הססמה. הקליקו כאן כדי לאפס", "Click here to reset your password");
 $CHECK_EMAIL_RESET_PASS = array("Go to your email for password reset", "יש לגשת אל האימייל שלך כדי לבצע איפוס ססמא", "Go to your email for password reset");
 $PROBLEM_USER_PASSWORD =  array("Problem with user or password", "סיסמא לא נכונה או משתמש לא קיים", "Problem with user or password");
 $NO_USER_EXIST = array("No user exists like that", "אין משתמש כזה", "No user exists with");
@@ -231,7 +231,7 @@ function forgot_password($email)
 {
     $email = strtolower($email);
     
-    global $NO_USER_EXIST, $CLICK_TO_RESET, $CHECK_EMAIL_RESET_PASS, $lang_idx, $FORGOT_PASS;
+    global $NO_USER_EXIST, $CLICK_TO_RESET, $CHECK_EMAIL_RESET_PASS, $lang_idx, $FORGOT_PASS, $SEND, $LOGO;
     $result = db_init("SELECT u_pswd, email FROM users WHERE lower(email) = ?", $email);
      $dbarray = $result["result"]->fetch_array(MYSQLI_ASSOC);
       if(sizeof($dbarray) < 1){
@@ -240,7 +240,7 @@ function forgot_password($email)
       else
       {
           $href="https://www.02ws.co.il/regConfirm.php?email=$email&lang=$lang_idx";
-          send_Email("<br /><br /><br /><h1><a href=\"$href\" >".$CLICK_TO_RESET[$lang_idx]."</a></h1><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array("02ws ".$FORGOT_PASS[$lang_idx],"02ws ".$FORGOT_PASS[$lang_idx]));
+          send_Email("<br /><br />Hi שלום,<br /><h2>".$CLICK_TO_RESET[$lang_idx]."<br/><a href=\"$href\" >".$SEND[$lang_idx]."</a></h2><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array( $LOGO[$lang_idx]." - ".$FORGOT_PASS[$lang_idx], $LOGO[$lang_idx]." - ".$FORGOT_PASS[$lang_idx]));
           echo $CHECK_EMAIL_RESET_PASS[$lang_idx];
       }
 }
@@ -475,7 +475,7 @@ function set_new_password($email, $pass)
 
 if ($_REQUEST['action']=="login"){
 
-   $return = confirmUserPass($_REQUEST['email'], md5($_REQUEST['password']), $_REQUEST['isrememberme'] );
+   $return = confirmUserPass(trim($_REQUEST['email']), md5($_REQUEST['password']), $_REQUEST['isrememberme'] );
    echo $return;
   
 }
@@ -483,9 +483,9 @@ else if ($_REQUEST['action']=="signout"){
 		signOut();
 }
 else if ($_REQUEST['action']=="register"){
-    $email_ok = check_email_address($_REQUEST['email']);
+    $email_ok = check_email_address(trim($_REQUEST['email']));
     if ($email_ok)
-        user_wants_to_register($_REQUEST['email'], $_POST['username'], md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon'], $_REQUEST['reg_id']);
+        user_wants_to_register(trim($_REQUEST['email']), $_POST['username'], md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon'], $_REQUEST['reg_id']);
     else
         echo "Email not OK";
     
@@ -494,14 +494,14 @@ else if ($_REQUEST['action']=="forgotpass"){
     forgot_password($_REQUEST['email']);
 }
 else if ($_REQUEST['action']=="newpass"){
-    set_new_password($_REQUEST['email'], md5($_REQUEST['password']));
+    set_new_password(trim($_REQUEST['email']), md5($_REQUEST['password']));
 }
 else if ($_REQUEST['action']=="getuser"){
     get_user();
 }
 else if ($_REQUEST['action']=="updateprofile"){
     //echo $_POST['priority'];
-    user_wants_to_update_profile($_REQUEST['email'], md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon'], $_REQUEST['priority'], $_REQUEST['personal_coldmeter']);
+    user_wants_to_update_profile(trim($_REQUEST['email']), md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon'], $_REQUEST['priority'], $_REQUEST['personal_coldmeter']);
     
 }
 else { echo "no action selected";}?>

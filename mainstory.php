@@ -29,7 +29,11 @@
 			<div  style="padding:0em 2em 0.1em 2em;margin:0em 0.8em 0em 0.8em" class="big">
 				 <? echo $box_description;?>
 			</div>
-			
+			<div class="big invfloat" style="padding:2em">
+			<a href="<?=$href?>" rel='external' class="float">
+			<?=$MORE_INFO[$lang_idx]?><?=get_arrow()?>
+			</a>
+			</div>
 	</div>
 	
 </div>
@@ -37,7 +41,7 @@
 <div>
 	<?
 	
-	$resultStories = db_init("select ms.lang, ms.Idx, ms.Title, ms.href, ms.Description, ms.img_src, ms.active, ms.updatedTime from mainstory ms where ms.lang = ? order by updatedTime desc limit 1,10", $lang_idx);
+	$resultStories = db_init("select ms.lang, ms.Idx, ms.Title, ms.href, ms.Description, ms.img_src, ms.active, ms.updatedTime from mainstory ms where ms.lang = ? order by updatedTime desc limit 1,30", $lang_idx);
 
 	while ($line = mysqli_fetch_array($resultStories["result"], MYSQLI_ASSOC)) {
 		?>
@@ -51,9 +55,11 @@
 		<div  style="padding:0em 2em 0.1em 2em;margin:0em 0.8em 0em 0.8em" class="float">
 			<?=$line["Description"]?>
 		</div>
+		<div class="big invfloat" style="padding:2em">
         <a href="<?=$line["href"]?>" rel='external' class="float">
-		<?=$MORE_INFO[$lang_idx]?>
+		<?=$MORE_INFO[$lang_idx]?><?=get_arrow()?>
 		</a>
+		</div>
  	
 	</div>
    <? }

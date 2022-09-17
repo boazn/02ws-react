@@ -55,28 +55,11 @@ function insertNewMessage ($survey_id, $value, $temp, $comments)
                  $comments = str_replace('insert', '', $comments);
                  $comments = str_replace('update', '', $comments);
                 //$comments = preg_replace("/[^a-zA-Z0-9]+/", "", html_entity_decode($comments));
-		$now = date('Y-m-d G:i:s', strtotime("0 hours 0 minutes", time()));
-		//$now = getLocalTime(time());
-		$query = "INSERT INTO surveyresult (survey_id, value, ip, gender, update_time, temp, comments, email) VALUES('{$survey_id}', '{$value}', '{$_SERVER['REMOTE_ADDR']}', '{$_POST['gender']}', '{$now}', '
-	{$temp}', '{$comments}', '{$_SESSION['email']}');";
+	
+		$query = "call SaveSurveyEntry('{$survey_id}', '{$_SESSION['email']}', '{$_REQUEST['reg_id']}', '{$value}', '{$_SERVER['REMOTE_ADDR']}', '{$_REQUEST['gender']}', '{$temp}', '{$comments}');";
 		//logger($query);
-		$result = db_init($query, '');
-                
-                if ($_SESSION['email'] != "")
-                {    
-                    
-                    $query = "select count(*) cnt from surveyresult where email='".$_SESSION['email']."' and `survey_id` = 2;";
-                    //logger($query);
-                    $result = db_init($query, '');
-                    $row = @mysqli_fetch_array($result["result"], MYSQLI_ASSOC);
-                    
-                    $query = "update  `users` set voteCount=? where email='".$_SESSION['email']."';";
-                    //logger($query);
-                    $result = db_init($query, $row['cnt']);
-                }
-                //logger("Survey->insertNewMessage: ".$_SESSION['email']." ".$_SESSION['loggedin']." ".$_COOKIE[PERSONAL_COLD_METER]." ".$_COOKIE['rememberme']);
-		// Free resultset 
-		@mysqli_free_result($result);
+		$result = db_init($query, "");
+  		@mysqli_free_result($result);
 		
 	//}
 }  

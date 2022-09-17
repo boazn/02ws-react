@@ -18,7 +18,18 @@ function getIMSData($Station_ID, $city){
     ];
     $staiondata = json_decode(file_get_contents("https://api.ims.gov.il/v1/envista/stations/".$Station_ID."/data/latest", false, stream_context_create($context_options)));
     //var_dump($staiondata);
-    return    "<div class=\"foreach\"><span class=\"city\">".$city."</span> <span title=\"".$staiondata->data[0]->datetime."\" class=\"number value\">".$staiondata->data[0]->channels[6]->value."</span>°/<span class=\"number value\">".$staiondata->data[0]->channels[7]->value."</span>% <span title=\"".$staiondata->stationId."\">(שמט)</span> </div>";
+    return    "<div class=\"foreach\"><span class=\"city\">".$city."</span> <span title=\"".$staiondata->data[0]->datetime."\" class=\"number value\">".$staiondata->data[0]->channels[6]->value."</span>°/<span class=\"number value\">".$staiondata->data[0]->channels[7]->value."</span>% <span title=\"".$staiondata->stationId."\"></span> </div>";
+}
+function getIMS2Data($Station_ID, $city){
+    $context_options = [
+        "http" => [
+            "method" => "GET",
+            "header" => "Authorization: ApiToken 6d2dd889-3fcf-4987-986f-e4679d4b2400"
+        ]
+    ];
+    $staiondata = json_decode(file_get_contents("https://api.ims.gov.il/v1/envista/stations/".$Station_ID."/data/latest", false, stream_context_create($context_options)));
+    //var_dump($staiondata);
+    return    "<div class=\"foreach\"><span class=\"city\">".$city."</span> <span title=\"".$staiondata->data[0]->datetime."\" class=\"number value\">".$staiondata->data[0]->channels[6]->value."</span>°/<span class=\"number value\">".$staiondata->data[0]->channels[13]->value."</span>% <span title=\"".$staiondata->stationId."\"></span> </div>";
 }
 
 function getAllIMSData(){
@@ -46,6 +57,8 @@ if ($ims_station_id == "ALL")
     echo getAllIMSData();
 else if ($StationType == "IMS")
     echo getIMSData($ims_station_id, $city);
+else if ($StationType == "IMS2")
+    echo getIMS2Data($ims_station_id, $city);
 else if ($StationType == "WU")
     echo getWUData($wu_station_id, $city);
 

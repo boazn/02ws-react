@@ -92,6 +92,12 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
         elseif ($time_at_day >= 7 && $time_at_day <= $MAX_TIME - 1){
                         $diff = $forcastday->get_temp_day() - $forcastday->get_temp_morning();
                         $tempHour = round($forcastday->get_temp_morning() + (($time_at_day - ($MAX_TIME - 1 - ($MAX_TIME - 8)))/($MAX_TIME - 1 - ($MAX_TIME - 8)))*$diff*$MULTIPLE_FACTOR);
+                        if  ($tsh - time() <=14400){
+                                $diff_to_current = $forcastday->get_temp_day() - $current->get_temp();
+                           //     $tempHour = round($current->get_temp() + (($time_at_day - ($MAX_TIME - 1 - ($MAX_TIME - $time_at_day)))/($MAX_TIME - 1 - ($MAX_TIME - $time_at_day)))*$diff_to_current*$MULTIPLE_FACTOR);
+                        } 
+                       
+                         
         }
         elseif ($time_at_day == ($MAX_TIME)){
                 
@@ -102,6 +108,11 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
         elseif ($time_at_day >= $MAX_TIME+1 && $time_at_day <= 21){
                         $diff = $forcastday->get_temp_day() - $forcastday->get_temp_night();
                         $tempHour = round($forcastday->get_temp_day() - (($time_at_day - $MAX_TIME)/(20 - $MAX_TIME + 1))*$diff);
+                        if  ($tsh - time() <= 14400){
+                                $diff_to_current = $current->get_temp() - $forcastday->get_temp_night();
+                           //     $tempHour = round($current->get_temp() - (($time_at_day - $MAX_TIME)/(20 - $MAX_TIME + 1))*$diff_to_current);
+                        }
+                       
         }
        elseif ($time_at_day >= 22 && $time_at_day <= 23)
                 $tempHour = $forcastday->get_temp_night() - 1;
@@ -116,26 +127,25 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
         elseif  ($tsh - time() <= 4800){
                 $tempHour = round(($tempHour + (2*$current->get_temp()))/3);
         }
-       elseif  ($tsh - time() <= 9600)
-               $tempHour = round(($tempHour + $current->get_temp())/2);
+     /*  elseif  ($tsh - time() <= 9600)
+               $tempHour = round(($tempHour + $current->get_temp())/2);*/
       if ($_REQUEST['debug'] >= 1)
                 echo "<br><strong>tempHour</strong>=".$tempHour;
        
 
       return $tempHour;
  }
- function calcForecastHum($time_at_day, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR)
+ function calcForecastHum($time_at_day, $forcastday, $prev_hum, $MAX_TIME, $MULTIPLE_FACTOR)
  {
         global $currentDay, $todayForecast, $passedMidnight, $threeHours, $nextTomorrowForecast, $tomorrowForecast, $fday, $todayForecast_date, $tommorrowForecast_day, $today, $current, $firstdayinforecast;
         
-        $forcastday = new ForecastDay();
-        $forcastday = $todayForecast;      
-        
+                
         if ($_REQUEST['debug'] >= 1){
                 
+                echo "<br>prev_hum= ",$prev_hum;
                 echo "<br>get_hum_morning= ",$forcastday->get_hum_morning();
                 echo "<br>get_hum_day= ",$forcastday->get_hum_day();
-		echo "<br>get_hum_night= ",$forcastday->get_hum_night();
+                echo "<br>get_hum_night= ",$forcastday->get_hum_night();
                 echo "<br>currentDay get_hum_night= ",$currentDay->get_hum_night();
 
         }
@@ -143,14 +153,15 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
         
         if ($time_at_day <= 4 ){
             
-            $diff = $currentDay->get_hum_night() - $forcastday->get_hum_morning();
+           /* $diff = $currentDay->get_hum_night() - $forcastday->get_hum_morning();
              if ($diff > 0)
                  $hourHum = round($forcastday->get_hum_morning() + ((4 - $time_at_day)/4)*$diff);
              elseif ($diff < 0)
                   $hourHum = round($currentDay->get_hum_night() + ((4 - $time_at_day)/4)*$diff);
              else
                  $hourHum = $forcastday->get_hum_morning();
-            
+            */
+            $hourHum = round(($prev_hum + $forcastday->get_hum_morning())/2);
             
         }
                 
@@ -184,14 +195,15 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
         if ($_REQUEST['debug'] >= 1){
                  echo "<br>diff=".$diff;
          }
+         if ($_REQUEST['debug'] >= 1)
+         echo "<br><strong>hourHum</strong>=".$hourHum;
       return $hourHum;
  }
  function calcForecastDust($time_at_day, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR)
  {
         global $currentDay, $todayForecast, $passedMidnight, $threeHours, $nextTomorrowForecast, $tomorrowForecast, $fday, $todayForecast_date, $tommorrowForecast_day, $today, $current, $firstdayinforecast;
         
-        $forcastday = new ForecastDay();
-        $forcastday = $todayForecast;      
+        
         
         if ($_REQUEST['debug'] >= 1){
                 
@@ -207,9 +219,9 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
             
             $diff = $currentDay->get_dust_night() - $forcastday->get_dust_morning();
              if ($diff > 0)
-                 $hourdust = round($forcastday->get_dust_morning() + ((3 - $time_at_day)/3)*$diff);
+                 $hourdust = round($forcastday->get_dust_morning() + ((4 - $time_at_day)/3)*$diff);
              elseif ($diff < 0)
-                  $hourdust = round($currentDay->get_dust_night() - ((3 - $time_at_day)/3)*$diff);
+                  $hourdust = round($currentDay->get_dust_night() - ((4 - $time_at_day)/3)*$diff);
              else
                  $hourdust = $forcastday->get_dust_morning();
             
@@ -220,26 +232,14 @@ function calcForecastTemp($time_at_day, $tsh, $prev_temp, $forcastday, $MAX_TIME
                 $hourdust = $forcastday->get_dust_morning();
 
         elseif ($time_at_day >= 7 && $time_at_day <= $MAX_TIME - 2){
-                        $diff = $forcastday->get_dust_day() - $forcastday->get_dust_morning();
-                        if ($diff > 0)
-                            $hourdust = round($forcastday->get_dust_day() + (($time_at_day - ($MAX_TIME - 1 - 7))/($MAX_TIME - 1 - 7))*$diff*$MULTIPLE_FACTOR);
-                        elseif ($diff < 0){
-                            $hourdust = round($forcastday->get_dust_morning() + (($time_at_day - ($MAX_TIME - 1 - 7))/($MAX_TIME - 1 - 7))*$diff*$MULTIPLE_FACTOR);
-                        }
-                        else {
-                            $hourdust = $forcastday->get_dust_morning();
-                        }
+                $hourdust = $forcastday->get_dust_morning();
+                       
         }
         elseif ($time_at_day >= ($MAX_TIME - 1) && $time_at_day <= $MAX_TIME)
                 $hourdust = $forcastday->get_dust_day();
 
         elseif ($time_at_day > $MAX_TIME && $time_at_day <= 21){
-                        $diff = $forcastday->get_dust_day() - $forcastday->get_dust_night();
-                        if ($diff > 0)
-                            $hourdust = round($forcastday->get_dust_night() - (($time_at_day - $MAX_TIME)/(20 - $MAX_TIME + 1))*$diff);
-                        else{
-                            $hourdust = round($forcastday->get_dust_day() - (($time_at_day - $MAX_TIME)/(20 - $MAX_TIME + 1))*$diff);
-                        }
+                $hourdust = $forcastday->get_dust_night();
         }
        elseif ($time_at_day >= 22 && $time_at_day <= 23)
                 $hourdust = $forcastday->get_dust_night();
@@ -804,6 +804,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
             array_push($forecast_title, array("<span>".$GENERALLY[$EN]." "."</span>", "<span>".$GENERALLY[$HEB]." "."</span>"));
             $passedMidnight = 0;
             $prev_temp = $current->get_temp();
+            $prev_hum = $current->get_hum();
              for ($t=$timetaf + 1; $t <= $timetaf+30 ; $t++)
              {
 
@@ -823,7 +824,8 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                $tempHour = calcForecastTemp($h, $currentDateTime, $prev_temp, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR); 
                $prev_temp = $tempHour;
                $clothHour = getCloth($tempHour);
-               $humHour = calcForecastHum($h, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR);
+               $humHour = calcForecastHum($h, $forcastday, $prev_hum, $MAX_TIME, $MULTIPLE_FACTOR);
+               $prev_hum = $humHour;
                $dustHour = calcForecastDust($h, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR);
                $uvHour = calcForecastUV($h, $forcastday, $MAX_TIME, $MULTIPLE_FACTOR);
                if ($_REQUEST["debug"] >= 3){
@@ -863,17 +865,17 @@ for ($i = 0; $i < count($taf_tokens); $i++)
     if ((stristr ($taf_tokens[$i], "GR"))||
              (stristr ($taf_tokens[$i], "GS"))) updateForecast(90, $HAIL, "n4_hail.svg");
 
-    if (stristr ($taf_tokens[$i], "TSRA")) updateForecast(85, array($THUNDERSTORM[$EN].", ".$RAIN[$EN], $THUNDERSTORM[$HEB].", ".$RAIN[$HEB]), "n4_TSRA.svg");
-    else if (stristr ($taf_tokens[$i], "TS")) updateForecast(80,$THUNDERSTORM, "n4_TS.svg");
+    if (stristr ($taf_tokens[$i], "TSRA")) updateForecast(85, array($THUNDERSTORM[$EN].", ".$RAIN[$EN], $THUNDERSTORM[$HEB].", ".$RAIN[$HEB]), "n4_tsra.svg");
+    else if (stristr ($taf_tokens[$i], "TS")) updateForecast(80,$THUNDERSTORM, "n4_ts.svg");
     else if ((stristr ($taf_tokens[$i], "-SHRA"))||
             (stristr ($taf_tokens[$i], "-RA"))) updateForecast(75, $LIGHT_RAIN, "n4_sun_lightrain.svg");
     else if (stristr ($taf_tokens[$i], "RA")) updateForecast(78, $RAIN, "n4_rain2.svg");
 
-    if (stristr ($taf_tokens[$i], "DZ")) updateForecast(68, $DRIZZLE, "n4_rainPC.svg");
+    if (stristr ($taf_tokens[$i], "DZ")) updateForecast(68, $DRIZZLE, "n4_rainpc.svg");
     if (stristr ($taf_tokens[$i], "CB")) updateForecast(62, $SEVERE_CLOUDS, "n4_mostlycloudy.svg");
     if (stristr ($taf_tokens[$i], "FG")) updateForecast(60, $FOG, "n4_fog2.svg");
-    if (stristr ($taf_tokens[$i], "SA")) updateForecast(55, $SANDSTORM, "dust.svg");
-    if (stristr ($taf_tokens[$i], "DU")) updateForecast(50, $DUST, "dust.svg");
+    if (stristr ($taf_tokens[$i], "SA")) updateForecast(55, $SANDSTORM, "n4_dust.svg");
+    if (stristr ($taf_tokens[$i], "DU")) updateForecast(50, $DUST, "n4_dust.svg");
     if (stristr ($taf_tokens[$i], "TCU")) updateForecast(48, $SEVERE_CLOUDS, "n4_mostlycloudy.svg");
     if (stristr ($taf_tokens[$i], "OVC"))   {
         $currentPri = 45;
@@ -940,7 +942,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
 
        }
     }
-    if (stristr ($taf_tokens[$i], "FEW"))  updateForecast(25, $FEW_CLOUDS, "n4_pcFew.svg");	
+    if (stristr ($taf_tokens[$i], "FEW"))  updateForecast(25, $FEW_CLOUDS, "n4_cloud_5_sun_3.svg");	
     if (stristr ($taf_tokens[$i], "CAVOK"))  updateForecast(20, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "n4_clear.svg");
     if (stristr ($taf_tokens[$i], "NSC")) updateForecast(18, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "n4_clear.svg");
     if (stristr ($taf_tokens[$i], "SKC")) updateForecast(15, array("$MOSTLY[$EN] $CLEAR[$EN]", "$MOSTLY[$HEB] $CLEAR[$HEB]"), "n4_clear.svg");

@@ -118,12 +118,15 @@ $current_feeling_sun = get_name($feeling_verdict_sun);
     $sun = $SUN[$lang_idx];
  }
 	
-$current_feeling = "<a href=\"javascript:void(0)\" class=\"info currentcloth\" ><span class=\"info\">".getClothTitle($cloth_name, $temp_to_cold_meter)."</span><img src=\"images/clothes/".$cloth_name."\" width=\"".$coldmeter_size*1.21."\" height=\"".$coldmeter_size."\" style=\"vertical-align: middle\" /></a><a class=\"info\" id=\"coldmetertitle\" href=\"javascript:void(0)\" ".$is_personal."><span class=\"info\" style=\"cursor: default;\" onclick=\"redirect('".BASE_URL.(($is_mobile==1)? "\/small\/" : "")."?section=survey.php&amp;survey_id=2&amp;lang=".$lang_idx."&amp;email=".$_SESSION['email']."')\">".$COLD_METER[$lang_idx]."</span>".$current_feeling."</a>".checkAsterisk($row_verdict, $is_jason)." ".$shade;    
+$current_feeling = "<a href=\"javascript:void(0)\" class=\"info currentcloth\" ><span class=\"info\">".getClothTitle($cloth_name, $temp_to_cold_meter, 0, 0)."</span><img src=\"images/clothes/".$cloth_name."\" width=\"".$coldmeter_size*1.21."\" height=\"".$coldmeter_size."\" alt=\"".$cloth_name."\" style=\"vertical-align: middle\" /></a><a class=\"info\" id=\"coldmetertitle\" href=\"javascript:void(0)\" ".$is_personal."><span class=\"info\" style=\"cursor: default;\" onclick=\"redirect('".BASE_URL.(($is_mobile==1)? "\/small\/" : "")."?section=survey.php&amp;survey_id=2&amp;lang=".$lang_idx."&amp;email=".$_SESSION['email']."')\">".$COLD_METER[$lang_idx]."</span>".$current_feeling."</a>".checkAsterisk($row_verdict, $is_jason)." ".$shade;    
+$current_heat_index = get_heat_index($current->get_temp(), $current->get_hum());
+ if ($current_heat_index != "")
+	$current_feeling = $current_feeling."<div id=\"heatindex\">".$current_heat_index."</div>";
 $json_res = "{\"coldmeter\":";
 $json_res .= "{";
-    $json_res .= "\"clothtitle\":\"".getClothTitle($cloth_name, $temp_to_cold_meter)."\"";
+    $json_res .= "\"clothtitle\":\"".getClothTitle($cloth_name, $temp_to_cold_meter, 0, 0)."\"";
     $json_res .= ",";
-    $json_res .= "\"cloth_name\":"."\"".$cloth_name." \"";
+    $json_res .= "\"cloth_name\":"."\"".$cloth_name."\"";
     $json_res .= ",";
     $json_res .= "\"personal\":"."\"".$is_personal."\"";
     $json_res .= ",";
@@ -133,14 +136,20 @@ $json_res .= "{";
     $json_res .= ",";
     $json_res .= "\"current_value\":\"".$value_verdict."\"";
     $json_res .= ",";
+    $json_res .= "\"temp_value\":\"".$temp_to_cold_meter."\"";
+    $json_res .= ",";
     $json_res .= "\"asterisk\":\"".checkAsterisk($row_verdict, $is_jason)." ".$shade."\"";
+    $json_res .= ",";
+    $json_res .= "\"heatindex\":\"".$current_heat_index."\"";
 $json_res .= "}";
 if (!empty($current->get_temp2_to_coldmeter())){
     $json_res .= ",\"coldmeter_sun\":";
     $json_res .= "{";
-        $json_res .= "\"clothtitle\":\"".getClothTitle($cloth_name_sun, $current->get_temp2_to_coldmeter())."\"";
+        $json_res .= "\"clothtitle\":\"".getClothTitle($cloth_name_sun, $current->get_temp2_to_coldmeter(), 0, 0)."\"";
         $json_res .= ",";
-        $json_res .= "\"cloth_name\":"."\"".$cloth_name_sun." \"";
+        $json_res .= "\"cloth_name\":"."\"".$cloth_name_sun."\"";
+        $json_res .= ",";
+        $json_res .= "\"personal\":"."\"".$is_personal."\"";
         $json_res .= ",";
         $json_res .= "\"current_feeling\":\"".get_name($feeling_verdict_sun)."\"";
         $json_res .= ",";
@@ -148,13 +157,14 @@ if (!empty($current->get_temp2_to_coldmeter())){
         $json_res .= ",";
         $json_res .= "\"current_value\":\"".$value_verdict_sun."\"";
         $json_res .= ",";
+        $json_res .= "\"temp_value\":\"".$current->get_temp2_to_coldmeter()."\"";
+        $json_res .= ",";
         $json_res .= "\"asterisk\":\"".checkAsterisk($row_verdict_sun, $is_jason)." ".$sun."\"";
+        $json_res .= ",";
+        $json_res .= "\"heatindex\":\"".$current_heat_index."\"";
     $json_res .= "}";
 }
-$current_heat_index = get_heat_index($current->get_temp(), $current->get_hum());
- 
-if ($current_heat_index != "")
-	$current_feeling = $current_feeling."<div id=\"heatindex\">".$current_heat_index."</div>";
+
 
 
 

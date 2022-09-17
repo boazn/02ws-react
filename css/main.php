@@ -318,11 +318,18 @@ display:inline-block;
 .main_info {
     text-align:center;
     margin-top:-10px;
-    margin-<?=get_s_align()?>: 212px;
+    margin-<?=get_s_align()?>: 200px;
 }
 @media only screen and (max-width: 1024px) {
     #main_info {
         margin-<?=get_s_align()?>:550px;
+    }
+   
+}
+@media only screen and (max-width: 1224px) {
+   
+    #current_info{
+        margin-<?=get_s_align()?>: 200px;
     }
 }
 
@@ -348,19 +355,16 @@ display:inline-block;
 #current_info{
 
 }
-#topbar{
-    height:40px;
-    width:420px;
+#topbar, #bottombar{
     margin: 3px;
 }
 #sidebar{
-    width:40px;
-    height:320px;
+    
     margin: 3px;
     
 }
-#bottombar li, #topbar li, #sidebar li{
-    margin:3px;
+#bottombar li, #topbar li, #sidebar li, #activities_yes li , #activities_no li, #activities_bar li {
+    margin: 6px 0 6px 10px;
     list-style: none;
 }
 #sidebar li {
@@ -368,6 +372,12 @@ display:inline-block;
 }
 #bottombar li, #topbar li{
     margin-<?=get_s_align()?>:4px
+}
+#activities_bar{
+    width:400px
+}
+#sigweather_bar{
+    margin-bottom:5px
 }
 #topbar li{
     margin-bottom:5px;
@@ -454,7 +464,7 @@ position:absolute;
     position:absolute;
     background: url(../img/runwalk.png) 2px no-repeat;
     background-color: #eeeeee;
-    opacity: 0.5;
+    opacity: 0.6;
     margin-<?=get_inv_s_align()?>:-294px;
     margin-top:228px;
     border-radius: 18px;
@@ -471,7 +481,7 @@ position:absolute;
 #dew_btn {
     background: url(../img/dewp.png) 8px no-repeat;
     background-color: #eeeeee;
-    opacity: 0.5;
+    opacity: 0.6;
     margin-<?=get_inv_s_align()?>:-17px;
     margin-top:75px;   
     position: absolute;
@@ -521,7 +531,7 @@ position:absolute;
 #moon_btn{
     background-image:url("../images/moonriseset.png");
     background-color: #eeeeee;
-    opacity: 0.5;
+    opacity: 0.6;
     border-radius: 18px;
     background-position: 6px;
     background-size: 25px;
@@ -532,7 +542,7 @@ position:absolute;
 }
 #window_btn {
     background-repeat: no-repeat;
-    opacity:0.5;
+    opacity:0.6;
     border-radius: 18px;
     background-position: 6px;
     background-color: #eeeeee;
@@ -545,7 +555,7 @@ position:absolute;
 }
 #webcam_btn {
     background-repeat: no-repeat;
-    opacity:0.5;
+    opacity:0.6;
     border-radius: 18px;
     background-position: 6px;
     background-color: #eeeeee;
@@ -1113,7 +1123,7 @@ margin-<?=get_s_align()?>:-20px;
 padding-<?=get_inv_s_align()?>:10px;
 background-color:#ebe8ed;
 }
-#table24{
+#table24, .daily_link{
     width: 200px;
     margin: 0px 550px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
@@ -1259,6 +1269,7 @@ background-color:#ebe8ed;
     float:<?=get_s_align()?>;
     padding:5px;
     margin:0px;
+    margin-bottom:15px;
    
 }
 
@@ -1350,6 +1361,9 @@ background-color:#ebe8ed;
     font-size: 1.3em;
     padding-bottom:0.3em
 }
+#forcast_hours_table li{
+    padding-bottom:0
+}
 #forcast_hours_table li .wind_icon{
     margin-top:4px
 }
@@ -1409,7 +1423,7 @@ float:<?=get_s_align()?>
 }
 #forcast_table .wind_icon, #forecastnextdays_table .wind_icon {
     margin-top: -5px;
-    font-size:0.7em;
+    font-size:0.8em;
     background-position-y: bottom;
     padding-bottom: 1em;
     
@@ -1431,7 +1445,7 @@ float:<?=get_s_align()?>
 }
 .forcast_each:hover 
 {
-    background:rgb(130, 226, 255);
+    background:#c4c7d6b3;
 }
 .extra {
     line-height:1;
@@ -1440,6 +1454,10 @@ float:<?=get_s_align()?>
 margin:0;
 direction: ltr;
 line-height: 0.6em;
+}
+.extra .forcast_night{ 
+    font-size: 0.8em;
+    margin-bottom: -50px;
 }
 .forcast_each ul li
 {
@@ -1496,7 +1514,7 @@ margin-<?=get_s_align()?>:10px
     margin-right:10px;
     font-family:Alef;
     font-size:0.8em;
-    width:<? if (isHeb()) echo "315px";else echo "285px"; ?>;
+    width:<? if (isHeb()) echo "305px";else echo "270px"; ?>;
     line-height: 1.1em;
     text-align:<?=get_s_align()?> !important;
     cursor:pointer;
@@ -1624,10 +1642,41 @@ font-size:0.35em
 <? if (isHeb()) echo "direction:rtl;"; ?>
 text-align:<?=get_s_align()?>;
 margin-bottom:8px;
-margin-<?=get_s_align()?>: 20px;
+margin-<?=get_s_align()?>: 200px;
 z-index:9999;
 }
-
+#activities_yes, #activities_no{
+    background-size: 15%;
+    margin-top: 10px;
+    width: 700px;
+    margin:0
+}
+#activities_yes{
+    
+   
+}
+#activities_no{
+   
+    
+}
+.detailed #activities_yes, .detailed #activities_no{
+    width: 270px;
+    padding: 0;
+}
+#activities_yes li , #activities_no li, #bottombar li{
+    border-radius: 999px;
+    background-color: #eeeeee;
+    opacity: 0.5;
+    display: inline !important;
+    padding: 0.4em !important;
+    position:relative;
+}
+ 
+.no {
+    background:url("../images/icons/xmark-thin.svg") no-repeat;
+    background-size: 65%;
+    background-position-x: 6px;
+}
 #addthis_icon
 {
 display:inline-block;
@@ -1644,10 +1693,12 @@ margin-<?=get_s_align()?>:0.5em
 @media only screen and (max-width: 1280px) {
     #mainadsense {
         margin-top:-330px;
+        display:none;
     }
-    #if1, #if2, #if3, #if4{
+    #if1, #if2, #if3, #if4, #windy_widget{
         display:none
     }
+    #
 }
 #extrainfo{
     display:inline
@@ -1659,6 +1710,10 @@ margin-<?=get_s_align()?>:0.5em
     position: absolute;
     width:300px;
     border-radius: 15px;
+}
+#belowmainad
+{
+
 }
 #xClose{
     display:none;
@@ -1697,7 +1752,8 @@ padding:0 0.4em;
     margin-bottom:3px;
 }
 #now_stuff li ul li a {
-    color:#000
+    color:#000;
+    font-size:1.3em
 }
 #now_stuff li ul li a:hover, #sigweather li a:hover{
     color:#ccc  
@@ -1989,6 +2045,8 @@ width:250px
     overflow-y: auto;
     width: 660px;
     line-height: 1.2em;
+    <? if (isHeb()) echo "direction:rtl;"; ?>
+    
 }
 #alerts.offset3, #mainstory.offset3 {
     margin-<?=get_s_align()?>: 200px;
@@ -2735,7 +2793,7 @@ font-size: 1.1em;
 .chatbodyreply
 {
 	width: 85%;
-        margin-<?echo get_s_align();?>:20px;
+        margin-<?echo get_s_align();?>:35px;
 	word-wrap: break-word;
 	white-space:normal;
 	white-space:-moz-pre-wrap;
@@ -2897,7 +2955,7 @@ margin-<?echo get_s_align();?>:150px
      height:38px;
      background-repeat:no-repeat;
      width:37px;
-     margin-<?=get_inv_s_align()?>:50px;
+     margin-<?=get_inv_s_align()?>:170px;
      margin-top:5px;
 }
 
@@ -3185,6 +3243,10 @@ color: #fff;
     margin-bottom:5px;
     word-break: break-word;
 }
+.chatfirstbody
+{
+    width:100%
+}
 #forum .white_box2 div.chataftersepreply, #forum .chosenreply div.chataftersepreply, #faq .chosenreply div.chataftersepreply, #faq .white_box2 div.chataftersepreply{
     padding-right:15px;
     padding-left:15px;
@@ -3212,12 +3274,13 @@ color: #fff;
 	background:transparent;
     background-image:url("../img/comment_plus.png");
     background-repeat:no-repeat;
-    background-position:right;
+    background-position:right;gra
     padding:5px;
     margin-right:30px;
     padding-right:18px;
 	border:none;
 	cursor:pointer;
+    font-size: 1.2em;
 }
 
 .comment_btn:hover {
@@ -3234,7 +3297,8 @@ color: #fff;
     margin-bottom:10px;
 }
 #new_post_alert{
-    padding: 0.5em;width:100%
+    padding: 0.5em;width:100%;font-size: 1.5em;
+    
 }
 #check_alert_msg{
     width:20px
@@ -3336,7 +3400,7 @@ color: #fff;
     position:fixed;
     text-align:center;
     padding:0;
-    margin-top:25px;
+    margin-top:5px;
     margin-<?echo get_s_align();?>:8px;
     top:200px;
     z-index:300;
@@ -3424,7 +3488,7 @@ color: #fff;
 			}
 		#whatmore {
 			position: absolute;
-			top: 730px;
+			top: 770px;
 			width:1280px;
 			float:right;
 			z-index: 13;
@@ -3816,8 +3880,8 @@ color: #fff;
 		}
 	#bg2-8 {
 		position: absolute;
-		top: 250px;
-		left: 370px;
+		top: 400px;
+        left: 160px;
         animation: animateCloud 10s ease forwards;
 		}
 	#bg2-9 {
@@ -3852,26 +3916,26 @@ color: #fff;
 		}
 	#bg1-2 {
 		position: absolute;
-		top: 500px;
-		left: -220px;
+		top: 360px;
+        left: 1220px;
 		animation: animateCloud 10s ease forwards;
 		}
 	#bg1-3 {
 		position: absolute;
-		top: 190px;
-		left: 295px;
+		top: 390px;
+		left: 25px;
         animation: animateCloud 10s ease forwards;
 		}
 	#bg1-4 {
 		position: absolute;
 		top: 180px;
-		left: 1050px;
+		left: 1150px;
         animation: animateCloud 10s ease forwards;
 		}
 	#bg1-5 {
 		position: absolute;
-		top: 170px;
-		left: 790px;
+        top: 270px;
+        left: 1200px;
         animation: animateCloud 10s ease forwards;
 		}
 	#bg1-6 {
@@ -3882,14 +3946,14 @@ color: #fff;
 		}
 	#bg1-7 {
 		position: absolute;
-		top: 240px;
-		left: -30px;
+		top: 270px;
+		left: -80px;
         animation: animateCloud 10s ease forwards;
 		}
 	#bg1-8 {
 		position: absolute;
-		top: 160px;
-		left: 440px;
+		top: 390px;
+		left: -100px;
         animation: animateCloud 10s ease forwards;
 		}
 	#bg1-9 {
@@ -3932,7 +3996,7 @@ color: #fff;
 color:#3D718E;
 }
 #graphnav li{
-    font-size: 1.3em;
+    font-size: 1.5em;
     padding: 0.6em;
 }
 #graphsportal{
@@ -3947,7 +4011,7 @@ margin-bottom:10px;
     <? if (isHeb()) echo "direction:rtl"; ?>
 }
 
-#login, #forgotpass, #register{
+#login, #forgotpass, #register, #clicktoregister{
     padding:0.9em;
     color:black;
     font-size:1.2em
@@ -4017,10 +4081,11 @@ right:10px;
 }
 #top_links li a {
     padding-bottom:7px;
-    color:#3D718E;
+    color:black;
 }
 #top_links li ul li a {
     padding-bottom:0;
+    font-size:1.3em;
     
 }
 .navbar .nav {
@@ -4220,7 +4285,7 @@ top:230px;left:580px
     top:1600px;
     left:150px;
     height:100%;
-    background: url("../img/bg_map<? if (SNOW_ON_THE_GROUND == 1) echo "_snow";?>.png") no-repeat center top;
+    background: url("../img/bg_map<? if (SNOW_ON_THE_GROUND == "1") echo "_snow";?>.png") no-repeat center top;
     width: 100%;
     z-index:7;
 }
@@ -4308,7 +4373,7 @@ a.info:hover span.info
 .inparamdiv
 {
     font-family: nextexitfotlight;
-    background:linear-gradient(to top,rgba(255, 255, 255, 0),rgba(255, 255, 255, 0.3));
+    background:linear-gradient(to top,rgba(255, 255, 255, 0),rgba(255, 255, 255, 0.25));
     text-align:center;
    -moz-border-radius: 999px;
     border-radius: 999px;
@@ -4317,7 +4382,11 @@ a.info:hover span.info
     height: 235px;
     color:#2C3A42;
     font-size: 1.4em;
+    z-index:9999;
   <? if (isHeb()) echo "direction:rtl"; ?>
+}
+.hourly{
+    padding:0.3em 1em;cursor: pointer;font-size: 1.1em
 }
 .inparamdiv a
 {
@@ -4334,16 +4403,23 @@ a.info:hover span.info
 .trendstable
 {
     position: absolute;
-    top: 5.4em;
+    top: 5.6em;
     width: 100%;    
+}
+#latestwind .trendstable
+{
+    top:6.6em
 }
 #latestrain .trendstable
 {
         line-height:1em;
+        top: 5.4em;
 }
 .trendstitles, .trendsvalues
 {
-	text-align:center
+	text-align:center;
+    font-size: 1.2em;
+    line-height: 1em;
 }
 .trendstitles .box img{
 	margin-top: 5px;
@@ -4424,7 +4500,7 @@ top:85px
 #latesttemp3 .graphslink, #latestdewpoint .graphslink{
 	width:270px;
 	<?=get_s_align()?>: 62px;
-    top: 200px;
+    top: 255px;
     line-height: 12px;
     font-size:0.9em
 }
@@ -4438,10 +4514,10 @@ top:85px
 }
 .paramtitle
 {
-   font-size: 1em;
+   font-size: 1.2em;
     padding-top: 6px;
     margin:0 auto;
-    width:200px;
+    width:100%;
 }
 #paramsdiv
 {
@@ -4500,9 +4576,9 @@ top:85px
 	font-weight: normal;
 	margin-left: 11px;
 	color: #2C3A42;
-	padding-top: 0.15em;
-	font-size: 5em;
-    width: 48%;
+	padding-top: 0.35em;
+	font-size: 4em;
+    width: 50%;
     direction:ltr
 	
 }
@@ -4523,6 +4599,7 @@ top:85px
     <?=get_inv_s_align()?>: <?  if (!isHeb()) echo "-35px"; else echo "-40px";?>;
     top: 104px;
     position: absolute;
+    display:none;
     
 }
 #laundryidx img{
@@ -4540,7 +4617,7 @@ top:85px
 }
 #windy
 {
-          margin: 0 auto;position: absolute;font-size:0.95em;width: 50%;z-index: 100;top: 1.3em;<?=get_inv_s_align()?>: 10em;
+          margin: 0 auto;position: absolute;font-size:0.95em;width: 50%;z-index: 100;top:9em;<?=get_inv_s_align()?>: 9.5em;
 }
 #windy .wind_title
 {
@@ -4559,21 +4636,20 @@ margin:0 auto
     font-size: 1.1em;
     line-height: 18px;
     height:95%;
-    border-radius: 40px;
-    border: 1px solid #1dc6ff; 
+    
 }
 #cm_dislike
 {
     position: absolute;
-    top: 4.2em;
-    left: -0.4em;
+    top: 6.5em;
+    left: 2.4em;
     cursor: pointer;
 }
 #cm_like
 {
     position: absolute;
-    top: 4.2em;
-    left: 7.2em;
+    top: 6.5em;
+    left: 3.8em;
     cursor: pointer;
 }
 #status .wind_title
@@ -4606,19 +4682,17 @@ margin:0 auto
 .color9{
     font-size: 0.6em;
 }
-#heatindex{
-margin-top:89px;
-}
+
 #current_feeling_link
 {
 	font-size:<? if (isHeb()) echo "110%"; else echo "90%"; ?>
 }
-#itfeels
+#itfeels, #heatindex
 {
     <? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr";?>;
 	    position: absolute;
         width: 245px;
-        top: 6em;
+        top: 5.2em;
         padding: 0px 5px;
         text-align:center;
         font-size: 1.2em;
@@ -4626,6 +4700,10 @@ margin-top:89px;
         border-radius: 15px;
         
         
+}
+#heatindex{
+top:2em;
+width:200px;
 }
 #currentrow #itfeels
 {
@@ -4661,6 +4739,10 @@ margin-top:89px;
     
 	display:inline
 }
+#latestpressure .paramvalue
+{
+    <? if (isHeb()) echo "direction:rtl"; ?>
+}
 .paramunit{
 	vertical-align: super;
 	font-size:0.25em;
@@ -4675,9 +4757,14 @@ margin-top:89px;
 .paramtrend
 {
     position:absolute;
-    top:8.8em;
+    top:8.2em;
     width:100%;
+    line-height:0.8;
     margin:0 auto
+}
+#latestwind .paramtrend
+{
+    top:5.5em;
 }
 .trendvalue
 {
@@ -4692,12 +4779,11 @@ margin-top:89px;
 .innertrendvalue
 {
     width:63%;
-    line-height: 1;
     margin: 0 auto;
 }
 #aqvalues{
     line-height:1em;
-    margin-top: 0em;
+    margin-top: -0.9em;
 }
 
 #aqvalues ul{
@@ -4719,8 +4805,13 @@ margin-top:89px;
     border-bottom: 1px solid #829CAA;
 }
 .dustexp{
-   
+   <? if (!isHeb()) echo "font-size:0.6em";?>
     
+}
+.exp
+{
+    line-height:1em;
+    padding: 0.2em;
 }
 #latestairq .paramvalue
 {
@@ -4732,7 +4823,7 @@ top: 36px;
 {
     font-size:0.45em;
 }
-#latestwindow, #latestrunwalk, #latestotherstations, #latestwind, #latesttemp, #latesttemp2, #latesttemp3, #latesthumidity, #latestdewpoint, #coldmetersurvey, #latestrain, #latestmoon, #latestuv, #latestradiation, #latestairq, #fseasonsurvey
+#latest_laundry, #latest_ac, #latest_sacker, #latest_bicycle, #latest_campfire, #latest_camping, #latest_car, #latest_children, #latest_dinneratbalcony, #latest_dog, #latest_eventoutside, #latest_gazellepark, #latest_heater, #latest_irrigation, #latest_openwindow, #latest_picnic, #latest_sport, #latest_westernwall, #latest_yoga, #latestwindow, #latestrunwalk, #latestotherstations, #latestwind, #latesttemp, #latesttemp2, #latesttemp3, #latesthumidity, #latestdewpoint, #coldmetersurvey, #latestrain, #latestmoon, #latestuv, #latestradiation, #latestairq, #fseasonsurvey
 {
     display:none;
 }
@@ -4849,49 +4940,49 @@ border-top:none; margin:0; padding:0;
 }
 .radio-toolbar.color0, .colmetercontainer .color0{
     background-color:#5F55D0 ;
-    background-image:url(../images/clothes/cold_b.svg);
+    background-image:url(../images/clothes/cold.svg);
     
 }
 .radio-toolbar.color1, .colmetercontainer .color1{
     background-color:#0F6ADB ;
-    background-image:url(../images/clothes/gloves_b.svg);
+    background-image:url(../images/clothes/gloves.svg);
     
 }
 .radio-toolbar.color2, .colmetercontainer .color2{
     background-color:#15A3DC ;
-    background-image:url(../images/clothes/coat_b_n4.svg);
+    background-image:url(../images/clothes/coat_n4.svg);
     
 }
 .radio-toolbar.color3, .colmetercontainer .color3{
     background-color:#00D5F2 ;
-    background-image:url(../images/clothes/jacket_b_n4.svg);
+    background-image:url(../images/clothes/jacket_n4.svg);
     
 }
 .radio-toolbar.color4, .colmetercontainer .color4{
     background-color:#5AEAAD ;
-    background-image:url(../images/clothes/lightjacket_b_n4.svg);
+    background-image:url(../images/clothes/lightjacket_n4.svg);
     
 }
 .radio-toolbar.color5, .colmetercontainer .color5{
     background-color:#98DD71 ;
-    background-image:url(../images/clothes/longsleeves_b_n4.svg);
+    background-image:url(../images/clothes/longsleeves_n4.svg);
    
 }
 .radio-toolbar.color6, .colmetercontainer .color6{
     background-color:#F2D227 ;
-    background-image:url(../images/clothes/tshirt_b_n4.svg);
+    background-image:url(../images/clothes/tshirt_n4.svg);
 }
 .radio-toolbar.color7, .colmetercontainer .color7{
     background-color:#FFAC30 ;
-    background-image:url(../images/clothes/shorts_b_n4.svg);
+    background-image:url(../images/clothes/shorts_n4.svg);
 }
 .radio-toolbar.color8, .colmetercontainer .color8{
     background-color:#FF7324 ;
-    background-image:url(../images/clothes/singlet_b_n4.svg);
+    background-image:url(../images/clothes/singlet.svg);
 }
 .radio-toolbar.color9, .colmetercontainer .color9{
     background-color:#FF3E3E ;
-    background-image:url(../images/clothes/singlet_b_n4.svg);
+    background-image:url(../images/clothes/singlet.svg);
 }
 .radio-toolbar label{
     display:inline-block;
@@ -4948,7 +5039,7 @@ border-top:none; margin:0; padding:0;
 }
 #genderchoose
 {
-position:absolute;top:0px;width:430px;z-index:500;<?=get_s_align()?>:500px
+position:absolute;top:0px;width:430px;z-index:9999;<?=get_s_align()?>:500px
 }
 #graphmain
 {
@@ -5468,13 +5559,13 @@ position:relative
 }
 .span-value:after {
   position: absolute;
-  top: -22px;
+  top: -25px;
   left: -20%;
   z-index: 200;
   visibility: hidden;
-  margin-left: -20px;
+  margin-left: -60px;
   padding: 2px;
-  width: 120px;
+  width: 180px;
   border-radius: 3px;
   background-color: #fff;
   color: #434a54;
@@ -5487,7 +5578,7 @@ position:relative
 }
 .span-value:before {
   position: absolute;
-  top: -3px;
+  top: -5px;
   left: 50%;
   z-index: 200;
   visibility: hidden;
@@ -5560,8 +5651,8 @@ height: 16px;
 .sprite.wink { background-position: 0px -698px; width: 20px; height: 20px;  } 
 .sprite.mood_add { background-position: 0px -728px; width: 25px; height: 25px;  }  
 .spriteB { background: url('images/spriteB.png') no-repeat top left;  } 
-.spriteB.up { background-image: url("../img/up_icon.png");width: 9px;margin-top:3px;height: 10px; display:inline-block} 
-.spriteB.down {background-image: url("../img/down_icon.png");width: 9px;margin-top:3px; height: 10px; display:inline-block} 
+.spriteB.up { background-image: url("../img/up_icon.png"); background-size: 12px;width: 12px; height: 16px; display:inline-block} 
+.spriteB.down {background-image: url("../img/down_icon.png");background-size: 12px;width: 12px; height: 16px; display:inline-block} 
 .spriteB.plus {  background-position: 0 -32px;background-size: 98% auto;height: 20px;width: 20px;  } 
 .spriteB.adlink { background-image: url("../img/new_post_link.png")  } 
 .spriteB.star { background-position: 0px -140px; width: 14px; height: 13px;  } 
@@ -5612,7 +5703,7 @@ height: 16px;
         .cboxSlideshow_on #cboxSlideshow.hover{background-position:-100px -25px;}
         .cboxSlideshow_off #cboxSlideshow{background-position:-100px 0px; right:44px;}
         .cboxSlideshow_off #cboxSlideshow.hover{background-position:-75px -25px;}
-		#cboxContent input{width:185px}
+		#cboxContent input{width:200px}
 		#cboxContent input[type="checkbox"]{width:auto}
 		#colorbox{border-radius:5px}
                  a.colorbox {position:relative;}
@@ -5620,8 +5711,8 @@ height: 16px;
                  a.colorbox:hover span, a.enlarge:hover span{display:block;}
 		
 body.mce-content-body { 
-   background:#E0E7B0;
-   opacity:0.9;
+   background:white;
+   opacity:1;
    color:#3D718E;
    line-height:10px;
    font-size:13px;

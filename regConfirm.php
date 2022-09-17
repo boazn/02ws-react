@@ -5,7 +5,7 @@ include ("include.php");
 include ("start.php");
 
 function make_user_active($email, $user_id, $key, $reg_id){
-    global $DONE, $lang_idx, $REGISTRATION_TO_02WS, $LOGO, $header_pic, $HOME_PAGE;
+    global $DONE, $lang_idx, $REGISTRATION_TO_02WS, $REGISTRATION_TO_02WS_DONE, $LOGO, $header_pic, $HOME_PAGE;
     $key = str_replace(" ", "+", $key);
     $query = "update users set user_status=1 where user_activation_key='$key' and email='$email'";
     //echo $query;
@@ -34,6 +34,7 @@ function make_user_active($email, $user_id, $key, $reg_id){
     	$_SESSION['loggedin'] = "true";
         echo "<div class=\"big success\"  style=\"margin:1em;padding:1em\"><h1>".$DONE[$lang_idx];
         echo "</h1>";
+        echo $REGISTRATION_TO_02WS_DONE[$lang_idx];
         echo "</div></div>";
 }	
         

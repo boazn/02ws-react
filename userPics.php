@@ -6,7 +6,7 @@
 
 <div>
  <?
-$result = db_init("SELECT * FROM UserPicture where approved=1 order by uploadedAt DESC LIMIT 60","");
+$result = db_init("SELECT * FROM UserPicture where approved=1 order by uploadedAt DESC LIMIT 150","");
 $pic_number = 0;
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
         $picaname = "images/userpic/".$line["picname"];
@@ -17,12 +17,12 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
         <div class="white_box2 float pic_cell">
                 <?  echo $line["uploadedAt"]; ?><br/>
                  <a href="<?=$picaname?>" title="<?echo getLocalTime(filemtime($picaname));?>" class="colorbox">
-                        <img src="phpThumb.php?src=<?=$picaname?>&amp;w=200" width="200px" title="<?echo getLocalTime(filemtime($picaname));?>" />
+                        <img src="phpThumb.php?src=<?=$picaname?>&amp;w=290" width="290px" title="<?echo getLocalTime(filemtime($picaname));?>" />
 
                 </a>
         
         <div class="piccomment">
-            <?=$line["comment"]." <br/>".$line["name"]."<br/>".replaceDays(getLocalTime(filemtime($picaname)))?>
+            <?=$line["comment"]." <br/>".$line["name"]."<br/>"?>
         </div>
         </div>
         

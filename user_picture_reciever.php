@@ -26,6 +26,8 @@ class DB_Functions {
                             move_uploaded_file($_FILES['pic']['tmp_name'], $file_path);
 				
 			//$result = db_init("call SaveUserPic ('$name', '$comment', '$user', '$picname', '$x', '$y')");
+                        $comment = str_replace("'", "`", $comment);
+                        $name = str_replace("'", "`", $name);
                         $result = db_init("INSERT INTO `UserPicture` (name, comment, approved, uploadedAt, User, x, y, picname, reg_id) VALUES('$name', '$comment', 0, SYSDATE(), '$user', '$x', '$y', '$picname', '$reg_id');", "");
 			// check for successful store
 			// get user details

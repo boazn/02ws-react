@@ -10,46 +10,6 @@ class CloudMessageType {
 }
 /*******************************************************************************************/
 
-function sendAPNMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip)
-{
-  
-    global $TIP;
-    // Report all PHP errors
-    error_reporting(-1);
-    $registrationIDs0 = array();
-    $registrationIDs1 = array();
-    $short_range = ($short_range === 'true');
-    $long_range = ($long_range === 'true');
-    $tip = ($tip === 'true');
-    if (boolval($tip)){
-        $messageBody[0] = $TIP[0].": ".$messageBody[0];
-        $messageBody[1] = $TIP[1].": ".$messageBody[1];
-    }
-   
-    //$reg_id = "6d5c6ca8d3d36348ea4c52f6e0813e6713ef9b823a3da66a3714228e67146a10"; //d057506a9d09770900a09fbeb25c9e404829937bc1b3da0d34216f9cc57608e5//6d5c6ca8d3d36348ea4c52f6e0813e6713ef9b823a3da66a3714228e67146a10 
-    //array_push ($registrationIDs1,array('apn_regid' => $reg_id, 'id' => '8025'));
-    //if (($long_range)&&($short_range))
-    //        $result = db_init("select * FROM apn_users where active=1 or active_rain_etc=1", "");
-    //    else if ($long_range)
-    //        $result = db_init("select * FROM apn_users where active=1", "");
-    //    else if ($short_range)
-        $result = db_init("select * FROM apn_users where active=1", "");
-
-    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
-	  if ($line["apn_regid"] != "")
-          {
-              if ($line["lang"] == 0)
-            array_push ($registrationIDs0, array('apn_regid' => $line["apn_regid"], 'id' => $line["id"]));
-            elseif ($line["lang"] == 1)
-            array_push ($registrationIDs1, array('apn_regid' => $line["apn_regid"], 'id' => $line["id"]));
-          }
-    }
- $result = "";
- $result = sendAPNToRegIDs($registrationIDs1, date('H:i')." ".$title[1]." - ".$messageBody[1], $picture_url, $embedded_url);
- $result .= sendAPNToRegIDs($registrationIDs0, date('H:i')." ".$title[0]." - ".$messageBody[0], $picture_url, $embedded_url);
- return $result;
-
-}
 
 function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $short_range, $long_range, $tip, $CloudMessageType)
 {
@@ -67,16 +27,10 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
     }
     $messageBody[0] = date('H:i')." ".$messageBody[0];
     $messageBody[1] = date('H:i')." ".$messageBody[1];
-    if ($CloudMessageType == CloudMessageType::Fcm)
-    {
-        $key = FCM_API_KEY;
-        $query_extension = " and fcm=1";
-    }
-    else
-    {
-        $key = GOOGLE_API_KEY;
-        $query_extension = " and fcm<>1";
-    }
+    
+    $key = FCM_API_KEY;
+    $query_extension = "";
+    
     if ((boolval($long_range))&&(boolval($short_range))){
         $result = db_init("select * FROM fcm_users where active=1 or active_rain_etc=1".$query_extension, "");
     }
@@ -98,7 +52,7 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
             array_push ($registrationIDs1, $line["gcm_regid"]);
     }
     
-    logger(" short_range=".$short_range." long_range=".$long_range);
+    logger(" short_range=".$short_range." long_range=".$long_range, 0, "FCM", "sendingGCMMessage", "sendingGCMMessage");
     
      
     /* test */
@@ -116,7 +70,7 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
       //      array_push ($registrationIDs1, "d2Y_RLBmKGM:APA91bHCtyGWSLtRYdCW6E0RYCkHEBScvzkcVS5zza88k7RXnyelE9_HJ2shxjJKIJUl1Rw-LJg-rCFCK_RvndH0CP3coto3Ld9bPGcAN5ntj9SLlTYybkDYPwHqc8hDysXT2a4f7u_p");
          
      //
-
+     array_push ($registrationIDs1, "cKbcV13UTLGh3M0nDlSjch:APA91bH3aGoeHh10EkcGbuYJIk-1N27k1VkyFqYR0qRPAgDKvy8zaYEwqMAu02vTKciQEO6zX_7QzQkVVLUp3mUD29CjJ7Y2aDGUTKoKGAnfT1SZdxEfWsEJjo1EkaUN4v--d8Y17ELs");
      array_push ($registrationIDs1, $_REQUEST["reg_id"]);    
      logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1), 0, "FCM", "sendingGCMMessage", "sendingGCMMessage");
      $result = "";
@@ -163,13 +117,13 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         //$now = getLocalTime(time());
 
         $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='$type') and (lang=$lang)";
-        apc_store('descriptionforecast'.$lang, $description);
+       // apc_store('descriptionforecast'.$lang, $description);
         $res = db_init($query, "" );
         // Free resultset 
         @mysqli_free_result($res);
     }
     catch (Exception $ex) {
-        $result .= " exception:".$ex->getMessage();
+      //  $result .= " exception:".$ex->getMessage();
     }   
 	
 }

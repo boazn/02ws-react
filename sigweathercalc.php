@@ -32,7 +32,7 @@ function CalcCarCleaning ($dust, $idx_check){
 	$idx_f = 0;
 	foreach ($forecastDaysDB as $day_f){
 		if ($idx_f <= ($idx_check + CAR_CLEANING_WORTH)){
-			if ($day_f['dustDay'] > 300)
+			if ($day_f['dustDay'] > 200)
 				return false;
 			if ($day_f['rainTo'] > 0)
 				return false;
@@ -41,6 +41,16 @@ function CalcCarCleaning ($dust, $idx_check){
 	}
 	return true;
 }
+
+function isGoingToRain(){
+	return false;
+}
+function isBecomingWindy(){
+	return false;
+}
+function isBecomingDusty(){
+	return false;
+}
 function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $rainperc, $dust, $uv)
 {
 	global $mem, $current, $todayForecast, $forecastHour, $hour, $forecastDaysDB, $HIGH_DUST, $VERY_HOT_HEAT_WAVE, $GOOD_TIME, $OPEN, $lang_idx, $HIGH_UV, $HOT_GROUND, $HIGH_ET, $LOW_RAD, $NO_WIND, $WINDY, $RAIN, $hour, $random_good_time, $sig;
@@ -48,162 +58,233 @@ function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $ra
 	$is_now = false;
 	$is_sig_forecast = false;
 	$nextSigForecast = $mem->get('nextSigForecast');
+	$idx_f = 0;
+	foreach ($forecastDaysDB as $day_f){
+		if ($idx_f == $idx - 1){
+			$dailyDust = $day_f['dustDay'];
+			$dailyRainTo = $day_f['rainTo'];
+			$dailyWindNight = $day_f['windNight'];
+			$dailyWindMorning = $day_f['windMorning'];
+		}
+		$idx_f++;
+	}
+	
 	if ((dustExistsNow())||(dustExistsIn24hf())||(rainExistsIn24hf()))
 		$is_sig_forecast = true;
 	if (($timeframe == TimeFrame::Hourly)&&(($idx == $hour)||($idx == $hour+1)))
 		$is_now = true;
 
 	if (($rainperc > 0)||($dust > 100)||
-		($nextSigForecast['hrs']<8&&$is_now&&$is_sig_forecast)){
-			array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Laundry, 'value' => Recommendations::No));
+		($nextSigForecast['hrs']<8 && $is_now && $is_sig_forecast)||
+		(($timeframe == TimeFrame::Daily)&&(($dailyRainTo > 0)||$dailyDust > 100))){
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$HIGH_DUST[0].":".$dailyDust, $RAIN[1].":".$dailyRainTo."; ".$HIGH_DUST[1].":".$dailyDust);
+			array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::Laundry, 'value' => Recommendations::No, 'timeframe' => $timeframe, 'idx' => $idx));
 	}
 	else {
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Laundry, 'value' => Recommendations::Yes));
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Laundry, 'value' => Recommendations::Yes, 'timeframe' => $timeframe, 'idx' => $idx));
 	}
 
 	if (($timeframe == TimeFrame::Daily) && (!CalcCarCleaning($dust, $idx))){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CARCLEANING, 'value' => Recommendations::No));
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CARCLEANING, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
+	else if (($timeframe == TimeFrame::Hourly) && (!$is_sig_forecast))
+	{
+		array_push($reco, array('sig0' => "", 'sig1' => "", 'activity' => Activities::CARCLEANING, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
+	}
+	else if (($timeframe == TimeFrame::Hourly) && ($is_sig_forecast))
+	{
+		array_push($reco, array('sig0' => "", 'sig1' => "", 'activity' => Activities::CARCLEANING, 'value' => Recommendations::No, 'timeframe' => $timeframe));
+	}
+	
 
 	if ((($temp<17)&&($timeframe == TimeFrame::Hourly))&&
 		(in_array($LOW_RAD, $sig)&&($timeframe == TimeFrame::Hourly))){
-		array_push($reco, array('sig0' => $LOW_RAD[0], 'sig1' => $LOW_RAD[1], 'activity' => Activities::Boiler, 'value' => Recommendations::Yes));
+		array_push($reco, array('sig0' => $LOW_RAD[0], 'sig1' => $LOW_RAD[1], 'activity' => Activities::Boiler, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 
 	if (($temp >= 35)||
-		($temp > 32)&&($humidity>50)||
-		($temp > 30)&&($humidity>65)){
-		array_push($reco, array('sig0' => $VERY_HOT_HEAT_WAVE[0], 'sig1' => $VERY_HOT_HEAT_WAVE[1], 'activity' => Activities::AC, 'value' => Recommendations::Yes));
+		($temp > 32)&&($humidity>45)||
+		($temp > 30)&&($humidity>60)){
+		array_push($reco, array('sig0' => $VERY_HOT_HEAT_WAVE[0], 'sig1' => $VERY_HOT_HEAT_WAVE[1], 'activity' => Activities::AC, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 
 	if ($temp < 14){
-		array_push($reco, array('sig0' => $temp, 'sig1' => $temp, 'activity' => Activities::HEATER, 'value' => Recommendations::Yes));
+		array_push($reco, array('sig0' => $temp, 'sig1' => $temp, 'activity' => Activities::HEATER, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 
 	if (in_array($HIGH_ET, $sig)&&($timeframe == TimeFrame::Hourly)){
-		array_push($reco, array('sig0' => $HIGH_ET[0], 'sig1' => $HIGH_ET[1], 'activity' => Activities::IRRIGATION, 'value' => Recommendations::Yes));
+		array_push($reco, array('sig0' => $HIGH_ET[0], 'sig1' => $HIGH_ET[1], 'activity' => Activities::IRRIGATION, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 
-	if (($timeframe == TimeFrame::Hourly) && 
-		(($rainperc > 50) ||
-	   (in_array($HOT_GROUND, $sig))||
-	   ($dust > 350 ))){
-	   array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Dog, 'value' => Recommendations::No));
-   	}
+	if (($timeframe == TimeFrame::Hourly) && (($rainperc > 50) || ($temp >= 35) || (($temp > 32)&&($humidity>45))|| ($is_now && (in_array($HOT_GROUND, $sig))) || ($dust > 350 ))){
+	   array_push($reco, array('sig0' => $HOT_GROUND[0], 'sig1' => $HOT_GROUND[1], 'activity' => Activities::Dog, 'value' => Recommendations::No, 'timeframe' => $timeframe));
+   	} else if ($timeframe == TimeFrame::Hourly)
+	   {
+		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::Dog, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
+	   }
 
 	if (($rainperc > 0)||($dust > 100)||($temp<22)||($temp>29)||
 		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
-			array_push($reco, array('sig0' => $HIGH_DUST[0], 'sig1' => $HIGH_DUST[1], 'activity' => Activities::OpenWindow, 'value' => Recommendations::No));
+			array_push($reco, array('sig0' => $HIGH_DUST[0], 'sig1' => $HIGH_DUST[1], 'activity' => Activities::OpenWindow, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 	else if (isOpenOrClose()==$OPEN[$lang_idx]) {
-		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::OpenWindow, 'value' => Recommendations::Yes));
+		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::OpenWindow, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
-	
+
 	if (($dust > (($timeframe == TimeFrame::Hourly) ? 250 : 300))||
+		($temp>33)||
 		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 50))){
-		array_push($reco, array('sig0' => $HIGH_DUST[0], 'sig1' => $HIGH_DUST[1], 'activity' => Activities::Sport, 'value' => Recommendations::No));
+		array_push($reco, array('sig0' => $HIGH_DUST[0], 'sig1' => $HIGH_DUST[1], 'activity' => Activities::Sport, 'value' => Recommendations::No, 'timeframe' => $timeframe));
+	}else if ($timeframe == TimeFrame::Hourly)
+	{
+		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::Sport, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 		
-	if ($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 50)||
-		(($timeframe == TimeFrame::Hourly) ? ($dust > 300) : false)||
-		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["rainTo"] > 20) : false)){
-		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::Bicycle, 'value' => Recommendations::No));
+	if ($wind10min > (($timeframe == TimeFrame::Daily) ? 30 : 40)||
+		(($timeframe == TimeFrame::Hourly) ? ($dust > 200) : false)||
+		(($timeframe == TimeFrame::Daily) ? ($dailyDust > 200) : false)||
+		(($timeframe == TimeFrame::Daily) ? ($dailyRainTo > 3) : false)){
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$HIGH_DUST[0].":".$dailyDust, $RAIN[1].":".$dailyRainTo."; ".$HIGH_DUST[1].":".$dailyDust);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::Bicycle, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 	else if ($timeframe == TimeFrame::Daily){
-		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::Bicycle, 'value' => Recommendations::Yes));
+		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::Bicycle, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 		
 	if ((($rainperc > 10)&&($wind10min > 10))||
-		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["windNight"] > 15) : false)||
-		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["windMorning"] > 15) : false)||
-		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["rainTo"] > 2) : false)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Camping, 'value' => Recommendations::No));
+		(($timeframe == TimeFrame::Daily) ? ($dailyWindNight > 15) : false)||
+		(($timeframe == TimeFrame::Daily) ? ($dailyWindMorning > 15) : false)||
+		(($timeframe == TimeFrame::Daily) ? ($dailyRainTo > 2) : false)){
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$WINDY[0].":".$dailyWindNight, $RAIN[1].":".$dailyRainTo."; ".$WINDY[1].":".$dailyWindNight);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::Camping, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 	else{
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Camping, 'value' => Recommendations::Yes));
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Camping, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 	
-	if ((($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["windNight"] > 10) : false)||
-		(($timeframe == TimeFrame::Daily) ? ($forecastDaysDB[$idx]["rainTo"] > 10) : false)){
-		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::DinnerAtBalcony, 'value' => Recommendations::No));
+	if ((($timeframe == TimeFrame::Daily) ? ($dailyWindNight > 10) : false)||
+		(($timeframe == TimeFrame::Daily) ? ($dailyRainTo > 10) : false)){
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$WINDY[0].":".$dailyWindNight, $RAIN[1].":".$dailyRainTo."; ".$WINDY[1].":".$dailyWindNight);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::DinnerAtBalcony, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 	else if (($timeframe == TimeFrame::Daily)){
-		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::DinnerAtBalcony, 'value' => Recommendations::Yes));
+		array_push($reco, array('sig0' => $WINDY[0], 'sig1' => $WINDY[1], 'activity' => Activities::DinnerAtBalcony, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}	
 
 	if (($rainperc > 0)||
 		($dust > 100)||
-		($wind10min > (($timeframe == TimeFrame::Daily) ? 25 : 15))||
+		(($timeframe == TimeFrame::Daily) ? ($dailyWindNight > 20) : false)||
 		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CAMPFIRE, 'value' => Recommendations::No));
+			if ($timeframe == TimeFrame::Daily)
+			$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$WINDY[0].":".$dailyWindNight, $RAIN[1].":".$dailyRainTo."; ".$WINDY[1].":".$dailyWindNight);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::CAMPFIRE, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 
 	if (($rainperc > 0)||
 		($dust > 100)||
+		($temp>32)||
 		($wind10min > (($timeframe == TimeFrame::Daily) ? 30 : 20))||
 		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Picnic, 'value' => Recommendations::No));
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$HIGH_DUST[0].":".$dailyDust, $RAIN[1].":".$dailyRainTo."; ".$HIGH_DUST[1].":".$dailyDust);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::Picnic, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 	else if ((($timeframe == TimeFrame::Hourly) ? (in_array($GOOD_TIME[$random_good_time], $sig)) : false)) {
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Picnic, 'value' => Recommendations::Yes));
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::Picnic, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 	
 
 	if (($rainperc > 30)||
+		($temp>32)||
 		(($timeframe == TimeFrame::Hourly) ? (in_array($HIGH_UV, $sig)) : false)||
 		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))||
+		(($timeframe == TimeFrame::Daily) ? ($dailyDust > 100) : false)||
 		($dust > 100)||
 		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CHILDRENS, 'value' => Recommendations::No));
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$HIGH_DUST[0].":".$dailyDust, $RAIN[1].":".$dailyRainTo."; ".$HIGH_DUST[1].":".$dailyDust);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::CHILDRENS, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
+	else
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CHILDRENS, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 
 	if (($rainperc > 30)||
+		($temp>32)||
 		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))||
+		(($timeframe == TimeFrame::Daily) ? ($dailyDust > 400) : false)||
 		($dust > 500)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::EVENTOUTSIDE, 'value' => Recommendations::No));
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$HIGH_DUST[0].":".$dailyDust, $RAIN[1].":".$dailyRainTo."; ".$HIGH_DUST[1].":".$dailyDust);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::EVENTOUTSIDE, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 	else if (($rainperc < 10)&&
 	($wind10min < (($timeframe == TimeFrame::Daily) ? 25 : 15))&&
 	($dust < 130)) {
-		array_push($reco, array('sig0' => $NO_WIND[0], 'sig1' => $NO_WIND[1], 'activity' => Activities::EVENTOUTSIDE, 'value' => Recommendations::Yes));
+		if ($timeframe == TimeFrame::Daily)
+			$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$WINDY[0].":".$wind10min, $RAIN[1].":".$dailyRainTo."; ".$WINDY[1].":".$wind10min);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::EVENTOUTSIDE, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 
 	if (($rainperc > 50)||
+		($dailyRainTo > 15)||
 		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))||
+		(($timeframe == TimeFrame::Daily) ? ($dailyDust > 300) : false)||
 		($dust > 300)||
 		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::GAZELLEPARK, 'value' => Recommendations::No));
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$HIGH_DUST[0].":".$dailyDust, $RAIN[1].":".$dailyRainTo."; ".$HIGH_DUST[1].":".$dailyDust);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::GAZELLEPARK, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 	else if (($rainperc < 50)&&
 	($wind10min < (($timeframe == TimeFrame::Daily) ? 40 : 35))&&
 	($dust < 100)) {
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::GAZELLEPARK, 'value' => Recommendations::Yes));
+		
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::GAZELLEPARK, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 	
 	
 
 	if (($rainperc > 50)||
 		($dust > 500)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::TEDY, 'value' => Recommendations::No));
+		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::TEDY, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 
 	if (($rainperc > 50)||
 		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))||
 		($dust > 500)||
 		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::WESTERNWALL, 'value' => Recommendations::No));
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$HIGH_DUST[0].":".$dailyDust."; ".$WINDY[0].":".$wind10min, $RAIN[1].":".$dailyRainTo."; ".$HIGH_DUST[1].":".$dailyDust."; ".$WINDY[1].":".$wind10min);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::WESTERNWALL, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
 
 	if (($rainperc > 10)||
 		($wind10min > (($timeframe == TimeFrame::Daily) ? 25 : 15))||
 		($dust > 200)||
+		($temp>32)||
 		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::YOGA, 'value' => Recommendations::No));
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$HIGH_DUST[0].":".$dailyDust."; ".$WINDY[0].":".$wind10min, $RAIN[1].":".$dailyRainTo."; ".$HIGH_DUST[1].":".$dailyDust."; ".$WINDY[1].":".$wind10min);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::YOGA, 'value' => Recommendations::No, 'timeframe' => $timeframe));
+	}
+	else
+	{
+		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::YOGA, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 
 	if (($rainperc > 50)||
 		($wind10min > (($timeframe == TimeFrame::Daily) ? 40 : 35))){
-		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::SACKER, 'value' => Recommendations::No));
+			if ($timeframe == TimeFrame::Daily)
+				$sigRecommendation = array($RAIN[0].":".$dailyRainTo."; ".$WINDY[0].":".$wind10min, $RAIN[1].":".$dailyRainTo."; ".$WINDY[1].":".$wind10min);
+		array_push($reco, array('sig0' => $sigRecommendation[0], 'sig1' => $sigRecommendation[1], 'activity' => Activities::SACKER, 'value' => Recommendations::No, 'timeframe' => $timeframe));
+	}
+	else
+	{
+		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::SACKER, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
 	
 	
@@ -339,8 +420,15 @@ else if (($today->get_highwind() == $thisMonth->get_highwind())
 
 
       /************************************************************************/
+
+$latestalert_passedts = time() - $mem->get('latestalerttime1');
+$LATEST_ALERT = array(explode("\n", $mem->get('latestalert0')), explode("\n",($mem->get('latestalert1'))));
+$LATEST_ALERT_TITLE = array($mem->get('latestalert_title0'), $mem->get('latestalert_title1'));
+$LATEST_ALERT_BODY = array(str_replace("\n", "", $LATEST_ALERT[$EN][0]." ".$LATEST_ALERT[$EN][2]), str_replace("\n", "",$LATEST_ALERT[$HEB][0]." ".$LATEST_ALERT[$HEB][2]));
+$LATEST_ALERT_BODY_CUT = array(mb_substr($LATEST_ALERT_BODY[$EN], 0, 120, "UTF-8"), mb_substr($LATEST_ALERT_BODY[$HEB], 0, 120, "UTF-8"));
+
 if ((max($today->get_highrainrate(),$today->get_highrainrate2())  == "0.2") && 
-    ($current->get_rainrate() == "0.0"))
+    ($current->get_rainrate() == "0.0")&&(IS_SNOWING != 1))
 {
 	  $dew_over_night = true;
 }
@@ -352,6 +440,15 @@ if ((max($today->get_highrainrate(),$today->get_highrainrate2())  == "0.2") &&
 		array($HUMIDITY[$EN].": ".$current->get_hum(), $HUMIDITY[$HEB].": ".$current->get_hum()), "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=2");
     //update_action ("Fog", $extrainfo, $ALT);
 }*/
+if (($latestalert_passedts < 1800)&&(!empty(trim($LATEST_ALERT_BODY_CUT[$HEB]))))
+{
+	updateSigWeather(
+		"profile1/rain.php?level=1&freq=1&amp;lang={$lang_idx}", 
+		$LATEST_ALERT_TITLE, 
+		array(array($LATEST_ALERT_BODY_CUT[$EN],$LATEST_ALERT_BODY_CUT[$EN]), 
+				array($LATEST_ALERT_BODY_CUT[$HEB],$LATEST_ALERT_BODY_CUT[$HEB])), 
+                "?section=alerts.php&amp;lang={$lang_idx}");
+}
 
 if (($hour < 10)&&($dew_over_night))
 {
@@ -372,8 +469,8 @@ if (isRaining()||(IS_SNOWING == 1))
 	updateSigWeather(
 		"rain1.jpg", 
 		$rainOrSnow, 
-		array(array($DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx]), 
-                      array($DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx])), 
+		array(array($current->get_rainrate2()." ".$RAINRATE_UNIT[$EN].", ".$DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx], $current->get_rainrate2()." ".$RAINRATE_UNIT[$EN].", ".$DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx]), 
+                      array($current->get_rainrate2()." ".$RAINRATE_UNIT[$HEB].", ".$DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx], $current->get_rainrate2()." ".$RAINRATE_UNIT[$HEB].", ".$DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx])), 
 				"?section=graph.php&amp;graph=rain.php&amp;profile=1");
 	if ($hour > 7)
     	update_action ("RainStarted", $extrainfo, $ALT);
@@ -385,12 +482,12 @@ if (($rainrateHour !== "0.0") &&
 	updateSigWeather(
 		"profile1/rain.php?level=1&freq=1&amp;lang={$lang_idx}", 
 		$RAIN_HAS_JUST_STOPPED, 
-		array(array($DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx]), 
-                      array($DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx])), 
+		array(array($DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx].", ".$TOTAL_RAIN[$EN].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$EN], $DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$EN].", ".$TOTAL_RAIN[$EN].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$EN]), 
+                      array($DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$HEB].", ".$TOTAL_RAIN[$HEB].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$HEB], $DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$HEB].", ".$TOTAL_RAIN[$HEB].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$HEB])), 
                 "?section=graph.php&amp;graph=rain.php&amp;profile=1");
      //update_action ("RainStopped", $extrainfo, $ALT);
 }
-if (($today->get_highrainrate() !== "0.0") && 
+else if (($today->get_highrainrate() !== "0.0") && 
 		 (!isRaining()) && 
 		 (!$dew_over_night)&&
 		 (($today->get_rain2() > 0.3)&&
@@ -399,9 +496,9 @@ if (($today->get_highrainrate() !== "0.0") &&
 	updateSigWeather(
 		"profile1/rain.php?level=1&freq=1&amp;lang={$lang_idx}", 
 		$RAIN_HAS_GONE, 
-		array(array($DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx]), 
-                      array($DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx],$DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$lang_idx])), 
-                "?section=graph.php&amp;graph=rain.php&amp;profile=1");
+		array(array($DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$lang_idx].", ".$TOTAL_RAIN[$EN].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$EN], $DAILY_RAIN[$EN].": ".$today->get_rain2().$RAIN_UNIT[$EN].", ".$TOTAL_RAIN[$EN].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$EN]), 
+                      array($DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$HEB].", ".$TOTAL_RAIN[$HEB].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$HEB], $DAILY_RAIN[$HEB].": ".$today->get_rain2()." ".$RAIN_UNIT[$HEB].", ".$TOTAL_RAIN[$HEB].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$HEB])), 
+              "?section=graph.php&amp;graph=rain.php&amp;profile=1");
 }
 
 if (($current->get_temp('C') < 2)&&($current->get_temp() != ""))
@@ -410,8 +507,8 @@ if (($current->get_temp('C') < 2)&&($current->get_temp() != ""))
 		"cold.gif", 
 		$VERY_COLD, 
 		array(array($TEMP[$EN].": ".$current->get_temp()."°",$TEMP[$EN].": ".$current->get_temp()."°"), 
-                      array($TEMP[$HEB].": "."<div class=\"low\">".$current->get_temp()."°"."</div>",$TEMP[$HEB].": "."<div class=\"low\">".$current->get_temp()."°"."</div>")), 
-                "?section=graph.php&amp;graph=temp.php&amp;profile=2");
+                      array($TEMP[$HEB].": ".$current->get_temp()."°",$TEMP[$HEB].": ".$current->get_temp()."°")), 
+                "?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=2");
     update_action ("Cold", 
                    array("<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$EN]\" width=\"150px\" border=\"0\"></div><div class=\"loading float\">&nbsp;$CURRENT_SIG_WEATHER[$EN]&nbsp;<strong>".$ALT[$EN]."</strong><div class=\"loading float big\">&nbsp;{$extrainfo[$EN]}</div></div>", "<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$HEB]\" width=\"150px\" border=\"0\"></div><div class=\"loading float\">&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<strong>".$ALT[$HEB]."</strong><div class=\"loading float big\">&nbsp;{$extrainfo[$HEB]}</div></div>"),
                            $ALT);
@@ -421,8 +518,7 @@ if ($current->get_pm10() > 130 || $current->get_pm25() > 38)
     $DUST_ARR = $HIGH_DUST;
 	if ($current->isLowDust()) 
 		$DUST_ARR = array($HIGH_DUST[$EN]." ".$A_BIT[$EN], $HIGH_DUST[$HEB]." ".$A_BIT[$HEB]);
-	else
-		updateRecommendations($DUST_ARR, Activities::Sport , Recommendations::No);
+	
 	updateSigWeather(
 		"dust.gif", 
 		$DUST_ARR, 
@@ -439,7 +535,7 @@ if ($current->get_uv() > 8)
 {
 	updateSigWeather("hot.gif" , $HIGH_UV,
 	array(array($UV[$EN].": ".$current->get_uv(), $UV[$EN].": ".$current->get_uv()), 
-              array($UV[$HEB].": "."<span style=\"direction:ltr\">".$current->get_uv()."</span>",$UV[$HEB].": ".$current->get_uv())), 
+              array($UV[$HEB].": ".$current->get_uv()."",$UV[$HEB].": ".$current->get_uv())), 
                "?section=graph.php&amp;graph=UVHistory.gif&amp;profile=2");
     update_action (CustomAlert::HighUV, $extrainfo, $ALT);
 }
@@ -468,7 +564,7 @@ if (($current->get_solarradiation() > 450)&&($current->get_temp('C') < 10)&&($mi
     "cold.gif", 
     $COLD_SUN, 
     array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=temp.php&amp;profile=1");
+    "?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
 
 }
 if (($current->get_solarradiation() > 450)&&($current->get_temp('C') < 14)&&($current->get_temp('C') > 10)&&($min10->get_windspd() > 10))
@@ -477,7 +573,7 @@ if (($current->get_solarradiation() > 450)&&($current->get_temp('C') < 14)&&($cu
     "cold.gif", 
     $HALF_COLD_SUN, 
     array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=temp.php&amp;profile=1");
+    "?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
 
 }
 if (abs($current->get_temp() - $current->get_temp2()) > 2)
@@ -509,7 +605,7 @@ if (($current->get_solarradiation() > 500)&&($itfeels[1] > 11)&&($itfeels[1] <= 
     "nowind.jpg", 
     $SUN_SHADE, 
     array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=temp.php&amp;profile=1");
+    "?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
 
 }
 if (($current->get_solarradiation() > 500)&&($itfeels[1] > 15)&&($itfeels[1] < 19)&&($min10->get_windspd() < 11)&&($current->get_hum() > 40)&&($current->get_thsw()-$current->get_temp() > 5))
@@ -518,7 +614,7 @@ if (($current->get_solarradiation() > 500)&&($itfeels[1] > 15)&&($itfeels[1] < 1
     "nowind.jpg", 
     $SUN_SHADE, 
     array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=temp.php&amp;profile=1");
+    "?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
 
 }
 
@@ -562,7 +658,7 @@ if (($current->get_hum() < 20)&&($current->get_hum() != ""))
 		$VERY_DRY, 
 		 $extrainfoS, 
 		 "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
-	update_action ("Dry", $extrainfo, $ALT);
+		 update_action (CustomAlert::Dry, $extrainfo, $ALT);
 }
 if ((($min15->get_prschange() > 0.2)||
 	 ($min30->get_prschange() > 0.5)||
@@ -602,35 +698,35 @@ if ((($min15->get_tempchange() < -0.8)||
 	if ($min15->get_tempchange() < -0.8)
 	{
 		$extrainfoS = array (
-		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), true, "°")."°" , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), false, "°")."°") , 
-                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), true, "°")."°",getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), false, "°")."°"));
+		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), true)."°" , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), false)."°") , 
+                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), true)."°",getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), false)."°"));
 		//update_action ("TempDrop", $extrainfo, $ALT);
 	}
 	else if ($min30->get_tempchange() < -1.5)
 	{
 		$extrainfoS = array (
-		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), true, "°")."°" , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), false, "°")."°") , 
-		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), true, "°")."°","30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), false), "°"."°"));
+		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), true)."°" , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), false)."°") , 
+		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), true)."°","30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), false)."°"));
 		//update_action ("TempDrop", $extrainfo, $ALT);
 	}
 	else if ($oneHour->get_tempchange() < -2.5)
 	{
 		$extrainfoS = array (
-		array($HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), true, "°")."°" , $HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), false, "°")."°" ),
-		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), true, "°")."°", $HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), false, "°")."°"));
+		array($HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), true)."°" , $HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), false)."°" ),
+		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), true)."°", $HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), false)."°"));
 		//update_action ("TempDrop", $extrainfo, $ALT);
 	}
 	else if (($threeHours->get_tempchange() < -4) && ($hour > 7) && ($hour < 15))
 	{
 		$extrainfoS = array (
-		array("3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), true, "°")."°" , "3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), false, "°")."°") ,
-		array("3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), true, "°")."°","3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), false, "°")."°"));
+		array("3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), true)."°" , "3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), false)."°") ,
+		array("3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), true)."°","3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), false)."°"));
 	}
 	updateSigWeather(
 		"profile1/temp.php?datasource=downld02&amp;lang={$lang_idx}", 
 		$DRASTIC_TEMP_DROP, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=temp.php&amp;profile=1");
+		"?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
 	
 }
 if (((($min15->get_tempchange() > 1) && ($hour > 9) && ($hour < 7))   ||
@@ -641,35 +737,35 @@ if (((($min15->get_tempchange() > 1) && ($hour > 9) && ($hour < 7))   ||
 	if (($min15->get_tempchange() > 1)&&($min15->get_tempchange()  < 10))
 	{
 		$extrainfoS = array (
-		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), true, "°")."°" , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), false, "°")."°") , 
-                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), true, "°")."°",getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), false, "°")."°"));
+		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), true)."°" , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_tempchange(), false)."°") , 
+                array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), true)."°",getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_tempchange(), false)."°"));
 		
 	}
 	else if (($min30->get_tempchange() > 2)&&($min30->get_tempchange() < 10))
 	{
 		$extrainfoS = array (
-		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), true, "°")."°" , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), false, "°")."°") , 
-		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), true, "°")."°","30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), false, "°")."°"));
+		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), true)."°" , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_tempchange(), false)."°") , 
+		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), true)."°","30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_tempchange(), false)."°"));
 		
 	}
 	else if (($oneHour->get_tempchange() > 3)&&($oneHour->get_tempchange() < 15))
 	{
 		$extrainfoS = array (
-		array($HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), true, "°")."°" , $HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), false, "°")."°") , 
-		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), true, "°")."°", $HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), false, "°")."°"));
+		array($HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), true)."°" , $HOUR[$EN].": ".get_param_tag($oneHour->get_tempchange(), false)."°") , 
+		array($HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), true)."°", $HOUR[$HEB].": ".get_param_tag($oneHour->get_tempchange(), false)."°"));
 	}
 	else if (($threeHours->get_tempchange() > 3.5)&&($threeHours->get_tempchange() < 15))
 	{
 		$extrainfoS = array (
-		array("3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), true, "°")."°" , "3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), false, "°")."°" ),
-		array("3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), true, "°")."°", "3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), false, "°")."°"));
+		array("3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), true)."°" , "3 ".$HOURS[$EN].": ".get_param_tag($threeHours->get_tempchange(), false)."°" ),
+		array("3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), true)."°", "3 ".$HOURS[$HEB].": ".get_param_tag($threeHours->get_tempchange(), false)."°"));
 		
 	}
 	updateSigWeather(
 		"profile1/temp.php?datasource=downld02&amp;lang={$lang_idx}", 
 		$DRASTIC_TEMP_RISE, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=temp.php&amp;profile=1");
+		"?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
 	update_action ("TempRise", $extrainfo, $ALT);
 }
 if ((($min15->get_humchange() > 15)||
@@ -770,23 +866,23 @@ if ((($current->get_temp('C') > 27)&&
 	//update_action ("HeatWave", $extrainfo, $ALT);
 }
 
-if (((($min15->get_windspdchange() > 8))||
-	 ($min30->get_windspdchange()  > 8)||
-	 ($oneHour->get_windspdchange() > 8))&& (notnull()))
+if (((($min15->get_windspdchange() > 12))||
+	 ($min30->get_windspdchange()  > 10)||
+	 ($oneHour->get_windspdchange() > 10))&& (notnull()))
 {
-	if ($min15->get_windspdchange() > 8)
+	if ($min15->get_windspdchange() > 12)
 	{
 		$extrainfoS = array (
 		array(getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_windspdchange(), true, $KMH[$lang_idx])." ".$KMH[$lang_idx] , getLastUpdateMin()." ".$MINTS[$EN].": ".get_param_tag($min15->get_windspdchange(), false, $KMH[$lang_idx])." ".$KMH[$lang_idx]),
                 array(getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_windspdchange(), true)." ".$KMH[$lang_idx], getLastUpdateMin()." ".$MINTS[$HEB].": ".get_param_tag($min15->get_windspdchange(), false, $KMH[$lang_idx])." ".$KMH[$lang_idx]));
 	}
-	else if ($min30->get_windspdchange() > 8)
+	else if ($min30->get_windspdchange() > 10)
 	{
 		$extrainfoS = array (
 		array("30 ".$MINTS[$EN].": ".get_param_tag($min30->get_windspdchange(), true, $KMH[$lang_idx])." " , "30 ".$MINTS[$EN].": ".get_param_tag($min30->get_windspdchange(), false, $KMH[$lang_idx])." ".$KMH[$lang_idx] ),
 		array("30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_windspdchange(), true, $KMH[$lang_idx])." ", "30 ".$MINTS[$HEB].": ".get_param_tag($min30->get_windspdchange(), false, $KMH[$lang_idx])." ".$KMH[$lang_idx]));
 	}
-	else if ($oneHour->get_windspdchange() > 8)
+	else if ($oneHour->get_windspdchange() > 10)
 	{
 		$extrainfoS = array (
 		array($HOUR[$EN].": ".get_param_tag($oneHour->get_windspdchange(), true, $KMH[$lang_idx])." " , $HOUR[$EN].": ".get_param_tag($oneHour->get_windspdchange(), false, $KMH[$lang_idx])." ".$KMH[$lang_idx] ),
@@ -907,26 +1003,24 @@ if (($yestsametime->get_humchange() <= -30)&&($yestsametime->get_humchange() != 
 	 "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=2");
 	//update_action ("HumDrop", $extrainfo, $ALT);
 }
-if (($current->get_windspd() > 30)&&($min10->get_windspd() > 30)){
+if ((($current->get_windspd() > 30)&&($min10->get_windspd() > 22))||($current->get_windspd() > 45)){
     
-	$extrainfoS = array ($current->get_windspd()." ".$KMH[$EN], $current->get_windspd()." ".$KMH[$HEB]);
+	$extrainfoS = array ($current->get_windspd().$KMH[$EN]." ".$WIND_GUST[$EN].":".$today->get_highwind(), $current->get_windspd().$KMH[$HEB].$KMH[$HEB]." ".$WIND_GUST[$HEB].":".$today->get_highwind().$KMH[$HEB]);
 	updateSigWeather(
 	"wind1.jpg", 
 	$WINDY, 
 	$extrainfoS, 
 	"?section=graph.php&amp;graph=WindSpeedHistory.gif&amp;profile=1");
 	update_action ("Windy", $extrainfo, $ALT);
-	updateRecommendations($WINDY, Activities::Bicycle, Recommendations::No);
+	
 }
 else if (($current->get_windspd() == 0)&&($min10->get_windspd() == 0))
 {
-        $pic = "nowind.jpg";
+     /*   $pic = "nowind.jpg";
         $ALT = $NO_WIND;
 		$url = "?section=graph.php&amp;graph=wind.php&amp;profile=1";
 		$extrainfo = "";
-		updateSigWeather($pic, $NO_WIND, $extrainfo, $url);
-		updateRecommendations($WINDY, Activities::DinnerAtBalcony, Recommendations::Yes);
-		updateRecommendations($WINDY, Activities::Picnic, Recommendations::Yes);
+		updateSigWeather($pic, $NO_WIND, $extrainfo, $url);*/
 		//if ($hour > 6)
 		//	update_action ("NoWind", $extrainfo, $ALT);
 }
@@ -977,7 +1071,7 @@ if ($current->get_temp3() > c_or_f(50))
 {
 	updateSigWeather("hot.gif" , $HOT_GROUND,
 	array(array($ROAD[$EN]." ".$TEMP[$EN].": ".$current->get_temp3(), $ROAD[$EN]." ".$TEMP[$EN].": ".$current->get_temp3()), 
-              array($TEMP[$HEB]." ".$ROAD[$HEB].": "."<span style=\"direction:ltr\">".$current->get_temp3()."</span>",$TEMP[$HEB]." ".$ROAD[$HEB].": ".$current->get_temp3())), 
+              array($TEMP[$HEB]." ".$ROAD[$HEB].": "."<span>".$current->get_temp3()."</span>",$TEMP[$HEB]." ".$ROAD[$HEB].": ".$current->get_temp3())), 
                "?section=graph.php&amp;graph=temp3LatestArchive.php&amp;profile=2");
    // update_action ("TEMP3", $extrainfo, $ALT);
 }
@@ -1003,31 +1097,36 @@ else
 {
 	updateRecommendations(isOpenOrClose(), Activities::OpenWindow, Recommendations::Yes);
 }
-if (true) 
+$monthToExplore = ($day > 3 ? $month : getPrevMonth($month));
+$yearToExplore = ($month == 1 && $day <= 3 ? $year - 1 : $year);
+$monthW = ($day > 3 ? $monthInWord : $prevMonthInWord);
+$dep = getDepFromNorm($monthToExplore);
+$warmcold = ($dep >= 0 ? $WARMER_THAN_AVERAGE : $COLDER_THAN_AVERAGE);
+if ($dep == 0)
 {
-	$monthToExplore = ($day > 3 ? $month : getPrevMonth($month));
-	$yearToExplore = ($month == 1 && $day <= 3 ? $year - 1 : $year);
-	$monthW = ($day > 3 ? $monthInWord : $prevMonthInWord);
-	$dep = getDepFromNorm($monthToExplore);
-	$warmcold = ($dep >= 0 ? $WARMER_THAN_AVERAGE : $COLDER_THAN_AVERAGE);
-	if ($dep == 0)
-	{
-			$warmcold = $LIKE_AVERAGE;
-	}
+		$warmcold = $LIKE_AVERAGE;
+}
+$monthSituation = array();
+array_push($monthSituation, array('sig' => array($warmcold[$EN], $warmcold[$HEB]), 'pic' => $picP, 'extrainfo' => array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." ".abs($dep)."°"."",
+$monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]." ".abs($dep)."°"), 'url' => $urlP));
+if (false) 
+{
+	
 	updateSigWeather(
 	($dep >= 0 ? "hot.gif" : "cold.jpg"), 
 	array($warmcold[$EN], $warmcold[$HEB]), 
 	($dep >= 0 ? (abs($dep) > 0 ?
-			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"\">".abs($dep)."°"."</span>",
+			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." ".abs($dep)."°"."",
                                 $monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." ".abs($dep)."°"),
-			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"\">".abs($dep)."°"."</span>",
+			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."".abs($dep)."°"."",
                             $monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]." ".abs($dep)."°")) : array("", ""))
 			: 
-			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." <span style=\"display:inline\" class=\"\">".abs($dep)."°"."</span>",
+			array(array($monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." ".abs($dep)."°"."",
                             $monthW." ".$yearToExplore." is ".$warmcold[$EN]." ".$ON[$EN]." ".abs($dep)."°"),
-			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."<span style=\"display:inline\" class=\"\">".abs($dep)."°"."</span>",
+			array($monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]."".abs($dep)."°"."",
                             $monthW." ".$yearToExplore." ".$warmcold[$HEB]." ".$ON[$HEB]." ".abs($dep)."°"))), 
-	get_query_edited_url($url_cur, 'section', FILE_THIS_MONTH));
+							"?section=".FILE_THIS_MONTH);
+	
 }
 //update_action ("Warmer", $extrainfo, $ALT);
 

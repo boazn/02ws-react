@@ -106,7 +106,7 @@ if (isset($_POST['message'])) {
 			$msgSpecial = $msgSpecial."<br /><br />".$_POST['message'];
 			$result = send_Email($msgSpecial, ME, $email, $email, "", array('feedback to 02ws', 'משוב על ירושמיים'));
 		//if ($result == ""){
-			echo "<div class=\"alert-success big\"><br /><br />...The Message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></div>";
+			echo "<div class=\"alert-success big\" style=\"text-align: center\"><br /><br />...The message was sent ההודעה נשלחה...<br /><br />Thanks תודה<br /><br /><br /></div>";
 			$sent = true;
 		//}
 		//else
@@ -223,7 +223,7 @@ if (isset($_POST['message'])) {
 	</td>
 	<td   <? echo get_align(); ?>>
 	
-	<select size="1" name="coldmeter" id="coldmeter" class="inv_plain_2" style="width:300px;font-size: 1.1em;<? if (isHeb()) echo "direction:rtl";?>">  
+	<select size="1" name="coldmeter" id="coldmeterf" class="inv_plain_2" style="width:300px;font-size: 1.1em;<? if (isHeb()) echo "direction:rtl";?>">  
 		<option	 class="inv_plain_2"	 value=""><? if (isHeb()) echo "בחר" ; else echo "choose"; ?></option>
 		<option	 class="inv_plain_2"	 value="too informative"><? if (isHeb()) echo "  עמוס מידי - יותר מידי מידע"; else echo "too informative";?></option>
 		<option	 class="inv_plain_2"	 value="more colors"><? if (isHeb()) echo " צריך להוסיף צבעים וסדר"; else echo "need to add colors";?></option>

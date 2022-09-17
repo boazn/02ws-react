@@ -25,7 +25,13 @@ if (stristr($imagefile, "Z"))
 	$updated_pic = "images/webCameraZ.jpg";
 ?>
 
-		<div><?=$CAMERA_LOOP[$lang_idx];?></div>
+		
+		<div class="inv_plain_3_zebra webcam_desc" style="width:95%">
+		
+		<? if ($lang_idx == $EN) {?>This is a look into the north horizon of Jerusalem. You can see Malcha at the left side and all the way to the old city at the right.<?} ?>
+	   <? if ($lang_idx == $HEB) {?>זהו מבט מדרום העיר צפונה. ניתן לראות ממלחה במערב (צד שמאל של התמונה) ועד העיר העתיקה במזרח (צד ימין של התמונה)<?} ?>
+	   
+		</div>
 	 <img name="animation" id="latestpics" width="320px" height="240px" alt="<? echo getPageTitle();?>" /> 
 	
 
@@ -40,7 +46,7 @@ if (stristr($imagefile, "Z"))
 			{$archwebcam = $archwebcam + 1;
 			?>
 			
-			<div style="float:<?echo get_s_align();?>;padding:3px">
+			<div style="float:<?echo get_s_align();?>;padding:5px">
 				<a href="<?=$image_href?>" title="<?echo getLocalTime($lpic[0]);?>" class="colorbox">
 					<img src="phpThumb.php?src=<? echo $lpic[1]; ?>&amp;w=70" width="70px" title="<?echo getLocalTime($lpic[0]);?>" />
 					
@@ -61,7 +67,7 @@ if (stristr($imagefile, "Z"))
 <script language="JavaScript" type="text/javascript"> 
 ////////////// pic animation
 var file_template = "phpThumb.php?src=/images/webCamera%d.jpg&w=360";
-var numOfPics = 10;
+var numOfPics = 20;
 var normal_delay = 60;
 var dwell_multipler = 20;
 var lowindex = 0;

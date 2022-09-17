@@ -35,16 +35,28 @@ $(document).ready(function() {
 		});
     	return false;
 	});
-	$('a.forecast').click(function(){
+	$('a.forecast_daily').click(function(){
 		$('.main_nav a').removeClass('active');
-		$('.main_nav a.forecast').addClass('active');
+		$('.main_nav a.forecast_daily').addClass('active');
 		 isClicked = true;
 			$('html, body').animate({
-				scrollTop:$('#forecast').offset().top
+				scrollTop:$('#forecast').offset().top - 20
 			}, 1000, function() {
 				parallaxScroll(); // Callback is required for iOS
 			});
 			return false;
+		});
+	$('a.forecast_hourly').click(function(){
+		$('.main_nav a').removeClass('active');
+		$('.main_nav a.forecast_hourly').addClass('active');
+		 isClicked = true;
+			$('html, body').animate({
+				scrollTop:$('#forecast').offset().top - 20
+			}, 1000, function() {
+				parallaxScroll(); // Callback is required for iOS
+			});
+			return false;
+
 		});
     $('a.whatmore').click(function(){
 	$('.main_nav a').removeClass('active');
@@ -179,7 +191,7 @@ function redrawDotNav(){
 	if($(document).scrollTop() >= section1Top && $(document).scrollTop() < section2Top){
 		$('.main_nav a.now').addClass('active');
 	} else if ($(document).scrollTop() >= section2Top && $(document).scrollTop() < section3Top){
-		$('.main_nav a.forecast').addClass('active');
+		$('.main_nav a.forecast_daily').addClass('active');
 	}else if ($(document).scrollTop() >= section3Top && $(document).scrollTop() < section4Top){
 		$('.main_nav a.whatmore').addClass('active');
 	} else if ($(document).scrollTop() >= section4Top && $(document).scrollTop() < section5Top){

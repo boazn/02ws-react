@@ -10,7 +10,7 @@
 <form method="post" action="#rainSeasons">
 	<select NAME="seasons[]" size="23" multiple>
 		<?
-		for ($year = 2020; $year >= 1847; $year--)
+		for ($year = 2022; $year >= 1847; $year--)
 		{
 			echo sprintf ("<option value=\"%04d-%04d\">%04d-%04d</option>",$year-1, $year , $year-1, $year);  
 		}

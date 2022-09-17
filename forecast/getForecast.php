@@ -23,7 +23,7 @@ $locations = isset($_REQUEST['locations']) ? $_REQUEST['locations'] : "";
         box-shadow:0 1px 5px rgba(0,0,0,0.2)
     }
 	#list_div{
-		width:300px;text-align:center;float:<?echo get_s_align();?>;padding:0.2em;
+		width:315px;text-align:center;float:<?echo get_s_align();?>;padding:0.2em;
 	}
     #list_div select{
 		width:240px
@@ -181,19 +181,18 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 </div>
 <? echo "<div>".$SOURCE[$lang_idx].": ".$IMS[$lang_idx]."</div>"; ?>
  <script type="text/javascript">	var pageLang = "en";	var default_search_text = "Please enter city / country / territory name";	var cookie_msg = "Cookie has to be enabled on your browser to display the WMO's World Weather Information Services website.";	var wxinfo = "[#Place Name#] Weather Information";	var hello = "Hello,";	var share_msg = "Here is the weather information for [#Place Name#] on the WMO\'s WWIS.";	var share_msg1 = "Weather information for [#Place Name#] on the WMO\'s WWIS:";	var share_msg2 = "[#Place Name#] Weather Information on the WMO\'s WWIS.";	var share_fav = "Here is the weather information for you on the WMO\'s WWIS.";	var city_not_found = "No such city found!";	var isArLang = false;	var src_path = "..";	var base_layer = "The base layer";	var additional_layer = "Additional layers";	var gray_base_map = "Gray base map";	var color_base_map = "Color base map";</script>	
- <link rel="stylesheet" type="text/css" href="https://worldweather.wmo.int/styles/jquery-ui.css" />       
- <link rel="stylesheet" type="text/css" href="https://worldweather.wmo.int/styles/common.css" />
-	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/jquery-1.6.2.min.js"></script>
-	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/jquery-ui.js"></script>
+     
+ <link rel="stylesheet" type="text/css" href="https://worldweather.wmo.int/styles/rwd.css" />
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/sessvars.js"></script>
 	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/common.js"></script>
-	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/moment-with-langs.min.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/moment-with-locales.min.js"></script>
 	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/highcharts.js"></script>
-	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/OpenLayers.js"></script>
-	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/osm.js"></script>
+	<script type="text/javascript" src="https://worldweather.wmo.int/scripts/turf.min.js"></script>
         <style>
             .city_forecast_info, .city_climate_info, .city_info, #forecastTable, #climateContainer, #climateTable, .climateTable{
-                width: 318px;
+                width: 315px;
 				<? if (isHeb()) echo "direction:rtl";?>
             }
 			@media only screen and (min-width: 1000px) {
@@ -502,6 +501,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 			var primary_yAxis = { // Primary yAxis
 					labels: {
 						format: '{value}°' + unit,
+						y:-5,
 						style: {
 							color: '#000000'
 						}
@@ -510,7 +510,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 						text: '<?=$TEMP[$lang_idx]?>',
 						style: {
 							color: '#000000',
-							fontSize: '120%',
+							fontSize: '110%',
 							fontWeight: 'bold',
 							fontFamily: 'Verdana'
 						}
@@ -518,7 +518,8 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 				};
 			var secondary_yAxis = { // Secondary yAxis
 					labels: {
-						format: '{value} mm',
+						format: '{value}mm',
+						y:-5,
 						style: {
 							color: '#000000'
 						}
@@ -527,7 +528,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 						text: hash_raintype(cityObj[0].climate.raintype, 'rf', 0),
 						style: {
 							color: '#000000',
-							fontSize: '120%',
+							fontSize: '110%',
 							fontWeight: 'bold',
 							fontFamily: 'Verdana'
 						}
@@ -598,11 +599,12 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 					}
 				},
 				subtitle: {
-					text: '30-year period'
+					text: '<?=$AVERAGE[$lang_idx]?>'
 				},
 				xAxis: [{
 					categories: ['01', '02', '03', '04', '05', '06',
 						'07', '08', '09', '10', '11', '12'],
+					
 					title: {text: '<?=$MONTH[$lang_idx]?>', style: {fontWeight: 'bold', fontFamily: 'Verdana', color: '#000000'}}
 				}],
 				credits: {
@@ -610,17 +612,25 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 				},
 				yAxis: [],
 				tooltip: {
+						enabled:false,
 						shared: true,
+						crosshairs: true,
 					style: {
+						align: 'center',
 						fontWeight: 'bold'
+					},
+					formatter: function () {
+						return '<b>' + this.x +
+							'</b> -> <b>' + this.y + '</b>';
 					}
 				},
 				legend: {
-					layout: 'vertical',
-					align: 'left',
-					x: 70,
-					verticalAlign: 'top',
-					y: 20,
+					
+					layout: 'horizontal',
+					align: 'center',
+					x: 10,
+					verticalAlign: 'bottom',
+					y: 100,
 					floating: true,
 					backgroundColor: 'transparent'
 				},
@@ -713,9 +723,13 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 		
 			for(var i = 0; i < cityObj[0].forecast.forecastDay.length; i++) {
 				var icon = cityObj[0].forecast.forecastDay[i].weatherIcon.toString().substr(0, (cityObj[0].forecast.forecastDay[i].weatherIcon.toString().length - 2));
-				if(icon.length == 1)
-					icon = "0" + icon;
-				var forecast_row = '<tr>';
+				if((icon <  22)||(icon >  24))
+					icon = "wxico" + icon;
+				else
+					icon = "wxico" + icon + "a";
+				
+				var class_icon = "class=\"" + icon + "\"";	
+				var forecast_row = '<tr class=\"inv_plain_3_zebra\">';
 				
 				var f_d = moment(cityObj[0].forecast.forecastDay[i].forecastDate).lang(localLang).format('D/M<br/>ddd');
 				f_d = replaceDays(f_d, <?=$lang_idx?>);
@@ -733,7 +747,7 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 					wxdesc = cityObj[0].forecast.forecastDay[i].wxdesc;
 				}
 								
-				forecast_row += '<td style="width: 80px;" ><div style="margin-left: 45px;" class="img_set wxicon_div wxicon_' + icon + '" title="' + wxdesc + '"></div></td>';
+				forecast_row += '<td style="width: 80px;" ><div style="margin-left: 45px;" class="city_weather_icon img_set wxicon_div'  + '" title="' + wxdesc + '"><span ' + class_icon + '></span></div></td>';
 				forecast_row += '<td >' + wxdesc + '</td>';
 				
 				forecast_row += '</tr>';

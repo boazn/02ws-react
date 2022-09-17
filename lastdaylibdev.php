@@ -34,11 +34,25 @@ function get_morning_temp($array)
     return min($TempOut);
 }
 
+function get_morning_hum($array)
+{
+    $hum = array_column(array_filter($array, 'only_morning'), "HumOut");
+    //print_r($TempOut); 
+    return min($hum);
+}
+
 function get_noon_temp($array)
 {
     $TempOut = array_column(array_filter($array, 'only_noon'), "TempOut");
     //print_r($TempOut); 
     return max($TempOut);
+}
+
+function get_noon_hum($array)
+{
+    $hum = array_column(array_filter($array, 'only_noon'), "HumOut");
+    //print_r($TempOut); 
+    return min($hum);
 }
 
 function get_max_temp($array)
@@ -61,6 +75,14 @@ function get_night_temp($array)
     //print_r($TempOut);  
     return number_format(array_sum($TempOut) / count($TempOut),  1, '.', '');
 }
+
+function get_night_hum($array)
+{
+    $hum = array_column(array_filter($array, 'only_night'), "HumOut");
+    //print_r($TempOut); 
+    return min($hum);
+}
+
 $path_to_file = "reports/LatestArchive.csv";
 $lastday_array = array_map('str_getcsv', file($path_to_file));
 array_walk($lastday_array, function(&$a) use ($lastday_array) {
@@ -79,6 +101,9 @@ if ((count($yestday_array) == 0)||(count($today_array) == 0))
     $yest->set_temp_morning(get_morning_temp($yestday_array), null);
     $yest->set_temp_day(get_noon_temp($yestday_array), null);
     $yest->set_temp_night(get_night_temp($yestday_array), null);
+    $yest->set_hum_morning(get_morning_hum($yestday_array), null);
+    $yest->set_hum_day(get_noon_hum($yestday_array), null);
+    $yest->set_hum_night(get_night_hum($yestday_array), null);
     $today->set_temp_morning(get_morning_temp($today_array), null);
     $today->set_temp_day(get_noon_temp($today_array), null);
     $today->set_hightemp2(get_max_temp($today_array), $today->get_hightemp2_time());

@@ -9,8 +9,8 @@ class DB_Functions {
     
  function getForecastDays($param, $AscOrDesc, $maxormin, $condition){
      
-     $query = "select * from forecast_days_archive ".$condition." order by ".$param." ".$AscOrDesc.";";
-     //logger($query);
+     $query = "select * from forecast_days_archive ".$condition." order by ".$param." ".$AscOrDesc." LIMIT 0,200";
+     //echo($query);
      $result = db_init($query, "");
      $JSON = "{\"jws\":";
      $JSON .= "{\"forecastDays\":[";
@@ -23,9 +23,9 @@ class DB_Functions {
         $JSON .= ",";
         $JSON .= "\"day_name0\":"."\"".$line['day_name']."\"";
         $JSON .= ",";
-        $JSON .= "\"TempHighClothTitle0\":"."\"".getClothTitle($line['TempHighCloth'], $line['TempHigh'])."\"";
+        $JSON .= "\"TempHighClothTitle0\":"."\"".getClothTitle($line['TempHighCloth'], $line['TempHigh'], 0,  $line['HumDay'])."\"";
         $JSON .= ",";
-        $JSON .= "\"TempNightClothTitle0\":"."\"".getClothTitle($line['TempNightCloth'], $line['TempNight'])."\"";
+        $JSON .= "\"TempNightClothTitle0\":"."\"".getClothTitle($line['TempNightCloth'], $line['TempNight'], 0,  $line['HumDay'])."\"";
         $JSON .= ",";
         $lang_idx = 1;
         $JSON .= "\"day_name1\":"."\"".replaceDays($line['day_name']." ")."\"";
@@ -40,11 +40,11 @@ class DB_Functions {
         $JSON .= ",";
         $JSON .= "\"TempHighCloth\":"."\""."images/clothes/".$line['TempHighCloth']."\"";
         $JSON .= ",";
-        $JSON .= "\"TempHighClothTitle1\":"."\"".getClothTitle($line['TempHighCloth'], $line['TempHigh'])."\"";
+        $JSON .= "\"TempHighClothTitle1\":"."\"".getClothTitle($line['TempHighCloth'], $line['TempHigh'], 0,  $line['HumNight'])."\"";
         $JSON .= ",";
         $JSON .= "\"TempNightCloth\":"."\""."images/clothes/".$line['TempNightCloth']."\"";
         $JSON .= ",";
-        $JSON .= "\"TempNightClothTitle1\":"."\"".getClothTitle($line['TempNightCloth'], $line['TempNight'])."\"";
+        $JSON .= "\"TempNightClothTitle1\":"."\"".getClothTitle($line['TempNightCloth'], $line['TempNight'], 0,  $line['HumNight'])."\"";
         $JSON .= ",";
         $JSON .= "\"icon\":"."\""."images/icons/day/".$line['icon']."\"";
         $JSON .= ",";
@@ -164,11 +164,11 @@ foreach ($_POST as $varname => $varvalue) {
    }
 }
 
-if (isset($_POST["command"])) {
+if (isset($_REQUEST["command"])) {
      
-    $idx = $_POST["idx"];
-    $lang = $_POST["lang"];
-    $command = $_POST["command"];
+    $idx = $_REQUEST["idx"];
+    $lang = $_REQUEST["lang"];
+    $command = $_REQUEST["command"];
     $db = new DB_Functions();
     
     if ($command == "like")
@@ -176,7 +176,7 @@ if (isset($_POST["command"])) {
     else if ($command == "dislike")
         $res = $db->updateForecastDayDislikes($idx);
     else 
-        $res = $db->getForecastDays($_POST["param"], $_POST["ascordesc"], $_POST["maxOrMin"], $_POST["condition"]);
+        $res = $db->getForecastDays($_REQUEST["param"], $_POST["ascordesc"], $_POST["maxOrMin"], $_POST["condition"]);
     echo ($res);
 } else {
  if (empty($empty)) {

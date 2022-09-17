@@ -31,7 +31,12 @@ function getNextPage($addToPage)
     #logo {
       //  float:<? echo get_s_align();?>
     }
-	
+	#updateprofile, #signout, #myvotes, #clicktoregister, #clicktoregister, #loginform_submit, #forgotpass, #clicktogetvotes, #clicktoupdate, #profileform_submit, #passforgotform_submit, #registerform_submit,
+	#loginform input[type="text"], #profileform input[type="text"], #registerform input[type="text"], #registerinput input[type="password"], #loginform input[type="password"]
+	{
+		width:200px;
+		height: 35px;
+	}
 </style>
 <a id="chat" ></a>
 <div id="forum">

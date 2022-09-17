@@ -41,6 +41,44 @@ function getWindHumSituation($hum, $dew, $windspd)
 	$WindHum = array($hum_eng.", ".$wind_eng, $hum_heb.", ".$wind_heb);
 	return $WindHum;
 }
+function getWindHumExp($currenttemp, $currenthum, $currentdew, $windspd, $windspd10min, $solarradiation)
+{
+	global $HEB, $EN, $HIGH_HUM_EXP, $LOW_HUM_LOW_TEMP_EXP, $LOW_HUM_HIGH_TEMP_EXP, $HIGH_WIND_HIGH_TEMP_EXP, $HIGH_WIND_EXP, $LIGHT_WIND_NIGHT_EXP, $NO_WIND_LOW_TEMP_EXP, $HIGH_WIND_HIGH_TEMP_EXP;
+	$windhum_exp = array();
+	if ((($windspd10min < 2)&&($currenttemp > 12))&&(($currenthum > 85)||($currentdew > c_or_f(16))))
+	{
+		$windhum_exp = $HIGH_HUM_EXP;
+	}
+	if (($currenthum < 50)&&($currenttemp < 15))
+	{
+		$windhum_exp = $LOW_HUM_LOW_TEMP_EXP; 
+	}
+	if (($currenthum < 35)&&($currenttemp > 20))
+	{
+		$windhum_exp = $LOW_HUM_HIGH_TEMP_EXP; 
+	}
+	if ((($windspd10min > 25)||($windspd > 35))&&($currenttemp > 20))
+	{
+		$windhum_exp = $HIGH_WIND_HIGH_TEMP_EXP;
+	}
+	elseif (($windspd10min > 25)||($windspd > 35))
+	{
+		$windhum_exp = $HIGH_WIND_EXP; 
+	}elseif (($windspd10min > 2)&&($windspd > 3)&&($solarradiation < 100))
+	{
+		$windhum_exp = $LIGHT_WIND_NIGHT_EXP;
+	}
+	if (($windspd == 0)&&($windspd10min == 0)&&($currenttemp < 20)&&($solarradiation < 300))
+	{
+		$windhum_exp = $NO_WIND_LOW_TEMP_EXP;
+	}
+	if (($solarradiation > 500)&&($currenttemp > 20)&&($windspd10min > 18))
+	{
+		$windhum_exp = $HIGH_WIND_HIGH_TEMP_EXP;
+	}
+	$windHumExp = array(array($windhum_exp[$EN],$windhum_exp[$EN]),array($windhum_exp[$HEB],$windhum_exp[$HEB]));
+	return $windHumExp;
+}
 function getTempSituation($current)
 {
 	
@@ -62,25 +100,16 @@ updateSigRunWeather(
 	"?section=graph.php&amp;graph=temp.php&amp;profile=1");
 updateSigRunWeather(
 	"", 
-	getWindHumSituation($current->get_hum(), $current->get_dew(), $current->get_windspd()), 
-	array(array("",""),array("","")), 
-	"?section=graph.php&amp;graph=wind.php&amp;profile=1");
-if (($current->get_hum() > 85)||($current->get_dew() > c_or_f(16)))
+	getWindHumSituation($current->get_hum(), $current->get_dew(), $min10->get_windspd()), 
+	getWindHumExp($current->get_temp('C'), $current->get_hum(), $current->get_dew(), $current->get_windspd(), $min10->get_windspd(), $current->get_solarradiation()), 
+	"?section=graph.php&amp;graph=temp.php&amp;profile=1");
+if (($current->get_solarradiation() > 200)&&($current->get_thsw()-$current->get_temp() > 5))
 {
 	updateSigRunWeather(
-	"", 
-	$HIGH_HUM_EXP, 
-	array(array("",""),array("","")), 
-	"?section=graph.php&amp;graph=temp.php&amp;profile=1");
-
-}
-if (($current->get_hum() < 50)&&($current->get_temp('C') < 15))
-{
-	updateSigRunWeather(
-	"", 
-	$LOW_HUM_LOW_TEMP_EXP, 
-	array(array("",""),array("","")), 
-	"?section=graph.php&amp;graph=temp.php&amp;profile=1");
+    "", 
+    $SUN_SHADE_DIFF_EXP, 
+    array(array($IT_FEELS[$EN]." ".$current->get_thsw()."°",$IT_FEELS[$EN]." ".$current->get_thsw()."°"),array($IT_FEELS[$HEB]." ".$current->get_thsw()."°",$IT_FEELS[$HEB]." ".$current->get_thsw()."°")), 
+    "?section=graph.php&amp;graph=temp.php&amp;profile=1");
 
 }
 if ($current->get_pm10() > 300 || $current->get_pm25() > 100)
@@ -100,69 +129,6 @@ if ($current->get_uv() > 9)
 		array(array($SPORT_FORBIDEN[$EN],$SPORT_FORBIDEN[$EN]), 
                       array($SPORT_FORBIDEN[$HEB],$SPORT_FORBIDEN[$HEB])), 
                      "?section=graph.php&amp;graph=UVHistory.gif&amp;profile=2");
-}
-if (($current->get_hum() < 35)&&($current->get_temp('C') > 20))
-{
-	updateSigRunWeather(
-	"", 
-	$LOW_HUM_HIGH_TEMP_EXP, 
-	array(array("",""),array("","")), 
-	"?section=graph.php&amp;graph=temp.php&amp;profile=1");
-
-}
-if ((($min10->get_windspd() > 25)||($current->get_windspd() > 35))&&($current->get_temp('C') > 20))
-{
-	updateSigRunWeather(
-    "", 
-    $HIGH_WIND_HIGH_TEMP_EXP, 
-    array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=wind.php&amp;profile=1");
-
-}
-elseif (($min10->get_windspd() > 25)||($current->get_windspd() > 35))
-{
-	updateSigRunWeather(
-    "", 
-    $HIGH_WIND_EXP, 
-    array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=wind.php&amp;profile=1");
-
-}elseif (($min10->get_windspd() > 2)&&($current->get_windspd() > 3)&&($current->get_solarradiation() < 100))
-{
-	updateSigRunWeather(
-    "", 
-    $LIGHT_WIND_NIGHT_EXP, 
-    array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=wind.php&amp;profile=1");
-
-}
-if (($current->get_windspd() == 0)&&($min10->get_windspd() == 0)&&($current->get_temp('C') < 20)&&($current->get_solarradiation() < 300))
-{
-	updateSigRunWeather(
-    "", 
-    $NO_WIND_LOW_TEMP_EXP, 
-    array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=temp.php&amp;profile=1");
-
-}
-if (($current->get_solarradiation() > 500)&&($current->get_temp('C') > 20)&&($min10->get_windspd() > 18))
-{
-	updateSigRunWeather(
-    "", 
-    $HIGH_WIND_HIGH_TEMP_EXP, 
-    array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=wind.php&amp;profile=1");
-
-}
-
-if (($current->get_solarradiation() > 200)&&($current->get_thsw()-$current->get_temp() > 5))
-{
-	updateSigRunWeather(
-    "", 
-    $SUN_SHADE_DIFF_EXP, 
-    array(array("(".$current->get_thsw()."°)","(".$current->get_thsw()."°)"),array("(".$current->get_thsw()."°)","(".$current->get_thsw()."°)")), 
-    "?section=graph.php&amp;graph=temp.php&amp;profile=1");
-
 }
 
 

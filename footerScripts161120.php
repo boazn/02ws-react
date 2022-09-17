@@ -944,7 +944,6 @@ function attachEnter(){
                     $("#colorbox").hide();
                     $("#cboxOverlay").hide();
                     fillUserDetails (JSON.parse( jsonstr  ) );
-                    toggle('loggedin');
                     toggle('notloggedin');
                     if (document.getElementById('new_post_btn')){
                             $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
