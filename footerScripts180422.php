@@ -1496,7 +1496,9 @@ function startup(lang, from, update)
           coldmeter_size = 60;
        if (cur_feel_link)
        {
-              fetch("coldmeter_service.php?lang="+lang + "&json=1&cloth_type=e")
+              fetch("coldmeter_service.php?lang="+lang + "&json=1&cloth_type=e",{
+                timeout: 3000
+                })
                 .then(response => response.json())
                 .then(data => fillcoldmeter_fromjson(data, coldmeter_size))
                 .catch(error => console.log("error:" + error))
@@ -1660,7 +1662,27 @@ function startup(lang, from, update)
       // $('#bottombar').html(activities_yes+activities_no);
         $('#activities_yes').html(activities_yes);
         $('#activities_no').html(activities_no);
+        $('#activities_perhour').empty();
+        for (hour_idx = 0; hour_idx< all_json.jws.forecastHours.length; hour_idx++){
+            activities_yes = "";activities_no = "";
+            for (i = 0; i< all_json.jws.forecastHours[hour_idx].recommendations.length; i++){
+                var act_container = 'latest_' + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase();
+                $('#' + act_container + ' .exp').html(getActivityDesc(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json));
+                $('#' + act_container + ' .paramtitle').html(getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json));
+                if (all_json.jws.forecastHours[hour_idx].recommendations[i].value == 1)
+                    activities_yes += "<li id=\"" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "_btn\" class=\"span-value\" data-value=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json) + "\"  onclick=\"change_circle('" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" + width=\"25\" height=\"25\" /></li>" ;
+                else
+                    activities_no += "<li id=\"" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "_btn\" class=\"no span-value\" data-value=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json) + "\" onclick=\"change_circle('" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" +  width=\"25\" height=\"25\" /></li>"  ;
+            }
+
+            $('#activities_perhour').append("<ul style=\"display:none\" class=\"activity\" id=\"activities_yes" + hour_idx + "\"></ul>");
+            $('#activities_perhour').append("<ul style=\"display:none\" class=\"activity\" id=\"activities_no" + hour_idx + "\"></ul>");
+            $('#activities_yes' + hour_idx).html(activities_yes);
+            $('#activities_no' + hour_idx).html(activities_no);
+        }
+        
      }
+     
      function getWindInfo(windspeed){
         var wind_class = "";
         var wind_img = "";
@@ -1937,7 +1959,9 @@ Licensed MIT
          if (cur_feel_link)
          {
             $(".loading").show();
-            fetch("coldmeter_service.php?lang="+<? echo $lang_idx;?> + "&json=1&cloth_type=e")
+            fetch("coldmeter_service.php?lang="+<? echo $lang_idx;?> + "&json=1&cloth_type=e",{
+                timeout: 3000
+                })
                 .then(response => response.json())
                 .then(data => loadPostData(data, coldmeter_size))
                 .catch(error => console.log("error:" + error))
@@ -2124,8 +2148,8 @@ Licensed MIT
         if (i >= json.jws.states.nowHourIndex)
         {
             forecastHoursNG += "<li class=\"x-axis-bar-item\">";
-            toptime =  (json.jws.forecastHours[i].time % 4 == 0) ? json.jws.forecastHours[i].day<? echo $lang_idx;?>+"&nbsp;"+json.jws.forecastHours[i].time+":00" : json.jws.forecastHours[i].time + ":00";
-            forecastHoursNG += "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('"+toptime+"','"+json.jws.forecastHours[i].icon+"',"+ json.jws.forecastHours[i].temp+","+json.jws.forecastHours[i].wind+",'"+json.jws.forecastHours[i].cloth.substring(json.jws.forecastHours[i].cloth.split('/', 2).join('/').length)+"',"+json.jws.forecastHours[i].rain+","+json.jws.forecastHours[i].hum+")\">";
+            toptime =  (json.jws.forecastHours[i].time % 4 == 0) ? json.jws.forecastHours[i].day<? echo $lang_idx;?>+"</br>"+json.jws.forecastHours[i].time+":00" : json.jws.forecastHours[i].time + ":00";
+            forecastHoursNG += "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('"+toptime+"','"+json.jws.forecastHours[i].icon+"',"+ json.jws.forecastHours[i].temp+","+json.jws.forecastHours[i].wind+",'"+json.jws.forecastHours[i].cloth.substring(json.jws.forecastHours[i].cloth.split('/', 2).join('/').length)+"',"+json.jws.forecastHours[i].rain+","+json.jws.forecastHours[i].hum+","+i+",''" + ")\">";
             forecastHoursNG += "<div class=\"x-axis-bar primary\" style=\"height: 100%\">"+toptime+"</div>";    
             bottom = 92;
             forecastHoursNG += "<div class=\"x-axis-bar tertiary icon\" style=\"height: "+ bottom +"%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"30\" width=\"35\" alt=\""+json.jws.forecastHours[i].icon+"\" /></div>";
@@ -2379,7 +2403,7 @@ function showHourlyParam(param, idx){
         $('.x-axis-bar-item .' + param).show(0);
     }
 
-function showcircleperhour(toptime, icon, temp, wind, cloth, rain, humidity){
+function showcircleperhour(toptime, icon, temp, wind, cloth, rain, humidity, hour_index, json){
     
     $('#chartjs-tooltip').css({
         opacity: 1,
@@ -2392,6 +2416,9 @@ function showcircleperhour(toptime, icon, temp, wind, cloth, rain, humidity){
     });
     $('#chartjs-tooltip').html( toptime + "<br/><div class=\"cloth\">&nbsp;<img src=\"images/clothes/" + cloth + "\" width=\"30.25\" height=\"25\" style=\"vertical-align: middle\">&nbsp;<img style=\"vertical-align: middle\" src=\"images/icons/day/" + icon + "\" height=\"30\" width=\"35\" alt=\""  + icon + "\"></div>&nbsp;<div class=\"temp\">"  + temp + "°<br/></div><div class=\"wind\">" + wind + " קמש<br/></div><div class=\"rainpercent\">" + rain + "%</div><div class=\"humidity\"><?=$HUMIDITY[$lang_idx] ?>:" + humidity + "%</div>" );
     change_circle('now_line', 'chartjs-tooltip');
+    $('.activity').hide();
+    $('#activities_yes'+hour_index).show();
+    $('#activities_no'+hour_index).show();
     
 }
  $(".open-close-button").click(function () {

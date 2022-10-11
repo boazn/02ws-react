@@ -2,85 +2,85 @@
 <!--  File Name: fulldata.xml -->
 <WXDATA>
  <PARAM>
-  <date>17/09/22</date> 
-  <time> 9:45</time>
+  <date>11/10/22</date> 
+  <time>11:20</time>
   <stationCity>Jerusalem</stationCity> 
   <stationState>Israel</stationState> 
   <stationElevation>  745 m</stationElevation> 
-  <stationDate>17/09/22</stationDate> 
-  <stationTime> 9:46</stationTime> 
-  <utcDate>17/09/22</utcDate>
-  <utcTime> 6:45</utcTime>
-  <sunriseTime> 6:24</sunriseTime> 
-  <sunsetTime>18:43</sunsetTime> 
-  <insideTemp>26.0</insideTemp>
+  <stationDate>11/10/22</stationDate> 
+  <stationTime>11:21</stationTime> 
+  <utcDate>11/10/22</utcDate>
+  <utcTime> 8:20</utcTime>
+  <sunriseTime> 6:39</sunriseTime> 
+  <sunsetTime>18:12</sunsetTime> 
+  <insideTemp>23.6</insideTemp>
   <tempUnit>C</tempUnit> 
-  <hiInsideTemp>26.3</hiInsideTemp> 
-  <hiInsideTempTime> 0:36</hiInsideTempTime> 
-  <lowInsideTemp>25.7</lowInsideTemp> 
-  <lowInsideTempTime> 7:12</lowInsideTempTime> 
-  <hiMonthlyInsideTemp>30.3</hiMonthlyInsideTemp> 
-  <lowMonthlyInsideTemp>23.1</lowMonthlyInsideTemp>  
+  <hiInsideTemp>23.9</hiInsideTemp> 
+  <hiInsideTempTime> 0:00</hiInsideTempTime> 
+  <lowInsideTemp>23.1</lowInsideTemp> 
+  <lowInsideTempTime> 8:21</lowInsideTempTime> 
+  <hiMonthlyInsideTemp>30.5</hiMonthlyInsideTemp> 
+  <lowMonthlyInsideTemp>22.2</lowMonthlyInsideTemp>  
   <hiYearlyInsideTemp>42.5</hiYearlyInsideTemp>  
   <lowYearlyInsideTemp>14.4</lowYearlyInsideTemp>  
-  <Temp>24.9</Temp>  
-  <hiTemp>24.9</hiTemp> 
-  <hiTempTime> 9:45</hiTempTime> 
-  <lowTemp>19.6</lowTemp>  
-  <lowTempTime> 5:33</lowTempTime>
-  <hiMonthlyTemp>33.7</hiMonthlyTemp>  
-  <lowMonthlyTemp>15.9</lowMonthlyTemp> 
+  <Temp>24.0</Temp>  
+  <hiTemp>24.0</hiTemp> 
+  <hiTempTime>11:20</hiTempTime> 
+  <lowTemp>16.3</lowTemp>  
+  <lowTempTime> 7:00</lowTempTime>
+  <hiMonthlyTemp>31.6</hiMonthlyTemp>  
+  <lowMonthlyTemp>15.0</lowMonthlyTemp> 
   <hiYearlyTemp>38.9</hiYearlyTemp>  
   <lowYearlyTemp>0.0</lowYearlyTemp>  
-  <Temp2>32.8 </Temp2>
-  <hiTemp2>32.8</hiTemp2> 
-  <hiTemp2Time> 9:43</hiTemp2Time>
-  <lowTemp2>17.2</lowTemp2>  
-  <lowTemp2Time> 5:28</lowTemp2Time>
-  <insideHumidity>62</insideHumidity> 
+  <Temp2>38.9 </Temp2>
+  <hiTemp2>39.4</hiTemp2> 
+  <hiTemp2Time>11:20</hiTemp2Time>
+  <lowTemp2>12.2</lowTemp2>  
+  <lowTemp2Time> 5:56</lowTemp2Time>
+  <insideHumidity>58</insideHumidity> 
   <humUnit>% </humUnit> 
-  <hiInsideHumidity>65</hiInsideHumidity> 
-  <hiInsideHumidityTime> 7:43</hiInsideHumidityTime> 
-  <lowInsideHumidity>62</lowInsideHumidity> 
-  <lowInsideHumidityTime> 9:31</lowInsideHumidityTime> 
-  <hiMonthlyInsideHumidity>79</hiMonthlyInsideHumidity> 
-  <lowMonthlyInsideHumidity>37</lowMonthlyInsideHumidity> 
+  <hiInsideHumidity>62</hiInsideHumidity> 
+  <hiInsideHumidityTime> 8:32</hiInsideHumidityTime> 
+  <lowInsideHumidity>56</lowInsideHumidity> 
+  <lowInsideHumidityTime> 0:00</lowInsideHumidityTime> 
+  <hiMonthlyInsideHumidity>68</hiMonthlyInsideHumidity> 
+  <lowMonthlyInsideHumidity>35</lowMonthlyInsideHumidity> 
   <hiYearlyInsideHumidity>79</hiYearlyInsideHumidity> 
   <lowYearlyInsideHumidity>19</lowYearlyInsideHumidity> 
-  <Humidity>68</Humidity> 
+  <Humidity>58</Humidity> 
   <hiHumidity>93</hiHumidity> 
-  <hiHumTime> 2:35</hiHumTime> 
-  <lowHumidity>68</lowHumidity> 
-  <lowHumTime> 9:43</lowHumTime> 
-  <hiMonthlyHumidity>94</hiMonthlyHumidity> 
+  <hiHumTime> 7:34</hiHumTime> 
+  <lowHumidity>58</lowHumidity> 
+  <lowHumTime>10:45</lowHumTime> 
+  <hiMonthlyHumidity>93</hiMonthlyHumidity> 
   <lowMonthlyHumidity>29</lowMonthlyHumidity> 
   <hiYearlyHumidity>98</hiYearlyHumidity> 
   <lowYearlyHumidity>9</lowYearlyHumidity> 
-  <barometer>1006.5</barometer> 
+  <barometer>1015.4</barometer> 
   <barUnit>mb</barUnit> 
   <barTrend>Steady</barTrend> 
-  <hiBarometer>1007.4</hiBarometer>  
-  <hiBarometerTime> 0:09</hiBarometerTime> 
-  <lowBarometer>1006.3</lowBarometer>  
-  <lowBarometerTime> 3:10</lowBarometerTime> 
+  <hiBarometer>1015.8</hiBarometer>  
+  <hiBarometerTime> 0:00</hiBarometerTime> 
+  <lowBarometer>1014.8</lowBarometer>  
+  <lowBarometerTime> 5:15</lowBarometerTime> 
   <lowMonthlyBarometer>1004.2</lowMonthlyBarometer>  
-  <hiMonthlyBarometer>1012.7</hiMonthlyBarometer>  
+  <hiMonthlyBarometer>1016.9</hiMonthlyBarometer>  
   <lowYearlyBarometer>1001.1</lowYearlyBarometer>  
   <hiYearlyBarometer>1029.2</hiYearlyBarometer>  
-  <windSpeed>9.7</windSpeed> 
+  <windSpeed>1.6</windSpeed> 
   <windUnit>km/hr</windUnit> 
-  <wind10Avg>4.8</wind10Avg>
+  <wind10Avg>1.6</wind10Avg>
   <wind10Gust>---</wind10Gust>
-  <hiWindSpeed>14.5</hiWindSpeed>
-  <hiWindSpeedTime> 3:23</hiWindSpeedTime> 
-  <hiMonthlyWindSpeed>37.0</hiMonthlyWindSpeed>  
+  <hiWindSpeed>16.1</hiWindSpeed>
+  <hiWindSpeedTime> 8:47</hiWindSpeedTime> 
+  <hiMonthlyWindSpeed>27.4</hiMonthlyWindSpeed>  
   <hiYearlyWindSpeed>74.0</hiYearlyWindSpeed>  
-  <windDir>360</windDir> 
-  <windDirection>N</windDirection> 
-  <windChill>24.9</windChill>  
-  <lowWindchill>19.4</lowWindchill>  
-  <lowWindchillTime> 5:01</lowWindchillTime> 
-  <lowMonthlyWindchill>16.1</lowMonthlyWindchill>  
+  <windDir>346</windDir> 
+  <windDirection>NNW</windDirection> 
+  <windChill>24.0</windChill>  
+  <lowWindchill>16.1</lowWindchill>  
+  <lowWindchillTime> 6:53</lowWindchillTime> 
+  <lowMonthlyWindchill>15.0</lowMonthlyWindchill>  
   <lowYearlyWindchill>-3.9</lowYearlyWindchill>  
   <totalRain>0.0</totalRain> 
   <rainUnit>mm</rainUnit> 
@@ -94,44 +94,44 @@
   <hiRainRateHour>0.0</hiRainRateHour>  
   <hiMonthlyRainRate>0.0</hiMonthlyRainRate>  
   <hiYearlyRainRate>0.0</hiYearlyRainRate>  
-  <DewPt>18.6</DewPt>  
-  <hiDewpoint>20.0</hiDewpoint>  
-  <hiDewpointTime> 8:39</hiDewpointTime> 
-  <lowDewpoint>18.3</lowDewpoint>  
-  <lowDewpointTime> 0:10</lowDewpointTime> 
-  <hiMonthlyDewpoint>23.3</hiMonthlyDewpoint>  
-  <lowMonthlyDewpoint>8.9</lowMonthlyDewpoint>  
+  <DewPt>15.2</DewPt>  
+  <hiDewpoint>16.7</hiDewpoint>  
+  <hiDewpointTime> 8:26</hiDewpointTime> 
+  <lowDewpoint>13.9</lowDewpoint>  
+  <lowDewpointTime> 0:13</lowDewpointTime> 
+  <hiMonthlyDewpoint>21.7</hiMonthlyDewpoint>  
+  <lowMonthlyDewpoint>10.0</lowMonthlyDewpoint>  
   <hiYearlyDewpoint>23.9</hiYearlyDewpoint>  
   <lowYearlyDewpoint>-12.2</lowYearlyDewpoint>  
-  <insideDewPt>18.2</insideDewPt>  
-  <HeatIndex>25.7</HeatIndex>  
-  <hiHeatindex>26.1</hiHeatindex> 
-  <hiHeatindexTime> 9:44</hiHeatindexTime> 
-  <hiMonthlyHeatindex>38.3</hiMonthlyHeatindex> 
+  <insideDewPt>14.9</insideDewPt>  
+  <HeatIndex>24.2</HeatIndex>  
+  <hiHeatindex>24.4</hiHeatindex> 
+  <hiHeatindexTime>10:47</hiHeatindexTime> 
+  <hiMonthlyHeatindex>32.8</hiMonthlyHeatindex> 
   <hiYearlyHeatindex>45.0</hiYearlyHeatindex> 
-  <thw>25.7</thw>
+  <thw>24.2</thw>
   <thsw><!--thsw--></thsw>
   <hiTHSWindex>30.6</hiTHSWindex> 
-  <hiTHSWindexTime> 9:44</hiTHSWindexTime>
-  <hiMonthlyTHSWindex>45.0</hiMonthlyTHSWindex> 
+  <hiTHSWindexTime>10:51</hiTHSWindexTime>
+  <hiMonthlyTHSWindex>38.3</hiMonthlyTHSWindex> 
   <hiYearlyTHSWindex>51.1</hiYearlyTHSWindex> 
-  <insideHeatIndex>26.7</insideHeatIndex> 
-  <emc>12.5</emc>
+  <insideHeatIndex>23.8</insideHeatIndex> 
+  <emc>10.5</emc>
   <emcUnit>%</emcUnit>
-  <airDensity>1.1518</airDensity> 
+  <airDensity>1.1707</airDensity> 
   <airDensityUnit>kg/cu.m</airDensityUnit>
-  <solarRad>508</solarRad>
-  <hiSolarRad>508</hiSolarRad>
-  <hiSolarRadTime> 9:45</hiSolarRadTime>
-  <hiMonthlySolarRad>1151</hiMonthlySolarRad>
+  <solarRad>740</solarRad>
+  <hiSolarRad>740</hiSolarRad>
+  <hiSolarRadTime>11:21</hiSolarRadTime>
+  <hiMonthlySolarRad>1046</hiMonthlySolarRad>
   <hiYearlySolarRad>1341</hiYearlySolarRad>
-  <uv>3.2</uv>
-  <hiUV>3.2</hiUV>
-  <hiUVTime> 9:45</hiUVTime>
-  <hiMonthlyUV>8.6</hiMonthlyUV>
+  <uv>5.0</uv>
+  <hiUV>5.0</hiUV>
+  <hiUVTime>11:17</hiUVTime>
+  <hiMonthlyUV>7.0</hiMonthlyUV>
   <hiYearlyUV>12.5</hiYearlyUV>
-  <dailyET>0.30</dailyET>
-  <monthlyET>82.35</monthlyET>
-  <yearlyET>1244.40</yearlyET>
+  <dailyET>0.94</dailyET>
+  <monthlyET>43.10</monthlyET>
+  <yearlyET>1358.06</yearlyET>
   </PARAM>
 </WXDATA>

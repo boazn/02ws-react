@@ -117,7 +117,8 @@ body {
      overflow-y: scroll;
     overflow-x: hidden;
     color:#2C3A42;
-    height:280vh
+    height:280vh;
+    font-size: <? if (isHeb()) echo "14px"; else echo "12px";?>;
 }
 
 
@@ -1645,7 +1646,7 @@ margin-bottom:8px;
 margin-<?=get_s_align()?>: 200px;
 z-index:9999;
 }
-#activities_yes, #activities_no{
+#activities_yes, #activities_no, #activities_perhour{
     background-size: 15%;
     margin-top: 10px;
     width: 700px;
@@ -1663,7 +1664,7 @@ z-index:9999;
     width: 270px;
     padding: 0;
 }
-#activities_yes li , #activities_no li, #bottombar li{
+#activities_yes li , #activities_no li, #bottombar li, .activity_show{
     border-radius: 999px;
     background-color: #eeeeee;
     opacity: 0.5;
@@ -1671,7 +1672,12 @@ z-index:9999;
     padding: 0.4em !important;
     position:relative;
 }
- 
+ .activity li {
+    border-radius: 999px;
+    background-color: #eeeeee;
+    padding: 0.4em !important;
+    position:relative;
+ }
 .no {
     background:url("../images/icons/xmark-thin.svg") no-repeat;
     background-size: 65%;
@@ -1735,7 +1741,7 @@ margin-<?=get_s_align()?>:0.5em
 }
 #what_is_h{
     padding-top: 0.1em;
-    font-size:1.4em
+    font-size:1.6em
 }
 #now_stuff a{
     color:#000
@@ -1886,7 +1892,9 @@ text-align:<?=get_s_align()?>;
     padding:10px 20px;
     
 }
-
+.white_box .box_text{
+    font-size:1.1em
+}
 .white_box h2 {
     display:table;
     border-bottom:solid;
@@ -3401,7 +3409,7 @@ color: #fff;
     text-align:center;
     padding:0;
     margin-top:5px;
-    margin-<?echo get_s_align();?>:8px;
+    margin-<?echo get_s_align();?>:0px;
     top:200px;
     z-index:300;
 }
@@ -4641,15 +4649,15 @@ margin:0 auto
 #cm_dislike
 {
     position: absolute;
-    top: 6.5em;
-    left: 2.4em;
+    top: 7em;
+    <?=get_inv_s_align()?>: 2.4em;
     cursor: pointer;
 }
 #cm_like
 {
     position: absolute;
-    top: 6.5em;
-    left: 3.8em;
+    top: 7em;
+    <?=get_inv_s_align()?>: 3.8em;
     cursor: pointer;
 }
 #status .wind_title
@@ -5319,7 +5327,7 @@ position:relative
 }
 #legends{
   margin: 0 0 20px;
-    width: 335px;
+    width: 345px;
     height: 10px;
 }
   
@@ -5468,6 +5476,7 @@ position:relative
 .x-axis-bar-item {
   width:65px;
   bottom: 0;
+  cursor: pointer;
   
 }
 .x-axis-bar-item-container {
@@ -5844,19 +5853,24 @@ position:absolute;
 
     }
     #chartjs-tooltip .rainpercent{
-        top:150px;
+        top:170px;
+        margin: 0 3em;
     }
     #chartjs-tooltip .temp{
-        top:60px;
+        top:70px;
+        margin: 0 4em;
     }
     #chartjs-tooltip .wind{
-        top:90px;
+        top:100px;
+        margin: 0 3.8em;
     }
     #chartjs-tooltip .cloth{
-        top:30px;
-    }
+        top:35px;
+        margin: 0 3.5em;
+            }
     #chartjs-tooltip .humidity{
-        top:120px;
+        top:130px;
+        margin: 0 3.5em;
     }
     .tooltipline{
       width:100%;

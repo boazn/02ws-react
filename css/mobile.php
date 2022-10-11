@@ -33,7 +33,7 @@ html {
 body{
 text-align:center;
 margin:0;
-font-size: 13.1px;
+font-size: <?if (isHeb()) echo "13.1"; else echo "11.5";?>13.1px;
 overflow-x: hidden;
 }
 #date{
@@ -1061,7 +1061,7 @@ width: 160px;
 }
 #cm_like
 {
-    left:3.4em;
+    <?=get_inv_s_align()?>:3.4em;
     top: 5.8em;
 }
 #tempdivvaluestart
@@ -1094,7 +1094,7 @@ margin:auto;
 top:0;position:relative; background: none;margin:auto
 }
 #heatindex{
-margin-top:4.4em;
+margin-top:1em;width: 150px;
 }
 .graphslink
 {

@@ -2,7 +2,7 @@
 header('Content-type: text/html; charset=utf-8');
 header("Access-Control-Allow-Origin: null");
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
-ini_set("display_errors","Off");
+//ini_set("display_errors","Off");
 include_once("include.php"); 
 include_once "start.php";
 include_once ("requiredDBTasks.php");
@@ -727,6 +727,10 @@ $JSON .= "\"wind_title0\":"."\"".getWindInfo($hour_f['wind'], 0)['windtitle']."\
 $JSON .= ",";
 $JSON .= "\"wind_title1\":"."\"".getWindInfo($hour_f['wind'], 1)['windtitle']."\"";
 $JSON .= ",";
+$JSON .= "\"wind_title2\":"."\"".getWindInfo($hour_f['wind'], 2)['windtitle']."\"";
+$JSON .= ",";
+$JSON .= "\"wind_title3\":"."\"".getWindInfo($hour_f['wind'], 3)['windtitle']."\"";
+$JSON .= ",";
 $JSON .= "\"icon\":"."\"".$hour_f['icon']."\"";
 $JSON .= ",";
 $JSON .= "\"temp\":"."\"".$hour_f['temp']."\"";
@@ -744,6 +748,10 @@ $JSON .= ",";
 $JSON .= "\"title0\":"."\"".$hour_f['title'][0]."\"";
 $JSON .= ",";
 $JSON .= "\"title1\":"."\"".str_replace('\"', "&quot;", $hour_f['title'][1])."\"";
+$JSON .= ",";
+$JSON .= "\"title2\":"."\"".str_replace('\"', "&quot;", $hour_f['title'][2])."\"";
+$JSON .= ",";
+$JSON .= "\"title3\":"."\"".str_replace('\"', "&quot;", $hour_f['title'][3])."\"";
 $lang_idx = 0;
 $JSON .= ",";
 $JSON .= "\"cloth_title0\":"."\"".getClothTitle($hour_f['cloth'], $hour_f['temp'], $hour_f['wind'], $hour_f['humidity'])."\"";
@@ -797,6 +805,10 @@ $JSON .= ",";
 $JSON .= "\"title0\":"."\"".$hour_f['title'][0]."\"";
 $JSON .= ",";
 $JSON .= "\"title1\":"."\"".str_replace('\"', "&quot;", $hour_f['title'][1])."\"";
+$JSON .= ",";
+$JSON .= "\"title2\":"."\"".str_replace('\"', "&quot;", $hour_f['title'][2])."\"";
+$JSON .= ",";
+$JSON .= "\"title3\":"."\"".str_replace('\"', "&quot;", $hour_f['title'][3])."\"";
 $JSON .= "},";
 }
 
@@ -816,11 +828,32 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= "{";
     $JSON .= "\"day_name0\":"."\"".$day_f['day_name']."\"";
     $JSON .= ",";
+    $JSON .= "\"TempLowClothTitle0\":"."\"".getClothTitle($day_f['TempLowCloth'], $day_f['TempLow'], $day_f['windMorning'], $day_f['humMorning'])."\"";
+    $JSON .= ",";
     $JSON .= "\"TempHighClothTitle0\":"."\"".getClothTitle($day_f['TempHighCloth'], $day_f['TempHigh'], $day_f['windDay'], $day_f['humDay'])."\"";
     $JSON .= ",";
     $JSON .= "\"TempNightClothTitle0\":"."\"".getClothTitle($day_f['TempNightCloth'], $day_f['TempNight'], $day_f['windNight'], $day_f['humNight'])."\"";
+    $lang_idx = 2;
     $JSON .= ",";
+    $JSON .= "\"day_name2\":"."\"".$day_f['day_name']."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempLowClothTitle2\":"."\"".getClothTitle($day_f['TempLowCloth'], $day_f['TempLow'], $day_f['windMorning'], $day_f['humMorning'])."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempHighClothTitle2\":"."\"".getClothTitle($day_f['TempHighCloth'], $day_f['TempHigh'], $day_f['windDay'], $day_f['humDay'])."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempNightClothTitle2\":"."\"".getClothTitle($day_f['TempNightCloth'], $day_f['TempNight'], $day_f['windNight'], $day_f['humNight'])."\"";
+    $lang_idx = 3;
+    $JSON .= ",";
+    $JSON .= "\"day_name3\":"."\"".$day_f['day_name']."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempLowClothTitle3\":"."\"".getClothTitle($day_f['TempLowCloth'], $day_f['TempLow'], $day_f['windMorning'], $day_f['humMorning'])."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempHighClothTitle3\":"."\"".getClothTitle($day_f['TempHighCloth'], $day_f['TempHigh'], $day_f['windDay'], $day_f['humDay'])."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempNightClothTitle3\":"."\"".getClothTitle($day_f['TempNightCloth'], $day_f['TempNight'], $day_f['windNight'], $day_f['humNight'])."\"";
+
     $lang_idx = 1;
+    $JSON .= ",";
     $JSON .= "\"day_name1\":"."\"".replaceDays($day_f['day_name']." ")."\"";
     $JSON .= ",";
     $JSON .= "\"date\":"."\"".$day_f['date']."\"";
@@ -828,12 +861,6 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= "\"TempLow\":"."\"".$day_f['TempLow']."\"";
     $JSON .= ",";
     $JSON .= "\"humMorning\":"."\"".$day_f['humMorning']."\"";
-    $JSON .= ",";
-    $JSON .= "\"TempLowCloth\":"."\""."images/clothes/".$day_f['TempLowCloth']."\"";
-    $JSON .= ",";
-    $JSON .= "\"TempLowClothTitle1\":"."\"".getClothTitle($day_f['TempLowCloth'], $day_f['TempLow'], $day_f['windMorning'], $day_f['humMorning'])."\"";
-    $JSON .= ",";
-    $JSON .= "\"TempLowClothTitle0\":"."\"".getClothTitle($day_f['TempLowCloth'], $day_f['TempLow'], $day_f['windMorning'], $day_f['humMorning'])."\"";
     $JSON .= ",";
     $JSON .= "\"TempHigh\":"."\"".$day_f['TempHigh']."\"";
     $JSON .= ",";
@@ -858,6 +885,10 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= "\"TempNight\":"."\"".$day_f['TempNight']."\"";
     $JSON .= ",";
     $JSON .= "\"humNight\":"."\"".$day_f['humNight']."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempLowCloth\":"."\""."images/clothes/".$day_f['TempLowCloth']."\"";
+    $JSON .= ",";
+    $JSON .= "\"TempLowClothTitle1\":"."\"".getClothTitle($day_f['TempLowCloth'], $day_f['TempLow'], $day_f['windMorning'], $day_f['humMorning'])."\"";
     $JSON .= ",";
     $JSON .= "\"TempHighCloth\":"."\""."images/clothes/".$day_f['TempHighCloth']."\"";
     $JSON .= ",";
@@ -891,9 +922,15 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= ",";
     $day_f['lang1'] = preg_replace("/<br\W*?\/>/", " ", $day_f['lang1']);
     $day_f['lang0'] = preg_replace("/<br\W*?\/>/", " ", $day_f['lang0']);
+    $day_f['lang2'] = preg_replace("/<br\W*?\/>/", " ", $day_f['lang2']);
+    $day_f['lang3'] = preg_replace("/<br\W*?\/>/", " ", $day_f['lang3']);
     $JSON .= "\"lang1\":"."\"".str_replace('"', '``',urldecode($day_f['lang1']))."\"";
      $JSON .= ",";
     $JSON .= "\"lang0\":"."\"".urldecode($day_f['lang0'])."\"";
+    $JSON .= ",";
+    $JSON .= "\"lang2\":"."\"".urldecode($day_f['lang2'])."\"";
+    $JSON .= ",";
+    $JSON .= "\"lang3\":"."\"".urldecode($day_f['lang3'])."\"";
     $JSON .= ",\"recommendations\":[";
     $day_recommendations = getRecommendations(TimeFrame::Daily, $day_idx, $day_f['TempHigh'], $day_f['windDay'], $day_f['humDay'], $day_f['rain'], 0, 0);
     foreach ($day_recommendations as $r){
@@ -925,11 +962,27 @@ $JSON .= "\"latestalert0\":"."\"".urlencode($mem->get('latestalert0'))."\"";
 $JSON .= ",";
 $JSON .= "\"latestalert_title0\":"."\"".$mem->get('latestalert_title0')."\"";
 $JSON .= ",";
+$JSON .= "\"latestalert2\":"."\"".urlencode($mem->get('latestalert2'))."\"";
+$JSON .= ",";
+$JSON .= "\"latestalert_title2\":"."\"".$mem->get('latestalert_title2')."\"";
+$JSON .= ",";
+$JSON .= "\"latestalert3\":"."\"".urlencode($mem->get('latestalert3'))."\"";
+$JSON .= ",";
+$JSON .= "\"latestalert_title3\":"."\"".$mem->get('latestalert_title3')."\"";
+$JSON .= ",";
 $JSON .= "\"addonalert0\":"."\"".urlencode($mem->get('addonalert0'))."\"";
 $JSON .= ",";
 $JSON .= "\"detailedforecast0\":"."\"".urlencode($mem->get('descriptionforecast0'))."\"";
 $JSON .= ",";
 $JSON .= "\"detailedforecast_title0\":"."\"".urlencode($mem->get('descriptionforecast_title0'))."\"";
+$JSON .= ",";
+$JSON .= "\"detailedforecast2\":"."\"".urlencode($mem->get('descriptionforecast2'))."\"";
+$JSON .= ",";
+$JSON .= "\"detailedforecast_title2\":"."\"".urlencode($mem->get('descriptionforecast_title2'))."\"";
+$JSON .= ",";
+$JSON .= "\"detailedforecast3\":"."\"".urlencode($mem->get('descriptionforecast3'))."\"";
+$JSON .= ",";
+$JSON .= "\"detailedforecast_title3\":"."\"".urlencode($mem->get('descriptionforecast_title3'))."\"";
 $JSON .= ",";
 $JSON .= "\"timeforecast0\":"."\"".date('Y-m-d G:i D', $mem->get('descriptionforecasttime0'))."\"";
 $JSON .= ",";
@@ -957,15 +1010,28 @@ $JSON .= "\"timelatestalert1\":"."\"".replaceDays(date('D H:i ', $mem->get('late
 $JSON .= ",";
 $JSON .= "\"timeforecast1\":"."\"".replaceDays(date('D H:i ', $mem->get('descriptionforecasttime1')))."\"";
 $JSON .= ",";
-if (($month > 3) && ($month < 11))
+if (($month > 3) && ($month < 11)){
     $JSON .= "\"tip0\":"."\"".$DID_YOU_KNOW_SUMMER[$random_did_you_know][$EN]."\"";
-else
-    $JSON .= "\"tip0\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$EN]."\"";
-$JSON .= ",";
-if (($month > 3) && ($month < 11))
+    $JSON .= ",";
     $JSON .= "\"tip1\":"."\"".$DID_YOU_KNOW_SUMMER[$random_did_you_know][$HEB]."\"";
+    $JSON .= ",";
+    $JSON .= "\"tip2\":"."\"".$DID_YOU_KNOW_SUMMER[$random_did_you_know][$RU]."\"";
+    $JSON .= ",";
+    $JSON .= "\"tip3\":"."\"".$DID_YOU_KNOW_SUMMER[$random_did_you_know][$FR]."\"";
+    
+}
 else
+{
+    $JSON .= "\"tip0\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$EN]."\"";
+    $JSON .= ",";
     $JSON .= "\"tip1\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$HEB]."\"";
+    $JSON .= ",";
+    $JSON .= "\"tip2\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$RU]."\"";
+    $JSON .= ",";
+    $JSON .= "\"tip3\":"."\"".$DID_YOU_KNOW_EX[$random_did_you_know][$FR]."\"";
+    
+}
+    
 $JSON .= "}";
 
 $JSON .= ",\"windstatus\":";
@@ -1038,13 +1104,13 @@ $JSON .= "\"sigtitle0\":"."\"".$sigtitle0."\"";
 $JSON .= ",";
 $JSON .= "\"sigtitle1\":"."\"".$sigtitle1."\"";
 $JSON .= ",";
-$JSON .= "\"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\"";
+$JSON .= "\"sigexthtml0\":"."\"".preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sigext0))."\"";
 $JSON .= ",";
-$JSON .= "\"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\"";
+$JSON .= "\"sigext0\":"."\"".preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sigext0plain))."\"";
 $JSON .= ",";
-$JSON .= "\"sigexthtml1\":"."\"".str_replace("\"", "&quot;", $sigext1)."\"";
+$JSON .= "\"sigexthtml1\":"."\"".preg_replace( "/\r|\n/", " ", str_replace("\"", "&quot;", $sigext1))."\"";
 $JSON .= ",";
-$JSON .= "\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\"";
+$JSON .= "\"sigext1\":"."\"".preg_replace( "/\r|\n/", " ", str_replace("\"", "&quot;", $sigext1plain))."\"";
 
 $SIGWEATHER_JSON = ", \"sigweather\": [";
 foreach ($sig as $sig_i){
@@ -1054,13 +1120,7 @@ foreach ($sig as $sig_i){
     $sigext0plain = $sig_i['extrainfo'][0][1];
     $sigext1 = $sig_i['extrainfo'][1][0];
     $sigext1plain = $sig_i['extrainfo'][1][1];
-    $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", 
-               \"sigtitle1\":"."\"".$sigtitle1."\", 
-               \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , 
-               \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",
-               \"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",
-               \"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",
-               \"url\":"."\"".$sig_i['url']."\"  }";
+    $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",\"url\":"."\"".$sig_i['url']."\"  }";
     $SIGWEATHER_JSON .= ",";
 }
 $SIGWEATHER_JSON = rtrim($SIGWEATHER_JSON, ",");
@@ -1075,12 +1135,8 @@ foreach ($sigRun as $sig_i){
     $sigext0plain = $sig_i['extrainfo'][0][1];
     $sigext1 = $sig_i['extrainfo'][1][0];
     $sigext1plain = $sig_i['extrainfo'][1][1];
-    $RUNWALK_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", 
-               \"sigtitle1\":"."\"".$sigtitle1."\", 
-               \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , 
-               \"sigext1\":"."\"".str_replace('"', "&quot;", $sigext1)."\",
-               \"url\":"."\"".$sig_i['url']."\"  }";
-               $RUNWALK_JSON .= ",";
+    $RUNWALK_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext1\":"."\"".str_replace('"', "&quot;", $sigext1)."\",\"url\":"."\"".$sig_i['url']."\"  }";
+    $RUNWALK_JSON .= ",";
 }
 $RUNWALK_JSON = rtrim($RUNWALK_JSON, ",");
 $RUNWALK_JSON .= "]";
@@ -1134,6 +1190,10 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
     $JSON .= "\"caption0\":"."\"".urlencode($line["comment0"])."\"";
     $JSON .= ",";
     $JSON .= "\"caption1\":"."\"".urlencode($line["comment1"])."\"";
+    $JSON .= ",";
+    $JSON .= "\"caption2\":"."\"".urlencode($line["comment0"])."\"";
+    $JSON .= ",";
+    $JSON .= "\"caption3\":"."\"".urlencode($line["comment0"])."\"";
     $JSON .= ",";
     $JSON .= "\"passedts\":"."\"".(time() - filemtime($picname))."\"";
     $JSON .= ",";

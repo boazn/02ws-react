@@ -1,5 +1,6 @@
 <pre>
 <?php
+ini_set('error_reporting', E_ERROR | E_PARSE);
 require('phpQuery.php');
 // Function to calculate standard deviation (uses sd_square) 
 

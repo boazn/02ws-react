@@ -1542,8 +1542,10 @@ function searchDoubleNext(&$tok, $strTofind, $str2Tofind) {
 }
 
 function getTokFromFile($file) {
-    $fp = @fopen($file, "r");
-    $filecontents = @fread($fp, filesize($file));
+    $timeout = 2;
+    $fp = fopen($file, "r");
+    stream_set_timeout($fp, $timeout);
+    $filecontents = fread($fp, filesize($file));
     @fclose($fp);
     $tok = strtok($filecontents, " \n\t");
     return $tok;
@@ -3313,7 +3315,7 @@ function saveInvalidTokens() {
 
 function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $addon, $class, $messageType, $ttl)
 {
-    global $mem, $ALERTS_PAYMENT, $PATREON_LINK;
+    global $mem, $ALERTS_PAYMENT, $PATREON_LINK, $RU, $FR;
     if (empty($ttl))
     {
         $ttl = 360;
@@ -3346,24 +3348,44 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
             $latestalert_title = $line["Title"];
             $latestalert_time = replaceDays(date('D H:i', $mem->get('latestalerttime'.$lang)));
         }
-        $description_appended = $latestalert_time."\n".trim($latestalert)."\n".trim($descriptionforecast);
+        $description_appended = "\n".$latestalert_time."\n".trim($latestalert)."\n".$descriptionforecast_title."\n".trim($descriptionforecast);
         //$description = "<div class=\"alerttime ".$class."\">".$now."</div>".$description;
         if (!empty($description))
             $description = $description."\n";
         //$now = getLocalTime(time());
 
         $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='forecast') and (lang=$lang)";
-        $mem->set('descriptionforecast'.$lang, $description_appended);
-        $mem->set('descriptionforecast_title'.$lang, $latestalert_title);
         $res = db_init($query, "" );
         $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='$type') and (lang=$lang)";
-        $mem->set('latestalert'.$lang, $description);
-        $mem->set('latestalert_title'.$lang, $title);
-        $mem->set('latestalert_img', $img_src);
-        $mem->set('addonalert'.$lang, $addon);
-        $mem->set('latestalerttime'.$lang, time());
-        $mem->set('latestalertttl', $ttl*60);
-        $mem->set('latestalerttype', $messageType);
+        
+        if ($type == 'LAlert'){
+            $mem->set('descriptionforecast'.$lang, $description_appended);
+            $mem->set('descriptionforecast_title'.$lang, $latestalert_title);
+            $mem->set('latestalert'.$lang, $description);
+            $mem->set('latestalert_title'.$lang, $title);
+            $mem->set('latestalert_img', $img_src);
+            $mem->set('addonalert'.$lang, $addon);
+            $mem->set('latestalerttime'.$lang, time());
+            $mem->set('latestalertttl', $ttl*60);
+            $mem->set('latestalerttype', $messageType);
+        }
+        else if ($type == 'forecast'){
+            $mem->set('descriptionforecast'.$lang, $description);
+            $mem->set('descriptionforecasttime'.$lang, time());
+            $mem->set('descriptionforecast_title'.$lang, $title);
+            echo "descriptionforecast".$lang."=".date('Y-m-d G:i D', $mem->get('descriptionforecasttime'.$lang));
+        }
+       /* if ($lang == 0)
+        {
+            $mem->set('latestalert'.$RU, translateText(urlencode($description), 'ru'));
+            $mem->set('latestalert_title'.$RU, translateText(urlencode($title), 'ru'));
+            $mem->set('latestalert'.$FR, translateText(urlencode($description), 'fr'));
+            $mem->set('latestalert_title'.$FR, translateText(urlencode($title), 'fr'));
+            $mem->set('descriptionforecast'.$RU, translateText(urlencode($description_appended), 'ru'));
+            $mem->set('descriptionforecast_title'.$RU, translateText(urlencode($latestalert_title), 'ru'));
+            $mem->set('descriptionforecast'.$FR, translateText(urlencode($description_appended), 'fr'));
+            $mem->set('descriptionforecast_title'.$FR, translateText(urlencode($latestalert_title), 'fr'));
+        }*/
         $res = db_init($query, "" );
         if (!empty(trim($description))&&($type=='LAlert')){
             $query = "INSERT INTO  `AlertsArchive` (Description, active, href,  img_src, Title, updatedTime, lang) Values('{$description}', '$active', '$href', '$img_src', '{$title}', SYSDATE(),  $lang)";
@@ -3935,6 +3957,17 @@ function getClothTitle($imagename, $temp, $wind, $hum)
        
 	return $title;
 
+}
+
+function getCssIdx ($lang_idx){
+    switch ($lang_idx)
+    {
+        case ($lang_idx == 1):
+            return $lang_idx;
+        default:
+            return 0;
+    }
+    return $lang_idx;
 }
 
 function db_init($query, $param) {
@@ -4618,6 +4651,8 @@ $lang_idx = @$_GET['lang'];
 $EN = 0;
 $HEB = 1;
 $RU = 2;
+$FR = 3;
+$AR = 4;
 if ($_GET['lang'] == "") {
     /* if (stristr(get_url(), 'lang')){
       $new_url = str_replace ( "&amp;", "&", get_url());
@@ -4626,7 +4661,7 @@ if ($_GET['lang'] == "") {
     $lang_idx = $HEB;
 } else
     $lang_idx = @$_GET['lang'];
-if (($lang_idx != '0')&&($lang_idx != '1')&&($lang_idx != '2'))
+if (($lang_idx != '0')&&($lang_idx != '1')&&($lang_idx != '2')&&($lang_idx != '3')&&($lang_idx != '4'))
 {
     //logger("redirected to Heb:".$lang_idx);
     $lang_idx = $HEB;

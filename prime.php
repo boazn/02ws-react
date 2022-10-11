@@ -204,7 +204,7 @@
                                 </li>
 								<li class="forcast_text">
                                     
-									<? if (isHeb()) $dscpIdx = "lang1"; else $dscpIdx = "lang0"; echo urldecode($forecastday[$dscpIdx]);$textsum = $textsum + strlen(urldecode($forecastday[$dscpIdx]));?>
+									<? $dscpIdx = "lang".$lang_idx; echo urldecode($forecastday[$dscpIdx]);$textsum = $textsum + strlen(urldecode($forecastday[$dscpIdx]));?>
                                     <?if ($i < 5) {?>
                                                     <div id="divlikes<?=$key?>" class="likedislike">		
                                                             <a onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'like');"><img src="images/like_white.png" width="15px" height="15px" alt="<?=$LIKE[$lang_idx]?>" style="cursor:pointer" /></a>
@@ -426,11 +426,11 @@
                      
 		    <div id="mainadsense" style="line-height: 0;">
                 <div id="bg3-1" class="cloud2" >
-               סופת הוצאות מתקרב <a href="" style="line-height: 10px;
+               <a href="https://runnerswithoutborders.org/race/" style="line-height: 10px;
         position: absolute;
-        margin-left: 40px;
+        margin-left: 48px;
         margin-top: -5px;
-        z-index: 9999;"><?if (isHeb()){?><?}?></a>
+        z-index: 9999;"><?if (isHeb()){?> מרוץ חוצה גבולות <?}?></a>
                 <div class="cloud2-more">
                 
                 </div>
@@ -466,7 +466,7 @@
                
                 <?}?>                
                                
-                <div id="belowmainad" class="" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
+                <div id="belowmainad" class="white_box" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
                 <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
     קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2022 בירושלים<?}?></a>
                 </div>
@@ -489,6 +489,9 @@
                             <div id="alerts_app_promo"><?=$ALERTS_TO_APP_PROMO[$lang_idx]?></div>
                             <div id="message" class="box_text"><? echo nl2br($latestalert)."<br/>".nl2br($detailedforecast);?></div>
                             <p id="personal_message" class="box_text"></p>
+                            <p id="alertachive_href" class="box_text">
+                                <a href="<? echo get_query_edited_url($url_cur, 'section', 'alertarchive.php');?>" style=""><?=$MORE_INFO[$lang_idx]?><?=get_arrow()?></a>
+                            </p>
                             <?php if (isHeb()) { ?>
                             <a class="twitter-timeline" data-lang="he" href="https://twitter.com/YERU02WS?ref_src=twsrc%5Etfw">Tweets by YERU02WS</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                             <?php }?>
@@ -504,7 +507,7 @@
 	   </div>
 			
 		    <div class="row" style="margin: 5px -20px">
-		    
+                <?if ($lang_idx <= 1) {?>
                 <div id="mainstory" class="span7 offset3 white_box">
                 
                     <h2><?php echo $MainStory->get_title();?></h2>
@@ -522,7 +525,7 @@
                     </div>
                 
                 </div>
-                        
+                 <?}?>       
                 <div id="adexternal" class="span2">
                 
                    

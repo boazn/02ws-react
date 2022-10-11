@@ -2,7 +2,7 @@
 ini_set("display_errors","On");
 include ("include.php");
 include_once("start.php");
-ini_set('error_reporting', E_ERROR | E_PARSE);
+ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
 require_once 'vendor/autoload.php';
 
 use Jose\Component\Core\AlgorithmManager;
@@ -386,7 +386,6 @@ if (empty($empty)) {
           }
         } 
     catch (Exception $ex) {
-        logger($ex->getMessage(), 4, "Push", "SendSpecialService", "updateMessageFromMessages");
         $result .= " exception updateMessageFromMessages:".$ex->getMessage();
     }
     

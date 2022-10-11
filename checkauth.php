@@ -260,7 +260,7 @@ function set_new_password($email, $pass)
         $stmt->close();
        logger("set_new_password affected rows = 0: ".$query, 0, "auth", "db", "set_new_password");
         if (mysqli_connect_errno ($link) == 0)
-             header("location:station.php");
+             header("location:regConfirm.php?action=done&email=".$email);
         echo "<br />reset password failed";
         echo "<br />error: ".mysqli_connect_errno ($link)." ".mysqli_error ($link); 
       }
@@ -269,7 +269,7 @@ function set_new_password($email, $pass)
           $stmt->close();
           logger($query, 0, "auth", "db", "set_new_password");
           $_SESSION['email'] = $email;
-        header("location:station.php");
+        header("location:regConfirm.php?action=done&email=".$email);
       }
 }
 

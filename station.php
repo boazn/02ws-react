@@ -24,7 +24,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
         <meta property="og:image:height" content="628" />
         <meta property="og:description" content="<? echo "{$sig[0]['sig'][$lang_idx]}"; ?>" /> 
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-        <link rel="stylesheet" href="css/bootstrap<?=$lang_idx; ?>.css" type="text/css" >
+        <link rel="stylesheet" href="css/bootstrap<?=getCssIdx($lang_idx)?>.css" type="text/css" >
         
 	<!--<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.css">-->
@@ -34,7 +34,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                 padding-bottom: 40px;
             }
         </style>
-        <link rel="stylesheet"  href="css/main<?=$lang_idx;?>.css" type="text/css">
+        <link rel="stylesheet"  href="css/main<?=getCssIdx($lang_idx);?>.css" type="text/css">
         <? if ($current->is_sunset()) { ?>
         <link rel="stylesheet" title="mystyle" href="css/sunset.min.css" type="text/css">
         <? }?>
@@ -48,7 +48,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
         <link rel="stylesheet" title="mystyle" href="css/dust.min.css" type="text/css">
         <? }?>
         <? if (!$current->is_light()){  ?>       
-            <link rel="stylesheet" title="mystyle" href="css/night<?=$lang_idx?>.min.css" type="text/css">
+            <link rel="stylesheet" title="mystyle" href="css/night<?=getCssIdx($lang_idx)?>.min.css" type="text/css">
             <? if ($current->get_pm10() > 300) { ?>
             <link rel="stylesheet" title="mystyle" href="css/dust-night.min.css" type="text/css">
             <? }?>
@@ -260,10 +260,10 @@ $sigforecastHour = $mem->get('sigforecastHour');
                          	
 			
                          <? if ($lang_idx == 1) {?>
-								<p id="english"><a href="#" title="switch to english" onclick="changeLang('0')">English</a></p>
+								<p id="english"><a href="#" title="switch to english" onclick="changeLang('0')">English</a> <a href="#" onclick="changeLang('2')" title="switch to Russian">Русский</a> <a href="#" onclick="changeLang('3')" title="switch to French">Français</a></p>
 								<?} 
 								else {?>
-								<p id="hebrew"><a href="#" onclick="changeLang('1')" title="switch to hebrew">עברית</a></p>
+								<p id="hebrew"><a href="#" onclick="changeLang('1')" title="switch to hebrew">עברית</a> <a href="#" onclick="changeLang('2')" title="switch to Russian">Русский</a> <a href="#" onclick="changeLang('3')" title="switch to French">Français</a></p>
 				<?} ?>
                          <? if (!isHeb()) {?>
 				<div dir="ltr" class="il_image" id="tempunitconversion">
@@ -1213,8 +1213,9 @@ $sigforecastHour = $mem->get('sigforecastHour');
                             <li id="moon_btn" onclick="change_circle('moon_line', 'latestmoon')" class="span-value" data-value="<?=$MOON[$lang_idx]?>"></li>
                             <li id="all_btn"  onclick="showAllCircles()" class="span-value" data-value="<? echo $FULL[$lang_idx];?>"></li>
                             <li id="goodtimefor" style="top: 10px;position: relative;clear:both;text-align: <?=get_s_align()?>;padding: 0"><?=$GOOD_TIME_FOR[$lang_idx]?></li>
-                            <li><ul id="activities_yes"></ul></li>
-                            <li style="clear:both"><ul id="activities_no" ></ul></li>
+                            <li><ul id="activities_yes" class="activity"></ul></li>
+                            <li style="clear:both"><ul id="activities_no" class="activity" ></ul></li>
+                            <li style="clear:both"><div id="activities_perhour" ></div></li>
                     </div>        
                     <hr id="cold_line" />
                     <hr id="fseason_line" />

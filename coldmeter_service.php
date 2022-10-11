@@ -1,5 +1,7 @@
 <?
 header('Content-type: text/html; charset=utf-8');
+ini_set("display_errors","Off");	
+ini_set('error_reporting', E_ERROR | E_PARSE);
 session_start();
 /*foreach ($_SESSION as $key=>$value)
 {
@@ -9,9 +11,11 @@ foreach ($_COOKIE as $key=>$value)
 {
     $cookie .= " ".$key.":".$value;
 }*/
-include_once($_SERVER['DOCUMENT_ROOT']."/include.php");
+
 include_once("start.php");
+
 include_once("requiredDBTasks.php");
+
 $forecastHour = $mem->get('forecasthour');
 $nextSigForecast = array();
 $pgender = $_COOKIE['gender'];

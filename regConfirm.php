@@ -1,9 +1,20 @@
 <?php
 
-ini_set("display_errors","On");
+ini_set("display_errors","Off");
 include ("include.php");
 include ("start.php");
+function handle_action($action){
+    global $DONE, $lang_idx, $REGISTRATION_TO_02WS, $REGISTRATION_TO_02WS_DONE, $LOGO, $header_pic, $HOME_PAGE;
 
+    if ($action == "done")
+    {
+        echo "<div class=\"big success\"  style=\"margin:1em;padding:1em\"><h1>".$DONE[$lang_idx];
+        echo "</h1>";
+        echo "<h2>".$REGISTRATION_TO_02WS_DONE[$lang_idx]."</h2>";
+        echo "</div>";
+    }
+
+}
 function make_user_active($email, $user_id, $key, $reg_id){
     global $DONE, $lang_idx, $REGISTRATION_TO_02WS, $REGISTRATION_TO_02WS_DONE, $LOGO, $header_pic, $HOME_PAGE;
     $key = str_replace(" ", "+", $key);
@@ -63,15 +74,17 @@ function make_user_active($email, $user_id, $key, $reg_id){
    echo "Email not valid.";
 else if ((isset($_GET['k']))&&(isset($_GET['email'])))
     make_user_active($_GET['email'], $_GET['user'], urldecode($_GET['k']), $_GET['reg_id']);
+else if (isset($_GET['action']))
+    handle_action($_GET['action']);
 else
 {
     ?>
 
-<div id="loginform" style="padding:10em" class="inv_plain_3_zebra float big">
+<div id="loginform" style="padding:1em" class="inv_plain_3_zebra float big">
 <form action="checkauth.php?action=newpass" method="post">
-        <?=$EMAIL[$lang_idx]?>:<input type="text" name="email" value="<?=$_GET['email']?>" readonly="readonly" size="30" /><br />
-        <?=$NEW_PASSWORD[$lang_idx]?>:<input type="password" name="password" value="" /><br /><br />
-        <input type="submit" value="<?=$SEND[$lang_idx]?>" class="inv_plain_3 big info" />
+       <input type="text" name="email" value="<?=$_GET['email']?>" readonly="readonly" size="25" /><br /><br />
+        <?=$NEW_PASSWORD[$lang_idx]?><br /> <input type="password" name="password" value="" style="direction:ltr" /><br /><br /><br />
+        <input type="submit" value="<?=$SEND[$lang_idx]?>" class="float clear inv_plain_3_zebra big"  />
     </form>
 </div>
 <?

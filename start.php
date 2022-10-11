@@ -1,6 +1,7 @@
 <?php
 //redirectToSite(get_url());
-//ini_set("display_errors","On");	
+ini_set("display_errors","Off");	
+ini_set('error_reporting', E_ERROR | E_PARSE);
 include_once($_SERVER['DOCUMENT_ROOT']."/lang.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/include.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/ini.php");  
@@ -23,53 +24,7 @@ function get_url() {
         return ("https://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"]);
 }
 }
-function retrieveTemp2()
-{
-    global $current, $min15, $min30;
-    $path_to_file = 'temp2.csv';
-    $path_to_file_back = 'temptemp2.csv';
-    if (stristr($_SERVER['SCRIPT_NAME'], 'getAllTempForecast'))
-            $path_to_file = "../".$path_to_file;
-    $temp2_array = array();
-    try {
-        $temp2_array = @array_map('str_getcsv', @file($path_to_file));
-    } catch (Exception $ex) {
-        $temp2_array = array_map('str_getcsv', file($path_to_file_back));
-    }
-    
-    $temp2 = number_format(((intval($temp2_array[1][0])/10) -32)*(5/9), 1, '.', '');
-    $dewpoint2 = number_format(((intval($temp2_array[1][3])/10) -32)*(5/9), 1, '.', '');
-    $heatindex2 = number_format(((intval($temp2_array[1][4])/10) -32)*(5/9), 1, '.', '');
-    $thsw = number_format(((intval($temp2_array[1][25])/10) -32)*(5/9), 1, '.', '');
-    $datetime2_arr = explode(" ", $temp2_array[1][1]);
-    $date2_arr = $datetime2_arr[0]; 
-    $time2_arr = $datetime2_arr[1]; 
-    list($day2, $month2, $year2) = explode('/', $date2_arr);
-    list($hour2, $min2, $sec2) = explode(':', $time2_arr);
-    $date2 = @mktime ($hour2, $min2, $sec2, $month2, $day2 , $year2);
-    if ($_GET['debug'] >= 4){
-        echo $path_to_file." ";
-        print_r($temp2_array);
-    }
-    if (empty($temp2)||($temp2_array[1][0] == 0))
-    {
-       //logger("empty temp2 date2, taking current values...");
-       $temp2 = $current->get_temp2();
-       $date2 = time();
-       $dewpoint2 = $current->get_dew();
-       $heatindex2 = $current->get_heatidx();
-       // no current thsw value, so copy from min15
-       /* if (empty($min15->get_thsw()))
-            $thsw = $min30->get_thsw();
-        else {
-            $thsw = $min15->get_thsw();
-        }*/
-       
-    }
-    
-    return array("temp2" =>$temp2, "dewpoint2" =>$dewpoint2, "heatindex2" =>$heatindex2, "thsw"=> $thsw, "date2" => $date2);
-    //var_dump ($temp2_array);
-}
+
 $template_routing = @$_GET['section'];    
 $profile = @$_GET['profile'];
 $hoursForecast = @$_GET['hours'];
@@ -78,12 +33,7 @@ $limitLines = LIMIT_CHAT_LINES;
 // url reset
 //
 $url_cur = get_url();
-//$url_cur = get_query_edited_url($url_cur, 'hours', '');
-//$url_cur = get_query_edited_url($url_cur, 'level', '');
-//$url_cur = get_query_edited_url($url_cur, 'profile', '');
-//$url_cur = @get_query_edited_url($url_cur, 'graph', '');
-//echo $url_cur;
-//
+
 $error_update = false;
 $boolbroken = false;
 $messageBroken = array();
@@ -144,8 +94,8 @@ if (stristr($_SERVER['SCRIPT_NAME'], 'getAllTempForecast'))
     $fulldatatotake = "../".$fulldatatotake;
 
 $ary_parsed_file = getXMLInArray($fulldatatotake);
-$last2 = retrieveTemp2();
-$temp2 = $last2['temp2'];
+//$last2 = retrieveTemp2();
+//$temp2 = $last2['temp2'];
 
 $current->set_temp2($ary_parsed_file['TEMP2']);
 
@@ -283,22 +233,42 @@ $oneHour->set_time(getMinusMinTime(60));
 $oneHour->set_date(getMinusMinDate(60));
 $threeHours->set_time(getMinusMinTime(180));    
 $threeHours->set_date(getMinusMinDate(180));
-$tok = getTokFromFile($prefix.FILE_ARCHIVE);
-// now
-if ($_GET['debug'] >= 1)
-	echo "<br>in ".$prefix.FILE_ARCHIVE."<br>searching ",$now->get_date()," and ",$now->get_time()," ";
-if (searchNext ($tok, $now->get_date())){// found the date in the file{}
+
+
+// thsw
+
+
+if (time() - $mem->get('thsw_ttime') > 120)
+{
+    $tok = getTokFromFile($prefix.FILE_ARCHIVE);
+    // now
+    if ($_GET['debug'] >= 1)
+        echo "<br>in ".$prefix.FILE_ARCHIVE."<br>searching ",$now->get_date()," and ",$now->get_time()," ";
+    if (searchNext ($tok, $now->get_date())){// found the date in the file{}
+    if ($_GET['debug'] >= 1)
+        echo "<br>in ".$prefix.FILE_ARCHIVE."<br>searching ",$min15->get_time()," ";
     if ( searchNext ($tok, $min15->get_time())){
         $min15->set_thsw(getNextWord($tok, 14, "thsw"));
     }
+    if ($_GET['debug'] >= 1)
+        echo "<br>in ".$prefix.FILE_ARCHIVE."<br>searching ",$now->get_time()," ";
     if ( searchNext ($tok, $now->get_time())){
         $current->set_thsw(getNextWord($tok, 14, "thsw"));
+        $mem->set('thsw', $current->get_thsw());
+        $mem->set('thsw_ttime', time());
     }
-    if (($current->get_thsw()==""))
+    if (($current->get_thsw()=="")){
         $current->set_thsw($min15->get_thsw());
+        $mem->set('thsw', $current->get_thsw());
+        $mem->set('thsw_ttime', time());
+    }
+    else if ($_GET['debug'] >= 1)
+        echo "<strong>NOT FOUND</strong>";
+    }
 }
-else if ($_GET['debug'] >= 1)
-    echo "<strong>NOT FOUND</strong>";
+    
+        
+
 fillPastTime ($oneHour, $ary_parsed_file, '60');
 fillPastTime ($min30, $ary_parsed_file, '30');
 fillPastTime ($min15, $ary_parsed_file, '15');

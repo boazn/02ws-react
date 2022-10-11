@@ -2,8 +2,8 @@
 define("MANAGER_NAME","bn");
 define("ICONS_PATH","images/icons/day");
 define("CLOTHES_PATH","images/clothes");
-ini_set("display_errors","On");
-ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+//ini_set("display_errors","On");
+ini_set('error_reporting', E_ERROR | E_PARSE);
 ?>
 <style>
     #section input
@@ -277,8 +277,8 @@ function saveForecastDay($idx,
     $forecastDaysDB[$idx]['windNight'] = $windNight;
     $forecastDaysDB[$idx]['lang0'] = $lang0;
     $forecastDaysDB[$idx]['lang1'] = $lang1;
-    //$forecastDaysDB[$idx]['lang2'] = translateText(urlencode($lang0), 'ru');
-    //$forecastDaysDB[$idx]['lang3'] = translateText(urlencode($lang0), 'fr');
+    $forecastDaysDB[$idx]['lang2'] = translateText(urlencode($lang0), 'ru');
+    $forecastDaysDB[$idx]['lang3'] = translateText(urlencode($lang0), 'fr');
     //$forecastDaysDB[$idx]['lang4'] = translateText(urlencode($lang0), 'ar');
     $forecastDaysDB[$idx]['active'] = $active;
     $forecastDaysDB[$idx]['icon'] = $icon;
@@ -420,12 +420,13 @@ function updateAds ($active, $idx, $type, $command, $img_url, $href, $w, $h)
 }
 function updateMessages ($description, $active, $type, $lang, $href, $img_src, $title, $append)
 {
-    global $forecastHour, $mem;
+    global $forecastHour, $mem, $RU, $FR, $AR;
     //$description = nl2br($description);
     $description = str_replace("'", "`", $description);
     $description = str_replace("\"", "``", $description);
     $now = replaceDays(date('D H:i'));
     $ttl = 360;
+    $messageType = "long_range";
      //$now = getLocalTime(time());
     $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'forecast') and (lang=?)", $lang);
     while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
@@ -436,20 +437,18 @@ function updateMessages ($description, $active, $type, $lang, $href, $img_src, $
     while ($line = mysqli_fetch_array($res["result"], MYSQLI_ASSOC) ){
         $latestalert = $line["Description"];
         $alertTitle = $line["Title"];
+        $latestalert_time = replaceDays(date('D H:i', $mem->get('latestalerttime'.$lang)));
     }
-    $description_appended = $latestalert."\n".$descriptionforecast;
+    $description_appended = $latestalert_time."\n".$latestalert."\n".$descriptionforecast;
     
     //echo "append=".$append."<br/>";
     if ($append==1){
         $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='forecast') and (lang=$lang)";
-        $mem->set('descriptionforecast'.$lang, $description_appended);
         $res = db_init($query, "" );
         //echo $query;
         //$description = "<div class=\"alerttime\">".$now."</div><div class=\"title\">".$description."</div>";
         $description = $now."\n".$description;
         $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='$type') and (lang=$lang)";
-        $mem->set('latestalert'.$lang, $description);
-        $mem->set('latestalerttime'.$lang, time());
         $res = db_init($query, "" );
        
          
@@ -464,13 +463,28 @@ function updateMessages ($description, $active, $type, $lang, $href, $img_src, $
             $mem->set('latestalerttime'.$lang, time());
             $mem->set('latestalertttl', $ttl*60);
             $mem->set('latestalerttype', $messageType);
+            $mem->set('latestalert_title'.$lang, $title);
             $mem->set('descriptionforecast_title'.$lang, $alertTitle);
+            if ($lang == 0)
+            {
+                $mem->set('latestalert'.$RU, translateText(urlencode($description), 'ru'));
+                $mem->set('latestalert_title'.$RU, translateText(urlencode($title), 'ru'));
+                $mem->set('latestalert'.$FR, translateText(urlencode($description), 'fr'));
+                $mem->set('latestalert_title'.$FR, translateText(urlencode($title), 'fr'));
+            }
             echo "updateLAlert".$lang."=".date('Y-m-d G:i D', $mem->get('latestalerttime'.$lang));
         }   
         else if ($type == 'forecast'){
             $mem->set('descriptionforecast'.$lang, $description);
             $mem->set('descriptionforecasttime'.$lang, time());
-            $mem->set('descriptionforecast_title'.$lang, $alertTitle);
+            $mem->set('descriptionforecast_title'.$lang, $title);
+            if ($lang == 0)
+            {
+                $mem->set('descriptionforecast'.$RU, translateText(urlencode($description), 'ru'));
+                $mem->set('descriptionforecast_title'.$RU, translateText(urlencode($title), 'ru'));
+                $mem->set('descriptionforecast'.$FR, translateText(urlencode($description), 'fr'));
+                $mem->set('descriptionforecast_title'.$FR, translateText(urlencode($title), 'fr'));
+            }
             echo "updateforecast".$lang."=".date('Y-m-d G:i D', $mem->get('descriptionforecasttime'.$lang));
         }
         else if ($type == 'synop'){
@@ -1075,7 +1089,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		
 	</div>
 	<div class="cell shrinked" >
-		
+        <input id="latestALert_title<?=$line["lang"]?>" name="latestALert_title<?=$line["lang"]?>" size="1"  value="<?=$line["Title"]?>" style="width:280px;text-align:<?if ($line["lang"] == "1") echo "right"; else echo "left;direction:ltr";?>;" /><br/>
 		<textarea id="descriptionLAlert<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
@@ -1107,7 +1121,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 <div id="forecast_href_plugin" class="invcell shrinked" >
 			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>&nbsp;&nbsp;
 	
-			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>&nbsp;&nbsp;
+			<a href="javascript: void(0)" id="hrefforecast<?=$line["lang"]?>" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>&nbsp;&nbsp;
 			
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecast')" style="cursor:pointer" />
@@ -1127,7 +1141,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		
 	</div>
 	<div class="cell shrinked" >
-		
+        <input id="descriptionforecast_title<?=$line["lang"]?>" name="descriptionforecast_title<?=$line["lang"]?>" size="1"  value="<?=$line["Title"]?>" style="width:280px;text-align:<?if ($line["lang"] == "1") echo "right"; else echo "left;direction:ltr";?>;" /><br/>
 		<textarea id="descriptionforecast<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
@@ -1485,6 +1499,7 @@ function getOneUFService(dayToSave, command, type)
 
             var description = document.getElementById('description'+dayToSave).value;
              var lang = document.getElementById('lang'+dayToSave).value;
+             
                            
             var img_src = document.getElementById('img'+dayToSave);
             var max_time = document.getElementById('max_time').value;
@@ -1498,7 +1513,7 @@ function getOneUFService(dayToSave, command, type)
             {
                     href = href.value;	
             }
-            var title = document.getElementById('title'+dayToSave);
+            var title = document.getElementById('descriptionforecast_title'+lang);
             if (title)
             {
                     title = title.value;

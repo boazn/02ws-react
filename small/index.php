@@ -5,64 +5,9 @@ ini_set("display_errors","Off");
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
 if ($_GET['debug'] == '')
 include "../begin_caching.php";
+include ("../lang.php");
 define("BASE_URL","https://www.02ws.co.il");
-$HOME_PAGE = array("To home page","לעמוד הראשי");
-$HOTORCOLD_T = array("Cold meter", "מדד הקור");
-$FSEASON_T = array("Best season", "העונה הטובה");
-$IT_FEELS = array("Feels like", "מרגיש כמו");
-$IN_THE_SUN = array("sun", "שמש");
-$MINTS = array("min", "דק'");
-$DAILY_RAIN = array("Daily rain", "גשם היום מחצות");
-$SYSTEM = array("System", "מערכת");
-$TOTAL_RAIN = array("Total", "סה'כ");
-$RAIN = array("rain","גשם");
-$CLOTH = array("cloth","לבוש");
-$CHANCE_OF = array("Chance of", "סיכוי ל-");
-$RAIN_RATE = array("Rain rate" , "עוצמת גשם");
-$TEMP = array("Temperature" , "טמפרטורה");
-$WIND = array("wind" , "רוח");
-$HUMIDITY = array("humidity" , "לחות");
-$RADIATION = array("radiation" , "קרינה", "излучение ");
-$DUST = array("dust", "אבק", "пыль");
-$RUN_WALK = array("Run and walk", "הליכה וריצה", "");
-$DUSTPM25 = array("small ", "אבק קטן", "пыль");
-$DUSTPM10 = array("large", "אבק גדול", "пыль");
-$DUST_THRESHOLD1 = array("Not healthy", "לא בריא", "вредно для здоровья");
-$DUST_THRESHOLD2 = array("Sport activity is not recommended", "לא לעשות ספורט", "не рекомендуется заниматься спортом, более опасный");
-$DUST_THRESHOLD3 = array("small is more dangerous", "הקטן יותר מסוכן", "не рекомендуется заниматься спортом, более опасный"); 
-$HOURLY = array("Hourly", "שעתי");
-$FORECAST_4D = array("Daily", "יומי");
-$GIVEN = array("given", "ניתנה");
-$AT = array("at ", "ב-");
-$MESSAGES = array("Alerts", "התראות");
-$REMOVE_ADS = array("Want to remove ads? click here:", "רוצה להסיר פרסומות? כאן:");
-$LIVE_PICTURE = array("Live Air", "שידור חי");
-$RAIN_UNIT = array("mm", "מ''מ");
-$WIND_UNIT = array("km/h", "קמש");
-$RAINRATE_UNIT = array("mm/hr", "מ''מ\שעה");
-$MALE = array("Male", "גבר");
-$FEMALE = array("Female", "אישה");
-$NOR_MALE_NOR_FEMALE = array("no male nor female", "לא רוצה לציין");
-$CHAT_TITLE = array("Forum", "פורום");
-$RAIN_RADAR = array("Radar", "מכ''ם גשם");
-$VALLEY = array("valley", "בעמק");
-$MOUNTAIN = array("hill", "בהר");
-$ROAD = array("at road", "בכביש");
-$AVERAGE = array("average", "ממוצע");
-$MOBILE_FRIENDLY = array("Mobile friendly" , "מותאם לנייד");
-$WEBSITE_TITLE = array ("Jerusalem Weather Forecast Station", "ירושמים - תחזית ומזג-האוויר בירושלים בזמן אמת", "Иерусалимская метеорологическая станция");
-$MORE_INFO = array("more", "עוד", "еще");
-$EXPAND = array("In table", "בטבלה");
-$PIC_OF_THE_DAY = array("Pic of the day", "תמונת היום", "");
-$USERS_PICS = array("Users Pics", "תמונות הגולשים", "");
-$NOW = array("Now", "עכשיו", "");
-$SHADE = array("shade", "צל", "");
-$SUNSHINEHOURS = array("sunshine hours" , "שעות שמש", "световой день ");
-$TILL_NOW = array("till now", "עד עכשיו", "До настоящего времени");
-$CHOOSE_STARTPAGE = array("choose this page as start page", "בחירת דף זה כדף פתיחה", "выберите эту страницу в качестве стартовой");
-$RISE = array("Rise", "זריחה", "Восход");
-$SET = array("Set", "שקיעה", "Закат");
-$DESKTOP_REDIRECT = array("To website", "לאתר", "website");
+
 
 function mainPage()
 {
@@ -85,6 +30,19 @@ function get_arrow(){
 	else
 		return "&nbsp;&#8250;&#8250;"; //"&#9658;";
 }}
+if (!function_exists('getCssIdx')){
+function getCssIdx ($lang_idx){
+    switch ($lang_idx)
+    {
+        case ($lang_idx == 1):
+            return $lang_idx;
+        default:
+            return 0;
+    }
+    return $lang_idx;
+}
+}
+
 if (!function_exists('isHeb')){
 function isHeb()
 {
@@ -144,8 +102,8 @@ if (isRadarPage())
 <html  <? if (isHeb()) echo "lang=\"he\" xml:lang=\"he\"" ; ?> xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-<link rel="stylesheet" href="<?=BASE_URL?>/css/main<?=$lang_idx;?>.css" type="text/css" />
-<link rel="stylesheet" href="<?=BASE_URL?>/css/mobile<?=$lang_idx;?>.css" type="text/css" />
+<link rel="stylesheet" href="<?=BASE_URL?>/css/main<?=getCssIdx($lang_idx);?>.css" type="text/css" />
+<link rel="stylesheet" href="<?=BASE_URL?>/css/mobile<?=getCssIdx($lang_idx);?>.css" type="text/css" />
 <link rel="manifest" href="manifest.php?lang=<?=$lang_idx?>">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -1375,7 +1333,11 @@ Licensed MIT
         if ((latestalerttext.length > partialtextlastindex))
             latestalerttext = "<a href=\"javascript:void(0)\" class=\"info\" >" + latestalerttext.substring(0, partialtext.length-1) + "<div class=\"title\">" + '<? echo get_arrow();?>' + "</div>" + "<span class=\"info\"> " + latestalerttext.replace(/(\r\n|\r|\n)/g, '<br/>') + "</span></a>";
 
-        $('#messages_box').children('.box_text').html(decodeURIComponent(json.jws.Messages.addonalert<?=$lang_idx?>+json.jws.Messages.latestalert<?=$lang_idx?>+json.jws.Messages.detailedforecast<?=$lang_idx?>).replace(/\+/g, ' ').replace(/(\r\n|\r|\n)/g, '<br/>'));
+        $('#messages_box').children('.box_text').html('<h3>' + json.jws.Messages.latestalert_title<?=$lang_idx?> + '</h3>'
+                                                + json.jws.Messages.timelatestalert1 + '<br/>' 
+                                                + decodeURIComponent(json.jws.Messages.latestalert<?=$lang_idx?>
+                                                + '<h3 >' + json.jws.Messages.detailedforecast_title<?=$lang_idx?> + '</h3>' 
+                                                + json.jws.Messages.detailedforecast<?=$lang_idx?>).replace(/\+/g, ' ').replace(/(\r\n|\r|\n)/g, '<br/>'));
         $('#tempdivvalue, #tempdivvaluestart').html('<div class="shade">' + ((json.jws.current.islight == 1) ? "" : "") + '</div>' + c_or_f(json.jws.current.temp, tempunit)+'<div class="param">'+tempunit+'</div>');
         $('#tempdivvalue').css('visibility', 'visible');
         $('#tempdivvaluestart').fadeIn(30);
