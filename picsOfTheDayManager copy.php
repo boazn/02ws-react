@@ -123,10 +123,7 @@ if ( isset( $_POST["comment1"]) )
 {
     //print_r($_POST);
    //print_r($_FILES);
-    $db = new DB_Functions();
-    
-    $res = $db->storePic($_FILES['imagefile']['name'], $_POST['comment0'], $_POST['comment1'], 0, 0, 0);
-    $file_path = "https://".$_SERVER["HTTP_HOST"]."/".PIC_PREFIX_PATH.$_FILES['imagefile']['name'];
+   
     $img = "<a href=\"".$file_path."\" title=\"pic of the day\" target=\"_blank\"><img src=\"".$file_path."\" alt=\"pic of the day\" /></a>";
 
     $res .= "<br /><br />".post_to_bufferApp($_POST['comment1'], $file_path); 

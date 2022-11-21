@@ -1061,7 +1061,7 @@ $JSON .= "{";
 $index_hour = 0;
 foreach ($forecastHour as $hour_f){
     $index_hour++;    
-    if (($hour_f['currentDateTime'] - time() >= 0)){
+    if ((abs($hour_f['currentDateTime']) - time()) < 1800){
          $nowHourIndex = $index_hour;
          $mem->set('nowHourIndex', $nowHourIndex);
          break;
@@ -1095,33 +1095,62 @@ $JSON .= ",";
 if ((count($sig) > 1)){
     $sigtitle0 = $sig[0]['sig'][0];
     $sigtitle1 = $sig[0]['sig'][1];
-    $sigext0 = $sig[0]['extrainfo'][0][0];
-    $sigext0plain = $sig[0]['extrainfo'][0][1];
-    $sigext1 = $sig[0]['extrainfo'][1][0];
-    $sigext1plain = $sig[0]['extrainfo'][1][1];
+    $sigext0 = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig[0]['extrainfo'][0][0]));
+    $sigext0plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig[0]['extrainfo'][0][1]));
+    $sigext1 = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig[0]['extrainfo'][1][0]));
+    $sigext1plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig[0]['extrainfo'][1][1]));
 }
 $JSON .= "\"sigtitle0\":"."\"".$sigtitle0."\"";
 $JSON .= ",";
 $JSON .= "\"sigtitle1\":"."\"".$sigtitle1."\"";
 $JSON .= ",";
-$JSON .= "\"sigexthtml0\":"."\"".preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sigext0))."\"";
+$JSON .= "\"sigexthtml0\":"."\"".$sigext0."\"";
 $JSON .= ",";
-$JSON .= "\"sigext0\":"."\"".preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sigext0plain))."\"";
+$JSON .= "\"sigext0\":"."\"".$sigext0plain."\"";
 $JSON .= ",";
-$JSON .= "\"sigexthtml1\":"."\"".preg_replace( "/\r|\n/", " ", str_replace("\"", "&quot;", $sigext1))."\"";
+$JSON .= "\"sigexthtml1\":"."\"".$sigext1."\"";
 $JSON .= ",";
-$JSON .= "\"sigext1\":"."\"".preg_replace( "/\r|\n/", " ", str_replace("\"", "&quot;", $sigext1plain))."\"";
+$JSON .= "\"sigext1\":"."\"".$sigext1plain."\"";
 
 $SIGWEATHER_JSON = ", \"sigweather\": [";
+$sig_item_idx = 0;
 foreach ($sig as $sig_i){
+    $sig_item_idx++;
     $sigtitle0 = $sig_i['sig'][0];
     $sigtitle1 = $sig_i['sig'][1];
-    $sigext0 = $sig_i['extrainfo'][0][0];
-    $sigext0plain = $sig_i['extrainfo'][0][1];
-    $sigext1 = $sig_i['extrainfo'][1][0];
-    $sigext1plain = $sig_i['extrainfo'][1][1];
+    $sigext0 = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig_i['extrainfo'][0][0]));
+    $sigext0plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig_i['extrainfo'][0][1]));
+    $sigext1 = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig_i['extrainfo'][1][0]));
+    $sigext1plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig_i['extrainfo'][1][1]));
     $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",\"url\":"."\"".$sig_i['url']."\"  }";
     $SIGWEATHER_JSON .= ",";
+}
+if ($boolbroken)
+{
+      
+		//echo $messageBroken[$i][$lang_idx];
+        $sigtitle0 = $messageBroken[0][0];
+        $sigtitle1 = $messageBroken[0][1];
+        $sigext0 = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $messageBroken[1][0].": ".$messageBroken[2][0]));
+        $sigext0plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $messageBroken[1][0].": ".$messageBroken[2][0]));
+        $sigext1 = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $messageBroken[1][1].": ".$messageBroken[2][1]));
+        $sigext1plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $messageBroken[1][1].": ".$messageBroken[2][1]));
+	
+    $sig_item_idx++;
+    $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",\"url\":"."\"".$sig_i['url']."\"  }";
+    $SIGWEATHER_JSON .= ",";
+}
+
+if ($sig_item_idx == 0){
+   
+        $sigext0 = "";$sigext1 = "";
+        //$sigext0 = $sig_i['extrainfo'][0][0];
+        //$sigext0plain = $sig_i['extrainfo'][0][1];
+        //$sigext1 = $sig_i['extrainfo'][1][0];
+        //$sigext1plain = $sig_i['extrainfo'][1][1];
+        $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigRun[1]['sig'][0]."\", \"sigtitle1\":"."\"".$sigRun[1]['sig'][1]."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" ,\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\", \"sigext1\":"."\"".str_replace('"', "&quot;", $sigext1)."\",\"url\":"."\"".$sig_i['url']."\"  }";
+        $SIGWEATHER_JSON .= ",";
+    
 }
 $SIGWEATHER_JSON = rtrim($SIGWEATHER_JSON, ",");
 $SIGWEATHER_JSON .= "]";
@@ -1162,7 +1191,7 @@ $FORECASTCALC_JSON .= "]";
 $JSON .= $FORECASTCALC_JSON; 
 
 $JSON .= ",\"LatestUserPic\":[";
-$result = db_init("SELECT * FROM UserPicture where approved=1 order by uploadedAt DESC LIMIT 7","");
+$result = db_init("SELECT * FROM UserPicture where approved=1 order by uploadedAt DESC LIMIT 10","");
 while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
     $picname = "images/userpic/".$line["picname"];
     $JSON .= "{";

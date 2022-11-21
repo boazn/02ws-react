@@ -45,16 +45,16 @@ $HIGH_UV = array("High and dangerous UV", "קרינה מסוכנת", "Опасн
 $ET = array("Evapotranspiration", "אידוי", "Количество испарения","évaporation");
 $HIGH_ET = array("Irrigation needed", "הצמחים צמאים", "Стоит подумать о поливе","les plantes ont soif");
 $KNOTS = array("knots", "קשר", "узлов","nœuds");
-$KMH = array("km/h", "קמש", "км/ч","km/h");
-$BAR_UNIT = array("mb", "מ&#39;&#39;ב", "мб ","mb");
-$RAIN_UNIT = array("mm", "מ&#39;&#39;מ", "мм","mm");
+$KM = array("km", "קמ", "км","km");
+$BAR_UNIT = array("mb", "מב", "мб ","mb");
+$RAIN_UNIT = array("mm", "ממ", "мм","mm");
 $WIND_UNIT = array("km/h", "קמש", "км/час","km/h");
-$RAINRATE_UNIT = array("mm/hr", "מ&#39;&#39;מ\שעה", "мм/час","mm/heure");
-$SNOW_UNIT = array("cm", "ס&#39;&#39;מ", "см","cm");
+$RAINRATE_UNIT = array("mm/hr", "ממ לשעה", "мм/час","mm/heure");
+$SNOW_UNIT = array("cm", "סמ", "см","cm");
 $KMH = array("km/hr", "קמש", "км/час","km/h");
-$MINTS = array("min", "דק&#39;", "мин","min.");
+$MINTS = array("min", "דק'", "мин","min.");
 $HOUR = array("hour", "שעה", "час","heure");
-$HOURS = array("hrs", "שע&#39;", "часов ","h.");
+$HOURS = array("hrs", "שע'", "часов ","h.");
 $CLOSE_TO = array("close to", "קרוב ל-", "около","près de");
 $SNOW_JER = array("Snow in Jerusalem", "שלג בירושלים", "Снег в Иерусалиме","neige à Jérusalem");
 $SNOW_PICTURES = array("Snow pictures from that day", "תמונות שלג מהאירוע", "Фотографии снега этого дня ","Photographies de neige de cette journée");
@@ -156,7 +156,7 @@ $SPORT_FORBIDEN = array("You should hold your outside activity", "צריך לצ�
 $ALERGY = array("allergy", "אלרגיה", "аллергия","allergie");
 $TEMPO = array("temporarily", "זמנית", "временно","temporaire");
 $CLOUDY = array("cloudy", "מעונן", "облачно","nuageux");
-$MOSTLY = array("mostly", "בד&#39;&#39;כ", "обычно","d’habitude");
+$MOSTLY = array("mostly", "בד''כ", "обычно","d’habitude");
 $PARTLY = array("partly", "חלקית", "частично","partiellement");
 $PARTLY_CLOUDY = array("partly cloudy", "מעונן חלקית", "переменная облачность","partiellement nuageux");
 $FEW_CLOUDS = array("few clouds", "כמה עננים", "небольшая облачность","quelques nuages");
@@ -208,7 +208,7 @@ $OVERLOOK = array("Outlook", "תשקיף", "прогноз","observation");
 $OVERLOOK_EXP = array("The forecast might change in a higher chance than previous days", "התחזית עשויה להשתנות בסיכוי גבוה יותר מאשר ימים קודמים", "Вероятность изменения прогноза выше чем в предыдущие дни","la prévision est plus susceptible d’évoluer que d’habitude");
 $NIGHT_TEMP_EXP = array("Evening = 20:00 to 24:00. Low temp occurs usually (but not always) in the early morning of the same day", "השעות 20:00 עד 23:00. מינימום מתרחש בד&#39;&#39;כ בשעות של לפנות בוקר. את המינימום של אותו לילה תמצאו למחרת", "Вечер = 20:00 по 24:00. Минимальная температура за день как правило рано утром","Il se passe peu de choses entre 20h et minuit.");
 $WHAT_IS_FORECAST = array("What is weather forecast?", "מה זאת תחזית?", "Что такое прогноз?","qu’est ce qu’une prévision météorologique?");
-$FORECAST_DESC = array("This forecast is for Jerusalem. For other location nearby you have to increase 0.8 degreee for every 100m decrease in elevation.", "זאת תחזית עבור ירושלים. אם מחפשים יעד קרוב בגובה אחר - צריך להעלות 0.8 מעלות לכל 100 מ&#39; ירידה בגובה.&lt;br/&gt;הזמנים המוזכרים עבור התחזית ל-24 שעות הינם בגדר הערכות ולא מתיימרים לציין זמן מדוייק. כלומר זה יותר בגדר &#39;ערב&#39;, &#39;בוקר&#39; או &#39;לילה&#39;. &lt;br/&gt; מה זאת תחזית? עד כמה אפשר לדייק בתחזית? אלה שאלות רלוונטיות שלרוב לא מתייחסים להן בכלל. &lt;br/&gt; אנשים רוצים לדעת אם יירד גשם בשעה 12:35 על עץ התות בחצר תיאטרון החאן. זאת בקשה לא אפשרית כי תחזית אפשר לתת לאיזור ולטווח של שעות, לא לשעה ספציפית ולא למקום ספציפי. זהו פער (בין הרצוי למצוי) שתמיד קיים ותמיד יתקיים בעתיד הנראה לעין, בגלל הצורה שבה תחזית נוצרת. &lt;br/&gt; תחזית נוצרת מתנאי התחלה הנלקחים מבלונים המופרחים לאוויר בנקודות מדגמיות בעולם, הלא הן הרדיוסונדות. בארץ יש רק מקום אחד שממנו מופרח בלון כזה. משום שזה מדגמי ובגלל הסיבוכיות של האטמוספירה, אפשר לחזות  רק ל-4-5 ימים בדיוק לא רע עבור אזורים ולתת תשקיף לשבוע מראש. לא עבור נקודות על המפה. &lt;br /&gt; אבל כאן אנחנו מדברים על תחזית לנקודה ספציפית - ירושלים. לכן כבר מעצם הגדרת התחזית יש כאן כשל. כשל שיכול לגרום לאי דיוק, לכאורה, בתחזית. תחזית למיקום ספציפי רגישה הרבה יותר לשינויים קלים במיקומי מערכות. שקע זז כמה קמ ויש לכך השפעה מקצה לקצה בירושלים. כאן באתר יש ניסיון לתת ניואנסים בתחזית שיתאימו לאיזור ירושלים, דבר שלא קיים בתחזיות הכלליות שניתנות במקומות אחרים. &lt;br /&gt; בחורה הולכת במדרכה יבשה בתלפיות, כאשר בגבעה הצרפתית הכל רטוב והיא תגיד לעצמה : &#39;איפה הגשם?&#39; &lt;br/&gt; כלבלב ילך להשתין להנאתו בגן סאקר ויתפלא שלא יורד גשם, כאשר חברו בתלפיות יעשה סקי מים בשלוליות שליד ביתו. &lt;br /&gt; תחזית שמנבאת גשם שיורד לבסוף ברמאללה ולא דרומה מכך היא עדיין תחזית שהצליחה, מכיוון  שמדובר באותו איזור ההר המרכזי. צריך להכיר במגבלות התחזית. &lt;br /&gt; יש גם את האנשים שקמים בבוקר אחרי לילה גשום אל תוך יום יבש וישר חושבים שהתחזית נכשלה. גם גשם בלילה הוא גשם. לילה הוא חלק  מהיממה. &lt;br /&gt; אחרי שנאמרו כל הדברים, קורה גם שהתחזית נכשלת וכן, זה מבאס. אבל, הכל בא מתוך רצון  לתת שירות שלא קיים ברשת. אז תיהנו!" , " Это прогноз для Иерусалима. Если вы хотите прогноз на близлежащие к Иерусалиму места, прибавьте 0.8° за каждые 100 метров понижения.&lt;br/&gt; Почасовой прогноз на ближайшие сутки может быть не точный. То есть  его лучше воспринимать как &#39;вечер&#39;, &#39;утро&#39; или &#39;ночь&#39;.&lt;br/&gt; Что такое прогноз? На сколько точен прогноз? Мы очень часто игнорируем эти вопросы.&lt;br/&gt; Мы хотим знать будет ли идти дождь над яблоней, стоящей во дворе театра Хен, в 12:35. Но это невозможно, так как прогноз можно дать только по области и на какой-то период времени. Эта разница между желаемым и возможным всегда была, есть и будет пока не придумают более совершенный способ прогнозирования.&lt;br/&gt; Основанием для всех прогнозов является система воздушных шариков, которые запускаются в ключевых точках по всему миру, под названием Радиозонд. В Израиле есть только одна такая точка, запуская шарик мы получаем несколько замеров. Из-за сложности структуры атмосферы и из-за того, что замеры точечные, есть возможность получить неплохой прогноз только на 4-5 дней, а также получить обзор на ближайшую неделю. Замечу, что прогноз будет по области, а не на точку на карте. Сейчас же мы говорим о прогнозе в Иерусалиме, а не об области радиозонда — это одна из причин неточности прогноза. Прогнозисту приходится делать дополнительные замеры, чтобы получить прогноз в Иерусалиме.&lt;br/&gt; Например девушка идет по сухому тротуару в Тальпиоте в то время как в Гива Царфатит все мокро от дождя и думает &#39;ну и где же обещанный дождь?&#39;.&lt;br/&gt; Собачка пойдет пописать в Ган Сакер и удивится, что нету дождя, в то время как её друг в Тальпиоте катается по лужам на водных лыжах.&lt;br/&gt; Например, по прогнозу должен был быть дождь в Рамалле но он прошёл южнее, это все равно хороший прогноз так-как прогноз был сделан на область холма, где располагается Рамалла. Нужно знать границы возможностей прогноза.&lt;br/&gt; Ещё пример – человек просыпается с утра после дождливой ночи, а на улице сухо и он уверен, что прогноз был ошибочный. Всё потому, что прогноз правильный на сутки, а ночь, это часть суток.&lt;br/&gt; Кроме всего вышесказанного есть так же ошибки в прогнозе и это огорчает, но надо помнить, что в конечном счёте все это делается ради вашего блага. Получаете удовольствие!","");
+$FORECAST_DESC = array("This forecast is for Jerusalem. For other location nearby you have to increase 0.8 degreee for every 100m decrease in elevation.", "זאת תחזית עבור ירושלים. אם מחפשים יעד קרוב בגובה אחר - צריך להעלות 0.8 מעלות לכל 100 מ&#39; ירידה בגובה.<br/>הזמנים המוזכרים עבור התחזית ל-24 שעות הינם בגדר הערכות ולא מתיימרים לציין זמן מדוייק. כלומר זה יותר בגדר &#39;ערב&#39;, &#39;בוקר&#39; או &#39;לילה&#39;. <br/> מה זאת תחזית? עד כמה אפשר לדייק בתחזית? אלה שאלות רלוונטיות שלרוב לא מתייחסים להן בכלל. <br/> אנשים רוצים לדעת אם יירד גשם בשעה 12:35 על עץ התות בחצר תיאטרון החאן. זאת בקשה לא אפשרית כי תחזית אפשר לתת לאיזור ולטווח של שעות, לא לשעה ספציפית ולא למקום ספציפי. זהו פער (בין הרצוי למצוי) שתמיד קיים ותמיד יתקיים בעתיד הנראה לעין, בגלל הצורה שבה תחזית נוצרת. <br/> תחזית נוצרת מתנאי התחלה הנלקחים מבלונים המופרחים לאוויר בנקודות מדגמיות בעולם, הלא הן הרדיוסונדות. בארץ יש רק מקום אחד שממנו מופרח בלון כזה. משום שזה מדגמי ובגלל הסיבוכיות של האטמוספירה, אפשר לחזות  רק ל-4-5 ימים בדיוק לא רע עבור אזורים ולתת תשקיף לשבוע מראש. לא עבור נקודות על המפה. <br/> אבל כאן אנחנו מדברים על תחזית לנקודה ספציפית - ירושלים. לכן כבר מעצם הגדרת התחזית יש כאן כשל. כשל שיכול לגרום לאי דיוק, לכאורה, בתחזית. תחזית למיקום ספציפי רגישה הרבה יותר לשינויים קלים במיקומי מערכות. שקע זז כמה קמ ויש לכך השפעה מקצה לקצה בירושלים. כאן באתר יש ניסיון לתת ניואנסים בתחזית שיתאימו לאיזור ירושלים, דבר שלא קיים בתחזיות הכלליות שניתנות במקומות אחרים. <br/> בחורה הולכת במדרכה יבשה בתלפיות, כאשר בגבעה הצרפתית הכל רטוב והיא תגיד לעצמה : &#39;איפה הגשם?&#39; <br/> כלבלב ילך להשתין להנאתו בגן סאקר ויתפלא שלא יורד גשם, כאשר חברו בתלפיות יעשה סקי מים בשלוליות שליד ביתו. <br/> תחזית שמנבאת גשם שיורד לבסוף ברמאללה ולא דרומה מכך היא עדיין תחזית שהצליחה, מכיוון  שמדובר באותו איזור ההר המרכזי. צריך להכיר במגבלות התחזית. <br/> יש גם את האנשים שקמים בבוקר אחרי לילה גשום אל תוך יום יבש וישר חושבים שהתחזית נכשלה. גם גשם בלילה הוא גשם. לילה הוא חלק  מהיממה. <br/> אחרי שנאמרו כל הדברים, קורה גם שהתחזית נכשלת וכן, זה מבאס. אבל, הכל בא מתוך רצון  לתת שירות שלא קיים ברשת. אז תיהנו!" , " Это прогноз для Иерусалима. Если вы хотите прогноз на близлежащие к Иерусалиму места, прибавьте 0.8° за каждые 100 метров понижения.<br/> Почасовой прогноз на ближайшие сутки может быть не точный. То есть  его лучше воспринимать как &#39;вечер&#39;, &#39;утро&#39; или &#39;ночь&#39;.<br/> Что такое прогноз? На сколько точен прогноз? Мы очень часто игнорируем эти вопросы.<br/> Мы хотим знать будет ли идти дождь над яблоней, стоящей во дворе театра Хен, в 12:35. Но это невозможно, так как прогноз можно дать только по области и на какой-то период времени. Эта разница между желаемым и возможным всегда была, есть и будет пока не придумают более совершенный способ прогнозирования.<br/> Основанием для всех прогнозов является система воздушных шариков, которые запускаются в ключевых точках по всему миру, под названием Радиозонд. В Израиле есть только одна такая точка, запуская шарик мы получаем несколько замеров. Из-за сложности структуры атмосферы и из-за того, что замеры точечные, есть возможность получить неплохой прогноз только на 4-5 дней, а также получить обзор на ближайшую неделю. Замечу, что прогноз будет по области, а не на точку на карте. Сейчас же мы говорим о прогнозе в Иерусалиме, а не об области радиозонда — это одна из причин неточности прогноза. Прогнозисту приходится делать дополнительные замеры, чтобы получить прогноз в Иерусалиме.<br/> Например девушка идет по сухому тротуару в Тальпиоте в то время как в Гива Царфатит все мокро от дождя и думает &#39;ну и где же обещанный дождь?&#39;.<br/> Собачка пойдет пописать в Ган Сакер и удивится, что нету дождя, в то время как её друг в Тальпиоте катается по лужам на водных лыжах.<br/> Например, по прогнозу должен был быть дождь в Рамалле но он прошёл южнее, это все равно хороший прогноз так-как прогноз был сделан на область холма, где располагается Рамалла. Нужно знать границы возможностей прогноза.<br/> Ещё пример – человек просыпается с утра после дождливой ночи, а на улице сухо и он уверен, что прогноз был ошибочный. Всё потому, что прогноз правильный на сутки, а ночь, это часть суток.<br/> Кроме всего вышесказанного есть так же ошибки в прогнозе и это огорчает, но надо помнить, что в конечном счёте все это делается ради вашего блага. Получаете удовольствие!","");
 /////////////////////////////////////////////////////////////////////
 $WHICH_IS = array("which is", "שזה", "который","c’est à dire");
 $YESTERDAY = array("yesterday", "אתמול", "вчера","hier");
@@ -265,7 +265,7 @@ $WEATHER_CLIPS = array("Weather clips", "סרטוני מזג-אוויר", "Ви�
 $ROAD = array("at road", "בכביש", "Дорога","sur la route");
 $ROAD_EXP = array("The thermometer is on stone. Asphalt could be hotter in the sun.", "המד מונח על אבן. אספלט עשוי להיות חם יותר בשמש", "Термометр находится на камне. Асфальт может быть горячим на солнце.","le thermomètre est posé sur le pavé, la température de l’asphalte est plus élevée dans le soleil");
 $ROAD_EXP_NIGHT = array("At night it is like the temp in valleys", "בלילה זו הטמפרטורה בעין כרם, עמק המצלבה או הצבאים", "Ночью это похоже на температуру в долинах","la températures nocturne dans les vallées");
-$DEW_DESC = array("18 - sauna level 1, 20 - sauna level 2, 22 - sauna level 3", "18 - סאונה רמה 1&lt;br/&gt; 20 - סאונה רמה 2&lt;br/&gt; 22 - סאונה רמה 3 ", "18° : sauna niveau 1- 20° : sauna niveau 2 – 22° : sauna niveau 3 ","");
+$DEW_DESC = array("18 - sauna level 1, 20 - sauna level 2, 22 - sauna level 3", "18 - סאונה רמה 1<br/> 20 - סאונה רמה 2<br/> 22 - סאונה רמה 3 ", "18° : sauna niveau 1- 20° : sauna niveau 2 – 22° : sauna niveau 3 ","");
 $VALLEY = array("at valley", "בעמק", "в долине","dans la vallée");
 $LOW_VALLEY = array("at lowest places", "בנקודה הנמוכה", "в самых низких местах","");
 $MOUNTAIN = array("at hill", "בהר", "на холме","en montagne");
@@ -308,11 +308,11 @@ $LONGSLEEVES = array("long sleeves, it is recommended to take also t-shirt and a
 $SUN_SHADE_CLOTH = array("short in the sun, long in the shade", "בשמש קצר, בצל ארוך", "","au soleil court, à l’ombre long");
 $SWEATSHIRT = array("Sweatshirt", "חולצה ארוכה עבה", "Толстовка","un haut long et épais");
 $SWEATER = array("Sweater", "סוודר", "Свитер","pull");
-$JACKET = array("Jacket", "ג&#39;קט", "Толстовка","veste");
+$JACKET = array("Jacket", "ג'קט", "Толстовка","veste");
 $COAT = array("Coat", "מעיל", "Куртка","manteau");
 $RAINCOAT = array("Rain coat", "מעיל גשם", "Дождевик","imperméable");
 $LIGHTCOAT = array("light coat", "מעיל דק", "Легкая курточка","k-way");
-$LIGHTJACKET = array("light jacket", "ג&#39;קט דק", "Легкая толстовка","veste légère");
+$LIGHTJACKET = array("light jacket", "ג'קט דק", "Легкая толстовка","veste légère");
 $LAYERS_BELOW = array("1 layer beneath", "שכבה אחת מתחת", "Дополнительный слой одежды","une couche en dessous");
 $LAYERS_BELOW2 = array("2 layers beneath", "שתי שכבות מתחת וגם גרביונים", "2 дополнительных слоя одежды и колготки","deux couches en dessous et collants");
 $LAYERS_BELOW3 = array("3 layers beneath, scarf and warm hat", "3 שכבות מתחת, צעיף וכובע וגם גרביונים או גרביים עבים", "3 дополнительных слоя одежды, шарф, шапка и колготки","3 couches en dessous et chapeau");
@@ -330,13 +330,13 @@ $STORMY = array("Stormy", "גשום וסוער", "Гроза","orageux");
 $ITS_SNOWING = array("Its snowing", "יורד שלג", "Идёт снег","il neige");
 $RAIN_PROB_EXP_TITLE = array("chances explanation", "הסבר על אחוזי גשם", "la probabilité d’averse expliquée","");
 $RAIN_PROB_EXP = array("low chance (30%) - keep your event outise alive, but consider a
-situation of rain (plan B).&lt;br /&gt;
+situation of rain (plan B).<br/>
 good chance (60%) - fits event which is not deliacate to rain and short breaks can be done
-under hood.&lt;br /&gt;
+under hood.<br/>
 high chance (80%) - does not fit for continues acticity outside. But, what is the probelm with rain
-coat?", "סיכוי נמוך (30%) - לקיים אירוע בחוץ תוך מודעות למצב שיירד גשם (תכנית גיבוי). &lt;br /&gt;
+coat?", "סיכוי נמוך (30%) - לקיים אירוע בחוץ תוך מודעות למצב שיירד גשם (תכנית גיבוי). <br/>
 סיכוי בינוני-טוב (50%-60%) - לקיים אירוע בחוץ שלא רגיש לגשם וניתן לעשות הפסקות קצרות תחת מחסה או
-פשוט להיות עם מטרייה\מעיל גשם. &lt;br /&gt;
+פשוט להיות עם מטרייה\מעיל גשם. <br/>
 
 סיכוי גבוה (80%) - לא מתאים לפעילות רציפה בחוץ. אבל מה הבעיה בעצם להיות עם מעיל גשם או מטרייה?",
 "faible probabilité (30%) – faire une fête à l’extérieur mais garder à l’esprit la probabilité qu’il
@@ -389,7 +389,7 @@ array("Good time to stay outside", " צאו החוצה לפני שנתחרט", "
 array("Good time for picnic", " טוב לפיקניק", "Советуем выйти сегодня из дома", "temps de picnic"),
 array("Good time to stay outside", " וואלה נחמד להיות בחוץ", "Советуем выйти сегодня из дома", "en fait il fait bon dehors"),
 array("Good time to stay outside", " כמה שזה נשמע הזוי, לצאת זה רצוי", "Советуем выйти сегодня из дома", "même si ça vous semble délirant, sortir c’est mieux"),
-array("Good time to stay outside", " כל מי שיוצא מקבל חיוך", "Советуем выйти сегодня из дома"),"celui qui sort reçoit un sourire");
+array("Good time to stay outside", " כל מי שיוצא מקבל חיוך", "Советуем выйти сегодня из дома","celui qui sort reçoit un sourire"));
 $GOOD_TIME_FOR = array ("good time for", "זמן טוב ל", "", "");
 $GOOD_LAUNDRY = array("Good time to dry laundry", "זמן טוב לייבש את הכביסה", "Благоприятная погода для сушки белья","temps idéal pour laisser sécher le linge");
 $SOSO_LAUNDRY = array("Not Ideal time to dry laundry, but acceptable", "לא תנאים אידיאליים לכביסה, אבל אפשרי", "Не идеальная погода для сушки белья, но сушить можно","pas un temps idéal pour laisser sécher le linge, mais c’est possible.");
@@ -397,7 +397,7 @@ $BAD_LAUNDRY = array("Bad time to dry laundry - because of rain or dust or humid
 $IN = array("in", "בעוד", "с","dans");
 $REMOVE_LAUNDRY = array("remove laundry", "כדאי להוריד את הכביסה", "удалить белье","il vaut descendre le linge étendu");
 $WITHOUT_WIND = array("Without Wind", "ללא רוח", "Безветренно","sans vent");
-$PIVOT_DESC = array ("Assuming idealistic inside temperature of: ", "המטרה של הדף הזה היא למזג את הבית כך שייתקרב כמה שיותר לתחושה הנוחה ביותר לנו. &lt;br/&gt;זה כמובן אינדיבידואלי, לכן צריך לעשות כמה הנחות. ההנחה היא שהטמפרטורה האידיאלית בבית היא: ","L’objectif de cette page est de trouver la température intérieure la plus agréable pour vous. Il s’agit d’un ressenti individuel ce qui nous amène à faire quelques présomptions. Il est estimé que la température idéale est : ");
+$PIVOT_DESC = array ("Assuming idealistic inside temperature of: ", "המטרה של הדף הזה היא למזג את הבית כך שייתקרב כמה שיותר לתחושה הנוחה ביותר לנו. <br/>זה כמובן אינדיבידואלי, לכן צריך לעשות כמה הנחות. ההנחה היא שהטמפרטורה האידיאלית בבית היא: ","L’objectif de cette page est de trouver la température intérieure la plus agréable pour vous. Il s’agit d’un ressenti individuel ce qui nous amène à faire quelques présomptions. Il est estimé que la température idéale est : ");
 //////////////////////////////////////////////////////////////////////////////
 $RECORDS_LINK = array("When there was 1134 mm rainfall? look here", "מתי ירדו 1134 מ&#39;&#39;מ ? הכנסו לכאן", "Когда выпали 1134мм осадков? Можно увидеть здесь","Quand aurons-nous 1134 mm de pluie ? ");
 $YEARLY_SUMMARY_LINK = array("Yearly summary", "מה קרה בכל חודש? חפשו בסיכום השנתי", "Сводка года","la météo par mois : résumé annuel");
@@ -423,7 +423,7 @@ $DAY = array("Day", "יום", "День","jour");
 $HOURLY = array("Hourly", "שעתי","Ежечасно", "Horaire");
 $DAILY_RAIN = array("Daily rain", "גשם היום מחצות", "Дождь начнётся в полночь","pluie à partir de minuit");
 $STORM_RAIN = array("Storm rain", "גשם במערכת", "Гроза","il pleue dans la maison d’édition");
-$TOTAL_RAIN = array("Total", "סה&#39;כ עונתי", "Итог сезона","ordinaire pour la saison");
+$TOTAL_RAIN = array("Total", "סה''כ עונתי", "Итог сезона","ordinaire pour la saison");
 $MONTHLY_RAIN = array("Monthly rain", "גשם החודש", "Дождь месяца","la pluie mensuelle");
 $SHOW = array("Show", "הצג", "Показать","ouvre");
 $SEND = array("Send", "שליחה", "Послать","envoyer");
@@ -486,7 +486,7 @@ $BETWEEN = array("Between", "בין", "Между","entre");
 //////////////////////////////////////////////////////////////////////////////////
 $CHAT_TITLE = array("Forum", "פורום", "Форум","forum");
 $SYNOP_TITLE = array("Synoptic chart", "סינופטיקה", "");
-$MESSAGES = array("Messages", "הודעות והתראות", "оповещения","alertes");
+$MESSAGES = array("Messages", "עדכונים", "оповещения","alertes");
 $PRIVATE_MSG = array("Private message", "הודעה פרטית", "Личное сообщение","messages");
 $PRIVATE_MSG_TO_SENDER = array("Private message to the opener", "הודעה פרטית לפותח השרשור", "Личное сообщение автору","message privé à l’utilisateur");
 $ALERT_MSG_TO_SENDER = array("Get alert when replied", "קבלת התראה על תגובה", "Оповещать когда вы получаете ответ","recevez une notification des échanges");
@@ -549,21 +549,21 @@ $DIGGING = array("Digging", "יא חופרים", "Выносители Мозг�
 $PUDENCY = array("Pudency", "ביישן או צנוע", "Стыдливый","timide ou modeste");
 $HELL = array("Who can beat me", "מי יכול עלי", "Кто на меня","qui peut me battre ?");
 //////////////////////////////////////////////////////////////////////////////////////////
-$RUN_WALK = array("Run and walk", "הליכה וריצה", "marche et course","");
-$HUM_LOW = array("Low humidity", "לחות נמוכה", "faible humidité","");
-$HUM_HIGH = array("High Humidity", "לחות גבוהה", "forte humidité","");
-$HUM_NEUTRAL = array("Neutral humidity", "לחות נייטרלית", "humidité neutre","");
-$RUN_GENERAL_EXP = array("", "בהליכה ובריצה דרוש פחות ביגוד. בעיקרון שכבה אחת פחות בהליכה ושתיים פחות בריצה. בתנאים רגילים, טמפרטורה דו-ספרתית מאפשרת ריצה עם קצר (פחות מ-15 לכיוון 10 לשקול ארוך, במיוחד אם הפעילות לא ארוכה). חד ספרתית דורשת ארוך עם אביזר חימום כמו כפפות, כובע ומגן- אוזניים. תמיד עדיף אביזר חימום על פני עוד חולצה כי מהחלקים החשופים בורח החום.", "Vous pouvez enlever une de vos couche pour marcher et deux pour courir. En temps normal, une température à deux figures vous permet de courir en vêtements courts. Une température de moins de 10C° nécessite une protection supplémentaire ","");
-$WIND_HUM_EXP = array("Wind cause chill, humidity makes us feel warmer.", "לחות מחממת - רוח מקררת", "l’humidité tient chaud, le vent refroidie","");
+$RUN_WALK = array("Run and walk", "הליכה וריצה", "", "marche et course","");
+$HUM_LOW = array("Low humidity", "לחות נמוכה", "", "faible humidité","");
+$HUM_HIGH = array("High Humidity", "לחות גבוהה", "", "forte humidité","");
+$HUM_NEUTRAL = array("Neutral humidity", "לחות נייטרלית", "", "humidité neutre","");
+$RUN_GENERAL_EXP = array("", "בהליכה ובריצה דרוש פחות ביגוד. בעיקרון שכבה אחת פחות בהליכה ושתיים פחות בריצה. בתנאים רגילים, טמפרטורה דו-ספרתית מאפשרת ריצה עם קצר (פחות מ-15 לכיוון 10 לשקול ארוך, במיוחד אם הפעילות לא ארוכה). חד ספרתית דורשת ארוך עם אביזר חימום כמו כפפות, כובע ומגן- אוזניים. תמיד עדיף אביזר חימום על פני עוד חולצה כי מהחלקים החשופים בורח החום.", "", "Vous pouvez enlever une de vos couche pour marcher et deux pour courir. En temps normal, une température à deux figures vous permet de courir en vêtements courts. Une température de moins de 10C° nécessite une protection supplémentaire ","");
+$WIND_HUM_EXP = array("Wind cause chill, humidity makes us feel warmer.", "לחות מחממת - רוח מקררת", "", "l’humidité tient chaud, le vent refroidie","");
 $SUN_EXP = array("Staying in the sun always warms up. Sometimes it is only a couple of degrees, sometimes it is even more than 10 degrees.", "שהות בשמש תמיד מחממת. לעתים רק בכמה מעלות ולעתים ביותר מ-10 מעלות.", "rester au soleil permet toujours de se réchauffer de quelques degrés","");
 $HIGH_WIND_HIGH_TEMP_EXP = array("High wind - lowering the heat", "רוח חזקה - מצננת את החום", "un vent fort permet de modérer la chaleur","");
-$HIGH_WIND_EXP = array("High wind - take another layer", "רוח חזקה - קחו עוד שכבה", "Vent fort = ajouter une couche de vêtement pour aller dehors","");
-$LIGHT_WIND_NIGHT_EXP = array("Wind gives cooler feeling", "הרוח נותנת תחושה קרירה יותר","Le vent crée un sentiment de fraicheur","");
-$NO_WIND_LOW_TEMP_EXP = array("No wind - good conditions", "אין רוח - תנאים טובים", "pas de vent- bonnes conditions","");
-$HIGH_WIND_HIGH_TEMP_EXP = array("Wind chills the hot sun", "הרוח מצננת את השמש הלוהטת", "le vents modère le soleil ardent","");
-$HIGH_HUM_EXP = array("Humidity gives warmer feeling, sweating more", "הלחות נותנת הרגשה חמה יותר, מזיעים יותר", "le vent est chaud, on transpire davantage","");
-$LOW_HUM_LOW_TEMP_EXP = array("Humidity gives chilly feeling, maybe add layer.", "הלחות נותנת תחושה קרה, אולי כדאי להוסיף שכבה", " Vent fort = ajouter une couche de vêtement pour aller dehors ","");
-$LOW_HUM_HIGH_TEMP_EXP = array("Low humidity, classic, drink more.", "לחות נמוכה,קלאסי, שתו יותר", "Faible humidité, piège classique, buvez plus","");
+$HIGH_WIND_EXP = array("High wind - take another layer", "רוח חזקה - קחו עוד שכבה", "","Vent fort = ajouter une couche de vêtement pour aller dehors","");
+$LIGHT_WIND_NIGHT_EXP = array("Wind gives cooler feeling", "הרוח נותנת תחושה קרירה יותר", "", "Le vent crée un sentiment de fraicheur","");
+$NO_WIND_LOW_TEMP_EXP = array("No wind - good conditions", "אין רוח - תנאים טובים", "", "pas de vent- bonnes conditions","");
+$HIGH_WIND_HIGH_TEMP_EXP = array("Wind chills the hot sun", "הרוח מצננת את השמש הלוהטת", "", "le vents modère le soleil ardent","");
+$HIGH_HUM_EXP = array("Humidity gives warmer feeling, sweating more", "הלחות נותנת הרגשה חמה יותר, מזיעים יותר", "", "le vent est chaud, on transpire davantage","");
+$LOW_HUM_LOW_TEMP_EXP = array("Humidity gives chilly feeling, maybe add layer.", "הלחות נותנת תחושה קרה, אולי כדאי להוסיף שכבה", "", " Vent fort = ajouter une couche de vêtement pour aller dehors ","");
+$LOW_HUM_HIGH_TEMP_EXP = array("Low humidity, classic, drink more.", "לחות נמוכה,קלאסי, שתו יותר", "", "Faible humidité, piège classique, buvez plus","");
 $SUN_SHADE_DIFF_EXP = array("Much hotter in the sun", "בשמש חם הרבה יותר", "il faut beaucoup plus chaud au soleil","");
 $DID_YOU_KNOW_EX = array(array("Personal cold meter. If you will register and vote and check it in your account, you will get your votes instead of the general public votes of the cold meter.", "מדד קור מותאם אישית. מה זה אומר? מקבלים את ההצבעות שלך (טקסט נטוי על הצד) ולא של כולם או של המגדר שלך אם הצבעת ולא נרשמת. אם בטמפרטורה מסויימת אין הצבעה שלכם - מקבלים הצבעה של כולם. מה צריך לעשות כדי לקבל את זה? להירשם. ", " Личная шкала холода. Что это такое? Шкала холода — это описание ощущения холода в зависимости от текущей Температуры. Например при температуре около 0 будет написано – «собачий холод». При включении этой опции, вы сможете видеть шкалу холода, настроенную на вас, а не общую с другими пользователями. Если вы не настроили вашу шкалу на одну из температур, то для текущей температуры будет показана общая шкала. Ваша личная шкала будет написана курсивным.", "Thermomètre de froid adapté individuellement, c’est-à-dire qui s’ajuste selon vos votes, sans votes émis de votre part vous n’accédrez qu’aux données générales"),
                          array("The lowest temperature in a day is mostly before sunrise. That is correct if the sky is clear and almost without wind.", "הטמפרטורה הנמוכה ביותר ביממה היא לרוב ממש לפני הזריחה, בתנאי שהשמיים בהירים וללא רוח כמעט ", "Самая низкая дневная температура в основном перед восходом солнца. ", ""),
@@ -591,5 +591,11 @@ $HIGHWIND_EXISTS_IN24HF = array(array("High wind is expected later on", "רוח 
                             array("Trees will feel the wind strength", "העצים ירגישו בקרוב את עוצמת הרוח", "Деревья почувствуют силу ветра", ""),
                             array("The windmill will fulill its destiny", "תחנת הרוח סוף סוף תהיה יעילה בקרוב", "Ветряная мельница исполнит свое предназначение", "")
                             );
-$END = array("Go", "שליחה", "отправка", "Envoyer");
+$END = array("Go", "שליחה", "отправка", "Envoyer", "");
+$CLICK_TO_CONFIRM = array("Click here to confirm your registration to 02ws.co.il and make your user active", "הקליקו כאן כדי לאשר הרשמה לאתר ירושמיים", "Нажмите здесь, чтобы подтвердить регистрацию на 02ws.co.il и активировать пользователя.", "Cliquez ici pour confirmer votre inscription à 02ws.co.il et rendre votre utilisateur actif", "");
+$CLICK_TO_RESET = array("Click here to reset your password", "כאן ירושמיים. לא נורא ששכחתם את הססמה. הקליקו כאן כדי לאפס", "Нажмите здесь, чтобы сбросить пароль", "Cliquez ici pour réinitialiser votre mot de passe", "");
+$CHECK_EMAIL_RESET_PASS = array("Go to your email for password reset", "יש לגשת אל האימייל שלך כדי לבצע איפוס ססמא", "Перейти на почту для сброса пароля", "Accédez à votre e-mail pour réinitialiser le mot de passe", "");
+$PROBLEM_USER_PASSWORD =  array("Problem with user or password", "סיסמא לא נכונה או משתמש לא קיים", "Проблема с пользователем или паролем", "Problème avec l'utilisateur ou le mot de passe", "");
+$NO_USER_EXIST = array("No user exists like that", "אין משתמש כזה", "Пользователь не существует с", "Aucun utilisateur n'existe avec", "");
+$VISIBILITY = array("visibility", "ראות", "видимость", "visibilité", "");
 ?>

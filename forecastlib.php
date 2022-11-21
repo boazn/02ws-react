@@ -1,6 +1,6 @@
 <?php
 $station_code = TAF_STATION;//TAF_STATION; 
-$shift_forecast_time = 0;
+$shift_forecast_time = GMT_TZ - 2;
 $taf_file = "cache/".$station_code.".txt"; 
 $taf_server_file = "/data/forecasts/taf/stations/".$station_code.".TXT"; 
 $taf_decoded = "http://www8.landings.com/cgi-bin/parse_wthr_script.pl?pass=37875119&amp;apt_id=".$station_code."&amp;type=TAF";  
@@ -349,6 +349,7 @@ function getWindSpeed($windstr)
 }
 function getStartTime ($timerange)
 {
+        global $shift_forecast_time;
         // daylight saving = + 2; regular = + 1
         if (strlen($timerange) == 4)
                 $startpos = 0;
@@ -568,6 +569,18 @@ function updateForecastHour($currentPri, $title, $icon){
                         if ($_REQUEST["debug"] >= 3)
                          echo	" + title ".$title[0]." appended"; 
                  }
+                if ($currentPri<=20)
+                        $hour_f['cloudiness'] = 0;
+                else if ($currentPri<=25)
+                        $hour_f['cloudiness'] = 2;
+                else if (($currentPri<=35)||($currentPri == 75))
+                        $hour_f['cloudiness'] = 4;
+                else if ($currentPri<=40)
+                        $hour_f['cloudiness'] = 6;
+                else if (($currentPri==50)||($currentPri==55)) // dust
+                        $hour_f['cloudiness'] = 2;
+                else
+                        $hour_f['cloudiness'] = 8;
                  
                  if ($_REQUEST["debug"] >= 3)
                     echo " + rain=".$hour_f['rain'];
@@ -626,7 +639,7 @@ function updateForecast($currentPri, $title, $pic)
                     $mem->set("cloudiness", 0);
             else if ($currentPri<=25)
                     $mem->set("cloudiness", 2);
-            else if ($currentPri<=35)
+            else if (($currentPri<=35)||($currentPri == 75))
                     $mem->set("cloudiness", 4);
             else if ($currentPri<=40)
                     $mem->set("cloudiness", 6);
@@ -833,7 +846,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
                 echo "<br/>-------------------------------------------------------------------------------------------";
                }
                    
-               array_push($forecastHour, array('id' => $hourindex, 'time' => $time, 'currentDateTime' => $currentDateTime, 'plusminus' => 0, 'change' => 0, 'temp' => $tempHour, 'dust' => $dustHour, 'UV' => $uvHour, 'wind' => 0, 'humidity' => $humHour ,'rain' => 0, 'icon' => "", 'title' => array(), 'cloth' => $clothHour, 'priority' => 0));
+               array_push($forecastHour, array('id' => $hourindex, 'time' => $time, 'currentDateTime' => $currentDateTime, 'plusminus' => 0, 'change' => 0, 'temp' => $tempHour, 'dust' => $dustHour, 'UV' => $uvHour, 'wind' => 0, 'humidity' => $humHour ,'rain' => 0, 'cloudiness' => 0, 'icon' => "", 'title' => array(), 'cloth' => $clothHour, 'priority' => 0));
                $hourindex += 1;
         }
         
@@ -858,6 +871,18 @@ for ($i = 0; $i < count($taf_tokens); $i++)
     if (stristr ($taf_tokens[$i], "PROB40")) {
             $isProb = true;
             $prob_mag = Chance::Good;
+    }
+    if (stristr ($taf_tokens[$i], "PROB50")) {
+        $isProb = true;
+        $prob_mag = Chance::Good;
+    }
+    if (stristr ($taf_tokens[$i], "PROB60")) {
+        $isProb = true;
+        $prob_mag = Chance::Good;
+    }
+    if (stristr ($taf_tokens[$i], "PROB80")) {
+        $isProb = true;
+        $prob_mag = Chance::Good;
     }
     if (stristr ($taf_tokens[$i], "RASN"))      updateForecast(95, array("$RAIN[$EN] $SNOW[$EN]", "$RAIN[$HEB] $SNOW[$HEB]"), "n4_rainSnow.svg");
      else if (stristr ($taf_tokens[$i], "SN"))  updateForecast(100, $SNOW, "n4_snow.svg");

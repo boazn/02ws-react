@@ -1855,7 +1855,8 @@ text-align:<?=get_s_align()?>;
     line-height:1.2em
 }
 #windy_widget{
-    margin-<?=get_s_align()?>:120px;
+    margin-<?=get_s_align()?>:0;
+    margin-top:-140px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
 }
 .white_box {

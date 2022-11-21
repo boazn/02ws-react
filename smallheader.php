@@ -127,10 +127,16 @@ else
  }
  #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw, #itfeels_thw, #itfeels{
     position: absolute;
-    top:4.2em;
-    font-size: 1.1em;
-    width:50%
- }
+    top: 4.9em;
+    font-size: 0.9em;
+    width: 60%;
+    left: 6em;
+}
+.param
+{
+    margin-left: -0.8em;
+    font-size: 0.15em;
+}
  #latestnow
  {
     display:block
@@ -172,17 +178,28 @@ else
      margin: auto 7em;
  }
  #what_is_h{
-     font-size: 1.2em;
+     font-size: 0.9em;
      line-height: 1em;
      margin-<?=get_s_align()?>:-210px;
-     top: -250px;
-     width:40%;
+     top: 50px;
+     width:30%;
      font-weight: bold;
      position: absolute;
     <?php   if (!$current->is_light()||isRaining()) { ?>
     color:#ffffff
     <?php }?>
      
+ }
+ #coldmeter{
+    top:5em
+ }
+ #currentinfo_container .currentcloth
+ {
+    margin-top: 0;
+ }
+ #latestnow .currentcloth
+ {
+    width: 10%;margin: 0em auto;
  }
  .paramunit{
      font-family: Alef;
@@ -392,7 +409,7 @@ else if ($itfeels[0] == "heatindex"){ ?>
 <script src="js/snow.js"></script>
 <?php   }?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
-<script src="footerScripts18042022.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
+<script src="footerScripts180422.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
 <script type="text/javascript">
 var coldmeter_size = 40;
 //startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");

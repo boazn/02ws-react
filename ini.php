@@ -37,7 +37,7 @@ define("MYSQL_USER","boazn");
 define("MYSQL_PASS","Boaz1972");
 define("SENDMAIL_SLEEP_INTERVAL","42200");
 define ("SERVER_CLOCK_DIFF", "+0 hours 0 minutes");
-define ("GMT_TZ", "3");
+define ("GMT_TZ", "2");
 define ("TASHKIF_START", "5");
 define ("IS_SNOWING", 0);
 define ("SNOW_IS_MELTING", 0);

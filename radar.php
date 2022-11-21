@@ -907,7 +907,7 @@ function imgError(image) {
 	<? if (isHeb()) echo "הרצה"; else echo "Play"; ?>
 </a><?=get_arrow()?><?=get_arrow()?>
 </div>
-<div id="fasterslowercontrols" style="display:none;width:500px">
+<div id="fasterslowercontrols" style="display:none;width:550px">
 <a  href="javascript: func()" onclick="stop();toggle('play');">
 	<img src="images/stop.png" alt="stop עצור" width="20px"/>
 </a>
@@ -954,22 +954,15 @@ function imgError(image) {
    </div>
 <div style="clear:both;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
 <div id="adunit2">
-<script type="text/javascript"><!--
-google_ad_client = "pub-2706630587106567";
-/* 160x600, created 9/24/10 */
-google_ad_slot = "1823672538";
-google_ad_width = 160;
-google_ad_height = 600;
-google_color_border = ["<?= $forground->bg['+4'] ?>"];
-google_color_bg = ["<?= $forground->bg['+4'] ?>"];
-google_color_link = ["<?= $forground->bg['-9'] ?>"];
-google_color_url = ["<?= $forground->bg['-9'] ?>"];
-google_color_text = ["<?= $forground->bg['-9'] ?>"];
-
-//-->
-</script>
-<script type="text/javascript"
-src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2706630587106567"
+     crossorigin="anonymous"></script>
+<!-- 160x600, created 9/24/10 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:320px;height:320px"
+     data-ad-client="ca-pub-2706630587106567"
+     data-ad-slot="1823672538"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 </div>
 </div>

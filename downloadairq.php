@@ -137,16 +137,18 @@ curl_setopt_array($ch, [
         "content-type: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
     ],
 ]);
-$result=file_get_contents($urlWL, false);
-$docWL = json_decode($result);
-//print_r($docWL);
-print_r($docWL->sensors[1]->data[0]);
+$resultWL=file_get_contents($urlWL, false);
+$docWL = json_decode($resultWL);
+print_r($docWL);
+//print_r($docWL->sensors[1]->data[0]);
 $pm2p5_02ws = round($docWL->sensors[1]->data[0]->pm_2p5);
 $pm1_02ws = round($docWL->sensors[1]->data[0]->pm_1);
 $pm10_02ws = round($docWL->sensors[1]->data[0]->pm_10);
+$thsw = "";
 echo ("pm10_02ws:".$pm10_02ws);
 echo ("<br/>pm2p5_02ws:".$pm2p5_02ws);
 echo ("<br/>pm1_02ws:".$pm1_02ws);
+echo ("<br/>thsw:".$thsw);
 
 $url="https://www.svivaaqm.net/dynamicTabulars/TabularReportTable?id=14";
 $local_file_path = "/home/boazn/public/02ws.com/public/cache/airq2.txt";

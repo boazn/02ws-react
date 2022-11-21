@@ -105,8 +105,8 @@ if (isRadarPage())
 <link rel="stylesheet" href="<?=BASE_URL?>/css/main<?=getCssIdx($lang_idx);?>.css" type="text/css" />
 <link rel="stylesheet" href="<?=BASE_URL?>/css/mobile<?=getCssIdx($lang_idx);?>.css" type="text/css" />
 <link rel="manifest" href="manifest.php?lang=<?=$lang_idx?>">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<!--<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">-->
 <link rel="apple-touch-icon" href="/img/logo.svg">
 <link rel="icon" type="image/png" href="img/favicon_sun.png" />
 <meta property="og:image" content="https://www.02ws.co.il/02ws_short.png" />
@@ -898,6 +898,9 @@ else {?>
 <article id="section" >
    <? include('../'.$_GET['section']);?>
 </article>
+<script>
+    $('#forecastnextdays, #forecastnextdays_table').hide();
+</script>
 <? } ?>
 <div id="adunit2" class="adunit" style="display:none">
     
@@ -1012,14 +1015,20 @@ else {?>
         <input type="text" name="email" value="" placeholder="<?=$EMAIL[$lang_idx]?>" id="loginform_email" size="30" tabindex="1" /><br /><br />
         <input type="password" name="password" placeholder="<?=$PASSWORD[$lang_idx]?>" value="" id="loginform_password" tabindex="2" size="15"/><br /><br />
         </div>
-        <div class="clear float big" style="padding:1em 0">
+        <div class="clear float big" style="padding:1em 0" id="loginform_rememberme_div">
         <input type="checkbox" name="rememberme" value="" id="loginform_rememberme"/><?=$REMEMBER_ME[$lang_idx]?>
         </div>  
 	<div style="display:none" class="float loading"><img src="images/loading.gif" alt="loading" width="32" height="32"/></div>
         <div id="loginform_result" class="float"></div>
 	<input type="submit" value="<?=$LOGIN[$lang_idx]?>" class="float clear inv_plain_3_zebra big" onclick="login_to_server(<?=$lang_idx?>)" id="loginform_submit"/>
         <input type="submit" value="Success!" onclick="$('#colorbox').hide();window.location.reload();" id="loginform_OK" class="info invfloat" style="display:none"/>
-        <div class="clear inv_plain_3_zebra float big" style="margin-top:0.8em"><a href="javascript: void(0)" id="forgotpass" title="<?=$FORGOT_PASS[$lang_idx]?>"><?=$FORGOT_PASS[$lang_idx]?></a></div>
+        <a href="javascript: void(0)" onclick="toggle('loginform_rememberme_div');toggle('loginform_email');toggle('loginform_password');toggle('loginform_submit');toggle('forgotpass');toggle('passforgotform');" id="forgotpass" title="<?=$FORGOT_PASS[$lang_idx]?>"><?=$FORGOT_PASS[$lang_idx]?></a>
+        <div id="passforgotform" style="padding:1em;display:none">
+            <input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="passforgotform_email" size="30" style="direction:ltr"/><br /><br />
+            <div id="passforgotform_result"></div>
+            <input type="submit" value="<?=$FORGOT_PASS[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit" class="info invfloat inv_plain_3 big"/>
+            <!--<input type="submit" value="<?=$CLOSE[$lang_idx]?>" onclick="$('#cboxClose').click();" id="passforgotform_OK" class="info invfloat inv_plain_3 big" style="display:none"/>-->
+        </div>
  	
 </div>
 <div id="registerform" style="padding:0.5em">
@@ -1056,12 +1065,7 @@ else {?>
 
 </div>
 
-<div id="passforgotform" style="padding:1em">
-    <?=$EMAIL[$lang_idx]?>:<input type="text" name="email" value="" id="passforgotform_email" size="30" style="direction:ltr"/><br /><br />
-    <div id="passforgotform_result"></div>
-    <input type="submit" value="<?=$FORGOT_PASS[$lang_idx]?>" onclick="passforgot_to_server(<?=$lang_idx?>)" id="passforgotform_submit" class="info invfloat inv_plain_3 big"/>
-    <input type="submit" value="<?=$CLOSE[$lang_idx]?>" onclick="$('#cboxClose').click();" id="passforgotform_OK" class="info invfloat inv_plain_3 big" style="display:none"/>
- </div>
+
  </div>
  <?}?>
  <div id="mobile_redirect" class="big inv_plain_3_zebra" style="display:none;" class role="dialog">

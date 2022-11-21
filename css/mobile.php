@@ -172,14 +172,20 @@ top:0px;
 font-size:1.60em;
 line-height: 0.7em;
 text-align:center;
-padding: 0.4em 0;
+padding: 0.6em 0;
 background:#eeeeee
 }
 #forecastnextdays .enlarge{
     margin: 4.2em 0px;
 }
+#legends
+{
+    width: 320px;
+    padding: 0 0.5em;
+}
 #forecastnextdays_table .icon_day{
-    background:#eeeeee 
+    background:#eeeeee;
+    float:none
 }
 #latestalert .alerttime{
     display:inline;
@@ -297,7 +303,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #coldmeter
 {
-          float:<?echo get_s_align();?>;top: 5em;
+          float:<?echo get_s_align();?>;top: <? if (isHeb()) echo "5.8"; else echo "6.8"; ?>em;
 }
 #radio_toolbar_container
 {
@@ -328,7 +334,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
        padding:0.2em;width:auto;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>;margin:0.2em;cursor:pointer
 }
 #login, .register, .login, .register{
-    font-size: 2em;width:100%
+    
 }
 #profileform, #registerform
 {
@@ -338,7 +344,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #updateprofile, #signout, #myvotes, #clicktoregister, #clicktoregister, #loginform_submit, #forgotpass, #clicktogetvotes, #clicktoupdate, #profileform_submit, #passforgotform_submit, #registerform_submit
 {
-  padding:0.4em;margin:0.8em 0em;cursor:pointer;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>; width: 280px;
+  padding:0.4em;margin:0.2em 0em;cursor:pointer;float:<?echo get_s_align();?>;text-align:<?echo get_s_align();?>; width: 280px;
 }
 #registerinput, #profileform
 {
@@ -638,12 +644,12 @@ width:320px;
 #currentinfo_container .currentcloth
 {
    position: absolute;
-   margin-top: -1.6em;
+   margin-top: -1.9em;
   
 }
 #currentinfo_container .inparamdiv
 {
-    font-size: 1.8em;
+    font-size: 1.6em;
 }
 @keyframes blink-animation {
     0% {
@@ -870,7 +876,7 @@ border-radius: 0px;
     
 }
 #what_is_h .rainpercent{
-    margin: -12em 7.5em;
+    margin: -28em 7.5em;
 }
 #msgDetails .white_box2
 {
@@ -920,7 +926,7 @@ text-align:<?=get_s_align()?>;
     padding-<?=get_inv_s_align()?>:1px;
     text-align:center;
     float:<?=get_s_align()?>;
-        font-size:22px;
+        font-size:1.3em;
         margin-bottom:0px;
         font-weight: bold;
         background-color:rgba(0,0,0,0);
@@ -965,6 +971,9 @@ letter-spacing: 0px;
      
 	
 }
+.info_btns li.no{
+    background-position-x: 6px;
+}
 #fornextdays_title
 {
 	
@@ -989,7 +998,7 @@ letter-spacing: 0px;
     float:<?echo get_s_align();?>;
     height:40px;
     background-size: 38px;
-    margin: 8px <? if (isHeb()) echo "4em";?> 10px;
+    margin: 10px <? if (isHeb()) echo "4em";?> 10px;
     background-position: right <? if (isHeb()) echo "38px"; else echo "54px";?> top;
     direction:rtl;
     z-index:0
@@ -1056,13 +1065,13 @@ width: 160px;
 }
 #cm_dislike
 {
-    left: 1.7em;
-    top: 5.8em;
+    <?=get_inv_s_align()?>: 1em;
+    top: <? if (isHeb()) echo "6.8"; else echo "7.5";?>em;
 }
 #cm_like
 {
-    <?=get_inv_s_align()?>:3.4em;
-    top: 5.8em;
+    <?=get_inv_s_align()?>:3.2em;
+    top: <? if (isHeb()) echo "6.8"; else echo "7.5";?>em;
 }
 #tempdivvaluestart
 {
@@ -1074,7 +1083,7 @@ width: 160px;
 }
 #latestnow
 {
-    padding:0.5em 0.3em 0em 0.3em;
+    padding:0.5em 0.3em 0em 0em;
     margin: auto;
     font-size: 1.3em;
 }
@@ -1124,7 +1133,7 @@ bottom:-200px;
 margin-top: 50px;
 z-index: -10;
 height: 220px;
-width:100%
+width:320px
 }
 
 

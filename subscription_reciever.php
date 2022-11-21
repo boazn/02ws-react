@@ -193,7 +193,7 @@
 		try{
 							
 		
-                $query = "select id, email, guid, approved from `Subscriptions` where reg_id='{$regid}'";
+                $query = "select id, email, guid, approved from `Subscriptions` where (now() < `BillingExpired` or `BillingExpired` is null) and reg_id='{$regid}'";
                  
                 $result = db_init($query, "");
                 $line = mysqli_fetch_array($result["result"]);

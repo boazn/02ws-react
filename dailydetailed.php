@@ -191,7 +191,7 @@ $day_recommendations = getRecommendations(TimeFrame::Daily, $dayid--, $forecastd
                 <div><?=$VISIBILITY[$lang_idx]?>: <?=$forecastday['visDay']." ".$KM[$lang_idx]?></div>
                 <br/>
                 <?if ($forecastday['rainTo']>0){?>
-                <div><?=$RAIN[$lang_idx]?>:<?=$forecastday['rainFrom']?> - <?=$forecastday['rainTo']?> mm</div>
+                <div><?=$RAIN[$lang_idx]?>:<?=$forecastday['rainFrom']?> - <?=$forecastday['rainTo']." ".$RAIN_UNIT[$lang_idx]?> </div>
                 <?}?>
                 <br/>
                 <div><?=$GOOD_TIME_FOR[$lang_idx]?></div>   

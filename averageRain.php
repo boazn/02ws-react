@@ -1,14 +1,14 @@
 <style>
     #rainsummery td
     {
-        padding: 0.2em;
+        padding: 0.5em;
     }
 </style>
 <table id="mouseover" width="100%" <? if (isHeb()) echo "dir=\"rtl\""; ?>> 
 
 	<tr>
 
-		<td colspan="4" class="base big"><? echo($PRECIPITATION[$lang_idx]." - ".$DIFF_FROM[$lang_idx]);?> <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=averages" ><? echo($NORMAL[$lang_idx]);?></a>
+		<td colspan="4" class="base big"><h2><? echo($PRECIPITATION[$lang_idx]." - ".$DIFF_FROM[$lang_idx]);?> <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=averages" ><? echo($NORMAL[$lang_idx]);?></a></h2>
 
 	</td>
 	</tr>

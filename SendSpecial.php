@@ -227,7 +227,7 @@ Upload.prototype.doUpload = function () {
             $("#SendButton").hide();
         },
         error: function (error) {
-            $("#SendSpecialResult").text(error);
+            $("#SendSpecialResult").text(error.status+ ' '+error.responseText);
         },
         async: true,
         data: formData,

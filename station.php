@@ -162,7 +162,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                                                                 ?>
                                                     <li>
                                                        
-                                                        <li><a href="JWSBanner.html" class="hlink"><? echo $BANNER_FLASH_VIEW[$lang_idx];?></a></li>
+                                                        <li><a href="smallheader.php?lang=<?=$lang_idx?>" class="hlink"><? echo $BANNER_FLASH_VIEW[$lang_idx];?></a></li>
                                                         <li>
                                                                 <a class="hlink" href="<? echo get_query_edited_url(get_url(), 'section', 'radiosonde.php');?>" title="<?echo $STORM_POWER[$lang_idx];?>">
                                                                         <? echo $CURRENT_ENERGY[$lang_idx].get_arrow();?>
@@ -1173,7 +1173,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                            <ul id="more_sigweather" class="">
                                 <li>
                                 <ul id="sigweather">
-                                <? if ($boolbroken) {?>
+                               
                                         <li class="">
                                                 <div id="brokenlatesttemp"></div>
                                                 <div id="brokenlatesthumidity"></div>
@@ -1181,7 +1181,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                                                 <div id="brokenlatestwind"></div>
                                                 <div id="brokenlatestrainrate" ></div>
                                         </li>
-                                <? } ?>
+                               
                                 
                                 <?
                                 if (count($sig) > 0)
@@ -1514,14 +1514,14 @@ else {  ?>
 </audio>
 <? }
 //////////////////////////////////////////////////////////////////
-if ($boolbroken)
+/*if ($boolbroken)
 {
         //logger("intended to print broken record: count=".count($messageBroken)." ");
 	for ($i=0 ; $i < count($messageBroken) ; $i++)
 	{
 		echo $messageBroken[$i][$lang_idx];
 	}
-}
+}*/
 ?>
 <!-- Default Statcounter code for Jerusalem Weather Station
 http://02ws.co.il -->

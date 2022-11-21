@@ -116,7 +116,7 @@ $today->set_hightemp2($ary_parsed_file['HITEMP2'],$ary_parsed_file['HITEMP2TIME'
 $today->set_lowtemp2($ary_parsed_file['LOWTEMP2'],$ary_parsed_file['LOWTEMP2TIME']);
 $today->set_hightemp3($ary_parsed_file['HITEMP3'],$ary_parsed_file['HITEMP3TIME']);
 $today->set_lowtemp3($ary_parsed_file['LOWTEMP3'],$ary_parsed_file['LOWTEMP3TIME']);
-$current->set_hum($ary_parsed_file['HUMIDITY']);
+$current->set_hum($ary_parsed_file['HUMIDITY2']);
 $current->set_hum2($ary_parsed_file['HUMIDITY2']);     
 $today->set_highhum($ary_parsed_file['HIHUMIDITY'],$ary_parsed_file['HIHUMTIME']);    
 $today->set_lowhum($ary_parsed_file['LOWHUMIDITY'],$ary_parsed_file['LOWHUMTIME']);
@@ -237,7 +237,8 @@ $threeHours->set_date(getMinusMinDate(180));
 
 // thsw
 
-
+if ($_GET['debug'] >= 1)
+        echo "time() - thsw_ttime: ".(time() - $mem->get('thsw_ttime'));
 if (time() - $mem->get('thsw_ttime') > 120)
 {
     $tok = getTokFromFile($prefix.FILE_ARCHIVE);
@@ -266,6 +267,8 @@ if (time() - $mem->get('thsw_ttime') > 120)
         echo "<strong>NOT FOUND</strong>";
     }
 }
+else
+    $current->set_thsw($mem->get('thsw'));
     
         
 

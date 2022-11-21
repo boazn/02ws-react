@@ -2673,9 +2673,11 @@ function http_implode($arrayInput) {
 
 /////////////////////////////////////////////////////////////////////////////////
 function update_action($action, $extrainfoS, $messageTitle) {
-    global $pic, $hour, $min, $CURRENT_SIG_WEATHER, $HEB, $EN, $messageAction, $actionActive, $EmailSubject, $link;
+    global $pic, $hour, $min, $CURRENT_SIG_WEATHER, $HEB, $EN, $messageAction, $actionActive, $EmailSubject, $link, $date, $dateInHeb, $EN, $HEB, $RU, $FR, $AR;
     $message = array("<div class=\"big\">" .$date . "<br/>" . "</div><div class=\"big loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$EN]&nbsp;<br/> <strong>" . $messageTitle[$EN] . "</strong><div class=\"loading  big\">&nbsp;{$extrainfoS[$EN][0]}<br/><br/><img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$EN]\" width=\"600px\" border=\"0\" /></div></div>",
-        "<div class=\" big\">" . $dateInHeb . "<br/>" . "</div><div class=\" big loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<br/> <strong>" . $messageTitle[$HEB] . "</strong><div class=\"loading  big\">&nbsp;{$extrainfoS[$HEB][0]}<br/><br/><img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$HEB]\" width=\"600px\" border=\"0\" /></div></div>");
+                     "<div class=\" big\">" . $dateInHeb . "<br/>" . "</div><div class=\" big loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<br/> <strong>" . $messageTitle[$HEB] . "</strong><div class=\"loading  big\">&nbsp;{$extrainfoS[$HEB][0]}<br/><br/><img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$HEB]\" width=\"600px\" border=\"0\" /></div></div>",
+                     "<div class=\" big\">" . $dateInHeb . "<br/>" . "</div><div class=\" big loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<br/> <strong>" . $messageTitle[$HEB] . "</strong><div class=\"loading  big\">&nbsp;{$extrainfoS[$HEB][0]}<br/><br/><img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$HEB]\" width=\"600px\" border=\"0\" /></div></div>",
+                     "<div class=\" big\">" . $dateInHeb . "<br/>" . "</div><div class=\" big loading\">" . "&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<br/> <strong>" . $messageTitle[$HEB] . "</strong><div class=\"loading  big\">&nbsp;{$extrainfoS[$HEB][0]}<br/><br/><img src=\"" . BASE_URL . "/images/$pic\" alt=\"$messageTitle[$HEB]\" width=\"600px\" border=\"0\" /></div></div>");
     if (!isActionAlreadyActivated($action)) {
         $sent = 1;
         $result = db_init("UPDATE sendmailsms SET Sent=$sent, lastSent=NOW() WHERE (Action='$action')", "");
@@ -2715,10 +2717,10 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
     $boolbroken = true;
 
     if ($highorlow == "high") {
-        $highorlowm = array("<span class=\"high\"><b>" . $NEW[$EN] . " " . $MAX[$EN] . " " . $RECORD[$EN] . "</b></span>", "<span class=\"high\" dir=\"rtl\"><b>" . $RECORD[$HEB] . " " . $MAX[$HEB] . " " . $NEW[$HEB] . "</b></span>");
+        $highorlowm = array($NEW[$EN] . " " . $MAX[$EN] . " " . $RECORD[$EN] , $RECORD[$HEB] . " " . $MAX[$HEB] . " " . $NEW[$HEB] );
         $prefEmailSubject = array($NEW[$EN] . " " . $MAX[$EN] . " " . $RECORD[$EN], $RECORD[$HEB] . " " . $MAX[$HEB] . " " . $NEW[$HEB]);
     } else {
-        $highorlowm = array("<span class=\"low\" ><b>" . $NEW[$EN] . " " . $MIN[$EN] . " " . $RECORD[$EN] . "</b></span>", "<span class=\"low\" dir=\"rtl\"><b>" . $RECORD[$HEB] . " " . $MIN[$HEB] . " " . $NEW[$HEB] . "</b></span>");
+        $highorlowm = array($NEW[$EN] . " " . $MIN[$EN] . " " . $RECORD[$EN] ,  $RECORD[$HEB] . " " . $MIN[$HEB] . " " . $NEW[$HEB] );
         $prefEmailSubject = array($NEW[$EN] . " " . $MIN[$EN] . " " . $RECORD[$EN], $RECORD[$HEB] . " " . $MIN[$HEB] . " " . $NEW[$HEB]);
     }
 
@@ -2728,8 +2730,8 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
     else
         $periodm = sprintf("%02d", $month) . "/{$year}";
 
-    array_push($messageBroken, array("<div style=\"width:100%\" id=\"broken" . $highorlow . $param . "\" ><div class=\"innerbroken\"><a href=\"javascript:void(0)\" onmouseover=\"toggleBrokenData(this)\" onmouseout=\"toggleBrokenData(this)\">$highorlowm[$EN] $ON[$EN] $periodm " . get_arrow() . "</a></div><div style=\"display:none\" class=\"grad big brokendatatitle\" >$extdata</div>",
-        "<div id=\"broken" . $highorlow . $param . "\" style=\"text-align:right\"><div class=\"innerbroken\"><a href=\"javascript:void(0)\" onmouseover=\"toggleBrokenData(this)\" onmouseout=\"toggleBrokenData(this)\">$highorlowm[$HEB] $ON[$HEB] $periodm " . get_arrow() . "</a></div><div style=\"display:none\" class=\"grad big brokendatatitle\" >$extdata</div>"));
+    array_push($messageBroken, array($highorlowm[$EN]." ".$ON[$EN]." ".$periodm.": ". $extdata,
+                                     $highorlowm[$HEB]." ".$ON[$HEB]." ".$periodm.": ". $extdata));
 
     $EmailSubject = array($prefEmailSubject[$EN] . " $ON[$EN] $periodm", $prefEmailSubject[$HEB] . " $ON[$HEB] $periodm");
 
@@ -2767,16 +2769,15 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
         db_init($query, "");
         logger(sprintf("updating in setBrokenData: %s ".$query, mysqli_error($link)), 0, "broken", "", "setBrokenData");
     }
-    array_push($messageBroken, array("<div style=\"display:none;text-align:left;paddign:0.3em\" class=\"grad\">$LAST_RECORD[$EN]: <strong>$old_record</strong> <br />$ON[$EN] $old_date</div>",
-        "<div style=\"display:none;text-align:right;padding:0.3em\" class=\"grad\">$LAST_RECORD[$HEB]: <strong>$old_record</strong> <br />$ON[$HEB] $old_date </div>"));
+    array_push($messageBroken, array($LAST_RECORD[$EN].": ".$old_record." ".$ON[$EN]." ".$old_date,
+                                    $LAST_RECORD[$HEB].": ".$old_record." ".$ON[$HEB]." ".$old_date));
     if ($period != "yearly") {
         $yearly_record = round($row["yearly_{$highorlow}"], 1);
         $yearly_date = $row["yearly_{$highorlow}_date"];
-        array_push($messageBroken, array("<div style=\"display:none;text-align:left;padding:0.3em\" class=\"grad\">$RECORD[$EN] $ON[$EN] $year: <strong><span dir=\"ltr\">$yearly_record</span></strong> <br />$ON[$EN] $yearly_date </div>",
-            "<div style=\"display:none;text-align:right;padding:0.3em\" class=\"grad\">$RECORD[$HEB] $ON[$HEB] $year: <strong><span dir=\"ltr\">$yearly_record</span></strong> <br />$ON[$HEB] $yearly_date </div>"));
+        array_push($messageBroken, array($RECORD[$EN]," ".$ON[$EN]." ".$year.": ".$yearly_record." ".$ON[$EN]." ".$yearly_date,
+                                         $RECORD[$HEB]," ".$ON[$HEB]." ".$year.": ".$yearly_record." ".$ON[$HEB]." ".$yearly_date));
     }
-    array_push($messageBroken, array("</div>", "</div>"));
-    array_push($messageBroken, array("\n<script type=\"text/javascript\">\nvar tdBroken = document.getElementById('brokenlatest" . $param . "');\ndivBroken = document.getElementById('broken" . $highorlow . $param . "');\ntdBroken.appendChild(divBroken);\n</script>", "\n<script type=\"text/javascript\">\nvar tdBroken = document.getElementById('brokenlatest" . $param . "');\ndivBroken = document.getElementById('broken" . $highorlow . $param . "');\ntdBroken.appendChild(divBroken);\n</script>"));
+    // array_push($messageBroken, array("\n<script type=\"text/javascript\">\nvar tdBroken = document.getElementById('brokenlatest" . $param . "');\ndivBroken = document.getElementById('broken" . $highorlow . $param . "');\ntdBroken.appendChild(divBroken);\n</script>", "\n<script type=\"text/javascript\">\nvar tdBroken = document.getElementById('brokenlatest" . $param . "');\ndivBroken = document.getElementById('broken" . $highorlow . $param . "');\ntdBroken.appendChild(divBroken);\n</script>"));
 
     //if (ShouldSendMsg($highorlow, $param, $period))
     //	echo "should SEND - ".$highorlow." ".$param." ".$period." !!!!!!!!!!!!!!!!!";
@@ -3348,16 +3349,14 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
             $latestalert_title = $line["Title"];
             $latestalert_time = replaceDays(date('D H:i', $mem->get('latestalerttime'.$lang)));
         }
-        $description_appended = "\n".$latestalert_time."\n".trim($latestalert)."\n".$descriptionforecast_title."\n".trim($descriptionforecast);
+        $description_appended = $latestalert_time."\n".trim($latestalert)."\n\n".$descriptionforecast_title."\n".trim($descriptionforecast);
         //$description = "<div class=\"alerttime ".$class."\">".$now."</div>".$description;
         if (!empty($description))
             $description = $description."\n";
         //$now = getLocalTime(time());
-
-        $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='forecast') and (lang=$lang)";
-        $res = db_init($query, "" );
+ 
         $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}'  WHERE (type='$type') and (lang=$lang)";
-        
+        $res = db_init($query, "" );
         if ($type == 'LAlert'){
             $mem->set('descriptionforecast'.$lang, $description_appended);
             $mem->set('descriptionforecast_title'.$lang, $latestalert_title);
@@ -3368,6 +3367,8 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
             $mem->set('latestalerttime'.$lang, time());
             $mem->set('latestalertttl', $ttl*60);
             $mem->set('latestalerttype', $messageType);
+            $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$latestalert_title}'  WHERE (type='forecast') and (lang=$lang)";
+            $res = db_init($query, "" );
         }
         else if ($type == 'forecast'){
             $mem->set('descriptionforecast'.$lang, $description);
@@ -3386,7 +3387,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
             $mem->set('descriptionforecast'.$FR, translateText(urlencode($description_appended), 'fr'));
             $mem->set('descriptionforecast_title'.$FR, translateText(urlencode($latestalert_title), 'fr'));
         }*/
-        $res = db_init($query, "" );
+        
         if (!empty(trim($description))&&($type=='LAlert')){
             $query = "INSERT INTO  `AlertsArchive` (Description, active, href,  img_src, Title, updatedTime, lang) Values('{$description}', '$active', '$href', '$img_src', '{$title}', SYSDATE(),  $lang)";
             $res = db_init($query, "" );
@@ -3530,6 +3531,9 @@ function callCustomAlertSender($messageBody, $title, $picture_url, $embedded_url
     }
     else if ($customAlert == CustomAlert::HighUV){
         $query = "select lang, gcm_regid  FROM fcm_users where active_uv=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_uv=1".$query_extension;
+    }
+    else if ($customAlert == CustomAlert::LowRadiation){
+        $query = "select lang, gcm_regid  FROM fcm_users where active_tips=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_tips=1".$query_extension;
     }
       
     $result = db_init($query, "");

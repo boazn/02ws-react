@@ -1215,13 +1215,13 @@ $mem->set('CurrentStory'.$line["lang"], htmlentities (preg_replace('`<br(?: /)?>
 </div>
 
 <div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell" style="float:left" id="ads">
-<?$Ads = $mem->get('Ads');echo "Ads<pre>"; var_dump($Ads);echo"</pre>";?>
+<?$Ads = $mem->get('Ads');echo "Ads<pre>"; var_dump($Ads);echo"</pre>";$idx=0;?>
 <div class="cell">
-idx<input id="ad_idx" name="ad_idx" size="18"  value="" style="width:80px;text-align:left"  /><br />
-href<input id="hrefads" name="hrefads" size="18"  value="" style="width:80px;text-align:left"  /><br />
-img_url<input id="imgads" name="imgads" size="18"  value="" style="width:80px;text-align:left"  /><br />
-w<input id="imgwidth" name="imgwidth" size="18"  value="" style="width:80px;text-align:left"  /><br />
-h<input id="imgheight" name="imgheight" size="18"  value="" style="width:80px;text-align:left"  /><br />
+idx<input id="ad_idx" name="ad_idx" size="18"  value="<?=$Ads[$idx]['idx']?>" style="width:80px;text-align:left"  /><br />
+href<input id="hrefads" name="hrefads" size="18"  value="<?=$Ads[$idx]['href']?>" style="width:380px;text-align:left"  /><br />
+img_url<input id="imgads" name="imgads" size="18"  value="<?=$Ads[$idx]['img_url']?>" style="width:280px;text-align:left"  /><br />
+w<input id="imgwidth" name="imgwidth" size="18"  value="<?=$Ads[$idx]['w']?>" style="width:80px;text-align:left"  /><br />
+h<input id="imgheight" name="imgheight" size="18"  value="<?=$Ads[$idx]['h']?>" style="width:80px;text-align:left"  /><br />
         </div>
 		<div class="cell shrinked">
 		active

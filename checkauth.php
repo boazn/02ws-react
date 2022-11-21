@@ -2,12 +2,6 @@
 //ini_set("display_errors","On");
 include ("include.php");
 include ("lang.php");
-$CLICK_TO_CONFIRM = array("Click here to confirm your registration to 02ws.co.il and make your user active", "הקליקו כאן כדי לאשר הרשמה לאתר ירושמיים", "Click here to confirm your registration to 02ws.co.il and make your user active");
-$CLICK_TO_RESET = array("Click here to reset your password", "כאן ירושמיים. לא נורא ששכחתם את הססמה. הקליקו כאן כדי לאפס", "Click here to reset your password");
-$CHECK_EMAIL_RESET_PASS = array("Go to your email for password reset", "יש לגשת אל האימייל שלך כדי לבצע איפוס ססמא", "Go to your email for password reset");
-$PROBLEM_USER_PASSWORD =  array("Problem with user or password", "סיסמא לא נכונה או משתמש לא קיים", "Problem with user or password");
-$NO_USER_EXIST = array("No user exists like that", "אין משתמש כזה", "No user exists with");
-
 session_start();
 
 
