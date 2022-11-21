@@ -267,8 +267,9 @@ function getForecastDay()
     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
         $idx++;
         //logger(date("H")." ".date("d/n")." ".$line["date"]);
-        if (((date("H")<11)&&($idx == 1))||((date("H")>17)&&($line["date"])!=date("d/n")))
+        if (((date("H")<11)&&($idx == 1))||((date("H")>17)&&(explode("/", $line["date"])[0])==getMinusDayDay(-1)))
             {
+                logger(date("H")." ".date("d/n")." ".$line["date"],  0, "Push", "getForecastDay", "SendSpecialService");
                 $lang_idx=0;
                 $first_day0 = replaceDays($line["day_name"]." ").$line["date"]."\n".$line["lang0"]."\n".$NOW[$EN].": ".$current->get_temp()."°\n".$NOON[$EN].": ".$line["TempHigh"]."° - ".getClothTitle($line["TempHighCloth"], $line["TempHigh"],$line['WindDay'], $line['HumDay'])."\n".$NIGHT[$EN].": ".$line["TempNight"]."° - ".getClothTitle($line["TempNightCloth"], $line["TempNight"],$line['WindNight'], $line['HumNight']);
                 $lang_idx=1;
@@ -284,7 +285,7 @@ $empty = $post = array();
 foreach ($_POST as $varname => $varvalue) {
    if (empty($varvalue)) {
        $empty[$varname] = $varvalue;
-   } else {
+   } else {דקמג
        $post[$varname] = $varvalue;
    }
 }
