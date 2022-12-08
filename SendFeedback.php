@@ -129,6 +129,10 @@ if (isset($_POST['message'])) {
 
 <form method="post" id="feedback_form">
 <div class="clear float" style="width:50%">
+	<div style="direction:rtl">
+		<a href="<? echo get_query_edited_url($url_cur, 'section', 'AdsPromotion.php');?>" target="_self">פנייה לבקשת פרסום באתר ובאפליקציית ירושמיים הקישו כאן <?=get_arrow()?></a>
+	</div>
+	<br/>
 <table id="feedbacktable" width="100%" cellspacing="10" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
 
 <tr >

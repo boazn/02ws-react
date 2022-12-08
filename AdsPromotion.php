@@ -84,11 +84,7 @@ if (isset($_POST['SendButton'])) {
 ?>
 <? if (!$msgSent) {?>
 
-<form method="post">
-
-	<div style="direction:rtl">
-		<a href="<? echo get_query_edited_url($url_cur, 'section', 'AdsPromotion.php');?>" target="_blank">פנייה לבקשת פרסום באתר ובאפליקציית ירושמיים הקישו כאן <?=get_arrow()?></a>
-	</div>
+<!--<form method="post">
 
 <div class="inv_plain_3" style="padding:4em 0 1em;margin:auto;width:85%">
 	<div style="padding:0.5em">
@@ -114,7 +110,31 @@ if (isset($_POST['SendButton'])) {
 		<input type="submit" name="SendButton" style="width:85%;font-size: 1.2em;" class="inv_plain_3_zebra btn-primary" value="<? if (isHeb()) echo "שליחת הודעה"; else echo "Send Message";?>"/>
 </div>
 
-</form>
+</form>-->
+<h1>  קמפיין פרסום בירושמיים</h1>
+
+<div class="inv_plain_3_zebra">
+
+<br/><br/><br/>
+	<div style="direction:rtl" class="inv_plain_3">
+		
+ פלטפורמת ירושמיים מציעה מגוון אפשרויות פרסום לבעלי עסקים ומוסדות תרבות.<br/>
+לפרטים יש ליצור קשר במייל: <a href = "mailto: media@just-brief.com">לחצו כאן</a>
+או לשלוח טופס הזמנה  <a href="https://bit.ly/yerushamaim" target="_blank">בקישור זה</a> ונחזור אליכם
+
+
+			
+	</div>
+	<br/><br/>
+	<img src="images/BriefLOGO-black.png" width="320"  alt="Brief"/>
+	<br/><br/>
+<div id="if_jerusky" style="display: block;"><a href="https://bit.ly/yerushamaim"><img src="images/jerusky_general1.gif" width="320" height="320" alt="Promotion"/></a></div>
+	<div style="direction:rtl">
+	<a href="https://bit.ly/yerushamaim" target="_blank">פנייה לבקשת פרסום באתר ובאפליקציית ירושמיים הקישו כאן <?=get_arrow()?></a>
+	</div>
+
+</div>
+
 <? } ?>
 
 

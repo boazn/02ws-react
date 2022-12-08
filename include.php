@@ -2717,11 +2717,15 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
     $boolbroken = true;
 
     if ($highorlow == "high") {
-        $highorlowm = array($NEW[$EN] . " " . $MAX[$EN] . " " . $RECORD[$EN] , $RECORD[$HEB] . " " . $MAX[$HEB] . " " . $NEW[$HEB] );
-        $prefEmailSubject = array($NEW[$EN] . " " . $MAX[$EN] . " " . $RECORD[$EN], $RECORD[$HEB] . " " . $MAX[$HEB] . " " . $NEW[$HEB]);
+        $highorlowm = array($NEW[$EN] . " " . $MAX[$EN] . " " . $RECORD[$EN] , 
+                            $RECORD[$HEB] . " " . $MAX[$HEB] . " " . $NEW[$HEB] );
+        $prefEmailSubject = array($NEW[$EN] . " " . $MAX[$EN] . " " . $RECORD[$EN], 
+                                   $RECORD[$HEB] . " " . $MAX[$HEB] . " " . $NEW[$HEB]);
     } else {
-        $highorlowm = array($NEW[$EN] . " " . $MIN[$EN] . " " . $RECORD[$EN] ,  $RECORD[$HEB] . " " . $MIN[$HEB] . " " . $NEW[$HEB] );
-        $prefEmailSubject = array($NEW[$EN] . " " . $MIN[$EN] . " " . $RECORD[$EN], $RECORD[$HEB] . " " . $MIN[$HEB] . " " . $NEW[$HEB]);
+        $highorlowm = array($NEW[$EN] . " " . $MIN[$EN] . " " . $RECORD[$EN] ,  
+                            $RECORD[$HEB] . " " . $MIN[$HEB] . " " . $NEW[$HEB] );
+        $prefEmailSubject = array($NEW[$EN] . " " . $MIN[$EN] . " " . $RECORD[$EN], 
+                                 $RECORD[$HEB] . " " . $MIN[$HEB] . " " . $NEW[$HEB]);
     }
 
     $shortYear = sprintf("%02d", $year - 2000);
@@ -3369,12 +3373,14 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
             $mem->set('latestalerttype', $messageType);
             $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$latestalert_title}'  WHERE (type='forecast') and (lang=$lang)";
             $res = db_init($query, "" );
+            logger($query, 0, "Push", "updateMessageFromMessages", "updateMessageFromMessages");
         }
         else if ($type == 'forecast'){
             $mem->set('descriptionforecast'.$lang, $description);
             $mem->set('descriptionforecasttime'.$lang, time());
             $mem->set('descriptionforecast_title'.$lang, $title);
             echo "descriptionforecast".$lang."=".date('Y-m-d G:i D', $mem->get('descriptionforecasttime'.$lang));
+            logger($description, 0, "descriptionforecast", "updateMessageFromMessages", "updateMessageFromMessages");
         }
        /* if ($lang == 0)
         {
@@ -3391,6 +3397,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         if (!empty(trim($description))&&($type=='LAlert')){
             $query = "INSERT INTO  `AlertsArchive` (Description, active, href,  img_src, Title, updatedTime, lang) Values('{$description}', '$active', '$href', '$img_src', '{$title}', SYSDATE(),  $lang)";
             $res = db_init($query, "" );
+            logger($query, 0, "Push", "AlertsArchive", "updateMessageFromMessages");
         }
        
         // Free resultset 

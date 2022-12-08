@@ -81,6 +81,11 @@ $sigforecastHour = $mem->get('sigforecastHour');
                 enable_page_level_ads: false
                 });
                 </script>
+        <script type='text/javascript'>
+                let temScript = document.createElement('script');
+                temScript.src = 'https://adncdnend.azureedge.net/adtags/02ws.adn.js';
+                        document.getElementsByTagName('head')[0].append(temScript);
+        </script>
     </head>
     <body>
         <!--[if lt IE 9 ]>	

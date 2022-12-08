@@ -1,3 +1,34 @@
+<style>
+ .ads_container{
+    width:320px;
+    margin-bottom:60px;
+    text-align: left;
+ }
+ #upload_container{
+    width:320px;
+    text-align: left;
+ }
+ #picname, #link{
+    width:320px
+ }
+ .cell{
+    margin:2px
+ }
+ .btnsstart{
+        margin:20px
+    }
+ @media only screen and (min-width: 1000px) {
+    .ads_container{
+        width:620px
+    }
+    #upload_container{
+        width:620px
+    }
+    .btnsstart{
+        margin:10px
+    }
+ }
+</style>
 <?
 define("MANAGER_NAME","bn");
 define("ICONS_PATH","images/icons/day");
@@ -8,6 +39,7 @@ include_once("ini.php");
 include_once("include.php"); 
 include_once("lang.php");
 define ("PIC_PREFIX_PATH", "images/");
+
 class DB_Functions {
  
     private $db;
@@ -35,8 +67,22 @@ class DB_Functions {
             $name = $info['basename'];
             $saveto = $file_path;
             move_uploaded_file($_FILES['imagefile']['tmp_name'], $saveto);
-            header('Content-type: image/jpeg');
-            $image = imagecreatefromjpeg($saveto);
+            $imagetype = strtolower(explode(".", $name)[1]);
+            if ($imagetype == "jpg")
+            {
+                header('Content-type: image/jpeg');
+                $image = imagecreatefromjpeg($saveto);
+            }
+            else if ($imagetype == "png")
+            {
+                header('Content-type: image/png');
+                $image = imagecreatefrompng($saveto);
+            }
+            else if ($imagetype == "gif"){
+                header('Content-type: image/gif');
+                $image = imagecreatefromgif($saveto);
+            }
+            
             
             // Calculate new dimensions
             $old_width      = imagesx($image);
@@ -104,12 +150,20 @@ function get_Fromdir($path){
 }
 function updateAds ($active, $idx, $command, $img_url, $href, $w, $h)
 {   
-    global $mem;
-    //echo "<br/>".$active." ".$idx." ".$command." ".$img_url." ".$href." ".$w." ".$h;
+    global $mem, $AD_LINK, $lang_idx;
+    //echo "<br/>".$active." idx=".$idx." ".$command." ".$img_url." ".$href." ".$w." ".$h;
     $Ads = $mem->get('Ads');
-    if ($command == "I"){
-        $idx = count($Ads);
-        array_push($Ads, array('img_url' => $img_url, 'href' => $href, 'w' => $w, 'h' => $h ));
+    if ($command == "D"){
+        echo "<br/>removing index ".$idx."<br/>";
+        unset($Ads[$idx]);
+    }
+    else if ($command == "I"){
+        //$idx = count($Ads);
+        //array_push($Ads, array('img_url' => $img_url, 'href' => $href, 'w' => $w, 'h' => $h ));
+        $Ads[$idx]['img_url'] = $img_url;
+        $Ads[$idx]['href'] = $href;
+        $Ads[$idx]['w'] = $w;
+        $Ads[$idx]['h'] = $h;
     }
     else if ($active == "true")
     {
@@ -122,10 +176,34 @@ function updateAds ($active, $idx, $command, $img_url, $href, $w, $h)
         unset($Ads[$idx]);
     }
     $mem->set('Ads', $Ads);
-    echo "<pre> updated ";
-    var_dump($Ads);
-    echo "</pre>";
-      
+   
+     for ($idx = 0; $idx <= max(array_keys($Ads)); $idx++) { if ($Ads[$idx]['href'] != "") {?>
+        <div id="ads_container<?=$idx?>" class="ads_container inv_plain_3_zebra invcell" style="margin-top:40px;" >
+        <div class="cell">
+        <div class="cell">index <?=$idx?></div>
+        <div class="cell">link </div><div class="cell"><input id="hrefads<?=$idx?>" name="hrefads" size="18"  value="<?=$Ads[$idx]['href']?>" style="width:320px;text-align:left"  /></div><br />
+        <div class="cell">img_url </div><div class="cell"><input id="imgads<?=$idx?>" name="imgads" size="18"  value="<?=$Ads[$idx]['img_url']?>" style="width:320px;text-align:left"  /></div><br />
+        <div class="cell">width </div><div class="cell"><input id="imgwidth<?=$idx?>" name="imgwidth" size="18"  value="<?=$Ads[$idx]['w']?>" style="width:50px;text-align:left"  /></div>
+        <div class="cell">height </div><div class="cell"><input id="imgheight<?=$idx?>" name="imgheight" size="18"  value="<?=$Ads[$idx]['h']?>" style="width:50px;text-align:left"  /></div><br />
+         </div>
+         <div class="cell shrinked">
+                active
+                <input type="checkbox" id="adsactive<?=$idx?>" name="adsactive" value="" checked="checked" />
+                
+            </div>
+            
+            <!--<div class="cell btnsstart" ><img src="images/plus.png" width="18px" onclick="getAdsService(<?=$idx?>, 'I', 'ads')" style="cursor:pointer" /></div>-->
+            <div class="cell btnsstart" ><img src="images/check.png" width="18px" onclick="getAdsService(<?=$idx?>, 'U',  'ads')" style="cursor:pointer" /></div>
+            <div class="cell btnsstart" ><img src="images/x.png" width="18px" onclick="getAdsService(<?=$idx?>, 'D', 'ads')" style="cursor:pointer" /></div>
+                
+                
+            </div>
+        
+        <?}}//print_r($Ads);
+        
+       echo "<pre> updated ";
+       var_dump($Ads);
+       echo "</pre>";
 
 }
 
@@ -136,8 +214,7 @@ if ((trim($_REQUEST['type']) == "ads"))
     $height = $db->storePic($_REQUEST['picname'], 0);
     $file_path = "https://".$_SERVER["HTTP_HOST"]."/".PIC_PREFIX_PATH.$_REQUEST['picname'];
     echo "height=".$height." ".$file_path;
-    $Ads = $mem->get('Ads');
-    updateAds (1, count($Ads), "I", PIC_PREFIX_PATH.$_REQUEST['picname'], urldecode($_REQUEST['href']), 320, $height);
+    updateAds (1, $_REQUEST['idx'], "I", PIC_PREFIX_PATH.$_REQUEST['picname'], urldecode($_REQUEST['href']), 320, $height);
 }
 else if ((trim($_REQUEST['type']) == "updateads"))
 {
@@ -145,28 +222,7 @@ else if ((trim($_REQUEST['type']) == "updateads"))
 }
 else {
 ?>
-<style>
- #ads_container{
-    width:320px;
-    margin-bottom:200px;
-    text-align: left;
- }
- #upload_container{
-    width:320px;
-    text-align: left;
- }
- #picname, #link{
-    width:320px
- }
- @media only screen and (min-width: 1000px) {
-    #ads_container{
-        width:620px
-    }
-    #upload_container{
-        width:620px
-    }
- }
-</style>
+
 <div id="logo"></div>
 <div id="spacer1" style="clear:both;height: 20px;">&nbsp;</div>
 <div id="upload_container" >
@@ -177,37 +233,39 @@ else {
 <div class="cell"><input  name="picname" id="picname" size="30"  style="width:320px" wrap="soft" /></div><br />
 <div class="cell">link </div>
 <div class="cell"><input  name="link" id="link" size="30"   style="width:320px" wrap="soft" /></div><br />
+<div class="cell">index </div>
+<div class="cell"><input  name="idx" id="idx" size="30"  value="0" style="width:20px" wrap="soft" /></div><br />
 <input type='button' class="button" name='upload_btn' value='upload' onclick="javascript:postToServer();" style="width:150px" size="60"/>
 </form>
 <progress></progress> 
 <div id="result"></div>
 </div>
 <?$Ads = $mem->get('Ads');?>
-<? $idx = 0; foreach ($Ads as $ad) { ?>
-<div id="ads_container" class="inv_plain_3_zebra invcell" style="margin-top:40px;" id="ads">
+<? for ($idx = 0; $idx <= max(array_keys($Ads)); $idx++) { if ($Ads[$idx]['href'] != "") {?>
+<div id="ads_container<?=$idx?>" class="ads_container inv_plain_3_zebra invcell" style="margin-top:40px;" >
 <div class="cell">
-<div class="cell">idx </div><div class="cell"><input id="ad_idx<?=$idx?>" name="ad_idx" size="18"  value="<?=$idx?>" style="width:80px;text-align:left"  /></div><br />
-<div class="cell">href </div><div class="cell"><input id="hrefads<?=$idx?>" name="hrefads" size="18"  value="<?=$ad['href']?>" style="width:320px;text-align:left"  /></div><br />
-<div class="cell">img_url </div><div class="cell"><input id="imgads<?=$idx?>" name="imgads" size="18"  value="<?=$ad['img_url']?>" style="width:320px;text-align:left"  /></div><br />
-<div class="cell">width </div><div class="cell"><input id="imgwidth<?=$idx?>" name="imgwidth" size="18"  value="<?=$ad['w']?>" style="width:80px;text-align:left"  /></div><br />
-<div class="cell">height </div><div class="cell"><input id="imgheight<?=$idx?>" name="imgheight" size="18"  value="<?=$ad['h']?>" style="width:80px;text-align:left"  /></div><br />
+<div class="cell">index <?=$idx?></div>
+<div class="cell">link </div><div class="cell"><input id="hrefads<?=$idx?>" name="hrefads" size="18"  value="<?=$Ads[$idx]['href']?>" style="width:320px;text-align:left"  /></div><br />
+<div class="cell">img_url </div><div class="cell"><input id="imgads<?=$idx?>" name="imgads" size="18"  value="<?=$Ads[$idx]['img_url']?>" style="width:320px;text-align:left"  /></div><br />
+<div class="cell">width </div><div class="cell"><input id="imgwidth<?=$idx?>" name="imgwidth" size="18"  value="<?=$Ads[$idx]['w']?>" style="width:50px;text-align:left"  /></div>
+<div class="cell">height </div><div class="cell"><input id="imgheight<?=$idx?>" name="imgheight" size="18"  value="<?=$Ads[$idx]['h']?>" style="width:50px;text-align:left"  /></div><br />
  </div>
  <div class="cell shrinked">
 		active
 		<input type="checkbox" id="adsactive<?=$idx?>" name="adsactive" value="" checked="checked" />
 		
 	</div>
-    <div class="cell btnsstart" >
-        <div class="cell" id="currstory_href_plugin" class="float btnsstart">
-                <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15" /></a>
-        </div>
-        <img src="images/plus.png" width="18px" onclick="getAdsService(<?=$idx?>, 'I', 'ads')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<img src="images/check.png" width="18px" onclick="getAdsService(<?=$idx?>, 'U',  'ads')" style="cursor:pointer" />
+    
+    <!--<div class="cell btnsstart" ><img src="images/plus.png" width="18px" onclick="getAdsService(<?=$idx?>, 'I', 'ads')" style="cursor:pointer" /></div>-->
+    <div class="cell btnsstart" ><img src="images/check.png" width="18px" onclick="getAdsService(<?=$idx?>, 'U',  'ads')" style="cursor:pointer" /></div>
+    <div class="cell btnsstart" ><img src="images/x.png" width="18px" onclick="getAdsService(<?=$idx?>, 'D', 'ads')" style="cursor:pointer" /></div>
+        
+		
 	</div>
-</div>
-<?$idx++;}//print_r($Ads);?>
-<?}?>		
 
+<?}}//print_r($Ads);?>
+<?}?>		
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 <script>
     function getAdsService(adToSave, command, type)
@@ -218,7 +276,7 @@ else {
 	
     if (type == "ads")
     {
-        var postData = "idx=" + $("#ad_idx"+adToSave).val() + "&command=" + command + "&type=updateads&w=" + $("#imgwidth"+adToSave).val() + "&h=" + $("#imgheight"+adToSave).val() + "&img_url=" + $("#imgads"+adToSave).val() + "&href=" + $("#hrefads"+adToSave).val() + "&active=" + $("#adsactive"+adToSave).prop("checked");
+        var postData = "idx=" + adToSave + "&command=" + command + "&type=updateads&w=" + $("#imgwidth"+adToSave).val() + "&h=" + $("#imgheight"+adToSave).val() + "&img_url=" + $("#imgads"+adToSave).val() + "&href=" + $("#hrefads"+adToSave).val() + "&active=" + $("#adsactive"+adToSave).prop("checked");
     }
     
     
@@ -249,6 +307,7 @@ function postToServer(){
     var fd = new FormData();    
     fd.append( 'imagefile', $('#imagefile')[0].files[0] );
     fd.append( 'picname', $('#picname').val() );
+    fd.append( 'idx', $('#idx').val() );
     fd.append( 'href', $('#link').val() );
     fd.append( 'type', 'ads' );
     $('progress').show();
@@ -274,7 +333,7 @@ function postToServer(){
         },
         error: function (error) {
             $('progress').hide();
-            alert(error.status+ ' '+error.responseText);
+            alert("error: " + error.status+ ' '+error.responseText);
         },
         // Custom XMLHttpRequest
         xhr: function() {

@@ -436,6 +436,8 @@
                 </div>
                 </div>
                 <hr id="leftline_cloud" /><hr id="rightline_cloud" />
+                <div data-onpage=true 
+                    data-adpath="/339474670,22847485332/02WS/Desktop_300x250">
                 <!-- Main Desktop -->
                 <ins class="adsbygoogle"
                     style="display:block"
@@ -445,6 +447,7 @@
                 <script>
                 (adsbygoogle = window.adsbygoogle || []).push({});  
                 </script>
+                </div>
                 <?if (isHeb()){?>
                 <div id="if1" >  
                    
@@ -601,6 +604,8 @@
 					<div class="row">
 					<div id="middleadsense_container" class="span11" >
 					<div id="middleadsense">
+                    <div data-onpage=true 
+                        data-adpath="/339474670,22847485332/02WS/Desktop_728x90">
                                          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                                          <!-- 728x90, created 3/31/10 -->
                                          <ins class="adsbygoogle"
@@ -610,6 +615,7 @@
                                          <script>
                                          (adsbygoogle = window.adsbygoogle || []).push({});
                                          </script>
+                                        </div>
                                         </div>
 					 <div id="plane">
 						<img src="img/plane.png" width="101" height="114" alt="plane"/>

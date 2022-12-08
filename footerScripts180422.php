@@ -1772,17 +1772,17 @@ function loadPostData(jsonstr, coldmeter_size)
         $("#nextdays").css('visibility', 'visible');
         if (sessions % 2 == 0)
         {
-           /* $("#if1").show();
-            $("#if2").hide();
+            $("#if1").show();
+            $("#if2").show();
             $("#if3").show();
-            $("#if4").hide();*/
+            $("#if4").show();
         }
         else 
         {
-          /*  $("#if1").hide();
+            $("#if1").show();
             $("#if2").show();
-            $("#if3").hide();
-            $("#if4").show();*/
+            $("#if3").show();
+            $("#if4").show();
             
         }
 

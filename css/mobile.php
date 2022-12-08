@@ -33,7 +33,7 @@ html {
 body{
 text-align:center;
 margin:0;
-font-size: <?if (isHeb()) echo "13.1"; else echo "11.5";?>13.1px;
+font-size: <?if (isHeb()) echo "13.1"; else echo "11.5";?>px;
 overflow-x: hidden;
 }
 #date{
@@ -295,7 +295,7 @@ z-index:2000;
 }
 #nextdays
 {
-        margin:1em 0.5em;
+        margin:1em 0em;
         <? if (isHeb()) echo "direction:rtl"; ?>
 }
 #section{
@@ -303,7 +303,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #coldmeter
 {
-          float:<?echo get_s_align();?>;top: <? if (isHeb()) echo "5.8"; else echo "6.8"; ?>em;
+          float:<?echo get_s_align();?>;top: <? if (isHeb()) echo "5.2"; else echo "6.2"; ?>em;
 }
 #radio_toolbar_container
 {
@@ -615,10 +615,7 @@ display:block
 #main_cellphone_container
 {
 text-align:center;
--webkit-overflow-scrolling: touch;
--webkit-transform: translateZ(0px);
 -webkit-transform: translate3d(0,0,0);
--webkit-perspective: 1000;
 margin: 0 auto;
 width:320px;
 
@@ -747,7 +744,7 @@ width:320px;
 
 #windy
 {
-width:33%;left:10em;top:3.4em
+width:33%;left:10em;top:3em
 } 
 .open-close-button{
   width: 1.2em;
@@ -926,7 +923,7 @@ text-align:<?=get_s_align()?>;
     padding-<?=get_inv_s_align()?>:1px;
     text-align:center;
     float:<?=get_s_align()?>;
-        font-size:1.3em;
+        font-size:1.4em;
         margin-bottom:0px;
         font-weight: bold;
         background-color:rgba(0,0,0,0);
@@ -1042,7 +1039,7 @@ width: 160px;
 {
     float:none;
     font-size: 3.4em;
-    margin-top: 50px;
+    margin-top: 30px;
     z-index:99999;
     direction:ltr;
     margin-left:0;
@@ -1066,12 +1063,12 @@ width: 160px;
 #cm_dislike
 {
     <?=get_inv_s_align()?>: 1em;
-    top: <? if (isHeb()) echo "6.8"; else echo "7.5";?>em;
+    top: <? if (isHeb()) echo "6.2"; else echo "7";?>em;
 }
 #cm_like
 {
     <?=get_inv_s_align()?>:3.2em;
-    top: <? if (isHeb()) echo "6.8"; else echo "7.5";?>em;
+    top: <? if (isHeb()) echo "6.2"; else echo "7";?>em;
 }
 #tempdivvaluestart
 {
@@ -1097,7 +1094,7 @@ width: 160px;
 margin:auto;
 }
 #itfeels {
-    margin:0;top:5.5em;background: none;  width: 40%;font-size: 28px;text-align: center;padding: 0 10px;
+    margin:0;top:4.5em;background: none;  width: 40%;font-size: 28px;text-align: center;padding: 0 10px;
 }
 #itfeels_windchill, #itfeels_heatidx, #itfeels_thsw{
 top:0;position:relative; background: none;margin:auto

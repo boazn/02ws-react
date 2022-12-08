@@ -4,7 +4,7 @@ include ("include.php");
 include_once("start.php");
 ini_set('error_reporting', E_ERROR | E_PARSE);
 require_once 'vendor/autoload.php';
-
+error_reporting(-1);
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\JWSBuilder;
@@ -173,6 +173,7 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
 {
     global $TIP, $REPLY_ENGAGE, $ALERTS_PAYMENT;
     $key = "";
+    error_reporting(-1);
     $registrationIDs0 = array();
     $registrationIDs1 = array();
     $lines = 0;
@@ -285,7 +286,7 @@ $empty = $post = array();
 foreach ($_POST as $varname => $varvalue) {
    if (empty($varvalue)) {
        $empty[$varname] = $varvalue;
-   } else {דקמג
+   } else {
        $post[$varname] = $varvalue;
    }
 }
@@ -419,6 +420,7 @@ if (empty($empty)) {
         else {
         $EmailSubject = array($title[0], $title[1]);
         }
+        logger("calling send_Email with ".$EmailSubject[0], 0, "Push", "SendSpecialService", "send_Email");
          $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
         }
        } 

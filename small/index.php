@@ -110,7 +110,7 @@ if (isRadarPage())
 <link rel="apple-touch-icon" href="/img/logo.svg">
 <link rel="icon" type="image/png" href="img/favicon_sun.png" />
 <meta property="og:image" content="https://www.02ws.co.il/02ws_short.png" />
-<meta name="viewport" content="width=<?=$width?><? if (isFastPage()) echo ",user-scalable=no";?>" />
+<meta name="viewport" content="width=<?=$width?><? if (isFastPage()) echo ", initial-scale=1.15 ,user-scalable=no";?>" />
 <title><?=$WEBSITE_TITLE[$lang_idx]." - ".$MOBILE_FRIENDLY[$lang_idx]?></title>
 <script id="loadGA">
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -121,6 +121,11 @@ if (isRadarPage())
     ga('create', 'UA-647172-1', 'auto');
     ga('send', 'pageview');
 
+</script>
+<script type='text/javascript'>
+  let temScript = document.createElement('script');
+    temScript.src = 'https://adncdnend.azureedge.net/adtags/02ws.adn.js';
+            document.getElementsByTagName('head')[0].append(temScript);
 </script>
 </head>
 <body >
@@ -134,6 +139,8 @@ if (isRadarPage())
 
 <div id="adunit1" class="adunit" style="visibility:hidden">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div data-onpage=true 
+      data-adpath="/339474670,22847485332/02WS/Mobile_320x50">
 <!-- Ad small page -->
 <ins class="adsbygoogle"
      style="display:block;width:320px;height:50px"
@@ -145,7 +152,7 @@ if (isRadarPage())
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 </div>
-
+</div>
 <?}?>
 <? if (mainPage()) {?>
 <div id="nextdays" style="visibility:hidden">
@@ -825,7 +832,8 @@ else {?>
         <div id="spacer2" style="clear:both;height:10px">&nbsp;</div>
         
         <div id="adunit3" class="adunit" style="">
-        
+        <div data-onpage=true 
+      data-adpath="/339474670,22847485332/02WS/Mobile_320x50">
             <!-- Large Mobile Banner 1 -->
            <ins class="adsbygoogle"
                 style="display:inline-block;width:320px;height:50px"
@@ -834,6 +842,7 @@ else {?>
             <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
+        </div>
         </div>
         <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
         <div id="for24_hours"></div>
@@ -916,7 +925,8 @@ else {?>
     <div id="if4">
       
     </div>
-	
+    <div data-onpage=true 
+      data-adpath="/339474670,22847485332/02WS/Mobile_320x50">
  <!-- small unit 2 -->
 <ins class="adsbygoogle"
      style="display:inline-block;width:320px;height:50px"
@@ -925,6 +935,7 @@ else {?>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+</div>
 </div>
 <ul id="sigweather" class="white_box" style="display:none">
 
@@ -1244,17 +1255,17 @@ Licensed MIT
                             $("#nextdays").css('visibility', 'visible');
                             if (sessions % 2 == 0)
                             {
-                               /* $("#if1").show();
-                                $("#if2").hide();
+                                $("#if1").show();
+                                $("#if2").show();
                                 $("#if3").show();
-                                $("#if4").hide();*/
+                                $("#if4").show();
                             }
                             else 
                             {
-                               /* $("#if1").hide();
+                                $("#if1").show();
                                 $("#if2").show();
-                                $("#if3").hide();
-                                $("#if4").show();*/
+                                $("#if3").show();
+                                $("#if4").show();
                                 
                             }
 

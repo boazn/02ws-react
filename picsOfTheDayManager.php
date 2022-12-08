@@ -126,13 +126,15 @@ if ( isset( $_POST["comment1"]) )
     $db = new DB_Functions();
     
     $res = $db->storePic($_FILES['imagefile']['name'], $_POST['comment0'], $_POST['comment1'], 0, 0, 0);
+    logger($res, 0, "picOfTheDayManager", "picOfTheDayManager", "storePic");
     $file_path = "https://".$_SERVER["HTTP_HOST"]."/".PIC_PREFIX_PATH.$_FILES['imagefile']['name'];
     $img = "<a href=\"".$file_path."\" title=\"pic of the day\" target=\"_blank\"><img src=\"".$file_path."\" alt=\"pic of the day\" /></a>";
 
     $res .= "<br /><br />".post_to_bufferApp($_POST['comment1'], $file_path); 
-    echo ("".$res."");		
+    echo ("".$res."");
+    logger($res, 0, "picOfTheDayManager", "picOfTheDayManager", "Pic");		
     insertNewMessage("מנהל ירושמיים", "admin_avatar", "<div class=\"float chatfirstbody\">".$img."<br/>".$_POST['comment1']."</div>", 3, 0);
-   
+    echo ("<br/>insertNewMessage done.");
 }else { //print_r($_POST);
 ?>
 <html>

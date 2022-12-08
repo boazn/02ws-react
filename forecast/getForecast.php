@@ -157,7 +157,8 @@ $RAIN_TOTAL = array("Mean Total Rainfall", "ממוצע גשם", "");
 	
 			
 		</div>
-		<div style="">
+		<div data-onpage=true 
+      data-adpath="/339474670,22847485332/02WS/Mobile_336x280">
 		<script type="text/javascript"><!--
 		google_ad_client = "ca-pub-2706630587106567";
 		/* Ad for GetForecast page */

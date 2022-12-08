@@ -186,7 +186,8 @@ $thisMonth->set_highwind($ary_parsed_file['HIMONTHLYWINDSPEED'],"");
 $thisYear->set_highwind($ary_parsed_file['HIYEARLYWINDSPEED'],"");    
    
 $thisMonth->set_rain($ary_parsed_file['MONTHLYRAIN']);    
-$thisMonth->set_highrainrate($ary_parsed_file['HIMONTHLYRAINRATE'],"");    
+$thisMonth->set_highrainrate($ary_parsed_file['HIMONTHLYRAINRATE'],"");
+$thisYear->set_highrainrate($ary_parsed_file['HIYEARLYRAINRATE'],"");       
 $seasonTillNow->set_highrainrate($ary_parsed_file['HIYEARLYRAINRATE'],"");    
 
 $thisMonth->set_highheatindex($ary_parsed_file['HIMONTHLYHEATINDEX'],"");

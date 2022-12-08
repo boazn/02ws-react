@@ -954,6 +954,8 @@ function imgError(image) {
    </div>
 <div style="clear:both;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
 <div id="adunit2">
+<div data-onpage=true 
+      data-adpath="/339474670,22847485332/02WS/Mobile_320x320">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2706630587106567"
      crossorigin="anonymous"></script>
 <!-- 160x600, created 9/24/10 -->
@@ -964,6 +966,7 @@ function imgError(image) {
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+ </div>
 </div>
 </div>
 </div>
