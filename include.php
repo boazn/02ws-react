@@ -2757,8 +2757,8 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
     if ($old_date != $datenotime) //already updated --> take from old_record & old_date columns
         $updateMessage = true;
     if (!$updateMessage) {
-        $record_col = "old_{$highorlow}_record";
-        $date_col = "old_{$highorlow}_date";
+        $record_col = "old_{$period}_{$highorlow}_record";
+        $date_col = "old_{$period}_{$highorlow}_date";
     }
     $old_record = round($row["$record_col"], 1);
     $old_date = $row["$date_col"];
@@ -2769,10 +2769,11 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
         $extdata = str_replace(",", "", $extdata);
 		$new_extreme = array($record_col => $extdata, $date_col=>$datenotime, 'old_'.$highorlow => $old_date, 'old_'.$highorlow.'_record'=>$old_record);
         $mem->set("extreme_".$param, $new_extreme);
-        $query = "UPDATE extremes SET $record_col='$extdata', $date_col='$datenotime', old_{$highorlow}_date='$old_date', old_{$highorlow}_record=$old_record WHERE (param='$param')";
+        $query = "UPDATE extremes SET $record_col='$extdata', $date_col='$datenotime', old_{$period}_{$highorlow}_date', old_{$period}_{$highorlow}_record=$old_record WHERE (param='$param')";
         db_init($query, "");
         logger(sprintf("updating in setBrokenData: %s ".$query, mysqli_error($link)), 0, "broken", "", "setBrokenData");
     }
+    logger($LAST_RECORD[$EN].": ".$old_record." ".$ON[$EN]." ".$old_date, 0, "broken", "", "setBrokenData");
     array_push($messageBroken, array($LAST_RECORD[$EN].": ".$old_record." ".$ON[$EN]." ".$old_date,
                                     $LAST_RECORD[$HEB].": ".$old_record." ".$ON[$HEB]." ".$old_date));
     if ($period != "yearly") {

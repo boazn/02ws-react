@@ -45,7 +45,11 @@
       
       
   </style>
-
+	<div class="inv_plain_3 float" style="padding:1em">
+	אלה נתונים של תחנות ניטור של המשרד להגנת הסביבה.
+	מוצג ממוצע של התחנות עם סטיית תקן.
+	סטיית תקן מוצגת במעבר עם העכבר על הערך
+	</div>
   <div class="inv_plain_3 float" style="padding:1em">
       <div>
           <img name="baseGraph" id="baseGraph" src="https://www.02ws.co.il/images/profile2/dustLatestArchive.php?level=1&freq=2&datasource=LatestArchive.csv&&lang=1" />

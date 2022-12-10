@@ -1706,6 +1706,9 @@ margin-<?=get_s_align()?>:0.5em
     }
     #
 }
+#if1, #if2, #if3, #if4{
+    margin:5px 0;
+}
 #extrainfo{
     display:inline
 }

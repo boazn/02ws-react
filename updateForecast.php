@@ -151,7 +151,7 @@ function translateText($text, $target_lang){
         $result_tr = json_decode($response);
         //var_dump($result_tr);
         echo $result_tr->translated_text->$target_lang;
-        return $result_tr->translated_text->$target_lang;
+        return str_replace('"', '',$result_tr->translated_text->$target_lang);
     }
 }
 function updateForecastMessage ($lang, $desc, $active)
@@ -1187,7 +1187,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	
 	<div class="cell shrinked">
 		
-		<textarea id="descriptionCurrStory<?=$line["lang"]?>" oninput="inputtextChanged(this)" class="floated" name="Description<?=$line["lang"]?>" size="90"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?>" style="height:200px;font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 120px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
+		<textarea id="descriptionCurrStory<?=$line["lang"]?>" oninput="inputtextChanged(this)" class="floated" name="Description<?=$line["lang"]?>" size="90"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?>" style="height:200px;font: bold 12px/14px Helvetiva, Arial, sans-serif; text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
 	
@@ -1554,6 +1554,33 @@ function getOneUFService(dayToSave, command, type)
                     title = title.value;
             }
             //alert('title = ' + title);
+            var postData = "reload=" + reload + "&command=" + command + "&lang=" + lang + "&description=" + escape(encodeURI(description)) + "&title=" + escape(encodeURI(title)) + "&active=" + active + "&type=" + type + "&max_time=" + max_time + "&multiple_factor=" + multiple_factor + "&img_src=" + escape(encodeURI(img_src)) + "&href=" + escape(encodeURI(href));
+    }
+    else
+    {
+            alert(type);
+
+            var description = document.getElementById('description'+dayToSave).value;
+            var lang = document.getElementById('lang'+dayToSave).value;
+            var img_src = document.getElementById('img'+dayToSave);
+            var max_time = document.getElementById('max_time').value;
+            var multiple_factor = document.getElementById('MULTIPLE_FACTOR').value;
+            if (img_src)
+            {
+                    img_src = img_src.value;	
+            }
+            var href = document.getElementById('href'+dayToSave);
+            if (href)
+            {
+                    href = href.value;	
+            }
+            var title = document.getElementById('title'+dayToSave);
+            if (title)
+            {
+                    title = title.value;
+            }
+            alert('title = ' + title + description);
+            
             var postData = "reload=" + reload + "&command=" + command + "&lang=" + lang + "&description=" + escape(encodeURI(description)) + "&title=" + escape(encodeURI(title)) + "&active=" + active + "&type=" + type + "&max_time=" + max_time + "&multiple_factor=" + multiple_factor + "&img_src=" + escape(encodeURI(img_src)) + "&href=" + escape(encodeURI(href));
     }
     

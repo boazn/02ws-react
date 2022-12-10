@@ -2,8 +2,70 @@
 <?php
 ini_set('error_reporting', E_ERROR | E_PARSE);
 require('phpQuery.php');
+$local_file_path = "/home/boazn/public/02ws.com/public/cache/airq2.txt";
+$output_airq_file_path = "/home/boazn/public/02ws.com/public/getAveragePM10.txt";
 // Function to calculate standard deviation (uses sd_square) 
+function connectToMANA ($station_id)
+{
+    
+$auth = "555C14B9-C7E4-4AA2-9F01-0CA4B419CC35";
+$auth2 = "Qm9hel9ZOk5uSlkyUzNi";
+$envidatasource = "MANA";
+$user = "Boaz_Y";
+$pass = "NnJY2S3b";
+$url="https://api.svivaaqm.net/v1/envista/stations?envi-data-source=".$envidatasource .
+"&User".$user.
+"&Password".$pass;
+$url="https://api.svivaaqm.net/v1/envista/stations?envi-data-source=".$envidatasource .
+"&User".$user.
+"&Password".$pass;
+$url="https://api.svivaaqm.net/v1/envista/stations/36/data/latest?envi-data-source=".$envidatasource .
+"&User".$user.
+"&Password".$pass;
+$url="https://api.svivaaqm.net/v1/envista/stations/".$station_id."/data/latest?envi-data-source=".$envidatasource .
+"&User".$user.
+"&Password".$pass;
+$data ='{"User":"'.$user.'","Password":"'.$pass.'", "envi-data-source":"'.$envidatasource.'"}';
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  2);
+curl_setopt_array($ch, [
+    CURLOPT_URL => $url,
+    CURLOPT_USERAGENT => $agent,
+    CURLOPT_VERBOSE => true,
+    //CURLOPT_POSTFIELDS => $data,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_USERPWD => $user.":".$pass,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_SSL_CIPHER_LIST => "TLSv1.2",
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
+     CURLOPT_HTTPHEADER => [
+        "accept-encoding: gzip, deflate, br",
+        "Content-Type: application/json",
+         "Authorization: Basic  ".$auth2
+    ],
+]);
+$result=curl_exec($ch);
+$apiMANA = json_decode($result);
+//print_r($apiMANA);
+if(curl_errno($ch)){
+    print_r("<br/><br/>Error:".curl_error($ch));
+}
+//$stations_array =  $apiMANA ;
+//echo "stations_array=".$stations_array;
+//print_r($stations_array);
+//print_r($stations_array[2]);
+//print_r($stations_array[10]);
+//echo "<br/>".$stations_array[2]->shortName." ".$stations_array[2]->monitors[7]->name." ".$stations_array[2]->monitors[7]->value;
 
+//echo "<br/>".$stations_array[10]->shortName." ".$stations_array[10]->monitors[7]->name." ".$stations_array[10]->monitors[7]->value;
+$file = fopen($local_file_path,"w");
+fwrite ($file, $result);
+fclose ($file);
+echo "<br/>ID:".$apiMANA->stationId." ".$apiMANA->data[0]->channels[3]->name." ".$apiMANA->data[0]->channels[3]->value;
+return $apiMANA;
+}
 function connectToWL () {
     /****************************************
 Example showing API Signature calculation
@@ -150,51 +212,33 @@ echo ("<br/>pm2p5_02ws:".$pm2p5_02ws);
 echo ("<br/>pm1_02ws:".$pm1_02ws);
 echo ("<br/>thsw:".$thsw);
 
-$url="https://www.svivaaqm.net/dynamicTabulars/TabularReportTable?id=14";
-$local_file_path = "/home/boazn/public/02ws.com/public/cache/airq2.txt";
-$output_airq_file_path = "/home/boazn/public/02ws.com/public/getAveragePM10.txt";
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  2);
-curl_setopt_array($ch, [
-    CURLOPT_URL => $url,
-    CURLOPT_USERAGENT => $agent,
-    CURLOPT_VERBOSE => true,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_TIMEOUT => 50,
-    CURLOPT_SSL_CIPHER_LIST => "TLSv1.2",
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-     CURLOPT_HTTPHEADER => [
-        "accept-encoding: gzip, deflate, br",
-        "content-type: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
-    ],
-]);
-$result=curl_exec($ch);
-//print_r($result);
-$file = fopen($local_file_path,"w");
-fwrite ($file, $result);
-fclose ($file);
-/***************** getAveragePM10 ***************/
-$doc = json_decode($result);
-//$doc_converted = $doc["TabularList"];
-//print_r($doc); 
-$doc_converted = str_replace('\"', '"', $doc->TabularList);
 
-$stations_array =  json_decode($doc->TabularList) ;
-//echo "stations_array=".$stations_array;
-//print_r($stations_array);
-//print_r($stations_array[0]);
-//echo $stations_array[0]->shortName." ".$stations_array[0]->monitors[0]->name." ".$stations_array[0]->monitors[0]->value;
-// 8 is the td of PM10
-$efrata =  $stations_array[1]->monitors[7]->value;
+/***************** getAveragePM10 ***************/
+$apiMANA = connectToMANA(13);
+$efrata_pm10 =  $apiMANA->data[0]->channels[7]->value;
+$efrata_pm25 =  $apiMANA->data[0]->channels[8]->value;
+$apiMANA = connectToMANA(36);
+$safra_pm10 =  $apiMANA->data[0]->channels[6]->value;
+$apiMANA = connectToMANA(458);//dvora PM2.5 channel 3
+$dvora_pm25 = $apiMANA->data[0]->channels[3]->value;
+$apiMANA = connectToMANA(509);//malchei PM2.5 channel 4
+$malchei_pm25 = $apiMANA->data[0]->channels[3]->value;
+$apiMANA = connectToMANA(547);//kvish16 PM2.5 channel 3 PM10 channel 4
+$kvish16_pm25 = $apiMANA->data[0]->channels[3]->value;
+$kvish16_pm10 = $apiMANA->data[0]->channels[4]->value;
+$apiMANA = connectToMANA(5);//bar_ilan PM2.5 PM25 channel 4
+$bar_ilan_pm25 = $apiMANA->data[0]->channels[4]->value;
+$apiMANA = connectToMANA(549);//kvish16_zemach PM2.5 channel 3 
+$kvish16_zemach_pm25 = $apiMANA->data[0]->channels[3]->value;
+$apiMANA = connectToMANA(193);//romema PM2.5 channel 3 
+$romema_pm25 = $apiMANA->data[0]->channels[3]->value;
 //$bar_ilan = $stations_array[1]["shortName"];
-$safra =  $stations_array[2]->monitors[5]->value;
+//$safra =  $stations_array[10]->monitors[7]->value;
 //$atarot = $stations_array[3]["shortName"];
 //$merkazit = $stations_array[4]["shortName"];
 
 
-$stations = array(intval($efrata), intval($safra));
+$stations = array(intval($efrata_pm10), intval($safra_pm10), intval($kvish16_pm10));
 sort ($stations);
 echo "<br/>pm10 before:";
 print_r($stations);
@@ -206,13 +250,9 @@ echo "pm10 after:";
 print_r($stations);
 echo "<br />";
 
-$bar_ilan = $stations_array[0]->monitors[4]->value;
-$efrata =  $stations_array[1]->monitors[8]->value;
-$merkazit = $stations_array[3]->monitors[3]->value;
-$nayedet_merkazit = $stations_array[4]->monitors[0]->value;
-$dvora = $stations_array[6]->monitors[3]->value;
+/********************** PM2.5 *****************************/
 
-$stations = array(intval($efrata), intval($nayedet_merkazit), intval($merkazit), intval($dvora));
+$stations = array(intval($efrata_pm25), intval($dvora_pm25), intval($malchei_pm25), intval($kvish16_pm25), intval($bar_ilan_pm25), intval($kvish16_zemach_pm25), intval($romema_pm25));
 sort($stations);
 echo "<br/>pm25 before:";
 print_r($stations);
