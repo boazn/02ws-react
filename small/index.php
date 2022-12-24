@@ -778,7 +778,9 @@ else {?>
     <div class="exp">
     </div>
 </div>
+<div id="info_btns_wrapper">
 <ul class="info_btns" style="display:none">
+    
     <li id="now_btn" onclick="change_circle('now_line', 'latestnow')"></li>
    <li id="temp_btn" onclick="change_circle('temp_line', 'latesttemp2')" title=""></li>
    <li id="temp2_btn" onclick="change_circle('temp_line', 'latesttemp')" title=""></li>
@@ -799,12 +801,14 @@ else {?>
     </li>
     <li id="more_stations_btn" onclick="change_circle('otherstations_line', 'latestotherstations');getLatest('ראש-צורים', '77', 'IMS');getLatest('צובה', '188', 'IMS');getLatest('חוף מערבי', '178', 'IMS');getLatest('עין גדי','211', 'IMS');getLatest('מעלה אדומים', '218', 'IMS');" title=""></li>
     </li>
-    <li id="activities_yes_con"><ul id="activities_yes"></ul></li>
-    <li id="activities_no_con"><ul id="activities_no" ></ul></li>
-</ul>    
+    <li id="activities_no_con"><ul id="activities_no" style="padding:0" ></ul></li>
+    <li id="activities_yes_con"><ul id="activities_yes" style="padding:0"></ul></li>
+    
+</ul>
+</div>    
 <div id="spacer1" style="clear:both;height: 2px;">&nbsp;</div>
 <div id="what_is_h"></div>
-<div id="latestalert"></div>
+<div id="latestalert"></div>    
 <div id="for24_given">
 							
 	</div>
@@ -1900,7 +1904,7 @@ Licensed MIT
 </script>
 <? if (!isFastPage()) { ?>
 <script src="<?=BASE_URL?>/js/tinymce/tinymce.min.07032017.js" type="text/javascript"></script>
-<script src="<?=BASE_URL?>/footerScripts011221.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>
+<script src="<?=BASE_URL?>/footerScripts180422.php?lang=<?=$lang_idx?>&email=<?=$_GET['email']?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>
 <script type="text/javascript">
 startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
 </script>

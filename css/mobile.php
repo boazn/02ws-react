@@ -744,7 +744,7 @@ width:320px;
 
 #windy
 {
-width:33%;left:10em;top:3em
+width:33%;left:9.5em;top:3em
 } 
 .open-close-button{
   width: 1.2em;
@@ -873,7 +873,7 @@ border-radius: 0px;
     
 }
 #what_is_h .rainpercent{
-    margin: -28em 7.5em;
+    margin: 14em 11.5em;
 }
 #msgDetails .white_box2
 {
@@ -1047,8 +1047,7 @@ width: 160px;
    
 }
 #activities_yes_con, #activities_no_con{
-    width: 315px;
-    height: auto;
+    margin: 0px 0px;
     
 }
 #activities_yes li, #activities_no li{
@@ -1057,8 +1056,7 @@ width: 160px;
     margin:4px
 }
 #activities_yes, #activities_no{
-    width:315px;
-    padding:0
+   
 }
 #cm_dislike
 {
@@ -1512,13 +1510,16 @@ input:focus::-webkit-input-placeholder
 }
 .info_btns
 {
-direction: rtl;
-float: none;
-margin: auto auto -40px;
-top: 0px;
-width: 315px;
+margin: 0 auto;
+width: 555px;
 padding-right: 0;
 z-index:10;
+}
+#info_btns_wrapper
+{
+overflow-x: scroll;
+width: 320px;
+direction:rtl;
 }
 .forecasttimebox
 {

@@ -177,29 +177,30 @@ function updateAds ($active, $idx, $command, $img_url, $href, $w, $h)
     }
     $mem->set('Ads', $Ads);
    
-     for ($idx = 0; $idx <= max(array_keys($Ads)); $idx++) { if ($Ads[$idx]['href'] != "") {?>
-        <div id="ads_container<?=$idx?>" class="ads_container inv_plain_3_zebra invcell" style="margin-top:40px;" >
-        <div class="cell">
-        <div class="cell">index <?=$idx?></div>
-        <div class="cell">link </div><div class="cell"><input id="hrefads<?=$idx?>" name="hrefads" size="18"  value="<?=$Ads[$idx]['href']?>" style="width:320px;text-align:left"  /></div><br />
-        <div class="cell">img_url </div><div class="cell"><input id="imgads<?=$idx?>" name="imgads" size="18"  value="<?=$Ads[$idx]['img_url']?>" style="width:320px;text-align:left"  /></div><br />
-        <div class="cell">width </div><div class="cell"><input id="imgwidth<?=$idx?>" name="imgwidth" size="18"  value="<?=$Ads[$idx]['w']?>" style="width:50px;text-align:left"  /></div>
-        <div class="cell">height </div><div class="cell"><input id="imgheight<?=$idx?>" name="imgheight" size="18"  value="<?=$Ads[$idx]['h']?>" style="width:50px;text-align:left"  /></div><br />
-         </div>
-         <div class="cell shrinked">
-                active
-                <input type="checkbox" id="adsactive<?=$idx?>" name="adsactive" value="" checked="checked" />
-                
-            </div>
+     
+     foreach ($Ads as $key => &$ad) 	{?>
+    <div id="ads_container<?=$idx?>" class="ads_container inv_plain_3_zebra invcell" style="margin-top:40px;" >
+    <div class="cell">
+    <div class="cell">index <input id="index<?=$key?>" name="index<?=$key?>" size="5"  value="<?=$key?>" style="width:20px;text-align:left"  /></div>
+    <div class="cell">link </div><div class="cell"><input id="hrefads<?=$key?>" name="hrefads" size="18"  value="<?=$ad['href']?>" style="width:320px;text-align:left"  /></div><br />
+    <div class="cell">img_url </div><div class="cell"><input id="imgads<?=$key?>" name="imgads" size="18"  value="<?=$ad['img_url']?>" style="width:320px;text-align:left"  /><img src="<?=$ad['img_url']?>" width="320" alt="pic" /></div><br />
+    <div class="cell">width </div><div class="cell"><input id="imgwidth<?=$key?>" name="imgwidth" size="18"  value="<?=$ad['w']?>" style="width:50px;text-align:left"  /></div>
+    <div class="cell">height </div><div class="cell"><input id="imgheight<?=$key?>" name="imgheight" size="18"  value="<?=$ad['h']?>" style="width:50px;text-align:left"  /></div><br />
+     </div>
+     <div class="cell shrinked">
+            active
+            <input type="checkbox" id="adsactive<?=$key?>" name="adsactive" value="" checked="checked" />
             
-            <!--<div class="cell btnsstart" ><img src="images/plus.png" width="18px" onclick="getAdsService(<?=$idx?>, 'I', 'ads')" style="cursor:pointer" /></div>-->
-            <div class="cell btnsstart" ><img src="images/check.png" width="18px" onclick="getAdsService(<?=$idx?>, 'U',  'ads')" style="cursor:pointer" /></div>
-            <div class="cell btnsstart" ><img src="images/x.png" width="18px" onclick="getAdsService(<?=$idx?>, 'D', 'ads')" style="cursor:pointer" /></div>
-                
-                
-            </div>
+        </div>
         
-        <?}}//print_r($Ads);
+        <!--<div class="cell btnsstart" ><img src="images/plus.png" width="18px" onclick="getAdsService(<?=$key?>, 'I', 'ads')" style="cursor:pointer" /></div>-->
+        <div class="cell btnsstart" ><img src="images/check.png" width="18px" onclick="getAdsService(<?=$key?>, 'U',  'ads')" style="cursor:pointer" /></div>
+        <div class="cell btnsstart" ><img src="images/x.png" width="18px" onclick="getAdsService(<?=$key?>, 'D', 'ads')" style="cursor:pointer" /></div>
+            
+            
+        </div>
+    
+    <?}//print_r($Ads);
         
        echo "<pre> updated ";
        var_dump($Ads);
@@ -241,42 +242,45 @@ else {
 <div id="result"></div>
 </div>
 <?$Ads = $mem->get('Ads');?>
-<? for ($idx = 0; $idx <= max(array_keys($Ads)); $idx++) { if ($Ads[$idx]['href'] != "") {?>
+<? foreach ($Ads as $key => &$ad) 	{?>
 <div id="ads_container<?=$idx?>" class="ads_container inv_plain_3_zebra invcell" style="margin-top:40px;" >
 <div class="cell">
-<div class="cell">index <?=$idx?></div>
-<div class="cell">link </div><div class="cell"><input id="hrefads<?=$idx?>" name="hrefads" size="18"  value="<?=$Ads[$idx]['href']?>" style="width:320px;text-align:left"  /></div><br />
-<div class="cell">img_url </div><div class="cell"><input id="imgads<?=$idx?>" name="imgads" size="18"  value="<?=$Ads[$idx]['img_url']?>" style="width:320px;text-align:left"  /></div><br />
-<div class="cell">width </div><div class="cell"><input id="imgwidth<?=$idx?>" name="imgwidth" size="18"  value="<?=$Ads[$idx]['w']?>" style="width:50px;text-align:left"  /></div>
-<div class="cell">height </div><div class="cell"><input id="imgheight<?=$idx?>" name="imgheight" size="18"  value="<?=$Ads[$idx]['h']?>" style="width:50px;text-align:left"  /></div><br />
+<div class="cell">index <input id="index<?=$key?>" name="index<?=$key?>" size="5"  value="<?=$key?>" style="width:20px;text-align:left"  /></div>
+<div class="cell">link </div><div class="cell"><input id="hrefads<?=$key?>" name="hrefads" size="18"  value="<?=$ad['href']?>" style="width:320px;text-align:left"  /></div><br />
+<div class="cell">img_url </div><div class="cell"><input id="imgads<?=$key?>" name="imgads" size="18"  value="<?=$ad['img_url']?>" style="width:320px;text-align:left"  /><img src="<?=$ad['img_url']?>" width="320" alt="pic" /></div><br />
+<div class="cell">width </div><div class="cell"><input id="imgwidth<?=$key?>" name="imgwidth" size="18"  value="<?=$ad['w']?>" style="width:50px;text-align:left"  /></div>
+<div class="cell">height </div><div class="cell"><input id="imgheight<?=$key?>" name="imgheight" size="18"  value="<?=$ad['h']?>" style="width:50px;text-align:left"  /></div><br />
  </div>
  <div class="cell shrinked">
 		active
-		<input type="checkbox" id="adsactive<?=$idx?>" name="adsactive" value="" checked="checked" />
+		<input type="checkbox" id="adsactive<?=$key?>" name="adsactive" value="" checked="checked" />
 		
 	</div>
     
-    <!--<div class="cell btnsstart" ><img src="images/plus.png" width="18px" onclick="getAdsService(<?=$idx?>, 'I', 'ads')" style="cursor:pointer" /></div>-->
-    <div class="cell btnsstart" ><img src="images/check.png" width="18px" onclick="getAdsService(<?=$idx?>, 'U',  'ads')" style="cursor:pointer" /></div>
-    <div class="cell btnsstart" ><img src="images/x.png" width="18px" onclick="getAdsService(<?=$idx?>, 'D', 'ads')" style="cursor:pointer" /></div>
+    <!--<div class="cell btnsstart" ><img src="images/plus.png" width="18px" onclick="getAdsService(<?=$key?>, 'I', 'ads')" style="cursor:pointer" /></div>-->
+    <div class="cell btnsstart" ><img src="images/check.png" width="18px" onclick="getAdsService(<?=$key?>, 'U',  'ads')" style="cursor:pointer" /></div>
+    <div class="cell btnsstart" ><img src="images/x.png" width="18px" onclick="getAdsService(<?=$key?>, 'D', 'ads')" style="cursor:pointer" /></div>
         
 		
 	</div>
 
-<?}}//print_r($Ads);?>
+<?}//print_r($Ads);   
+      /* echo "<pre> updated ";
+       var_dump($Ads);
+       echo "</pre>";*/?>
 <?}?>		
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 <script>
     function getAdsService(adToSave, command, type)
 {
-	//alert (dayToSave);
-	var active;
+	//alert ($("#index"+adToSave).val());
+	var active; 
        
 	
     if (type == "ads")
     {
-        var postData = "idx=" + adToSave + "&command=" + command + "&type=updateads&w=" + $("#imgwidth"+adToSave).val() + "&h=" + $("#imgheight"+adToSave).val() + "&img_url=" + $("#imgads"+adToSave).val() + "&href=" + $("#hrefads"+adToSave).val() + "&active=" + $("#adsactive"+adToSave).prop("checked");
+        var postData = "oldidx=" + adToSave + "&idx=" + $("#index"+adToSave).val() + "&command=" + command + "&type=updateads&w=" + $("#imgwidth"+adToSave).val() + "&h=" + $("#imgheight"+adToSave).val() + "&img_url=" + $("#imgads"+adToSave).val() + "&href=" + $("#hrefads"+adToSave).val() + "&active=" + $("#adsactive"+adToSave).prop("checked");
     }
     
     

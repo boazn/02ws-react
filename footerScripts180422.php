@@ -260,8 +260,8 @@ $("#login").colorbox({width:"310px", height:"480px", inline:true, top:"40px", fi
 $(".register").colorbox({width:"310px", height:"600px", inline:true, top:"40px", fixed:true,href:"#registerform"});
 $("#updateprofile").colorbox({width:"310px", height:"600px", top:"40px",inline:true, href:"#profileform"});
 $(".icon_forecast").colorbox({width:"35%", inline:true, href:"#icons_dialog"});
-$(".temphigh").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
-$(".tempnight").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
+$(".temphigh, .templow, .tempnight").colorbox({width:"35%", inline:true, href:"#clothes_dialog"});
+
 });
 var isMobile = {
     Android: function() {
@@ -1508,7 +1508,7 @@ function startup(lang, from, update)
         $.ajax({
             type: "GET",
             headers: {  'Access-Control-Allow-Origin': 'https://www.02ws.co.il' },
-            url: "checkauth.php?action=getuser&lang=" + lang +"&reg_id=<?=$_GET['reg_id']?>"
+            url: "checkauth.php?action=getuser&lang=" + lang +"&reg_id=<?=$_GET['reg_id']?>"+"&email=<?=$_GET['email']?>"
         })
         .done(function( jsonstr ) {
             try{
@@ -1733,7 +1733,7 @@ function loadPostData(jsonstr, coldmeter_size)
         <?if ($_GET['reg_id'] != "") {?>
         $.ajax({
             type: "GET",
-            url: "checkauth.php?action=getuser&reg_id=<?=$_GET['reg_id']?>&qs=<?=$_SERVER['QUERY_STRING']?>"
+            url: "checkauth.php?action=getuser&reg_id=<?=$_GET['reg_id']?>&qs=<?=$_SERVER['QUERY_STRING']?>&email=<?=$_GET['email']?>"
             }).done(function( jsonstr ) {
 
                 var jsonT = JSON.parse( jsonstr  );
@@ -2151,7 +2151,7 @@ Licensed MIT
             toptime =  (json.jws.forecastHours[i].time % 4 == 0) ? json.jws.forecastHours[i].day<? echo $lang_idx;?>+"</br>"+json.jws.forecastHours[i].time+":00" : json.jws.forecastHours[i].time + ":00";
             forecastHoursNG += "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('"+toptime+"','"+json.jws.forecastHours[i].icon+"',"+ json.jws.forecastHours[i].temp+","+json.jws.forecastHours[i].wind+",'"+json.jws.forecastHours[i].cloth.substring(json.jws.forecastHours[i].cloth.split('/', 2).join('/').length)+"',"+json.jws.forecastHours[i].rain+","+json.jws.forecastHours[i].hum+","+i+",''" + ")\">";
             forecastHoursNG += "<div class=\"x-axis-bar primary\" style=\"height: 100%\">"+toptime+"</div>";    
-            bottom = 92;
+            bottom = 90;
             forecastHoursNG += "<div class=\"x-axis-bar tertiary icon\" style=\"height: "+ bottom +"%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"30\" width=\"35\" alt=\""+json.jws.forecastHours[i].icon+"\" /></div>";
             bottom = ((json.jws.forecastHours[i].temp-min_temp)*80)/(max_temp - min_temp);
             if (bottom < 10) bottom = 13;
@@ -2179,7 +2179,11 @@ Licensed MIT
        
       
        //$('#for24_given').html('<? echo $GIVEN[$lang_idx]." ".$AT[$lang_idx]." ";?>' + json.jws.TAF.timetaf + ':00 ' + json.jws.TAF.dayF + '/' + json.jws.TAF.monthF + '/' + json.jws.TAF.yearF);
-
+       var userpics_str = "";
+       for (i = 0; i< json.jws.LatestUserPic.length; i++){
+             userpics_str += "<a href=\"https://www.02ws.co.il?section=userPics.php&amp;lang=1\" title=\"" + json.jws.LatestUserPic[i].comment + "\"><img id=\"pic_thumb" + (i+1) + "\" src=\"" + json.jws.LatestUserPic[i].picname + "\" width=\"30\" alt=\"" + json.jws.LatestUserPic[i].name + "\"  /></a>\n";
+       }
+       $('#map_thumbs').html(userpics_str);
        $('#for24_hours_s').html(forecastHours);
        $('#for24_graph_ng, .for24_graph_ng').html(forecastHoursNG);
        $('#forcast_hours_table').html(forecastHoursD);

@@ -428,7 +428,7 @@ else if (($today->get_highwind() == $thisMonth->get_highwind())
       /************************************************************************/
 
 $latestalert_passedts = time() - $mem->get('latestalerttime1');
-$LATEST_ALERT = array(explode("\n", $mem->get('latestalert0')), explode("\n",($mem->get('latestalert1'))));
+$LATEST_ALERT = array(explode("\n", strip_tags($mem->get('latestalert0'))), explode("\n",strip_tags($mem->get('latestalert1'))));
 $LATEST_ALERT_TITLE = array($mem->get('latestalert_title0'), $mem->get('latestalert_title1'));
 $LATEST_ALERT_BODY = array(str_replace("\n", "", $LATEST_ALERT[$EN][0]." ".$LATEST_ALERT[$EN][2]), 
                            str_replace("\n", "",$LATEST_ALERT[$HEB][0]." ".$LATEST_ALERT[$HEB][2]), 

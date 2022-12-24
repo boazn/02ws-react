@@ -1265,7 +1265,7 @@ background-color:#ebe8ed;
 }
 
 .contentbox{
-    width:820px;
+    width:805px;
     height:100%;
     float:<?=get_s_align()?>;
     padding:5px;
@@ -1343,7 +1343,7 @@ background-color:#ebe8ed;
 }
 
 #forcast_hours, #forcast_hours_table {
-    margin-<?=get_s_align()?>:-5px;
+    margin-<?=get_s_align()?>:5px;
     margin-<?=get_inv_s_align()?>:60px;
     text-align:<?=get_s_align()?>;
     max-height: 480px;
@@ -1618,6 +1618,9 @@ font-size:0.35em
     font-size: 1.2em;
     direction:ltr;
     text-align: center;
+}
+.forcast_each .number{
+    font-size: 1.4em;
 }
 .smalllogo{
 	background-image:url("../img/sun_toolbar.png");
@@ -2677,28 +2680,48 @@ margin-<?=get_s_align()?>:96px;
 }
 
 #pic_thumb1 {
-    top: 400px;
+    top: 430px;
     left: 520px;
 }
 
 #pic_thumb2 {
     top: 550px;
-    left: 610px;
+    left: 450px;
 }
 
 #pic_thumb3 {
-    top:430px;
-    left:500px;
+    top:630px;
+    left:490px;
 }
 
 #pic_thumb4 {
-    top:450px;
-    left:620px;
+    top:600px;
+    left:580px;
 }
 
 #pic_thumb5 {
-    top:370px;
-    left:640px;
+    top:570px;
+    left:670px;
+}
+#pic_thumb6 {
+    top:530px;
+    left:550px;
+}
+#pic_thumb7 {
+    top:650px;
+    left:740px;
+}
+#pic_thumb8 {
+    top:620px;
+    left:890px;
+}
+#pic_thumb9 {
+    top:600px;
+    left:850px;
+}
+#pic_thumb10 {
+    top:590px;
+    left:440px;
 }
 
 /* ==========================================================================
@@ -3369,8 +3392,8 @@ color: #fff;
 
 #hill4 {
     position:absolute;
-    top: -290px;
-    left: 674px;
+    top: -270px;
+    left: 374px;
 }
 
 #hill5 {

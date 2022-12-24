@@ -162,7 +162,15 @@ function parallaxScroll(){
         $('#train').css('top',(1330-(scrolled*0.6))+'px');
         $('#train2').css('top',(1250-(scrolled*0.6))+'px');
         $('#pic_thumb2').css('top',(1540-(scrolled*0.6))+'px');
-        $('#pic_thumb1').css('top',(1370-(scrolled*0.6))+'px');
+        $('#pic_thumb1').css('top',(1420-(scrolled*0.6))+'px');
+		$('#pic_thumb3').css('top',(1500-(scrolled*0.6))+'px');
+        $('#pic_thumb4').css('top',(1510-(scrolled*0.6))+'px');
+		$('#pic_thumb5').css('top',(1540-(scrolled*0.6))+'px');
+        $('#pic_thumb6').css('top',(1570-(scrolled*0.6))+'px');
+		$('#pic_thumb7').css('top',(1510-(scrolled*0.6))+'px');
+		$('#pic_thumb8').css('top',(1510-(scrolled*0.6))+'px');
+		$('#pic_thumb9').css('top',(1540-(scrolled*0.6))+'px');
+		$('#pic_thumb10').css('top',(1490-(scrolled*0.6))+'px');
 	
 	$('#cover_clouds-1').css('left',(80-(scrolled*2))+'px');
 	$('#cover_clouds-2').css('left',(300-(scrolled*0.8))+'px');

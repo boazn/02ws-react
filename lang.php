@@ -293,15 +293,11 @@ $MALE = array("Male", "גבר", "Мужчина","homme");
 $FEMALE = array("Female", "אישה", "Женщина","femme");
 $NOR_MALE_NOR_FEMALE = array("no male nor female", "לא רוצה לציין", "не заполнять","je ne souhaite pas préciser");
 $GENDER_NOTICE = array("The cold estimator is evaluated from you being", "מדד הקור במחשב זה נגזר מהיותך", "Шкала холода на этом компьютере высчитывается при помощи "," votre thermomètre du froid dérive de votre ");
-$GENDER_NOTICE2 = array("To alter this assumption click &lt;a
-href=\"https://www.02ws.co.il/station.php?section=survey.php&amp;amp;survey_id=2&amp;amp;lang=0\"
-&gt;here&lt;/a&gt;.", " אפשר לשנות את זה &lt;a
-href=\"https://www.02ws.co.il/station.php?section=survey.php&amp;amp;survey_id=2&amp;amp;lang=1\"
-&gt;כאן&lt;/a&gt;.", "Это можно изменить &lt;a
-href=\"http://www.02ws.co.il/station.php?section=survey.php&amp;amp;survey_id=2&amp;amp;lang=0\"&gt;
-здесь&lt;/a&gt;.","\"&gt;here&lt;/a&gt;.", " paramétrer &lt;a
+$GENDER_NOTICE2 = array("To alter this assumption go to vote again.", " אפשר לשנות את זה בהצבעה הבאה.", "Это можно изменить <a
+href=\"http://www.02ws.co.il/station.php?section=survey.php&amp;amp;survey_id=2&amp;amp;lang=0\">
+здесь</a>.","\"here</a>.", " paramétrer <a
 href=\https://www.02ws.co.il/station.php?section=survey.php&amp;amp;survey_id=2&amp;amp;lang=1 ici
-ן&lt;/a&gt;.");
+</a>.");
 $SHORTS = array("Shorts. Short pants and t-shirt.", "לבוש קצר. מכנסיים וחולצה קצרים. סנדלים, כפכפים ודומיהם", "Летняя одежда. Шорты, футболка, сандалии, шлёпки и т.п.. ","habits courts. Short, t-shirt. Sandales, claquettes etc.");
 $TSHIRT = array("T-shirt", "טישרט", "Футболка","t-shirt");
 $LONGSLEEVES = array("long sleeves, it is recommended to take also t-shirt and add or remove layer when necessary", "שכבה דקה, ארוכה או קצרה, תלוי במשתמש, אפשר גם לשלב", "Длинные рукава. Стоит взять с собой футболку, чтобы добавить или снять слой одежды в случае нужды","couches fines, manches courtes où longue selon l’usager, il est possible de mixer");
@@ -598,4 +594,5 @@ $CHECK_EMAIL_RESET_PASS = array("Go to your email for password reset", "יש ל�
 $PROBLEM_USER_PASSWORD =  array("Problem with user or password", "סיסמא לא נכונה או משתמש לא קיים", "Проблема с пользователем или паролем", "Problème avec l'utilisateur ou le mot de passe", "");
 $NO_USER_EXIST = array("No user exists like that", "אין משתמש כזה", "Пользователь не существует с", "Aucun utilisateur n'existe avec", "");
 $VISIBILITY = array("visibility", "ראות", "видимость", "visibilité", "");
+$CLOTH = array("cloth", "לבוש", "", "", "");
 ?>

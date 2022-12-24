@@ -111,27 +111,26 @@ if (isset($_POST['SendButton'])) {
 </div>
 
 </form>-->
-<h1>  קמפיין פרסום בירושמיים</h1>
+
 
 <div class="inv_plain_3_zebra">
+<h2 class="big">  קמפיין פרסום בירושמיים</h2>
 
-<br/><br/><br/>
-	<div style="direction:rtl" class="inv_plain_3">
+<br/>
+	<div style="direction:rtl" class="inv_plain_3 big">
 		
  פלטפורמת ירושמיים מציעה מגוון אפשרויות פרסום לבעלי עסקים ומוסדות תרבות.<br/>
 לפרטים יש ליצור קשר במייל: <a href = "mailto: media@just-brief.com">לחצו כאן</a>
-או לשלוח טופס הזמנה  <a href="https://bit.ly/yerushamaim" target="_blank">בקישור זה</a> ונחזור אליכם
+או לשלוח טופס הזמנה  <a href="https://forms.clickup.com/3850230/f/3nfzp-36182/R06IO5L5VZU3CH4PMN" target="_blank">בקישור זה</a> ונחזור אליכם
 
 
 			
 	</div>
 	<br/><br/>
-	<img src="images/BriefLOGO-black.png" width="320"  alt="Brief"/>
-	<br/><br/>
-<div id="if_jerusky" style="display: block;"><a href="https://bit.ly/yerushamaim"><img src="images/jerusky_general1.gif" width="320" height="320" alt="Promotion"/></a></div>
-	<div style="direction:rtl">
-	<a href="https://bit.ly/yerushamaim" target="_blank">פנייה לבקשת פרסום באתר ובאפליקציית ירושמיים הקישו כאן <?=get_arrow()?></a>
-	</div>
+	
+	
+<div id="if_jerusky" style="display: block;"><a href="https://forms.clickup.com/3850230/f/3nfzp-36182/R06IO5L5VZU3CH4PMN" target="_blank"><img src="images/Brief.gif" width="820"  alt="Brief"/></a></div>
+	<br/>
 
 </div>
 

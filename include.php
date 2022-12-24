@@ -2774,13 +2774,12 @@ function setBrokenData($period, $highorlow, $extdata, $param) {
         logger(sprintf("updating in setBrokenData: %s ".$query, mysqli_error($link)), 0, "broken", "", "setBrokenData");
     }
     logger($LAST_RECORD[$EN].": ".$old_record." ".$ON[$EN]." ".$old_date, 0, "broken", "", "setBrokenData");
-    array_push($messageBroken, array($LAST_RECORD[$EN].": ".$old_record." ".$ON[$EN]." ".$old_date,
-                                    $LAST_RECORD[$HEB].": ".$old_record." ".$ON[$HEB]." ".$old_date));
+   // array_push($messageBroken, array($LAST_RECORD[$EN].": ".$old_record." ".$ON[$EN]." ".$old_date, $LAST_RECORD[$HEB].": ".$old_record." ".$ON[$HEB]." ".$old_date));
     if ($period != "yearly") {
         $yearly_record = round($row["yearly_{$highorlow}"], 1);
         $yearly_date = $row["yearly_{$highorlow}_date"];
-        array_push($messageBroken, array($RECORD[$EN]," ".$ON[$EN]." ".$year.": ".$yearly_record." ".$ON[$EN]." ".$yearly_date,
-                                         $RECORD[$HEB]," ".$ON[$HEB]." ".$year.": ".$yearly_record." ".$ON[$HEB]." ".$yearly_date));
+        logger($RECORD[$EN]," ".$ON[$EN]." ".$year.": ".$yearly_record." ".$ON[$EN]." ".$yearly_date, 0, "broken", "", "setBrokenData");
+       // array_push($messageBroken, array($RECORD[$EN]," ".$ON[$EN]." ".$year.": ".$yearly_record." ".$ON[$EN]." ".$yearly_date, $RECORD[$HEB]," ".$ON[$HEB]." ".$year.": ".$yearly_record." ".$ON[$HEB]." ".$yearly_date));
     }
     // array_push($messageBroken, array("\n<script type=\"text/javascript\">\nvar tdBroken = document.getElementById('brokenlatest" . $param . "');\ndivBroken = document.getElementById('broken" . $highorlow . $param . "');\ntdBroken.appendChild(divBroken);\n</script>", "\n<script type=\"text/javascript\">\nvar tdBroken = document.getElementById('brokenlatest" . $param . "');\ndivBroken = document.getElementById('broken" . $highorlow . $param . "');\ntdBroken.appendChild(divBroken);\n</script>"));
 
@@ -3318,7 +3317,43 @@ function saveInvalidTokens() {
          //logger($query.": ".$resultUpdate);
      }
 }
+function getMsgAlert($picture_url, $message, $title) {
+    $class_alerttxt = "";
+    if (empty($picture_url))
+        $img_tag = "";
+    else{
+        if((strtolower(end(explode(".",$picture_url))) =="mp4")||(($_POST["video"]=="true")))
+        {
+            $img_tag = "<video width=\"310\" height=\"240\" controls><source src=\"".$picture_url."\" type=\"video/mp4\"></video>";
+        }   
+        else{
+            $img_tag = "<div id=\"alertbg\" style=\"background-image: url(phpThumb.php?src=".$picture_url."&w=400)\"></div>";
+            $img_tag = "<div id=\"alertbg\" style=\"background-image: url(".$picture_url.")\"></div>";
+            $class_alerttxt = " class=\"txtindiv\"";
+            $class_alerttitle = " txtindiv";
+            $img_tag = "<img id=\"alertimg\" src=\"".$picture_url."\" width=\"310\">";
+        }
+        
+    }
+    
+    $msgformat = "<div id=\"alerttxt\" ".$class_alerttxt.">%s</div>".$img_tag;
+    $msgformatNoImg = "<div id=\"alerttxt\" ".$class_alerttxt.">%s</div>";
 
+    $msgformat = $img_tag."<br/>".$message;
+    $msgformatNoImg = $message;
+    if (!sprintf($msgformat, $message))
+        $msgToAlertSection = printf($msgformatNoImg, $message);
+    else
+        $msgToAlertSection = sprintf($msgformat, $message);
+    if (strlen($title) > 0){
+        //$msgformat = "<div class=\"title".$class_alerttitle."\">%s</div> %s";
+        // no title is put
+        //$msgToAlertSection = sprintf ($msgformat, "", $msgToAlertSection);
+        $msgToAlertSection = $msgformat;
+        
+    }
+    return  $msgToAlertSection;
+}
 function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $addon, $class, $messageType, $ttl)
 {
     global $mem, $ALERTS_PAYMENT, $PATREON_LINK, $RU, $FR;
@@ -3337,10 +3372,12 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
     {
         global $lang_idx;
         $lang_idx = $lang;
-        //$description = nl2br($description);
+        $description = nl2br($description);
         $description = trim($description);
-        $description = str_replace("'", "`", $description);
-        $description = str_replace("\"", "``", $description);
+        
+        $description = getMsgAlert($img_src, $description, $title);
+        //$description = str_replace("'", "`", $description);
+        //$description = str_replace("\"", "''", $description);
         $now = replaceDays(date('D H:i'));
         $append = true;
         $res = db_init("SELECT * FROM  `content_sections` WHERE (TYPE =  'forecast') and (lang=?)", $lang);
@@ -3927,9 +3964,9 @@ function getClothTitle($imagename, $temp, $wind, $hum)
 		$title = $RAINCOAT[$lang_idx];
                  if ($temp < 5)
                     $title .= ", ".$LAYERS_BELOW3_PLUS[$lang_idx];
-                else if($temp < 10)
+                else if(($temp < 10) && ($wind > 10))
                     $title .= ", ".$LAYERS_BELOW3[$lang_idx];
-                else if ($temp < 13)
+                else if (($temp < 13) || ($wind > 10))
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
                 else
                     $title .= ", ".$LAYERS_BELOW[$lang_idx];
@@ -3939,9 +3976,9 @@ function getClothTitle($imagename, $temp, $wind, $hum)
         
                  if ($temp < 5)
                     $title .= ", ".$LAYERS_BELOW3_PLUS[$lang_idx];
-                else if($temp < 10)
+                else if (($temp < 10) && ($wind > 10))
                     $title .= ", ".$LAYERS_BELOW3[$lang_idx];
-                else if ($temp < 13)
+                else if (($temp < 13) || ($wind > 10))
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
                 else
                     $title .= ", ".$LAYERS_BELOW[$lang_idx];

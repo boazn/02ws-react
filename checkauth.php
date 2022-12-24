@@ -40,6 +40,11 @@ function get_user(){
         //logger( $_SESSION['email']." authenticated with Session: "."\"display\":"."\"".$line['display_name']."\""." \"nicename\":"."\"".$line['user_nicename']."\""." \"priority\":".$line['priority']." \"admin\":".$line['admin']);
         $_SESSION['loggedin'] = "true";
     }
+    else if (!empty($_GET['email'])){
+        $line = get_user_from_email($_GET['email']);
+        //logger( $_GET['email']." authenticated with _GET: "."\"display\":"."\"".$line['display_name']."\""." \"nicename\":"."\"".$line['user_nicename']."\""." \"priority\":".$line['priority']." \"admin\":".$line['admin']);
+        $_SESSION['loggedin'] = "true";
+    }
     else {
         // This means the session file doesn't exist, is empty, or there is no valid userid
         // This is where we will check for a 'rememberme' cookie if one exists

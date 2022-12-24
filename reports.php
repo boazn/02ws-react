@@ -1,5 +1,5 @@
                                 <?
-$current_year = 2021;
+$current_year = 2022;
 $min_year = 1846;
 $tablestobeSearched = array();
 $where_clause_archivemin = array();
@@ -376,9 +376,9 @@ function getReport($min_year,$current_year, $report)
 		
 		$query_total .= ") ar where month is not null ";
 		if ($orderbydate)
-		$query_total .= "  ORDER BY MONTH(Date),DAY(DATE) ".$AscOrDesc." LIMIT 0 , 30";
+		$query_total .= "  ORDER BY MONTH(Date),DAY(DATE) ".$AscOrDesc." LIMIT 0 , 50";
 		else
-		$query_total .= "  ORDER BY ".$maxOrMin.$param." ".$AscOrDesc." LIMIT 0 , 30";
+		$query_total .= "  ORDER BY ".$maxOrMin.$param." ".$AscOrDesc." LIMIT 0 , 50";
 	}
 	else
 	{
@@ -418,9 +418,9 @@ function getReport($min_year,$current_year, $report)
 		
 		$query_total .= ") ar ";
 		if ($orderbydate)
-		$query_total .= "  GROUP BY  YEAR(Date) order by MONTH(Date),DAY(DATE) ".$AscOrDesc." LIMIT 0 , 30";
+		$query_total .= "  GROUP BY  YEAR(Date) order by MONTH(Date),DAY(DATE) ".$AscOrDesc." LIMIT 0 , 50";
 		else
-		$query_total .= "  GROUP BY  `Date` ORDER BY ".$maxOrMin."(  ".$param." ) ".$AscOrDesc." LIMIT 0 , 30";
+		$query_total .= "  GROUP BY  `Date` ORDER BY ".$maxOrMin."(  ".$param." ) ".$AscOrDesc." LIMIT 0 , 50";
 		}
 	//var_dump($_POST);
 	//echo $query_total;

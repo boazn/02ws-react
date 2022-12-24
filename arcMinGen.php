@@ -23,7 +23,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
  // change that according to file
  //
  //
- $SITE['cvalues'] = array("stationid","date", "rain","raincode");
+ $SITE['cvalues'] = array("stationid","date", "Rain");
  $key_split = "/,+/";
  function ret_value($lookup) {
 	global $SITE, $DATA;
@@ -61,11 +61,13 @@ foreach($rawdata as $key) {
 	if (ret_value("date") != "date")
 	{
 	$value = ret_value($nameOfParam);
+	$value = str_replace('"', '', $value);
 	$date = ret_value("date");
-	$date = str_replace('/', '-', $date);
-	$date = date("Y-m-d", strtotime($date) );
+	//$date = str_replace('/', '-', $date);
+	$date = DateTimeImmutable::createFromFormat('\"d/m/Y\"',$date);
+	$date = date("Y-m-d", strtotime($date->format('Y-m-d')) );
 	if ($insertOrUpdate == "I")
-				 echo "insert into `archivemin`  ( `Date` , `".$nameOfParam."` ) VALUES ('".$date."' , ".$value.");<br>";
+				 echo "insert into `archivemin`  ( `Date` , `".$nameOfParam."` ) VALUES ('".$date."' , '".$value."');<br>";
 				else if ($insertOrUpdate == "U")
 				 echo ("update `archivemin`  set `".$nameOfParam."`=$value  where `Date`='$date';<br>");
                                 else

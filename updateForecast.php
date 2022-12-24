@@ -326,10 +326,10 @@ function updateForecastDay ($idx,
     //$now = getLocalTime(time());
     $lang0 = nl2br($lang0);
     $lang0 = str_replace("'", "`", $lang0);
-    $lang0 = str_replace("\"", "``", $lang0);
+    $lang0 = str_replace("\"", "", $lang0);
     $lang1 = nl2br($lang1);
     $lang1 = str_replace("'", "`", $lang1);
-    $lang1 = str_replace("\"", "``", $lang1);
+    $lang1 = str_replace("\"", "", $lang1);
     $query = "UPDATE forecast_days SET 
                     TempLow='{$temp_low}', 
                     TempHigh='{$temp_high}', 
@@ -423,7 +423,7 @@ function updateMessages ($description, $active, $type, $lang, $href, $img_src, $
     global $forecastHour, $mem, $RU, $FR, $AR;
     //$description = nl2br($description);
     $description = str_replace("'", "`", $description);
-    $description = str_replace("\"", "``", $description);
+    $description = str_replace("\"", "", $description);
     $now = replaceDays(date('D H:i'));
     $ttl = 360;
     $messageType = "long_range";
