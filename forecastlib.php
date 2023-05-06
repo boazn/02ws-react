@@ -884,7 +884,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
         $isProb = true;
         $prob_mag = Chance::Good;
     }
-    if (stristr ($taf_tokens[$i], "RASN"))      updateForecast(95, array("$RAIN[$EN] $SNOW[$EN]", "$RAIN[$HEB] $SNOW[$HEB]"), "n4_rainSnow.svg");
+    if (stristr ($taf_tokens[$i], "RASN"))      updateForecast(95, array("$RAIN[$EN] $SNOW[$EN]", "$RAIN[$HEB] $SNOW[$HEB]"), "n4_snowrain.svg");
      else if (stristr ($taf_tokens[$i], "SN"))  updateForecast(100, $SNOW, "n4_snow.svg");
 
     if ((stristr ($taf_tokens[$i], "GR"))||
@@ -903,7 +903,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
     if (stristr ($taf_tokens[$i], "DU")) updateForecast(50, $DUST, "n4_dust.svg");
     if (stristr ($taf_tokens[$i], "TCU")) updateForecast(48, $SEVERE_CLOUDS, "n4_mostlycloudy.svg");
     if (stristr ($taf_tokens[$i], "OVC"))   {
-        $currentPri = 45;
+        $currentPri = 45;`
 
         if ($currentPri != $priority){
              $last_priority = $currentPri;
