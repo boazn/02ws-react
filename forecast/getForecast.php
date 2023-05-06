@@ -12,7 +12,11 @@ $locations = isset($_REQUEST['locations']) ? $_REQUEST['locations'] : "";
         direction:<?=getDirection()?>;
         border:1px rgba(0,0,0,0.2);
     }
-    
+    #forecastTable .inv_plain_3_zebra
+	{
+		direction:ltr;
+		text-align: center;
+	}
     #wrapperforecast{
         float:right;text-align:center;padding:0 1em;margin-bottom: 1em;
     }

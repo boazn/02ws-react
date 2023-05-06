@@ -5,7 +5,7 @@ $tablestobeSearched = array();
 $where_clause_archivemin = array();
 $where_clause_archive = array();
 $where_clause_rainseason = array();
- function pushTables($min_year,$current_year, $monthMode, $param, $tableToSearch)
+ function pushTables($min_year,$current_year, $monthMode, $seasonMode, $param, $tableToSearch)
  {
 	global $tablestobeSearched;
 	global $where_clause_archivemin; 
@@ -17,7 +17,8 @@ $where_clause_rainseason = array();
             $startingYearFromMyStation = 2002;
         else
             $startingYearFromMyStation = $current_year;
-        
+    //print_r($_POST['years']) ; 
+	//print_r($_POST['months']) ;   
 	if (count($_POST['years']) > 0){
 		foreach ($_POST['years'] as $yearToSearch)
 		{
@@ -64,6 +65,10 @@ $where_clause_rainseason = array();
 							array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
 						}
 					}
+					elseif ($seasonMode)
+					{
+						array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-09-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-06-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
+					}
 					else
 						array_push ($where_clause_archivemin, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
 					if (!in_array("archivemin", $tablestobeSearched))
@@ -76,6 +81,10 @@ $where_clause_rainseason = array();
 						for ($monthToSearch = 1;$monthToSearch <= 12 ;$monthToSearch++) { 
 							array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-%02d-01' ) ) <0) ", $yearToSearch , $monthToSearch , getNextMonthYear($monthToSearch, $yearToSearch) , getNextMonth($monthToSearch)));
 						}
+					}
+					elseif ($seasonMode)
+					{
+						array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-09-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-06-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
 					}
 					else
 						array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
@@ -128,7 +137,7 @@ $where_clause_rainseason = array();
                 else {// no year selected and no month selected
             
                     if ($monthMode)
-			{
+					{
                             for ($monthToSearch = 1;$monthToSearch <= 12 ;$monthToSearch++) { 
 								if ($tableToSearch == "rainseason")
 							{
@@ -147,7 +156,13 @@ $where_clause_rainseason = array();
                                 
 							   
                             }
-                       }   
+                       }
+					elseif ($seasonMode)
+					{
+						for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
+							array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-09-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-06-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
+						}
+					}   
                     else {
                         for ($yearToSearch = $min_year;$yearToSearch < $startingYearFromMyStation ;$yearToSearch++) { 
                          array_push ($where_clause_archive, sprintf(" ( DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) >=0 AND DATEDIFF(  `Date` , DATE(  '%d-01-01' ) ) <0) ", $yearToSearch , $yearToSearch + 1));
@@ -170,6 +185,8 @@ function getReport($min_year,$current_year, $report)
 	global $where_clause_rainseason;
 	$orderbydate = false;
 	$monthMode = false;
+	$seasonMode = false;
+
 	if ($report == "minofmax")
 	{
 		$maxOrMin = "MAX";
@@ -307,10 +324,58 @@ function getReport($min_year,$current_year, $report)
 			$group_by_column = "season";
 			$min_year = 1846;
 	}
-	//echo "monthMode=".$monthMode." param=".$param." tableToSearch=".$tableToSearch." <br\>";
-	pushTables($min_year,$current_year, $monthMode, $param, $tableToSearch);
+	else if ($report == "maxrainydays")
+	{
+			
+		$monthMode = true;
+		$seasonMode = false;
+		$maxOrMin = "COUNT";
+		$param = "Rain";
+		$AscOrDesc = "Desc";
+		$unit = "days";
+		$min_year = 1846;
+	}
+	else if ($report == "minrainydays")
+	{
+			
+		$monthMode = true;
+		$seasonMode = false;
+		$maxOrMin = "COUNT";
+		$param = "Rain";
+		$AscOrDesc = "Asc";
+		$unit = "days";
+		$min_year = 1846;
+	}
+	else if ($report == "minseasonrainydays")
+	{
+			
+		$monthMode = false;
+		$seasonMode = true;
+		$maxOrMin = "COUNT";
+		$param = "Rain";
+		$AscOrDesc = "Asc";
+		$unit = "days";
+		$group_by_column = "YEAR(Date)";
+		$orderbydate = true;
+		$min_year = 1846;
+	}
+	else if ($report == "maxseasonrainydays")
+	{
+			
+		$monthMode = false;
+		$seasonMode = true;
+		$maxOrMin = "COUNT";
+		$param = "Rain";
+		$AscOrDesc = "Desc";
+		$unit = "days";
+		$group_by_column = "YEAR(Date)";
+		$orderbydate = true;
+		$min_year = 1846;
+	}
+	//echo "monthMode=".$monthMode." seasonMode=".$seasonMode." param=".$param." tableToSearch=".$tableToSearch." <br\>";
+	pushTables($min_year,$current_year, $monthMode, $seasonMode, $param, $tableToSearch);
 	//print_r($tablestobeSearched);
-	//print_r($where_clause_archivemin);
+	//print_r("where_clause_archivemin=".$where_clause_archivemin);
 	global $link;
 	db_init("", "");
 	if ($complex == "") 
@@ -491,8 +556,10 @@ function getReport($min_year,$current_year, $report)
 				$MAXRAINMONTH = array("The most rainy month", "החודש הגשום ביותר");
 				$MINRAINMONTH = array("The most dry month", "החודש השחון ביותר");
 				$CONSECUTIVERAINSEASON = array("Rain seasons with", "עונות גשם עם");
-                                $MINTEMPMONTH = array("The most hot month", "החודש החם ביותר");
-                                $MAXTEMPMONTH = array("The most cold month", "החודש הקר ביותר");
+				$RAINYDAYS_MAX = array("Max Rainy days", "הרבה ימי גשם");
+				$RAINYDAYS_MIN = array("Min Rainy days", "מעט ימי גשם");
+				$MINTEMPMONTH = array("The most hot month", "החודש החם ביותר");
+				$MAXTEMPMONTH = array("The most cold month", "החודש הקר ביותר");
 				$CTRL  = array("to choose multiple years or/and months use the ctrl key", "לבחירת כמה שנים או כמה חודשים יש להשתמש ב-מקש קונטרול  . אם לא תבחר שנה - יחושב עבור כל השנים. אם לא יבחר חודש - יחושב עבור כל החודשים");
 				
 				
@@ -585,6 +652,10 @@ function getReport($min_year,$current_year, $report)
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="lastrain" name="report" <? if ($_POST['report'] == "lastrain") echo "checked"; ?>/><?=$LASTRAIN[$lang_idx]?> (1909+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxrainmonth" name="report" <? if ($_POST['report'] == "maxrainmonth") echo "checked"; ?>/><?=$MAXRAINMONTH[$lang_idx]?> (1846+)<br />
 						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minrainmonth" name="report" <? if ($_POST['report'] == "minrainmonth") echo "checked"; ?>/><?=$MINRAINMONTH[$lang_idx]?> (1846+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxrainydays" name="report" <? if ($_POST['report'] == "maxrainydays") echo "checked"; ?>/><?=$RAINYDAYS_MAX[$lang_idx]?> (1909+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minrainydays" name="report" <? if ($_POST['report'] == "minrainydays") echo "checked"; ?>/><?=$RAINYDAYS_MIN[$lang_idx]?> (1909+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="maxseasonrainydays" name="report" <? if ($_POST['report'] == "maxseasonrainydays") echo "checked"; ?>/><?=$SEASONRAINYDAYS_MAX[$lang_idx]?> (1909+)<br />
+						<input <? if (isHeb()) echo "dir=\"rtl\""; ?> type="radio" value="minseasonrainydays" name="report" <? if ($_POST['report'] == "minseasonrainydays") echo "checked"; ?>/><?=$SEASONRAINYDAYS_MIN[$lang_idx]?> (1909+)<br />
 						<!--<select name="consecutiveseasons" size="2" >
 						<option value='2' <?if (isconsecutiveseasonsSubmited("2")) echo "selected";?>>2</option>
 						<option value='3' <?if (isconsecutiveseasonsSubmited("3")) echo "selected";?>>3</option>

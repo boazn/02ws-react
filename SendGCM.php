@@ -41,7 +41,7 @@
 
              $(".loading").hide();
 
-             $("#SendSpecialResult").text(result);
+             $("#SendSpecialResult").html(result);
              //$("#SendButton").hide();
 
 

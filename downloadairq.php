@@ -13,16 +13,16 @@ $auth2 = "Qm9hel9ZOk5uSlkyUzNi";
 $envidatasource = "MANA";
 $user = "Boaz_Y";
 $pass = "NnJY2S3b";
-$url="https://api.svivaaqm.net/v1/envista/stations?envi-data-source=".$envidatasource .
+$url="https://air-api.sviva.gov.il/v1/envista/stations?envi-data-source=".$envidatasource .
 "&User".$user.
 "&Password".$pass;
-$url="https://api.svivaaqm.net/v1/envista/stations?envi-data-source=".$envidatasource .
+$url="https://air-api.sviva.gov.il/v1/envista/stations?envi-data-source=".$envidatasource .
 "&User".$user.
 "&Password".$pass;
-$url="https://api.svivaaqm.net/v1/envista/stations/36/data/latest?envi-data-source=".$envidatasource .
+$url="https://air-api.sviva.gov.il/v1/envista/stations/36/data/latest?envi-data-source=".$envidatasource .
 "&User".$user.
 "&Password".$pass;
-$url="https://api.svivaaqm.net/v1/envista/stations/".$station_id."/data/latest?envi-data-source=".$envidatasource .
+$url="https://air-api.sviva.gov.il/v1/envista/stations/".$station_id."/data/latest?envi-data-source=".$envidatasource .
 "&User".$user.
 "&Password".$pass;
 $data ='{"User":"'.$user.'","Password":"'.$pass.'", "envi-data-source":"'.$envidatasource.'"}';
@@ -157,10 +157,14 @@ function sd($array) {
 function cleanGarbageStations(&$array){
     if (count($array) < 2)
         return;
-    if ($array[0] <= 0)
+     if ($array[0] <= 0)
+        echo "<br/>cleanGarbageStations: first=".$array[0]." --> removed ".array_shift($array);
+     if ($array[0] <= 0)
         echo "<br/>cleanGarbageStations: first=".$array[0]." --> removed ".array_shift($array);
      if (($array[count($array)-1] > 3 * $array[count($array)-2])&&(count($array) > 1))
         echo "<br/>cleanGarbageStations: last=".$array[count($array)-1]." before last=".$array[count($array)-2]." --> removed ".array_pop($array);
+     if (standard_deviation($array) > round(array_sum($array)/count($array)))
+         echo "<br/>cleanGarbageStations: SD too high. last=".$array[count($array)-1]." before last=".$array[count($array)-2]." --> removed ".array_pop($array);
      if (standard_deviation($array) > round(array_sum($array)/count($array)))
          echo "<br/>cleanGarbageStations: SD too high. last=".$array[count($array)-1]." before last=".$array[count($array)-2]." --> removed ".array_pop($array);
     

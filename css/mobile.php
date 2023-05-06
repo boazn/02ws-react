@@ -91,12 +91,12 @@ top:0px;
 {
 	width:100%;height:auto;
 }
-#forecastnextdays
+#forecastnextdays, #nextdays_table
 {
 	padding:0.1em 0.1em;;width:100%;
 	<? if (isHeb()) echo "direction:rtl"; ?>
 }
-#forecastnextdays table
+#forecastnextdays table, #nextdays_table table
 {	
 	border-spacing: 0px 8px;
 	padding:0em 0.1em;
@@ -111,15 +111,15 @@ top:0px;
 {
     
 }
-#forecastnextdays tr
+#forecastnextdays tr, #nextdays_table tr
 {
     margin-top:0.2em
 }
-#forecastnextdays .plus{
+#forecastnextdays .plus, #nextdays_table .plus{
     background:#eeeeee
 }
 
-#forecastnextdays table .text
+#forecastnextdays table .text, #nextdays_table .text
 {
     padding: 0 0.75em 0.2em;
     line-height: 1.1em;
@@ -128,16 +128,16 @@ top:0px;
     background:#eeeeee;
     font-size:1.1em
 }
-#forecastnextdays .tsfh .icon{
+#forecastnextdays .tsfh .icon, #nextdays_table .tsfh .icon{
     margin-top:10px;
 }
-#forecastnextdays .paramunit{
+#forecastnextdays .paramunit, #nextdays_table .paramunit{
     display:none;
 }
 #forecastnextdays .average{
     font-size:1.40em  
 }
-#forecastnextdays .date{
+#forecastnextdays .date, #nextdays_table .date{
     font-family:nextexitfot_regularregular;
     letter-spacing: 0px;
     font-size:1.2em;
@@ -148,34 +148,34 @@ top:0px;
     border-bottom-right-radius: 10px;
     background:#eeeeee
 }
-#forecastnextdays .datetext{
+#forecastnextdays .datetext, #nextdays_table .datetext{
     font-size:0.8em;
 }
-#forecastnextdays .datef{
+#forecastnextdays .datef, #nextdays_table .datef{
     text-align:center;line-height: 0.9em;width:2em
 }
-#forecastnextdays table a
+#forecastnextdays table a, #nextdays_table table a
 {
     text-decoration:underline;
 }
-#forecastnextdays .humidity a
+#forecastnextdays .humidity a, #nextdays_table .humidity a
 {
     text-decoration:none;
     font-size:3em
 
 }
-#forecastnextdays table a.info
+#forecastnextdays table a.info, #nextdays_table table a.info
 {
     text-decoration:none;
 }
-#forecastnextdays .tsfh{
+#forecastnextdays .tsfh, #nextdays_table .tsfh{
 font-size:1.60em;
 line-height: 0.7em;
 text-align:center;
 padding: 0.6em 0;
 background:#eeeeee
 }
-#forecastnextdays .enlarge{
+#forecastnextdays .enlarge, #nextdays_table .enlarge{
     margin: 4.2em 0px;
 }
 #legends
@@ -183,7 +183,7 @@ background:#eeeeee
     width: 320px;
     padding: 0 0.5em;
 }
-#forecastnextdays_table .icon_day{
+#forecastnextdays_table .icon_day, #nextdays_table .icon_day{
     background:#eeeeee;
     float:none
 }
@@ -276,6 +276,11 @@ background:#eeeeee
     visibility:hidden;
     font-size:1.1em;
     padding:0.1em 0;font-size: 1.4em;z-index: 99999;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background: #eeeeee;
     <? if (isHeb()) echo "direction:rtl"; ?>
 }
 .low{
@@ -747,9 +752,9 @@ width:320px;
 width:33%;left:9.5em;top:3em
 } 
 .open-close-button{
-  width: 1.2em;
-  height: 1.2em;
-  margin: -0.6em -0.1em;
+  width: 1.4em;
+  height: 1.4em;
+  margin: -0.6em -0.6em;
 }  
 #windystart
 {
@@ -859,9 +864,15 @@ border-radius: 0px;
 {
 	font-size:1.1em;
 	margin-top:0.2em;
+    padding:1em;
     width: 70%;
     margin: 1em auto 0;
     line-height:16px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background: #eeeeee;
 }
 #what_is_h_start
 {
@@ -873,7 +884,7 @@ border-radius: 0px;
     
 }
 #what_is_h .rainpercent{
-    margin: 14em 11.5em;
+    margin: -24em 11.5em;
 }
 #msgDetails .white_box2
 {
@@ -922,6 +933,8 @@ text-align:<?=get_s_align()?>;
     width:24%;
     padding-<?=get_inv_s_align()?>:1px;
     text-align:center;
+    padding-top:5px;
+    height: 40px;
     float:<?=get_s_align()?>;
         font-size:1.4em;
         margin-bottom:0px;
@@ -955,7 +968,7 @@ text-decoration: underline;
 }
 .for_active
 {
-    border-bottom: black solid;
+    border-bottom: 4px black solid;
     border-bottom-right-radius: 0px;
 }
 .timefh, .tsfh{
@@ -1048,7 +1061,7 @@ width: 160px;
 }
 #activities_yes_con, #activities_no_con{
     margin: 0px 0px;
-    
+    display: contents;
 }
 #activities_yes li, #activities_no li{
     width: 26px;
@@ -1056,8 +1069,9 @@ width: 160px;
     margin:4px
 }
 #activities_yes, #activities_no{
-   
+   width:750px
 }
+
 #cm_dislike
 {
     <?=get_inv_s_align()?>: 1em;
@@ -1135,7 +1149,9 @@ width:320px
 .humidity{
     font-size:0.8em
 }
-
+#nextdays_table .humidity{
+    display:none
+}
 #forcast_hours li, #forcast_hours_table li{
     font-size:1.1em
 }
@@ -1181,10 +1197,10 @@ padding:0.4em 0.3em
 line-height: 0.9em;
 color:#000;
 }
-#for24_hours .nav li .wind_icon, #forcast_hours_table .nav li .wind_icon
+#for24_hours .nav li .wind_icon, #forcast_hours_table .nav li .wind_icon, #nextdays_table .wind_icon
 {
 margin-top:0.5em;
-padding: 0.6em 0 0;
+padding: 0.8em 0 0;
 }
 .wind_icon .small{ font-size:0.6em}
 .light_wind{
@@ -1263,9 +1279,8 @@ border-top:0px;top:95px;margin:0
 }
 #what_is_h .invhigh{
     display:inline-block;
-    font-size: 0.55em;
+    font-size: 0.75em;
     vertical-align: text-top;
-    height: 1.2em;
 }
 .winddir
 {
@@ -1527,6 +1542,13 @@ direction:rtl;
   width: 100%;
   height:2.7em;
   clear:both;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background: #eeeeee;    
+    margin-bottom: 0.2em;
+    padding: 0.2em;
 }
 .forecasttimebox .forcast_date{
 text-align:center;width:6%

@@ -37,7 +37,7 @@ define("MYSQL_USER","boazn");
 define("MYSQL_PASS","Boaz1972");
 define("SENDMAIL_SLEEP_INTERVAL","42200");
 define ("SERVER_CLOCK_DIFF", "+0 hours 0 minutes");
-define ("GMT_TZ", "2");
+define ("GMT_TZ", "3");
 define ("TASHKIF_START", "5");
 define ("IS_SNOWING", 0);
 define ("SNOW_IS_MELTING", 0);
@@ -57,7 +57,7 @@ $user_locked = false;
 $PIVOT_TEMP = 22;
 $PRIMARY_TEMP = 2;
 // 30 min diff
-if (((@filemtime(FILE_XML_FULLDATA) + 1800) < @filemtime(FILE_XML_FULLDATA2)) || (!file_exists(FILE_XML_FULLDATA)))
+if (((@filemtime(FILE_XML_FULLDATA) + 900) < @filemtime(FILE_XML_FULLDATA2)) || (!file_exists(FILE_XML_FULLDATA)))
 	$fulldatatotake = FILE_XML_FULLDATA2;
 $fulldatatotake = FILE_XML_FULLDATA3;
 //$fulldatatotake = FILE_XML_FULLDATA2;

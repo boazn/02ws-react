@@ -1,6 +1,7 @@
 <style>
     #rainsummery td
     {
+		line-height: 1em;
         padding: 0.5em;
     }
 </style>

@@ -459,7 +459,7 @@ else
  function change_circle(line_id, info_id) {
      
     
-    $('#runwalk_btn, #moon_btn, #more_stations_btn, #dew_btn, #laundry_btn, #sport_btn, #car_btn, #openwindow_btn, #camping_btn, #children_btn, #eventoutside_btn, #gazellepark_btn, #irrigation_btn, #dog_btn, #picnic_btn, #sacker_btn, #westernwall_btn, #yoga_btn, #ac_btn, #bicycle_btn, #campfire_btn, #campfire_btn, #dinneratbalcony_btn').css('opacity','0.6');
+    $('#runwalk_btn, #moon_btn, #more_stations_btn, #dew_btn, #laundry_btn, #heater_btn, #sport_btn, #car_btn, #openwindow_btn, #camping_btn, #children_btn, #eventoutside_btn, #gazellepark_btn, #irrigation_btn, #dog_btn, #picnic_btn, #sacker_btn, #westernwall_btn, #yoga_btn, #ac_btn, #bicycle_btn, #campfire_btn, #campfire_btn, #dinneratbalcony_btn').css('opacity','0.6');
         
     if (info_id == "latestdewpoint")
         $('#dew_btn').css('opacity','1');
@@ -1225,11 +1225,13 @@ function fillLikes(jsonstr)
         $('#cm_current').val(json.coldmeter.current_value);
         const clothimage = json.coldmeter.cloth_name;
         const clothtitle = json.coldmeter.clothtitle;
+        const asterisk = json.coldmeter.asterisk;
         const coldmeter_title = json.coldmeter.current_feeling;
         const laundrytitle = json.laundryidx.laundry_con_title;
         const laundryimage = json.laundryidx.laundry_con_img;
-        const coldmetersize = coldmeter_size
-        const output = `<a href="javascript:void(0)" class="info currentcloth" ><span class="info">${clothtitle}</span><img src="images/clothes/${clothimage}" height="${coldmeter_size}" style="vertical-align: middle" /></a><a class="info" id="coldmetertitle" href="javascript:void(0)" ><span class="info" style="cursor: default;" onclick="redirect('https://www.02ws.co.il?section=survey.php&amp;survey_id=2&amp;lang=1&amp;email=')">לא מסכימים? הצביעו!</span>${coldmeter_title}</a> <div id="laundryidx"><a href="javascript:void(0)" class="info" ><img src="images/laundry/${laundryimage}.svg" width="36" height="36" alt="laundry" title="${laundrytitle}" /><span class="info">${laundrytitle}</span></a><div><strong></strong></div></div>`;
+        const coldmetersize = coldmeter_size;
+        asterisk_title = (asterisk == "") ? "" : `<a href="javascript:void(0)" class="info" ><span class="info" style="cursor: default;">${asterisk}</span>*</a>`;
+        const output = `<a href="javascript:void(0)" class="info currentcloth" ><span class="info">${clothtitle}</span><img src="images/clothes/${clothimage}" height="${coldmeter_size}" style="vertical-align: middle" /></a><a class="info" id="coldmetertitle" href="javascript:void(0)" ><span class="info" style="cursor: default;" onclick="redirect('https://www.02ws.co.il?section=survey.php&amp;survey_id=2&amp;lang=1&amp;email=')">לא מסכימים? הצביעו!</span>${coldmeter_title}</a>${asterisk_title} <div id="laundryidx"><a href="javascript:void(0)" class="info" ><img src="images/laundry/${laundryimage}.svg" width="36" height="36" alt="laundry" title="${laundrytitle}" /><span class="info">${laundrytitle}</span></a><div><strong></strong></div></div>`;
         fillcoldmeter(output);
         $('#heatindex').html(json.coldmeter.heatindex);
 
@@ -1863,6 +1865,43 @@ Licensed MIT
             results = regex.exec(location.search);
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
+    function getClass(name, json){
+        //<li>130</li><li>300</li></ul></li>
+        //<li>38</li><li>100</li></ul></li>
+        if (name == 'pm10')
+        {
+            if (json.jws.current.pm10 > 300)
+                return "red";
+            if (json.jws.current.pm10 > 130)
+                return "orange";
+            return "green";
+        }
+        else
+        {
+            if (json.jws.current.pm25 > 100)
+                return "red";
+            if (json.jws.current.pm25 > 38)
+                return "orange";
+            return "green";
+        }
+        return "";
+    }
+    function getWidth(name, json){
+        var percDust;
+        if (name == 'pm10')
+        {
+            percDust = (json.jws.current.pm10/300)*100;
+            if (percDust > 100) {percDust = 100;}
+            return percDust+"%";
+        }
+        else
+        {
+            percDust = (json.jws.current.pm25/100)*100;
+            if (percDust > 100) {percDust = 100;}
+            return percDust+"%";
+        }
+       return "30%";
+    }
     function loadData(json)
     {
         var cssstyle_str = "";  
@@ -1974,9 +2013,9 @@ Licensed MIT
         }
         
         if (json.jws.feelslike.state == "windchill")
-            {$("#itfeels_windchill").show();$("#itfeels_windchill .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "")}
+            {$("#itfeels_windchill").show();$("#itfeels_windchill .value").html(c_or_f(json.jws.feelslike.avg, tempunit) + "")}
         else if (json.jws.feelslike.state == "heatindex")
-            {$("#itfeels_heatidx").show();$("#itfeels_heatidx .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "")}
+            {$("#itfeels_heatidx").show();$("#itfeels_heatidx .value").html(c_or_f(json.jws.feelslike.avg, tempunit) + "")}
         $('.rainpercent').html((json.jws.current.rainchance > 0 ? (json.jws.current.rainchance + '%') : ''));
         if (json.jws.states.sigweather.length > 1)
         $('#what_is_h, #what_is_h_start ').html(json.jws.states.sigweather[0].sigtitle<? echo $lang_idx;?>+
@@ -2067,10 +2106,10 @@ Licensed MIT
         $("#latestrain .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min15.rainratechange.split(",")[2]);
         $("#latestrain .paramvalue").html(json.jws.current.rainrate+'<div class="param">' + " <?=$RAINRATE_UNIT[$lang_idx]?>" +'</div>');
         $("#latestrain .paramtrend").html("<?=$DAILY_RAIN[$lang_idx]?>:&nbsp;" + json.jws.today.rain + " " + "&nbsp;&nbsp;" + "<?=$TOTAL_RAIN[$lang_idx]?>:&nbsp;" + json.jws.seasonTillNow.rain + " <?=$RAIN_UNIT[$lang_idx]?>");
-		$("#latestairq #aqvalues").html("<ul><li class=\"line\"><ul><li></li><li></li><li class=\"dustexp\"><?=$DUST_THRESHOLD1[$lang_idx]?></li><li class=\"dustexp\"><?=$DUST_THRESHOLD2[$lang_idx]?></li></ul></li>" +
-                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm10sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM10[$lang_idx]?></li><li><span class=\"number\">" + json.jws.current.pm10 + "</span>&nbsp;<span class=\"small\">µg/m3</span></li><li>+130</li><li>+300</li></ul></li>" +
-                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm25sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM25[$lang_idx]?></li><li><span class=\"number\">" + json.jws.current.pm25 + "</span>&nbsp;<span class=\"small\">µg/m3</span></li><li>+38</li><li>+100</li></ul></li>" +
-                             "<li ><?=$DUST_THRESHOLD3[$lang_idx]?></li>" +
+		$("#latestairq #aqvalues").html("<ul><li class=\"line title\"><ul><li class=\"theshhold_spacer\"></li><li class=\"dustexp\"><?=$DUST_THRESHOLD0[$lang_idx]?></li><li class=\"dustexp\"><?=$DUST_THRESHOLD1[$lang_idx]?></li><li class=\"dustexp\"><?=$DUST_THRESHOLD2[$lang_idx]?></li></ul></li>" +
+                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm10sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM10[$lang_idx]?></li><li class=\"y-axis-bar-item-container\" style=\"width: 70%\"><div class=\"y-axis-bar-item "  + getClass('pm10', json) + "\" style=\"width: " + getWidth('pm10', json) + "\"><span class=\"number\">" + json.jws.current.pm10 + "</span>&nbsp;<span class=\"small\">µg/m3</span></div></li></ul></li>" +
+                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm25sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM25[$lang_idx]?></li><li class=\"y-axis-bar-item-container\" style=\"width: 70%\"><div class=\"y-axis-bar-item " + getClass('pm25', json) + "\" style=\"width: " + getWidth('pm25', json) + "\"><span class=\"number\">" + json.jws.current.pm25 + "</span>&nbsp;<span class=\"small\">µg/m3</span></div></li></ul></li>" +
+                             "<li class=\"y-axis-bar-item-container dustexp\" style=\"width: 80%\"><?=$DUST_THRESHOLD3[$lang_idx]?></li>" +
                              "</ul>");
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.pm10change.split(",")[2]);
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.pm10change.split(",")[2]);
@@ -2151,7 +2190,7 @@ Licensed MIT
             toptime =  (json.jws.forecastHours[i].time % 4 == 0) ? json.jws.forecastHours[i].day<? echo $lang_idx;?>+"</br>"+json.jws.forecastHours[i].time+":00" : json.jws.forecastHours[i].time + ":00";
             forecastHoursNG += "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('"+toptime+"','"+json.jws.forecastHours[i].icon+"',"+ json.jws.forecastHours[i].temp+","+json.jws.forecastHours[i].wind+",'"+json.jws.forecastHours[i].cloth.substring(json.jws.forecastHours[i].cloth.split('/', 2).join('/').length)+"',"+json.jws.forecastHours[i].rain+","+json.jws.forecastHours[i].hum+","+i+",''" + ")\">";
             forecastHoursNG += "<div class=\"x-axis-bar primary\" style=\"height: 100%\">"+toptime+"</div>";    
-            bottom = 90;
+            bottom = 85;
             forecastHoursNG += "<div class=\"x-axis-bar tertiary icon\" style=\"height: "+ bottom +"%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"30\" width=\"35\" alt=\""+json.jws.forecastHours[i].icon+"\" /></div>";
             bottom = ((json.jws.forecastHours[i].temp-min_temp)*80)/(max_temp - min_temp);
             if (bottom < 10) bottom = 13;
@@ -2194,7 +2233,7 @@ Licensed MIT
                 .then(data => fillactivities(data, json))
                 .catch(error => console.log("error fetching activities:" + error))
       
-        /*
+        
         var forecastDays;
        var fulltextforecast;
        var textforecast;
@@ -2222,6 +2261,7 @@ Licensed MIT
          night_value = json.jws.current.temp;
          date_value = json.jws.today.date;
        }
+       /*
        forecastDays = "";
        forecastDays += "<li class=\"forcast_each\">";
        forecastDays += "<ul><li></li><li id=\"plus\"></li>";

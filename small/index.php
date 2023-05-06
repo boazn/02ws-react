@@ -273,7 +273,7 @@ else {?>
  </a> 
 </span>
 <span id="itfeels_thw" style="display:none;"> 
-<a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=thw.php&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" onclick="showLoading()"> 
+<a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" onclick="showLoading()"> 
  <span dir="ltr" class="value" title="<?=$WIND_CHILL[$lang_idx]?>"></span> 
  </a> 
 </span>
@@ -806,9 +806,11 @@ else {?>
     
 </ul>
 </div>    
-<div id="spacer1" style="clear:both;height: 2px;">&nbsp;</div>
+<div id="spacer1" style="clear:both;height: 15px;">&nbsp;</div>
 <div id="what_is_h"></div>
-<div id="latestalert"></div>    
+<div id="spacer2" style="clear:both;height: 10px;">&nbsp;</div>
+<div id="latestalert"></div>
+<div id="spacer3" style="clear:both;height: 10px;">&nbsp;</div>    
 <div id="for24_given">
 							
 	</div>
@@ -833,9 +835,11 @@ else {?>
         </div>
         
         </div>
-        <div id="spacer2" style="clear:both;height:10px">&nbsp;</div>
+        <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
+        <div id="for24_hours"></div>
+        <div id="spacer4" style="clear:both;height:10px">&nbsp;</div>
         
-        <div id="adunit3" class="adunit" style="">
+        <div id="adunit5" class="adunit" style="">
         <div data-onpage=true 
       data-adpath="/339474670,22847485332/02WS/Mobile_320x50">
             <!-- Large Mobile Banner 1 -->
@@ -848,13 +852,13 @@ else {?>
             </script>
         </div>
         </div>
-        <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
-        <div id="for24_hours"></div>
-        <div id="spacer4" style="clear:both;height:15px">&nbsp;</div>
         
+        <div id="spacer4" style="clear:both;height:15px">&nbsp;</div>
+      <? if (mainPage()) {   ?>
     <table id="nextdays_table" class="forecastnextdays" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="width:100%">
             
     </table> 
+    <?}?>
  </div>
 
 </div>
@@ -1085,9 +1089,8 @@ else {?>
  <?}?>
  <div id="mobile_redirect" class="big inv_plain_3_zebra" style="display:none;" class role="dialog">
         <button type="button" id="cboxCloseMobileRedirect" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-        <br /><br />
-        <h2 class="big inv_plain_2"><br /><a   onclick="redirect_to_desktop(<?=$lang_idx?>)" id="mobile_redirect_submit" class="clear inv_plain_3 big" style="width:100%"><?=$DESKTOP_REDIRECT[$lang_idx].get_arrow()?></a><br /><br /></h2><br/><br/><br/>      
-                <div>
+        <br />
+        <h2 class="big inv_plain_2"><br /><div>
                 <a href="https://play.google.com/store/apps/details?id=il.co.jws.app" target="_blank">
                         <img src="images/getitongp.svg" alt="Google play App" width="150" height="60"/>
                 </a>
@@ -1096,7 +1099,9 @@ else {?>
                 <a href="https://itunes.apple.com/us/app/yrwsmyym/id925504632?ls=1&mt=8" target="_blank">
                         <img src="images/Available_on_the_App_Store.svg" alt="App Store App" width="150" height="60"/>
                 </a>
-                </div>
+                </div><br /><br />
+                <a   onclick="redirect_to_desktop(<?=$lang_idx?>)" id="mobile_redirect_submit" class="clear inv_plain_3 big" style="width:100%"><?=$DESKTOP_REDIRECT[$lang_idx].get_arrow()?></a><br /><br /></h2><br/><br/><br/>      
+                <br /><br /><br /><br /><br /><br />
 </div>
 <div id="startupdiv" style="display:none;" class role="dialog">
 <button type="button" id="cboxClose" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();"></button>
@@ -1196,6 +1201,43 @@ Licensed MIT
         if (tempunit == 'none')
             return temp;
         return temp + '<div class="paramunit">°</div>' ;
+    }
+    function getClass(name, json){
+        //<li>130</li><li>300</li></ul></li>
+        //<li>38</li><li>100</li></ul></li>
+        if (name == 'pm10')
+        {
+            if (json.jws.current.pm10 > 300)
+                return "red";
+            if (json.jws.current.pm10 > 130)
+                return "orange";
+            return "green";
+        }
+        else
+        {
+            if (json.jws.current.pm25 > 100)
+                return "red";
+            if (json.jws.current.pm25 > 38)
+                return "orange";
+            return "green";
+        }
+        return "";
+    }
+    function getWidth(name, json){
+        var percDust;
+        if (name == 'pm10')
+        {
+            percDust = (json.jws.current.pm10/300)*100;
+            if (percDust > 100) {percDust = 100;}
+            return percDust+"%";
+        }
+        else
+        {
+            percDust = (json.jws.current.pm25/100)*100;
+            if (percDust > 100) {percDust = 100;}
+            return percDust+"%";
+        }
+       return "30%";
     }
 	function loadPostData(jsonstr, coldmeter_size, all_json)
 	{
@@ -1367,9 +1409,9 @@ Licensed MIT
         }
         else if (json.jws.sigForecastCalc.length > 0){
             $('#latestalert').html(json.jws.sigForecastCalc[0].sigtitle<? echo $lang_idx;?>+
-                                 '&nbsp;<div class=\"invhigh\">&nbsp;' + 
+                                 '&nbsp;' + 
                                   ((json.jws.sigForecastCalc.length > 1) ? json.jws.sigForecastCalc.length : "") + 
-                                         '&nbsp;</div>');
+                                         '&nbsp;');
         }
         else{
           //  $('#latestalert').html(latest_tip_of_the_day);
@@ -1402,11 +1444,11 @@ Licensed MIT
         else
             $("#itfeels").show();
         if (json.jws.feelslike.state == "windchill")
-        {$("#itfeels_windchill").show();$("#itfeels_windchill .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "")}
+        {$("#itfeels_windchill").show();$("#itfeels_windchill .value").html(c_or_f(json.jws.feelslike.avg, tempunit) + "")}
         else if (json.jws.feelslike.state == "heatindex")
-        {$("#itfeels_heatidx").show();$("#itfeels_heatidx .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "")}
+        {$("#itfeels_heatidx").show();$("#itfeels_heatidx .value").html(c_or_f(json.jws.feelslike.avg, tempunit) + "")}
         else if (json.jws.feelslike.state == "thw")
-        {$("#itfeels_thw").show();$("#itfeels_thw .value").html(c_or_f(json.jws.feelslike.value, tempunit) + "")}
+        {$("#itfeels_thw").show();$("#itfeels_thw .value").html(c_or_f(json.jws.feelslike.avg, tempunit) + "")}
         if (json.jws.states.sigweather.length > 1)
         $('#what_is_h, #what_is_h_start ').html(json.jws.states.sigweather[0].sigtitle<? echo $lang_idx;?> +
                                  '&nbsp;<div class=\"invhigh\">&nbsp;' + 
@@ -1490,11 +1532,12 @@ Licensed MIT
         $("#latestrain .trendstable .trendsvalues .innertrendvalue").eq(2).html(json.jws.min15.rainratechange.split(",")[2]);
         $("#latestrain .paramvalue").html(json.jws.current.rainrate+'<siv class="param">' + " <?=$RAINRATE_UNIT[$lang_idx]?>" +'</siv>');
         $("#latestrain .paramtrend").html("<?=$DAILY_RAIN[$lang_idx]?>:&nbsp;" + json.jws.today.rain + " " + "&nbsp;&nbsp;<?=$SYSTEM[$lang_idx]?>:&nbsp;" + json.jws.storm.rain + "<br/><?=$TOTAL_RAIN[$lang_idx]?>:&nbsp;" + json.jws.seasonTillNow.rain + " <?=$RAIN_UNIT[$lang_idx]?>");
-        $("#latestairq #aqvalues").html("<ul><li class=\"line\"><ul><li></li><li></li><li class=\"dustexp\"><?=$DUST_THRESHOLD1[$lang_idx]?></li><li class=\"dustexp\"><?=$DUST_THRESHOLD2[$lang_idx]?></li></ul></li>" +
-                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm10sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM10[$lang_idx]?></li><li><span class=\"number\">" + json.jws.current.pm10 + "</span>&nbsp;<span class=\"small\">µg/m3</span></li><li>+130</li><li>+300</li></ul></li>" +
-                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm25sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM25[$lang_idx]?></li><li><span class=\"number\">" + json.jws.current.pm25 + "</span>&nbsp;<span class=\"small\">µg/m3</span></li><li>+38</li><li>+100</li></ul></li>" +
-                             "<li ><?=$DUST_THRESHOLD3[$lang_idx]?></li>" +
+        $("#latestairq #aqvalues").html("<ul><li class=\"line title\"><ul><li class=\"theshhold_spacer\"></li><li class=\"dustexp\"><?=$DUST_THRESHOLD0[$lang_idx]?></li><li class=\"dustexp\"><?=$DUST_THRESHOLD1[$lang_idx]?></li><li class=\"dustexp\"><?=$DUST_THRESHOLD2[$lang_idx]?></li></ul></li>" +
+                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm10sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM10[$lang_idx]?></li><li class=\"y-axis-bar-item-container\" style=\"width: 70%\"><div class=\"y-axis-bar-item "  + getClass('pm10', json) + "\" style=\"width: " + getWidth('pm10', json) + "\"><span class=\"number\">" + json.jws.current.pm10 + "</span>&nbsp;<span class=\"small\">µg/m3</span></div></li></ul></li>" +
+                             "<li class=\"line\" title=\"&plusmn;"+json.jws.current.pm25sd+"\"><ul><li class=\"dusttitle\"><?=$DUSTPM25[$lang_idx]?></li><li class=\"y-axis-bar-item-container\" style=\"width: 70%\"><div class=\"y-axis-bar-item " + getClass('pm25', json) + "\" style=\"width: " + getWidth('pm25', json) + "\"><span class=\"number\">" + json.jws.current.pm25 + "</span>&nbsp;<span class=\"small\">µg/m3</span></div></li></ul></li>" +
+                             "<li class=\"y-axis-bar-item-container dustexp\" style=\"width: 80%\"><?=$DUST_THRESHOLD3[$lang_idx]?></li>" +
                              "</ul>");
+                             
                
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(0).html(json.jws.yestsametime.pm10change.split(",")[2]);
         $("#latestairq .trendstable .trendsvalues .innertrendvalue").eq(1).html(json.jws.oneHour.pm10change.split(",")[2]);
@@ -1562,7 +1605,7 @@ Licensed MIT
                 forecastHoursD += "<li class=\"tsfh text timefh \"><span>" + strDate + "</span></li>";
                 //forecastHoursD += "<li class=\"timefh forcast_time\"><span>" + json.jws.forecastHours[i].time + ":00" + (json.jws.forecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus : "") +"</span></li>";
                 forecastHoursD += "<li class=\"tsfh forecasttemp\" id=\"tempfh"+ json.jws.forecastHours[i].time + "\"><div class=\"number\">" + c_or_f(json.jws.forecastHours[i].temp, tempunit) + "" +TempCloth + "</div></li>";
-                forecastHoursD += "<li class=\"wind\" style=\"padding:0;\"><div title=\"" + json.jws.forecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.forecastHours[i].wind_class+" \"></div><div class=\"humidity extra"+i+"\"><?=$HUMIDITY[$lang_idx]?>" + "  " +json.jws.forecastHours[i].hum+"%</div></li>";
+                forecastHoursD += "<li class=\"wind\" style=\"padding:0;\"><div title=\"" + json.jws.forecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.forecastHours[i].wind_class+" \"></div><!--<div class=\"humidity extra"+i+"\"><?=$HUMIDITY[$lang_idx]?>" + "  " +json.jws.forecastHours[i].hum+"%</div>--></li>";
                 forecastHoursD += "<li class=\"forcast_icon\"><span><img src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"30\" width=\"30\" /></span></li>";
                 forecastHoursD += "<li class=\"forcast_title text\"><span>"+json.jws.forecastHours[i].title<? echo $lang_idx;?>+"</span></li>";
                 forecastHoursD += "</ul></li>";
@@ -1652,8 +1695,8 @@ Licensed MIT
        forecastDays += "<td></td>";
        forecastDays += "</tr>";
        forecastDays += "<tr id=\"yesterday_line\" style=\"display:none\">";
-       forecastDays += "<td class=\"tsfh\" style=\"text-align:center;\">" + date_value + "</td><td></td>";
-       forecastDays += "<td class=\"tsforecastDaysfh\"><div class=\"number\">" + c_or_f(morning_value, tempunit) + "</div></td>";
+       forecastDays += "<td class=\"\" style=\"text-align:center;\">" + date_value + "</td><td></td>";
+       forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(morning_value, tempunit) + "</div></td>";
        forecastDays += "<td class=\"tsfh\">" + c_or_f(noon_value, tempunit) +"</td>";
        forecastDays += "<td class=\"tsfh\">" + c_or_f(night_value, tempunit) + "</td>";
        forecastDays += "<td></td>";

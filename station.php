@@ -418,7 +418,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                                 <span id="itfeels_heatidx" dir="ltr"><span class="value" data-value="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1];  ?></span></span><span class="info"><?=$HEAT_IDX[$lang_idx]?></span> 
                                 </a>
                                 <?}else if ($itfeels[0] == "thw"){?>
-                                <a  href="<?=BASE_URL?>?section=graph&amp;graph=thw.php&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
+                                <a  href="<?=BASE_URL?>?section=graph&amp;graph=THWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
                                 <span id="itfeels_thw" dir="ltr" ><span class="value" data-value="<?=$THW[$lang_idx]?>"><? echo $itfeels[1];  ?></span></span><span class="info"><?=$THW[$lang_idx]?></span> 
                                 </a>
                               <?}?>

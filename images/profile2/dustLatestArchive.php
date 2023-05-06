@@ -247,14 +247,14 @@ $graph->AddText($txt3);
 
 
 $txtaa=new Text($chrs . "pm2.5");
-$txtaa->SetFont(FF_VERDANA, FS_BOLD,7);
+$txtaa->SetFont(FF_VERDANA, FS_BOLD,12);
 $txtaa->SetPos($width - 26,$height - 80,'center');
 $txtaa->SetColor("darkgreen");
 $graph->AddText($txtaa);
 
 
 $txtab=new Text($chrs . "pm10");
-$txtab->SetFont(FF_ARIAL, FS_BOLD,7);
+$txtab->SetFont(FF_ARIAL, FS_BOLD,12);
 $txtab->SetPos($width - 26,$height - 210,'center');
 $txtab->SetColor("green");
 $graph->AddText($txtab);

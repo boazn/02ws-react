@@ -988,9 +988,9 @@ $JSON .= "\"timeforecast0\":"."\"".date('Y-m-d G:i D', $mem->get('descriptionfor
 $JSON .= ",";
 $JSON .= "\"latestalert1\":"."\"".urlencode($mem->get('latestalert1'))."\"";
 $JSON .= ",";
-$JSON .= "\"latestalert_title1\":"."\"".str_replace('"', "''", $mem->get('latestalert_title1'))."\"";
+$JSON .= "\"latestalert_title1\":"."\"".str_replace('"', "", $mem->get('latestalert_title1'))."\"";
 $JSON .= ",";
-$JSON .= "\"latestalert_img\":"."\"".$mem->get('latestalert_img')."\"";
+$JSON .= "\"latestalert_img\":"."\"".trim(strip_tags($mem->get('latestalert_img')))."\"";
 $JSON .= ",";
 $JSON .= "\"addonalert1\":"."\"".urlencode($mem->get('addonalert1'))."\"";
 $JSON .= ",";
@@ -1140,24 +1140,46 @@ if ($boolbroken)
     $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",\"url\":"."\"".$sig_i['url']."\"  }";
     $SIGWEATHER_JSON .= ",";
 }
-
-if ($sig_item_idx == 0){
-   
-        $sigext0 = "";$sigext1 = "";
-        //$sigext0 = $sig_i['extrainfo'][0][0];
-        //$sigext0plain = $sig_i['extrainfo'][0][1];
-        //$sigext1 = $sig_i['extrainfo'][1][0];
-        //$sigext1plain = $sig_i['extrainfo'][1][1];
-        $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigRun[1]['sig'][0]."\", \"sigtitle1\":"."\"".$sigRun[1]['sig'][1]."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" ,\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\", \"sigext1\":"."\"".str_replace('"', "&quot;", $sigext1)."\",\"url\":"."\"".$sig_i['url']."\"  }";
+if (true)
+{
+    foreach ($sigForecast as $sig_i){
+        $sigtitle0 = $sig_i['sig'][0];
+        $sigtitle1 = $sig_i['sig'][1];
+        $sigext0 = $sig_i['extrainfo'][0][0];
+        $sigext0plain = $sig_i['extrainfo'][0][1];
+        $sigext1 = $sig_i['extrainfo'][1][0];
+        $sigext1plain = $sig_i['extrainfo'][1][1];
+        $sig_item_idx++;
+        $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",\"url\":"."\"".$sig_i['url']."\"  }";
         $SIGWEATHER_JSON .= ",";
-    
+    }
+}
+if (true){
+    $sig_run_idx=0;
+    foreach ($sigRun as $sig_i){
+        $sig_run_idx++;
+        $sigtitle0 = $sig_i['sig'][0];
+        $sigtitle1 = $sig_i['sig'][1];
+        $sigext0 = $sig_i['extrainfo'][0][0];
+        $sigext0plain = $sig_i['extrainfo'][0][1];
+        $sigext1 = $sig_i['extrainfo'][1][0];
+        $sigext1plain = $sig_i['extrainfo'][1][1];
+        if ($sig_run_idx > 1){
+            $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",\"url\":"."\"".$sig_i['url']."\"  }";
+            $SIGWEATHER_JSON .= ",";
+        }
+       
+    }
+       
 }
 $SIGWEATHER_JSON = rtrim($SIGWEATHER_JSON, ",");
 $SIGWEATHER_JSON .= "]";
 $JSON .= $SIGWEATHER_JSON;
 $JSON .= "}";
 $RUNWALK_JSON = ", \"sigRunWalkweather\": [";
+$sig_run_idx=0;
 foreach ($sigRun as $sig_i){
+    $sig_run_idx++;
     $sigtitle0 = $sig_i['sig'][0];
     $sigtitle1 = $sig_i['sig'][1];
     $sigext0 = $sig_i['extrainfo'][0][0];
@@ -1166,6 +1188,8 @@ foreach ($sigRun as $sig_i){
     $sigext1plain = $sig_i['extrainfo'][1][1];
     $RUNWALK_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext1\":"."\"".str_replace('"', "&quot;", $sigext1)."\",\"url\":"."\"".$sig_i['url']."\"  }";
     $RUNWALK_JSON .= ",";
+   
+    
 }
 $RUNWALK_JSON = rtrim($RUNWALK_JSON, ",");
 $RUNWALK_JSON .= "]";

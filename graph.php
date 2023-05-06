@@ -1,7 +1,7 @@
 <style>
 	.trendstable
 	{
-		top:150px;
+		top:130px;
 	}
 	.paramvalue{
 		font-size: 2.3em;
@@ -26,6 +26,7 @@
 		float:none;
 		margin-bottom: 2em;
 		background: white;
+		color:black;
 	}
 	#latestrain .trendstable
 	{

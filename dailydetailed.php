@@ -60,6 +60,12 @@ $day_recommendations = getRecommendations(TimeFrame::Daily, $dayid--, $forecastd
                 width: 32px;
                 height:32px;
             }
+            .exp{
+                font-size: 0.5em;
+            }
+            .paramtitle{
+                font-size: 0.6em;
+            }
         </style>
     <body>
 <ul id="forcast_days" class="detailed">
@@ -194,7 +200,7 @@ $day_recommendations = getRecommendations(TimeFrame::Daily, $dayid--, $forecastd
                 <div><?=$RAIN[$lang_idx]?>:<?=$forecastday['rainFrom']?> - <?=$forecastday['rainTo']." ".$RAIN_UNIT[$lang_idx]?> </div>
                 <?}?>
                 <br/>
-                <div><?=$GOOD_TIME_FOR[$lang_idx]?></div>   
+                <div><?=$GOOD_DAY_FOR[$lang_idx]?></div>   
                 <? foreach ($day_recommendations as $r) {
                     $act_container = 'latest_' . strtolower($r['activity']);
                      if ($r['value'] == 1)

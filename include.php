@@ -2,7 +2,13 @@
 define("SEPERATOR", "");
 define("HIDDENSEPERATOR", "<!---->");
 define("PERSONAL_COLD_METER", "PersonalColdMeter");
-include_once ($_SERVER['DOCUMENT_ROOT']."/ini.php");
+function isCommandLineInterface()
+{
+    return (php_sapi_name() === 'cli');
+}
+$self = pathinfo(__FILE__, PATHINFO_BASENAME);
+$document_root = rtrim(str_replace($self, '', __FILE__), '/');
+include_once (isCommandLineInterface()? $document_root."/ini.php": $_SERVER['DOCUMENT_ROOT']."/ini.php");
 ini_set("display_errors","Off");
 class FixedTime {
 
@@ -92,6 +98,7 @@ class FixedTime {
       $prschange = $pprschange;
       } */
 
+     
     function set_tempchange($temp) {
         if ($_GET["debug"] >= 4)
             echo "<br > set_tempchange $temp -".$this->temp.": ".number_format($temp - $this->temp, 1, '.', '');
@@ -762,7 +769,7 @@ class Period {
 
       } */
 
-    function Period() {
+    function __construct() {
         $this->hightemp = new Parameter();
         $this->lowtemp = new Parameter();
         $this->hightemp2 = new Parameter();
@@ -1796,6 +1803,7 @@ class TimeFrame {
 }
 Class CustomAlert {
     const HighUV = "UV";
+    const ExtremeUV = "ExtremeUV";
     const HighET = "HighET";
     const Dry = "Dry";
     const LowRadiation = "LowRad";
@@ -2307,6 +2315,8 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
 
     
     //echo("message body = ".$messageBody);
+    $now = replaceDays(date('D H:i'));
+    
     $multiLangBody = array();
     if (is_array($messageBody)) {
         for ($i = 0; $i < count($messageBody); $i++) {
@@ -2314,8 +2324,8 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
                 for ($j = 0; $j < count($messageBody[$i]); $j++)
                     array_push($multiLangBody, $messageBody[$i][$j]);
             } else {
-                array_push($multiLangBody, $messageBody[$EN]);
-                array_push($multiLangBody, $messageBody[$HEB]);
+                array_push($multiLangBody, $now." ".$messageBody[$EN]);
+                array_push($multiLangBody, $now." ".$messageBody[$HEB]);
                 // exit for
                 $i = count($messageBody);
             }
@@ -2985,302 +2995,10 @@ function post_to_bufferApp($messageBody, $picture_url)
     //$ret = new stdClass();
     //var_dump($data);
     $ret = $buffer->post('updates/create', $data);
-    var_dump($ret);
+    //var_dump($ret);
     
      logger("bufferApp: ".$ret->message, 0, "buffer", "", "post_to_bufferApp");
     return $ret->message;
-}
-// FUNCTION to check if there is an error response from Apple
-// Returns TRUE if there was and FALSE if there was not
-function checkAppleErrorResponse($fp, $regIDs) {
-
-    //byte1=always 8, byte2=StatusCode, bytes3,4,5,6=identifier(rowID). 
-    // Should return nothing if OK.
-    
-    //NOTE: Make sure you set stream_set_blocking($fp, 0) or else fread will pause your script and wait 
-    // forever when there is no response to be sent. 
-    $result = "";
-    stream_set_blocking($fp, 0);
-    $apple_error_response = fread($fp, 6);
-    
-    if ($apple_error_response) {
-    
-        // unpack the error response (first byte 'command" should always be 8)
-        $error_response = unpack('Ccommand/Cstatus_code/Nidentifier', $apple_error_response); 
-    
-        if ($error_response['status_code'] == '0') {
-        $error_response['status_code'] = '0-No errors encountered';
-    
-        } else if ($error_response['status_code'] == '1') {
-        $error_response['status_code'] = '1-Processing error';
-    
-        } else if ($error_response['status_code'] == '2') {
-        $error_response['status_code'] = '2-Missing device token';
-    
-        } else if ($error_response['status_code'] == '3') {
-        $error_response['status_code'] = '3-Missing topic';
-    
-        } else if ($error_response['status_code'] == '4') {
-        $error_response['status_code'] = '4-Missing payload';
-    
-        } else if ($error_response['status_code'] == '5') {
-        $error_response['status_code'] = '5-Invalid token size';
-    
-        } else if ($error_response['status_code'] == '6') {
-        $error_response['status_code'] = '6-Invalid topic size';
-    
-        } else if ($error_response['status_code'] == '7') {
-        $error_response['status_code'] = '7-Invalid payload size';
-    
-        } else if ($error_response['status_code'] == '8') {
-        $error_response['status_code'] = '8-Invalid token';
-    
-        } else if ($error_response['status_code'] == '255') {
-        $error_response['status_code'] = '255-None (unknown)';
-    
-        } else {
-        $error_response['status_code'] = $error_response['status_code'].'-Not listed';
-    
-        }
-        global $link;
-        $query = "update apn_users set ResponseMessage='{$error_response['status_code']}', ResponseCode={$error_response['status_code']} where apn_regid='".$regIDs['apn_regid']."';";
-        $resultUpdate = mysqli_query($link, $query);
-        $result =  '<br><b>+ + + + + + ERROR</b> Response Command:<b>' . $error_response['command'] . '</b>&nbsp;&nbsp;&nbsp;Identifier:<b>' . $error_response['identifier'] . '</b>&nbsp;&nbsp;&nbsp;Status:<b>' . $error_response['status_code'] . '</b><br>';
-    
-        $result .= 'Identifier is the rowID (index) in the database that caused the problem, and Apple will disconnect you from server. To continue sending Push Notifications, just start at the next rowID after this Identifier.<br>';
-    
-        return $error_response['command']." ".$error_response['identifier']." ".$regIDs['apn_regid']." ".$error_response['status_code'];
-    }
-        return "";
-}
-function sendAPNToRegIDsOld($registrationIDs, $message, $picture_url, $embedded_url){
-    //logger("sendingAPNMessage : ".count($registrationIDs)." ".$message);
-    $payload['aps'] = array('alert' => $message, 'badge' => 1, 'sound' => 'lighttrainshort', 'content-available' => 1, 'category' => "share", 'EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
-    $payload = json_encode($payload);
-
-    $apnsHost = 'gateway.push.apple.com';
-    $apnsPort = 2195;
-    $apnsCert = 'ApplePush1219.pem';//old=ApplePush1218.pem 
-    // Keep push alive (waiting for delivery) for 1 hour
-    $apple_expiry = time() + (60 * 60);
-    $streamContext = stream_context_create();
-    stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
-    stream_context_set_option($streamContext, 'ssl', 'passphrase', "bn19za72");
-    $resultAPNs = "";
-    $apns = stream_socket_client('ssl://' . $apnsHost . ':' . $apnsPort, $error, $errorString, 2, STREAM_CLIENT_CONNECT, $streamContext);
-    stream_set_blocking ($apns, 0);
-    foreach ($registrationIDs as $regIDs){
-            //$apnsMessage = chr(0) . chr(0) . chr(32) . pack('H*', str_replace(' ', '', $regIDs['apn_regid'])) . chr(0) . chr(strlen($payload)) . $payload;
-            $apnsMessage = pack("C", 1) . pack("N", $regIDs['id']) . pack("N", $apple_expiry) . pack("n", 32) . pack('H*', str_replace(' ', '', $regIDs['apn_regid'])) . pack("n", strlen($payload)) . $payload; 
-
-            fwrite($apns, $apnsMessage, strlen ($apnsMessage));
-            $resultAPNs .= checkAppleErrorResponse($apns, $regIDs);
-                    
-                    //logger($query);
-                   /* $streamContext = stream_context_create();
-                    stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
-                    stream_context_set_option($streamContext, 'ssl', 'passphrase', "bn19za72");
-                    $apns = stream_socket_client('ssl://' . $apnsHost . ':' . $apnsPort, $error, $errorString, 2, STREAM_CLIENT_CONNECT, $streamContext);
-                    stream_set_blocking ($apns, 0);*/
-                  
-                   // usleep(500000);
-		//logger($resultAPNs);
-    }
-    // Workaround to check if there were any errors during the last seconds of sending.
-    // Pause for half a second. 
-    // Note I tested this with up to a 5 minute pause, and the error message was still available to be retrieved
-    usleep(5000); 
-
-    $resultAPNs .= checkAppleErrorResponse($apns, "");
-
-    $resultAPNs .= ' --- '.count($registrationIDs).' APNs Completed';
-    logger($resultAPNs, 0, "APN", "", "sendAPNToRegIDsOld");
-    @socket_close($apns);
-    fclose($apns);
-    return $errorString." ".$resultAPNs;
-}
-function sendNewAPNPushAsync($curl, $deviceToken) {
-    global $errorMessage, $remove_ids;
-    // 1.
-	$path = '/3/device/'.$deviceToken;
-
-    curl_setopt($curl, CURLOPT_URL, "https://api.push.apple.com:443".$path);
-	/*$res = json_decode($response,true);
-    $err = curl_error($curl);
-    $info = curl_getinfo($curl);
-	if ($err) {
-	  return "cURL Error #:" . $err;
-	} else {
-        if ($info['http_code'] != 200)
-            array_push($errorMessage, array('id' => $deviceToken, 'desc' => $response, 'idx' => null));
-       //array_push($remove_ids, $deviceToken);
-	  return array('res' => $response, 'code' => $info['http_code'], 'res_arr' => $res);
-	}*/
-}
-
-function sendNewAPNPush($curl, $deviceToken) {
-    global $errorMessage, $remove_ids;
-    // 1.
-	$path = '/3/device/'.$deviceToken;
-
-    curl_setopt($curl, CURLOPT_URL, "https://api.push.apple.com:443".$path);
-	$response = curl_exec($curl);
-    $res = json_decode($response,true);
-    $err = curl_error($curl);
-    $info = curl_getinfo($curl);
-	if ($err) {
-	  return "cURL Error #:" . $err;
-	} else {
-        if ($info['http_code'] != 200)
-            array_push($errorMessage, array('id' => $deviceToken, 'desc' => $response, 'idx' => null));
-       //array_push($remove_ids, $deviceToken);
-	  return array('res' => $response, 'code' => $info['http_code'], 'res_arr' => $res);
-	}
-}
-function sendAPNToRegIDs($registrationIDs, $title,  $body, $picture_url, $embedded_url, $authToken){
-    global $link;
-    logger("sendingAPNMessage : ".count($registrationIDs)." ".$title, 0, "APN", "", "sendAPNToRegIDs");
-    $payload['aps'] = array('alert' => ['title' => $title, 'body' => $body ], 'badge' => 1, 'sound' => 'lighttrain.wav', 'content-available' => 1, 'category' => "share", 'EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
-    $payload = json_encode($payload);
-    $resultAPNs = "";
-    $errorString = "";
-    $resultAPN = "";
-    db_init("", "");
-    $sent = 0;
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-        // 2.
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        // 3.
-        CURLOPT_POSTFIELDS => $payload,
-        CURLOPT_HTTPHEADER => array(
-        "Content-Type: application/json",
-        "apns-expiration: 0",
-        "apns-topic: il.co.jws", // 4.
-        "authorization: bearer ".$authToken // 5.
-        ),
-    ));
-    
-    
-    foreach ($registrationIDs as $regID){
-        
-            $resultAPN = sendNewAPNPush($curl, $regID['apn_regid']);
-            $sent++;
-            //$resultAPNs .= " ".$resultAPN['res']." : ".$resultAPN['code'];
-            //logger($regID['apn_regid'].":".$resultAPN['res']);
-            if ($resultAPN['code'] != 200){
-                $query = "insert into InvalidTokens (regid, status, updated, system, reason) values('".$regID['apn_regid']."', ".$resultAPN['code'].", SYSDATE(), 2, '".$resultAPN['res']."')";
-                $resultUpdate = mysqli_query($link, $query);
-            }
-            
-            //$resultAPNs .= $resultAPN['code'];
-        if ($resultAPN['code'] == 403){
-           // break;
-        }
-    }
-    curl_close($curl);
-
-    $resultAPNs .= ' --- '.$sent.' APNs Completed';
-    logger($resultAPNs, 0, "APN", "", "sendAPNToRegIDs");
-        //saveInvalidTokens();
-    return $errorString." ".$resultAPNs;
-}
-function sendAPNToRegIDsAsync($mh, $registrationIDs, $title,  $body, $picture_url, $embedded_url, $authToken){
-    global $link;
-    logger("sendingAPNMessage : ".count($registrationIDs)." ".$title, 0, "APN", "", "sendAPNToRegIDsAsync");
-    $payload['aps'] = array('alert' => ['title' => $title, 'body' => $body ], 'badge' => 1, 'sound' => 'lighttrain.wav', 'content-available' => 1, 'category' => "share", 'EmbeddedUrl' => $embedded_url, 'picture' => $picture_url);
-    $payload = json_encode($payload);
-    $resultAPNs = "";
-    $errorString = "";
-    $resultAPN = "";
-    db_init("", "");
-    $sent = 0;
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-        // 2.
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        // 3.
-        CURLOPT_POSTFIELDS => $payload,
-        CURLOPT_HTTPHEADER => array(
-        "Content-Type: application/json",
-        "apns-expiration: 0",
-        "apns-topic: il.co.jws", // 4.
-        "authorization: bearer ".$authToken // 5.
-        ),
-    ));
-    
-    
-    foreach ($registrationIDs as $regID){
-        
-            $resultAPN = sendNewAPNPushAsync($curl, $regID['apn_regid']);
-            $sent++;
-            //$resultAPNs .= " ".$resultAPN['res']." : ".$resultAPN['code'];
-            //logger($regID['apn_regid'].":".$resultAPN['res']);
-            if ($resultAPN['code'] != 200){
-                $query = "insert into InvalidTokens (regid, status, updated, system, reason) values('".$regID['apn_regid']."', ".$resultAPN['code'].", SYSDATE(), 2, '".$resultAPN['res']."')";
-                $resultUpdate = mysqli_query($link, $query);
-            }
-            
-            //$resultAPNs .= $resultAPN['code'];
-        if ($resultAPN['code'] == 403){
-           // break;
-        }
-    }
-    
-
-    $resultAPNs .= ' --- '.$sent.' APNs Completed';
-    logger($resultAPNs, 0, "APN", "", "sendAPNToRegIDsAsync");
-        
-    return $curl;
-}
-function cleanInvalidAPNTokens()
-{
-    $result = db_init("select * FROM apn_users", "");
-    $registrationIDs = array();
-    $invalidregistrationIDs = array();
-     while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
-	  if ($line["apn_regid"] != "")
-          {
-             array_push ($registrationIDs, array('apn_regid' => $line["apn_regid"], 'id' => $line["id"]));
-          }
-    }
-    //logger("cleanInvalidAPNTokens : ".count($registrationIDs)." ".$message);
-    
-    $apnsHost = 'gateway.push.apple.com';
-    $apnsPort = 2195;
-    $apnsCert = 'ApplePush1219.pem';
-       
-    $streamContext = stream_context_create();
-    stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
-    stream_context_set_option($streamContext, 'ssl', 'passphrase', "bn19za72");
-    $apns = stream_socket_client('ssl://' . $apnsHost . ':' . $apnsPort, $error, $errorString, 2, STREAM_CLIENT_CONNECT, $streamContext);
-    if(!$apns) {
-        logger( "ERROR $errcode: $errstr\n", 4, "APN", "", "cleanInvalidAPNTokens");
-        return;
-    }
-
-
-    $feedback_tokens = array();
-    //and read the data on the connection:
-    while(!feof($apns)) {
-        $data = fread($apns, 38);
-        if(strlen($data)) {
-            $feedback_tokens[] = unpack("N1timestamp/n1length/H*devtoken", $data);
-        }
-    }
-    fclose($apns);
-    $invalid_feedback_tokens = "";
-    foreach ($feedback_tokens as $feedback_token){
-        $invalid_feedback_tokens .= ",".$feedback_token['devtoken'];
-    }
-    logger ("invalid feedback_tokens: ".$invalid_feedback_tokens, 4, "APN", "", "cleanInvalidAPNTokens");
-    return $feedback_tokens;
 }
 $errorMessage = array();
 $remove_ids = array();
@@ -3288,33 +3006,42 @@ function handleInvalidTokens($jsonArray, $registration_ids, $header_key){
     global  $errorMessage, $remove_ids;
     
     //logger("handleInvalidTokens: header_key(SenderID)=".$header_key." success:".$jsonArray["success"]." + failure:".$jsonArray["failure"]." = ".count($jsonArray["results"]));
-     for($i=0; $i<count($jsonArray["results"]);$i++){
+    $errors = 0; 
+    for($i=0; $i<count($jsonArray["results"]);$i++){
+        
         if(isset($jsonArray["results"][$i]["error"])){
             if($jsonArray["results"][$i]["error"] == "NotRegistered"){
                 $remove_ids[$i] = $registration_ids[$i];
             }else{
                 $errorMessage[$i] = array('id' => $registration_ids[$i], 'desc' => $jsonArray["results"][$i]["error"], 'idx' => $i);
             }
+            $errors++;
         }
     }
+    
+    logger("handleInvalidTokens errors: ". $errors, 0, "handleInvalidTokens", "", "handleInvalidTokens");
     saveInvalidTokens();
 }
 function saveInvalidTokens() {
     global $link, $errorMessage, $remove_ids;
-    
+    logger("saveInvalidTokens errors: ". count($remove_ids), 0, "saveInvalidTokens", "", "saveInvalidTokens");
+    db_init("", "");
     foreach ($remove_ids as $id){
          //print_r($regIDs);
          //$query = "update fcm_users set ResponseCode='9', ResponseMessage='NotRegistered' where gcm_regid='".$id."'";
          $query = "insert into InvalidTokens (regid, status, updated) values('".$id."', 9, SYSDATE())";
          $resultUpdate = mysqli_query($link, $query);
-         //logger($query);
+         //logger($query." ".$resultUpdate, 0, "saveInvalidTokens", "", "saveInvalidTokensQuery");
      }
      foreach ($errorMessage as $err){
          //print_r($regIDs);
-         $query = "update fcm_users set ResponseCode='5', ResponseMessage=".$err['desc']." where gcm_regid='".$err['id']."'";
+         $query = "update fcm_users set ResponseCode='5', ResponseMessage='".$err['desc']."' where gcm_regid='".$err['id']."'";
+         $resultUpdate = mysqli_query($link, $query);
+         $query = "update apn_users set ResponseCode='5', ResponseMessage='".$err['desc']."' where apn_regid='".$err['id']."'";
+         $resultUpdate = mysqli_query($link, $query);
          $query = "insert into InvalidTokens (regid, status, updated) values('".$err['id']."', 5, SYSDATE())";
          $resultUpdate = mysqli_query($link, $query);
-         //logger($query.": ".$resultUpdate);
+        //logger($err['id']." ".$err['desc'], 4, "saveInvalidTokens", "", "saveInvalidTokensQuery");
      }
 }
 function getMsgAlert($picture_url, $message, $title) {
@@ -3331,7 +3058,7 @@ function getMsgAlert($picture_url, $message, $title) {
             $img_tag = "<div id=\"alertbg\" style=\"background-image: url(".$picture_url.")\"></div>";
             $class_alerttxt = " class=\"txtindiv\"";
             $class_alerttitle = " txtindiv";
-            $img_tag = "<img id=\"alertimg\" src=\"".$picture_url."\" width=\"310\">";
+            $img_tag = "<img id=\"alertimg\" src=\"".$picture_url."\" width=\"310\"><br/>";
         }
         
     }
@@ -3339,7 +3066,7 @@ function getMsgAlert($picture_url, $message, $title) {
     $msgformat = "<div id=\"alerttxt\" ".$class_alerttxt.">%s</div>".$img_tag;
     $msgformatNoImg = "<div id=\"alerttxt\" ".$class_alerttxt.">%s</div>";
 
-    $msgformat = $img_tag."<br/>".$message;
+    $msgformat = $img_tag.$message;
     $msgformatNoImg = $message;
     if (!sprintf($msgformat, $message))
         $msgToAlertSection = printf($msgformatNoImg, $message);
@@ -3372,8 +3099,9 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
     {
         global $lang_idx;
         $lang_idx = $lang;
-        $description = nl2br($description);
+        //$description = nl2br($description);
         $description = trim($description);
+        $img_src = trim(strip_tags($img_src));
         
         $description = getMsgAlert($img_src, $description, $title);
         //$description = str_replace("'", "`", $description);
@@ -3662,6 +3390,7 @@ function callTopicFirebaseSender($topic, $messageBody, $title, $picture_url, $em
         }
     return array($resultHttpCode, json_decode($result, true));
 }
+
 ///////////////////////////////////////////////////////
 // xml parser
 ///////////////////////////////////////////////////////
@@ -3945,7 +3674,7 @@ function getPageTitle()
 
 function getClothTitle($imagename, $temp, $wind, $hum)
 {
-	global $lang_idx, $HEB, $EN, $OR, $SUN_SHADE_CLOTH, $TSHIRT, $JACKET, $COAT, $RAINCOAT, $UMBRELLA, $SWEATER, $SWEATSHIRT, $SHORTS, $LONGSLEEVES, $LIGHTJACKET, $LIGHTCOAT,$LAYERS_BELOW, $LAYERS_BELOW2, $LAYERS_BELOW3, $LAYERS_BELOW3_PLUS, $current;
+	global $lang_idx, $HEB, $EN, $OR, $SUN_SHADE_CLOTH, $SUN_SHADE_JACKET, $TSHIRT, $JACKET, $COAT, $RAINCOAT, $UMBRELLA, $SWEATER, $SWEATSHIRT, $SHORTS, $LONGSLEEVES, $LIGHTJACKET, $LIGHTCOAT,$LAYERS_BELOW, $LAYERS_BELOW2, $LAYERS_BELOW3, $LAYERS_BELOW3_PLUS, $current;
 	
 	if (stristr(strtolower($imagename), 'tshirt'))
 		$title = $TSHIRT[$lang_idx];
@@ -3957,6 +3686,8 @@ function getClothTitle($imagename, $temp, $wind, $hum)
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
                  else if ($temp < 20)
                     $title .= ", ".$LAYERS_BELOW[$lang_idx];
+            if ($temp > 16)
+            $title .= ", ".$SUN_SHADE_JACKET[$lang_idx];
         }
 	else if (stristr(strtolower($imagename), 'coatlight'))
 		$title = $LIGHTCOAT[$lang_idx];
@@ -3964,7 +3695,7 @@ function getClothTitle($imagename, $temp, $wind, $hum)
 		$title = $RAINCOAT[$lang_idx];
                  if ($temp < 5)
                     $title .= ", ".$LAYERS_BELOW3_PLUS[$lang_idx];
-                else if(($temp < 10) && ($wind > 10))
+                else if((($temp < 10) && ($wind > 10)) || ($temp <= 8))
                     $title .= ", ".$LAYERS_BELOW3[$lang_idx];
                 else if (($temp < 13) || ($wind > 10))
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
@@ -3976,17 +3707,19 @@ function getClothTitle($imagename, $temp, $wind, $hum)
         
                  if ($temp < 5)
                     $title .= ", ".$LAYERS_BELOW3_PLUS[$lang_idx];
-                else if (($temp < 10) && ($wind > 10))
+                else if ((($temp < 10) && ($wind > 10)) || ($temp <= 8))
                     $title .= ", ".$LAYERS_BELOW3[$lang_idx];
                 else if (($temp < 13) || ($wind > 10))
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
                 else
                     $title .= ", ".$LAYERS_BELOW[$lang_idx];
+                if ($temp > 16)
+                    $title .= ", ".$SUN_SHADE_JACKET[$lang_idx];
         }        
 	else if (stristr(strtolower($imagename), 'umbrella'))
 		$title = $UMBRELLA[$lang_idx];
 	else if (stristr(strtolower($imagename), 'sweater'))
-		$title = $SWEATER[$lang_idx];
+		$title = $LIGHTJACKET[$lang_idx]." ".$OR[$lang_idx]." ".$SWEATER[$lang_idx];
 	else if (stristr(strtolower($imagename), 'sweatshirt'))
 		$title = $SWEATSHIRT[$lang_idx];
 	else if (stristr(strtolower($imagename), 'shorts'))
@@ -4039,7 +3772,7 @@ function db_init($query, $param) {
         }
         if ((!empty($param)) || (is_int($param)) || ($param === "0")) {
             $param = $link->real_escape_string($param);
-			//logger("in db_init:". $query." ".$param);
+			
             if (is_float($param))
                 $res = $stmt->bind_param('d', $param);
             else if (is_numeric($param))
@@ -4053,6 +3786,7 @@ function db_init($query, $param) {
         if (!$res)
             logger("query=" . $query . " param=" . $param . "; error in execute: " . $stmt->error, 4, "db", "", "db_init");
         $result = $stmt->get_result();
+        //logger("mysql Audit: query=" . $query . " param=" . $param , 0, "db", "", "db_init");
         return array("result" =>$result, "error" =>$stmt->error, "query" =>$query, "affectedrows" => $link->affected_rows);
     }
     return null;
@@ -4540,11 +4274,13 @@ function checkAsterisk($row_verdict, $is_json)
 {
     global $CLOSE_TO, $lang_idx;
     $close_to_sec_coldmeter = $CLOSE_TO[$lang_idx].get_name($row_verdict[1]["field_name"]);
+    
     if (count($row_verdict) < 2)
         return "";
+    
     if ($row_verdict[0]["count"] < ($row_verdict[1]["count"] + 90))
     {
-        if ($is_json==1)
+        if ($is_json=="1")
             return $close_to_sec_coldmeter;
         else
             return "<a href=\"javascript:void(0)\" id=\"asterisk\" class=\"info\" >&#x002A;<span class=\"info\">".$close_to_sec_coldmeter."</span></a>";

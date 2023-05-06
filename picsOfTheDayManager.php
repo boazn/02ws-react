@@ -1,5 +1,6 @@
 <?
-include_once("include.php"); 
+include_once("include.php");
+include_once("start.php"); 
 include_once("lang.php");
 define ("PIC_PREFIX_PATH", "images/picOfTheDay/");
 
@@ -9,6 +10,7 @@ function insertNewMessage ($name, $icon, $body, $category, $p_alert)
     $now = date('Y-m-d G:i:s', strtotime(SERVER_CLOCK_DIFF, time()));
     //$now = getLocalTime(time());
     $body = nl2br($body);
+    $body = str_replace("'", "&apos;", $body);
     $p_email = EMAIL_ADDRESS;
     $name = "<span class=\"high\">".$name."</span>";
     //$msg_total_count = $_SESSION['MsgCount'] + $_SESSION['MsgStart'];
@@ -84,12 +86,15 @@ class DB_Functions {
             $result = "https://".$_SERVER["HTTP_HOST"]."/".$saveto;         
            }
                 
-				
+            $comment1 = str_replace("'", "`", $comment1);	
+            $comment0 = str_replace("'", "`", $comment0);	
 			//$result = db_init("call SaveUserPic ('$name', '$comment', '$user', '$picname', '$x', '$y')");
             $rs = db_init("INSERT INTO `PicOfTheDay` (name, comment0, comment1, uploadedAt, x, y, picname) VALUES('$name', '$comment0', '$comment1',SYSDATE(), '$x', '$y', '$name');", "");
 			// check for successful store
 			// get user details
             $id = $link->insert_id; // last inserted id
+
+           
             return $result;
        
    
@@ -126,15 +131,18 @@ if ( isset( $_POST["comment1"]) )
     $db = new DB_Functions();
     
     $res = $db->storePic($_FILES['imagefile']['name'], $_POST['comment0'], $_POST['comment1'], 0, 0, 0);
+    $mem->set("picOfTheDayName", $_FILES['imagefile']['name']);
+    $mem->set("picOfTheDaycomment0", $_POST['comment0']);
+    $mem->set("picOfTheDaycomment1", $_POST['comment1']);
     logger($res, 0, "picOfTheDayManager", "picOfTheDayManager", "storePic");
     $file_path = "https://".$_SERVER["HTTP_HOST"]."/".PIC_PREFIX_PATH.$_FILES['imagefile']['name'];
     $img = "<a href=\"".$file_path."\" title=\"pic of the day\" target=\"_blank\"><img src=\"".$file_path."\" alt=\"pic of the day\" /></a>";
 
     $res .= "<br /><br />".post_to_bufferApp($_POST['comment1'], $file_path); 
-    echo ("".$res."");
     logger($res, 0, "picOfTheDayManager", "picOfTheDayManager", "Pic");		
     insertNewMessage("מנהל ירושמיים", "admin_avatar", "<div class=\"float chatfirstbody\">".$img."<br/>".$_POST['comment1']."</div>", 3, 0);
     echo ("<br/>insertNewMessage done.");
+    echo ("".$res."");
 }else { //print_r($_POST);
 ?>
 <html>

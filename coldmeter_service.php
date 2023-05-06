@@ -82,12 +82,12 @@ if (empty($is_personal)){
             if ((($line["type"]) == "1")) array_push($row_verdict, array("field_name" => $line["field_name"], "count" => $line["count( * )"], "shadoworsun" => $line["type"], "value" => $line["value"]));
            if ((($line["type"]) == "2")) array_push($row_verdict_sun, array("field_name" => $line["field_name"], "count" => $line["count( * )"], "shadoworsun" => $line["type"], "value" => $line["value"]));
        }
-        $resultcomments = db_init($lastcomments, "");
+      /*  $resultcomments = db_init($lastcomments, "");
         $commentidx = 1;
         while ($line = mysqli_fetch_array($resultcomments["result"], MYSQLI_ASSOC)) {
             array_push($row_comment, array("comment" => $line["comments"], "gender" => $line["gender"], "temp" => $line["temp"], "update_time" => $line["update_time"]));
             $commentidx = $commentidx + 1;
-        }
+        }*/
        $feeling_verdict = $row_verdict[0]["field_name"];
        $value_verdict = $row_verdict[0]["value"];
        //logger("calling GetColdMeter ".$temp_from." ".$temp_to." ".$temp_from2." ".$temp_to2." ".$pgender." ->".$feeling_verdict);

@@ -23,7 +23,7 @@
 <div><img align="absmiddle" src="images/icons/day/n4_cloud_3_sun_1.svg" width="65px" height="65px" ><img align="absmiddle" src="images/icons/day/n4_cloud_2_sun_1.svg" width="65px" height="65px" ><img align="absmiddle" src="images/icons/day/n4_cloud_1_sun_1.svg" width="65px" width="65px" ><img align="absmiddle" src="images/icons/day/n4_cloud_0_sun_1.svg" width="65px" width="65px" ><?=$VERY_HOT_HEAT_WAVE[$lang_idx]?></div>
 <div><img align="absmiddle" src="images/icons/day/n4_clear.svg" width="65px" height="65px" ><?=$CLEAR[$lang_idx]?></div>
 <div><img align="absmiddle" src="images/icons/day/n4_cloud_3_sun_4.svg" width="65px" height="65px" ><img align="absmiddle" src="images/icons/day/n4_cloud_2_sun_4.svg" width="65px" height="65px" ><img align="absmiddle" src="images/icons/day/n4_cloud_0_sun_4.svg" width="65px" width="65px" ><?=$COLD_SUN[$lang_idx]?></div>
-<div><img align="absmiddle" src="images/icons/day/n4_dust.svg" width="65px" height="65px" ><img align="absmiddle" src="images/icons/day/cloudy_zirus.svg" width="65px" height="65px" ><?=$DUST[$lang_idx]?>, <?=$SANDSTORM[$lang_idx]?></div>
+<div><img align="absmiddle" src="images/icons/day/n4_dust.svg" width="65px" height="65px" /><?=$DUST[$lang_idx]?>, <?=$SANDSTORM[$lang_idx]?></div>
 <div><img align="absmiddle" src="images/icons/day/n4_cloud_1_sun_2.svg" width="65px" height="65px" ><img align="absmiddle" src="images/icons/day/n4_cloud_1_sun_3.svg" width="65px" height="65px" ><?=$FEW_CLOUDS[$lang_idx]?></div>
 <div><img align="absmiddle" src="images/icons/day/n4_cloud_2_sun_2.svg" width="65px" height="65px" ><img align="absmiddle" src="images/icons/day/n4_cloud_2_sun_3.svg" width="65px" height="65px" ><?=$PARTLY_CLOUDY[$lang_idx]?></div>
 <div><img align="absmiddle" src="images/icons/day/n4_cloud_3_sun_2.svg" width="65px" height="65px" ><img align="absmiddle" src="images/icons/day/n4_cloud_3_sun_3.svg" width="65px" height="65px" ><?echo "$MOSTLY[$lang_idx] $CLOUDY[$lang_idx]";?></div>
@@ -31,10 +31,10 @@
 <div><img align="absmiddle" src="images/icons/day/n4_fog2.svg" width="65px" height="65px" ><?=$FOG[$lang_idx]?></div>
 </div>
 <div class="float" style="width:30%">
-<div><img align="absmiddle" src="images/icons/day/n4_TS.svg" width="65px" height="65px" ><?=$THUNDERSTORM[$lang_idx]?></div>
-<div><img align="absmiddle" src="images/icons/day/n4_becomingrain.svg" width="65px" height="65px" ><?=$CLEAR[$lang_idx]?>, <?=$CLEAR[$lang_idx]?>, <?=$PARTLY_CLOUDY[$lang_idx]?>, <?=$PARTLY_CLOUDY[$lang_idx]?>, <?=$RAIN[$lang_idx]?></div>
-<div><img align="absmiddle" src="images/icons/day/n4_rainPC.svg" width="65px" height="65px" ><?=$PARTLY_CLOUDY[$lang_idx]?>, <?=$RAIN[$lang_idx]?>, <?=$PARTLY_CLOUDY[$lang_idx]?></div>
-<div><img align="absmiddle" src="images/icons/day/n4_rainPC2.svg" width="65px" height="65px" ><?=$PARTLY_CLOUDY[$lang_idx]?>, <?=$LIGHT_RAIN[$lang_idx]?>, <?=$PARTLY_CLOUDY[$lang_idx]?></div>
+<div><img align="absmiddle" src="images/icons/day/n4_ts.png" width="65px" height="65px" ><?=$THUNDERSTORM[$lang_idx]?></div>
+<div><img align="absmiddle" src="images/icons/day/becomingrain.gif" width="65px" height="65px" ><?=$CLEAR[$lang_idx]?>, <?=$CLEAR[$lang_idx]?>, <?=$PARTLY_CLOUDY[$lang_idx]?>, <?=$PARTLY_CLOUDY[$lang_idx]?>, <?=$RAIN[$lang_idx]?></div>
+<div><img align="absmiddle" src="images/icons/day/rainPC.gif" width="65px" height="65px" ><?=$PARTLY_CLOUDY[$lang_idx]?>, <?=$RAIN[$lang_idx]?>, <?=$PARTLY_CLOUDY[$lang_idx]?></div>
+<div><img align="absmiddle" src="images/icons/day/rainPC2.gif" width="65px" height="65px" ><?=$PARTLY_CLOUDY[$lang_idx]?>, <?=$LIGHT_RAIN[$lang_idx]?>, <?=$PARTLY_CLOUDY[$lang_idx]?></div>
 <div><img align="absmiddle" src="images/icons/day/n4_sun_lightrain.svg" width="65px" height="65px" ><?=$LIGHT_RAIN[$lang_idx]?>, <?=$LOCAL_RAIN[$lang_idx]?>, <?=$CLOUDY[$lang_idx]?>, <?=$DRIZZLE[$lang_idx]?></div>
 <div><img align="absmiddle" src="images/icons/day/n4_TSRA.svg" width="65px" height="65px" ><?echo"$THUNDERSTORM[$lang_idx] $RAIN[$lang_idx]";?></div>
 <div><img align="absmiddle" src="images/icons/day/n4_hail.svg" width="50px" height="50px" ><?=$HAIL[$lang_idx]?></div>

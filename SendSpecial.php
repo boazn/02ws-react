@@ -54,6 +54,9 @@
 select{
     height:28px;margin-top:2px
 }
+#SendSpecialResult{
+    line-break: anywhere;
+}
 #combos{text-align:left}
 #combos label{width: 50px;
 display: inline-block;
@@ -223,11 +226,11 @@ Upload.prototype.doUpload = function () {
         success: function (data) {
             $(".loading").hide();
 
-            $("#SendSpecialResult").text(data);
+            $("#SendSpecialResult").html(data);
             $("#SendButton").hide();
         },
         error: function (error) {
-            $("#SendSpecialResult").text(error.status+ ' '+error.responseText);
+            $("#SendSpecialResult").html('error:' + error.status + ' ' + error.responseText);
         },
         async: true,
         data: formData,
@@ -297,13 +300,13 @@ Upload.prototype.progressHandling = function (event) {
                 $("#title0").val("rain is coming");
                 $("#title1").val("גשם בא");
                 $("#message0").append("The rain is expected to arrive");
-                $("#message1").append("גשם צפוי להגיע");
+                $("#message1").append("לפי צפייה בתמונת מכם ולווין גשם צפוי להגיע");
             break;
             case "will stop":
                 $("#title0").val("break is coming");
                 $("#title1").val("הגשם ייפסק");
                 $("#message0").append("The rain is expected to pass" );
-                $("#message1").append("הפוגה צפויה להגיע");
+                $("#message1").append("לפי צפייה בתמונת מכם ולווין הפוגה צפויה להגיע");
                
             break;
             case "sunset":

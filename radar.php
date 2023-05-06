@@ -24,7 +24,7 @@
       var rounded = new Date(Math.round(date.getTime() / coeff) * coeff);
       var found = false;
       rounded.setTime(rounded.getTime() - min_sub*60*1000);
-      var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/IMSRadar/IMSRadar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
+      var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/IMSRadar4GIS/IMSRadar4GIS_%04d%02d%02d%02d%02d_0.png", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
       //var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/radar/radar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
       //console.log(imagepath);
       checkImageExists(imagepath,
@@ -189,7 +189,7 @@ function buildImageArray(rounded){
    for (i = 0; i < numOfPics ; i++)
 
       {
-         var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/IMSRadar/IMSRadar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
+         var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/IMSRadar4GIS/IMSRadar4GIS_%04d%02d%02d%02d%02d_0.png", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
          //var imagepath = sprintf("https://ims.gov.il/sites/default/files/ims_data/map_images/radar/radar_%04d%02d%02d%02d%02d.gif", rounded.getFullYear(), ("0" + (rounded.getMonth() + 1)).slice(-2), rounded.getDate(), rounded.getHours(), rounded.getMinutes());
          modImages[i] = imagepath;
          timeImages[i] = new Date(rounded);
@@ -813,6 +813,15 @@ function startup()
            timeID = setTimeout("animate_fwd()", delay_time);
  }
 
+ function toggle(id)
+ {
+   
+if(document.getElementById(id))
+{if(document.getElementById(id).style.display=='none')
+{$('#'+id).show("slow");}
+else
+$('#'+ id).hide("slow");}
+ }
  function displayCurrentIdx()
 
  {
@@ -879,6 +888,53 @@ function imgError(image) {
 </div>
 
 <div  id="imsradar" class="float" >
+<!--<div class="il_map">
+   <div id="leaflet_map" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="height: 430px; position: relative; outline: none;">
+      <div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(-157px, 0px, 0px);">
+      <div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;">
+      <div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 18; transform: translate3d(0px, 0px, 0px) scale(1);">
+      <img alt="" role="presentation" src="img/152/103.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(151px, -6px, 0px); opacity: 1;">
+      <img alt="" role="presentation" src="img/152/104.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(151px, 250px, 0px); opacity: 1;">
+     
+   </div>
+  </div>
+  </div>
+  <div class="leaflet-pane leaflet-shadow-pane"></div>
+  <div class="leaflet-pane leaflet-overlay-pane">
+   <img class="leaflet-image-layer leaflet-zoom-animated" src="/sites/default/files/ims_data/map_images/IMSRadar4GIS/IMSRadar4GIS_202301031350_0.png" alt="" style="z-index: 1; opacity: 0.7; transform: translate3d(-172px, -333px, 0px); width: 1034px; height: 1126px;"></div>
+   <div class="leaflet-pane leaflet-marker-pane"></div>
+   <div class="leaflet-pane leaflet-tooltip-pane"></div>
+   <div class="leaflet-pane leaflet-popup-pane"></div>
+   <div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(39057.5px, 26589px, 0px) scale(128);">
+   </div></div>
+   <div class="leaflet-control-container">
+      <div class="leaflet-top leaflet-left">
+         <div class="leaflet-control-zoom leaflet-bar leaflet-control">
+            <a class="leaflet-control-zoom-in" href="#" title="Zoom in" role="button" aria-label="Zoom in">+</a>
+            <a class="leaflet-control-zoom-out" href="#" title="Zoom out" role="button" aria-label="Zoom out">−</a>
+         </div>
+      <div class="leaflet-bar easy-button-container leaflet-control">
+         <button class="easy-button-button leaflet-bar-part leaflet-interactive unnamed-state-active" type="button" title="Center">
+            <span class="button-state state-unnamed-state unnamed-state-active">
+               <span class="fas fa-crosshairs"></span>
+            </span>
+         </button>
+      </div>
+   </div>
+   <div class="leaflet-top leaflet-right"></div>
+   <div class="leaflet-bottom leaflet-left"></div>
+   <div class="leaflet-bottom leaflet-right">
+      <div class="leaflet-control-attribution leaflet-control"><a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © Survey of Israel</div>
+   </div>
+   </div>
+</div>
+  
+   <link rel="stylesheet" href="css/leaflet.css">
+   <script src="js/leaflet.js"></script>
+   <script src="js/leaflet.wms.js"></script>
+   <link rel="stylesheet" href="css/easy-button.css">
+   <script src="js/easy-button.js"></script>
+</div>-->
 <div style="display:none;margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:-110px;top:370px;position:absolute" id="downloadStatus"></div>
 <div id="radarimg" >
 <div id="radarcontrols" >                        
@@ -907,7 +963,8 @@ function imgError(image) {
 	<? if (isHeb()) echo "הרצה"; else echo "Play"; ?>
 </a><?=get_arrow()?><?=get_arrow()?>
 </div>
-<div id="fasterslowercontrols" style="display:none;width:550px">
+
+<!--<div id="fasterslowercontrols" style="display:none;width:550px">
 <a  href="javascript: func()" onclick="stop();toggle('play');">
 	<img src="images/stop.png" alt="stop עצור" width="20px"/>
 </a>
@@ -934,9 +991,9 @@ function imgError(image) {
     <input type="hidden" name="myPHPvar" id="hiddenPics" value="" />
     </form>
 </div>
+</div>-->
 </div>
-</div>
- <div id="frametime" class="topbase" style="position:absolute"></div>
+ <div id="frametime" class="number big" style="position:absolute;margin:250px 180px"></div>
  <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="" width="520px" height="520px" alt="IMS radar" style="z-index:0"/>
  
  

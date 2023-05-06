@@ -112,7 +112,8 @@ body {
      /*background-image:url("../img/bg_blue.png");
      background-repeat: repeat;
      background-attachment:fixed;*/
-     background: linear-gradient(180deg, #00bfff 0%, #00bfff 4%, #1ca1cd  8%, #82e2ff 90%, #C9F6FF 100%); /* #1e528e #2d91c2 #246fa8 #57c1eb #00bfff*/
+     background: linear-gradient(180deg, #00bfff 0%, #00bfff 4%, #82e2ff  20%, #82e2ff 90%, #C9F6FF 100%); /* #1e528e #2d91c2 #246fa8 #57c1eb #00bfff*/ /*linear-gradient(180deg, #00bfff 0%, #00bfff 4%, #82e2ff  20%, #82e2ff 90%, #C9F6FF 100%)*/
+     /*180deg, #E40303 0%, #E40303 2%, #FF8C00  4%, #FFED00 6%, #008026 8%, #24408E 10%, #732982 12%, #1ca1cd  14%, #82e2ff 90%, #C9F6FF 100%*/
      font-family:Alef;
      overflow-y: scroll;
     overflow-x: hidden;
@@ -1426,7 +1427,7 @@ float:<?=get_s_align()?>
     margin-top: -5px;
     font-size:0.8em;
     background-position-y: bottom;
-    padding-bottom: 1em;
+    
     
 }
 #forcast_table .wind_icon .small{
@@ -1434,7 +1435,7 @@ float:<?=get_s_align()?>
 }
 .icon_day .wind_icon{
     position: absolute;
-    margin-top: -13px !important;
+    margin-top: 3px !important;
     background-size: 145px;
 }
 .forcast_each {
@@ -1635,6 +1636,10 @@ font-size:0.35em
 }
 #radarimg{
     width:520px;float:<?echo get_s_align();?>;z-index:0;margin-<?echo get_s_align();?>:170px;
+    background: no-repeat url(https://www.02ws.co.il/img/IL_streetmap.png);
+    background-size: 70%;
+    background-position-y: 92px;
+    background-position-x: 105px;
 }
 #wrapper{
     width:120%
@@ -1772,7 +1777,7 @@ padding:0 0.4em;
 }
 
 #now_stuff li ul li{
-width:300px;
+width:450px;
 padding:0.5em;
 }
 #now_stuff liabilities{
@@ -1862,7 +1867,7 @@ text-align:<?=get_s_align()?>;
 }
 #windy_widget{
     margin-<?=get_s_align()?>:0;
-    margin-top:-140px;
+    margin-top:-60px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
 }
 .white_box {
@@ -1900,7 +1905,7 @@ text-align:<?=get_s_align()?>;
     
 }
 .white_box .box_text{
-    font-size:1.1em
+    font-size:1.2em
 }
 .white_box h2 {
     display:table;
@@ -2058,7 +2063,7 @@ width:250px
     text-align:<?=get_s_align()?>;
     max-height: 280px;
     overflow-y: auto;
-    width: 660px;
+    width: 720px;
     line-height: 1.2em;
     <? if (isHeb()) echo "direction:rtl;"; ?>
     
@@ -2108,7 +2113,7 @@ a.more_icons {
     text-align:center;
     background-repeat:no-repeat;
     background-position:left;
-    margin:15px 5px;
+    margin:5px 5px;
     padding-top: 65px;
     
     width:60px;
@@ -2139,7 +2144,7 @@ a.more_icons:hover {
 }
 #weather_hul {
     background-image:url("../img/weather_hul.png");
-    left: <? if (isHeb()) echo "190px"; else echo "790px";?> ;
+    left: 190px ;
   
 }
 #likeddislikedforecasts{
@@ -3021,7 +3026,7 @@ margin-<?echo get_s_align();?>:150px
 }
 
 #new_post_private{
-margin:2px 10px 0 10px;
+margin:5px 10px 0 10px;
 float: <?=get_s_align()?>;width:120%
 
 }
@@ -4833,15 +4838,21 @@ width:200px;
 }
 #aqvalues li ul li{
     width:22%;
-    margin:0.05em
+    margin:0.1em
 }
 #aqvalues .line{
     width:90% !important;
+    
+}
+#aqvalues .title{
     border-bottom: 1px solid #829CAA;
 }
 .dustexp{
-   <? if (!isHeb()) echo "font-size:0.6em";?>
+   <? if (!isHeb()) echo "font-size:0.6em"; else echo "font-size:0.75em"; ?>
     
+}
+.theshhold_spacer{
+    width:45%
 }
 .exp
 {
@@ -5515,6 +5526,7 @@ position:relative
     display: block;
     width:65px;
     font-size: 1.2em;
+    line-height:0.6em
 }
   
 }
@@ -5650,7 +5662,26 @@ position:relative
   bottom: 0;
   left: 2px;
   height: 1px;
-  background-color: #1f2125;
+  background-color: #1f2125;    
+}
+.y-axis-bar-item-container{
+    text-align:start;
+    width:70%
+}
+.y-axis-bar-item-container .small {
+    font-size: 0.45em;
+}
+.y-axis-bar-item-container .green{
+    background-color:#27e551
+}
+.y-axis-bar-item-container .orange{
+    background-color:#f7902e
+}
+.y-axis-bar-item-container .red{
+    background-color:#e52727
+}
+.y-axis-bar-item {
+    
 }
 .forcast_each .spriteB.up, .forcast_each .spriteB.down {
 position:absolute;

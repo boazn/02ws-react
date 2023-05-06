@@ -10,7 +10,7 @@ function updateSigRunWeather ($picP, $sigW, $extrainfoP, $urlP)
 	$extrainfo = $extrainfoP;
 	$url = $urlP;
 
-	array_push($sigRun, array('sig' => $sigW, 'pic' => $picP, 'extrainfo' => $extrainfoP, 'url' => $urlP));
+	array_push($sigRun, array('sig' => $sigW, 'pic' => $picP, 'extrainfo' => $extrainfo, 'url' => $urlP));
 }
 
 function getWindHumSituation($hum, $dew, $windspd)
@@ -103,7 +103,7 @@ updateSigRunWeather(
 	getWindHumSituation($current->get_hum(), $current->get_dew(), $min10->get_windspd()), 
 	getWindHumExp($current->get_temp('C'), $current->get_hum(), $current->get_dew(), $current->get_windspd(), $min10->get_windspd(), $current->get_solarradiation()), 
 	"?section=graph.php&amp;graph=temp.php&amp;profile=1");
-if (($current->get_solarradiation() > 200)&&($current->get_thsw()-$current->get_temp() > 5))
+if (($current->get_solarradiation() > 200)&&($current->get_thsw()-$current->get_temp() > 5)&&($min10->get_windspd() < 10))
 {
 	updateSigRunWeather(
     "", 

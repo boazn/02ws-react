@@ -36,12 +36,14 @@ $PRECIPITATION = array("precipitation", "משקעים", "осадки","averse")
 $BAR = array("Pressure" , "לחץ-אוויר", "Атмосферное давление","pression");
 $WIND = array("wind" , "רוח", "ветер","vent");
 $SUNSHINEHOURS = array("sunshine hours" , "שעות שמש", "световой день ","calendrier solaire");
-$LOW_RAD = array("Turn on the boiler", "כדאי להדליק את הבוילר", "Сегодня будет мало солнца, стоит подумать о бойлере","il est recommandé d’allumer la chaudière");
+$LOW_RAD = array("Turn on the boiler", "כדאי להדליק את הבוילר - השמש לא סיפקה את הסחורה ", "Сегодня будет мало солнца, стоит подумать о бойлере","il est recommandé d’allumer la chaudière");
 $RADIATION = array("radiation" , "קרינה", "излучение ","radiation");
 $SOLAR_ENERGY = array("solar energy" , "אנרגיה סולרית", "солнечная энергия ","énergie solaire");
 $UV = array("UV" , "UV", "УФ","UV");
 $UV_DOSE = array("UV Dose" , "UV מנות", "Доза УФ","indice UV");
 $HIGH_UV = array("High and dangerous UV", "קרינה מסוכנת", "Опасный уровень УФ","risque indice UV élevé");
+$EXTREME_UV = array("Extreme and dangerous UV", "קרינה קיצונית", "Экстремальное и опасное УФ","UV extrêmes et dangereux");
+$SUNSCREEN_UV = array("Put sunscreen every 2 hours", "שימו קרם הגנה כל שעתיים", "Наносите солнцезащитный крем каждые 2 часа","Mettre de la crème solaire toutes les 2 heures");
 $ET = array("Evapotranspiration", "אידוי", "Количество испарения","évaporation");
 $HIGH_ET = array("Irrigation needed", "הצמחים צמאים", "Стоит подумать о поливе","les plantes ont soif");
 $KNOTS = array("knots", "קשר", "узлов","nœuds");
@@ -75,8 +77,8 @@ $CHANGE_STYLE = array("Change style", "שנה עיצוב", "Изменить и�
 $GOING_DOWN = array("going down", "במגמת ירידה", "понижение","tendance à la baisse");
 $GOING_UP = array("going up", "במגמת עליה", "подъём","tendance à la hausse");
 $MORE_INFO = array("more", "עוד", "еще","plus");
-$WHAT_ELSE = array("What&#39;s now?", "מה עוד קורה עכשיו", "Что твориться сейчас","plus d’actualités");
-$WHAT_MORE = array("Alerts plus", "התראות ועוד", "Оповещения","notifications");
+$WHAT_ELSE = array("What&#39;s now?", "מה עוד קורה עכשיו", "Что творится сейчас","plus d’actualités");
+$WHAT_MORE = array("Notifications", "התראות", "Оповещения","notifications");
 $CURRENT_ENERGY = array("and what with the energy?", "נו, ומה עם האנרגיה?", "а что там с энергией?","quid de l’energie?");
 $STORM_POWER = array("Storm Power", "מדדי חוזק המערכת", "Грозовой индикатор","indices de puissance du système");
 $RAIN_RADAR = array("Radar", "מכ&#39;&#39;ם גשם", "Радар дождя ","radar de pluie");
@@ -149,8 +151,9 @@ $SEVERE_CLOUDS = array("heavy clouds", "עננים כבדים", "грозовы�
 $DUST = array("dust", "אבק", "пыль","poussière");
 $DUSTPM25 = array("small ", "אבק קטן", "пыль","petite poussière");
 $DUSTPM10 = array("large", "אבק גדול", "пыль","grande poussière");
-$DUST_THRESHOLD1 = array("Not healthy", "לא בריא", "вредно для здоровья","mauvais pour la santé");
-$DUST_THRESHOLD2 = array("Sport activity is not recommended", "לא לעשות ספורט", "не рекомендуется заниматься спортом, более опасный","ne pas faire d’exercice physique");
+$DUST_THRESHOLD0 = array("healthy", "תקין", "здоровый","en bonne santé");
+$DUST_THRESHOLD1 = array("Not healthy", "לא תקין", "вредно для здоровья","mauvais pour la santé");
+$DUST_THRESHOLD2 = array("Sport activity is not recommended", "לצמצם פעילות בחוץ", "не рекомендуется заниматься спортом, более опасный","ne pas faire d’exercice physique");
 $DUST_THRESHOLD3 = array("small is more dangerous", "הקטן יותר מסוכן", "не рекомендуется заниматься спортом, более опасный","le plus petit est risqué");
 $SPORT_FORBIDEN = array("You should hold your outside activity", "צריך לצמצם פעילות בחוץ", "","il faut réduire l’activité à l’extérieur");
 $ALERGY = array("allergy", "אלרגיה", "аллергия","allergie");
@@ -284,9 +287,9 @@ $LHOT = array("Hot enough for T-shirt", "חום של טישרט", "Достат�
 $NHOTNCOLD = array("Neither hot nor cold", "לא חם ולא קר", "Не жарко и не холодно","ni chaud ni froid");
 $COLDISH = array("Cool, light jacket", "קריר, ג'קט קל כזה", "Прохладно, лёгкая курточка","frais, veste légère");
 $LCOLD = array("Chilly","קור מורגש בקטנה", "Прохладно","frais");
-$COLD = array("Cold (coat)", "קור של (רק) מעיל", "Холодно","fraicheur, portez (qu’)un manteau");
+$COLD = array("Cold (coat)", "קור של מעיל", "Холодно","fraicheur, portez (qu’)un manteau");
 $VCOLD = array("Very cold (gloves etc)", "קור ברמה של כפפות", "Собачий холод","froid, portez des gants");
-$VVCOLD = array("Extremely cold", "קור של שלג", "Мороз","froid de neige");
+$VVCOLD = array("Extremely cold", " קור של ש** ", "Мороз","froid de neige");
 $HOT_GROUND = array("Hot ground", "קרקע רותחת", "Дорога","sol ardent");
 $GENDER = array("Gender", "מין", "Пол","sexe");
 $MALE = array("Male", "גבר", "Мужчина","homme");
@@ -302,16 +305,17 @@ $SHORTS = array("Shorts. Short pants and t-shirt.", "לבוש קצר. מכנסי
 $TSHIRT = array("T-shirt", "טישרט", "Футболка","t-shirt");
 $LONGSLEEVES = array("long sleeves, it is recommended to take also t-shirt and add or remove layer when necessary", "שכבה דקה, ארוכה או קצרה, תלוי במשתמש, אפשר גם לשלב", "Длинные рукава. Стоит взять с собой футболку, чтобы добавить или снять слой одежды в случае нужды","couches fines, manches courtes où longue selon l’usager, il est possible de mixer");
 $SUN_SHADE_CLOTH = array("short in the sun, long in the shade", "בשמש קצר, בצל ארוך", "","au soleil court, à l’ombre long");
+$SUN_SHADE_JACKET = array("open in the sun, closed in the shade", "בשמש פתוח או להוריד, בצל קר", "","ouvert au soleil, fermé à l'ombre");
 $SWEATSHIRT = array("Sweatshirt", "חולצה ארוכה עבה", "Толстовка","un haut long et épais");
-$SWEATER = array("Sweater", "סוודר", "Свитер","pull");
-$JACKET = array("Jacket", "ג'קט", "Толстовка","veste");
+$SWEATER = array("Sweater or something warm", "סוודר או משהו חם", "Свитер","pull");
+$JACKET = array("Jacket or fleese", "ג'קט או פליז", "Толстовка","veste");
 $COAT = array("Coat", "מעיל", "Куртка","manteau");
 $RAINCOAT = array("Rain coat", "מעיל גשם", "Дождевик","imperméable");
 $LIGHTCOAT = array("light coat", "מעיל דק", "Легкая курточка","k-way");
-$LIGHTJACKET = array("light jacket", "ג'קט דק", "Легкая толстовка","veste légère");
+$LIGHTJACKET = array("light jacket", "ג'קט דק קליל", "Легкая толстовка","veste légère");
 $LAYERS_BELOW = array("1 layer beneath", "שכבה אחת מתחת", "Дополнительный слой одежды","une couche en dessous");
 $LAYERS_BELOW2 = array("2 layers beneath", "שתי שכבות מתחת וגם גרביונים", "2 дополнительных слоя одежды и колготки","deux couches en dessous et collants");
-$LAYERS_BELOW3 = array("3 layers beneath, scarf and warm hat", "3 שכבות מתחת, צעיף וכובע וגם גרביונים או גרביים עבים", "3 дополнительных слоя одежды, шарф, шапка и колготки","3 couches en dessous et chapeau");
+$LAYERS_BELOW3 = array("3 layers beneath, scarf and warm hat", "3 שכבות מתחת, צעיף או כובע וגם גרביונים או גרביים עבים", "3 дополнительных слоя одежды, шарф, шапка и колготки","3 couches en dessous et chapeau");
 $LAYERS_BELOW3_PLUS = array("3 layers beneath, scarf and warm hat, long underwear, thermal clothing", "3 שכבות מתחת, צעיף וכובע וגם גרביונים או גרביים עבים, ביגוד תרמי וגטקס", "3 дополнительных слоя одежды, шарф, шапка и колготки","3 couches en dessous, écharpe, bonnet et collants ou chaussette épaisses, vêtements thermolactile et guêtres");
 $UMBRELLA = array("Umbrella", "מטריה", "Зонт","parapluie");
 ////////////////////////////////////////////////////////////////////////////
@@ -377,7 +381,7 @@ $VERY_COLD = array("very cold", "קור שלא פוגשים כל יום", "оч�
 $COLD_SUN = array("Cold sun", "שמש שלא תעבור פוליגרף", "Негреющее солнце","un soleil menteur");
 $HALF_COLD_SUN = array("Half cold sun", "שמש בשקר לבן", "Немного греющее солнце","un soleil légèrement menteur");
 $SHADE = array("(shade)", "בַּצֵּל", "тень","à l’ombre");
-$SUN_SHADE = array("Warm in sun, cold in shade", "סהרה בשמש, סיביר בצל (לפחות קריר)", "Холодно в тени, тепло на солнышке","c’est le désert du Sahara au soleil mais à l’ombre il fait frais");
+$SUN_SHADE = array("Warm in sun, cold in shade", "סהרה בשמש, סיביר או קריר בצל", "Холодно в тени, тепло на солнышке","c’est le désert du Sahara au soleil mais à l’ombre il fait frais");
 $GOOD_TIME = array(array("Good time to stay outside", " טוב לשבת בחוץ או כל דבר אחר", "Советуем выйти сегодня из дома", "agréable de s’asseoir dehors et faire ce qu’on veut" ),
 array("Good time to stay outside", " טוב לשבת בחוץ ולקשקש", "Советуем выйти сегодня из дома", "sympa de rester papoter dehors"),
 array("Good time to stay outside", " טוב לשהות בחוץ כי די נעים לנו", "Советуем выйти сегодня из дома", "sympa et agréable à l’extérieur"),
@@ -387,6 +391,7 @@ array("Good time to stay outside", " וואלה נחמד להיות בחוץ", "
 array("Good time to stay outside", " כמה שזה נשמע הזוי, לצאת זה רצוי", "Советуем выйти сегодня из дома", "même si ça vous semble délirant, sortir c’est mieux"),
 array("Good time to stay outside", " כל מי שיוצא מקבל חיוך", "Советуем выйти сегодня из дома","celui qui sort reçoit un sourire"));
 $GOOD_TIME_FOR = array ("good time for", "זמן טוב ל", "", "");
+$GOOD_DAY_FOR = array ("good day for", "יום טוב ל", "", "");
 $GOOD_LAUNDRY = array("Good time to dry laundry", "זמן טוב לייבש את הכביסה", "Благоприятная погода для сушки белья","temps idéal pour laisser sécher le linge");
 $SOSO_LAUNDRY = array("Not Ideal time to dry laundry, but acceptable", "לא תנאים אידיאליים לכביסה, אבל אפשרי", "Не идеальная погода для сушки белья, но сушить можно","pas un temps idéal pour laisser sécher le linge, mais c’est possible.");
 $BAD_LAUNDRY = array("Bad time to dry laundry - because of rain or dust or humidity", "זמן רע לייבוש כביסה בגלל גשם, אבק או לחות", "Из-за дождя, пыли или влажности, не стоит сушить бельё","temps difficile pour faire sécher le linge à cause de la pluie, de la poussière ou del’humidité");
@@ -575,19 +580,19 @@ $DID_YOU_KNOW_SUMMER = array(array("The highest record temperature in Jerusalem 
                          array("Humidity warms, wind chills. Wind in the valleys tend to be less than in the exposed to west locations.", "לחות מחממת, רוח מקררת. הלחות לא משתנה לרוב בתוך העיר, אבל הרוח חזקה יותר במקומות גבוהים חשופים למערב מאשר בעמקים", "Влажность согревает, ветер холодит. Ветер в долинах, как правило, слабее, чем в местах, подверженных влиянию западного направления.", ""),
                          array("Before going out think which type of activity you will do. If it is active one it is advised to remove layer.", "כשיוצאים צריך לחשוב לפני איזה פעילות נעשה ובהתאם לזה לבחור לבוש. אם יוצאים לפעילות אקטיבית כדאי מראש להוריד שכבה", "Перед выходом подумайте, чем вы будете заниматься. Если он активен, рекомендуется удалить слой.", ""));
 ////////////////////////////////////////////////////////////////////////////////////////////
-$DUST_EXISTS_IN24HF = array(array("Dust is expected, be aware", "דאגו שהאבק שמגיע לא ייכנס לנשימה ולנשמה", "Ожидается пыль, имейте в виду", ""),
-                         array("Clean air will be replaced with dust", " האבק יגבר בקרוב, כדאי להתכונן ", "Чистый воздух заменит пыль", ""),
+$DUST_EXISTS_IN24HF = array(array("Dust is expected, be aware", "דאגו שהאבק שיגיע לא ייכנס לנשימה ולנשמה", "Ожидается пыль, имейте в виду", ""),
+                         array("Clean air will be replaced with dust", " האבק יגבר בקרוב, סגרו חלון ", "Чистый воздух заменит пыль", ""),
                          array("The horizon is not clean, dust is coming", "כדאי לעקוב אחרי רמות האבק בשעות הקרובות", "Горизонт не чистый", "")
                          );
 $RAIN_EXISTS_IN24HF = array(array("Rain is expected, be aware and plan", "הבטחנו לכם יום גשם והרווחנו עוד יום שמש, סתם, סתם", "Ожидается дождь, знайте и планируйте ", ""),
                             array("Here comes the rain again", "גשם בעיתו והעת מתקרבת", "Вот идет дождь снова", ""),
-                            array("Blue sky, when you gonna learn to rain? soon", "השמיים הכחולים מחכים להפוך לרטובים", "Голубое небо, когда ты научишься дождь? скоро", "")
+                            array("Blue sky, when you gonna learn to rain? soon", "השמיים הכחולים מחכים רק בשבילך... טעות, גשם מקסים צפוי", "Голубое небо, когда ты научишься дождь? скоро", "")
                             );
-$HIGHWIND_EXISTS_IN24HF = array(array("High wind is expected later on", "רוח חזקה צפויה בהמשך", "Позже ожидается сильный ветер", ""),
-                            array("Trees will feel the wind strength", "העצים ירגישו בקרוב את עוצמת הרוח", "Деревья почувствуют силу ветра", ""),
-                            array("The windmill will fulill its destiny", "תחנת הרוח סוף סוף תהיה יעילה בקרוב", "Ветряная мельница исполнит свое предназначение", "")
+$HIGHWIND_EXISTS_IN24HF = array(array("High wind is expected later on", "רוח חזקה צפויה בהמשך, סגרו חלון או משהו", "Позже ожидается сильный ветер", ""),
+                            array("Trees will feel the wind strength", "העצים יתחילו לרקוד מעוצמת הרוח", "Деревья почувствуют силу ветра", ""),
+                            array("The windmill will fulill its destiny", "טחנת הרוח סוף סוף תהיה יעילה בקרוב", "Ветряная мельница исполнит свое предназначение", "")
                             );
-$END = array("Go", "שליחה", "отправка", "Envoyer", "");
+$END = array("Ok", "אישור", "отправка", "Envoyer", "");
 $CLICK_TO_CONFIRM = array("Click here to confirm your registration to 02ws.co.il and make your user active", "הקליקו כאן כדי לאשר הרשמה לאתר ירושמיים", "Нажмите здесь, чтобы подтвердить регистрацию на 02ws.co.il и активировать пользователя.", "Cliquez ici pour confirmer votre inscription à 02ws.co.il et rendre votre utilisateur actif", "");
 $CLICK_TO_RESET = array("Click here to reset your password", "כאן ירושמיים. לא נורא ששכחתם את הססמה. הקליקו כאן כדי לאפס", "Нажмите здесь, чтобы сбросить пароль", "Cliquez ici pour réinitialiser votre mot de passe", "");
 $CHECK_EMAIL_RESET_PASS = array("Go to your email for password reset", "יש לגשת אל האימייל שלך כדי לבצע איפוס ססמא", "Перейти на почту для сброса пароля", "Accédez à votre e-mail pour réinitialiser le mot de passe", "");

@@ -20,6 +20,8 @@
 		float:none;
 		margin-bottom: 2em;
 		background: white;
+		color:black;
+		
 	}
 	#latestrain .trendstable
 	{

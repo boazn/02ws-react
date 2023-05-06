@@ -35,7 +35,7 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
         position:absolute;top:3em;left:30em;width:100px
     }
     .cell{
-        float:right;padding:1.2em 1.2em 0 1.2em
+        float:right;padding:1.2em 1.35em 0 1.35em
     }
     .invcell{
         float:left;padding:5px 1em
@@ -47,7 +47,7 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
         padding:0.3em 0.5em 0 0.5em
     }
     textarea{
-        width:290px;
+        width:310px;
         height:35px;
     }
     textarea.floated{
@@ -441,17 +441,23 @@ function updateMessages ($description, $active, $type, $lang, $href, $img_src, $
     }
     $description_appended = $latestalert_time."\n".$latestalert."\n".$descriptionforecast;
     
-    echo "append=".$append."<br/>"."type=".$type;
+    //echo "append=".$append."<br/>"."type=".$type;
     if ($append==1){
         $query = "UPDATE `content_sections` SET Description='{$description_appended}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='forecast') and (lang=$lang)";
         $res = db_init($query, "" );
-        echo "append=1 ".$query;
+       // echo "append=1 ".$query;
         //$description = "<div class=\"alerttime\">".$now."</div><div class=\"title\">".$description."</div>";
         $description = $now."\n".$description;
         $query = "UPDATE `content_sections` SET Description='{$description}', active={$active}, href='{$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='$type') and (lang=$lang)";
         $res = db_init($query, "" );
-        echo "<br/>".$query;
-       
+       // echo "<br/>".$query;
+        if ($type == 'LAlert')
+            $mem->set('descriptionforecast_title'.$lang, $alertTitle);
+            
+        if (($type != 'synop')&&($type != 'taf')){
+            $query = "INSERT INTO  `AlertsArchive` (Description, active, href,  img_src, Title, updatedTime, lang) Values('{$description}', '{$active}', '{$href}', '{$img_src}', '{$title}', SYSDATE(),  $lang)";
+            $res = db_init($query, "" );
+        }
          
     }
     else{
@@ -459,14 +465,13 @@ function updateMessages ($description, $active, $type, $lang, $href, $img_src, $
         $query = "UPDATE `content_sections` SET Description='$description', active=$active, href='$href}', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='$type')";
         else
         $query = "UPDATE `content_sections` SET Description='$description', active=$active, href='$href', img_src='{$img_src}', Title='{$title}', updatedTime=SYSDATE()  WHERE (type='$type') and (lang=$lang)";
-        echo "<br/>".$query;
+        //echo "<br/>".$query;
         if ($type == 'LAlert'){
             $mem->set('latestalert'.$lang, $description);
             $mem->set('latestalerttime'.$lang, time());
             $mem->set('latestalertttl', $ttl*60);
             $mem->set('latestalerttype', $messageType);
             $mem->set('latestalert_title'.$lang, $title);
-            $mem->set('descriptionforecast_title'.$lang, $alertTitle);
             echo "<br/>LAlert->latestalert_title=".$title;
             if ($lang == 0)
             {
@@ -498,10 +503,7 @@ function updateMessages ($description, $active, $type, $lang, $href, $img_src, $
         $res = db_init($query, "" );
      }
 
-    if (($type != 'synop')&&($type != 'taf')){
-        $query = "INSERT INTO  `AlertsArchive` (Description, active, href,  img_src, Title, updatedTime, lang) Values('{$description}', '{$active}', '{$href}', '{$img_src}', '{$title}', SYSDATE(),  $lang)";
-        $res = db_init($query, "" );
-    }
+    
     
         
     //  echo "<br/>".$query;
@@ -858,6 +860,11 @@ $results = $stmt->get_result();
 $lines = 0;
 
 $forecastDaysDB = $mem->get('forecastDaysDB');
+if ($_POST['reloadf'] == 1){
+    $forecastDaysDB  = array();
+    $forecastDaysDB = [];
+}
+    
 
 while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 	$lines++;
@@ -868,6 +875,7 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
          {
             //array_push($forecastDaysDB, array('liked' => array(), 'disliked' => array(), 'lang0' => urlencode($line["lang0"]), 'lang1' => urlencode($line["lang1"]),  'TempLow' => $line["TempLow"], 'TempHigh' => $line["TempHigh"], 'date' => $line["date"], 'day_name' => $line["day_name"], 'icon' => $line["icon"], 'TempNight' => $line["TempNight"], 'TempNightCloth' => $line["TempNightCloth"], 'TempHighCloth' => $line["TempHighCloth"]));
             if ($_POST['reloadf'] == 1){
+                
                 $forecastDaysDB[$line["idx"]] = array('likes' => array(), 
                                                       'dislikes' => array(), 
                                                       'lang0' => urlencode($line["lang0"]), 
@@ -905,6 +913,8 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
             }
          }	
          $key = $line["idx"];	
+        /* foreach ($forecastDaysDB as $key => &$forecastday) 
+							{*/
 	?>
 
 <div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> small invcell" style="clear:both;margin-bottom:0.5em" id="<?=$key?>">
@@ -999,18 +1009,7 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
     <div class="cell ">
 		<a class="icon_forecast" title="day_icon<?=$key?>" href="javascript:void(0)" id="day_icon<?=$key?>"><img src="images/icons/day/<?=$line["icon"]?>" width="30px"  height="30px" id="day_icon<?=$key?>_img" /></a>
     </div>
-    <div class="cell ">
-		<input id="visDay<?=$key?>" name="visDay<?=$key?>" size="1"  value="<?=$line["visDay"]?>" style="width:20px;background-color:#8aa6df" />
-	</div>
-    <div class="cell ">
-		<input id="uvmax<?=$key?>" name="uvmax<?=$key?>" size="1"  value="<?=$line["uvmax"]?>" style="width:20px;background-color:#9d83d2" />
-	</div>
-    <div class="cell ">
-		<input id="rainFrom<?=$key?>" name="rainFrom<?=$key?>" size="1"  value="<?=$line["rainFrom"]?>" style="width:20px;background-color:#5ee8d7" />
-	</div>
-    <div class="cell ">
-		<input id="rainTo<?=$key?>" name="rainTo<?=$key?>" size="1"  value="<?=$line["rainTo"]?>" style="width:20px;background-color:#5ee8d7" />
-	</div>
+   
 	
     <div class="cell cellspace ">
     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1033,7 +1032,24 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
     <div class="cell ">
 		<a class="icon_forecast" title="night_icon<?=$key?>" href="javascript:void(0)" id="night_icon<?=$key?>"><img src="images/icons/day/<?=$line["iconnight"]?>" width="30px"  height="30px" id="night_icon<?=$key?>_img" /></a>
     </div>
-    
+    <div class="cell cellspace ">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    <div class="cell ">
+		<input id="visDay<?=$key?>" name="visDay<?=$key?>" size="1"  value="<?=$line["visDay"]?>" style="width:20px;background-color:#8aa6df" />
+	</div>
+    <div class="cell ">
+		<input id="uvmax<?=$key?>" name="uvmax<?=$key?>" size="1"  value="<?=$line["uvmax"]?>" style="width:20px;background-color:#9d83d2" />
+	</div>
+    <div class="cell ">
+		<input id="rainFrom<?=$key?>" name="rainFrom<?=$key?>" size="1"  value="<?=$line["rainFrom"]?>" style="width:20px;background-color:#5ee8d7" />
+	</div>
+    <div class="cell ">
+		<input id="rainTo<?=$key?>" name="rainTo<?=$key?>" size="1"  value="<?=$line["rainTo"]?>" style="width:20px;background-color:#5ee8d7" />
+	</div>
+    <div class="cell cellspace ">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
     
        
 	
@@ -1062,9 +1078,13 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 <div style="clear:both"></div>
 <?
 }
-if ($_POST['reloadf'] == 1)
+if ($_POST['reloadf'] == 1){
+      
     $mem->set('forecastDaysDB',$forecastDaysDB);
-//var_dump($forecastDaysDB);
+    //var_dump($forecastDaysDB);
+}
+
+    
 ?>
 <?
 $query = "SELECT * FROM  `content_sections` WHERE TYPE =  'LAlert'";
@@ -1378,7 +1398,8 @@ function getSelectionEnd(o) {
  }
  function inputtextChanged(e)
  {
-    e.style.height = "200px";
+    e.style.height = "300px";
+    //e.style.width = "125%";
  }
  function disableOthers(checkbox)
  {

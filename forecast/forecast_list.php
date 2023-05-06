@@ -29,6 +29,7 @@
 <li	 value="183">טוקיו, יפן Tokyo</li>
 <li	  value="770">יוסטון Houston</li>
 <li	  value="43">ירושלים Jerusalem</li>
+<li	  value="2278">כרתים Herakleion</li>
 <li	  value="54">לובליאנה, סלובניה Ljubljana</li>
 <li	  value="781">לאס וגאס Las Vegas</li>
 <li   value="32">לונדון London</li>
@@ -46,6 +47,7 @@
 <li   value="272">סאן-פרנסיסקו San-francisco </li>
 <li   value="277">סיאטל Seattle </li>
 <li   value="300">סידני Sydney </li>
+<li   value="178">סלוניקי Thessaloniki </li>
 <li   value="602">פירנצה Florence </li>
 <li	  value="194">פריס Paris</li>
 <li	  value="197">פראג Prague</li>

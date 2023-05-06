@@ -148,38 +148,43 @@ if ($hour == 1) {
        
   //or print($php_errormsg);
 }
+if ($_GET["debug"] >= 1)
+        echo "<br />time() - yestsametime_time = ".(time() - $mem->get('yestsametime_time'));
+if ((time() - $mem->get('yestsametime_time')) > 200){
     $query = "SELECT Date, Time, ROUND(MAX(TEMP),1) TEMP, ROUND(MAX(TEMP2), 1) TEMP2, ROUND(MAX(Hum)) Hum, Round(MAX(Dew),1) Dew, Round(MAX(TEMP3),1) TEMP3, Round(MAX(SolarRadiation)) SolarRadiation, Round(MAX(uv), 1) uv, MAX(pm10) pm10, MAX(pm25) pm25 FROM `archivelatest` WHERE Date = DATE_ADD(CURDATE(), INTERVAL -1 DAY) AND HOUR(`Time`) = HOUR(NOW()) AND (MINUTE(`Time`) = MINUTE(NOW()) or MINUTE(`Time`) = MINUTE(NOW()) - 1 or MINUTE(`Time`) = MINUTE(NOW()) + 1)";
-        $result = mysqli_query($link, $query) ;
-        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-        $yestsametime->set_temp( $row["TEMP"]);
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $yestsametime->set_temp( $row["TEMP"]);
 	$yestsametime->set_temp2 ($row["TEMP2"]);
 	$yestsametime->set_hum ($row["Hum"]);
 	$yestsametime->set_dew ($row["Dew"]);
 	$yestsametime->set_solarradiation ($row["SolarRadiation"]);
 	$yestsametime->set_uv($row["uv"]);
-        $yestsametime->set_temp3($row["TEMP3"]);
-        $yestsametime->set_pm10($row["pm10"]);
-        $yestsametime->set_pm25($row["pm25"]);
-        $yestsametime->set_change($current->get_temp2(), 
-                                            $current->get_hum(),
-                                            $current->get_dew(), 
-                                            $current->get_windspd(), 
-                                            $current->get_pressure(),
-                                            $current->get_cloudbase(),
-                                            $current->get_rainrate(),
-                                            $current->get_solarradiation(),
-                                            $current->get_uv(),
-                                            $current->get_temp(),
-                                            $current->get_temp3(),
-                                            $current->get_pm10(),
-                                            $current->get_pm25());
+    $yestsametime->set_temp3($row["TEMP3"]);
+    $yestsametime->set_pm10($row["pm10"]);
+    $yestsametime->set_pm25($row["pm25"]);
+    $yestsametime->set_change($current->get_temp2(), 
+                                        $current->get_hum(),
+                                        $current->get_dew(), 
+                                        $current->get_windspd(), 
+                                        $current->get_pressure(),
+                                        $current->get_cloudbase(),
+                                        $current->get_rainrate(),
+                                        $current->get_solarradiation(),
+                                        $current->get_uv(),
+                                        $current->get_temp(),
+                                        $current->get_temp3(),
+                                        $current->get_pm10(),
+                                        $current->get_pm25());
+        $mem->set('yestsametime', $yestsametime);
+        $mem->set('yestsametime_time', time());
         if ($_GET["debug"] >= 1)
             echo "<br />set yestsametime(".$row["Time"]."): ".$row["pm10"]." ".$row["pm25"]." ".$row["TEMP"]." ".$row["TEMP2"]." ".$row["Hum"]." ".$row["Dew"];
         
      $query = "SELECT Date, Time, ROUND(MAX(TEMP),1) TEMP, ROUND(MAX(TEMP2), 1) TEMP2, ROUND(MAX(Hum)) Hum, Dew, Round(MAX(TEMP3),1) TEMP3, Round(MAX(SolarRadiation)) SolarRadiation, Round(MAX(uv), 1) uv, MAX(pm10) pm10, MAX(pm25) pm25 FROM `archivelatest` WHERE Date = DATE(SUBTIME(NOW(), '03:00:00')) AND HOUR(`Time`) = HOUR(SUBTIME(NOW(), '03:00:00')) AND (MINUTE(`Time`) = MINUTE(NOW()) or MINUTE(`Time`) = MINUTE(NOW()) - 1 or MINUTE(`Time`) = MINUTE(NOW()) + 1)";
-        $result = mysqli_query($link, $query) ;
-        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-        $threeHours->set_temp( $row["TEMP"]);
+    $result = mysqli_query($link, $query) ;
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $threeHours->set_temp( $row["TEMP"]);
 	$threeHours->set_temp2 ($row["TEMP2"]);
 	$threeHours->set_hum ($row["Hum"]);
 	$threeHours->set_dew ($row["Dew"]);
@@ -199,7 +204,9 @@ if ($hour == 1) {
                                             $current->get_temp(),
                                             $current->get_temp3(),
                                             $current->get_pm10(),
-                                            $current->get_pm25());
+                                             $current->get_pm25());
+        $mem->set('threeHours', $threeHours);
+        $mem->set('threeHours_time', time());
         if ($_GET["debug"] >= 1)
             echo "<br />set threeHours(".$row["Time"]."): ".$row["pm10"]." ".$row["pm25"]." ".$row["TEMP"]." ".$row["TEMP2"]." ".$row["Hum"]." ".$row["Dew"];
 
@@ -211,19 +218,29 @@ if ($hour == 1) {
         $oneHour->set_pm10change($current->get_pm10());
         $oneHour->set_pm25($row["pm10"]);
         $oneHour->set_pm25change($current->get_pm25());
+        $mem->set('oneHour', $oneHour);
+        $mem->set('oneHour_time', time());
         if ($_GET["debug"] >= 1)
             echo "<br />set oneHours(".$row["Time"]."): ".$row["pm10"]." ".$row["pm25"]." ".$row["Hum"]." ".$row["Dew"];
 
-         $query = "SELECT Date, Time, ROUND(MAX(TEMP),1) TEMP, ROUND(MAX(TEMP2), 1) TEMP2, ROUND(MAX(Hum)) Hum, Dew, Round(MAX(TEMP3),1) TEMP3, Round(MAX(SolarRadiation)) SolarRadiation, Round(MAX(uv), 1) uv, MAX(pm10) pm10, MAX(pm25) pm25 FROM `archivelatest` WHERE Date = DATE(SUBTIME(NOW(), '00:30:00')) AND HOUR(`Time`) = HOUR(SUBTIME(NOW(), '00:30:00')) AND (MINUTE(`Time`) = MINUTE(NOW()-30) or MINUTE(`Time`) = MINUTE(NOW()) - 31 or MINUTE(`Time`) = MINUTE(NOW()) - 29)";
+         $query = "SELECT Date, Time, ROUND(MAX(TEMP),1) TEMP, ROUND(MAX(TEMP2), 1) TEMP2, ROUND(MAX(Hum)) Hum, Dew, Round(MAX(TEMP3),1) TEMP3, Round(MAX(SolarRadiation)) SolarRadiation, Round(MAX(uv), 1) uv, MAX(pm10) pm10, MAX(pm25) pm25 FROM `archivelatest` WHERE Date = DATE(SUBTIME(NOW(), '00:30:00')) AND HOUR(`Time`) = HOUR(SUBTIME(NOW(), '00:30:00')) AND (MINUTE(`Time`) = MINUTE(SUBTIME(NOW(), '00:30:00')))";
         $result = mysqli_query($link, $query) ;
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
         $min30->set_pm10($row["pm10"]);
         $min30->set_pm10change($current->get_pm10());
         $min30->set_pm25($row["pm10"]);
         $min30->set_pm25change($current->get_pm25());
+        $mem->set('min30', $oneHour);
+        $mem->set('min30_time', time());
         if ($_GET["debug"] >= 1)
             echo "<br />set min30(".$row["Time"]."): ".$row["pm10"]." ".$row["pm25"]." ".$row["Hum"]." ".$row["Dew"];
+}
 
+//////////////////
+$yestsametime = $mem->get('yestsametime');
+$threeHours = $mem->get('threeHours');
+$oneHour = $mem->get('oneHour');
+$min30 = $mem->get('min30');
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // reading messages
 $detailedforecast = "";
@@ -452,7 +469,7 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
         $picname = "images/picOfTheDay/".$line["picname"];
         $comment0 = $line["comment0"];
         $comment1 = $line["comment1"];
-        $mem->set("picname", $picname);
+        $mem->set("picOfTheDayName", $picname);
         $mem->set("picOfTheDaycomment0", $comment0);
         $mem->set("picOfTheDaycomment1", $comment1);
     }

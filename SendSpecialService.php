@@ -1,77 +1,21 @@
 <?
-ini_set("display_errors","On");
-include ("include.php");
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+include_once ("include.php");
 include_once("start.php");
-ini_set('error_reporting', E_ERROR | E_PARSE);
-require_once 'vendor/autoload.php';
-error_reporting(-1);
-use Jose\Component\Core\AlgorithmManager;
-use Jose\Component\KeyManagement\JWKFactory;
-use Jose\Component\Signature\JWSBuilder;
-use Jose\Component\Signature\Algorithm\ES256;
-use Jose\Component\Signature\Serializer\JWSSerializerManager;
-use Jose\Component\Signature\Serializer\CompactSerializer;
 
-class CloudMessageType {
 
-    const Gcm = 1;
-    const Fcm = 2;
-}
-
-function getToken($cerPath, $secret, $teamId) {
-	// 1.
-	$algorithmManager = new AlgorithmManager([ 
-		new ES256() 
-	]);
-
-	// 2.
-	$jwk = JWKFactory::createFromKeyFile($cerPath);
-
-	// We instantiate our JWS Builder.
-	$jwsBuilder = new JWSBuilder(
-	    $algorithmManager
-	);
-
-	// 3.
-	$payload = json_encode([
-	    'iat' => time(),
-	    'iss' => $teamId,
-	]);
-
-	// 4.
-	$jws = $jwsBuilder
-	    ->create()                                                  // We want to create a new JWS
-	    ->withPayload($payload)                                     // We set the payload
-	    ->addSignature($jwk, ['alg' => 'ES256', 'kid' => $secret])  // We add a signature with a simple protected header
-	    ->build();                                                  // We build it
-
-    // The serializer manager. We only use the JWS Compact Serialization Mode.
-    $serializerManager = new JWSSerializerManager([
-        new CompactSerializer(),
-    ]);
-	
-    // 5.
-    $token = $serializerManager->serialize("jws_compact", $jws);
-	return $token;
-}
-
-function sendAPN($registrationIDs, $msg, $picture_url, $embedded_url){
-    // open connection 
-    $http2ch = curl_init();
-    curl_setopt($http2ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
-
-    // send push    
-    $apple_cert = 'ApplePush1218.pem';
-    $message = '{"aps":{"alert":"{$msg}","sound":"lighttrainshort.wav","badge":"1"}}';
-    $token = '64559e7a912254227033d04a8e347e5563e142a4519a61a937af2c188cba1f1e';
-    $http2_server = 'https://api.push.apple.com';
-    $app_bundle_id = 'il.co.02ws';
-
-    $status = sendHTTP2Push($http2ch, $http2_server, $apple_cert, $app_bundle_id, $message, $token);
-    echo "Response from apple -> {$status}\n";
-
-    // close connection
-    curl_close($http2ch);
+// send_push "title0" "title1" "msg0" "msg1" short_range long_range tip dailyforecast picture_url
+function send_push($msgSpecial, $title, $picture_url, $embedded_url, $short_range,  $long_range, $tip, $dailyforecast) {
+    // prepare the command
+    $command = "php /home/boazn/public/02ws.com/public/SendSpecialServiceBackground.php '".urlencode($title[0])."' '".urlencode($title[1])."' '".urlencode($msgSpecial[0])."' '".urlencode($msgSpecial[1])."' {$short_range} {$long_range} {$tip} {$dailyforecast} {$picture_url} ";
+    $result = "\r\n{$command}";
+    // execute in shell
+    $output = shell_exec("/usr/bin/nohup {$command} >/dev/null 2>&1 &");
+    $result .= $output;
+    return $result;
 }
 /*******************************************************************************************/
  /**
@@ -126,8 +70,11 @@ function sendPUSHMessage($messageBody, $title, $picture_url, $embedded_url, $sho
         $messageBody[0] = $TIP[0].": ".$messageBody[0];
         $messageBody[1] = $TIP[1].": ".$messageBody[1];
     }
-    $messageBody[0] = date('H:i')." ".$messageBody[0];
-    $messageBody[1] = date('H:i')." ".$messageBody[1];
+    if (!boolval($dailyforecast)&&!boolval($tip)){
+        $messageBody[0] = date('H:i')." ".mb_substr($messageBody[0], 0, 50, "UTF-8")."...";
+        $messageBody[1] = date('H:i')." ".mb_substr($messageBody[1], 0, 50, "UTF-8")."...";
+    }
+   
     $key = FCM_API_KEY;
     $query_extension = "";
     $res_fcm = "FCMs";
@@ -147,8 +94,8 @@ function sendPUSHMessage($messageBody, $title, $picture_url, $embedded_url, $sho
     else if (boolval($dailyforecast)){
         $query = "select lang, gcm_regid FROM fcm_users where dailyforecast=".date("H")." UNION select lang, apn_regid FROM apn_users where dailyforecast=".date("H").$query_extension;
     }
-    $result = db_init($query, "");
-    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
+    $result_db = db_init($query, "");
+    while ($line = mysqli_fetch_array($result_db["result"], MYSQLI_ASSOC)) {
 	$lines++;
         //echo "<br />".$line["gcm_regid"]."<br />";
         if ($line["lang"] == 0)
@@ -200,9 +147,9 @@ function getForecastDay()
 {
     global $NIGHT, $NOW, $NOON, $EN, $HEB, $current;
     $query = "select * FROM forecast_days order by idx";
-    $result = db_init($query, "");
+    $result_db = db_init($query, "");
     $first_day = array();$idx = 0; 
-    while ($line = mysqli_fetch_array($result["result"], MYSQLI_ASSOC)) {
+    while ($line = mysqli_fetch_array($result_db["result"], MYSQLI_ASSOC)) {
         $idx++;
         //logger(date("H")." ".date("d/n")." ".$line["date"]);
         if (((date("H")<11)&&($idx == 1))||((date("H")>17)&&(explode("/", $line["date"])[0])==getMinusDayDay(-1)))
@@ -239,12 +186,12 @@ foreach ($_FILES as $varname => $varvalue) {
 }
 if (empty($empty)) {
    print "None of the POSTed values are empty, posted:\n";
-   //var_dump($post);
+ //  var_dump($post);
 } else {
-   //$result .= "We have " . count($empty) . " empty values\n";
-   //$result .= "Posted:\n"; var_dump($post);
-   //$result .= "Filed:\n"; var_dump($file);
-  // $result .= "Empty:\n";  var_dump($empty);
+ /*  $result .= "We have " . count($empty) . " empty values\n";
+   $result .= "Posted:\n"; var_dump($post);
+   $result .= "Filed:\n"; var_dump($file);
+   $result .= "Empty:\n";  var_dump($empty);*/
    
 }
    
@@ -259,6 +206,8 @@ $title = array($_POST['title0'], $_POST['title1']);
 $picture_url = $_POST['picture_url'];
 $embedded_url = $_POST['embedded_url'];
 $is_test = ($_GET['test'] == 1)? true : false;
+
+print_r($result);
 
 
 if ($is_test)
@@ -275,13 +224,13 @@ if (isset($_FILES['file'])) {
     $picture_url = $res;
     var_dump ($res);
 } 
-print_r ("<br/>picture_url=".$picture_url);
+print_r ("\r\npicture_url=".$picture_url);
 
 /************************** dailyforecast ***********/
 if (!empty($_POST['dailyforecast'])||!empty($_GET['dailyforecast'])){
     $msgSpecial = getForecastDay();
     $title = array("Daily Forecast", "תחזית יומית");
-    
+    $isDailyForecast = true;
 }
 if ($msgSpecial == ""){
     $result = "Empty Message";
@@ -301,7 +250,7 @@ try{
     if ($_POST["alert_section"]=="1"){
         updateMessageFromMessages ($message[0], 1, 'LAlert', 0 ,'' ,$picture_url, $title[0], $addon[0], $class_alerttitle, $messageType, $_POST['ttl']);
         updateMessageFromMessages ($message[1], 1, 'LAlert', 1 ,'' ,$picture_url, $title[1], $addon[1], $class_alerttitle, $messageType, $_POST['ttl']);
-        $result .= "\n<br/>".$message[1];
+        //$result .= "\n".$message[1];
 
     }
     
@@ -315,7 +264,8 @@ catch (Exception $ex) {
 
 try{
     logger("calling sendPUSHMessage with ".$title[0], 0, "Push", "SendSpecialService", "sendPUSHMessage");
-    $result .= "\n<br/>".sendPUSHMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"], CloudMessageType::Fcm);
+   // $result .= "\n<br/>".sendPUSHMessage($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"], CloudMessageType::Fcm);
+    $result .= "\r\n".send_push($msgSpecial, $title, $picture_url, $embedded_url, $_POST["short_range"], $_POST["long_range"], $_POST["tip"], $_POST["dailyforecast"]);
     
 } catch (Exception $ex) {
     $result .= " exception sendPUSHMessage:".$ex->getMessage();
@@ -323,14 +273,14 @@ try{
 
 /*********************************** send to Email list ***************************/
 try {
-    if  ($_POST["email"]=="1"){
+    if (($_POST["email"]=="1")&&(!boolval($short_range))&&(!boolval($long_range))){
     if (empty($_POST['title1']))
     $EmailSubject = array("02ws Update Service", "שירות עדכון ירושמיים");
     else {
     $EmailSubject = array($title[0], $title[1]);
     }
     logger("calling send_Email with ".$EmailSubject[0], 0, "Push", "SendSpecialService", "send_Email");
-        $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
+       // $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
     }
     } 
 catch (Exception $ex) {
@@ -342,7 +292,7 @@ try {
         $msgToBuffer = $msgSpecial[1]." ".$picture_url;
         if (strlen($title[1]) > 0) {$msgToBuffer = $title[1].": ".$msgToBuffer;}
         if ($_POST["social"]=="true")
-        $result .= "<br/>".post_to_bufferApp($msgToBuffer, $picture_url); 
+        $result .= "\r\n".post_to_bufferApp($msgToBuffer, $picture_url); 
 } 
 catch (Exception $ex) {
     $result .= " exception post_to_bufferApp:".$ex->getMessage();
@@ -353,5 +303,5 @@ try{
 } catch (Exception $ex) {
     $result .= " exception cleanInvalidAPNTokens:".$ex->getMessage();
 }
-print_r($result);
+print_r(nl2br($result));
 ?>
