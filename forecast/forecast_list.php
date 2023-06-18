@@ -41,6 +41,7 @@
 <li   value="267">מיאמי Miami</li>
 <li   value="603">מילנו Milano </li>
 <li   value="58">מינכן Muenchen </li>
+<li   value="1235">מלגה Malaga </li>
 <li   value="1055">מרסיי Marseille </li>
 <li   value="278">ניו-יורק New York</li>
 <li   value="224">ניו-דלהי New-Delhi</li>

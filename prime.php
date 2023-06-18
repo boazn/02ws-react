@@ -474,7 +474,10 @@
                 </div>
                 <?if (isHeb()){?>
                 <div id="if1" >  
-                   
+                <div id="belowmainad" class="white_box" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
+                <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
+    קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2023 בירושלים<?}?></a>
+                </div>
                 </div>
                
                 
@@ -484,10 +487,7 @@
                
                 <?}?>                
                                
-                <!--<div id="belowmainad" class="white_box" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
-                <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
-    קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2023 בירושלים<?}?></a>
-                </div>-->
+              
             </div>       
                          
             </div>
@@ -497,7 +497,7 @@
             
 	    
 	    
-<article id="whatmore" style="<? if (($textsum >= 580)||(count($forecastDaysDB) > 6)) echo "top:900px";?>">
+<article id="whatmore" style="<? if (($textsum >= 580)||(count($forecastDaysDB) >= 5)) echo "top:900px";?>">
 	    
 		
 	   <div class="row">
@@ -520,11 +520,8 @@
                     <!--<a href="https://hazira.org.il/" target=_blank><img src="images/Banner-02ws-3-small.gif" alt="hazira" width="300" height="100" /></a>-->
                 </div>
                 <div id="if3" style="width:300px">
-                    
-                
                 </div>
                 <div id="if4">
-                   
                 </div>
             
 	   </div>
@@ -693,7 +690,7 @@
 					<p><?=$comment[$lang_idx]?>&nbsp;- <?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></p>
 					</a>
                      <a href="<? echo "station.php?section=picoftheday.php&amp;lang=".$lang_idx;?>">                   
-					<img src="phpThumb.php?src=<?=$picname?>&amp;w=350&amp;fltr%5B%5D=gam%7C1.25" alt="<?=$comment[$lang_idx]?>" />
+					<img src="phpThumb.php?src=<?=$picname?>&amp;w=350&amp;fltr%5B%5D=gam%7C1.25" alt="<?=$comment[$lang_idx]?>" /><!--phpThumb.php?src=<?=$picname?>&amp;w=350&amp;fltr%5B%5D=gam%7C1.25-->
 					</a>
 				    </div>
 				    

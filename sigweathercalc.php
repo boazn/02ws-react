@@ -89,11 +89,11 @@ function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $ra
 	if (($timeframe == TimeFrame::Daily) && (!CalcCarCleaning($dust, $idx))){
 		array_push($reco, array('sig0' => $RAIN[0], 'sig1' => $RAIN[1], 'activity' => Activities::CARCLEANING, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}
-	else if (($timeframe == TimeFrame::Hourly) && (!$is_sig_forecast))
+	else if (($timeframe == TimeFrame::Hourly) && (!$is_sig_forecast)&& (CalcCarCleaning($dust, $idx)))
 	{
 		array_push($reco, array('sig0' => "", 'sig1' => "", 'activity' => Activities::CARCLEANING, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	}
-	else if (($timeframe == TimeFrame::Hourly) && ($is_sig_forecast))
+	else if (($timeframe == TimeFrame::Hourly) && (($is_sig_forecast)|| (!CalcCarCleaning($dust, $idx))))
 	{
 		array_push($reco, array('sig0' => "", 'sig1' => "", 'activity' => Activities::CARCLEANING, 'value' => Recommendations::No, 'timeframe' => $timeframe));
 	}

@@ -280,7 +280,7 @@ try {
     $EmailSubject = array($title[0], $title[1]);
     }
     logger("calling send_Email with ".$EmailSubject[0], 0, "Push", "SendSpecialService", "send_Email");
-       // $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
+        $result .= send_Email(array($_POST['message0']." ".$img_tag, $_POST['message1']." ".$img_tag), ALL, EMAIL_ADDRESS, "", "", $EmailSubject);
     }
     } 
 catch (Exception $ex) {

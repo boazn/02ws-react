@@ -1,34 +1,25 @@
 
 <div style="direction:ltr;text-align:left;padding:1em" class="white_box">
     <h3 style="direction:ltr;text-align:left">Rest API</h3>
-    https://www.02ws.co.il/services/forecast/dayNumber/language/tempUnit/futureUse
-
-    https://www.02ws.co.il/services/now/dataNumber/language/tempUnit/futureUse
+    1. https://www.02ws.co.il/services/forecast/{dayNumber}/{language}/{tempUnit}/{futureUse}
+    <br />
+    2. https://www.02ws.co.il/services/now/{dataNumber}/{language}/{tempUnit}/{futureUse}
 
     <hr/>
+    
     <h3 style="direction:ltr;text-align:left">Example Rest API 1</h3>
-    first day in forecast<br/>
-    https://www.02ws.co.il/services/forecast/1/1/C/1
-    <hr/>
-
-    <h3 style="direction:ltr;text-align:left">Example Rest API 2</h3>
     all days in forecast<br/>
     https://www.02ws.co.il/services/forecast/all
     <hr/>
 
+    <h3 style="direction:ltr;text-align:left">Example Rest API 2</h3>
+    first day in forecast<br/>
+    <a href="https://www.02ws.co.il/services/forecast/1/1/C/1" target="_blank">https://www.02ws.co.il/services/forecast/1/1/C/1</a>
+    <hr/>
+
     <h3 style="direction:ltr;text-align:left">Example Rest API 3</h3>
-    first data in current conditions (time)<br/>
-    https://www.02ws.co.il/services/now/1/1/C/1
-    <hr/>
-
-    <h3 style="direction:ltr;text-align:left">Example Rest API 4</h3>
-    Sunshine hours<br/>
-    https://www.02ws.co.il/services/now/12/1/C/1
-    <hr/>
-
-    <h3 style="direction:ltr;text-align:left">Example Rest API 5</h3>
     All Data<br/>
-    https://www.02ws.co.il/services/now/0/1/C/1
+    <a href="https://www.02ws.co.il/services/now/0/1/C/1" target="_blank">https://www.02ws.co.il/services/now/0/1/C/1</a>
     <hr/>
     <table>
     <tr><td>dataNumber</td><td>data</td></tr>
@@ -46,6 +37,16 @@
     <tr><td>12</td><td>sunshine hours</td></tr>
     <tr><td>13</td><td>rain today</td></tr>
     </table>
+    
+    <h3 style="direction:ltr;text-align:left">Example Rest API 4</h3>
+    first data in current conditions (time)<br/>
+    https://www.02ws.co.il/services/now/1/1/C/1
+    <hr/>
+
+    <h3 style="direction:ltr;text-align:left">Example Rest API 5</h3>
+    Sunshine hours<br/>
+    https://www.02ws.co.il/services/now/12/1/C/1
+    <hr/>
 
 
 

@@ -1222,24 +1222,16 @@ background-color:#ebe8ed;
 }
 
 #morning_icon {
-    background-image:url("../img/morning_icon.png");
-    vertical-align:middle;
-    background-repeat:no-repeat;
-    background-position:center;
-    margin:0
+   
     
 }
 
 #noon_icon {
-    background-image:url("../img/noon_icon.png");
-    background-repeat:no-repeat;
-    background-position:center;
+    
 }
 
 #night_icon {
-    background-image:url("../img/night_icon.png");
-    background-repeat:no-repeat;
-    background-position:center;
+    
 }
 
 #forcast_main {
@@ -1652,6 +1644,7 @@ font-size:0.35em
 text-align:<?=get_s_align()?>;
 margin-bottom:8px;
 margin-<?=get_s_align()?>: 200px;
+font-size:1.2em;
 z-index:9999;
 }
 #activities_yes, #activities_no, #activities_perhour{
@@ -1862,7 +1855,7 @@ text-align:<?=get_s_align()?>;
    ========================================================================== */
 
 .now_messages {
-    margin-top:80px;
+    margin-top:40px;
     line-height:1.2em
 }
 #windy_widget{
@@ -2900,7 +2893,7 @@ border-color:#829CAA;
 	margin-top: 50px;
 }
 #adexternal{
-margin-<?echo get_s_align();?>:150px
+margin-<?echo get_s_align();?>:80px
 }
 #new_post_btn {
     background-image:url("../img/new_post.png");
@@ -4742,7 +4735,7 @@ margin:0 auto
         
 }
 #heatindex{
-top:2em;
+top:7.8em;
 width:200px;
 }
 #currentrow #itfeels

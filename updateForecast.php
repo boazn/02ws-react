@@ -1579,10 +1579,10 @@ function getOneUFService(dayToSave, command, type)
     }
     else
     {
-            alert(type);
+            //alert(type);
 
             var description = document.getElementById('description'+dayToSave).value;
-            var lang = document.getElementById('lang'+dayToSave).value;
+            var lang = document.getElementById('lang'+dayToSave).value.replace("'", "`");
             var img_src = document.getElementById('img'+dayToSave);
             var max_time = document.getElementById('max_time').value;
             var multiple_factor = document.getElementById('MULTIPLE_FACTOR').value;
@@ -1600,7 +1600,7 @@ function getOneUFService(dayToSave, command, type)
             {
                     title = title.value;
             }
-            alert('title = ' + title + description);
+            //alert('title = ' + title + description);
             
             var postData = "reload=" + reload + "&command=" + command + "&lang=" + lang + "&description=" + escape(encodeURI(description)) + "&title=" + escape(encodeURI(title)) + "&active=" + active + "&type=" + type + "&max_time=" + max_time + "&multiple_factor=" + multiple_factor + "&img_src=" + escape(encodeURI(img_src)) + "&href=" + escape(encodeURI(href));
     }

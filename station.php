@@ -64,15 +64,15 @@ $sigforecastHour = $mem->get('sigforecastHour');
         <? }?>
         <? }?>
         <link rel="icon" type="image/png" href="img/favicon_sun.png">
-         <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       
+                <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FC82DP541T"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-            ga('create', 'UA-647172-1', 'auto');
-            ga('send', 'pageview');
-
+        gtag('config', 'G-FC82DP541T');
         </script>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                 <script id="adsense_start">

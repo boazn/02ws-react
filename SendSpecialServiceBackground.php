@@ -28,8 +28,8 @@ function sendPUSHMessage($messageBody, $title, $picture_url, $embedded_url, $sho
       //  $picture_url = 'https://www.02ws.co.il/images/webCamera0.jpg';
     }
     if (boolval($tip)){
-        $messageBody[0] = $TIP[0].": ".$messageBody[0];
-        $messageBody[1] = $TIP[1].": ".$messageBody[1];
+        $messageBody[0] = "Tip".": ".$messageBody[0];
+        $messageBody[1] = "טיפ".": ".$messageBody[1];
     }
     if (!boolval($dailyforecast)&&!boolval($tip)){
         $messageBody[0] = date('H:i')." ".mb_substr($messageBody[0], 0, 50, "UTF-8")."...";

@@ -5,7 +5,9 @@ include ("include.php");
 include ("start.php");
 function make_user_removed($reg_id){
     global $DONE, $lang_idx, $REGISTRATION_TO_02WS, $LOGO, $header_pic, $HOME_PAGE;
-    //$key = str_replace(" ", "+", $key);
+    $reg_id = str_replace("document", "", $reg_id);
+    $reg_id  = htmlspecialchars($reg_id);
+    $reg_id  = Strip_tags($reg_id);
     $query = "call RemoveUser ('$reg_id')";
     
     //echo $query;
@@ -13,7 +15,7 @@ function make_user_removed($reg_id){
     global $link;
    
     //echo "<div class=\"inv_plain_3_zebra big float\" style=\"padding:1em\"><img src=\"".$header_pic."\" align=\"absmiddle\"/>&nbsp;&nbsp;".$REGISTRATION_TO_02WS[$lang_idx];
-    return true;
+   
     if(mysqli_affected_rows($link)==1)
     {
     	
@@ -62,9 +64,9 @@ function make_user_removed($reg_id){
 
 <? 
     if (make_user_removed($_GET['reg_id']))
-        echo "<h2>".$_GET['reg_id']." הוסר Removed </h2>";
+        echo "<h2>"." הוסר Removed </h2>";
     else
-        echo "<h2>".$_GET['reg_id']." - done but with errors</h2>";
+        echo "<h2> - done but with errors</h2>";
 ?>
 
 

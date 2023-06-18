@@ -2389,46 +2389,49 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     $textToSend = str_replace(array("display:none", "\n"), array("", "<br/>"), $textToSend);
     $emailsSent = 0;
     //logger("Sending mail: " . $source."(".$sourcename.")"." --> " . $target . " - " . implode(" / ", $subject). " lang:".$EmailsToSend[0]['lang']);
+    
+    //echo "sending to $email...<br/>body=$textToSend<br/>Subject=$subject<br/>from=$source";
+    $body = $textToSend[$email['lang']];
+    $body .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$email['lang']] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>.  <a href=\"" . BASE_URL . "/unsubscribe.php?email=".$email['email']."\">Unsubscribe</a></div><img src=\"" . BASE_URL . "/" . $footer_pic . "\" /></footer></body></html>";
+    $mail->Body = $body;
+    $mail->AltBody = strip_tags($textToSend[$email['lang']]);
     foreach ($EmailsToSend as $email) {
-        //echo "sending to $email...<br/>body=$textToSend<br/>Subject=$subject<br/>from=$source";
-        $body = $textToSend[$email['lang']];
-        $body .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$email['lang']] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>.  <a href=\"" . BASE_URL . "/unsubscribe.php?email=".$email['email']."\">Unsubscribe</a></div><img src=\"" . BASE_URL . "/" . $footer_pic . "\" /></footer></body></html>";
-        $mail->Body = $body;
-        $mail->AltBody = strip_tags($textToSend[$email['lang']]);
-        $mail->AddAddress($email['email'], "");
-        $subjectToMail = "";
-        if (is_array($subject)) {
-            $mail->Subject = $subject[$email['lang']];
-            $subjectToMail = $subject[$email['lang']];
-        } else {
-            $mail->Subject = $subject;
-            $subjectToMail = $subject;
-        }
-
-        $mail->CharSet = "UTF-8";
-        //$mail->AddStringAttachment("path/to/photo", "YourPhoto.jpg");
-        //$mail->AddAttachment("c:/temp/11-10-00.zip", "new_name.zip");  // optional name
-        $emailsSent++;
-         if (!$mail->Send()) {
-            mail("boazn1@gmail.com", "JWS mail failure", "failed sending to " . $email['email'], $headers);
-            $result = "<br />failed sending to " . $email['email'] . " check your Email.";
-        }else if ($target == HS)
-        {
-            $query = "UPDATE `users` SET `HS` = 1 WHERE email='".$email['email']."'";
-            //logger("target=HS: ".$query);
-            $res = mysqli_query($link, $query);
-            
-        }
-        /*if (!mail($email['email'], $subjectToMail, $textToSend[$email['lang']], $headers)) {
-            //ini_set("SMTP","mailgw.netvision.net.il");
-            mail("boazn1@gmail.com", "JWS mail failure", "failed sending to " . $email['email'], $headers);
-            $result = "<br />failed sending to " . $email['email'] . " check your Email.";
-        }*/
-
-        // Clear all addresses and attachments for next loop
-        $mail->ClearAddresses();
-        $mail->ClearAttachments();
+       // $mail->AddAddress($email['email'], "");
+        $mail->addBcc($email['email'], "");
     }
+    $subjectToMail = "";
+    if (is_array($subject)) {
+        $mail->Subject = $subject[$email['lang']];
+        $subjectToMail = $subject[$email['lang']];
+    } else {
+        $mail->Subject = $subject;
+        $subjectToMail = $subject;
+    }
+
+    $mail->CharSet = "UTF-8";
+    //$mail->AddStringAttachment("path/to/photo", "YourPhoto.jpg");
+    //$mail->AddAttachment("c:/temp/11-10-00.zip", "new_name.zip");  // optional name
+    $emailsSent++;
+        if (!$mail->Send()) {
+        mail("boazn1@gmail.com", "JWS mail failure", "failed sending to " . $email['email'], $headers);
+        $result = "<br />failed sending to " . $email['email'] . " check your Email.";
+    }else if ($target == HS)
+    {
+        $query = "UPDATE `users` SET `HS` = 1 WHERE email='".$email['email']."'";
+        //logger("target=HS: ".$query);
+        $res = mysqli_query($link, $query);
+        
+    }
+    /*if (!mail($email['email'], $subjectToMail, $textToSend[$email['lang']], $headers)) {
+        //ini_set("SMTP","mailgw.netvision.net.il");
+        mail("boazn1@gmail.com", "JWS mail failure", "failed sending to " . $email['email'], $headers);
+        $result = "<br />failed sending to " . $email['email'] . " check your Email.";
+    }*/
+
+    // Clear all addresses and attachments for next loop
+    $mail->ClearAddresses();
+    $mail->ClearAttachments();
+    
     @mysqli_close($link);
     $result .= " ->".$emailsSent." emails Sent";
     return $result;

@@ -1,6 +1,6 @@
 <?
 header('Content-type: text/html; charset=utf-8');
-header("Access-Control-Allow-Origin: null");
+header("Access-Control-Allow-Origin: *");
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
 //ini_set("display_errors","Off");
 include_once("include.php"); 
@@ -1099,6 +1099,11 @@ if ((count($sig) > 1)){
     $sigext0plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig[0]['extrainfo'][0][1]));
     $sigext1 = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig[0]['extrainfo'][1][0]));
     $sigext1plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig[0]['extrainfo'][1][1]));
+    $sigext0 = urlencode($sig[0]['extrainfo'][0][0]);
+    $sigext0plain = urlencode($sig[0]['extrainfo'][0][1]);
+    $sigext1 = urlencode($sig[0]['extrainfo'][1][0]);
+    $sigext1plain = urlencode($sig[0]['extrainfo'][1][1]);
+    
 }
 $JSON .= "\"sigtitle0\":"."\"".$sigtitle0."\"";
 $JSON .= ",";
@@ -1122,6 +1127,10 @@ foreach ($sig as $sig_i){
     $sigext0plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig_i['extrainfo'][0][1]));
     $sigext1 = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig_i['extrainfo'][1][0]));
     $sigext1plain = preg_replace( "/\r|\n/", " ", str_replace('"', "&quot;", $sig_i['extrainfo'][1][1]));
+    $sigext0 = urlencode($sig[0]['extrainfo'][0][0]);
+    $sigext0plain = urlencode($sig[0]['extrainfo'][0][1]);
+    $sigext1 = urlencode($sig[0]['extrainfo'][1][0]);
+    $sigext1plain = urlencode($sig[0]['extrainfo'][1][1]);
     $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",\"url\":"."\"".$sig_i['url']."\"  }";
     $SIGWEATHER_JSON .= ",";
 }
@@ -1149,6 +1158,10 @@ if (true)
         $sigext0plain = $sig_i['extrainfo'][0][1];
         $sigext1 = $sig_i['extrainfo'][1][0];
         $sigext1plain = $sig_i['extrainfo'][1][1];
+        $sigext0 = urlencode($sig_i['extrainfo'][0][0]);
+        $sigext0plain = urlencode($sig_i['extrainfo'][0][1]);
+        $sigext1 = urlencode($sig_i['extrainfo'][1][0]);
+        $sigext1plain = urlencode($sig_i['extrainfo'][1][1]);
         $sig_item_idx++;
         $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",\"url\":"."\"".$sig_i['url']."\"  }";
         $SIGWEATHER_JSON .= ",";
@@ -1164,6 +1177,10 @@ if (true){
         $sigext0plain = $sig_i['extrainfo'][0][1];
         $sigext1 = $sig_i['extrainfo'][1][0];
         $sigext1plain = $sig_i['extrainfo'][1][1];
+       /* $sigext0 = urlencode($sig_i['extrainfo'][0][0]);
+        $sigext0plain = urlencode($sig_i['extrainfo'][0][1]);
+        $sigext1 = urlencode($sig_i['extrainfo'][1][0]);
+        $sigext1plain = urlencode($sig_i['extrainfo'][1][1]);*/
         if ($sig_run_idx > 1){
             $SIGWEATHER_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigexthtml0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0plain)."\",\"sigexthtml1\":"."\"".str_replace("\''", "&quot;", $sigext1)."\",\"sigext1\":"."\"".str_replace("\"", "&quot;", $sigext1plain)."\",\"url\":"."\"".$sig_i['url']."\"  }";
             $SIGWEATHER_JSON .= ",";
@@ -1186,6 +1203,10 @@ foreach ($sigRun as $sig_i){
     $sigext0plain = $sig_i['extrainfo'][0][1];
     $sigext1 = $sig_i['extrainfo'][1][0];
     $sigext1plain = $sig_i['extrainfo'][1][1];
+   /* $sigext0 = urlencode($sig_i['extrainfo'][0][0]);
+    $sigext0plain = urlencode($sig_i['extrainfo'][0][1]);
+    $sigext1 = urlencode($sig_i['extrainfo'][1][0]);
+    $sigext1plain = urlencode($sig_i['extrainfo'][1][1]);*/
     $RUNWALK_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", \"sigtitle1\":"."\"".$sigtitle1."\", \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , \"sigext1\":"."\"".str_replace('"', "&quot;", $sigext1)."\",\"url\":"."\"".$sig_i['url']."\"  }";
     $RUNWALK_JSON .= ",";
    
@@ -1203,6 +1224,10 @@ foreach ($sigForecast as $sig_i){
     $sigext0plain = $sig_i['extrainfo'][0][1];
     $sigext1 = $sig_i['extrainfo'][1][0];
     $sigext1plain = $sig_i['extrainfo'][1][1];
+    /*$sigext0 = urlencode($sig_i['extrainfo'][0][0]);
+    $sigext0plain = urlencode($sig_i['extrainfo'][0][1]);
+    $sigext1 = urlencode($sig_i['extrainfo'][1][0]);
+    $sigext1plain = urlencode($sig_i['extrainfo'][1][1]);*/
     $FORECASTCALC_JSON .= "{\"sigtitle0\":"."\"".$sigtitle0."\", 
                \"sigtitle1\":"."\"".$sigtitle1."\", 
                \"sigext0\":"."\"".str_replace('"', "&quot;", $sigext0)."\" , 

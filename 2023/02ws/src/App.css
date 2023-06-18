@@ -1,9 +1,81 @@
+/* ==========================================================================
+				   FONTS
+   ========================================================================== */
+
+    @font-face {
+       font-family: 'Alef';
+       src: url('fonts/Alef-Bold.eot');
+       src: url('fonts/Alef-Bold.eot?#iefix') format('embedded-opentype'),
+            url('fonts/Alef-Bold.woff') format('woff'),
+            url('fonts/Alef-Bold.ttf') format('truetype'),
+            url('fonts/Alef-Bold.svg#alefbold') format('svg');
+       font-weight: bold;
+       font-style: normal;
+   
+   }
+   @font-face {
+       font-family: 'Alef';
+       src: url('fonts/Alef-Regular.eot');
+       src: url('fonts/Alef-Regular.eot?#iefix') format('embedded-opentype'),
+            url('fonts/Alef-Regular.woff') format('woff'),
+            url('fonts/Alef-Regular.ttf') format('truetype'),
+            url('fonts/Alef-Regular.svg#alefregular') format('svg');
+       font-weight: normal;
+       font-style: normal;
+   
+   }
+   @font-face {
+       font-family: 'nextexitfotlight';
+       src: url('fonts/nextexitfot-light-webfont.eot');
+       src: url('fonts/nextexitfot-light-webfont.eot?#iefix') format('embedded-opentype'),
+            url('fonts/nextexitfot-light-webfont.woff') format('woff'),
+            url('fonts/nextexitfot-light-webfont.ttf') format('truetype');
+       font-weight: normal;
+       font-style: normal;
+   
+   }
+   @font-face {
+       font-family: 'nextexitfot_regularregular';
+       src: url('fonts/nextexitfot-regular-webfont.eot');
+       src: url('fonts/nextexitfot-regular-webfont.eot?#iefix') format('embedded-opentype'),
+            url('fonts/nextexitfot-regular-webfont.woff') format('woff'),
+            url('fonts/nextexitfot-regular-webfont.ttf') format('truetype');
+       font-weight: normal;
+       font-style: normal;
+   
+   }
+   @font-face {
+       font-family: 'ezerblock_oelight';
+       src: url('fonts/ezerblock_oelight-webfont.eot');
+       src: url('fonts/ezerblock_oelight-webfont.eot?#iefix') format('embedded-opentype'),
+            url('fonts/ezerblock_oelight-webfont.woff') format('woff'),
+            url('fonts/ezerblock_oelight-webfont.ttf') format('truetype');
+       font-weight: normal;
+       font-style: normal;
+   
+   }
+   @font-face {
+       font-family: 'ezerblock_oe_regularregular';
+       src: url('fonts/ezerblock_oeregular.eot');
+       src: url('fonts/ezerblock_oeregular.eot?#iefix') format('embedded-opentype'),
+            url('fonts/ezerblock_oeregular.woff') format('woff'),
+            url('fonts/ezerblock_oeregular.ttf') format('truetype');
+       font-weight: normal;
+       font-style: normal;
+   
+   }
+
+body {
+  font-family: 'Alef';
+  background: linear-gradient(180deg, #00bfff 0%, #00bfff 4%, #82e2ff  20%, #82e2ff 90%, #C9F6FF 100%);
+}
 .App {
   text-align: center;
+  font-family: 'Alef';
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 4vmin;
   pointer-events: none;
 }
 
@@ -15,7 +87,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,3 +108,622 @@
     transform: rotate(360deg);
   }
 }
+
+
+.x-axis-bar-list {
+  margin: 0;
+  
+}
+.y-axis,
+.x-axis {
+  position: absolute;
+  bottom: 50px;
+  left: 50px;
+}
+.y-axis {
+  top: 0;
+  right: auto;
+  width: 1px;
+  background-color: #434a54;
+}
+.x-axis {
+  top: auto;
+  right: 0;
+  height: 1px;
+  background-color: #434a54;
+}
+.x-axis-bar .span-value
+{
+    width:100%
+}
+.temp
+{
+    direction:ltr
+}
+.y-axis-target,
+.x-axis-target {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 51px;
+  left: 51px;
+}
+.y-axis-target > .y-axis-target-line,
+.x-axis-target > .y-axis-target-line,
+.y-axis-target > .x-axis-target-line,
+.x-axis-target > .x-axis-target-line {
+  position: absolute;
+}
+.x-axis-target > .x-axis-target-line {
+  top: auto;
+  right: 0;
+  bottom: 170px;
+  left: 0;
+  height: 0;
+  border-bottom: 1px dashed #da4453;
+}
+.x-axis-target-line-label {
+  position: absolute;
+  top: -9px;
+  right: -50px;
+  width: 40px;
+  text-align: left;
+}
+.x-axis-target-line-label:after {
+  content: attr(data-label);
+  color: #da4453;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.x-axis-line-list {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  bottom: 51px;
+  left: 50px;
+}
+.x-axis-line-item {
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: 0;
+}
+
+.x-axis-line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  border-right: 1px solid #ccd1d9;
+}
+
+.x-axis-label-list {
+  position: absolute;
+  top: auto;
+  right: 5px;
+  bottom: 30px;
+}
+.h-bar-chart .x-axis-label-list {
+  right: 5px;
+  left: 56px;
+}
+.v-bar-chart .x-axis-label-list {
+  right: 10px;
+  left: 50px;
+}
+.x-bar-value{
+    width:100%;
+    direction:ltr;
+    font-size:1.3em
+}
+.x-axis-label-item {
+  display: block;
+  float: left;
+  width: 100%;
+}
+.x-axis-label {
+  position: relative;
+  display: block;
+  color: #656d78;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1;
+}
+.h-bar-chart .x-axis-label {
+  text-align: center;
+}
+.v-bar-chart .x-axis-label {
+  text-align: right;
+}
+
+.x-axis-bar-item {
+  width:65px;
+  bottom: 0;
+  cursor: pointer;
+  
+}
+.x-axis-bar-item-container {
+}
+.x-axis-bar {
+   text-align:center;  
+   position:absolute;
+   bottom: 0;
+    display: block;
+    width:65px;
+    font-size: 1.2em;
+    line-height:0.6em
+}
+  
+  
+.x-axis-bar.primary {
+    background:transparent;
+    line-height: 0.6em;
+    font-size: 1em;
+}
+.x-axis-bar.secondary {
+    z-index:999;
+  background-image: linear-gradient(to top, rgba(247,148,30,0.4) 0%, rgba(247,148,30,0.05) 75%, rgba(247,148,30,0.0) 100%);
+ }
+.x-axis-bar.secondaryalt {
+    z-index:999;
+   background-image: linear-gradient(to top, rgba(247,148,30,0.5) 0%, rgba(247,148,30,0.05) 75%, rgba(247,148,30,0.0) 100%);
+  
+}
+.x-axis-bar.rain {
+    background-image: linear-gradient(to top, rgba(228, 240, 242,0.4) 0%, rgba(228, 240, 242,0.0) 100%);
+}
+.x-axis-bar.humidity {
+    background-image: linear-gradient(to top, rgba(228, 240, 30,0.4) 0%, rgba(228, 240, 30,0.0) 100%);
+}
+.x-axis-bar.tertiary {
+    
+}
+.x-axis-bar.dashed {
+  border-color: #748298;
+  border-style: dashed;
+  border-bottom: none;
+  background-color: #fff;
+}
+.nested-bars .x-axis-bar:nth-of-type(1) {
+  right: 5px;
+  left: 5px;
+}
+.nested-bars .x-axis-bar:nth-of-type(2) {
+  right: 10px;
+  left: 10px;
+}
+.nested-bars .x-axis-bar:nth-of-type(3) {
+  right: 15px;
+  left: 15px;
+}
+
+.span-value {
+    
+  border-radius: 50%;
+  cursor: pointer;
+  margin:0
+  
+}
+.primary .span-value {
+    background:transparent;
+}
+.secondary .span-value, .secondaryalt .span-value {
+    background:transparent;
+}
+.tertiary .span-value {
+    background:transparent;
+}
+.dashed .span-value {
+  border-color: #748298;
+  background-color: #fff;
+}
+.x-axis-bar:hover{
+  opacity: 0.4;
+  background-color: #000;
+}
+.span-value:hover:after,
+.span-value:focus:after,
+.span-value:hover:before,
+.span-value:focus:before {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.15s linear;
+  transition: all 0.15s linear;
+}
+.span-value:after {
+  position: absolute;
+  top: -25px;
+  left: -20%;
+  z-index: 200;
+  visibility: hidden;
+  margin-left: -60px;
+  padding: 2px;
+  width: 180px;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #434a54;
+  content: attr(data-value);
+  text-align: center;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 1.1;
+  opacity: 0;
+}
+.span-value:before {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  z-index: 200;
+  visibility: hidden;
+  margin-left: -6px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-top-color: #fff;
+  content: '';
+  opacity: 0;
+}
+.uppervalue .span-value:after {
+    top: 35px;
+}
+.uppervalue .span-value:before {
+    top: 30px;
+}
+.x-axis-bullet-bar {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  bottom: 0;
+  left: 15px;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  -webkit-transition: all 0.15s linear;
+  transition: all 0.15s linear;
+}
+.x-axis-bar-target-line {
+  position: absolute;
+  top: auto;
+  right: 2px;
+  bottom: 0;
+  left: 2px;
+  height: 1px;
+  background-color: #1f2125;    
+}
+.y-axis-bar-item-container{
+    text-align:start;
+    width:70%
+}
+.y-axis-bar-item-container .small {
+    font-size: 0.45em;
+}
+.y-axis-bar-item-container .green{
+    background-color:#27e551
+}
+.y-axis-bar-item-container .orange{
+    background-color:#f7902e
+}
+.y-axis-bar-item-container .red{
+    background-color:#e52727
+}
+#forcast_days{
+  
+  height: 500px;
+  overflow-y: scroll;
+}
+#forcast_days li {
+  list-style: none;
+  display: inline-block;
+  text-align: center;
+}
+
+a.info
+{
+	position: relative;text-decoration: none;
+ 
+}
+a.info:hover
+{
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 100;
+}
+a.info span.info
+{
+    display: none;
+    z-index: 9999;
+}
+a.info:hover span.info
+{
+    display: block;
+    font-size: 0.8em;
+    left: -1em;
+    width: 10em;
+    position: absolute;
+    top: 1.5em;
+    text-align: center;
+    padding: 0.7em;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.9);
+    -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    color: #2C3A42;
+
+}
+
+#forcast_hours, #forcast_hours_table {
+    text-align:right;
+    max-height: 480px;
+    overflow-y: auto;
+    width:2100px;
+}
+
+
+#for24_graph_ng{
+    padding:0
+}
+#forcast_hours li, #forcast_hours_table li, #for24_graph_ng li {
+    line-height:1.5em;
+    list-style:none;
+    display:inline-block;
+    font-family: nextexitfot_regularregular;
+    font-size: 1.3em;
+    padding-bottom:0.3em
+}
+#forcast_hours_table li{
+    padding-bottom:0
+}
+#forcast_hours_table li .wind_icon{
+    margin-top:4px
+}
+
+#forcast_hours ul, #forcast_hours_table ul {
+   font-size:16px;
+}
+
+#forcast_hours .forcast_each, #forcast_hours_table .forcast_each {
+     margin-bottom:0;
+}
+
+#forcast_hours .forcast_date, #forcast_hours_table .forcast_date{
+    letter-spacing:1px;
+    margin-left:1px;
+}
+
+#forcast_hours .forcast_text, #forcast_hours_table .forcast_text {
+    
+   
+    text-align:right;
+
+}
+#graph_forcast {
+  height: 200px;
+  width:1920px;
+  position:relative;
+  color:black;
+  overflow-x: scroll;
+        background-color: rgba(255, 255, 255, 0);
+ 
+
+}
+.rtl {
+  direction:rtl
+}
+.textright {
+  text-align: right;
+}
+.likedislike{
+  display:none
+}
+
+
+#sidebar {
+  width: 22rem;
+  background-color: #f7f7f7;
+  border-right: solid 1px #e3e3e3;
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar > * {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+#sidebar h1 {
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 1rem 2rem;
+  border-top: 1px solid #e3e3e3;
+  order: 1;
+  line-height: 1;
+}
+
+#sidebar h1::before {
+  content: url("data:image/svg+xml,%3Csvg width='25' height='18' viewBox='0 0 25 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M19.4127 6.4904C18.6984 6.26581 18.3295 6.34153 17.5802 6.25965C16.4219 6.13331 15.9604 5.68062 15.7646 4.51554C15.6551 3.86516 15.7844 2.9129 15.5048 2.32334C14.9699 1.19921 13.7183 0.695046 12.461 0.982805C11.3994 1.22611 10.516 2.28708 10.4671 3.37612C10.4112 4.61957 11.1197 5.68054 12.3363 6.04667C12.9143 6.22097 13.5284 6.3087 14.132 6.35315C15.2391 6.43386 15.3241 7.04923 15.6236 7.55574C15.8124 7.87508 15.9954 8.18975 15.9954 9.14193C15.9954 10.0941 15.8112 10.4088 15.6236 10.7281C15.3241 11.2334 14.9547 11.5645 13.8477 11.6464C13.244 11.6908 12.6288 11.7786 12.0519 11.9528C10.8353 12.3201 10.1268 13.3799 10.1828 14.6234C10.2317 15.7124 11.115 16.7734 12.1766 17.0167C13.434 17.3056 14.6855 16.8003 15.2204 15.6762C15.5013 15.0866 15.6551 14.4187 15.7646 13.7683C15.9616 12.6032 16.423 12.1505 17.5802 12.0242C18.3295 11.9423 19.1049 12.0242 19.8071 11.6253C20.5491 11.0832 21.212 10.2696 21.212 9.14192C21.212 8.01428 20.4976 6.83197 19.4127 6.4904Z' fill='%23F44250'/%3E%3Cpath d='M7.59953 11.7459C6.12615 11.7459 4.92432 10.5547 4.92432 9.09441C4.92432 7.63407 6.12615 6.44287 7.59953 6.44287C9.0729 6.44287 10.2747 7.63407 10.2747 9.09441C10.2747 10.5536 9.07172 11.7459 7.59953 11.7459Z' fill='black'/%3E%3Cpath d='M2.64217 17.0965C1.18419 17.093 -0.0034949 15.8971 7.72743e-06 14.4356C0.00352588 12.9765 1.1994 11.7888 2.66089 11.7935C4.12004 11.797 5.30772 12.9929 5.30306 14.4544C5.29953 15.9123 4.10366 17.1 2.64217 17.0965Z' fill='black'/%3E%3Cpath d='M22.3677 17.0965C20.9051 17.1046 19.7046 15.9217 19.6963 14.4649C19.6882 13.0023 20.8712 11.8017 22.3279 11.7935C23.7906 11.7854 24.9911 12.9683 24.9993 14.4251C25.0075 15.8866 23.8245 17.0883 22.3677 17.0965Z' fill='black'/%3E%3C/svg%3E%0A");
+  margin-right: 0.5rem;
+  position: relative;
+  top: 1px;
+}
+
+#sidebar > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+#sidebar > div form {
+  position: relative;
+}
+
+#sidebar > div form input[type="search"] {
+  width: 100%;
+  padding-left: 2rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='%23999' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0.625rem 0.75rem;
+  background-size: 1rem;
+  position: relative;
+}
+
+#sidebar > div form input[type="search"].loading {
+  background-image: none;
+}
+
+#search-spinner {
+  width: 1rem;
+  height: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23000' strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M20 4v5h-.582m0 0a8.001 8.001 0 00-15.356 2m15.356-2H15M4 20v-5h.581m0 0a8.003 8.003 0 0015.357-2M4.581 15H9' /%3E%3C/svg%3E");
+  animation: spin 1s infinite linear;
+  position: absolute;
+  left: 0.625rem;
+  top: 0.75rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#sidebar nav {
+  flex: 1;
+  overflow: auto;
+  padding-top: 1rem;
+  position: absolute;
+}
+
+#sidebar nav a span {
+  float: right;
+  color: #eeb004;
+}
+#sidebar nav a.active span {
+  color: inherit;
+}
+
+i {
+  color: #818181;
+}
+#sidebar nav .active i {
+  color: inherit;
+}
+
+#sidebar ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#sidebar li {
+  margin: 0.25rem 0;
+}
+
+#sidebar nav a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+
+  white-space: pre;
+  padding: 0.5rem;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+  gap: 1rem;
+}
+
+#sidebar nav a:hover {
+  background: #e3e3e3;
+}
+
+#sidebar nav a.active {
+  background: hsl(224, 98%, 58%);
+  color: white;
+}
+#sigweather, #more_sigweather{
+  list-style: none;
+  font-size: 1.2em;
+}
+#sigweather a{
+  text-decoration: none;
+  color:black;
+}
+#latestnow{
+  font-size:1.2em
+}
+#cm_like, #cm_dislike{
+  display: table-cell;
+}
+#cm_result{
+  display: none;
+}
+.forcast_text{
+  width:30%
+}
+.forcast_day, .forcast_date{
+  width:5%
+}
+.forcast_morning, .forcast_noon, .forcast_night{
+  width:10%
+}
+.shadow, .sun{
+
+}
+.white_box{
+  background:white;
+  border-radius: 15px;
+  margin:8px;
+}
+
+.night{
+  background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 20%, #7480bb 40%, #737fbb 100%);
+}
+
+.dust{
+  background: linear-gradient(180deg, #65625a 0%, #4f5352 10%, #4f5352 60%, #65625a 100%);
+}
+
+.sunet{
+  background:linear-gradient(180deg, #b3d1cf 0%, #d2d5c6 4%, #ded0ba 8%, #f6c185 90%, #fbc066 100%);
+}
+
+.sunrise{
+  background: linear-gradient(180deg, #afd9ea 0%, #b6dae5 4%, #e8e6c1 90%, #f4e9b5 100%);
+}
+
+.rain{
+  background-color:#648AA5;
+}
+
+.snow{
+  background-color:#829CAA;
+}
+
+.windy{
+
+}
+.cloudy{
+
+}
+.partlycloudy{
+
+}
+.fewclouds{
+
+}
+.paramunit{
+  display:inline
+}
+
+

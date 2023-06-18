@@ -600,4 +600,6 @@ $PROBLEM_USER_PASSWORD =  array("Problem with user or password", "סיסמא ל�
 $NO_USER_EXIST = array("No user exists like that", "אין משתמש כזה", "Пользователь не существует с", "Aucun utilisateur n'existe avec", "");
 $VISIBILITY = array("visibility", "ראות", "видимость", "visibilité", "");
 $CLOTH = array("cloth", "לבוש", "", "", "");
+$VOTE_INSERTED = array("Your vote inserted to overall calculations. You have joined to thousend of voters, thank you!", "הצבעתך התקבלה! הצטרפת לאלפי מצביעים שמשפיעים על מדד הקור המוצג. תודה!", "Ваш голос включен в общие расчеты. Вы присоединились к тысяче избирателей, спасибо вам", "Votre vote inséré dans les calculs globaux. Vous avez rejoint des milliers d'électeurs, merci
+", "");
 ?>

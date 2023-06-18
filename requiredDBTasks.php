@@ -461,12 +461,12 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
         
  }
 
- $picname = $mem->get("picOfTheDayName");
+ $picname = "images/picOfTheDay/".$mem->get("picOfTheDayName");
  $comment = array($mem->get("picOfTheDaycomment0"), $mem->get("picOfTheDaycomment1"));
  if (!$picname){
     $result = db_init("SELECT * FROM PicOfTheDay order by uploadedAt DESC LIMIT 1","");
     while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) { 
-        $picname = "images/picOfTheDay/".$line["picname"];
+        $picname = $line["picname"];
         $comment0 = $line["comment0"];
         $comment1 = $line["comment1"];
         $mem->set("picOfTheDayName", $picname);
