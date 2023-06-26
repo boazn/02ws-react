@@ -1,21 +1,25 @@
 import decodeUriComponent from 'decode-uri-component';
 
 const Notifications = (props) => {
-    var latestalertprop = `props.notifications.latestalert${props.lang}`;
-    let latestalert = decodeUriComponent(`${props.notifications.latestalert1}`).replace(/\+/g, ' ');
-    let detailedForecast_title = decodeUriComponent(`${props.notifications.detailedforecast_title1}`).replace(/\+/g, ' ');
-    let detailedForecast = decodeUriComponent(`${props.notifications.detailedforecast1}`).replace(/\+/g, ' ');
+    
+    var latestalert_title = eval(`props.notifications.latestalert_title${props.lang}`);
+    let latestalert = decodeUriComponent(eval(`props.notifications.latestalert${props.lang}`)).replace(/\+/g, ' ');
+    let detailedForecast_title = decodeUriComponent(eval(`props.notifications.detailedforecast_title${props.lang}`)).replace(/\+/g, ' ');
+    let detailedForecast = decodeUriComponent(eval(`props.notifications.detailedforecast${props.lang}`)).replace(/\+/g, ' ');
     return (
         <div class="now_messages">       
         <div id="alerts" class="span7 offset3 white_box">
            <div id="alerts_app_promo"></div>
             <div id="message" className={"box_text " + (props.lang === 1? 'rtl' : '')}>
-                <h4>{props.notifications.latestalert_title1}</h4>
+                <h4>{latestalert_title}</h4>
+                {props.notifications.latestalerttype} ttl:{props.notifications.latestalertttl}  passedts:{props.notifications.passedts}
                 {props.notifications.timelatestalert1}<br/>
-                {latestalert}<br/><br/><br/>
+                <div dangerouslySetInnerHTML={{__html: latestalert}}></div>
+                <br/>
                 <h4>{detailedForecast_title}</h4>
                 {props.notifications.timeforecast1}<br/>
-                {detailedForecast}
+                <div dangerouslySetInnerHTML={{__html: detailedForecast}}></div>
+                
               
 
             </div>

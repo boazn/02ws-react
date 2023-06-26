@@ -10,7 +10,6 @@ import Ad from './Ad';
 import ColdMeter  from './ColdMeter';
 import { React } from 'react';
 import Statuses from './Statuses';
-import classNames from "classnames";
 import PicOfTheDay from './PicOfTheDay';
 import UserPics from './UserPics';
 import Activities from './Activities';
@@ -45,7 +44,7 @@ function App1({json, cssClasses}) {
   return (
     <>
     
-    <div className={"container-fluid App " + cssClasses}>
+    <div className={"clouds container-fluid App " + cssClasses}>
       
       <header className={"App-header row mb-2 " + (langcode === 1? 'rtl' : '')}>
         <div className="col-6 ">
@@ -56,6 +55,8 @@ function App1({json, cssClasses}) {
           })}
         </div>
        </header>
+       
+      
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
        <div className="col mx-auto mt-2"><Now current={current} lang={langcode} className={cssClasses} /></div>
        <div className="col white_box"><ColdMeter  lang={langcode}/></div>
@@ -64,6 +65,8 @@ function App1({json, cssClasses}) {
        <div className="col "><Activities activities={currentrecommendations} lang={langcode} /></div>
          
        </div>
+       <div className="clouds-3"></div>
+       
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
        <div className="col-12 mx-auto mt-12">
        <Forecast24h hours={nextHours} lang={langcode} className={cssClasses} />

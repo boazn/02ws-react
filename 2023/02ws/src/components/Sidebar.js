@@ -1,7 +1,6 @@
 
-import {getMainData} from '../helpers/Utils';
 import { Outlet, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import '../css/navbar.css';
 
 function Sidebar() {

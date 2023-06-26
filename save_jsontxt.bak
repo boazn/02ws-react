@@ -1,14 +1,3 @@
 #!/bin/bash
-curl https://www.02ws.co.il/02wsjson.php > /home/boazn/public/02ws.com/public/02wsjson.txt.temp
+curl -L https://www.02ws.co.il/02wsjson.php > /home/boazn/public/02ws.com/public/02wsjson.txt.temp
 mv -f /home/boazn/public/02ws.com/public/02wsjson.txt.temp /home/boazn/public/02ws.com/public/02wsjson.txt
-curl https://www.02ws.co.il/css/main.php?lang=1&type= > /home/boazn/public/02ws.com/public/css/main1.css.temp
-mv -f /home/boazn/public/02ws.com/public/css/main1.css.temp /home/boazn/public/02ws.com/public/css/main1.css
-curl https://www.02ws.co.il/css/main.php?lang=0&type= > /home/boazn/public/02ws.com/public/css/main0.css.temp
-mv -f /home/boazn/public/02ws.com/public/css/main0.css.temp /home/boazn/public/02ws.com/public/css/main0.css
-curl https://www.02ws.co.il/css/mobile.php?lang=1&type= > /home/boazn/public/02ws.com/public/css/mobile1.css.temp
-mv -f /home/boazn/public/02ws.com/public/css/mobile1.css.temp /home/boazn/public/02ws.com/public/css/mobile1.css
-curl https://www.02ws.co.il/css/mobile.php?lang=0&type= > /home/boazn/public/02ws.com/public/css/mobile0.css.temp
-mv -f /home/boazn/public/02ws.com/public/css/mobile0.css.temp /home/boazn/public/02ws.com/public/css/mobile0.css
-curl https://www.02ws.co.il/css/mobile.php?lang=0&type= > /home/boazn/public/02ws.com/public/mobile0.css
-
-

@@ -1,33 +1,11 @@
 
-import { React, useEffect, useState, useRef, classNames } from 'react';
+import {   useRef} from 'react';
+import classnames from "classnames";
 
 function Utils(){
-   const [app_layout, setLayout] = useState([]);
-  const [json, setJson] = useState([]);
-  const [current, setCurrent] = useState([]);
-  const [states, setStates] = useState([]);
+  
   const counter = useRef(0);
-    useEffect(() =>{
-        var opts = {
-          headers: {
-           
-          }
-        }
-        const fetchJson = async () => {
-          
-          const response = await fetch("https://www.02ws.co.il/02wsjson.txt", opts);
-          const json = await response.json();
-          const current = json.jws.current;;
-          const states = json.jws.states;
-          setJson(json);
-          setCurrent(current);
-          setStates(states);
-          setLayout("current");
-          counter.current++;
-          
-        };
-       fetchJson();
-      }, [])
+    
    
 }
 
@@ -42,7 +20,7 @@ export async function loader({ params }) {
     const current = json.jws.current;;
     const states = json.jws.states;
        
-    const cssClasses = classNames ({
+    const cssClasses = classnames ({
     snow: (states.issnowing  === 'true'),
     rain: (states.israining  === 'true'),
     night: (current.issun  === 'false'),

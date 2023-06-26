@@ -11,7 +11,6 @@ import ColdMeter  from './ColdMeter';
 import { React } from 'react';
 import navValues from '../helpers/navValues';
 import Statuses from './Statuses';
-import classNames from "classnames";
 import PicOfTheDay from './PicOfTheDay';
 import UserPics from './UserPics';
 import Activities from './Activities';

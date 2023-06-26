@@ -1,7 +1,7 @@
 import './App.css';
 import { React, useEffect, useState, useRef } from 'react';
 import navValues from './helpers/navValues';
-import classNames from "classnames";
+import classnames from "classnames";
 import App1 from './components/App1';
 import App2 from './components/App2';
 import App3 from './components/App3';
@@ -39,7 +39,7 @@ function App({layout, src}) {
   }, [])
 
 
-  const cssClasses = classNames ({
+  const cssClasses = classnames ({
     snow: (states.issnowing  === 'true'),
     rain: (states.israining  === 'true'),
     night: (current.issun  === 'false'),

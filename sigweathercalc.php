@@ -774,7 +774,26 @@ if	((($min15->get_prschange() < -0.3)||
 		"?section=graph.php&amp;graph=baro.php&amp;profile=1");
  	//update_action ("PrsSinking", $extrainfo, $ALT);
 }
-
+if (($current->get_hum() < 20)&&($current->get_hum() != "")&&($current->get_temp() > 25)&&($current->get_windspd() > 20))
+{
+	$extrainfoS = array (
+		array($HUMIDITY[$EN].": ".$current->get_hum() , 
+			  $HUMIDITY[$EN].": ".$current->get_hum()) ,
+		array($HUMIDITY[$HEB].": ".$current->get_hum(),
+			  $HUMIDITY[$HEB].": ".$current->get_hum()),
+		array($HUMIDITY[$RU].": ".$current->get_hum(),
+			  $HUMIDITY[$RU].": ".$current->get_hum()),
+		array($HUMIDITY[$FR].": ".$current->get_hum(),
+			  $HUMIDITY[$FR].": ".$current->get_hum()),
+		array($HUMIDITY[$AR].": ".$current->get_hum(),
+			  $HUMIDITY[$AR].": ".$current->get_hum()));
+   updateSigWeather(
+		"dry_ground_1.jpg", 
+		$FIRE_INDEX, 
+		 $extrainfoS, 
+		 "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
+		 update_action (CustomAlert::FireIndex, $extrainfo, $ALT);
+}
 if (($current->get_hum() < 20)&&($current->get_hum() != ""))
 {
 	$extrainfoS = array (
@@ -795,6 +814,7 @@ if (($current->get_hum() < 20)&&($current->get_hum() != ""))
 		 "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
 		 update_action (CustomAlert::Dry, $extrainfo, $ALT);
 }
+
 if ((($min15->get_prschange() > 0.2)||
 	 ($min30->get_prschange() > 0.5)||
 	 ($oneHour->get_prschange() > 1))&& (notnull()))
@@ -1477,7 +1497,7 @@ if ($current->get_temp3() > c_or_f(50))
           array($TEMP[$AR]." ".$ROAD[$AR].": "."<span>".$current->get_temp3()."</span>",
 			    $TEMP[$AR]." ".$ROAD[$AR].": ".$current->get_temp3())), 
                "?section=graph.php&amp;graph=temp3LatestArchive.php&amp;profile=2");
-   // update_action ("TEMP3", $extrainfo, $ALT);
+    update_action (CustomAlert::HotGround, $extrainfo, $ALT);
 }
 if (($current->get_rainchance() == 0)&&
 	($current->get_pm10() < 80) &&

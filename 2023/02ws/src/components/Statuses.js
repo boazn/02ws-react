@@ -6,7 +6,9 @@ const Statuses = (props) => {
             <li>
             <ul id="sigweather">
                     {props.statuses.map((status, i) => {
-                    return <li key={i}><a href={`https://www.02ws.co.il/${status.url}`}>{status.sigtitle1} - {status.sigext1} &nbsp;››</a></li>;
+                        const title = eval(`status.sigtitle${props.lang}`);
+                        const ext = eval(`status.sigext${props.lang}`);
+                    return <li key={i}><a href={`https://www.02ws.co.il/${status.url}`}>{title} - {ext} &nbsp;››</a></li>;
                 })}
                 
             </ul>

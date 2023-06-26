@@ -100,6 +100,7 @@ class FixedTime {
 
      
     function set_tempchange($temp) {
+        if (isset($_GET["debug"]))
         if ($_GET["debug"] >= 4)
             echo "<br > set_tempchange $temp -".$this->temp.": ".number_format($temp - $this->temp, 1, '.', '');
         if ($temp == "miss")
@@ -109,7 +110,8 @@ class FixedTime {
     }
     
     function set_temp2change($temp) {
-         if ($_GET["debug"] >= 4)
+        if (isset($_GET["debug"])) 
+        if ($_GET["debug"] >= 4)
             echo "<br > set_temp2change $temp - ".$this->temp2.": ".number_format($temp - $this->temp2, 1, '.', '');;
         if ($temp == "miss")
             $this->temp2change = "miss";
@@ -118,7 +120,8 @@ class FixedTime {
     }
     
     function set_temp3change($temp) {
-         if ($_GET["debug"] >= 4)
+        if (isset($_GET["debug"])) 
+        if ($_GET["debug"] >= 4)
             echo "<br > set_temp3change $temp - ".$this->temp3.": ".number_format($temp - $this->temp3, 1, '.', '');;
         if ($temp == "miss")
             $this->temp3change = "miss";
@@ -127,7 +130,7 @@ class FixedTime {
     }
 
      function set_dewchange($dew) {
-        if ($hum == "miss")
+        if ($dew == "miss")
             $this->dewchange = "miss";
         else
             $this->dewchange = number_format($dew - $this->dew, 1, '.', '');
@@ -1634,10 +1637,12 @@ function is_in_twilight()
     return ((get_sunset_ut() - $current->get_current_time_ut() > 8600) && ($current->get_current_time_ut() - get_sunrise_ut() > 8600));
 }
 function isTempF(){
+    if (!isset($_GET['tempunit']))
+        return false;
     return ($_GET['tempunit'] == 'F');
 }
 function c_or_f($temp) {
-
+    if (isset($_GET['tempunit']))
     if ($_GET['tempunit'] == 'F') {
 
         return ( round(((9 * $temp) / 5) + 32));
@@ -1703,6 +1708,7 @@ function getMinusHourMonth($minusHour) {
 
 function getMinusMinTime($minusMin) {
     global $hour, $min, $offset;
+    if (isset($_GET['debug']))
     if ($_GET['debug'] >= 3)
         echo "<br>getMinusMinTime: hour=" . $hour . " min=" . $min . " minusMin=" . $minusMin . " offest=" . $offset;
     $ret_date = date("G:i", mktime($hour, $min - $minusMin - $offset));
@@ -1809,6 +1815,8 @@ Class CustomAlert {
     const LowRadiation = "LowRad";
     const Dust = "Dust";
     const HighDust = "HighDust";
+    const FireIndex = "FireIndex";
+    const HotGround = "HotGround";
 }
 /********************************************************************/
 	// This function is called for every opening XML tag. We
@@ -2379,6 +2387,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
         }
 
     } else if ($target === ME) {
+        $mail->From = $source;
         array_push($EmailsToSend, array('email' => EMAIL_ADDRESS, 'lang' => $HEB));
     } else {//target = email
         $lang = $_GET['lang'] == "" ? $HEB : $_GET['lang'];
@@ -2389,15 +2398,15 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     $textToSend = str_replace(array("display:none", "\n"), array("", "<br/>"), $textToSend);
     $emailsSent = 0;
     //logger("Sending mail: " . $source."(".$sourcename.")"." --> " . $target . " - " . implode(" / ", $subject). " lang:".$EmailsToSend[0]['lang']);
-    
-    //echo "sending to $email...<br/>body=$textToSend<br/>Subject=$subject<br/>from=$source";
-    $body = $textToSend[$email['lang']];
-    $body .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$email['lang']] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>.  <a href=\"" . BASE_URL . "/unsubscribe.php?email=".$email['email']."\">Unsubscribe</a></div><img src=\"" . BASE_URL . "/" . $footer_pic . "\" /></footer></body></html>";
-    $mail->Body = $body;
-    $mail->AltBody = strip_tags($textToSend[$email['lang']]);
     foreach ($EmailsToSend as $email) {
-       // $mail->AddAddress($email['email'], "");
-        $mail->addBcc($email['email'], "");
+        $body = $textToSend[$email['lang']];
+        $body .= "\n<br /><footer><div style=\"clear:both;direction:rtl\" class=\"inv big\">" . $MORE_INFO[$email['lang']] . " - <a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>.  <a href=\"" . BASE_URL . "/unsubscribe.php?email=".$email['email']."\">Unsubscribe</a></div><img src=\"" . BASE_URL . "/" . $footer_pic . "\" /></footer></body></html>";
+        $mail->Body = $body;
+        $mail->AltBody = strip_tags($textToSend[$email['lang']]);
+        if ($target === ME)
+            $mail->AddAddress($email['email'], "");
+        else
+            $mail->addBcc($email['email'], "");
     }
     $subjectToMail = "";
     if (is_array($subject)) {
@@ -2412,7 +2421,7 @@ function send_Email($messageBody, $target, $source, $sourcename, $attachment, $s
     //$mail->AddStringAttachment("path/to/photo", "YourPhoto.jpg");
     //$mail->AddAttachment("c:/temp/11-10-00.zip", "new_name.zip");  // optional name
     $emailsSent++;
-        if (!$mail->Send()) {
+     if (!$mail->Send()) {
         mail("boazn1@gmail.com", "JWS mail failure", "failed sending to " . $email['email'], $headers);
         $result = "<br />failed sending to " . $email['email'] . " check your Email.";
     }else if ($target == HS)
@@ -3305,10 +3314,10 @@ function callCustomAlertSender($messageBody, $title, $picture_url, $embedded_url
     else if (($customAlert == CustomAlert::HighET)||($customAlert == CustomAlert::Dry)){
         $query = "select lang, gcm_regid  FROM fcm_users where active_dry=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_dry=1".$query_extension;
     }
-    else if ($customAlert == CustomAlert::HighUV){
+    else if (($customAlert == CustomAlert::HighUV)||($customAlert == CustomAlert::ExtremeUV)){
         $query = "select lang, gcm_regid  FROM fcm_users where active_uv=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_uv=1".$query_extension;
     }
-    else if ($customAlert == CustomAlert::LowRadiation){
+    else if (($customAlert == CustomAlert::LowRadiation)||($customAlert == CustomAlert::HotGround)){
         $query = "select lang, gcm_regid  FROM fcm_users where active_tips=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_tips=1".$query_extension;
     }
       

@@ -1,4 +1,3 @@
-import { Button } from "bootstrap";
 import { useEffect, useState } from 'react';
 
 const ColdMeter = (props) => {

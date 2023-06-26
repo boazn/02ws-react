@@ -17,7 +17,7 @@ const ForecastHour = (props) => {
                     </span>
                 </div>
                 <div class="x-axis-bar tertiary humidity" style={{'height': '60%'}}>
-                    <span class="span-value" data-value="לחות">{props.hum}%</span>
+                    
                 </div>
             </div>
         </li>

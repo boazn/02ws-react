@@ -602,4 +602,5 @@ $VISIBILITY = array("visibility", "ראות", "видимость", "visibilité
 $CLOTH = array("cloth", "לבוש", "", "", "");
 $VOTE_INSERTED = array("Your vote inserted to overall calculations. You have joined to thousend of voters, thank you!", "הצבעתך התקבלה! הצטרפת לאלפי מצביעים שמשפיעים על מדד הקור המוצג. תודה!", "Ваш голос включен в общие расчеты. Вы присоединились к тысяче избирателей, спасибо вам", "Votre vote inséré dans les calculs globaux. Vous avez rejoint des milliers d'électeurs, merci
 ", "");
+$FIRE_INDEX = array("High risk in fire starting", "סכנה גבוהה בהצתת שריפות", "Высокий риск возникновения пожара", "Risque élevé de départ de feu", "");
 ?>

@@ -6,12 +6,6 @@ import {
 } from "react-router-dom";
 import './index.css';
 import App from './App';
-import App1 from './components/App1';
-import App2 from './components/App3';
-import App3 from './components/App3';
-import AppExternal from './components/AppExternal';
-import Sidebar from './components/Sidebar';
-import Now from './components/Now';
 import ErrorPage from './pages/error-page';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';

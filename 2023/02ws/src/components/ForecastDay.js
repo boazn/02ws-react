@@ -18,8 +18,8 @@ const ForecastDay = (props) => {
                     <div class="number">
                         {props.TempLow}</div><div class="cloth extra0"> 
                         <a href="WhatToWear.php#jacket" rel="external" class="info cboxElement">
-                            <span class="info">ג'קט או פליז, שתי שכבות מתחת וגם גרביונים</span>
-                            <img style={{'vertical-align': 'middle'}} src={`https://www.02ws.co.il/${props.TempLowCloth}`} width="35" height="30" title="ג'קט או פליז, שתי שכבות מתחת וגם גרביונים" alt="ג'קט או פליז, שתי שכבות מתחת וגם גרביונים" />
+                            <span class="info">{eval(`props.TempLowClothTitle${props.lang}`)}</span>
+                            <img style={{'vertical-align': 'middle'}} src={`https://www.02ws.co.il/${props.TempLowCloth}`} width="35" height="30" alt={eval(`props.TempLowClothTitle${props.lang}`)} />
                         </a>
                     </div>
                 </div>
@@ -37,8 +37,8 @@ const ForecastDay = (props) => {
                     <div class="number">
                     {props.TempHigh}</div><div class="cloth extra0">
                         <a href="WhatToWear.php#tshirt" rel="external" class="info cboxElement">
-                            <span class="info">טישרט</span>
-                            <img style={{'vertical-align': 'middle'}} src={`https://www.02ws.co.il/${props.TempHighCloth}`} width="35" height="30" title="טישרט" alt="טישרט" />
+                            <span class="info">{eval(`props.TempHighClothTitle${props.lang}`)}</span>
+                            <img style={{'vertical-align': 'middle'}} src={`https://www.02ws.co.il/${props.TempHighCloth}`} width="35" height="30"  alt={eval(`props.TempHighClothTitle${props.lang}`)} />
                         </a>
                     </div>
                 </div>
@@ -51,8 +51,8 @@ const ForecastDay = (props) => {
                     <div class="number">
                     {props.TempNight}</div><div class="cloth extra0">
                         <a href="WhatToWear.php#jacket" rel="external" class="info cboxElement">
-                            <span class="info">ג'קט או פליז, שכבה אחת מתחת</span>
-                            <img style={{'vertical-align': 'middle'}} src={`https://www.02ws.co.il/${props.TempNightCloth}`} width="35" height="30" title="ג'קט או פליז, שכבה אחת מתחת" alt="ג'קט או פליז, שכבה אחת מתחת" />
+                            <span class="info">{eval(`props.TempNightClothTitle${props.lang}`)}</span>
+                            <img style={{'vertical-align': 'middle'}} src={`https://www.02ws.co.il/${props.TempNightCloth}`} width="35" height="30"  alt={eval(`props.TempNightClothTitle${props.lang}`)} />
                         </a>
                     </div>
                 </div>  

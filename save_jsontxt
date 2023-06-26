@@ -1,3 +1,3 @@
 #!/bin/bash
-curl https://www.02ws.co.il/02wsjson.php > /home/boazn/public/02ws.com/public/02wsjson.txt.temp
+curl -L https://www.02ws.co.il/02wsjson.php > /home/boazn/public/02ws.com/public/02wsjson.txt.temp
 mv -f /home/boazn/public/02ws.com/public/02wsjson.txt.temp /home/boazn/public/02ws.com/public/02wsjson.txt

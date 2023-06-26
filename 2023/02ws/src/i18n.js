@@ -17,8 +17,14 @@ i18n
          site: "02ws",
          temp: "Temp",
          humidity: "Humidity",
-         wind: "wind"
-
+         wind: "wind",
+         dew: "dew",
+         rain: "rain",
+         radiation: "radiation",
+         uv: "uv",
+         pm10: "pm10",
+         pm25: "pm25",
+         pressure: "pressure"
       
         }
       },
@@ -28,7 +34,14 @@ i18n
          site: "ירושמיים",
          temp: "טמפרטורה",
          humidity: "לחות",
-         wind: "רוח"
+         wind: "רוח",
+         dew: "נקודת טל",
+         rain: "גשם",
+         radiation: "קרינה",
+         uv: "uv",
+         pm10: "אבק גדול",
+         pm25: "אבק קטן",
+         pressure: "לחץ אוויר"
 
         }
       },

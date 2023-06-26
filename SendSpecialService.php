@@ -200,11 +200,13 @@ $result = "";
 $msgSent = true;
 //$name = array($_POST['name0'], $_POST['name1']);
 $email = $_POST['email'];
-$message = array($_POST['message0'], $_POST['message1']);
-$msgSpecial = array($_POST['message0'], $_POST['message1']);
-$title = array($_POST['title0'], $_POST['title1']);
-$picture_url = $_POST['picture_url'];
-$embedded_url = $_POST['embedded_url'];
+if (isset($_POST['message0'])){
+    $message = array($_POST['message0'], $_POST['message1']);
+    $msgSpecial = array($_POST['message0'], $_POST['message1']);
+    $title = array($_POST['title0'], $_POST['title1']);
+    $picture_url = $_POST['picture_url'];
+    $embedded_url = $_POST['embedded_url'];
+}
 $is_test = ($_GET['test'] == 1)? true : false;
 
 print_r($result);

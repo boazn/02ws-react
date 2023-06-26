@@ -24,15 +24,6 @@ function AppExternal({json, cssClasses, src}) {
   if (json.length === 0){ 
     return <div>loading...</div>
   }
-  const nextDays = json.jws.forecastDays;
-  const nextHours = json.jws.forecastHours;
-  const current = json.jws.current;
-  const messages = json.jws.Messages;
-  const statuses = json.jws.states.sigweather;
-  const states = json.jws.states;
-  const picoftheday = json.jws.LatestPicOfTheDay;
-  const userpics = json.jws.LatestUserPic;
-  const currentrecommendations = json.jws.current.recommendations;
     return (
       <>
       <div className={"container-fluid App " + cssClasses}>
