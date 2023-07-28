@@ -7,7 +7,7 @@
 <h1 align="center"><? echo $AVERAGE[$lang_idx]; ?> - <? echo $TEMP[$lang_idx]; ?>, <? echo $HUMIDITY[$lang_idx]; ?>, <? echo $PRECIPITATION[$lang_idx]; ?></h1>
 <? if (isHeb()) { ?>
 <div class="clear" style="direction:rtl">
-<a href="<? echo get_query_edited_url(get_url(), 'section', 'RainSeasons.php');?>"><? echo $RAIN_SEASONS[$lang_idx]; ?><?=get_arrow()?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="<? echo get_query_edited_url(get_url(), 'section', 'RainSeasons');?>"><? echo $RAIN_SEASONS[$lang_idx]; ?><?=get_arrow()?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="http://www.ims.gov.il/NR/rdonlyres/FEE1B975-72C5-45EF-B67A-672FC83C6FE2/0/%D7%9E%D7%A4%D7%95%D7%AA%D7%9E%D7%A9%D7%A7%D7%A2%D7%99%D7%9D19812010%D7%9E%D7%A4%D7%95%D7%AA19.pdf" rel="external" class="colorbox">מפות ממוצעי כמות גשם שנתית<?=get_arrow()?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="http://www.ims.gov.il/NR/rdonlyres/6C644572-AC12-4B7D-A084-342771C43527/0/%D7%9E%D7%A4%D7%95%D7%AA%D7%99%D7%9E%D7%99%D7%92%D7%A9%D7%9D19812010%D7%9E%D7%A4%D7%95%D7%AA1015.pdf" rel="external" class="colorbox">מפות ממוצעי ימי גשם<?=get_arrow()?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </div>

@@ -85,7 +85,7 @@ $thisMonth->set_rainydays($mem->get(THIS_MONTH_RAINY_DAYS));
 $prevMonth->set_rainydays($mem->get(PREV_MONTH_RAINY_DAYS));
 	try{
 if (($hour == 2)&&($min<10)) {
-    $tok = ($day > 1) ? getTokFromFile(FILE_THIS_MONTH) : getTokFromFile(FILE_PREV_MONTH);
+    $tok = ($day > 1) ? getTokFromFile($prefix.FILE_THIS_MONTH) : getTokFromFile($prefix.FILE_PREV_MONTH);
 
     $found = searchNext ($tok, "Rain:");//max rain 
     if (searchNext ($tok, "Rain:"))//rainy days   
@@ -128,8 +128,9 @@ if ($hour == 1) {
   {
 	/***********************************************************************/	
 
-	/* getting data from thisYear file */        
-	$tok = getTokFromFile(FILE_THIS_YEAR);
+	/* getting data from thisYear file */     
+      
+	$tok = getTokFromFile($_SERVER['DOCUMENT_ROOT'].FILE_THIS_YEAR);
 	getNextWordWith($tok, "---");
 	$borderword = getNextWordWith($tok, "---");
 	if ($borderword != "")
@@ -413,6 +414,8 @@ if ((!$forecastDaysDB)||(count($forecastDaysDB) == 0))
                     echo "<br>fmonth=".$fmonth;
                     echo "<br>fyear=".$fyear;
                     echo "<br>todayForecast_date=".$todayForecast_date."<br>";
+                    echo "<br>set_temp_day=".$line["TempHigh"]."<br>";
+                    echo "<br>set_temp_night=".$line["TempNight"]."<br>";
                    
                 }
 

@@ -84,22 +84,18 @@ include_once("include.php");
 
 		</select>
 		</li>
-		<li class="<?=getCurrentClass("yesterday")?> il_first" style="clear:both"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'yesterday.php');?>" class="hlink"> <? echo $YESTERDAY[$lang_idx];?></a></li>
+		<li class="<?=getCurrentClass("yesterday")?> il_first" style="clear:both"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'yesterday');?>" class="hlink"> <? echo $YESTERDAY[$lang_idx];?></a></li>
 		<li class="<?=getCurrentClass("downld02")?>" ><a OnClick="namosw_goto_byclick('reports/downld02.txt', 'reportdiv')" href="javascript:void(0)" class="hlink"> <? echo $DETAILED_TABLE[$lang_idx];?></a></li>
 		<li class="<?=getCurrentClass("downld08")?>"><a OnClick="namosw_goto_byclick('reports/downld08.txt', 'reportdiv')" href="javascript:void(0)" class="hlink"> <? echo $DETAILED_TABLE08[$lang_idx];?></a></li>
 		<li class="<?=getCurrentClass("2weeks")?>"><a OnClick="namosw_goto_byclick('2weeks.php', 'reportdiv')" href="javascript:void(0)" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_WEEK[$lang_idx];?></a></li>
 		<li class="<?=getCurrentClass("lastmonth")?>"><a OnClick="namosw_goto_byclick('month.php', 'reportdiv')" href="javascript:void(0)" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_MONTH[$lang_idx];?></a></li>
-		<li class="<?=getCurrentClass("averages")?>"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'averages.php');?>" class="hlink"><? echo $AVERAGE[$lang_idx];?></a></li>    
-		<li class="<?=getCurrentClass("allTimeRecords")?>"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'allTimeRecords.php');?>" class="hlink"><? echo $RECORDS[$lang_idx];?></a></li>
-		<li class="<?=getCurrentClass("RainSeasons")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'RainSeasons.php');?>" class="hlink">150 <? echo $RAIN_SEASONS[$lang_idx]."...";?></a></li>
-		<li class="<?=getCurrentClass("snow")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'snow.php');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a></li>
-		<li class="<?=getCurrentClass("reports")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'reports.php');?>" class="hlink"><? echo $REPORTS[$lang_idx];?>...</a></li>
-		<li class="<?=getCurrentClass("climate")?>"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'climate.php');?>" title="<? echo $CLIMATE_TITLE[$lang_idx];?>" class="hlink"><? echo $CLIMATE[$lang_idx];?></a></li>
-		<li class="<?=getCurrentClass("browsedate")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'browsedate.php');?>" class="hlink"><? echo $ARCHIVE[$lang_idx];?>...</a></li>
-		<li class="<?=getCurrentClass("<?=FILE_THIS_MONTH?>")?> il_first" style="width:10%"><a OnClick="namosw_goto_byclick('<?=BASE_URL.substr(FILE_THIS_MONTH, strpos(FILE_THIS_MONTH,"/reports"))?>', 'reportdiv')" href="javascript:void(0)" ><? echo $monthInWord." ".$year; ?></a></li>
-		<li class="<?=getCurrentClass("<?=FILE_PREV_MONTH?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=BASE_URL.substr(FILE_PREV_MONTH, strpos(FILE_PREV_MONTH,"/reports"))?>', 'reportdiv')" href="javascript:void(0)" ><? echo $prevMonthInWord." ".getPrevMonthYear($month, $year);?></a></li>
-		<li class="<?=getCurrentClass("<?=FILE_THIS_YEAR?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=BASE_URL.substr(FILE_THIS_YEAR, strpos(FILE_THIS_YEAR,"/reports"))?>', 'reportdiv')" href="javascript:void(0)" ><? echo $year; ?></a></li>    
-		<li class="<?=getCurrentClass("<?=FILE_PREV_YEAR?>")?>" style="width:10%"><a OnClick="namosw_goto_byclick('<?=BASE_URL.substr(FILE_PREV_YEAR, strpos(FILE_PREV_YEAR,"/reports"))?>', 'reportdiv')" href="javascript:void(0)" ><? echo $year-1; ?></a></li> 
+		<li class="<?=getCurrentClass("averages")?>"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'averages');?>" class="hlink"><? echo $AVERAGE[$lang_idx];?></a></li>    
+		<li class="<?=getCurrentClass("allTimeRecords")?>"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'allTimeRecords');?>" class="hlink"><? echo $RECORDS[$lang_idx];?></a></li>
+		<li class="<?=getCurrentClass("RainSeasons")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'RainSeasons');?>" class="hlink">150 <? echo $RAIN_SEASONS[$lang_idx]."...";?></a></li>
+		<li class="<?=getCurrentClass("snow")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'snow');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a></li>
+		<li class="<?=getCurrentClass("reports")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'reports');?>" class="hlink"><? echo $REPORTS[$lang_idx];?>...</a></li>
+		<li class="<?=getCurrentClass("climate")?>"><a href="<? echo get_query_edited_url($url_cur, 'subsection', 'climate');?>" title="<? echo $CLIMATE_TITLE[$lang_idx];?>" class="hlink"><? echo $CLIMATE[$lang_idx];?></a></li>
+		<li class="<?=getCurrentClass("browsedate")?>"><a href="<? echo get_query_edited_url($url_cur, 'section', 'browsedate');?>" class="hlink"><? echo $ARCHIVE[$lang_idx];?>...</a></li>
 		
 </ul>
 
@@ -107,10 +103,44 @@ include_once("include.php");
 <div id="reportdiv" class="report inv_plain_3_zebra" style="padding:2em;text-align:left;overflow:auto;direction:ltr">
 <? if ($_GET['subsection'] != "")
 {
+	$url = $_GET['subsection'];
+	$blackList = array(
+		'http',
+		'exec',
+		'system',
+		'cmd=',
+		'php://',
+		'passthru',
+		'://',
+		'<?'
+	);
+	foreach($blackList as $blackItem)
+	{
+	if(strpos(strtolower($_GET['subsection']), $blackItem) !== false)
+	{
+			echo "blocked";
+			exit;
+				
+	}
+	} 
 echo "<div class=\"inv_plain_3_zebra\" style=\"text-align:center\">";
 if (isReport())
 	echo "<div align=\"left\" class=\"report\"><pre>";
-include("{$_GET['subsection']}");
+	if (file_exists($url.".php")){
+		$url = $url.".php";             
+	
+	}
+	else if (file_exists($url))
+	{
+
+	}
+	else
+	{
+		echo  "blocked";
+		exit;
+	} 
+
+include("{$url}");
 if (isReport())
 	echo "</pre></div>";
 echo "</div>";

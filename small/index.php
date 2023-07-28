@@ -134,7 +134,7 @@ if (isRadarPage())
 <div id="navbar" style="display:none">
 </div>
 <div style="" id="main_cellphone_container">
-<div class="loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
+<div class="loading"><img src="<?=BASE_URL?>/img/loading.gif" alt="loading" width="32" height="32" /></div>
 <? if (isFastPage()) {?>
 
 <div id="adunit1" class="adunit" style="visibility:hidden">
@@ -242,7 +242,7 @@ else {?>
 <div id="statuslinestart">
     <div  id="coldmeterstart">
     <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>"> 
-    <span id="current_feeling_link_start"><img src="img/loading.gif" alt="loading" width="32" height="32" /></span>
+    <span id="current_feeling_link_start"><img src="<?=BASE_URL?>/img/loading.gif" alt="loading" width="32" height="32" /></span>
      </a>
     </div>
 </div>
@@ -266,7 +266,7 @@ else {?>
     <a title="<?=$THSW[$lang_idx]?>"  href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>"> 
     <span dir="ltr" class="value" title="<?=$THSW[$lang_idx]?>"><? echo $itfeels[1];  ?></span> 
     </a></span>
-    <span class="sunshade" style="display:none;"><img src="images/shadow.png" width="15" alt="<? echo $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" /></span>
+    <span class="sunshade" style="display:none;"><img src="<?=BASE_URL?>/images/shadow.png" width="15" alt="<? echo $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" /></span>
 <span id="itfeels_windchill" style="display:none;"> 
 <a title="" href="<?=$_SERVER['SCRIPT_NAME']?>?section=graph.php&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c']?>" onclick="showLoading()"> 
  <span dir="ltr" class="value" title="<?=$WIND_CHILL[$lang_idx]?>"></span> 
@@ -293,8 +293,8 @@ else {?>
     <span id="current_feeling_link">&nbsp;</span>
      </a>
     </div>
-    <div id="cm_dislike"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" onclick="showLoading()"> <img src="images/icons/cm_dislike.svg" width="50" height="50"></a></div>
-    <div id="cm_like"><a onclick="vote_cm_like()" class="info"><span class="info"><?=$COLD_METER_YES[$lang_idx]?></span> <img src="images/icons/cm_like.svg" width="50" height="50"></a></div>
+    <div id="cm_dislike"><a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=survey.php&amp;survey_id=2&amp;lang=<? echo $lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" onclick="showLoading()"> <img src="<?=BASE_URL?>/images/icons/cm_dislike.svg" width="50" height="50"></a></div>
+    <div id="cm_like"><a onclick="vote_cm_like()" class="info"><span class="info"><?=$COLD_METER_YES[$lang_idx]?></span> <img src="<?=BASE_URL?>/images/icons/cm_like.svg" width="50" height="50"></a></div>
     <div id="cm_result" style="display:none"><div id="cm_result_msg"></div><div><input type="button" value="<?=$DONE[$lang_idx]?>" onclick="$('#cboxClose').click();" id="cm_result_OK" class="info  inv_plain_3 button" /></div></div>
 
 </div>
@@ -307,17 +307,17 @@ else {?>
              
          </div>
          <div class="highlows">
-                 <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
-                 <div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
+                 <div class="highparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
+                 <div class="lowparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div> 
         
    <div class="trendstable"> 
             <table>
                  <tr class="trendstitles">
-                         <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
-                         <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
-                         <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
-                         <td  class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/24_icon.png" width="21" height="21" alt=""/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/hour_icon.png" width="21" height="21" alt="hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                  </tr>
                  <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
@@ -339,17 +339,17 @@ else {?>
              
          </div>
          <div class="highlows">
-                 <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
-                 <div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
+                 <div class="highparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
+                 <div class="lowparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div> 
          
    <div class="trendstable"> 
         <table>
                  <tr class="trendstitles">
-                         <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
-                         <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
-                         <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
-                         <td  class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/24_icon.png" width="21" height="21" alt=""/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/hour_icon.png" width="21" height="21" alt="hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                  </tr>
                  <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
@@ -371,17 +371,17 @@ else {?>
                 
         </div>
         <div class="highlows">
-            <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
-            &nbsp;&nbsp;&nbsp;&nbsp;<div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
+            <div class="highparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<div class="lowparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div>
        
         <div class="trendstable">
         <table>
         <tr class="trendstitles">
-                <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
-                <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
-                <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
-                <td  class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
+                <td  class="box" title=""><img src="<?=BASE_URL?>/img/24_icon.png" width="21" height="21" alt=""/></td>
+                <td  class="box" title=""><img src="<?=BASE_URL?>/img/hour_icon.png" width="21" height="21" alt="hour"/></td>
+                <td  class="box" title=""><img src="<?=BASE_URL?>/img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                <td  class="box" title=""><img src="<?=BASE_URL?>/img/quarter_icon.png" width="21" alt="quarter hour"/></td>
         </tr>
          <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
@@ -399,7 +399,7 @@ else {?>
 </div>
 <div id="latestwebcam" class="inparamdiv" style="display:none;overflow: hidden;">
     <div id="livepic_box" class="" style="display:none">
-    <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=smallwebcam.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" title="<? echo($LIVE_PICTURE[$lang_idx]);?>" onclick="showLoading()"><img src="<?=BASE_URL?>/phpThumb.php?src=images/webCameraB.jpg&w=600&fltr%5B%5D=gam%7C0.9" width="280" height="285" alt="<? echo($LIVE_PICTURE[$lang_idx]);?>" /></a>
+    <a href="<?=$_SERVER['SCRIPT_NAME']?>?section=smallwebcam.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>" title="<? echo($LIVE_PICTURE[$lang_idx]);?>" onclick="showLoading()"><img src="<?=BASE_URL?>/phpThumb.php?src=<?=BASE_URL?>/images/webCameraB.jpg&w=600&fltr%5B%5D=gam%7C0.9" width="280" height="285" alt="<? echo($LIVE_PICTURE[$lang_idx]);?>" /></a>
     </div>
 </div>
 <div id="latestmoon" class="inparamdiv" style="display:none;">
@@ -416,7 +416,7 @@ else {?>
         </div>
   </div>
     <div class="highlows">
-            <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
+            <div class="highparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
     </div>
     <div class="paramtrend">
             <div class="">  
@@ -426,9 +426,9 @@ else {?>
     <div class="trendstable">	
       <table>
        <tr class="trendstitles">
-            <td  class="box" title=""><img src="img/hour_icon.png" width="21" alt="hour" /></td>
-            <td  class="box" title=""><img src="img/half_icon.png" width="21" alt="half hour"/></td>
-            <td class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
+            <td  class="box" title=""><img src="<?=BASE_URL?>/img/hour_icon.png" width="21" alt="hour" /></td>
+            <td  class="box" title=""><img src="<?=BASE_URL?>/img/half_icon.png" width="21" alt="half hour"/></td>
+            <td class="box" title=""><img src="<?=BASE_URL?>/img/quarter_icon.png" width="21" alt="quarter hour"/></td>
        </tr>
        <tr class="trendsvalues">
         <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
@@ -448,7 +448,7 @@ else {?>
 <div id="rainratevalue" class="paramvalue">
 </div>
 <div class="highlows">
-    <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/><span class="high_time"></span>
+    <div class="highparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_max.png" width="15" height="14" alt=""/><span class="high_time"></span>
 </div>
 <div class="paramtrend">
     <? echo $DAILY_RAIN[$lang_idx]; ?>:&nbsp;<span id="dailyrain"></span><br/>
@@ -457,9 +457,9 @@ else {?>
 <div class="trendstable">
  <table id="rainrate15min">
 <tr class="trendstitles">
-        <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
-        <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
-        <td class="box" title=""><img src="img/quarter_icon.png" width="21" height="21" alt="quarter hour"/></td>
+        <td  class="box" title=""><img src="<?=BASE_URL?>/img/hour_icon.png" width="21" height="21" alt="hour"/></td>
+        <td  class="box" title=""><img src="<?=BASE_URL?>/img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+        <td class="box" title=""><img src="<?=BASE_URL?>/img/quarter_icon.png" width="21" height="21" alt="quarter hour"/></td>
 </tr>
 <tr class="trendsvalues">
         <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
@@ -479,7 +479,7 @@ else {?>
    <div id="sunvalues" class="paramvalue">
    </div>
     <div class="highlows">
-            <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
+            <div class="highparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
     </div>
     <div class="paramtrend">
             <div class="innertrendvalue">
@@ -489,9 +489,9 @@ else {?>
     <div class="trendstable">	
       <table>
        <tr class="trendstitles">
-            <td  class="box" title=""><img src="img/24_icon.png" width="21" alt="24 hours" /></td>
-            <td  class="box" title=""><img src="img/half_icon.png" width="21" alt="half hour"/></td>
-            <td class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
+            <td  class="box" title=""><img src="<?=BASE_URL?>/img/24_icon.png" width="21" alt="24 hours" /></td>
+            <td  class="box" title=""><img src="<?=BASE_URL?>/img/half_icon.png" width="21" alt="half hour"/></td>
+            <td class="box" title=""><img src="<?=BASE_URL?>/img/quarter_icon.png" width="21" alt="quarter hour"/></td>
        </tr>
        <tr class="trendsvalues">
         <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
@@ -512,14 +512,14 @@ else {?>
             
     </div>
     <div class="highlows">
-        <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
+        <div class="highparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
     </div>
     <div class="trendstable"> 
         <table>
                  <tr class="trendstitles">
-                         <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
-                         <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
-                         <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/24_icon.png" width="21" height="21" alt=""/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/hour_icon.png" width="21" height="21" alt="hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/half_icon.png" width="21" height="21" alt="half hour"/></td>
                  </tr>
                  <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
@@ -544,9 +544,9 @@ else {?>
     <div class="trendstable">
         <table>
         <tr class="trendstitles">
-                <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
-                <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
-                <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                <td  class="box" title=""><img src="<?=BASE_URL?>/img/24_icon.png" width="21" height="21" alt=""/></td>
+                <td  class="box" title=""><img src="<?=BASE_URL?>/img/hour_icon.png" width="21" height="21" alt="hour"/></td>
+                <td  class="box" title=""><img src="<?=BASE_URL?>/img/half_icon.png" width="21" height="21" alt="half hour"/></td>
         </tr>
          <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
@@ -567,16 +567,16 @@ else {?>
         <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=graph.php&amp;graph=dewptLatestArchive.php&amp;level=1&amp;freq=2&amp;profile=<? echo $profile;?>&amp;lang=<? echo $lang_idx;?>&amp;tempunit=<?=$tu?>&amp;style=<?=$_GET["style"]?>"  class="info"></a>
 </div>
 <div class="highlows">
-            <span><strong><div class="highparam"></div></strong>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"></span>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span><strong><div class="lowparam"></div></strong>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/></span>&nbsp;<span class="low_time"></span>
+            <span><strong><div class="highparam"></div></strong>&nbsp;<img src="<?=BASE_URL?>/img/peak_max.png" width="15" height="14" alt="<? echo $HIGH[$lang_idx]; ?>"/></span>&nbsp;<span class="high_time"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span><strong><div class="lowparam"></div></strong>&nbsp;<img src="<?=BASE_URL?>/img/peak_min.png" width="15" height="14" alt="<? echo $LOW[$lang_idx]; ?>"/></span>&nbsp;<span class="low_time"></span>
     </div>
 
 <div class="trendstable">
 <table>
 <tr class="trendstitles">
-        <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
-        <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="img/hour_icon.png" width="21" alt="hour"/></td>
-        <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="img/half_icon.png" width="21" alt="half hour"/></td>
+        <td  class="box" title="24 <? echo $HOURS[$lang_idx];?>"><img src="<?=BASE_URL?>/img/24_icon.png" width="21" alt="24 <? echo $HOURS[$lang_idx];?>"/></td>
+        <td  class="box" title="<? echo($HOUR[$lang_idx]);?>"><img src="<?=BASE_URL?>/img/hour_icon.png" width="21" alt="hour"/></td>
+        <td  class="box" title="30<? echo($MINTS[$lang_idx]);?>"><img src="<?=BASE_URL?>/img/half_icon.png" width="21" alt="half hour"/></td>
 </tr>
     <tr class="trendsvalues">
         <td><div class="trendvalue"><div class="innertrendvalue">
@@ -607,17 +607,17 @@ else {?>
              
          </div>
          <div class="highlows">
-                 <div class="highparam"><strong></strong></div>&nbsp;<img src="img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
-                 <div class="lowparam"><strong></strong></div>&nbsp;<img src="img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
+                 <div class="highparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_max.png" width="15" height="14" alt=""/>&nbsp;<span class="high_time"></span>
+                 <div class="lowparam"><strong></strong></div>&nbsp;<img src="<?=BASE_URL?>/img/peak_min.png" width="15" height="14" alt=""/>&nbsp;<span class="low_time"></span>
          </div> 
          
    <div class="trendstable"> 
         <table>
                  <tr class="trendstitles">
-                         <td  class="box" title=""><img src="img/24_icon.png" width="21" height="21" alt=""/></td>
-                         <td  class="box" title=""><img src="img/hour_icon.png" width="21" height="21" alt="hour"/></td>
-                         <td  class="box" title=""><img src="img/half_icon.png" width="21" height="21" alt="half hour"/></td>
-                         <td  class="box" title=""><img src="img/quarter_icon.png" width="21" alt="quarter hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/24_icon.png" width="21" height="21" alt=""/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/hour_icon.png" width="21" height="21" alt="hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/half_icon.png" width="21" height="21" alt="half hour"/></td>
+                         <td  class="box" title=""><img src="<?=BASE_URL?>/img/quarter_icon.png" width="21" alt="quarter hour"/></td>
                  </tr>
                  <tr class="trendsvalues">
                      <td><div class="trendvalue"><div class="innertrendvalue"></div></div></td>
@@ -999,7 +999,7 @@ else {?>
         <tr><td><?=$EMAIL[$lang_idx]?>:</td><td><input type="text" name="email" value="" readonly="readonly" id="profileform_email" size="30"/></td></tr>
         <tr><td><?=$PASSWORD[$lang_idx]?>:</td><td><input type="password" name="password" value="" id="profileform_password"/></td></tr>
         <tr><td><?=$USER_ICON[$lang_idx]?>:</td><td><div><div class="user_icon_frame">
-    <div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir("img/user_icon")); foreach ($user_icons as $user_icon)
+    <div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir($_SERVER['DOCUMENT_ROOT']."/img/user_icon")); foreach ($user_icons as $user_icon)
                 { ?>
         <div class="contentbox">
                 <div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>'>&nbsp;</div>
@@ -1018,7 +1018,7 @@ else {?>
         <input type="checkbox" name="personal_coldmeter" value="" id="profileform_personal_coldmeter" /><?=$PERSONAL_COLD_METER[$lang_idx]?><br />
         </div>
 
-        <div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
+        <div style="display:none" class="float loading"><img src="<?=BASE_URL?>/img/loading.gif" alt="loading" width="32" height="32" /></div>
         <div id="profileform_result" class="float"></div>
         <input type="submit" value="<?=$UPDATE_PROFILE[$lang_idx]?>" onclick="updateprofile_to_server(<?=$lang_idx?>)" id="profileform_submit" class="clear inv_plain_3"/>
         <input type="submit" value="<?=$DONE[$lang_idx]?>" onclick="$('#cboxClose').click();window.location.reload()" id="profileform_OK" class="info inv_plain_3" style="display:none"/>
@@ -1037,7 +1037,7 @@ else {?>
         <div class="clear float big" style="padding:1em 0" id="loginform_rememberme_div">
         <input type="checkbox" name="rememberme" value="" id="loginform_rememberme"/><?=$REMEMBER_ME[$lang_idx]?>
         </div>  
-	<div style="display:none" class="float loading"><img src="images/loading.gif" alt="loading" width="32" height="32"/></div>
+	<div style="display:none" class="float loading"><img src="<?=BASE_URL?>/images/loading.gif" alt="loading" width="32" height="32"/></div>
         <div id="loginform_result" class="float"></div>
 	<input type="submit" value="<?=$LOGIN[$lang_idx]?>" class="float clear inv_plain_3_zebra big" onclick="login_to_server(<?=$lang_idx?>)" id="loginform_submit"/>
         <input type="submit" value="Success!" onclick="$('#colorbox').hide();window.location.reload();" id="loginform_OK" class="info invfloat" style="display:none"/>
@@ -1058,7 +1058,7 @@ else {?>
 <tr><td></td><td><input type="password" placeholder="<?=$PASSWORD_VERIFICATION[$lang_idx]?>" name="password_verif" value="" id="registerform_password_verif" tabindex="5"/></td></tr>
 <tr><td></td><td><input type="text" name="username" placeholder="<?=$USER_ID[$lang_idx]?>" value="" id="registerform_userid" tabindex="6"/><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$USER_ID_EXP[$lang_idx]?></span></a></td></tr>
 <tr><td></td><td><?=$USER_ICON[$lang_idx]?>:<div style="display:inline-block"><div class="user_icon_frame">
-<div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir("img/user_icon")); foreach ($user_icons as $user_icon)
+<div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir($_SERVER['DOCUMENT_ROOT']."/img/user_icon")); foreach ($user_icons as $user_icon)
             { ?>
     <div class="contentbox">
             <div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>'>&nbsp;</div>
@@ -1076,7 +1076,7 @@ else {?>
 <input type="checkbox" name="priority" value="" id="registerform_priority"/><?=$GET_UPDATES[$lang_idx]?><br />
 <input type="checkbox" name="personal_coldmeter" value="" id="registerform_personal_coldmeter" disabled/><?=$PERSONAL_COLD_METER[$lang_idx]?><a href="javascript:void(0)" class="info">(?)<span class="info" style="top:-50px;<?=get_s_align()?>:-100px"><?=$PERSONAL_COLD_METER_EXP[$lang_idx]?></span></a>
 </div>
-<div style="display:none" class="float loading"><img src="img/loading.gif" alt="loading" width="32" height="32" /></div>
+<div style="display:none" class="float loading"><img src="<?=BASE_URL?>/img/loading.gif" alt="loading" width="32" height="32" /></div>
 <div id="registerform_result" class="float">
 </div>
 <input type="submit" value="<?=$REGISTER[$lang_idx]?>" class="invfloat clear inv_plain_3" onclick="register_to_server(<?=$lang_idx?>)" id="registerform_submit"/>
@@ -1092,12 +1092,12 @@ else {?>
         <br />
         <h2 class="big inv_plain_2"><br /><div>
                 <a href="https://play.google.com/store/apps/details?id=il.co.jws.app" target="_blank">
-                        <img src="images/getitongp.svg" alt="Google play App" width="150" height="60"/>
+                        <img src="<?=BASE_URL?>/images/getitongp.svg" alt="Google play App" width="150" height="60"/>
                 </a>
                 </div>
                 <div>
                 <a href="https://itunes.apple.com/us/app/yrwsmyym/id925504632?ls=1&mt=8" target="_blank">
-                        <img src="images/Available_on_the_App_Store.svg" alt="App Store App" width="150" height="60"/>
+                        <img src="<?=BASE_URL?>/images/Available_on_the_App_Store.svg" alt="App Store App" width="150" height="60"/>
                 </a>
                 </div><br /><br />
                 <a   onclick="redirect_to_desktop(<?=$lang_idx?>)" id="mobile_redirect_submit" class="clear inv_plain_3 big" style="width:100%"><?=$DESKTOP_REDIRECT[$lang_idx].get_arrow()?></a><br /><br /></h2><br/><br/><br/>      
@@ -1332,15 +1332,15 @@ Licensed MIT
         var cssstyle_str = "";
         if (json.jws.current.issunset == 1) { 
             cssstyle_str += "sunset"; 
-            loadCSS("css/sunset.min.css", document.getElementById('loadGA'));
+            loadCSS("<?=BASE_URL?>/css/sunset.min.css", document.getElementById('loadGA'));
        }
        if (json.jws.current.issunrise == 1) { 
                 cssstyle_str += "sunrise"; 
-                loadCSS("css/sunrise.min.css", document.getElementById('loadGA'));
+                loadCSS("<?=BASE_URL?>/css/sunrise.min.css", document.getElementById('loadGA'));
         } 
        if ((json.jws.current.islight == 1)&&(json.jws.current.cloudiness > 6)) { 
                 cssstyle_str += ",cloudy"; 
-                loadCSS("css/cloudy.min.css", document.getElementById('loadGA'));
+                loadCSS("<?=BASE_URL?>/css/cloudy.min.css", document.getElementById('loadGA'));
         }
        if (json.jws.current.isdusty == 'true') { 
                 cssstyle_str += ",dust"; 
@@ -1348,7 +1348,7 @@ Licensed MIT
         } 
        if (json.jws.current.islight == '') { 
             cssstyle_str += ",night";
-            loadCSS("css/night<? echo $lang_idx;?>.min.css", document.getElementById('loadGA')); 
+            loadCSS("<?=BASE_URL?>/css/night<? echo $lang_idx;?>.min.css", document.getElementById('loadGA')); 
            if (json.jws.current.pm10 > 300) { 
                cssstyle_str += ",dust-night"; 
                loadCSS("css/dust-night.min.css", document.getElementById('loadGA'));
@@ -1356,15 +1356,15 @@ Licensed MIT
        }
       if (json.jws.states.israining == 1){ 
             cssstyle_str += ",rain"; 
-            loadCSS("css/rain.min.css", document.getElementById('loadGA'));
+            loadCSS("<?=BASE_URL?>/css/rain.min.css", document.getElementById('loadGA'));
     }
       if (json.jws.states.issnowing == 1) { 
             if (json.jws.current.islight){ 
                 cssstyle_str += ",snow"; 
-                loadCSS("css/snow.min.css", document.getElementById('loadGA'));
+                loadCSS("<?=BASE_URL?>/css/snow.min.css", document.getElementById('loadGA'));
            } else { 
                 cssstyle_str += ",snow_night"; 
-                loadCSS("css/snow_night.min.css", document.getElementById('loadGA'));
+                loadCSS("<?=BASE_URL?>/css/snow_night.min.css", document.getElementById('loadGA'));
            } 
       }
       cssstyle_str += ",mobile";
@@ -1555,7 +1555,7 @@ Licensed MIT
             $('#sigweather').show();
         });
         for (i = 0; i< 4; i++){ 
-        $('#shortforecast').children('.nav').children().eq(i).html(json.jws.forecastDays[i].day_name<?=$lang_idx?>+"  "+json.jws.forecastDays[i].date+"</br>"+"<img src=\"" + json.jws.forecastDays[i].icon + "\" onclick=\"showNextDays()\" width=\"32\" height=\"32\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></br>"+c_or_f(json.jws.forecastDays[i].TempLow, tempunit)+" - "+c_or_f(json.jws.forecastDays[i].TempHigh, tempunit));
+        $('#shortforecast').children('.nav').children().eq(i).html(json.jws.forecastDays[i].day_name<?=$lang_idx?>+"  "+json.jws.forecastDays[i].date+"</br>"+"<img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].icon + "\" onclick=\"showNextDays()\" width=\"32\" height=\"32\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></br>"+c_or_f(json.jws.forecastDays[i].TempLow, tempunit)+" - "+c_or_f(json.jws.forecastDays[i].TempHigh, tempunit));
         }
         var sigweatherstates = "";
         sigweatherstates += "<li><button type=\"button\" id=\"xClose\" style=\"background-image: url(../img/close.png); border: none;height: 32px;width: 32px;left: 5px;position: absolute;top: 5px\" onclick=\"$( '#sigweather' ).hide();\"></button></li>";
@@ -1578,7 +1578,7 @@ Licensed MIT
            forecastHours += "<li class=\"tsfh forecasttemp timefh\"><span>" + json.jws.sigforecastHours[i].time + ":00" + (json.jws.sigforecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.sigforecastHours[i].plusminus : "") +"</span></li>";
            //forecastHours += "<li class=\"forecasttemp\" id=\"tempfh"+ json.jws.sigforecastHours[i].time + "\"><span>" + c_or_f(json.jws.sigforecastHours[i].temp, tempunit) + "<img style=\"vertical-align: middle\" src=\"images/clothes/"+json.jws.sigforecastHours[i].cloth+"\" height=\"15\" width=\"20\" /></span></li>";
            forecastHours += "<li style=\"padding:0;\"><div title=\"" + json.jws.sigforecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.sigforecastHours[i].wind_class+" \"></div></li>";
-           forecastHours += "<li class=\"forcast_icon\"><span><img src=\"images/icons/day/"+json.jws.sigforecastHours[i].icon+"\" height=\"30\" width=\"30\" /></span></li>";
+           forecastHours += "<li class=\"forcast_icon\"><span><img src=\"<?=BASE_URL?>/images/icons/day/"+json.jws.sigforecastHours[i].icon+"\" height=\"30\" width=\"30\" /></span></li>";
            forecastHours += "<li class=\"forcast_title\"><span>"+json.jws.sigforecastHours[i].title<? echo $lang_idx;?>+"</span></li>";
            forecastHours += "</ul>";
        }
@@ -1595,7 +1595,7 @@ Licensed MIT
             if (json.jws.forecastHours[i].hum < min_hum) min_hum = json.jws.forecastHours[i].hum;
             if ((json.jws.forecastHours[i].time % 3 == 0) || (json.jws.forecastHours[i].plusminus > 0))
             {
-                var  TempCloth = '&nbsp;<a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastHours[i].cloth+'\" width=\"20\" height=\"15\" title=\"'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'</span></a>';
+                var  TempCloth = '&nbsp;<a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"<?=BASE_URL?>/'+json.jws.forecastHours[i].cloth+'\" width=\"20\" height=\"15\" title=\"'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastHours[i].cloth_title<? echo $lang_idx;?>+'</span></a>';
                 forecastHoursD += "<li class=\"forecasttimebox nav \" index=\"" + i + "\" ><ul>";
                 forecastHoursD += "<li class=\"plus\"><div class=\"open-close-button\" index=\"" + i + "\"></div></li>";
                 forecastHoursD += "<li class=\"tsfh currentts text\" style=\"display:none\"><span>" + json.jws.forecastHours[i].currentDateTime + "</span></li>";
@@ -1606,7 +1606,7 @@ Licensed MIT
                 //forecastHoursD += "<li class=\"timefh forcast_time\"><span>" + json.jws.forecastHours[i].time + ":00" + (json.jws.forecastHours[i].plusminus > 0 ? "&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus : "") +"</span></li>";
                 forecastHoursD += "<li class=\"tsfh forecasttemp\" id=\"tempfh"+ json.jws.forecastHours[i].time + "\"><div class=\"number\">" + c_or_f(json.jws.forecastHours[i].temp, tempunit) + "" +TempCloth + "</div></li>";
                 forecastHoursD += "<li class=\"wind\" style=\"padding:0;\"><div title=\"" + json.jws.forecastHours[i].wind_title<? echo $lang_idx;?>+"\" class=\"wind_icon "+json.jws.forecastHours[i].wind_class+" \"></div><!--<div class=\"humidity extra"+i+"\"><?=$HUMIDITY[$lang_idx]?>" + "  " +json.jws.forecastHours[i].hum+"%</div>--></li>";
-                forecastHoursD += "<li class=\"forcast_icon\"><span><img src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"30\" width=\"30\" /></span></li>";
+                forecastHoursD += "<li class=\"forcast_icon\"><span><img src=\"<?=BASE_URL?>/images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"30\" width=\"30\" /></span></li>";
                 forecastHoursD += "<li class=\"forcast_title text\"><span>"+json.jws.forecastHours[i].title<? echo $lang_idx;?>+"</span></li>";
                 forecastHoursD += "</ul></li>";
                 
@@ -1627,14 +1627,14 @@ Licensed MIT
             forecastHoursNG += "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('"+toptime+"','"+json.jws.forecastHours[i].icon+"',"+ json.jws.forecastHours[i].temp+","+json.jws.forecastHours[i].wind+",'"+json.jws.forecastHours[i].cloth.substring(json.jws.forecastHours[i].cloth.split('/', 2).join('/').length)+"',"+json.jws.forecastHours[i].rain+","+json.jws.forecastHours[i].hum+")\">";
             forecastHoursNG += "<div class=\"x-axis-bar primary\" style=\"height: 100%\">"+toptime+"</div>";    
             bottom = 88;
-            forecastHoursNG += "<div class=\"x-axis-bar tertiary icon\" style=\"height: "+ bottom +"%;\"><img style=\"vertical-align: middle\" src=\"images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"25\" width=\"28\" alt=\""+json.jws.forecastHours[i].icon+"\" /></div>";
+            forecastHoursNG += "<div class=\"x-axis-bar tertiary icon\" style=\"height: "+ bottom +"%;\"><img style=\"vertical-align: middle\" src=\"<?=BASE_URL?>/images/icons/day/"+json.jws.forecastHours[i].icon+"\" height=\"25\" width=\"28\" alt=\""+json.jws.forecastHours[i].icon+"\" /></div>";
             bottom = ((json.jws.forecastHours[i].temp-min_temp)*78)/(max_temp - min_temp);
             if (bottom < 10) bottom = 15;
             else if (bottom < 20) bottom = bottom + 3;
             else if (bottom > 60) addonclass = "uppervalue"; else addonclass = "";
             tempclass = (i % 2 == 0) ? "secondary" : "secondaryalt";
             forecastHoursNG += "<div class=\"x-axis-bar "+ tempclass + " " + addonclass+" temp\" style=\"height: "+bottom+"%;\"><span class=\"span-value\" data-value=\""+ json.jws.forecastHours[i].temp +"° "+json.jws.forecastHours[i].hum+"%\">"+ c_or_f(json.jws.forecastHours[i].temp, tempunit) + "°</span></div>";
-            forecastHoursNG += "<div class=\"x-axis-bar tertiary cloth icon "+ addonclass + "\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"span-value "+ addonclass + "\" data-value=\"" + json.jws.forecastHours[i].cloth_title<?=$lang_idx;?> +  "\"><img style=\"vertical-align: middle\" src=\""+json.jws.forecastHours[i].cloth+"\" height=\"30\" width=\"30\" /></span></div>";
+            forecastHoursNG += "<div class=\"x-axis-bar tertiary cloth icon "+ addonclass + "\" style=\"display:none;height: "+ bottom +"%;\"><span class=\"span-value "+ addonclass + "\" data-value=\"" + json.jws.forecastHours[i].cloth_title<?=$lang_idx;?> +  "\"><img style=\"vertical-align: middle\" src=\"<?=BASE_URL?>/"+json.jws.forecastHours[i].cloth+"\" height=\"30\" width=\"30\" /></span></div>";
             bottom = 40;
             if (json.jws.forecastHours[i].plusminus > 0)
                 forecastHoursNG += "<div class=\"x-axis-bar tertiary\" style=\"height: "+ bottom +"%;\"><span class=\"span-value\" data-value=\""+"&nbsp;&plusmn;"+json.jws.forecastHours[i].plusminus+"\"></span></div>";
@@ -1686,11 +1686,11 @@ Licensed MIT
        }
        forecastDays = "<table style=\"border-spacing:4px;width:100%\">";
        forecastDays += "<tr style=\"height:2em\">";
-       link_for_yest = "<a id=\"linkyesterday\" hrf=\"javascript:void(0)\" onclick=\"$('#yesterday_line').show();\"><img src=\"images/yesterday.png\" width=\"14\" height=\"14\" title=\"<?=$LAST_DAY[$lang_idx]?>\" /></a>";
+       link_for_yest = "<a id=\"linkyesterday\" hrf=\"javascript:void(0)\" onclick=\"$('#yesterday_line').show();\"><img src=\"<?=BASE_URL?>/images/yesterday.png\" width=\"14\" height=\"14\" title=\"<?=$LAST_DAY[$lang_idx]?>\" /></a>";
        forecastDays += "<td></td><td id=\"plus\">" + link_for_yest + "</td>";
-       forecastDays += "<td id=\"morning\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"../img/morning_icon.png\" width=\"30\" /><span class=\"info\">" + json.jws.desc.early_morning<? echo $lang_idx;?> + "</span></a></td>";
-       forecastDays += "<td id=\"noon\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"../img/noon_icon.png\" width=\"18\" /><span class=\"info\">" + json.jws.desc.noon<? echo $lang_idx;?> + "</span></a></td>";
-       forecastDays += "<td id=\"night\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"../img/night_icon.png\" width=\"18\" /><span class=\"info\">" + json.jws.desc.night_temp_exp<? echo $lang_idx;?> + "</span></a></td>";
+       forecastDays += "<td id=\"morning\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"<?=BASE_URL?>//img/morning_icon.png\" width=\"30\" /><span class=\"info\">" + json.jws.desc.early_morning<? echo $lang_idx;?> + "</span></a></td>";
+       forecastDays += "<td id=\"noon\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"<?=BASE_URL?>//img/noon_icon.png\" width=\"18\" /><span class=\"info\">" + json.jws.desc.noon<? echo $lang_idx;?> + "</span></a></td>";
+       forecastDays += "<td id=\"night\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"<?=BASE_URL?>//img/night_icon.png\" width=\"18\" /><span class=\"info\">" + json.jws.desc.night_temp_exp<? echo $lang_idx;?> + "</span></a></td>";
        forecastDays += "<td></td>";
        forecastDays += "<td></td>";
        forecastDays += "</tr>";
@@ -1703,9 +1703,9 @@ Licensed MIT
        forecastDays += "<td></td>";
        forecastDays += "</tr>";
         for (i = 0; i< json.jws.forecastDays.length; i++){
-            TempLowClothfull = '<div class=\"cloth extra' + i + '\"><a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastDays[i].TempLowCloth+'\" width=\"20\" height=\"20\" title=\"'+json.jws.forecastDays[i].TempLowClothTitle<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastDays[i].TempLowClothTitle<? echo $lang_idx;?>+'</span></a></div>';
-            TempHighClothfull = '<div class=\"cloth extra' + i + '\"><a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastDays[i].TempHighCloth+'\" width=\"20\" height=\"20\" title=\"'+json.jws.forecastDays[i].TempHighClothTitle<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastDays[i].TempHighClothTitle<? echo $lang_idx;?>+'</span></a></div>';
-            TempNightClothfull = '<div class=\"cloth extra' + i + '\"><a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"'+json.jws.forecastDays[i].TempNightCloth+'\" width=\"20\" height=\"20\" title=\"'+json.jws.forecastDays[i].TempNightClothTitle<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastDays[i].TempNightClothTitle<? echo $lang_idx;?>+'</span></a></div>';
+            TempLowClothfull = '<div class=\"cloth extra' + i + '\"><a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"<?=BASE_URL?>/'+json.jws.forecastDays[i].TempLowCloth+'\" width=\"20\" height=\"20\" title=\"'+json.jws.forecastDays[i].TempLowClothTitle<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastDays[i].TempLowClothTitle<? echo $lang_idx;?>+'</span></a></div>';
+            TempHighClothfull = '<div class=\"cloth extra' + i + '\"><a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"<?=BASE_URL?>/'+json.jws.forecastDays[i].TempHighCloth+'\" width=\"20\" height=\"20\" title=\"'+json.jws.forecastDays[i].TempHighClothTitle<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastDays[i].TempHighClothTitle<? echo $lang_idx;?>+'</span></a></div>';
+            TempNightClothfull = '<div class=\"cloth extra' + i + '\"><a href=\"javascript:void(0)\" class=\"info\" ><img style=\"vertical-align: middle\" src=\"<?=BASE_URL?>/'+json.jws.forecastDays[i].TempNightCloth+'\" width=\"20\" height=\"20\" title=\"'+json.jws.forecastDays[i].TempNightClothTitle<? echo $lang_idx;?>+'\" alt=\"\" /><span class=\"info\">'+json.jws.forecastDays[i].TempNightClothTitle<? echo $lang_idx;?>+'</span></a></div>';
         
             TempLowCloth = "";
             TempHighCloth = "";
@@ -1722,9 +1722,9 @@ Licensed MIT
                             <?}?>
              forecastDays += "<tr>";
              forecastDays += "<td class=\"date\" >"  + json.jws.forecastDays[i].day_name<?=$lang_idx?> + "<div class=\"datetext\">" + json.jws.forecastDays[i].date + "<div></td><td class=\"plus\">" + "<div index=\"" + i + "\" id=\"" + i + "\" class='open-close-button'></div>" + "</td>";
-            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempLow, tempunit) + TempLowCloth +  "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humMorning + "%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"morning_icon" + i + "\">" + TempLowClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"" + json.jws.forecastDays[i].morning_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].morning_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windMorning + "\">" + json.jws.forecastDays[i].windMorningSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
-            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempHigh, tempunit) + TempHighCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humDay +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"day_icon" + i + "\">" + TempHighClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windDay + "\">" + json.jws.forecastDays[i].windDaySpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
-            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempNight, tempunit) + TempNightCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humNight +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"night_icon" + i + "\">" + TempNightClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"" + json.jws.forecastDays[i].night_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].night_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windNight + "\">" + json.jws.forecastDays[i].windNightSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
+            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempLow, tempunit) + TempLowCloth +  "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humMorning + "%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"morning_icon" + i + "\">" + TempLowClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].morning_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].morning_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windMorning + "\">" + json.jws.forecastDays[i].windMorningSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
+            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempHigh, tempunit) + TempHighCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humDay +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"day_icon" + i + "\">" + TempHighClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windDay + "\">" + json.jws.forecastDays[i].windDaySpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
+            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempNight, tempunit) + TempNightCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humNight +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"night_icon" + i + "\">" + TempNightClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].night_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].night_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windNight + "\">" + json.jws.forecastDays[i].windNightSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
             forecastDays += "<td class=\"forcast_each icon_day\" >";
             if (i==0)
                 forecastDays += noon_value_change;
@@ -1732,7 +1732,7 @@ Licensed MIT
                 wind_extra = "<div class=\"wind_icon high_wind\"></div>";
             else
                 wind_extra = "";                        
-            forecastDays += "<span class=\"icon extra" + i + "\" id=\"icon" + i + "\">" + wind_extra + "<img src=\"" + json.jws.forecastDays[i].icon + "\" width=\"34\" height=\"34\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></span><div class=\"tsfh\"><div class=\"enlarge icon extra" + i + "\"><a href=\"<?=BASE_URL?>/dailydetailed.php?m=1&dayid=" + (i+1) + "\" rel=\"external\" ><img src=\"images/enlarge_64.png\" width=\"35\" alt=\"enlarge\"/></a></div></div>"+"</td>";
+            forecastDays += "<span class=\"icon extra" + i + "\" id=\"icon" + i + "\">" + wind_extra + "<img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].icon + "\" width=\"34\" height=\"34\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></span><div class=\"tsfh\"><div class=\"enlarge icon extra" + i + "\"><a href=\"<?=BASE_URL?>/dailydetailed.php?m=1&dayid=" + (i+1) + "\" rel=\"external\" ><img src=\"<?=BASE_URL?>/images/enlarge_64.png\" width=\"35\" alt=\"enlarge\"/></a></div></div>"+"</td>";
             fulltextforecast = json.jws.forecastDays[i].lang<? echo $lang_idx;?>;
             containsanchor = fulltextforecast.indexOf("<a");
             partialtextlastindex = (containsanchor > 0) ? containsanchor - 1 : lastindex;
@@ -1754,7 +1754,7 @@ Licensed MIT
       
        var ad_html, ad_container;
        for (i = 0; i< json.jws.Ads.length; i++){
-        ad_html = "<a href='"+json.jws.Ads[i].link+"' >" + "<img src=\"" + json.jws.Ads[i].img_url + "\" width=\"" + json.jws.Ads[i].width  + "\" height=\"" + json.jws.Ads[i].height  +  "\" /></a>";
+        ad_html = "<a href='"+json.jws.Ads[i].link+"' >" + "<img src=\"<?=BASE_URL?>/" + json.jws.Ads[i].img_url + "\" width=\"" + json.jws.Ads[i].width  + "\" height=\"" + json.jws.Ads[i].height  +  "\" /></a>";
         ad_container = '#if'+(i+1);
         $(ad_container).html(ad_html);
        }
@@ -1859,7 +1859,7 @@ Licensed MIT
     {
         var audio = {};
         audio["rain"] = new Audio();
-        audio["rain"].src = "sound/rain/RAINFIBL.mp3";
+        audio["rain"].src = "<?=BASE_URL?>/sound/rain/RAINFIBL.mp3";
         audio["rain"].addEventListener('canplaythrough', function() {
             audio["rain"].play();
         });

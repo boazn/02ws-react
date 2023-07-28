@@ -239,7 +239,7 @@ function forgot_password($email)
       else
       {
           $href="https://www.02ws.co.il/regConfirm.php?email=$email&lang=$lang_idx";
-          send_Email("<br /><br />Hi שלום,<br /><h2>".$CLICK_TO_RESET[$lang_idx]."<br/><a href=\"$href\" >".$SEND[$lang_idx]."</a></h2><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array( $LOGO[$lang_idx]." - ".$FORGOT_PASS[$lang_idx], $LOGO[$lang_idx]." - ".$FORGOT_PASS[$lang_idx]));
+          send_Email("<br /><br />Hi שלום,<br /><br/><br/><br/><h2><a href=\"$href\" >".$CLICK_TO_RESET[$lang_idx]."</a></h2><br /><br />", $email, EMAIL_ADDRESS, ""  , "", array( $LOGO[$lang_idx]." - ".$FORGOT_PASS[$lang_idx], $LOGO[$lang_idx]." - ".$FORGOT_PASS[$lang_idx]));
           echo $CHECK_EMAIL_RESET_PASS[$lang_idx];
       }
 }

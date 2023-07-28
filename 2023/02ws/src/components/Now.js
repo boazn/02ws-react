@@ -5,7 +5,7 @@ const Now = (props) => {
     if (props.current === undefined)
         return "loading...";
     return (
-          <div id="latestnow" className={"white_box " + (props.lang === 1? 'rtl' : '')}>
+          <div id="latestnow" className={" " + (props.lang === 1? 'rtl' : '')}>
             <div id="tempdivvalue" title="" className="mx-auto">
                 {props.current.date1}<br/>
                 {t("temp")} {props.current.temp}°<br/>

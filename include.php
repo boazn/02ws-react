@@ -1555,6 +1555,8 @@ function getTokFromFile($file) {
     $timeout = 2;
     $fp = fopen($file, "r");
     stream_set_timeout($fp, $timeout);
+    if ($_GET['debug'] >= 4)
+            echo "getTokFromFile = " . $file . "<br>";
     $filecontents = fread($fp, filesize($file));
     @fclose($fp);
     $tok = strtok($filecontents, " \n\t");
@@ -1567,7 +1569,8 @@ function getNextWord(&$tok, $intNextWord, $title) {
 
     if ($_GET['debug'] >= 4)
         echo "SearchingNextWord = " . $intNextWord . "<br>";
-
+    if (!$tok)
+        return false;
     for ($i = 0; $i < $intNextWord; $i++) {
         $tok = strtok("  \t");
         if ($_GET['debug'] >= 4)
@@ -1590,12 +1593,15 @@ function getNextWordWith(&$tok, $str) {
 
     if ($_GET['debug'] >= 4)
         echo "<br>SearchingNextWordWith = " . $str . "<br>";
-
+    if (!$tok)
     $tok = strtok("  \n\t"); // It is meant for searching the next, not current
     if ($_GET['debug'] >= 4)
         echo "tok = " . $tok . "<br>";
-
+    $start_time = time();
     while (!strstr($tok, $str)) {
+        if ((time() - $start_time) > 3) {
+            return false; 
+         }
         $tok = strtok("  \t");
         if ($_GET['debug'] >= 4)
             echo "tok = " . $tok . "<br>";
@@ -2075,11 +2081,11 @@ function get_file_string($full_search_url){
 // returns array of rain accumulation
 function getRainAcc($thedate, $fromTime, $toTime) {
 
-    global $datenotime;
+    global $datenotime, $prefix;
     $rainaccA = array();
     if ($_GET['debug'] >= 1)
         echo "<br>searching from ", $thedate, " ", $fromTime, " to ", $datenotime, " " . $toTime . "<br>";
-    $tok = getTokFromFile(FILE_ARCHIVE);
+    $tok = getTokFromFile($prefix.FILE_ARCHIVE);
     if (searchNext($tok, $thedate)) {
         if (searchNext($tok, $fromTime)) {
 
@@ -2123,8 +2129,8 @@ function getRainAccInterval($rainInterval) {
 }
 
 function getRainAccArray($rainInterval, $MinusBaseHours, $MinusBaseMin) {
-
-    $tok = getTokFromFile(FILE_ARCHIVE);
+    global $prefix;
+    $tok = getTokFromFile($prefix.FILE_ARCHIVE);
     if ($_GET['debug'] >= 1)
         echo "<br>getRainAccInterval = " . $rainInterval . "<br>";
 
@@ -2245,14 +2251,15 @@ function extract_Weather($array) {
 }
 
 function getDepFromNorm($month) {
-    global $day;
+    global $day, $prefix;
+    $prefix = $_SERVER['DOCUMENT_ROOT'];
     /* getting data from thisYear file */
     if ($_GET['debug'] > 2)
         echo "<br> searching getDepFromNorm for month = " . $month . "<br>";
     if (($day <= 3) && ($month == 12))
-        $tok = getTokFromFile(FILE_PREV_YEAR);
+        $tok = getTokFromFile($prefix.FILE_PREV_YEAR);
     else
-        $tok = getTokFromFile(FILE_THIS_YEAR);
+        $tok = getTokFromFile($prefix.FILE_THIS_YEAR);
     getNextWordWith($tok, "---");
     getNextWord($tok, 6, "Dep.From NORM"); // Dep.From NORM OF January
     $dep = $tok;
@@ -2263,9 +2270,11 @@ function getDepFromNorm($month) {
 }
 
 function getPrevMonthRain() {
+    global $prefix;
+    $prefix  = $_SERVER['DOCUMENT_ROOT']; 
     if ($_GET['debug'] > 2)
         echo "<br> searching getPrevMonthRain for Rain <br>";
-    $tok = getTokFromFile(FILE_PREV_YEAR);
+    $tok = getTokFromFile($prefix.FILE_PREV_YEAR);
     getNextWordWith($tok, "---");
     getNextWord($tok, 2, "MonthRain");
     getNextWordWith($tok, "---");
@@ -2647,9 +2656,9 @@ function replaceArgInIRL($url, $arg, $val) {
     }
 
     if ($val == "")
-        return ($url_pref . "?" . $startargs . "lang=" . $lang_idx);
+        return ( "?" . $startargs . "lang=" . $lang_idx);
     else
-        return ($url_pref . "?" . $startargs . $arg . "=" . $val . "&amp;lang=" . $lang_idx);
+        return ( "?" . $startargs . $arg . "=" . $val . "&amp;lang=" . $lang_idx);
 }
 
 function get_query_edited_url($url, $arg, $val) {

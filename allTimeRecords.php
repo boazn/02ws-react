@@ -132,7 +132,7 @@
 		</table>
 		<? echo $SOURCE[$lang_idx]; ?>: <? echo $IMS[$lang_idx]; ?><br />
 		<div <? if (isHeb()) echo "dir=\"rtl\""; ?>>
-		<a href="<? echo get_query_edited_url(get_url(), 'section', 'RainSeasons.php');?>">150 <? echo $RAIN_SEASONS[$lang_idx]; ?>...<span id="moreinfo"><?=get_arrow()?><?=get_arrow()?></span></a>
+		<a href="<? echo get_query_edited_url(get_url(), 'section', 'RainSeasons');?>">150 <? echo $RAIN_SEASONS[$lang_idx]; ?>...<span id="moreinfo"><?=get_arrow()?><?=get_arrow()?></span></a>
 		</div>
 	</td>
 </tr>

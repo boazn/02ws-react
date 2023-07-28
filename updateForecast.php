@@ -804,7 +804,7 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 	<div class="cell shrinked">
 		
 		<!-- <input id="commandtaf" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
-		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'taf')" style="cursor:pointer" />
+		<img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'taf')" style="cursor:pointer" />
 	</div>
 	<div class="cell shrinked">
 		
@@ -838,7 +838,7 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 	</div>
 <div class="cell shrinked" id="synop<?=$line["lang"]?>">synop
         <input id="langsynop<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>" style="width:0"  />
-		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.id, 'U', 'synop')" style="cursor:pointer" />
+		<img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOneUFService(this.parentNode.id, 'U', 'synop')" style="cursor:pointer" />
 	</div>
     
     <div class="cell shrinked">
@@ -922,20 +922,20 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
     &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
 	<div class="cell">
-	<img src="images/x.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'D', 'forecastd')" style="cursor:pointer" />
+	<img src="<?=BASE_URL?>/images/x.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'D', 'forecastd')" style="cursor:pointer" />
     </div>
     <div class="cell cellspace ">
     &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
 	<div class="cell">
-			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'lang1<?=$key?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
+			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'lang1<?=$key?>')"><img src="<?=BASE_URL?>/images/italic.png" title="italic" width="16" height="16" /></a>
     </div>
     <div class="cell cellspace ">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="cell">		
-			<img src="images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecastd')" style="cursor:pointer" />
+			<img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img src="<?=BASE_URL?>/images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecastd')" style="cursor:pointer" />
 			
     </div>
     <div class="cell cellspace ">
@@ -982,11 +982,11 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 		<input id="windMorning<?=$key?>" name="windMorning<?=$key?>" size="1"  value="<?=$line["windMorning"]?>" style="width:20px;background-color:#DDA000" />
 	</div>
     <div class="cell">
-		<a class="templow" title="temp_morning_cloth<?=$key?>" href="javascript:void(0)" id="temp_morning_cloth<?=$key?>"><img src="<? echo CLOTHES_PATH."/".$line["TempLowCloth"];?>" width="25px" height="25px" id="temp_morning_cloth<?=$key?>_img" alt="<?=$line["TempLowCloth"]?>" /></a>
+		<a class="templow" title="temp_morning_cloth<?=$key?>" href="javascript:void(0)" id="temp_morning_cloth<?=$key?>"><img src="<? echo BASE_URL."/".CLOTHES_PATH."/".$line["TempLowCloth"];?>" width="25px" height="25px" id="temp_morning_cloth<?=$key?>_img" alt="<?=$line["TempLowCloth"]?>" /></a>
 	</div>
     
     <div class="cell ">
-		<a class="icon_forecast" title="morning_icon<?=$key?>" href="javascript:void(0)" id="morning_icon<?=$key?>"><img src="images/icons/day/<?=$line["iconmorning"]?>" width="30px"  height="30px" id="morning_icon<?=$key?>_img" /></a>
+		<a class="icon_forecast" title="morning_icon<?=$key?>" href="javascript:void(0)" id="morning_icon<?=$key?>"><img src="<?=BASE_URL?>/images/icons/day/<?=$line["iconmorning"]?>" width="30px"  height="30px" id="morning_icon<?=$key?>_img" /></a>
     </div>
     <div class="cell cellspace ">
     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1004,10 +1004,10 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 		<input id="windDay<?=$key?>" name="windDay<?=$key?>" size="1"  value="<?=$line["windDay"]?>" style="width:20px;background-color:#DDA000" />
 	</div>
     <div class="cell">
-		<a class="temphigh" title="temphigh_cloth<?=$key?>" href="javascript:void(0)" id="temphigh_cloth<?=$key?>"><img src="<? echo CLOTHES_PATH."/".$line["TempHighCloth"];?>" width="25px" height="25px" id="temphigh_cloth<?=$key?>_img" alt="<?=$line["TempHighCloth"]?>" /></a>
+		<a class="temphigh" title="temphigh_cloth<?=$key?>" href="javascript:void(0)" id="temphigh_cloth<?=$key?>"><img src="<? echo BASE_URL."/".CLOTHES_PATH."/".$line["TempHighCloth"];?>" width="25px" height="25px" id="temphigh_cloth<?=$key?>_img" alt="<?=$line["TempHighCloth"]?>" /></a>
 	</div>
     <div class="cell ">
-		<a class="icon_forecast" title="day_icon<?=$key?>" href="javascript:void(0)" id="day_icon<?=$key?>"><img src="images/icons/day/<?=$line["icon"]?>" width="30px"  height="30px" id="day_icon<?=$key?>_img" /></a>
+		<a class="icon_forecast" title="day_icon<?=$key?>" href="javascript:void(0)" id="day_icon<?=$key?>"><img src="<?=BASE_URL?>/images/icons/day/<?=$line["icon"]?>" width="30px"  height="30px" id="day_icon<?=$key?>_img" /></a>
     </div>
    
 	
@@ -1027,10 +1027,10 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 		<input id="windNight<?=$key?>" name="windNight<?=$key?>" size="1"  value="<?=$line["windNight"]?>" style="width:20px;background-color:#DDA000" />
 	</div>
 	<div class="cell ">
-			<a class="tempnight" title="tempnight_cloth<?=$key?>" href="javascript:void(0)" id="tempnight_cloth<?=$key?>"><img src="<?echo CLOTHES_PATH."/".$line["TempNightCloth"];?>" width="25px" height="25px" id="tempnight_cloth<?=$key?>_img" alt="<?=$line["TempNightCloth"]?>" /></a>
+			<a class="tempnight" title="tempnight_cloth<?=$key?>" href="javascript:void(0)" id="tempnight_cloth<?=$key?>"><img src="<?echo BASE_URL."/".CLOTHES_PATH."/".$line["TempNightCloth"];?>" width="25px" height="25px" id="tempnight_cloth<?=$key?>_img" alt="<?=$line["TempNightCloth"]?>" /></a>
 	</div>
     <div class="cell ">
-		<a class="icon_forecast" title="night_icon<?=$key?>" href="javascript:void(0)" id="night_icon<?=$key?>"><img src="images/icons/day/<?=$line["iconnight"]?>" width="30px"  height="30px" id="night_icon<?=$key?>_img" /></a>
+		<a class="icon_forecast" title="night_icon<?=$key?>" href="javascript:void(0)" id="night_icon<?=$key?>"><img src="<?=BASE_URL?>/images/icons/day/<?=$line["iconnight"]?>" width="30px"  height="30px" id="night_icon<?=$key?>_img" /></a>
     </div>
     <div class="cell cellspace ">
     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1062,14 +1062,14 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
             <textarea id="lang1<?=$key?>" name="lang1<?=$key?>" size="80" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 215px;text-align:right;direction:rtl;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?></textarea>
         </div>
 		<div id="day_href_plugin<?=$key?>" class="cell">
-			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
+			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>
     </div>
      <div  class="cell shrinked textforecast">
         <textarea id="lang0<?=$key?>" name="lang0<?=$key?>" size="40" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif; max-height: 215px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?></textarea>
         <span style="font-size:2.1em"><?//=$forecastDaysDB[$key]['lang2']?></span>
 	</div>
 	<div id="day_href_plugin<?=$key?>" class="cell" >
-			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
+			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>
 	</div>
 	
         
@@ -1096,8 +1096,8 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		
-        <img src="images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'I', 'LAlert')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <img src="images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'LAlert')" style="cursor:pointer" />
+        <img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'I', 'LAlert')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="<?=BASE_URL?>/images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'LAlert')" style="cursor:pointer" />
 	</div>
 	<div class="cell shrinked" style="clear:both">
 		
@@ -1120,10 +1120,10 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	</div>
     
 	<div id="forecast_href_plugin" class="float cell shrinked">
-			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
+			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>
 	</div>
 	<div class="cell shrinked">
-			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'latestalert<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
+			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'latestalert<?=$line["lang"]?>')"><img src="<?=BASE_URL?>/images/italic.png" title="italic" width="16" height="16" /></a>
 	</div>
 	
 		
@@ -1144,12 +1144,12 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
 <div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell alert"  id="forecast<?=$line["lang"]?>">
 <div id="forecast_href_plugin" class="invcell shrinked" >
-			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>&nbsp;&nbsp;
+			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>&nbsp;&nbsp;
 	
-			<a href="javascript: void(0)" id="hrefforecast<?=$line["lang"]?>" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>&nbsp;&nbsp;
+			<a href="javascript: void(0)" id="hrefforecast<?=$line["lang"]?>" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="<?=BASE_URL?>/images/italic.png" title="italic" width="16" height="16" /></a>&nbsp;&nbsp;
 			
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
-		<img src="images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecast')" style="cursor:pointer" />
+		<img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecast')" style="cursor:pointer" />
 	</div>
 	<div class="cell shrinked" style="clear:both">
 		
@@ -1218,14 +1218,14 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	
     <div class="cell btnsstart" style="width:20px">
         <div class="cell" id="currstory_href_plugin" class="float btnsstart">
-                <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15"  /></a>
+                <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>
         </div>
         <div class="cell">
-            <a href="javascript: void(0)" onclick="additalic(getSelText(), 'descriptionCurrStory<?=$line["lang"]?>')"><img src="images/italic.png" title="italic" width="16" height="16" /></a>
+            <a href="javascript: void(0)" onclick="additalic(getSelText(), 'descriptionCurrStory<?=$line["lang"]?>')"><img src="<?=BASE_URL?>/images/italic.png" title="italic" width="16" height="16" /></a>
         </div>
 		<!-- <input id="commandCurrStory<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" style="text-align:<?if ($line["lang"] == 1) echo "right"; else "left";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
-		<img src="images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'ISTORY', 'mainstory')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<img src="images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'USTORY',  'mainstory')" style="cursor:pointer" />
+		<img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'ISTORY', 'mainstory')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<img src="<?=BASE_URL?>/images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'USTORY',  'mainstory')" style="cursor:pointer" />
 	</div>
 	<!-- <div class="cell">
 		<input type="checkbox" id="CurrStory<?=$line["lang"]?>" value=""  onclick="disableOthers(this)" />
@@ -1255,10 +1255,10 @@ h<input id="imgheight" name="imgheight" size="18"  value="<?=$Ads[$idx]['h']?>" 
 	</div>
     <div class="cell btnsstart" style="width:20px">
         <div class="cell" id="currstory_href_plugin" class="float btnsstart">
-                <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="images/adlink.png" width="20" height="15" /></a>
+                <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15" /></a>
         </div>
-        <img src="images/plus.png" width="18px" onclick="getOneUFService(1, 'I', 'ads')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<img src="images/check.png" width="18px" onclick="getOneUFService(1, 'U',  'ads')" style="cursor:pointer" />
+        <img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(1, 'I', 'ads')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<img src="<?=BASE_URL?>/images/check.png" width="18px" onclick="getOneUFService(1, 'U',  'ads')" style="cursor:pointer" />
 	</div>
 </div>
 
@@ -1297,7 +1297,7 @@ h<input id="imgheight" name="imgheight" size="18"  value="<?=$Ads[$idx]['h']?>" 
 <? $forcast_icons = array(); $forcast_icons = getfilesFromdir(ICONS_PATH); foreach ($forcast_icons as $icon)
 	{ if (stristr($icon[1], "svg")) {?>
 <div class="float">
-	<img align="middle" src="<?=$icon[1]?>" alt="<?=$icon[1]?>" width="50px" height="50px" onclick="addForecastIconToMessage(this)" style="cursor:pointer" alt="<?=$icon[1]?>" />
+	<img align="middle" src="<?=BASE_URL?>/<?=$icon[1]?>" alt="<?=$icon[1]?>" width="50px" height="50px" onclick="addForecastIconToMessage(this)" style="cursor:pointer" alt="<?=$icon[1]?>" />
 </div>
 <? }}?>
 </div>
@@ -1305,10 +1305,10 @@ h<input id="imgheight" name="imgheight" size="18"  value="<?=$Ads[$idx]['h']?>" 
 
 <div style='display:none'>
 <div id='clothes_dialog' style='background-color:#eeeeee;height:150px'>
-<? $clothes = array(); $clothes = getfilesFromdir(CLOTHES_PATH); foreach ($clothes as $cloth)
+<? $clothes = array(); $clothes = getfilesFromdir($_SERVER['DOCUMENT_ROOT']."/".CLOTHES_PATH); foreach ($clothes as $cloth)
 	{ ?>
 <div class="float">
-	<img align="middle" src="<?=$cloth[1]?>" width="50px" height="50px" onclick="addClothIconToMessage(this)" style="cursor:pointer" alt="<?=$cloth[1]?>" />
+	<img align="middle" src="<?=BASE_URL?>/<?=substr($cloth[1], strpos($cloth[1], "images"))?>" width="50px" height="50px" onclick="addClothIconToMessage(this)" style="cursor:pointer" alt="<?=$cloth[1]?>" />
 </div>
 <? }?>
 </div>
@@ -1487,6 +1487,11 @@ function getOneUFService(dayToSave, command, type)
             var idx = document.getElementById('idx'+dayToSave).value;
             var day;
             var date = document.getElementById('date'+dayToSave).value;
+            if (date.indexOf('/') < 0)
+            {
+                alert ("date must contain /");
+                exit;
+            }
             var day_name = document.getElementById('day_name'+dayToSave).value;
             var full_day_icon = $("#" + 'day_icon' + dayToSave).children().attr("src");
             var full_morning_icon = $("#" + 'morning_icon' + dayToSave).children().attr("src");
@@ -1610,7 +1615,7 @@ function getOneUFService(dayToSave, command, type)
     ajax.setMimeType('text/html');
     ajax.postData = postData;
     ajax.setHandlerBoth(fillForecast);
-    fillForecast('<img src="images/loading.gif" alt="loading" />');
+    fillForecast('<img src="<?=BASE_URL?>/images/loading.gif" alt="loading" />');
     ajax.url = '<?=BASE_URL?>/updateForecast.php';
     ajax.doReq();
     
@@ -1660,7 +1665,7 @@ function getUFService()
 }
 function onLoad()
 {
-	fillForecast('<img src="images/loading.gif" alt="loading" />');
+	fillForecast('<img src="<?=BASE_URL?>/images/loading.gif" alt="loading" />');
 	var ajax = new Ajax();
 	ajax.method = 'POST';
 	ajax.setMimeType('text/html');

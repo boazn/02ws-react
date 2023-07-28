@@ -48,7 +48,7 @@ include_once("start.php");
 	<input type="password" placeholder="<?=$PASSWORD[$lang_idx]?>" name="password" value="" id="profileform_password"/><br />
 	<div><?=$USER_ICON[$lang_idx]?>:</div><div style="display:inline"><div class="user_icon_frame">
 <div id="user_icon_contentbox" class="contentbox-wrapper"> 
-		<? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir("img/user_icon")); 
+		<? $user_icons = array(); $user_icons = array_reverse(getfilesFromdir($_SERVER['DOCUMENT_ROOT']."/img/user_icon")); 
 		foreach ($user_icons as $user_icon) { ?>
 	<div class="contentbox">
 			<div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>'>&nbsp;</div>
@@ -93,12 +93,11 @@ include_once("start.php");
 								
 							    <input type="submit" value="Success!" onclick="$('#cboxClose').click();window.location.reload();" id="loginform_OK" class="info float big" style="display:none"/>
 								<div style="clear:both;height:0px">&nbsp;</div>
-								<a href="javascript:void()" id="forgotpass" onclick="toggle('loginform');toggle('passforgotform');" title="<?=$FORGOT_PASS[$lang_idx]?>"><?echo $FORGOT_PASS[$lang_idx].get_arrow();?></a>
 								<div id="loginform_result" class="float"></div>
 								<input type="submit" value="<?=$END[$lang_idx]?>" class="float clear inv_plain_3_zebra big" onclick="login_to_server(<?=$lang_idx?>, <?=$limitLines?>, '<?=$_GET['update']?>')" id="loginform_submit"/>
-								<div style="clear:both;height:0px">&nbsp;</div>
-								<a href="javascript:void()" id="clicktoregister" onclick="toggle('loginform');toggle('registerform');" class="float"><?=$NEW_TO_02WS[$lang_idx]?>&nbsp;<?echo $REGISTER[$lang_idx].get_arrow();?></a>
-								
+								<div style="clear:both;height:30px">&nbsp;</div>
+								<a href="javascript:void(0)" id="clicktoregister" onclick="toggle('loginform');toggle('registerform');" class="float"><?=$NEW_TO_02WS[$lang_idx]?>&nbsp;<?echo $REGISTER[$lang_idx].get_arrow();?></a>
+								<a href="javascript:void(0)" id="forgotpass" onclick="toggle('loginform');toggle('passforgotform');" title="<?=$FORGOT_PASS[$lang_idx]?>"><?echo $FORGOT_PASS[$lang_idx].get_arrow();?></a>
 							</div>
 							<div id="loggedin" style="display:none">
 								<label id="hello" class="clear big float"></label> <?=$HELLO[$lang_idx]?>,<br />

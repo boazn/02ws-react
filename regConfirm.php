@@ -8,6 +8,7 @@ function handle_action($action){
 
     if ($action == "done")
     {
+        echo "<div style=\"margin:3em;padding:3em\"></div>";
         echo "<div class=\"big success\"  style=\"margin:1em;padding:1em\"><h1>".$DONE[$lang_idx];
         echo "</h1>";
         echo "<h2>".$REGISTRATION_TO_02WS_DONE[$lang_idx]."</h2>";
@@ -68,7 +69,9 @@ function make_user_active($email, $user_id, $key, $reg_id){
 </style>
 </head>
 <body>
-
+<div id="logo">
+    
+</div>
 
 <? if (!check_email_address($_GET['email']))
    echo "Email not valid.";

@@ -48,38 +48,47 @@ function App1({json, cssClasses}) {
       
       <header className={"App-header row mb-2 " + (langcode === 1? 'rtl' : '')}>
         <div className="col-6 ">
-        <h4><img src={logo} className="App-logo" alt="logo" />  {t("welcome")}{t("site")}</h4>
+        <div><img src={logo} className="App-logo" alt="logo" />  {t("welcome")}{t("site")} 
+        <div id="trans_btns">
             {lngs.map((lng, i) => {
             const { code, native } = lng;
             return <Btn key={i} btnOnClick={() => handleTrans(code)} btnTitleText={native}></Btn>;
           })}
         </div>
+        </div>
+        </div>
        </header>
        
       
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
-       <div className="col mx-auto mt-2"><Now current={current} lang={langcode} className={cssClasses} /></div>
-       <div className="col white_box"><ColdMeter  lang={langcode}/></div>
-       <div className="col white_box"><Statuses statuses={statuses} lang={langcode} className={cssClasses}/></div>
-       <div className="col"><Ad /></div>
-       <div className="col "><Activities activities={currentrecommendations} lang={langcode} /></div>
+       <div className="clouds-3"></div>
+       <div className="col-xs-4 col-md-4 col-lg-4 blue_transp_box "><Now current={current} lang={langcode} className={cssClasses} /></div>
+       <div className="col-xs-4 col-md-4 col-lg-4 white_transp_box"><ColdMeter  lang={langcode}/></div>
+       <div className="col-xs-4 col-md-4 col-lg-4 white_transp_box">
+        <Statuses statuses={statuses} lang={langcode} className={cssClasses}/>
+       <Activities activities={currentrecommendations} lang={langcode} />
+       </div>
          
        </div>
-       <div className="clouds-3"></div>
        
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
-       <div className="col-12 mx-auto mt-12">
-       <Forecast24h hours={nextHours} lang={langcode} className={cssClasses} />
+       <div className="col-xs-4 col-lg-8 mx-auto mt-12">
+          <Forecast24h hours={nextHours} lang={langcode} className={cssClasses} />
         </div>
+        <div className="col-xs-4 col-lg-4"><Ad /></div>
        </div>
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
-       <div className="col-6 mt-2"><NextDays days={nextDays} lang={langcode} className={cssClasses}/></div>
-       <div className="col "><Notifications notifications={messages} lang={langcode} className={cssClasses}/></div>
-       <div className="col "><Ad /></div>
+       
+       </div>
+       <div className={"row "  + (langcode === 1? 'rtl' : '')}>
+       <div className="col-xs-4 col-lg-8 mt-2"><NextDays days={nextDays} lang={langcode} className={cssClasses}/></div>
+       <div className="col-xs-4 col-lg-4 "><Notifications notifications={messages} lang={langcode} className={cssClasses}/></div>
+       
        </div> 
        <div className="row">
-       <div className="col "><PicOfTheDay pic={picoftheday} lang={langcode} /></div>
-       <div className="col "><UserPics userPics={userpics} lang={langcode} /></div>
+       <div className="col-xs-4 col-lg-4 "><PicOfTheDay pic={picoftheday} lang={langcode} /></div>
+       <div className="col-xs-4 col-lg-4 "><Ad /></div>
+       <div className="col-xs-4 col-lg-4 "><UserPics userPics={userpics} lang={langcode} /></div>
        </div>
      </div>
      </>

@@ -1488,16 +1488,16 @@ if ($current->get_temp3() > c_or_f(50))
 	updateSigWeather("hot.gif" , $HOT_GROUND,
 	array(array($ROAD[$EN]." ".$TEMP[$EN].": ".$current->get_temp3(), 
 	            $ROAD[$EN]." ".$TEMP[$EN].": ".$current->get_temp3()), 
-          array($TEMP[$HEB]." ".$ROAD[$HEB].": "."<span>".$current->get_temp3()."</span>",
+          array($TEMP[$HEB]." ".$ROAD[$HEB].": ".$current->get_temp3(),
 			    $TEMP[$HEB]." ".$ROAD[$HEB].": ".$current->get_temp3()), 
-          array($TEMP[$RU]." ".$ROAD[$RU].": "."<span>".$current->get_temp3()."</span>",
+          array($TEMP[$RU]." ".$ROAD[$RU].": ".$current->get_temp3(),
 			    $TEMP[$RU]." ".$ROAD[$RU].": ".$current->get_temp3()), 
-          array($TEMP[$FR]." ".$ROAD[$FR].": "."<span>".$current->get_temp3()."</span>",
+          array($TEMP[$FR]." ".$ROAD[$FR].": ".$current->get_temp3(),
 			    $TEMP[$FR]." ".$ROAD[$FR].": ".$current->get_temp3()), 
-          array($TEMP[$AR]." ".$ROAD[$AR].": "."<span>".$current->get_temp3()."</span>",
+          array($TEMP[$AR]." ".$ROAD[$AR].": ".$current->get_temp3(),
 			    $TEMP[$AR]." ".$ROAD[$AR].": ".$current->get_temp3())), 
                "?section=graph.php&amp;graph=temp3LatestArchive.php&amp;profile=2");
-    update_action (CustomAlert::HotGround, $extrainfo, $ALT);
+    //update_action (CustomAlert::HotGround, $extrainfo, $ALT);
 }
 if (($current->get_rainchance() == 0)&&
 	($current->get_pm10() < 80) &&

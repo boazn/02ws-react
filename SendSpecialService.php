@@ -11,7 +11,7 @@ include_once("start.php");
 function send_push($msgSpecial, $title, $picture_url, $embedded_url, $short_range,  $long_range, $tip, $dailyforecast) {
     // prepare the command
     $command = "php /home/boazn/public/02ws.com/public/SendSpecialServiceBackground.php '".urlencode($title[0])."' '".urlencode($title[1])."' '".urlencode($msgSpecial[0])."' '".urlencode($msgSpecial[1])."' {$short_range} {$long_range} {$tip} {$dailyforecast} {$picture_url} ";
-    $result = "\r\n{$command}";
+    $result = urldecode($command);
     // execute in shell
     $output = shell_exec("/usr/bin/nohup {$command} >/dev/null 2>&1 &");
     $result .= $output;

@@ -234,7 +234,7 @@ $oneHour->set_time(getMinusMinTime(60));
 $oneHour->set_date(getMinusMinDate(60));
 $threeHours->set_time(getMinusMinTime(180));    
 $threeHours->set_date(getMinusMinDate(180));
-
+//$prefix = $_SERVER['DOCUMENT_ROOT']."/";
 
 // thsw
 
@@ -242,10 +242,10 @@ if ($_GET['debug'] >= 1)
         echo "time() - thsw_ttime: ".(time() - $mem->get('thsw_ttime'));
 if (time() - $mem->get('thsw_ttime') > 120)
 {
-    $tok = getTokFromFile($prefix.FILE_ARCHIVE);
-    // now
     if ($_GET['debug'] >= 1)
-        echo "<br>in ".$prefix.FILE_ARCHIVE."<br>searching ",$now->get_date()," and ",$now->get_time()," ";
+    echo "<br>in ".$prefix.FILE_ARCHIVE."<br>searching ",$now->get_date()," and ",$now->get_time()," ";
+    $tok = getTokFromFile($prefix.FILE_ARCHIVE);
+   
     if (searchNext ($tok, $now->get_date())){// found the date in the file{}
     if ($_GET['debug'] >= 1)
         echo "<br>in ".$prefix.FILE_ARCHIVE."<br>searching ",$min15->get_time()," ";

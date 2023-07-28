@@ -87,7 +87,7 @@ body {
 
 .App-header {
   background-color: #282c34;
-  min-height: 10vh;
+  min-height: 4vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -95,7 +95,9 @@ body {
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+#trans_btns{
+  display:inline; margin: 0 1rem
+}
 .App-link {
   color: #61dafb;
 }
@@ -419,7 +421,11 @@ body {
   display: inline-block;
   text-align: center;
 }
-
+.inline
+{
+  display:inline;
+  margin:0.5rem
+}
 a.info
 {
 	position: relative;text-decoration: none;
@@ -480,7 +486,7 @@ a.info:hover span.info
 }
 
 #forcast_hours ul, #forcast_hours_table ul {
-   font-size:16px;
+   font-size:1.3em;
 }
 
 #forcast_hours .forcast_each, #forcast_hours_table .forcast_each {
@@ -499,12 +505,12 @@ a.info:hover span.info
 
 }
 #graph_forcast {
-  height: 200px;
-  width:1920px;
+  height: 300px;
+  width:100%;
   position:relative;
   color:black;
   overflow-x: scroll;
-        background-color: rgba(255, 255, 255, 0);
+  background-color: rgba(255, 255, 255, 0);
  
 
 }
@@ -602,6 +608,7 @@ a.info:hover span.info
   overflow: auto;
   padding-top: 1rem;
   position: absolute;
+  z-index: 999;
 }
 
 #sidebar nav a span {
@@ -653,7 +660,7 @@ i {
 }
 #sigweather, #more_sigweather{
   list-style: none;
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 #sigweather a{
   text-decoration: none;
@@ -682,9 +689,42 @@ i {
 }
 .white_box{
   background:white;
-  border-radius: 15px;
-  margin:8px;
+  border-radius: 10px;
+  
 }
+.white_transp_box{
+  opacity:0.7;
+  background:white;
+  border-radius: 10px;
+  
+}
+.blue_transp_box{
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.20);
+  color:white;
+}
+.box {
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.box .rectangle-wrapper {
+  border: 0px none;
+  height: 326px;
+}
+
+.box .rectangle {
+  background-color: #00000033;
+  border-radius: 10px;
+  height: 326px;
+  left: 0;
+  position: fixed;
+  top: 0;
+}
+
 
 .night{
   background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 20%, #7480bb 40%, #737fbb 100%);
@@ -733,7 +773,7 @@ i {
 }
 .clouds-1 {
   background-image: url("https://s.cdpn.io/15514/clouds_2.png");
-  animation: clouds-loop-1 20s infinite linear;
+  animation: clouds-loop-1 20s infinite ease ;
 }
 
 @keyframes clouds-loop-2 {
@@ -743,7 +783,7 @@ i {
 }
 .clouds-2 {
   background-image: url("https://s.cdpn.io/15514/clouds_1.png");
-  animation: clouds-loop-2 15s infinite linear;
+  animation: clouds-loop-2 15s infinite ease ;
 }
 
 @keyframes clouds-loop-3 {
@@ -753,7 +793,8 @@ i {
 }
 .clouds-3 {
   background-image: url("https://s.cdpn.io/15514/clouds_3.png");
-  animation: clouds-loop-3 17s infinite linear;
+  animation: clouds-loop-3 25s infinite ease ;
+  animation-iteration-count: 1;
 }
 
 .clouds {
@@ -766,9 +807,16 @@ i {
 .clouds-3 {
   background-repeat: repeat-x;
   position: absolute;
-  top: 100;
+  top: 2  0;
   right: 0;
   left: 0;
-  height: 100px;
+  height: 340px;
+}
+
+.display_on {
+  display:block;
+}
+.display_off {
+  display:none;
 }
 

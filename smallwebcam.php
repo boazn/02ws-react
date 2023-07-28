@@ -22,7 +22,7 @@ if (!file_exists($imagefile))
 
 $updated_pic = getUpdatedPic();
 if (stristr($imagefile, "Z"))
-	$updated_pic = "images/webCameraZ.jpg";
+	$updated_pic = BASE_URL."images/webCameraZ.jpg";
 ?>
 
 		
@@ -48,7 +48,7 @@ if (stristr($imagefile, "Z"))
 			
 			<div style="float:<?echo get_s_align();?>;padding:5px">
 				<a href="<?=$image_href?>" title="<?echo getLocalTime($lpic[0]);?>" class="colorbox">
-					<img src="phpThumb.php?src=<? echo $lpic[1]; ?>&amp;w=70" width="70px" title="<?echo getLocalTime($lpic[0]);?>" />
+					<img src="<?=BASE_URL?>/phpThumb.php?src=<? echo $lpic[1]; ?>&amp;w=70" width="70px" title="<?echo getLocalTime($lpic[0]);?>" />
 					
 				</a>
 			</div>
@@ -63,18 +63,18 @@ if (stristr($imagefile, "Z"))
 	
 
 <!-- ///////////// pic animation -->
-<script type="text/javascript" src="/sprintf2.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>/sprintf2.js"></script>
 <script language="JavaScript" type="text/javascript"> 
 ////////////// pic animation
-var file_template = "phpThumb.php?src=/images/webCamera%d.jpg&w=360";
-var numOfPics = 20;
+var file_template = "<?=BASE_URL?>/phpThumb.php?src=<?=BASE_URL?>/images/webCamera%d.jpg&w=360";
+var numOfPics = 19;
 var normal_delay = 60;
 var dwell_multipler = 20;
-var lowindex = 0;
+var lowindex = 1;
 var pic_id = 'latestpics';
 //////////////
 </script>
-<script type="text/javascript" src="/picanimation.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>//picanimation.js"></script>
 <script language="JavaScript" type="text/javascript"> 
 	launch();
 </script>

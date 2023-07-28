@@ -1745,7 +1745,7 @@ margin-<?=get_s_align()?>:0.5em
 }
 #what_is_h{
     padding-top: 0.1em;
-    font-size:1.6em
+    font-size:1.8em
 }
 #now_stuff a{
     color:#000
@@ -1860,7 +1860,7 @@ text-align:<?=get_s_align()?>;
 }
 #windy_widget{
     margin-<?=get_s_align()?>:0;
-    margin-top:-60px;
+    margin-top:0px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
 }
 .white_box {
@@ -2893,7 +2893,8 @@ border-color:#829CAA;
 	margin-top: 50px;
 }
 #adexternal{
-margin-<?echo get_s_align();?>:80px
+margin-<?echo get_s_align();?>:80px;
+margin-top:-120px;
 }
 #new_post_btn {
     background-image:url("../img/new_post.png");
@@ -5718,7 +5719,7 @@ height: 16px;
 .spriteB.star { background-position: 0px -140px; width: 14px; height: 13px;  } 
 .spriteB.eng { background-position: 0px -163px; width: 28px; height: 17px;  } 
 .spriteB.israelflag { background-position: 0px -190px; width: 19px; height: 14px;  }
-.arrow_down{color: #829CAA;font-size: 11px;vertical-align: text-bottom;}
+.arrow_down{color: #829CAA;font-size: 12px;vertical-align: text-bottom;}
 
 
 /*

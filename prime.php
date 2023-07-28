@@ -30,18 +30,18 @@
                             "images/midragexterminator.png", 
                             "images/midragexterminator.png", 
                             "images/midragrenovation.png");
-        $MIDRAG_L = array(BASE_URL."?section=midrag.php", 
-                            BASE_URL."/?section=midrag.php", 
-                            BASE_URL."/?section=midrag.php&serviceId=284&cityId=515&areaId=2", 
-                            BASE_URL."/?section=midrag.php&serviceId=284&cityId=515&areaId=2",
-                            BASE_URL."/?section=midrag.php&ntla=ZN7C2105U243N7IU6LE28",
-                            BASE_URL."/?section=midrag.php&ntla=ZN7C2105U243N7IU6LE28", 
-                            BASE_URL."/?section=midrag.php&ntla=W7531M9Q921301NJ28M03TT24B40503", 
-                            BASE_URL."/?section=midrag.php&serviceId=202&cityId=515&areaId=2", 
-                            BASE_URL."/?section=midrag.php&serviceId=202&cityId=515&areaId=2");
+        $MIDRAG_L = array(BASE_URL."?section=midrag", 
+                            BASE_URL."/?section=midrag", 
+                            BASE_URL."/?section=midrag&serviceId=284&cityId=515&areaId=2", 
+                            BASE_URL."/?section=midrag&serviceId=284&cityId=515&areaId=2",
+                            BASE_URL."/?section=midrag&ntla=ZN7C2105U243N7IU6LE28",
+                            BASE_URL."/?section=midrag&ntla=ZN7C2105U243N7IU6LE28", 
+                            BASE_URL."/?section=midrag&ntla=W7531M9Q921301NJ28M03TT24B40503", 
+                            BASE_URL."/?section=midrag&serviceId=202&cityId=515&areaId=2", 
+                            BASE_URL."/?section=midrag&serviceId=202&cityId=515&areaId=2");
         $random_midrag = rand(0,count($MIDRAG_T)-1);
         $random_did_you_know = rand(0, count($DID_YOU_KNOW_EX)-1);
-        $DID_YOU_KNOW_LINK = array(get_query_edited_url($url_cur, 'section', 'allTimeRecords.php'), get_query_edited_url($url_cur, 'section', 'myVotes.php'), get_query_edited_url($url_cur, 'section', '2weeks.php'), get_query_edited_url($url_cur, 'section', 'snow.php'));
+        $DID_YOU_KNOW_LINK = array(get_query_edited_url($url_cur, 'section', 'allTimeRecords'), get_query_edited_url($url_cur, 'section', 'myVotes'), get_query_edited_url($url_cur, 'section', '2weeks'), get_query_edited_url($url_cur, 'section', 'snow'));
         $DID_YOU_KNOW_TITLE = array($RECORDS[$lang_idx], $MY_VOTES[$lang_idx], $ALL_GRAPHS[$lang_idx], $SNOW_JER[$lang_idx]);
         
         ////////////////////////////////////////
@@ -251,10 +251,10 @@
                                                 
                                             </li>
 					    <li style="border-top:1px dashed">
-                        <a href="<? echo get_query_edited_url($url_cur, 'section', 'reports.php');?>" title="<? echo $monthInWord." ".$RECORDS[$lang_idx]; ?>">
+                        <a href="<? echo get_query_edited_url($url_cur, 'section', 'reports');?>" title="<? echo $monthInWord." ".$RECORDS[$lang_idx]; ?>">
 									<? echo $RECORDS[$lang_idx];?>
 								</a><br /><br />
-							<a href="<? echo get_query_edited_url($url_cur, 'section', 'averages.php');?>" title="<? echo $monthInWord." ".$AVERAGE[$lang_idx]; ?>">
+							<a href="<? echo get_query_edited_url($url_cur, 'section', 'averages');?>" title="<? echo $monthInWord." ".$AVERAGE[$lang_idx]; ?>">
 									<? echo $AVERAGE[$lang_idx];?>
 								</a>
                                                        
@@ -508,7 +508,7 @@
                             <div id="message" class="box_text"><? echo nl2br($latestalert)."<br/>".nl2br($detailedforecast);?></div>
                             <p id="personal_message" class="box_text"></p>
                             <p id="alertachive_href" class="box_text">
-                                <a href="<? echo get_query_edited_url($url_cur, 'section', 'alertarchive.php');?>" style=""><?=$MORE_INFO[$lang_idx]?><?=get_arrow()?></a>
+                                <a href="<? echo get_query_edited_url($url_cur, 'section', 'alertarchive');?>" style=""><?=$MORE_INFO[$lang_idx]?><?=get_arrow()?></a>
                             </p>
                             <?php if (isHeb()) { ?>
                             <a class="twitter-timeline" data-lang="he" href="https://twitter.com/YERU02WS?ref_src=twsrc%5Etfw">Tweets by YERU02WS</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -539,14 +539,14 @@
                                     //echo "<img src=\"$box_img_src\" title=\"".$img_title."\" id=\"mainpic\" alt=\"".$img_title."\" width=\"40px\" />";
                                     ?>
                                     
-                                    <a href="<? echo "station.php?section=mainstory.php&amp;lang=".$lang_idx;?>" class="invfloat">
+                                    <a href="<? echo "station.php?section=mainstory&amp;lang=".$lang_idx;?>" class="invfloat">
                                         <?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
                                     </a>
                     </div>
                     <?}?> 
                 </div>
                       
-                <div id="adexternal" class="span2">
+                <div id="adexternal" class="span3">
                 <div id="windy_widget" class="span4">
                 <h2><?=$SYNOP_TITLE[$lang_idx]?></h2>
                 <iframe width="300" height="180" src="https://embed.windy.com/embed2.html?lat=31.775&lon=35.156&detailLat=31.728&detailLon=34.942&width=300&height=180&zoom=7&level=850h&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=true&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>               
@@ -585,15 +585,15 @@
                            <div id="gp_icon" class="span8">
                                
                                <div id="more_icons_container">
-                                    <a id="weather_movies" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'weatherclips.php');?>" title="<? echo $WEATHER_CLIPS[$lang_idx];?>" class="hlink"><? echo $WEATHER_CLIPS[$lang_idx];?></a>
-                                    <a id="weather_songs" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'songs.php');?>"><?=$SONGS[$lang_idx]?></a>
-                                    <a id="snow_poems" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'snow.php');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a>
+                                    <a id="weather_movies" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'weatherclips');?>" title="<? echo $WEATHER_CLIPS[$lang_idx];?>" class="hlink"><? echo $WEATHER_CLIPS[$lang_idx];?></a>
+                                    <a id="weather_songs" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'songs');?>"><?=$SONGS[$lang_idx]?></a>
+                                    <a id="snow_poems" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'snow');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a>
                                     <?if (isHeb()){?>
-                                    <a id="myths" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'myths.php');?>" class="hlink"><? echo $MYTHS[$lang_idx];?></a>
+                                    <a id="myths" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'myths');?>" class="hlink"><? echo $MYTHS[$lang_idx];?></a>
                                     <?}?>
-                                    <a id="weather_hul" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast.php&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a>
-                                    <a id="weather_israel" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast.php&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a>
-                                    <a id="likeddislikedforecasts" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'forecastDays.php');?>"><? echo $LIKED_FORECAST[$lang_idx];?></a>
+                                    <a id="weather_hul" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a>
+                                    <a id="weather_israel" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a>
+                                    <a id="likeddislikedforecasts" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'forecastDays');?>"><? echo $LIKED_FORECAST[$lang_idx];?></a>
 
                                </div>
                             </div>
@@ -602,7 +602,7 @@
                             <ul id="outside_links">
                                <li><a href="http://shabat.open.org.il/?fbclid=IwAR34It8gX-qQFVGGLmnHYlCiBhduy0y-XsHcw30rUjs3kCpFvO7NVMoBUX4" title='open02' target="_blank">פתוח בשבת</a></li>
                                <li><a href="http://www.weather2day.co.il" title='Weather2day' target="_blank">מזג האוויר - Weather2day</a></li>
-                               <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tracks.php');?>">טיולים בירושלים</a></li>
+                               <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tracks');?>">טיולים בירושלים</a></li>
                             </ul>
                            <?}?>
                     </div>
@@ -659,7 +659,7 @@
 			
 			<div class="row" id="pic_stuff">
 			    <div id="album"><a href="ubergallery/index.php"  title="<?=$ALBUM_DESC[$lang_idx]?>" target="_blank"><? echo $PICTURES[$lang_idx];?></a></div>
-                            <div id="userpic"><a href="<?=BASE_URL?>?section=userPics.php&amp;lang=<?=$lang_idx?>"  title="<?=$USERS_PICS[$lang_idx]?>"><? echo $USERS_PICS[$lang_idx];?></a></div>		    
+                            <div id="userpic"><a href="<?=BASE_URL?>?section=userPics&amp;lang=<?=$lang_idx?>"  title="<?=$USERS_PICS[$lang_idx]?>"><? echo $USERS_PICS[$lang_idx];?></a></div>		    
 			    <div id="pic_empty"></div>
 			    
 			    <div id="map_thumbs">
@@ -686,10 +686,10 @@
 					<div class="avatar picoftheday_avatar"></div>
 					<h3><? echo $PIC_OF_THE_DAY[$lang_idx];?></h3>
 					
-                    <a href="<? echo "station.php?section=picoftheday.php&amp;lang=".$lang_idx;?>">
+                    <a href="<? echo "station.php?section=picoftheday&amp;lang=".$lang_idx;?>">
 					<p><?=$comment[$lang_idx]?>&nbsp;- <?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?></p>
 					</a>
-                     <a href="<? echo "station.php?section=picoftheday.php&amp;lang=".$lang_idx;?>">                   
+                     <a href="<? echo "station.php?section=picoftheday&amp;lang=".$lang_idx;?>">                   
 					<img src="phpThumb.php?src=<?=$picname?>&amp;w=350&amp;fltr%5B%5D=gam%7C1.25" alt="<?=$comment[$lang_idx]?>" /><!--phpThumb.php?src=<?=$picname?>&amp;w=350&amp;fltr%5B%5D=gam%7C1.25-->
 					</a>
 				    </div>
@@ -736,8 +736,8 @@
                                 }
                                 ?>	
                             </select>
-                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'snowpoetry.php');?>" title="חמשירים" class="hlink">חמשירי שלג ועוד</a></li>
-                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'dictionary.php');?>" class="hlink"><?=$DICTIONARY[$lang_idx]?></a></li>
+                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'snowpoetry');?>" title="חמשירים" class="hlink">חמשירי שלג ועוד</a></li>
+                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'dictionary');?>" class="hlink"><?=$DICTIONARY[$lang_idx]?></a></li>
                             <li><a href="http://madeinjlm.org/" target="_blank"><img src="images/madeinjlm.png" width="146" height="144" alt="Made in Jerusalem" /></a></li>
 			    
 			</ul>

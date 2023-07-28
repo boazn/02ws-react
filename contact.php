@@ -13,7 +13,7 @@ $ABOUT_ME = array("I have built this site from my own interest in weather and in
 					<iframe width="560" height="315" src="https://www.youtube.com/embed/nDJAuCwoKOs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				<div class="inv_plain_3_zebra float" style="padding:1em;width:80%">
 			    <div class="float" style="width:50%">
-			    <em>Email: <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=SendEmailForm.php&amp;lang=<?=$lang_idx?>" ><?echo $CONTACT_ME[$lang_idx];?></a></em><br/>
+			    <em>Email: <a href="<?=$_SERVER['SCRIPT_NAME'];?>?section=SendEmailForm&amp;lang=<?=$lang_idx?>" ><?echo $CONTACT_ME[$lang_idx];?></a></em><br/>
 				
 				<? if ($lang_idx == $EN) {?><em>Nayot, Jerusalem , Israel</em><?} ?>  <? if ($lang_idx == $HEB) {?><em>ניות, ירושלים, ישראל</em><?} ?>
 			    <br/>
@@ -24,7 +24,7 @@ $ABOUT_ME = array("I have built this site from my own interest in weather and in
 				<a href="http://www.haaretz.co.il/news/weather/1.1642873" target="_blank"><? if ($lang_idx == $EN) {?><?} else {?>מן העתונות 2<?}?></a><?=get_arrow()?><br />
                                 <a href="http://issuu.com/pi-haaton/docs/186issuu" target="_blank"><? if ($lang_idx == $EN) {?><?} else {?>מן העתונות 3<?}?></a><?=get_arrow()?><br />
                                 <a href="http://www.nrg.co.il/online/55/ART2/663/767.html?hp=55&cat=323&loc=7" target="_blank"><? if ($lang_idx == $EN) {?><?} else {?>מן העתונות 4<?}?></a><?=get_arrow()?><br />
-                                <a href="<? echo get_query_edited_url($url_cur, 'section', 'faq.php');?>"  title="<?=$FAQ[$lang_idx]?>"><? echo $FAQ[$lang_idx];?></a><?=get_arrow()?>
+                                <a href="<? echo get_query_edited_url($url_cur, 'section', 'faq');?>"  title="<?=$FAQ[$lang_idx]?>"><? echo $FAQ[$lang_idx];?></a><?=get_arrow()?>
 				</div>
 			</td>
 			<td width="24%" valign="top" style="padding:1em">

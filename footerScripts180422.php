@@ -335,11 +335,11 @@ document.layers[object].visibility='hidden';}
 function toggle(id)
 {if(document.getElementById(id))
 {if(document.getElementById(id).style.display=='none')
-{$('#'+id).show("slow");}
+{$('#'+id).show(100);}
 else
-$('#'+ id).hide("slow");}}
-function show(id){$('#'+id).show("slow");}
-function hide(id){$('#'+id).hide("slow");}
+$('#'+ id).hide(50);}}
+function show(id){$('#'+id).show(100);}
+function hide(id){$('#'+id).hide(50);}
 function IncludeJavaScript(jsFile)
 {document.write('<script language="javascript" type="text/javascript" src="'
 +jsFile+'"></script>');}
@@ -815,11 +815,11 @@ function attachEnter(){
                  toggle('loggedin');
                  toggle('notloggedin');
                  if ($("#msgDetailes")){
-                 fillMessage('<img src="img/loading_white.gif" alt="loading" width="50" height="50"/>');
+                 fillMessage('<img src="<?=BASE_URL?>/img/loading_white.gif" alt="loading" width="50" height="50"/>');
                 $.ajax({
                     type: "POST",
                     headers: {  'Access-Control-Allow-Origin': '*' },
-                    url: "chat_service.php?lang="+lang+"&from="+limit+"&update="+update,
+                    url: "<?=BASE_URL?>/chat_service.php?lang="+lang+"&from="+limit+"&update="+update,
                     data: {lang:lang, from:limit, update:update},
                }).done(function(str){fillMessage(str);});
                }
@@ -883,14 +883,14 @@ function attachEnter(){
 		
 		var postData = "lang=" + lang + "&from=" + limit + "&to=" + to + "&alert=" + alert_to_sender + "&private=" + private +"&startLine=" + start + "&category=" + category + "&idx=" + idx + "&name=" + escape(encodeURI(name)) + "&searchname=" + escape(encodeURI(searchname)) + "&body=" + escape(encodeURI(body)) + "&mood=" + escape(encodeURI(mood_elm))  + "&update=" + update;
 		if ($('#current_forum_update_display').val() == 'R')
-                    fillMessage('<img src="img/loading.gif" alt="loading" width="50" height="50"/>');
+                    fillMessage('<img src="<?=BASE_URL?>/img/loading.gif" alt="loading" width="50" height="50"/>');
 		$('input[name="SendButton"]').attr("disabled", "disabled");
 		var ajax = new Ajax();
 		ajax.method = 'POST';
 		ajax.setMimeType('text/html');
 		ajax.postData = postData;
 		ajax.setHandlerBoth(fillMessage);
-		ajax.url = 'chat_service.php?'+postData;
+		ajax.url = '<?=BASE_URL?>/chat_service.php?'+postData;
 		ajax.doReq();
                 
 		
@@ -947,18 +947,18 @@ function attachEnter(){
                     $("#colorbox").hide();
                     $("#cboxOverlay").hide();
                     fillUserDetails (JSON.parse( jsonstr  ) );
-                    toggle('loggedin');
+                    toggle('loggedin');toggle('notloggedin');
                     
                     if (document.getElementById('new_post_btn')){
                             $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
                     }
                     if (document.getElementById('forum'))
                     {                    
-                    fillMessage('<img src="img/loading.gif" alt="loading" width="50" height="50"/>');
+                    fillMessage('<img src="<?=BASE_URL?>/img/loading.gif" alt="loading" width="50" height="50"/>');
                                                 $.ajax({
                                                     type: "POST",
                                                     headers: {  'Access-Control-Allow-Origin': '*' },
-                                                    url: "chat_service.php?lang="+lang+"&from="+limit+"&update="+update,
+                                                    url: "<?=BASE_URL?>/chat_service.php?lang="+lang+"&from="+limit+"&update="+update,
                                                     data: {lang:lang, from:limit, update:update},
                                                 }).done(function(str){fillMessage(str);});
                                                 
@@ -998,7 +998,7 @@ function attachEnter(){
                    
         	$.ajax({
 		  type: "POST",
-		  url: "checkauth.php?action=updateprofile&lang="+lang+"&email="+$("#profileform_email").val()+"&password="+$("#profileform_password").val()+"&user_display_name="+$("#profileform_displayname").val()+"&user_icon="+$("#chosen_user_icon").val()+"&user_nice_name="+$("#profileform_nicename").val()+"&personal_coldmeter=" + ($("#profileform_personal_coldmeter").is(':checked') ? 1 : 0) +"&priority="+ ($("#profileform_priority").is(':checked') ? 1 : 0),
+		  url: "<?=BASE_URL?>/checkauth.php?action=updateprofile&lang="+lang+"&email="+$("#profileform_email").val()+"&password="+$("#profileform_password").val()+"&user_display_name="+$("#profileform_displayname").val()+"&user_icon="+$("#chosen_user_icon").val()+"&user_nice_name="+$("#profileform_nicename").val()+"&personal_coldmeter=" + ($("#profileform_personal_coldmeter").is(':checked') ? 1 : 0) +"&priority="+ ($("#profileform_priority").is(':checked') ? 1 : 0),
 		  data: { email: $("#profileform_email").val(), 
 		          password: $("#profileform_password").val(), 
 		          user_display_name: $("#profileform_displayname").val(), 
@@ -1069,7 +1069,7 @@ function attachEnter(){
                    
         	$.ajax({
 		  type: "POST",
-		  url: "checkauth.php?action=register&lang="+lang+"&username="+$("#registerform_userid").val()+"&email=" + $("#registerform_email").val()+"&password="+$("#registerform_password").val()+"&user_display_name="+$("#registerform_displayname").val()+"&user_icon="+$("#chosen_user_icon").val()+"&user_nice_name="+$("#registerform_nicename").val()+"&priority="+($("#registerform_priority").is(':checked') ? 1 : 0),
+		  url: "<?=BASE_URL?>/checkauth.php?action=register&lang="+lang+"&username="+$("#registerform_userid").val()+"&email=" + $("#registerform_email").val()+"&password="+$("#registerform_password").val()+"&user_display_name="+$("#registerform_displayname").val()+"&user_icon="+$("#chosen_user_icon").val()+"&user_nice_name="+$("#registerform_nicename").val()+"&priority="+($("#registerform_priority").is(':checked') ? 1 : 0),
                   beforeSend: function(){$(".loading").show();},
 		  data: { username:$("#registerform_userid").val(),
 		  	  email: $("#registerform_email").val(), 
@@ -1115,7 +1115,7 @@ function attachEnter(){
                    
         	$.ajax({
 		  type: "POST",
-		  url: "checkauth.php?action=forgotpass&lang="+lang+"&email="+$("#passforgotform_email").val(),
+		  url: "<?=BASE_URL?>/checkauth.php?action=forgotpass&lang="+lang+"&email="+$("#passforgotform_email").val(),
 		  data: {  }
 		}).done(function( msg ) {
 		    toggle('passforgotform_OK');
@@ -1231,7 +1231,7 @@ function fillLikes(jsonstr)
         const laundryimage = json.laundryidx.laundry_con_img;
         const coldmetersize = coldmeter_size;
         asterisk_title = (asterisk == "") ? "" : `<a href="javascript:void(0)" class="info" ><span class="info" style="cursor: default;">${asterisk}</span>*</a>`;
-        const output = `<a href="javascript:void(0)" class="info currentcloth" ><span class="info">${clothtitle}</span><img src="images/clothes/${clothimage}" height="${coldmeter_size}" style="vertical-align: middle" /></a><a class="info" id="coldmetertitle" href="javascript:void(0)" ><span class="info" style="cursor: default;" onclick="redirect('https://www.02ws.co.il?section=survey.php&amp;survey_id=2&amp;lang=1&amp;email=')">לא מסכימים? הצביעו!</span>${coldmeter_title}</a>${asterisk_title} <div id="laundryidx"><a href="javascript:void(0)" class="info" ><img src="images/laundry/${laundryimage}.svg" width="36" height="36" alt="laundry" title="${laundrytitle}" /><span class="info">${laundrytitle}</span></a><div><strong></strong></div></div>`;
+        const output = `<a href="javascript:void(0)" class="info currentcloth" ><span class="info">${clothtitle}</span><img src="<?=BASE_URL?>/images/clothes/${clothimage}" height="${coldmeter_size}" style="vertical-align: middle" /></a><a class="info" id="coldmetertitle" href="javascript:void(0)" ><span class="info" style="cursor: default;" onclick="redirect('https://www.02ws.co.il?section=survey.php&amp;survey_id=2&amp;lang=1&amp;email=')">לא מסכימים? הצביעו!</span>${coldmeter_title}</a>${asterisk_title} <div id="laundryidx"><a href="javascript:void(0)" class="info" ><img src="images/laundry/${laundryimage}.svg" width="36" height="36" alt="laundry" title="${laundrytitle}" /><span class="info">${laundrytitle}</span></a><div><strong></strong></div></div>`;
         fillcoldmeter(output);
         $('#heatindex').html(json.coldmeter.heatindex);
 
@@ -1510,7 +1510,7 @@ function startup(lang, from, update)
         $.ajax({
             type: "GET",
             headers: {  'Access-Control-Allow-Origin': 'https://www.02ws.co.il' },
-            url: "checkauth.php?action=getuser&lang=" + lang +"&reg_id=<?=$_GET['reg_id']?>"+"&email=<?=$_GET['email']?>"
+            url: "<?=BASE_URL?>/checkauth.php?action=getuser&lang=" + lang +"&reg_id=<?=$_GET['reg_id']?>"+"&email=<?=$_GET['email']?>"
         })
         .done(function( jsonstr ) {
             try{
@@ -1532,12 +1532,12 @@ function startup(lang, from, update)
                     }
                 }
                 if (document.getElementById('forum')){
-                    fillMessage('<img src="img/loading.gif" alt="loading" width="50" height="50"/>');
+                    fillMessage('<img src="<?=BASE_URL?>/img/loading.gif" alt="loading" width="50" height="50"/>');
                     $.ajax({
                         type: "POST",
                         crossDomain: true,
                             headers: {  'Access-Control-Allow-Origin': '*' },
-                        url: "chat_service.php?lang="+lang+"&from="+from+"&update="+update,
+                        url: "<?=BASE_URL?>/chat_service.php?lang="+lang+"&from="+from+"&update="+update,
                         data: {lang:lang, from:from, update:update},
                     })
                     .done(function(str){fillMessage(str);});
@@ -1657,9 +1657,9 @@ function startup(lang, from, update)
         $('#' + act_container + ' .exp').html(getActivityDesc(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json));
         $('#' + act_container + ' .paramtitle').html(getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json));
           if (all_json.jws.current.recommendations[i].value == 1)
-            activities_yes += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"span-value\" data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json) + "\"  onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" + width=\"25\" height=\"25\" /></li>" ;
+            activities_yes += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"span-value\" data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json) + "\"  onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"<?=BASE_URL?>/images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" + width=\"25\" height=\"25\" /></li>" ;
          else
-            activities_no += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"no span-value\" data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json) + "\" onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" +  width=\"25\" height=\"25\" /></li>"  ;
+            activities_no += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"no span-value\" data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json) + "\" onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"<?=BASE_URL?>/images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" +  width=\"25\" height=\"25\" /></li>"  ;
        }
       // $('#bottombar').html(activities_yes+activities_no);
         $('#activities_yes').html(activities_yes);
@@ -1735,7 +1735,7 @@ function loadPostData(jsonstr, coldmeter_size)
         <?if ($_GET['reg_id'] != "") {?>
         $.ajax({
             type: "GET",
-            url: "checkauth.php?action=getuser&reg_id=<?=$_GET['reg_id']?>&qs=<?=$_SERVER['QUERY_STRING']?>&email=<?=$_GET['email']?>"
+            url: "<?=BASE_URL?>/checkauth.php?action=getuser&reg_id=<?=$_GET['reg_id']?>&qs=<?=$_SERVER['QUERY_STRING']?>&email=<?=$_GET['email']?>"
             }).done(function( jsonstr ) {
 
                 var jsonT = JSON.parse( jsonstr  );
@@ -2019,9 +2019,7 @@ Licensed MIT
         $('.rainpercent').html((json.jws.current.rainchance > 0 ? (json.jws.current.rainchance + '%') : ''));
         if (json.jws.states.sigweather.length > 1)
         $('#what_is_h, #what_is_h_start ').html(json.jws.states.sigweather[0].sigtitle<? echo $lang_idx;?>+
-                                 '&nbsp;<div class=\"high number\">&nbsp;' + 
-                                  (json.jws.states.sigweather.length - 1) + 
-                                  '</div>&nbsp;<span class=\"arrow_down\">&#9660;</span>'
+                                 '&nbsp;&nbsp;<span class=\"arrow_down\">&#9660;</span>&nbsp;&nbsp;'
                                    + '<div class="rainpercent">' + (json.jws.current.rainchance > 0 ? (json.jws.current.rainchance + '%') : '') + '</div>');
         $('#what_is_h').css('visibility', 'visible');                          
         var title_temp;

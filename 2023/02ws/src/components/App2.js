@@ -57,20 +57,20 @@ function App2({json, cssClasses}) {
         </div>
        </header>
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
-       <div className="col mt-2"><Forecast24h hours={nextHours} lang={langcode} className={cssClasses} /></div>
-       <div className="col mx-auto mt-2"><Now current={current} lang={langcode} className={cssClasses} /></div>
-       <div className="col "><ColdMeter  lang={langcode}/></div>
-       <div className="col "><Statuses statuses={statuses} lang={langcode} className={cssClasses}/></div>
-       <div className="col "><Activities activities={currentrecommendations} lang={langcode} /></div>
+       <div className="col-xs-4 col-lg-8 mt-2"><Forecast24h hours={nextHours} lang={langcode} className={cssClasses} /></div>
+       <div className="col-xs-4 col-md-4 col-lg-4 mx-auto mt-2"><Now current={current} lang={langcode} className={cssClasses} /></div>
+       <div className="col-xs-4 col-md-4 col-lg-4 "><ColdMeter  lang={langcode}/></div>
+       <div className="col-xs-4 col-md-4 col-lg-4 "><Statuses statuses={statuses} lang={langcode} className={cssClasses}/></div>
+       <div className="ccol-xs-4 col-md-4 col-lg-4 "><Activities activities={currentrecommendations} lang={langcode} /></div>
        </div>
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
-       <div className="col-6 mt-2"><NextDays days={nextDays} lang={langcode} className={cssClasses}/></div>
-       <div className="col "><Notifications notifications={messages} lang={langcode} className={cssClasses}/></div>
-       <div className="col "><Ad /></div>
+       <div className="col-xs-4 col-lg-8 mt-2"><NextDays days={nextDays} lang={langcode} className={cssClasses}/></div>
+       <div className="col-xs-4 col-lg-4 "><Notifications notifications={messages} lang={langcode} className={cssClasses}/></div>
+       <div className="col-xs-4 col-lg-4 "><Ad /></div>
        </div> 
        <div className="row">
-       <div className="col "><PicOfTheDay pic={picoftheday} lang={langcode} /></div>
-       <div className="col "><UserPics userPics={userpics} lang={langcode} /></div>
+       <div className="col-xs-4 col-lg-4 "><PicOfTheDay pic={picoftheday} lang={langcode} /></div>
+       <div className="col-xs-4 col-lg-4 "><UserPics userPics={userpics} lang={langcode} /></div>
        </div>
      </div>
      </>

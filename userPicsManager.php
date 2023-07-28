@@ -145,15 +145,15 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
            <input type="checkbox" id="approved<?=$line["idx"]?>" name="approved<?=$line["idx"]?>"  value="<?=$line["approved"]?>" <? if ($line["approved"] == 1) echo "checked=\"checked\""; ?> />
            <input type="hidden" id="picname<?=$line["idx"]?>" name="<?=$picaname?>"  value="<?=$picaname?>" <? if ($line["approved"] == 1) echo "checked=\"checked\""; ?> />
            <input type="hidden" id="reg_id<?=$line["idx"]?>" value="<?=$line["reg_id"]?>" />&nbsp;&nbsp;&nbsp;&nbsp;
-           <img src="images/check.png" width="16px" onclick="getOnePicService(this.parentNode.id, 'U')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;
-           <img src="images/rotate.png" width="16px" onclick="getOnePicService(this.parentNode.id, 'R')" style="cursor:pointer" /><br/>
+           <img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOnePicService(this.parentNode.id, 'U')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;
+           <img src="<?=BASE_URL?>/images/rotate.png" width="16px" onclick="getOnePicService(this.parentNode.id, 'R')" style="cursor:pointer" /><br/>
            <?=$line["name"]." <br/>".$line["comment"]."<br/>".$line["x"]." <br/>".$line["y"]?>
            
        
                                 
                 <a href="<?=$picaname?>" title="" class="colorbox">
                         
-                        <img src="phpThumb.php?src=<? echo $picaname ?>&amp;w=150" width="150px" title="<?=$picaname?>" />
+                        <img src="<?=BASE_URL?>/phpThumb.php?src=<? echo $picaname ?>&amp;w=150" width="150px" title="<?=$picaname?>" />
 
                 </a>
         </div>
@@ -173,7 +173,7 @@ function getOnePicService(picToSave, command)
     var approved = $('#approved'+picToSave).is(":checked") ? 1 : 0;
     var reg_id = $('#reg_id'+picToSave).val();
     var picname = $('#picname'+picToSave).val();
-    fillPage('<img src="images/loading.gif" alt="loading" />');
+    fillPage('<img src="<?=BASE_URL?>/images/loading.gif" alt="loading" />');
     $.ajax({
         type: "POST",
         mimeType:"text/html",
