@@ -3102,6 +3102,15 @@ function getMsgAlert($picture_url, $message, $title) {
     }
     return  $msgToAlertSection;
 }
+function updateAlerts ($description, $type, $href, $img_src, $title,  $messageType, $ttl)
+{
+    global $mem;
+    $Alerts = array();
+    $Alerts = $mem->get('alerts');
+    $id = time();
+    $Alerts[$id] = array('title0' => $title[0], 'description0' => $description[0], 'title1' => $title[1], 'description1' => $description[1], 'img_src' => $img_src, 'messageType' => $messageType, 'href' => $href, 'ts' => time(), 'ttl' => $ttl);
+    $mem->set('alerts', $Alerts);
+}
 function updateMessageFromMessages ($description, $active, $type, $lang, $href, $img_src, $title, $addon, $class, $messageType, $ttl)
 {
     global $mem, $ALERTS_PAYMENT, $PATREON_LINK, $RU, $FR;
@@ -3169,6 +3178,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
             echo "descriptionforecast".$lang."=".date('Y-m-d G:i D', $mem->get('descriptionforecasttime'.$lang));
             logger($description, 0, "descriptionforecast", "updateMessageFromMessages", "updateMessageFromMessages");
         }
+        
        /* if ($lang == 0)
         {
             $mem->set('latestalert'.$RU, translateText(urlencode($description), 'ru'));

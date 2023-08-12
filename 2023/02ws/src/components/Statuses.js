@@ -4,7 +4,7 @@ const Statuses = (props) => {
     return (
         <ul id="more_sigweather" className={"box_text " + (props.lang === 1? 'rtl' : '')}>
             <li>
-            <ul id="sigweather">
+            <ul id="sigweather" className="white_transp_box">
                     {props.statuses.map((status, i) => {
                         const title = eval(`status.sigtitle${props.lang}`);
                         const ext = eval(`status.sigext${props.lang}`);

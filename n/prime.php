@@ -550,7 +550,7 @@
                             <tr><td><?=$EMAIL[$lang_idx]?>:</td><td><input type="text" name="email" value="" readonly="readonly" id="profileform_email" size="30"/></td></tr>
                             <tr><td><?=$PASSWORD[$lang_idx]?>:</td><td><input type="password" name="password" value="" id="profileform_password"/></td></tr>
                             <tr><td><?=$USER_ICON[$lang_idx]?>:</td><td><div><div class="user_icon_frame">
-                        <div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = getfilesFromdir("img/user_icon"); foreach ($user_icons as $user_icon)
+                        <div id="user_icon_contentbox" class="contentbox-wrapper"> <? $user_icons = array(); $user_icons = getfilesFromdir($_SERVER['DOCUMENT_ROOT']."/img/user_icon"); foreach ($user_icons as $user_icon)
                                     { ?>
                             <div class="contentbox">
                                     <div class='<? $user_icon_name =explode(".", end(explode("/",$user_icon[1]))); echo $user_icon_name[0];?>' style="width:36px;height:36px">&nbsp;</div>

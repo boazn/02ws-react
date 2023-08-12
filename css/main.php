@@ -1008,7 +1008,7 @@ width: 33px;
     background:rgba(255, 255, 255, 0.5);
     padding:6px 5px;
     font-size:1.1em;
-    margin-bottom:1px;
+    margin-bottom:10px;
 }
 
 .seker_btns li:hover, #seker_btns li:hover {
@@ -1709,6 +1709,7 @@ margin-<?=get_s_align()?>:0.5em
 }
 #if1, #if2, #if3, #if4{
     margin:5px 0;
+    width:300px
 }
 #extrainfo{
     display:inline
@@ -1859,8 +1860,8 @@ text-align:<?=get_s_align()?>;
     line-height:1.2em
 }
 #windy_widget{
-    margin-<?=get_s_align()?>:0;
-    margin-top:0px;
+    margin-<?=get_s_align()?>:80px;
+    margin-top:-60px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
 }
 .white_box {

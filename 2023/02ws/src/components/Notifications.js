@@ -5,10 +5,10 @@ const Notifications = (props) => {
     var latestalert_title = eval(`props.notifications.latestalert_title${props.lang}`);
     let latestalert = decodeUriComponent(eval(`props.notifications.latestalert${props.lang}`)).replace(/\+/g, ' ');
     let detailedForecast_title = decodeUriComponent(eval(`props.notifications.detailedforecast_title${props.lang}`)).replace(/\+/g, ' ');
-    let detailedForecast = decodeUriComponent(eval(`props.notifications.detailedforecast${props.lang}`)).replace(/\+/g, ' ');
+    let detailedForecast = decodeUriComponent(eval(`props.notifications.detailedforecast${props.lang}`)).replace(/\+/g, ' ').replace(/(\r\n|\r|\n)/g, '<br/>');
     return (
-        <div class="now_messages">       
-        <div id="alerts" class="span7 offset3 white_box">
+        <div className="now_messages">       
+        <div id="alerts" className="span7 offset3 white_box">
            <div id="alerts_app_promo"></div>
             <div id="message" className={"box_text " + (props.lang === 1? 'rtl' : '')}>
                 <h4>{latestalert_title}</h4>
@@ -23,8 +23,8 @@ const Notifications = (props) => {
               
 
             </div>
-            <p id="personal_message" class="box_text"></p>
-            <p id="alertachive_href" class="box_text">
+            <p id="personal_message" className="box_text"></p>
+            <p id="alertachive_href" className="box_text">
                 
             </p>
                    

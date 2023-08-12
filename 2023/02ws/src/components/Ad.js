@@ -16,7 +16,7 @@ const Ad = (props) => {
         
         <div data-onpage="true"     data-adpath="/339474670,22847485332/02WS/Desktop_300x250">
             Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad Ad 
-        <ins class="adsbygoogle"
+        <ins className="adsbygoogle"
             
             data-ad-client="ca-pub-2706630587106567"
             data-ad-slot="1816548745"

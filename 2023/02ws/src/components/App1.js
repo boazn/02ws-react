@@ -14,6 +14,7 @@ import PicOfTheDay from './PicOfTheDay';
 import UserPics from './UserPics';
 import Activities from './Activities';
 import { Outlet, Link } from "react-router-dom";
+import LatestNow from './LatestNow';
 
 const lngs = [
   { code: "en", native: "English" },
@@ -35,9 +36,11 @@ function App1({json, cssClasses}) {
   const nextDays = json.jws.forecastDays;
   const nextHours = json.jws.forecastHours;
   const current = json.jws.current;
+  const feelslike = json.jws.feelslike;
   const messages = json.jws.Messages;
   const statuses = json.jws.states.sigweather;
   const states = json.jws.states;
+  const windstatus = json.jws.windstatus;
   const picoftheday = json.jws.LatestPicOfTheDay;
   const userpics = json.jws.LatestUserPic;
   const currentrecommendations = json.jws.current.recommendations;
@@ -62,13 +65,12 @@ function App1({json, cssClasses}) {
       
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
        <div className="clouds-3"></div>
-       <div className="col-xs-4 col-md-4 col-lg-4 blue_transp_box "><Now current={current} lang={langcode} className={cssClasses} /></div>
-       <div className="col-xs-4 col-md-4 col-lg-4 white_transp_box"><ColdMeter  lang={langcode}/></div>
-       <div className="col-xs-4 col-md-4 col-lg-4 white_transp_box">
+       <div className="col-xs-4 col-md-4 col-lg-4 blue_transp_box "><LatestNow current={current} feelslike={feelslike} windstatus={windstatus} lang={langcode} className={cssClasses} /></div>
+       <div className="col-xs-4 col-md-4 col-lg-4  ">
         <Statuses statuses={statuses} lang={langcode} className={cssClasses}/>
        <Activities activities={currentrecommendations} lang={langcode} />
        </div>
-         
+       <div className="col-xs-4 col-md-4 col-lg-4 "><Ad /></div>  
        </div>
        
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>

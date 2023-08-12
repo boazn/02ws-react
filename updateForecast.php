@@ -418,6 +418,47 @@ function updateAds ($active, $idx, $type, $command, $img_url, $href, $w, $h)
     echo "</pre>";
 
 }
+function updateAlert ($id, $description, $title, $type, $href, $img_src, $action, $ttl, $ts)
+{
+    global $mem;
+    $Alerts = $mem->get('alerts');
+    echo "about to ".$action.": ".$id, " ",$description[0], " ",$title[0], " ",$type, " ",$href, " ",$img_src, " ",$action, " ",$ttl;
+    $now = time();
+    if ($action=="DAlert")
+         unset($Alerts[$id]);
+    else if($action=="UAlert") 
+        $Alerts[$id] = array('title0' => $title[0], 'description0' => $description[0], 'title1' => $title[1], 'description1' => $description[1], 'img_src' => $img_src, 'messageType' => $type, 'href' => $href, 'ts' => $ts, 'ttl' => $ttl);     
+    else if($action=="IAlert") 
+        $Alerts[$now] = array('title0' => $title[0], 'description0' => $description[0], 'title1' => $title[1], 'description1' => $description[1], 'img_src' => $img_src, 'messageType' => $type, 'href' => $href, 'ts' => $now, 'ttl' => $ttl);      
+        
+    $Alerts_r = array_reverse($Alerts);
+    updateMessagesFromAlertsArray($Alerts_r);
+    //var_dump($Alerts);
+    $mem->set('alerts', $Alerts);
+}
+function updateMessagesFromAlertsArray($Alerts){
+    $idx = 0;$description0="";$description1="";
+    foreach($Alerts as $alert){
+        if ($idx == 0){
+            updateMessages ($alert["description0"], 1, 'LAlert', 0, $alert["href"],  $alert["img_src"],  $alert["title0"], 0);
+            updateMessages ($alert["description1"], 1, 'LAlert', 1, $alert["href"],  $alert["img_src"],  $alert["title1"], 0);
+        }
+        else{
+            if ($idx == 1)
+            {
+                $title0 = $alert["title0"];
+                $title1 = $alert["title1"];
+            }
+            $time_a = replaceDays(date('D H:i', $alert["ts"])); 
+            $description0.=$time_a."\n".$alert["title0"]."\n".$alert["description0"]."\n";
+            $description1.=$time_a."\n".$alert["title1"]."\n".$alert["description1"]."\n";
+        }
+        $idx++;
+    }
+    updateMessages ($description0, 1, 'forecast', 0, $alert["href"],  $alert["img_src"],  $title0, 0);
+    updateMessages ($description1, 1, 'forecast', 1, $alert["href"],  $alert["img_src"],  $title1, 0);
+
+}
 function updateMessages ($description, $active, $type, $lang, $href, $img_src, $title, $append)
 {
     global $forecastHour, $mem, $RU, $FR, $AR;
@@ -706,6 +747,19 @@ else if ($_POST['idx'] != "")
 else if ((trim($_POST['command']) == "ISTORY"))
 {
 	insertMainStory(html_entity_decode(urldecode($_POST['description'])), $_POST['lang'],urldecode($_POST['href']) ,urldecode($_POST['img_src']),urldecode($_POST['title']));
+}
+else if ((trim($_POST['command']) == "UAlert")||(trim($_POST['command']) == "IAlert")||(trim($_POST['command']) == "DAlert"))
+{
+   //var_dump($_POST);
+   updateAlert($_POST['id'], 
+                    array(html_entity_decode(urldecode($_POST['description0'])), html_entity_decode(urldecode($_POST['description1']))),
+                    array(html_entity_decode(urldecode($_POST['title0'])), html_entity_decode(urldecode($_POST['title1']))),
+                    $_POST['alert_type'],
+                    urldecode($_POST['href']),
+                    $_POST['img_src'],
+                    $_POST['command'],
+                    $_POST['ttl'],
+                    $_POST['ts']);
 }
 else if ((trim($_POST['command']) == "USTORY"))
 {
@@ -1096,7 +1150,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		
-        <img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'I', 'LAlert')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'I', 'LAlert')" style="cursor:pointer" />
         <img src="<?=BASE_URL?>/images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'LAlert')" style="cursor:pointer" />
 	</div>
 	<div class="cell shrinked" style="clear:both">
@@ -1104,7 +1158,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		<input type="checkbox" id="activeLAlert<?=$line["lang"]?>" name="active<?=$line["day"]?>" value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
 		
 	</div>
-    <div class="cell shrinked latestalerttime" style="width:80px">
+    <div class="cell shrinked latestalerttime" style="display:none">
 		<span><?=date('Y-m-d G:i D ', $mem->get('latestalerttime'.$line["lang"]))?></span>
 		
 	</div>
@@ -1114,8 +1168,8 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		
 	</div>
 	<div class="cell shrinked" >
-        <input id="latestALert_title<?=$line["lang"]?>" name="latestALert_title<?=$line["lang"]?>" size="1"  value="<?=$line["Title"]?>" style="width:280px;text-align:<?if ($line["lang"] == "1") echo "right"; else echo "left;direction:ltr";?>;" /><br/>
-		<textarea oninput="inputtextChanged(this)" id="descriptionLAlert<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
+        <input id="latestALert_title<?=$line["lang"]?>" name="latestALert_title<?=$line["lang"]?>" size="1"  value="<?=$line["Title"]?>" style="width:240px;text-align:<?if ($line["lang"] == "1") echo "right"; else echo "left;direction:ltr";?>;" /><br/>
+		<textarea oninput="inputtextChanged(this)" id="descriptionLAlert<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 20px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
     
@@ -1144,9 +1198,9 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
 <div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell alert"  id="forecast<?=$line["lang"]?>">
 <div id="forecast_href_plugin" class="invcell shrinked" >
-			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>&nbsp;&nbsp;
+			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>
 	
-			<a href="javascript: void(0)" id="hrefforecast<?=$line["lang"]?>" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="<?=BASE_URL?>/images/italic.png" title="italic" width="16" height="16" /></a>&nbsp;&nbsp;
+			<a href="javascript: void(0)" id="hrefforecast<?=$line["lang"]?>" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="<?=BASE_URL?>/images/italic.png" title="italic" width="16" height="16" /></a>
 			
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
 		<img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecast')" style="cursor:pointer" />
@@ -1156,7 +1210,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		<input type="checkbox" id="activeforecast<?=$line["lang"]?>" name="active<?=$line["day"]?>" value="<?=$line["active"]?>" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?> />
 		
 	</div>
-    <div class="cell shrinked" style="width:60px">
+    <div class="cell shrinked" style="display:none">
 		<span><?=date('Y-m-d G:i D ', $mem->get('descriptionforecasttime'.$line["lang"]))?></span>
 		
 	</div>
@@ -1167,7 +1221,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	</div>
 	<div class="cell shrinked" >
         <input id="descriptionforecast_title<?=$line["lang"]?>" name="descriptionforecast_title<?=$line["lang"]?>" size="1"  value="<?=$line["Title"]?>" style="width:280px;text-align:<?if ($line["lang"] == "1") echo "right"; else echo "left;direction:ltr";?>;" /><br/>
-		<textarea id="descriptionforecast<?=$line["lang"]?>" oninput="inputtextChanged(this)" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
+		<textarea id="descriptionforecast<?=$line["lang"]?>" oninput="inputtextChanged(this)" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 20px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
     
@@ -1178,9 +1232,59 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	</div> -->
 </div>
 <?
+
 //apc_store('descriptionforecast'.$line["lang"], $line["Description"]);
 //apc_store('descriptionforecasttime'.$line["lang"], strtotime($line["updatedTime"]));
 } ?>
+<?
+$Alerts = array();
+$Alerts = $mem->get('alerts');
+$Alerts_r = array_reverse($Alerts, true);
+//var_dump($Alerts);
+foreach ($Alerts_r as $key => &$alert){
+?>
+<div  class="inv_plain_3_zebra invcell alert"  id="alert<?=$key?>">
+    <div id="alerts_href_plugin" class="invcell shrinked" >
+		<!-- <input id="commandforecast0" name="command0" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
+        <img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'IAlert', 'alert')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'UAlert', 'alert')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="<?=BASE_URL?>/images/x.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'DAlert', 'alert')" style="cursor:pointer" />
+	</div>
+	
+    <div class="cell " style="width:60px">
+		<span><?=date('Y-m-d G:i D ', $alert["ts"])?></span>
+        
+		
+	</div>
+    <div class="cell " >
+    <input id="title1_alert<?=$key?>" name="alert_title1<?=$key?>"  value="<?=$alert["title1"]?>" style="width:280px;text-align:right;direction:ltr" /><br/>
+    <textarea id="descriptionalert<?=$key?>1" oninput="inputtextChanged(this)" class="floated" name="descriptionalert1<?=$key?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $alert["description1"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:right;direction:rtl" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $alert["description1"]), ENT_QUOTES, "UTF-8")?></textarea>
+    <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>&nbsp;&nbsp;
+    </div>
+    <? if (!empty($alert["img_src"])) 
+    { 
+        echo "<img src=\"".$alert["img_src"]."\" width=\"260px\" />";
+        }?>
+    <div class="cell " >
+    <input id="title0_alert<?=$key?>" name="alert_title0<?=$key?>"  value="<?=$alert["title0"]?>" style="width:280px;text-align:left" /><br/>
+    <textarea id="descriptionalert<?=$key?>0" oninput="inputtextChanged(this)" class="floated" name="descriptionalert0<?=$key?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $alert["description0"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $alert["description0"]), ENT_QUOTES, "UTF-8")?></textarea>
+    <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>&nbsp;&nbsp;
+    </div>
+    <div class="cell " >
+        <span id="type_alert<?=$key?>">  <?=$alert["messageType"]?></span>
+    </div>
+    <div class="cell " >
+        id=<input id="id_alert<?=$key?>" style="width:80px" value="<?=$key?>" readonly />
+    </div>
+    <div class="cell " >
+        ttl=<input id="ttl_alert<?=$key?>" value="<?=$alert["ttl"]?>" readonly />
+    </div>
+        
+</div>
+   
+<?
+}
+?>
 <div style="clear:both"></div>
 <?
 
@@ -1477,6 +1581,31 @@ function getOneUFService(dayToSave, command, type)
         var description = document.getElementById('descriptionsynop'+lang).value;
         var postData = "reload=" + reload + "&command=" + command + "&lang=" + lang + "&description=" + escape(encodeURI(description)) + "&title=" + escape(encodeURI(title)) + "&active=" + active + "&type=" + type + "&max_time=" + max_time + "&multiple_factor=" + multiple_factor + "&img_src=" + escape(encodeURI(img_src)) + "&href=" + escape(encodeURI(href));
     }
+    else if((type == "alert"))
+    {
+        var description0 = document.getElementById('description'+ dayToSave + '0').value;
+        var description1 = document.getElementById('description'+ dayToSave + '1').value;
+        
+        var img_src = document.getElementById('img'+dayToSave);
+    
+        if (img_src)
+        {
+                img_src = img_src.value;	
+        }
+        var href = document.getElementById('href'+dayToSave);
+        if (href)
+        {
+                href = href.value;	
+        }
+        var title0 = document.getElementById('title0_'+dayToSave).value;
+        var title1 = document.getElementById('title1_'+dayToSave).value;
+        var id = document.getElementById('id_'+dayToSave).value;
+        var ttl = document.getElementById('ttl_'+dayToSave).value;
+        var ts = document.getElementById('ttl_'+dayToSave).value;
+        var alert_type = document.getElementById('type_'+dayToSave).innerText;
+        var postData = "ts=" + id + "&alert_type=" + alert_type + "&ttl=" + ttl + "&id=" + id + "&command=" + command + "&description1=" + escape(encodeURI(description1)) + "&description0=" + escape(encodeURI(description0)) + "&title1=" + escape(encodeURI(title1)) + "&title0=" + escape(encodeURI(title0)) + "&active=" + active + "&type=" + type + "&img_src=" + escape(encodeURI(img_src)) + "&href=" + escape(encodeURI(href));
+
+    }
 	else if (!document.getElementById('description'+dayToSave))
     {
             //alert('day');
@@ -1582,6 +1711,7 @@ function getOneUFService(dayToSave, command, type)
             //alert('title = ' + title);
             var postData = "reload=" + reload + "&command=" + command + "&lang=" + lang + "&description=" + escape(encodeURI(description)) + "&title=" + escape(encodeURI(title)) + "&active=" + active + "&type=" + type + "&max_time=" + max_time + "&multiple_factor=" + multiple_factor + "&img_src=" + escape(encodeURI(img_src)) + "&href=" + escape(encodeURI(href));
     }
+    
     else
     {
             //alert(type);

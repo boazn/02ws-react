@@ -393,6 +393,7 @@ function set_new_password($email, $pass)
         else
             logger("After Activation no regID:".$email." ".$reg_id." 0", 0, "auth", "db", "confirmUserPass");
             
+            
         
          return $userJSON; //Success! Username and password confirmed
       }

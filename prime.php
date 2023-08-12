@@ -474,10 +474,7 @@
                 </div>
                 <?if (isHeb()){?>
                 <div id="if1" >  
-                <div id="belowmainad" class="white_box" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
-                <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
-    קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2023 בירושלים<?}?></a>
-                </div>
+                
                 </div>
                
                 
@@ -522,6 +519,10 @@
                 <div id="if3" style="width:300px">
                 </div>
                 <div id="if4">
+                <div id="belowmainad" class="white_box" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
+                <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
+    קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2023 בירושלים<?}?></a>
+                </div>
                 </div>
             
 	   </div>
@@ -545,14 +546,13 @@
                     </div>
                     <?}?> 
                 </div>
-                      
-                <div id="adexternal" class="span3">
                 <div id="windy_widget" class="span4">
                 <h2><?=$SYNOP_TITLE[$lang_idx]?></h2>
                 <iframe width="300" height="180" src="https://embed.windy.com/embed2.html?lat=31.775&lon=35.156&detailLat=31.728&detailLon=34.942&width=300&height=180&zoom=7&level=850h&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=true&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>               
                 <?=$synop?>   
-		        </div>
-                   
+		        </div>      
+                <div id="adexternal" class="span3" style="display:none">
+                                 
                   
                 </div>
             </div>

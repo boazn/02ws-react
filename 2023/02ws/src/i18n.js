@@ -24,7 +24,8 @@ i18n
          uv: "uv",
          pm10: "pm10",
          pm25: "pm25",
-         pressure: "pressure"
+         pressure: "pressure",
+         it_feels: "it feels"
       
         }
       },
@@ -41,7 +42,8 @@ i18n
          uv: "uv",
          pm10: "אבק גדול",
          pm25: "אבק קטן",
-         pressure: "לחץ אוויר"
+         pressure: "לחץ אוויר",
+         it_feels: "מרגיש כמו"
 
         }
       },

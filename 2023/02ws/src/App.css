@@ -267,11 +267,11 @@ body {
     font-size: 1em;
 }
 .x-axis-bar.secondary {
-    z-index:999;
+   
   background-image: linear-gradient(to top, rgba(247,148,30,0.4) 0%, rgba(247,148,30,0.05) 75%, rgba(247,148,30,0.0) 100%);
  }
 .x-axis-bar.secondaryalt {
-    z-index:999;
+    
    background-image: linear-gradient(to top, rgba(247,148,30,0.5) 0%, rgba(247,148,30,0.05) 75%, rgba(247,148,30,0.0) 100%);
   
 }
@@ -420,6 +420,10 @@ body {
   list-style: none;
   display: inline-block;
   text-align: center;
+  margin:0 0.2em
+}
+#forcast_days ul{
+  padding: 0.2em;
 }
 .inline
 {
@@ -658,6 +662,13 @@ i {
   background: hsl(224, 98%, 58%);
   color: white;
 }
+#sigweather, #coldmeter,  #graph_forcast{
+  margin-top:1rem;
+  color:black
+}
+#coldmeter .shadow, #coldmeter .sun{
+  width:50%
+}
 #sigweather, #more_sigweather{
   list-style: none;
   font-size: 1.1em;
@@ -689,7 +700,9 @@ i {
 }
 .white_box{
   background:white;
+  color:black;
   border-radius: 10px;
+  margin:8px 8px;
   
 }
 .white_transp_box{
@@ -819,4 +832,56 @@ i {
 .display_off {
   display:none;
 }
-
+.imgbox
+{
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  margin: 0 5px;
+}
+.parambox
+{
+  display:flex;
+  width:200px;
+  margin: 5px;
+}
+#tempdivvalue
+{
+  display:grid
+}
+.wind_icon
+{
+ background: url('https://www.02ws.co.il/img/wind_icons2.png') no-repeat top left;
+ width:40px;height:14px;
+}
+.no_wind
+{
+background-position: -120px 0px;
+}
+.light_wind
+{
+background-position: -80px 0px;
+}
+.moderate_wind
+{
+background-position: -40px 0px;
+}
+.high_wind
+{
+background-position: 0px 0px;
+}
+.inlineGrid
+{
+  display: inline;
+}
+#itfeels_title
+{
+  width:100%
+}
+#shadow_sun_wrapper
+{
+  display:flex
+}
+.more{
+ 
+}

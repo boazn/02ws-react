@@ -463,7 +463,7 @@ if (($latestalert_passedts < 3600)&&(!empty(trim($LATEST_ALERT_BODY_CUT[$HEB])))
 				array($LATEST_ALERT_BODY_CUT[$RU],$LATEST_ALERT_BODY_CUT[$RU]), 
 				array($LATEST_ALERT_BODY_CUT[$FR],$LATEST_ALERT_BODY_CUT[$FR]), 
 				array($LATEST_ALERT_BODY_CUT[$AR],$LATEST_ALERT_BODY_CUT[$AR])), 
-                "?section=alerts.php&amp;lang={$lang_idx}");
+                "?section=alerts&amp;lang={$lang_idx}");
 }
 
 if (($hour < 10)&&($dew_over_night))
@@ -476,7 +476,7 @@ if (($hour < 10)&&($dew_over_night))
                       array($today->get_highhum()." ".$HUMIDITY[$RU],$today->get_highhum()." ".$HUMIDITY[$RU]), 
                       array($today->get_highhum()." ".$HUMIDITY[$FR],$today->get_highhum()." ".$HUMIDITY[$FR]), 
                       array($today->get_highhum()." ".$HUMIDITY[$AR],$today->get_highhum()." ".$HUMIDITY[$AR])), 
-                "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=2");
+                "?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=2");
 }
 if (isRaining()||(IS_SNOWING == 1))
 {
@@ -498,7 +498,7 @@ if (isRaining()||(IS_SNOWING == 1))
 					 $current->get_rainrate2()." ".$RAINRATE_UNIT[$FR].", ".$DAILY_RAIN[$FR].": ".$today->get_rain2()." ".$RAIN_UNIT[$FR]), 
 			   array($current->get_rainrate2()." ".$RAINRATE_UNIT[$AR].", ".$DAILY_RAIN[$AR].": ".$today->get_rain2()." ".$RAIN_UNIT[$AR], 
 					$current->get_rainrate2()." ".$RAINRATE_UNIT[$AR].", ".$DAILY_RAIN[$AR].": ".$today->get_rain2()." ".$RAIN_UNIT[$AR])), 
-				"?section=graph.php&amp;graph=rain.php&amp;profile=1");
+				"?section=graph&amp;graph=rain.php&amp;profile=1");
 	if ($hour > 7)
     	update_action ("RainStarted", $extrainfo, $ALT);
 }
@@ -519,7 +519,7 @@ if (($rainrateHour !== "0.0") &&
 				  $DAILY_RAIN[$FR].": ".$today->get_rain2()." ".$RAIN_UNIT[$FR].", ".$TOTAL_RAIN[$FR].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$FR]), 
 			array($DAILY_RAIN[$AR].": ".$today->get_rain2()." ".$RAIN_UNIT[$AR].", ".$TOTAL_RAIN[$AR].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$AR], 
 				  $DAILY_RAIN[$AR].": ".$today->get_rain2()." ".$RAIN_UNIT[$AR].", ".$TOTAL_RAIN[$AR].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$AR])), 
-                "?section=graph.php&amp;graph=rain.php&amp;profile=1");
+                "?section=graph&amp;graph=rain.php&amp;profile=1");
      //update_action ("RainStopped", $extrainfo, $ALT);
 }
 else if (($today->get_highrainrate() !== "0.0") && 
@@ -541,7 +541,7 @@ else if (($today->get_highrainrate() !== "0.0") &&
 				  $DAILY_RAIN[$FR].": ".$today->get_rain2()." ".$RAIN_UNIT[$FR].", ".$TOTAL_RAIN[$FR].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$FR]), 
 			array($DAILY_RAIN[$AR].": ".$today->get_rain2()." ".$RAIN_UNIT[$AR].", ".$TOTAL_RAIN[$AR].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$AR], 
 				  $DAILY_RAIN[$AR].": ".$today->get_rain2()." ".$RAIN_UNIT[$AR].", ".$TOTAL_RAIN[$AR].": ".$seasonTillNow->get_rain2()." ".$RAIN_UNIT[$AR])), 
-              "?section=graph.php&amp;graph=rain.php&amp;profile=1");
+              "?section=graph&amp;graph=rain.php&amp;profile=1");
 }
 
 if (($current->get_temp('C') < 3)&&($current->get_temp() != ""))
@@ -559,7 +559,7 @@ if (($current->get_temp('C') < 3)&&($current->get_temp() != ""))
 					  		$TEMP[$FR].": ".$current->get_temp()."°"), 
                       array($TEMP[$AR].": ".$current->get_temp()."°",
 					  		$TEMP[$AR].": ".$current->get_temp()."°")), 
-                "?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=2");
+                "?section=graph&amp;graph=tempLatestArchive.php&amp;profile=2");
     update_action ("Cold", 
                    array("<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$EN]\" width=\"150px\" border=\"0\"></div><div class=\"loading float\">&nbsp;$CURRENT_SIG_WEATHER[$EN]&nbsp;<strong>".$ALT[$EN]."</strong><div class=\"loading float big\">&nbsp;{$extrainfo[$EN]}</div></div>", 
 				         "<div class=\"loading float\"><img src=\"".BASE_URL."/images/$pic\" alt=\"$ALT[$HEB]\" width=\"150px\" border=\"0\"></div><div class=\"loading float\">&nbsp;$CURRENT_SIG_WEATHER[$HEB]&nbsp;<strong>".$ALT[$HEB]."</strong><div class=\"loading float big\">&nbsp;{$extrainfo[$HEB]}</div></div>", 
@@ -591,7 +591,7 @@ if ($current->get_pm10() > 130 || $current->get_pm25() > 50)
 					  		$DUSTPM10[$FR].": ".$current->get_pm10()."   ".$DUSTPM25[$FR].": ".$current->get_pm25()." µg/m3"), 
                       array($DUSTPM10[$AR].": ".$current->get_pm10()."   ".$DUSTPM25[$AR].": ".$current->get_pm25()." µg/m3",
 					  		$DUSTPM10[$AR].": ".$current->get_pm10()."   ".$DUSTPM25[$AR].": ".$current->get_pm25()." µg/m3")), 
-                     "?section=dust.php");
+                     "?section=dust");
 		if ($current->isLowDust())
 			update_action (CustomAlert::Dust, $extrainfo, $ALT);
 		else
@@ -608,7 +608,7 @@ if ($current->get_uv() >= 8)
               array($UV[$RU].": ".$current->get_uv().", ".$SUNSCREEN_UV[$RU],$UV[$RU].": ".$current->get_uv().", ".$SUNSCREEN_UV[$RU]), 
               array($UV[$FR].": ".$current->get_uv().", ".$SUNSCREEN_UV[$FR],$UV[$FR].": ".$current->get_uv().", ".$SUNSCREEN_UV[$FR]), 
               array($UV[$AR].": ".$current->get_uv().", ".$SUNSCREEN_UV[$AR],$UV[$AR].": ".$current->get_uv().", ".$SUNSCREEN_UV[$AR])), 
-               "?section=graph.php&amp;graph=UVHistory.gif&amp;profile=2");
+               "?section=graph&amp;graph=UVHistory.gif&amp;profile=2");
 		update_action (CustomAlert::ExtremeUV, $extrainfo, $ALT);
 	}
   	else{
@@ -618,7 +618,7 @@ if ($current->get_uv() >= 8)
               array($UV[$RU].": ".$current->get_uv()."",$UV[$RU].": ".$current->get_uv()), 
               array($UV[$FR].": ".$current->get_uv()."",$UV[$FR].": ".$current->get_uv()), 
               array($UV[$AR].": ".$current->get_uv()."",$UV[$AR].": ".$current->get_uv())), 
-               "?section=graph.php&amp;graph=UVHistory.gif&amp;profile=2");
+               "?section=graph&amp;graph=UVHistory.gif&amp;profile=2");
 		update_action (CustomAlert::HighUV, $extrainfo, $ALT);
 	}
 		
@@ -643,7 +643,7 @@ if (($current->get_dew() > c_or_f(15))&&(true))
 		"hum.jpg", 
 		$ToDisplay, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=dewpt.php&amp;profile=1");
+		"?section=graph&amp;graph=dewpt.php&amp;profile=1");
 }
 if (($current->get_solarradiation() > 450)&&($current->get_temp('C') <= 10)&&($min10->get_windspd() >= 10)&&($current->get_thsw()-$current->get_temp() < 5))
 {
@@ -651,7 +651,7 @@ if (($current->get_solarradiation() > 450)&&($current->get_temp('C') <= 10)&&($m
     "cold.gif", 
     $COLD_SUN, 
     array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
+    "?section=graph&amp;graph=tempLatestArchive.php&amp;profile=1");
 
 }
 if (($current->get_solarradiation() > 450)&&($current->get_temp('C') < 14)&&($current->get_temp('C') > 10)&&($min10->get_windspd() >= 10)&&($current->get_thsw()-$current->get_temp() < 5))
@@ -660,7 +660,7 @@ if (($current->get_solarradiation() > 450)&&($current->get_temp('C') < 14)&&($cu
     "cold.gif", 
     $HALF_COLD_SUN, 
     array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
+    "?section=graph&amp;graph=tempLatestArchive.php&amp;profile=1");
 
 }
 if (abs($current->get_temp() - $current->get_temp2()) >= 2)
@@ -680,7 +680,7 @@ if (abs($current->get_temp() - $current->get_temp2()) >= 2)
 		"profile1/temp.php?datasource=downld02&amp;lang={$lang_idx}", 
 		$MOUNTAIN_VALLEY_DIF, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=temp.php&amp;profile=1");
+		"?section=graph&amp;graph=temp.php&amp;profile=1");
 }
 if (abs($current->get_hum() - $current->get_hum2()) >= 20)
 {
@@ -699,7 +699,7 @@ if (abs($current->get_hum() - $current->get_hum2()) >= 20)
 		"profile1/temp.php?datasource=downld02&amp;lang={$lang_idx}", 
 		$MOUNTAIN_VALLEY_DIF, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=temp.php&amp;profile=1");
+		"?section=graph&amp;graph=temp.php&amp;profile=1");
 }
 $itfeels = $current->get_itfeels();
 if (($current->get_solarradiation() > 500)&&($itfeels[1] > 11)&&($itfeels[1] <= 15)&&($min10->get_windspd() < 5)&&($current->get_thsw()-$current->get_temp() > 4))
@@ -717,7 +717,7 @@ if (($current->get_solarradiation() > 500)&&($itfeels[1] > 15)&&($itfeels[1] < 1
     "nowind.jpg", 
     $SUN_SHADE, 
     array(array("",""),array("",""),array("",""),array("",""),array("","")), 
-    "?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
+    "?section=graph&amp;graph=tempLatestArchive.php&amp;profile=1");
 
 }
 
@@ -791,7 +791,7 @@ if (($current->get_hum() < 20)&&($current->get_hum() != "")&&($current->get_temp
 		"dry_ground_1.jpg", 
 		$FIRE_INDEX, 
 		 $extrainfoS, 
-		 "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
+		 "?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
 		 update_action (CustomAlert::FireIndex, $extrainfo, $ALT);
 }
 if (($current->get_hum() < 20)&&($current->get_hum() != ""))
@@ -811,7 +811,7 @@ if (($current->get_hum() < 20)&&($current->get_hum() != ""))
 		"dry_ground_1.jpg", 
 		$VERY_DRY, 
 		 $extrainfoS, 
-		 "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
+		 "?section=graphp&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
 		 update_action (CustomAlert::Dry, $extrainfo, $ALT);
 }
 
@@ -866,7 +866,7 @@ if ((($min15->get_prschange() > 0.2)||
 		"profile1/baro.php?datasource=downld02&amp;lang={$lang_idx}", 
 		$DRASTIC_PRESSURE_RISE, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=baro.php&amp;profile=1");
+		"?section=graph&amp;graph=baro.php&amp;profile=1");
 	//update_action ("PrsRise", $extrainfo, $ALT);
 }
 if ((($min15->get_tempchange() <= -0.7)||
@@ -937,7 +937,7 @@ if ((($min15->get_tempchange() <= -0.7)||
 		"profile1/temp.php?datasource=downld02&amp;lang={$lang_idx}", 
 		$DRASTIC_TEMP_DROP, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
+		"?section=graph&amp;graph=tempLatestArchive.php&amp;profile=1");
 	
 }
 if (((($min15->get_tempchange() >= 1) && ($hour > 9) && ($hour < 7))   ||
@@ -1008,7 +1008,7 @@ if (((($min15->get_tempchange() >= 1) && ($hour > 9) && ($hour < 7))   ||
 		"profile1/temp.php?datasource=downld02&amp;lang={$lang_idx}", 
 		$DRASTIC_TEMP_RISE, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=tempLatestArchive.php&amp;profile=1");
+		"?section=graph&amp;graph=tempLatestArchive.php&amp;profile=1");
 	update_action ("TempRise", $extrainfo, $ALT);
 }
 if ((($min15->get_humchange() >= 15)||
@@ -1076,7 +1076,7 @@ if ((($min15->get_humchange() >= 15)||
 		"profile1/humwind.php?level=1&amp;freq=2&amp;datasource=downld02", 
 		$DRASTIC_HUM_RISE, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
+		"?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
 	update_action ("HumRise", $extrainfo, $ALT);
 }
 if (((($min15->get_humchange() < -15)&& ($hour > 9) && ($hour < 7))||
@@ -1144,7 +1144,7 @@ if (((($min15->get_humchange() < -15)&& ($hour > 9) && ($hour < 7))||
 		"profile1/humwind.php?level=1&amp;freq=2&amp;datasource=downld02", 
 		$DRASTIC_HUM_DROP, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
+		"?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=1");
 	update_action ("HumDrop", $extrainfo, $ALT);
 }
 //logger("get_temp: ".$current->get_temp('C'));
@@ -1185,7 +1185,7 @@ if ((($current->get_temp('C') > 27)&&
 		"heat.jpg", 
 		$VERY_HOT_HEAT_WAVE, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=temp.php&amp;profile=3");
+		"?section=graph&amp;graph=temp.php&amp;profile=3");
 	//update_action ("HeatWave", $extrainfo, $ALT);
 }
 
@@ -1240,7 +1240,7 @@ if (((($min15->get_windspdchange() > 12))||
 		"profile1/wind.php?level=1&amp;freq=2&amp;datasource=downld02", 
 		$DRASTIC_WIND_RISE, 
 		$extrainfoS, 
-		"?section=graph.php&amp;graph=wind.php&amp;profile=1");
+		"?section=graph&amp;graph=wind.php&amp;profile=1");
 	//update_action ("WindRise", $extrainfo, $ALT);
 }
 
@@ -1268,7 +1268,7 @@ if (stristr($current->get_winddir(), 'W')
                 "60 ".$MINTS[$FR].":".$oneHour->get_winddir()."->".$current->get_winddir()), 
 		array("<div class=\"float\" >"."60 ".$MINTS[$AR].":</div> <div class=\"float winddir ".$oneHour->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>",
                 "60 ".$MINTS[$AR].":".$oneHour->get_winddir()."->".$current->get_winddir())), 
-		 "?section=graph.php&amp;graph=winddir.php&amp;profile=1");
+		 "?section=graph&amp;graph=winddir.php&amp;profile=1");
 	//update_action ("WindShift", $extrainfo, $ALT);
 }
 else if (stristr($current->get_winddir(), 'W')
@@ -1291,7 +1291,7 @@ else if (stristr($current->get_winddir(), 'W')
                      "30 ".$MINTS[$FR].":".$min30->get_winddir()."->".$current->get_winddir()),
 		array("<div class=\"float\" >"."30 ".$MINTS[$AR].":</div> <div class=\"float winddir ".$min30->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>",
                      "30 ".$MINTS[$AR].":".$min30->get_winddir()."->".$current->get_winddir())), 
-		 "?section=graph.php&amp;graph=winddir.php&amp;profile=1");
+		 "?section=graph&amp;graph=winddir.php&amp;profile=1");
 	//update_action ("WindShift", $extrainfo, $ALT);
 }
 else if (stristr($current->get_winddir(), 'W')
@@ -1313,7 +1313,7 @@ else if (stristr($current->get_winddir(), 'W')
                      INTERVAL." ".$MINTS[$FR].":".$min15->get_winddir()."->".$current->get_winddir()), 
 		array("<div class=\"float\" >".INTERVAL." ".$MINTS[$AR].":</div> <div class=\"float winddir ".$min15->get_winddir()."\"></div> <div class=\"float\" >-></div> <div class=\"float winddir ".$current->get_winddir()."\"></div>",
                      INTERVAL." ".$MINTS[$AR].":".$min15->get_winddir()."->".$current->get_winddir())), 
-		 "?section=graph.php&amp;graph=winddir.php&amp;profile=1");
+		 "?section=graph&amp;graph=winddir.php&amp;profile=1");
 	//update_action ("WindShift", $extrainfo, $ALT);
 }
 if (($yestsametime->get_tempchange() > 3)&&($yestsametime->get_tempchange() < 20))
@@ -1332,7 +1332,7 @@ if (($yestsametime->get_tempchange() > 3)&&($yestsametime->get_tempchange() < 20
               "24 ".$HOURS[$FR].": ".get_param_tag($yestsametime->get_tempchange(), false, "°")), 
 		array("24 ".$HOURS[$AR].": ".get_param_tag($yestsametime->get_tempchange(), true, "°"),
               "24 ".$HOURS[$AR].": ".get_param_tag($yestsametime->get_tempchange(), false, "°"))), 
-		 "?section=graph.php&amp;graph=temp.php&amp;profile=2");
+		 "?section=graph&amp;graph=temp.php&amp;profile=2");
 	//update_action ("TempRise", $extrainfo, $ALT);
 }
 if (($yestsametime->get_tempchange() < -4)&&($yestsametime->get_tempchange() != ""))
@@ -1351,7 +1351,7 @@ if (($yestsametime->get_tempchange() < -4)&&($yestsametime->get_tempchange() != 
               "24 ".$HOURS[$FR].": ".get_param_tag($yestsametime->get_tempchange(), false, "°")."°"),
 		array("24 ".$HOURS[$AR].": ".get_param_tag($yestsametime->get_tempchange(), true, "°"),
               "24 ".$HOURS[$AR].": ".get_param_tag($yestsametime->get_tempchange(), false, "°")."°")), 
-		 "?section=graph.php&amp;graph=temp.php&amp;profile=2");
+		 "?section=graph&amp;graph=temp.php&amp;profile=2");
 	//update_action ("TempDrop", $extrainfo, $ALT);
 }
 if (($yestsametime->get_humchange() >= 30)&&($yestsametime->get_humchange() < 90))
@@ -1370,7 +1370,7 @@ if (($yestsametime->get_humchange() >= 30)&&($yestsametime->get_humchange() < 90
           "24 ".$HOURS[$FR].": ".get_param_tag($yestsametime->get_humchange(), false, "%")."%"),
 	array("24 ".$HOURS[$AR].": ".get_param_tag($yestsametime->get_humchange(), true, "%"),
           "24 ".$HOURS[$AR].": ".get_param_tag($yestsametime->get_humchange(), false, "%")."%")), 
-	 "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=2");
+	 "?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=2");
 	//update_action ("HumRise", $extrainfo, $ALT);
 }
 if (($yestsametime->get_humchange() <= -30)&&($yestsametime->get_humchange() != ""))
@@ -1389,7 +1389,7 @@ if (($yestsametime->get_humchange() <= -30)&&($yestsametime->get_humchange() != 
           "24 ".$HOURS[$FR].": ".get_param_tag($yestsametime->get_humchange(), false, "%")."%"),
 	array("24 ".$HOURS[$AR].": ".get_param_tag($yestsametime->get_humchange(), true, "%"),
           "24 ".$HOURS[$AR].": ".get_param_tag($yestsametime->get_humchange(), false, "%")."%")), 
-	 "?section=graph.php&amp;graph=OutsideHumidityHistory.gif&amp;profile=2");
+	 "?section=graph&amp;graph=OutsideHumidityHistory.gif&amp;profile=2");
 	//update_action ("HumDrop", $extrainfo, $ALT);
 }
 if ((($current->get_windspd() > 30)&&($min10->get_windspd() > 22))||($current->get_windspd() > 45)){
@@ -1408,7 +1408,7 @@ if ((($current->get_windspd() > 30)&&($min10->get_windspd() > 22))||($current->g
 	"wind1.jpg", 
 	$WINDY, 
 	$extrainfoS, 
-	"?section=graph.php&amp;graph=WindSpeedHistory.gif&amp;profile=1");
+	"?section=graph&amp;graph=WindSpeedHistory.gif&amp;profile=1");
 	update_action ("Windy", $extrainfo, $ALT);
 	
 }
@@ -1438,7 +1438,7 @@ if ($today->get_et() > 7)
                   $ET[$FR]." ".$TILL_NOW[$FR]." ".$today->get_et()." מ'מ"), 
 			array($ET[$AR]." ".$TILL_NOW[$AR]." ".$today->get_et()." מ'מ",
                   $ET[$AR]." ".$TILL_NOW[$AR]." ".$today->get_et()." מ'מ")), 
-	"?section=graph.php&amp;graph=ETHistory.gif&amp;profile=1"); 
+	"?section=graph&amp;graph=ETHistory.gif&amp;profile=1"); 
         update_action (CustomAlert::HighET, $extrainfo, $ALT);
 }
 if ($hour > 16 && $hour < 21 && $today->get_sunshinehours() < 2.3 && $today->get_sunshinehours() != "")
@@ -1457,7 +1457,7 @@ if ($hour > 16 && $hour < 21 && $today->get_sunshinehours() < 2.3 && $today->get
 			      $today->get_sunshinehours()." ".$SUNSHINEHOURS[$FR]." ".$TODAY[$FR]." "),
 			array($today->get_sunshinehours()." ".$SUNSHINEHOURS[$AR]." ".$TODAY[$AR]." ",
 			      $today->get_sunshinehours()." ".$SUNSHINEHOURS[$AR]." ".$TODAY[$AR]." ")), 
-	"?section=graph.php&amp;graph=rad.php&amp;profile=1"); 
+	"?section=graph&amp;graph=rad.php&amp;profile=1"); 
         update_action (CustomAlert::LowRadiation, $extrainfo, $ALT);
 }
 if (($lowtemp_diffFromAv > 2) 
@@ -1480,7 +1480,7 @@ if (($lowtemp_diffFromAv > 2)
                   $TILL_NOW[$FR]." ".$MAX[$FR]." ".$today->get_hightemp()."°"), 
 			array($TILL_NOW[$AR]." ".$MAX[$AR]." ".$today->get_hightemp(),
                   $TILL_NOW[$AR]." ".$MAX[$AR]." ".$today->get_hightemp()."°")), 
-	"?section=graph.php&amp;graph=temp.php&amp;profile=2");
+	"?section=graph&amp;graph=temp.php&amp;profile=2");
 		//update_action ("Warmer", $extrainfo, $ALT);
 }
 if ($current->get_temp3() > c_or_f(50))
@@ -1496,7 +1496,7 @@ if ($current->get_temp3() > c_or_f(50))
 			    $TEMP[$FR]." ".$ROAD[$FR].": ".$current->get_temp3()), 
           array($TEMP[$AR]." ".$ROAD[$AR].": ".$current->get_temp3(),
 			    $TEMP[$AR]." ".$ROAD[$AR].": ".$current->get_temp3())), 
-               "?section=graph.php&amp;graph=temp3LatestArchive.php&amp;profile=2");
+               "?section=graph&amp;graph=temp3LatestArchive.php&amp;profile=2");
     //update_action (CustomAlert::HotGround, $extrainfo, $ALT);
 }
 if (($current->get_rainchance() == 0)&&
@@ -1510,7 +1510,7 @@ if (($current->get_rainchance() == 0)&&
     "nowind.jpg", 
     $GOOD_TIME[$random_good_time], 
     array(array("",""),array("","")), 
-    "?section=graph.php&amp;graph=temp.php&amp;profile=1");
+    "?section=graph&amp;graph=temp.php&amp;profile=1");
 
 }
 if (isOpenOrClose() == $CLOSE[$lang_idx])

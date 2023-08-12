@@ -250,8 +250,10 @@ try{
         $messageType = "tip";
     
     if ($_POST["alert_section"]=="1"){
+        updateAlerts ($message, 'LAlert', '' ,$picture_url, $title, $messageType, $_POST['ttl']);
         updateMessageFromMessages ($message[0], 1, 'LAlert', 0 ,'' ,$picture_url, $title[0], $addon[0], $class_alerttitle, $messageType, $_POST['ttl']);
         updateMessageFromMessages ($message[1], 1, 'LAlert', 1 ,'' ,$picture_url, $title[1], $addon[1], $class_alerttitle, $messageType, $_POST['ttl']);
+        
         //$result .= "\n".$message[1];
 
     }
