@@ -221,7 +221,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                              </li>
                             <li><a href="<?=BASE_URL;?>/?section=survey&amp;lang=<? echo $lang_idx;?>&amp;survey_id=1" title="<?=$FSEASON[$lang_idx]?>"><?=$FSEASON_T[$lang_idx]?></a></li>
                             <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'faq');?>" title="<?=$FAQ[$lang_idx]?>"><?=$FAQ[$lang_idx ]?></a></li>
-                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tip');?>" title="<?=$TIPS[$lang_idx]?>"><?=$TIPS[$lang_idx ]?></a></li>
+                            <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tips');?>" title="<?=$TIPS[$lang_idx]?>"><?=$TIPS[$lang_idx ]?></a></li>
 			    <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'SendFeedback');?>" class="hlink" title="<? echo $CONTACT_ME[$lang_idx];?>"><? echo $CONTACT_ME[$lang_idx];?></a></li>
 			</ul>
 		    </div>

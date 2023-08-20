@@ -29,6 +29,8 @@ nav {
         transition: all 0.3s ease-in-out;
         width:1.5rem;
         
+        
+        
     }
 
     &:before{
@@ -48,6 +50,8 @@ nav {
         transform:translateY(0) rotate(-90deg);
        }
    }
+
+   
 }
    .links {
     display:flex;

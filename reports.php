@@ -1,5 +1,5 @@
                                 <?
-$current_year = 2022;
+$current_year = 2023;
 $min_year = 1846;
 $tablestobeSearched = array();
 $where_clause_archivemin = array();
@@ -507,7 +507,7 @@ function getReport($min_year,$current_year, $report)
 			else
 			{
 				print " >";
-				print "<form method=\"post\" action=\"".get_query_edited_url($url_cur, 'section', 'browsedate.php')."\">";
+				print "<form method=\"post\" action=\"".get_query_edited_url($url_cur, 'section', 'browsedate')."\">";
                                 print "<input type=\"submit\" value=\"$col_value\" name=\"submitdate\" style=\"cursor:pointer;width:120px\" />";
                                 if  (stristr($col_value, "/"))
                                 {

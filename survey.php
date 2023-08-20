@@ -55,7 +55,8 @@ function insertNewMessage ($survey_id, $value, $temp, $comments)
                  $comments = str_replace('insert', '', $comments);
                  $comments = str_replace('update', '', $comments);
                 //$comments = preg_replace("/[^a-zA-Z0-9]+/", "", html_entity_decode($comments));
-	
+		if ($_REQUEST['json_res'] != 1)
+			echo "<script>localStorage.setItem('gender', '".$_POST['gender']."');</script>";
 		$query = "call SaveSurveyEntry('{$survey_id}', '{$_SESSION['email']}', '{$_REQUEST['reg_id']}', '{$value}', '{$_SERVER['REMOTE_ADDR']}', '{$_REQUEST['gender']}', '{$temp}', '{$comments}');";
 		//logger($query);
 		$result = db_init($query, "");
@@ -225,7 +226,7 @@ print "</div>";
  if ($displayVotes)
 {
         if (isset($_SESSION['email'])){
-            header("Location: https://www.02ws.co.il/".$_SERVER['SCRIPT_NAME']."?section=myVotes.php&lang=".$lang_idx."&survey_id=".$_REQUEST['survey_id']."&fullt=".$_GET['fullt']."&s=".$_GET['s']."&c=".$_GET['c']."\""); /* Redirect browser */
+            header("Location: https://www.02ws.co.il/".$_SERVER['SCRIPT_NAME']."?section=myVotes&lang=".$lang_idx."&survey_id=".$_REQUEST['survey_id']."&fullt=".$_GET['fullt']."&s=".$_GET['s']."&c=".$_GET['c']."\""); /* Redirect browser */
             exit();
         }   
 	if((isset($_COOKIE['gender']))&&($_COOKIE['gender'] != ""))

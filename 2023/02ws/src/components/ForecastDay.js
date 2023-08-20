@@ -1,14 +1,11 @@
 import Btn from './Button';
 import React, { useState } from 'react';
 
-import { Heart } from "react-bootstrap-icons";
-import { ArrowDown } from 'react-bootstrap-icons';
 const ForecastDay = (props) => {
-    const toggleDay = () => {
-       alert('day expends');
-      };
+    
     const prevDay = () => {
-    alert('prev day expends');
+        setTogglePrev(!togglePrev);
+    
     };
 
     const useToggle = (initialState) => {
@@ -18,13 +15,29 @@ const ForecastDay = (props) => {
         return [toggleValue, toggler]
       };
       const [toggle, setToggle] = useToggle();
+      const [togglePrev, setTogglePrev] = useToggle();
     return (
+        <>
+        
+        {props.a_key == 0 && togglePrev 
+            ? 
+            <ul className={"white_box box_text " + (props.lang === 1? 'rtl' : '')}>
+                <li className="forcast_day"> </li>
+                <li className="forcast_date">{props.yest.date}</li>
+                <li className="forcast_morning">{props.yest.lowtemp}°</li>
+                <li className="forcast_noon">{props.yest.noontemp}°</li>
+                <li className="forcast_night">{props.yest.nighttemp}°</li>
+                <li className="forcast_text"></li>
+            </ul>
+            : ''}
+
+
         <ul className={"white_box box_text " + (props.lang === 1? 'rtl' : '')}>
-            <li className="forcast_off_day">
-            {props.a_key == 0 ? <Btn className="btn-link" btnOnClick={() => prevDay()} btnTitleText={"קודם"} img="ArrowUp">
+            
+            {props.a_key == 0 ? <li className="forcast_off_day"><Btn className="btn-link" btnOnClick={() => prevDay()} btnTitleText={"קודם"} img="ArrowUp">
                 <img src="images/yesterday.png" width="14" height="14" title="יום אחרון" alt=""  />
-            </Btn> : ''}
-            </li>
+            </Btn></li> : ''}
+            
             <li className="forcast_day">{props.day_name1} </li>
             <li className="forcast_date">{props.date}</li>
             <li className="expand_plus">
@@ -55,7 +68,7 @@ const ForecastDay = (props) => {
                     <img src={`https://www.02ws.co.il/${props.morning_icon}`} width="28" height="28" alt="https://www.02ws.co.il/images/icons/day/n4_cloud_5_sun_3.svg" />
                 </div>)}
                 <div className="icon extra">
-                {toggle && ( <div className={`wind_icon ${props.windMorning}`} title="">
+                {toggle && ( <div className={`wind_icon ${props.windMorning}`} title="">{props.windMorningSpd}kmh
                     </div>)}
                 </div>
             </li>
@@ -83,7 +96,7 @@ const ForecastDay = (props) => {
                 )}
                 {toggle && (<div className="icon extra" id="day_icon0"><img src={`https://www.02ws.co.il/${props.icon}`} width="28" height="28" alt="images/icons/day/n4_cloud_5_sun_3.svg" /></div>)}                                       
                 <div className="icon extra">
-                {toggle && (<div className={`wind_icon ${props.windDay}`}></div>)}
+                {toggle && (<div className={`wind_icon ${props.windDay}`}> {props.windDaySpd}kmh</div>)}
                 <div>
                 </div>
                 </div>
@@ -111,7 +124,7 @@ const ForecastDay = (props) => {
                 )}
                 {toggle && (<div className="icon extra" id="night_icon0"><img src={`https://www.02ws.co.il/${props.night_icon}`} width="28" height="28" alt="https://www.02ws.co.il/images/icons/day/n4_moon.svg" /></div>)}
                 <div className="icon extra">
-                {toggle && (  <div className={`wind_icon ${props.windNight}`} ></div> )}
+                {toggle && (  <div className={`wind_icon ${props.windNight}`} >{props.windNightSpd}kmh</div> )}
                     <div></div></div>
             </li>
             <li className="icon_day"><div className="spriteB up" title="במגמת עליה"></div>                      
@@ -137,6 +150,7 @@ const ForecastDay = (props) => {
                 
             </li>
         </ul>
+        </>
     );
 }
 

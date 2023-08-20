@@ -9,8 +9,8 @@ const LatestNow = (props) => {
           <div id="latestnow" className={" " + (props.lang === 1? 'rtl' : '')}>
             {props.current.date1}<br/>
                 <div title="" className="mx-auto parambox white_box">
-                <div className="imgbox"><img src="https://www.02ws.co.il/img/temp2.png" width="72px" height="30px" alt={t("temp")} /></div>
-                {t("temp")} {props.current.temp}°
+                <div className="imgbox"><img src="https://www.02ws.co.il/img/temp2.png" width="72px" height="30px" alt={t("TEMP")} /></div>
+                {t("TEMP")} {props.current.temp}°
                 <div  id="windy">   
                     <div dangerouslySetInnerHTML={{__html: props.windstatus.lang1}}></div>
                 </div>

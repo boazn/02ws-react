@@ -1,10 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactModal  from 'react-modal';
+import { voteLike } from '../helpers/Utils';
+
 const ColdMeter = (props) => {
+  var resultCMVote;
   const { t } = useTranslation();
-  const vote_cm_like = () => {
-    alert('vote_cm_like');
+  const callVoteLike = async () => {
+    var gender = window.localStorage.getItem('gender');
+    const json = await voteLike(cm_value, gender);
+    console.log (json.result.message);
+    setCMResult(json.result.message);
+    return json.result.message;
+ }
+  const Vote_cm_like = (cm_value) => {
+    console.log(cm_value);
+    console.assert(cm_value!="");
+    if (cm_value === "")
+        return;
+    let _data = {
+        SendSurveyButton: 1,
+        json_res: 1,
+        survey: cm_value, 
+        survey_id:2
+    }
+    callVoteLike();
+    setIsCMResultOpen(true);
+    
   };
   const vote_cm_dislike = () => {
     //alert('vote_cm_dislike');
@@ -18,6 +40,10 @@ const ColdMeter = (props) => {
   const [coldTitleSun, setColdTitleSun] = useState([]);
   const [heatindex, setHeatIndex] = useState([]);
   const [isOpen, setPopupIsOpen] = useState(false);
+  const [isCMResultOpen, setIsCMResultOpen] = useState(false);
+  const [cm_value, setCMvalue] = useState(false);
+  const [cm_value_result, setCMResult] = useState(false);
+  const [cm_value_sun, setCMSunvalue] = useState(false);
   const customStyles = {
     content: {
       width:'400px',
@@ -51,16 +77,22 @@ const ColdMeter = (props) => {
           const asterisk_sun = json.coldmeter_sun.asterisk;
           const coldmeter_title_sun = json.coldmeter_sun.current_feeling;
           const heatindex = json.coldmeter.heatindex;
+          const cm_value = json.coldmeter.current_value;
+          const cm_value_sun = json.coldmeter_sun.current_value;
           //const output = `<a href="javascript:void(0)" class="info currentcloth" ><span class="info">${clothtitle}</span><img src="images/clothes/${clothimage}" height=100" style="vertical-align: middle" /></a><a class="info" id="coldmetertitle" href="javascript:void(0)" ><span class="info" style="cursor: default;" onclick="redirect('https://www.02ws.co.il?section=survey.php&amp;survey_id=2&amp;lang=1&amp;email=')">לא מסכימים? הצביעו!</span>${coldmeter_title}</a>${asterisk} </div>`;
           const output = `${clothtitle} ${coldmeter_title} ${asterisk}`;
           const output_sun = `${clothtitle_sun} ${coldmeter_title_sun} ${asterisk_sun}`;
           setColdMeter(output);
-          setColdMeterSun(output_sun)
+          setColdMeterSun(output_sun);
           setClothColdMeter(clothimage);
           setClothColdMeterSun(clothimage_sun);
           setColdTitle(coldmeter_title);
           setColdTitleSun(coldmeter_title_sun);
           setHeatIndex(heatindex);
+          console.log ("setCMvalue:" + cm_value);
+          setCMvalue(cm_value);
+          console.log ("setCMSunvalue:" + cm_value_sun);
+          setCMSunvalue(cm_value_sun);
         };
        fetchJson();
 
@@ -75,7 +107,7 @@ const ColdMeter = (props) => {
         <div id="heatindex">
             {heatindex}
         </div>
-        <div id="itfeels_title">{t("it_feels")}</div>
+        <div id="itfeels_title">{t("IT_FEELS")}</div>
         <div id="shadow_sun_wrapper">         
         <div className="shadow" >
         <h4 >צל {props.shadowtemp}°</h4>
@@ -83,8 +115,8 @@ const ColdMeter = (props) => {
         <span id="current_feeling_link">
             <img src={`https://www.02ws.co.il/images/clothes/${clothColdMeter}`} height="80" alt="cold meter"  /><br/>{coldTitle}<br/>
         </span>
-        <div id="cm_dislike"> <img onClick={vote_cm_dislike} src="https://www.02ws.co.il/images/icons/cm_dislike.svg" width="50" height="50" alt="" /></div>
-        <div id="cm_like"><img onClick={vote_cm_like} src="https://www.02ws.co.il/images/icons/cm_like.svg" width="50" height="50" alt="" /></div>
+        <div className="cm_dislike"> <img onClick={() => vote_cm_dislike()} src="https://www.02ws.co.il/images/icons/cm_dislike.svg" width="50" height="50" alt="" /></div>
+        <div className="cm_like"><img onClick={() => Vote_cm_like(cm_value)} src="https://www.02ws.co.il/images/icons/cm_like.svg" width="50" height="50" alt="" /></div>
         <div id="cm_shadow_result" ><div id="cm_shadow_result_msg"></div></div>
         </div> 
         {output}
@@ -94,8 +126,8 @@ const ColdMeter = (props) => {
           <h4>שמש {props.suntemp}°</h4>
           <div className="inlineGrid"> 
           <span id="current_feeling_link"><img src={`https://www.02ws.co.il/images/clothes/${clothColdMeterSun}`} height="80" alt="cold meter"  /><br/>{coldTitleSun}<br/></span>
-          <div id="cm_dislike"> <img onClick={vote_cm_dislike} src="https://www.02ws.co.il/images/icons/cm_dislike.svg" width="50" height="50" alt="" /></div>
-          <div id="cm_like"><img onClick={vote_cm_like} src="https://www.02ws.co.il/images/icons/cm_like.svg" width="50" height="50" alt="" /></div>
+          <div className="cm_dislike"> <img onClick={() => vote_cm_dislike()} src="https://www.02ws.co.il/images/icons/cm_dislike.svg" width="50" height="50" alt="" /></div>
+          <div className="cm_like"><img onClick={() => Vote_cm_like(cm_value_sun)} src="https://www.02ws.co.il/images/icons/cm_like.svg" width="50" height="50" alt="" /></div>
           <div id="cm_sun_result" ><div id="cm_sun_result_msg"></div></div>
           </div>
           {output_sun}
@@ -111,6 +143,17 @@ const ColdMeter = (props) => {
         onRequestClose={() => setIsOpen(false)}
       >
          <iframe src="https://www.02ws.co.il/small/?section=survey.php&amp;survey_id=2&amp;" width={320} height={600} sandbox='allow-scripts allow-modal' loading='eager' title="iframePopup"></iframe>
+      </ReactModal>
+
+      <ReactModal
+        isOpen={isCMResultOpen}
+        ariaHideApp={false}
+        contentLabel="מדד הקור"
+        style={customStyles}
+        onRequestClose={() => setIsCMResultOpen(false)}
+      >
+        <h4>הצבעה למדד הקור</h4>
+         {cm_value_result}
       </ReactModal>
        
          

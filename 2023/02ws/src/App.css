@@ -67,6 +67,8 @@
 
 body {
   font-family: 'Alef';
+  height:280vh;
+  overflow-x: hidden;
   background: linear-gradient(180deg, #00bfff 0%, #00bfff 4%, #82e2ff  20%, #82e2ff 90%, #C9F6FF 100%);
 }
 .App {
@@ -94,6 +96,7 @@ body {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  font-size: 1rem;
 }
 #trans_btns{
   display:inline; margin: 0 1rem
@@ -468,6 +471,7 @@ a.info:hover span.info
     max-height: 480px;
     overflow-y: auto;
     width:2100px;
+    padding:0
 }
 
 
@@ -538,8 +542,8 @@ a.info:hover span.info
 }
 
 #sidebar > * {
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 #sidebar h1 {
@@ -662,16 +666,17 @@ i {
   background: hsl(224, 98%, 58%);
   color: white;
 }
-#sigweather, #coldmeter,  #graph_forcast{
+ #coldmeter,  #graph_forcast{
   margin-top:1rem;
   color:black
 }
 #coldmeter .shadow, #coldmeter .sun{
   width:50%
 }
-#sigweather, #more_sigweather{
+#sigweather, #more_sigweather, #forcast_days{
   list-style: none;
   font-size: 1.1em;
+  padding:0.1em
 }
 #sigweather a{
   text-decoration: none;
@@ -680,14 +685,15 @@ i {
 #latestnow{
   font-size:1.2em
 }
-#cm_like, #cm_dislike{
+.cm_like, .cm_dislike{
   display: table-cell;
+  cursor: pointer;
 }
 #cm_result{
   display: none;
 }
 .forcast_text{
-  width:30%
+  width:320px;
 }
 .forcast_day, .forcast_date{
   width:5%
@@ -853,6 +859,7 @@ i {
 {
  background: url('https://www.02ws.co.il/img/wind_icons2.png') no-repeat top left;
  width:40px;height:14px;
+ padding: 15px 0;
 }
 .no_wind
 {
@@ -884,4 +891,33 @@ background-position: 0px 0px;
 }
 .more{
  
+}
+.activity img{
+  cursor: pointer;
+}
+.forcast_text_full{
+  white-space:normal;
+}
+.graph
+{
+  height:400px
+}
+@media only screen and (max-width: 500px) {
+  #forcast_days li
+  {
+    font-size: 0.8em;
+  }
+  .forcast_day, .forcast_date{
+    width:12%
+  }
+  .forcast_morning, .forcast_noon, .forcast_night{
+    width:18%
+  }
+  .forcast_text{
+    word-break: normal;
+    white-space:nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }    
+  
 }

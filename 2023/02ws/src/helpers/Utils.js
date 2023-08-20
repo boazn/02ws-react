@@ -50,5 +50,70 @@ export async function getMainData() {
      return result;
   }
 
+  
+export async function getActivitiesData() {
+  const fetchJson = async () => {
+      var opts = {
+          headers: {
+           
+          }
+        }
+      const response = await fetch("https://www.02ws.co.il/activities.json", opts);
+      const json = await response.json();
+      return json;
+      
+    };
+    let result = fetchJson();
+   return result;
+}
+export async function getParamsData() {
+  const fetchJson = async () => {
+      var opts = {
+          headers: {
+           
+          }
+        }
+      const response = await fetch("https://www.02ws.co.il/parameters.json", opts);
+      const json = await response.json();
+      return json;
+      
+    };
+    let result = fetchJson();
+   return result;
+}
+
+export async function voteLike(cm_value, gender) {
+  const fetchJson = async () => {
+      var opts = {
+         //mode: 'no-cors',
+          headers: {
+           
+          }
+        }
+      const response = await fetch("https://www.02ws.co.il/survey.php?SendSurveyButton=1&json_res=1&survey="+cm_value + "&survey_id=2&gender=" + gender , opts);
+      const json = await response.json();
+      return json;
+      
+    };
+    let result = fetchJson();
+   return result;
+}
+
+export async function getLatestArchiveData(limit) {
+  const fetchJson = async () => {
+      var opts = {
+         //mode: 'no-cors',
+          headers: {
+           
+          }
+        }
+      const response = await fetch("https://www.02ws.co.il/images/profile1/LatestArchiveJson.php?limit=" + limit , opts);
+      const json = await response.json();
+      return json;
+      
+    };
+    let result = fetchJson();
+   return result;
+}
 
 export default Utils;

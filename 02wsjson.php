@@ -862,6 +862,8 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= ",";
     $JSON .= "\"humMorning\":"."\"".$day_f['humMorning']."\"";
     $JSON .= ",";
+    $JSON .= "\"dustMorning\":"."\"".$day_f['dustMorning']."\"";
+    $JSON .= ",";
     $JSON .= "\"TempHigh\":"."\"".$day_f['TempHigh']."\"";
     $JSON .= ",";
     $JSON .= "\"humDay\":"."\"".$day_f['humDay']."\"";
@@ -874,6 +876,8 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= ",";
     $JSON .= "\"visDay\":"."\"".$day_f['visDay']."\"";
     $JSON .= ",";
+    $JSON .= "\"dustDay\":"."\"".$day_f['dustDay']."\"";
+    $JSON .= ",";
     $JSON .= "\"windNight\":"."\"".getWindInfo($day_f['windNight'], 0)['wind_class']."\"";
     $JSON .= ",";
     $JSON .= "\"windMorningSpd\":"."\"".$day_f['windMorning']."\"";
@@ -885,6 +889,8 @@ foreach ($forecastDaysDB as $day_f){
     $JSON .= "\"TempNight\":"."\"".$day_f['TempNight']."\"";
     $JSON .= ",";
     $JSON .= "\"humNight\":"."\"".$day_f['humNight']."\"";
+    $JSON .= ",";
+    $JSON .= "\"dustNight\":"."\"".$day_f['dustNight']."\"";
     $JSON .= ",";
     $JSON .= "\"TempLowCloth\":"."\""."images/clothes/".$day_f['TempLowCloth']."\"";
     $JSON .= ",";

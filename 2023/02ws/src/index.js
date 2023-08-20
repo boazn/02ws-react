@@ -10,17 +10,16 @@ import ErrorPage from './pages/error-page';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import './i18n';
-import {loader as jsonLoader} from './helpers/Utils';
 
 
 const app_layout =  [ "current", "forecast24", "NextDays", "External"];
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App layout={app_layout[0]} />,
-    errorElement: <ErrorPage />,
-  },
+      {
+        path: "/",
+        element: <App layout={app_layout[0]} />,
+        errorElement: <ErrorPage />,
+      },
       {
         path: "Now/:nowId",
         element: <App layout={app_layout[0]}/>,
@@ -30,26 +29,188 @@ const router = createBrowserRouter([
         path: "App1",
         element: <App layout="NextDays"/>,
         errorElement: <ErrorPage />,
-        loader: jsonLoader,
+        
       },
       {
         path: "App2",
         element: <App layout={app_layout[1]}/>,
         errorElement: <ErrorPage />,
-        loader: jsonLoader,
+        
       },
       {
         path: "App3",
         element: <App layout={app_layout[2]}/>,
         errorElement: <ErrorPage />,
-        loader: jsonLoader,
+        
       },
       {
         path: "AppExternal/:linkID",
         element: <App src="https://www.02ws.co.il/small/?section=graph.php&graph=temp.php&profile=1&lang=1&tempunit=&fullt=&s=&c=" layout={app_layout[3]}/>,
         errorElement: <ErrorPage />,
-        loader: jsonLoader,
+        
       },
+      {
+        path: "ForecastAbroad",
+        element: <App src="https://www.02ws.co.il/small/?section=forecast/getForecast&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "ForecastIsrael",
+        element: <App src="https://www.02ws.co.il/small/?section=forecast/getForecast&region=isr&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "ForecastJob",
+        element: <App src="https://www.02ws.co.il/small/?section=ForecasterJob&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Radar",
+        element: <App src="https://www.02ws.co.il/small/?section=radar&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Satellite",
+        element: <App src="https://www.02ws.co.il/small/?section=graph.php&graph=temp.php&profile=1&lang=1&tempunit=&fullt=&s=&c=" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Rain",
+        element: <App src="https://www.02ws.co.il/small/?section=graph&graph=rain.php&profile=1&lang=1&style=" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Runningtreks",
+        element: <App src="https://www.02ws.co.il/runningtreks.php?lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "GlobalWarming",
+        element: <App src="https://www.02ws.co.il/small/?section=globalwarm&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Average",
+        element: <App src="https://www.02ws.co.il/small/?section=averages&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Last2days",
+        element: <App src="https://www.02ws.co.il/small/?section=reports/downld02.txt&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "LastWeek",
+        element: <App src="https://www.02ws.co.il/small/?section=reports/downld08.txt&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "ThisMonth",
+        element: <App src="https://www.02ws.co.il/small/?section=reports/NOAAMO.TXT&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "ChooseMonthYear",
+        element: <App src="https://www.02ws.co.il/small/?section=graph.php&graph=temp.php&profile=1&lang=1&tempunit=&fullt=&s=&c=" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "LastMonth",
+        element: <App src="https://www.02ws.co.il/small/?section=chooseMonthYear&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Records",
+        element: <App src="https://www.02ws.co.il/small/?section=allTimeRecords&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "RainSeasons",
+        element: <App src="https://www.02ws.co.il/small/?section=RainSeasons&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "LoveHateForecasts",
+        element: <App src="https://www.02ws.co.il/small/?section=forecastDays&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Reports",
+        element: <App src="https://www.02ws.co.il/small/?section=reports&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Archive",
+        element: <App src="https://www.02ws.co.il/small/?section=browsedate&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Snow",
+        element: <App src="https://www.02ws.co.il/small/?section=snow&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Climate",
+        element: <App src="https://www.02ws.co.il/small/?section=climate&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "BestSeason",
+        element: <App src="https://www.02ws.co.il/small/?section=survey&lang=1&survey_id=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Faq",
+        element: <App src="https://www.02ws.co.il/small/?section=faq&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },  
+      {
+        path: "Tips",
+        element: <App src="https://www.02ws.co.il/small/?section=tips&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "About",
+        element: <App src="https://www.02ws.co.il/small/?section=contact&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Contact",
+        element: <App src="https://www.02ws.co.il/small/?section=SendFeedback&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
+        path: "Radiosonde",
+        element: <App src="https://www.02ws.co.il/small/?section=radiosonde&lang=1" layout={app_layout[3]}/>,
+        errorElement: <ErrorPage />,
+        
+      }
    
   
    

@@ -231,7 +231,14 @@ if (isRadarPage())
 <?} if (!mainPage()&&!isGraphsPage()) {
    ?>
 <article id="section" >
-   <? include('../'.$_GET['section']);?>
+    <? if (file_exists('../'.$_GET['section'].".php")){
+                   include('../'.$_GET['section'].".php");
+                }
+                else
+                {
+                    include('../'.$_GET['section']);
+                }  
+     ?>
 </article>
 <? }
 else {?>
