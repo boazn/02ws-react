@@ -902,6 +902,10 @@ background-position: 0px 0px;
 {
   height:400px
 }
+.splash
+{
+  padding:8rem
+}
 @media only screen and (max-width: 500px) {
   #forcast_days li
   {

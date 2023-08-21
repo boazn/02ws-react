@@ -66,7 +66,7 @@ function App({layout, src}) {
  if ((layout === 'current') || (layout === '')){
   return (
     isLoading ?
-    <div><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
+    <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
     <ConfigContext.Provider value={configData}>
     <CurrentUserProvider>
       <Sidebar />
@@ -78,7 +78,7 @@ function App({layout, src}) {
  )} else  if (layout === 'forecast24') {
     return (
       isLoading ?
-      <div><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
+      <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
       <ConfigContext.Provider value={configData}>
       <CurrentUserProvider>
         <Sidebar />
@@ -89,7 +89,7 @@ function App({layout, src}) {
    )}  else  if (layout === 'NextDays'){
     return (
       isLoading ?
-      <div><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
+      <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
       <ConfigContext.Provider value={configData}>
       <CurrentUserProvider>
         <Sidebar />
@@ -100,7 +100,7 @@ function App({layout, src}) {
     )}  else  if (layout === 'External') {
     return (
       isLoading ?
-      <div><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
+      <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
       <ConfigContext.Provider value={configData}>
       <CurrentUserProvider>
         <Sidebar />
