@@ -966,13 +966,15 @@ $JSON .= "]";
 $JSON .= ",\"Messages\":";
 $JSON .= "{";
 $JSON .= "\"alerts\":[";
-foreach ($alerts as $alert){
+$Alerts_r = array_reverse($alerts, true);
+foreach ($Alerts_r as $key => &$alert){
     $JSON .= "{";
     $JSON .= "\"desc0\":"."\"".str_replace('"', "", urlencode($alert['description0']))."\",";
     $JSON .= "\"title0\":"."\"".str_replace('"', "", urlencode($alert['title0']))."\",";
     $JSON .= "\"desc1\":"."\"".str_replace('"', "", urlencode($alert['description1']))."\",";
     $JSON .= "\"title1\":"."\"".str_replace('"', "", urlencode($alert['title1']))."\",";
-    $JSON .= "\"id\":"."\"".$alert['id']."\",";
+    $JSON .= "\"ts\":"."\"".$key."\",";
+    $JSON .= "\"passedts\":"."\"".time() - $key."\",";
     $JSON .= "\"ttl\":"."\"".$alert['ttl']."\",";
     $JSON .= "\"href\":"."\"".$alert['href']."\",";
     $JSON .= "\"type\":"."\"".$alert['messageType']."\",";
