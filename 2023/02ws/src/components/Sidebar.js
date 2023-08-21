@@ -1,20 +1,25 @@
 
 import { Outlet, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import '../css/navbar.css';
 import { useTranslation } from 'react-i18next';
+import {ConfigContext} from "../helpers/ConfigContext";
+
 import Btn from './Button';
 
 const lngs = [
-    { code: "en", native: "English" },
-    { code: "he", native: "Hebrew" }
+    { code: "0", native: "English" },
+    { code: "1", native: "עברית" }
 ];
 function Sidebar() {
     function do_something(){
       //  alert('do something');
     }
     const { t, i18n } = useTranslation();
-    var langcode = 1;
+
+    const configs = useContext(ConfigContext);
+    var langcode = configs.lang;
+
     const handleTrans = (code) => {
         i18n.changeLanguage(code);
         langcode = code;
@@ -50,85 +55,85 @@ function Sidebar() {
                     <Link to={`/App3`} onClick={() => do_something()} >Nextdays first</Link>
                 </li>
                 <li>
-                    <Link to={`/About`} onClick={() => do_something()} >About</Link>
+                    <Link to={`/About`} onClick={() => do_something()} >{t("CONTACT_INFO")}</Link>
                 </li>
                 <li>
-                    <Link to={`/ForecastAbroad`} onClick={() => do_something()} >ForecastAbroad</Link>
+                    <Link to={`/ForecastAbroad`} onClick={() => do_something()} >{t("WORLD")}</Link>
                 </li>
                 <li>
-                    <Link to={`/ForecastIsrael`} onClick={() => do_something()} >ForecastIsrael</Link>
+                    <Link to={`/ForecastIsrael`} onClick={() => do_something()} >{t("ISRAEL")}</Link>
                 </li>
                 <li>
-                    <Link to={`/ForecastJob`} onClick={() => do_something()} >ForecastJob</Link>
+                    <Link to={`/ForecastJob`} onClick={() => do_something()} >{t("FORECASTER_JOB")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Radar`} onClick={() => do_something()} >Radar</Link>
+                    <Link to={`/Radar`} onClick={() => do_something()} >{t("RAIN_RADAR")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Satellite`} onClick={() => do_something()} >Satellite</Link>
+                    <Link to={`/Satellite`} onClick={() => do_something()} >{t("Satellite")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Rain`} onClick={() => do_something()} >Rain</Link>
+                    <Link to={`/Rain`} onClick={() => do_something()} >{t("RAIN")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Runningtreks`} onClick={() => do_something()} >Runningtreks</Link>
+                    <Link to={`/Runningtreks`} onClick={() => do_something()} >{t("RUNNING_TREKS")}</Link>
                 </li>
                 <li>
-                    <Link to={`/GlobalWarming`} onClick={() => do_something()} >GlobalWarming</Link>
+                    <Link to={`/GlobalWarming`} onClick={() => do_something()} >{t("GLOBAL_WARMING")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Average`} onClick={() => do_something()} >Average</Link>
+                    <Link to={`/Average`} onClick={() => do_something()} >{t("AVERAGE")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Last2days`} onClick={() => do_something()} >Last2days</Link>
+                    <Link to={`/Last2days`} onClick={() => do_something()} >{t("LAST_DAY")}</Link>
                 </li>
                 <li>
-                    <Link to={`/LastWeek`} onClick={() => do_something()} >LastWeek</Link>
+                    <Link to={`/LastWeek`} onClick={() => do_something()} >{t("LAST_WEEK")}</Link>
                 </li>
                 <li>
-                    <Link to={`/ThisMonth`} onClick={() => do_something()} >ThisMonth</Link>
+                    <Link to={`/ThisMonth`} onClick={() => do_something()} >{t("THIS_MONTH")}</Link>
                 </li>
                 <li>
-                    <Link to={`/ChooseMonthYear`} onClick={() => do_something()} >ChooseMonthYear</Link>
+                    <Link to={`/ChooseMonthYear`} onClick={() => do_something()} >{t("CHOOSE")}</Link>
                 </li>
                 <li>
-                    <Link to={`/LastMonth`} onClick={() => do_something()} >LastMonth</Link>
+                    <Link to={`/LastMonth`} onClick={() => do_something()} >{t("LAST_MONTH")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Records`} onClick={() => do_something()} >Records</Link>
+                    <Link to={`/Records`} onClick={() => do_something()} >{t("RECORDS")}</Link>
                 </li>
                 <li>
-                    <Link to={`/RainSeasons`} onClick={() => do_something()} >RainSeasons</Link>
+                    <Link to={`/RainSeasons`} onClick={() => do_something()} >{t("RAIN_SEASONS")}</Link>
                 </li>
                 <li>
-                    <Link to={`/LoveHateForecasts`} onClick={() => do_something()} >LoveHateForecasts</Link>
+                    <Link to={`/LoveHateForecasts`} onClick={() => do_something()} >{t("LIKED_FORECAST")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Reports`} onClick={() => do_something()} >Reports</Link>
+                    <Link to={`/Reports`} onClick={() => do_something()} >{t("REPORTS")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Archive`} onClick={() => do_something()} >Archive</Link>
+                    <Link to={`/Archive`} onClick={() => do_something()} >{t("ARCHIVE")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Snow`} onClick={() => do_something()} >Snow</Link>
+                    <Link to={`/Snow`} onClick={() => do_something()} >{t("SNOW")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Climate`} onClick={() => do_something()} >Climate</Link>
+                    <Link to={`/Climate`} onClick={() => do_something()} >{t("CLIMATE")}</Link>
                 </li>
                 <li>
-                    <Link to={`/BestSeason`} onClick={() => do_something()} >BestSeason</Link>
+                    <Link to={`/BestSeason`} onClick={() => do_something()} >{t("FSEASON_T")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Faq`} onClick={() => do_something()} >Faq</Link>
+                    <Link to={`/Faq`} onClick={() => do_something()} >{t("FAQ")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Tips`} onClick={() => do_something()} >Tips</Link>
+                    <Link to={`/Tips`} onClick={() => do_something()} >{t("TIPS")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Contact`} onClick={() => do_something()} >Contact</Link>
+                    <Link to={`/Contact`} onClick={() => do_something()} >{t("CONTACT_ME")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Radiosonde`} onClick={() => do_something()} >Radiosonde</Link>
+                    <Link to={`/Radiosonde`} onClick={() => do_something()} >{t("RADIOSONDE")}</Link>
                 </li>
                 <li>
                     <Link to={`/AppExternal/1`} onClick={() => do_something()} >External</Link>

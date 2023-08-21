@@ -2891,7 +2891,6 @@ border-color:#829CAA;
 #plane{
 	float:left;
 	width:150px;
-	margin-top: 50px;
 }
 #adexternal{
 margin-<?echo get_s_align();?>:80px;

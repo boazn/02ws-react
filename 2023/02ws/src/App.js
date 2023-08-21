@@ -11,7 +11,7 @@ import {getMainData} from './helpers/Utils';
 import {getActivitiesData} from './helpers/Utils';
 import Sidebar from './components/Sidebar';
 import configData from "./02wsconfig.json";
-import ConfigProvider from "./helpers/ConfigContext";
+import ConfigContext from "./helpers/ConfigContext";
 
 function App({layout, src}) {
   
@@ -67,46 +67,46 @@ function App({layout, src}) {
   return (
     isLoading ?
     <div><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
-    <ConfigProvider configJson={configData}>
+    <ConfigContext.Provider value={configData}>
     <CurrentUserProvider>
       <Sidebar />
      <App1 json={json} cssClasses={cssClasses} activities_json={activities} />
      </CurrentUserProvider>
-     </ConfigProvider>
+     </ConfigContext.Provider>
     
     
  )} else  if (layout === 'forecast24') {
     return (
       isLoading ?
       <div><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
-      <ConfigProvider configJson={configData}>
+      <ConfigContext.Provider value={configData}>
       <CurrentUserProvider>
         <Sidebar />
         <App2 json={json} cssClasses={cssClasses}  activities_json={activities} />
       </CurrentUserProvider>
-      </ConfigProvider> 
+      </ConfigContext.Provider> 
       
    )}  else  if (layout === 'NextDays'){
     return (
       isLoading ?
       <div><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
-      <ConfigProvider configJson={configData}>
+      <ConfigContext.Provider value={configData}>
       <CurrentUserProvider>
         <Sidebar />
         <App3 json={json} cssClasses={cssClasses}  activities_json={activities}/>
         </CurrentUserProvider> 
-        </ConfigProvider>
+        </ConfigContext.Provider>
       
     )}  else  if (layout === 'External') {
     return (
       isLoading ?
       <div><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
-      <ConfigProvider configJson={configData}>
+      <ConfigContext.Provider value={configData}>
       <CurrentUserProvider>
         <Sidebar />
         <AppExternal src={src} json={json} cssClasses={cssClasses}  activities_json={activities}/>
         </CurrentUserProvider>
-        </ConfigProvider>
+        </ConfigContext.Provider>
       
     )};
   

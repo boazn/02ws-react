@@ -5,13 +5,13 @@ i18n
   .use(initReactI18next)
   .init({
     debug: true,
-    fallbackLng: 'he',
+    fallbackLng: '1',
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
     // language resources
     resources: {
-      en: {
+      '0': {
         translation: {
           "WEBSITE_TITLE": "02WS",
           "SLOGAN": "Weather with humor",
@@ -570,7 +570,7 @@ i18n
           "VOTE_INSERTED": "Your vote inserted to overall calculations. You have joined to thousend of voters, thank you!"
       }
       },
-      he: {
+      '1': {
         translation: {
           "WEBSITE_TITLE": "ירושמים",
           "SLOGAN": "מזג-אוויר עם קור-טוב של הומור",

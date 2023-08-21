@@ -20,9 +20,8 @@ function App1({json, cssClasses, activities_json}) {
   
   const { t, i18n } = useTranslation();
   const { currentUser, fetchCurrentUser } = useCurrentUser();
-  const {configs, addConfig} = useContext(ConfigContext);
-  var langcode = 1;
-  
+  const configs = useContext(ConfigContext);
+  var langcode = configs.lang;
   if (json.length === 0){ 
     return <div>loading...</div>
   }
@@ -79,10 +78,15 @@ function App1({json, cssClasses, activities_json}) {
        
        </div> 
        <div className="row">
-       <div className="graph col-xs-4 col-lg-12 ">
-       <TempGraph />
+       <div className="graph col-xs-4 col-lg-4 ">
+       <TempGraph className={cssClasses} lang={langcode}/>
        </div>
-          
+       <div className="graph col-xs-4 col-lg-4 ">
+       <TempGraph className={cssClasses} lang={langcode}/>
+       </div>
+       <div className="graph col-xs-4 col-lg-4 ">
+       <TempGraph className={cssClasses} lang={langcode}/>
+       </div>    
        </div>
        <div className="row">
        <div className="col-xs-4 col-lg-4 "><PicOfTheDay pic={picoftheday} lang={langcode} /></div>

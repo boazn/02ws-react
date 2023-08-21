@@ -110,27 +110,35 @@ const ColdMeter = (props) => {
         <div id="itfeels_title">{t("IT_FEELS")}</div>
         <div id="shadow_sun_wrapper">         
         <div className="shadow" >
-        <h4 >צל {props.shadowtemp}°</h4>
-        <div className="inlineGrid"> 
+        <h4 >{t("SHADE")} {props.shadowtemp}°</h4>
+        <div className="inlineGrid">
+        <a href="WhatToWear.php#tshirt" className="info"> 
         <span id="current_feeling_link">
             <img src={`https://www.02ws.co.il/images/clothes/${clothColdMeter}`} height="80" alt="cold meter"  /><br/>{coldTitle}<br/>
         </span>
+        <span className="info">{output}</span>
+        </a>
         <div className="cm_dislike"> <img onClick={() => vote_cm_dislike()} src="https://www.02ws.co.il/images/icons/cm_dislike.svg" width="50" height="50" alt="" /></div>
         <div className="cm_like"><img onClick={() => Vote_cm_like(cm_value)} src="https://www.02ws.co.il/images/icons/cm_like.svg" width="50" height="50" alt="" /></div>
         <div id="cm_shadow_result" ><div id="cm_shadow_result_msg"></div></div>
+        
         </div> 
-        {output}
+        
         </div>
          {(props.issun === 'true') ? 
           <div className="sun" >
-          <h4>שמש {props.suntemp}°</h4>
-          <div className="inlineGrid"> 
-          <span id="current_feeling_link"><img src={`https://www.02ws.co.il/images/clothes/${clothColdMeterSun}`} height="80" alt="cold meter"  /><br/>{coldTitleSun}<br/></span>
+          <h4>{t("IN_THE_SUN")} {props.suntemp}°</h4>
+          <div className="inlineGrid">
+          <a href="WhatToWear.php#tshirt" className="info">  
+          <span id="current_feeling_link">
+            <img src={`https://www.02ws.co.il/images/clothes/${clothColdMeterSun}`} height="80" alt="cold meter"  /><br/>{coldTitleSun}<br/>
+          </span>
+          <span className="info">{output_sun}</span>
+          </a>
           <div className="cm_dislike"> <img onClick={() => vote_cm_dislike()} src="https://www.02ws.co.il/images/icons/cm_dislike.svg" width="50" height="50" alt="" /></div>
           <div className="cm_like"><img onClick={() => Vote_cm_like(cm_value_sun)} src="https://www.02ws.co.il/images/icons/cm_like.svg" width="50" height="50" alt="" /></div>
           <div id="cm_sun_result" ><div id="cm_sun_result_msg"></div></div>
           </div>
-          {output_sun}
           </div> : ''
         }
         </div>

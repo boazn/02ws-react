@@ -7,7 +7,7 @@ const LatestNow = (props) => {
         return "loading...";
     return (
           <div id="latestnow" className={" " + (props.lang === 1? 'rtl' : '')}>
-            {props.current.date1}<br/>
+            {eval(`props.current.date${props.lang}`)}<br/>
                 <div title="" className="mx-auto parambox white_box">
                 <div className="imgbox"><img src="https://www.02ws.co.il/img/temp2.png" width="72px" height="30px" alt={t("TEMP")} /></div>
                 {t("TEMP")} {props.current.temp}°

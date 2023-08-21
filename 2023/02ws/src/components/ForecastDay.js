@@ -1,13 +1,13 @@
 import Btn from './Button';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ForecastDay = (props) => {
-    
     const prevDay = () => {
         setTogglePrev(!togglePrev);
     
     };
-
+    const { t } = useTranslation();
     const useToggle = (initialState) => {
         const [toggleValue, setToggleValue] = useState(initialState);
     
@@ -16,10 +16,13 @@ const ForecastDay = (props) => {
       };
       const [toggle, setToggle] = useToggle();
       const [togglePrev, setTogglePrev] = useToggle();
+    
+    if (props.yest === undefined)
+      return "loading...";
     return (
         <>
         
-        {props.a_key == 0 && togglePrev 
+        {props.a_key === 0 && togglePrev 
             ? 
             <ul className={"white_box box_text " + (props.lang === 1? 'rtl' : '')}>
                 <li className="forcast_day"> </li>
@@ -38,7 +41,7 @@ const ForecastDay = (props) => {
                 <img src="images/yesterday.png" width="14" height="14" title="יום אחרון" alt=""  />
             </Btn></li> : ''}
             
-            <li className="forcast_day">{props.day_name1} </li>
+            <li className="forcast_day">{eval(`props.day_name${props.lang}`)} </li>
             <li className="forcast_date">{props.date}</li>
             <li className="expand_plus">
             <div id="0" className="open-close-button" index="0"></div>
@@ -134,7 +137,7 @@ const ForecastDay = (props) => {
              </a>
             </li>
             <li className="forcast_text">
-             <div dangerouslySetInnerHTML={{__html: props.lang1}}></div>
+             <div dangerouslySetInnerHTML={{__html: eval(`props.lang${props.lang}`)}}></div>
                                                                                 <div id="divlikes2584" className="likedislike">		
                     <Btn className="btn-secondary" onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'like');"><img src="https://www.02ws.co.il/images/like_white.png" width="15px" height="15px" alt="אהבתי" style={{'cursor':'pointer'}} /></Btn>
                     <span className="likes">31</span>&nbsp;
@@ -144,7 +147,7 @@ const ForecastDay = (props) => {
                                                                                     
             </li>
             <li className="more">
-                <Btn btnOnClick={() => setToggle()} btnTitleText={"עוד"} img="ArrowDown">
+                <Btn btnOnClick={() => setToggle()} btnTitleText={t("MORE_INFO")} img="ArrowDown">
                     
                 </Btn>
                 
