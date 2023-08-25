@@ -1,22 +1,23 @@
 
 import { useTranslation } from 'react-i18next';
 import ColdMeter  from './ColdMeter';
+import { Link } from "react-router-dom";
 const LatestNow = (props) => {
     const { t } = useTranslation();
     if (props.current === undefined)
         return "loading...";
     return (
-          <div id="latestnow" className={" " + (props.lang === 1? 'rtl' : '')}>
+          <div id="latestnow" className={"white_transp_box " + (props.lang === 1? 'rtl' : '')}>
             {eval(`props.current.date${props.lang}`)}<br/>
                 <div title="" className="mx-auto parambox white_box">
-                <div className="imgbox"><img src="https://www.02ws.co.il/img/temp2.png" width="72px" height="30px" alt={t("TEMP")} /></div>
-                {t("TEMP")} {props.current.temp}°
+                <Link to={`/Now`}  >{props.current.temp}°</Link>
+                 
                 <div  id="windy">   
                     <div dangerouslySetInnerHTML={{__html: props.windstatus.lang1}}></div>
                 </div>
                 </div>
             <div className="" id="itfeels">
-               
+            {t("IT_FEELS")} <br/>{props.feelslike.avg}°
             </div>
             
             <div className="rainpercent">

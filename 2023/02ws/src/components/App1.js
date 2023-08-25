@@ -15,17 +15,24 @@ import LatestNow from './LatestNow';
 import {useCurrentUser} from "../helpers/UserContext";
 import {ConfigContext} from "../helpers/ConfigContext";
 import TempGraph from './TempGraph';
+import Btn from './Button';
 
 function App1({json, cssClasses, activities_json}) {
   
   const { t, i18n } = useTranslation();
   const { currentUser, fetchCurrentUser } = useCurrentUser();
-  const configs = useContext(ConfigContext);
-  var langcode = configs.lang;
+  const configData = useContext(ConfigContext);
+  var langcode = configData.lang;
   if (json.length === 0){ 
     return <div>loading...</div>
   }
   
+ const saveConfigData = () => {
+  configData.layout = "now";
+  localStorage.setItem('configData', JSON.stringify(configData));
+  console.log ('saved' + JSON.stringify(configData));
+ }
+
   const nextDays = json.jws.forecastDays;
   const nextHours = json.jws.forecastHours;
   const current = json.jws.current;
@@ -59,33 +66,36 @@ function App1({json, cssClasses, activities_json}) {
        <div className="col-xs-4 col-md-4 col-lg-4  ">
         <Statuses statuses={statuses} lang={langcode} className={cssClasses}/>
        <Activities activities_json={activities_json} activities={currentrecommendations} lang={langcode} />
+       <Btn btnOnClick={() => saveConfigData()} btnTitleText="set default layout" img="ArrowDown">
+                    
+        </Btn>
        </div>
        <div className="col-xs-4 col-md-4 col-lg-4 "><Ad /></div>  
        </div>
        
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
-       <div className="col-xs-4 col-lg-8 mx-auto mt-12">
+      <div className="col-xs-8 col-lg-8">
+        <div className="col mt-12">
           <Forecast24h hours={nextHours} lang={langcode} className={cssClasses} />
         </div>
-        <div className="col-xs-4 col-lg-4"><Ad /></div>
+        <div className="col mt-12">
+            <NextDays days={nextDays} lang={langcode} className={cssClasses} yest={yest}/>
+        </div>
+      </div>
+      <div className="col-xs-4 col-lg-4">
+        <Notifications notifications={messages} lang={langcode} className={cssClasses}/>
+      </div>
        </div>
-       <div className={"row "  + (langcode === 1? 'rtl' : '')}>
        
-       </div>
-       <div className={"row "  + (langcode === 1? 'rtl' : '')}>
-       <div className="col-xs-4 col-lg-8 mt-2"><NextDays days={nextDays} lang={langcode} className={cssClasses} yest={yest}/></div>
-       <div className="col-xs-4 col-lg-4 "><Notifications notifications={messages} lang={langcode} className={cssClasses}/></div>
-       
-       </div> 
        <div className="row">
        <div className="graph col-xs-4 col-lg-4 ">
-       <TempGraph className={cssClasses} lang={langcode}/>
+       <TempGraph className={cssClasses} lang={langcode} limit={1000} params={'temp,temp2,temp3'}/>
        </div>
        <div className="graph col-xs-4 col-lg-4 ">
-       <TempGraph className={cssClasses} lang={langcode}/>
+       <Ad/>
        </div>
        <div className="graph col-xs-4 col-lg-4 ">
-       <TempGraph className={cssClasses} lang={langcode}/>
+       <Ad/>
        </div>    
        </div>
        <div className="row">

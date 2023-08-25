@@ -99,7 +99,7 @@ export async function voteLike(cm_value, gender) {
    return result;
 }
 
-export async function getLatestArchiveData(limit) {
+export async function getLatestArchiveData(limit, params, lang) {
   const fetchJson = async () => {
       var opts = {
          //mode: 'no-cors',
@@ -107,7 +107,7 @@ export async function getLatestArchiveData(limit) {
            
           }
         }
-      const response = await fetch("https://www.02ws.co.il/images/profile1/LatestArchiveJson.php?limit=" + limit , opts);
+      const response = await fetch("https://www.02ws.co.il/images/profile1/LatestArchiveJson.php?limit=" + limit + "&params=" + params + "&lang=" + lang , opts);
       const json = await response.json();
       return json;
       

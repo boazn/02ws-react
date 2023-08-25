@@ -93,6 +93,8 @@ $SITE['beufort'] = array("Calm","Light Air","Light Breeze","Gentle Breeze",
 $SITE['compass'] = array(0 => 'N', 45 => 'NE', 90 =>'E', 135 => 'SE', 180 => 'S', 
         225 => 'SW', 270 => 'W', 315 => 'NW', 360 => 'N');
 $limit = empty($_GET['limit']) ? 10000 : $_GET['limit'];
+$params = empty($_GET['params']) ? 'temp' : $_GET['params'];
+$lang = empty($_GET['lang']) ? 1 : $_GET['lang'];
 
 $resultarichive = db_init("select date, time, temp,temp2,temp3,hum,windspd,winddir,thw,thw2,HeatIdx, uv, solarradiation, pm10, pm25, Dew, Rain, Bar, RainRate from  `archivelatest` order by ID Desc limit 0,".$limit, "");
 $temp = array();
@@ -128,19 +130,33 @@ while ($line = $resultarichive["result"]->fetch_array(MYSQLI_ASSOC)) {
     array_push($RainRate, array('x' => $line["date"]." ".$line["time"], 'y' => $line["RainRate"]));
 }
 $rawdata = array();
-array_push($rawdata, array('id' => 'temp', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $temp));
-array_push($rawdata, array('id' => 'temp2', 'color' =>  'hsl(227, 70%, 50%)', 'data' => $temp2));
-/*array_push($rawdata, array('id' => 'temp3', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $temp3));
-array_push($rawdata, array('id' => 'windspd', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $windspd));
-array_push($rawdata, array('id' => 'winddir', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $winddir));
-array_push($rawdata, array('id' => 'HeatIdx', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $HeatIdx));
-array_push($rawdata, array('id' => 'uv', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $uv));
-array_push($rawdata, array('id' => 'solarradiation', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $solarradiation));
-array_push($rawdata, array('id' => 'pm10', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $pm10));
-array_push($rawdata, array('id' => 'pm25', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $pm25));
-array_push($rawdata, array('id' => 'Dew', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $Dew));
-array_push($rawdata, array('id' => 'Rain', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $Rain));
-array_push($rawdata, array('id' => 'Bar', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $Bar));
-array_push($rawdata, array('id' => 'RainRate', 'color' =>  'hsl(247, 70%, 50%)', 'data' => $RainRate));*/
+if (strpos($params, 'temp') !== false)
+    array_push($rawdata, array('id' => $VALLEY[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $temp));
+if (strpos($params, 'temp2') !== false)
+    array_push($rawdata, array('id' => $TEMP[$lang], 'color' =>  'hsl(227, 70%, 50%)', 'data' => $temp2));
+if (strpos($params, 'temp3') !== false)
+    array_push($rawdata, array('id' => $ROAD[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $temp3));
+if (strpos($params, 'windspd') !== false)
+    array_push($rawdata, array('id' => $WIND_SPEED[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $windspd));
+if (strpos($params, 'winddir') !== false)
+    array_push($rawdata, array('id' => $WIND_DIR[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $winddir));
+if (strpos($params, 'HeatIdx') !== false)
+    array_push($rawdata, array('id' => $HEAT_IDX[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $HeatIdx));
+if (strpos($params, 'uv') !== false)
+    array_push($rawdata, array('id' => $UV[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $uv));
+if (strpos($params, 'solarradiation') !== false)
+    array_push($rawdata, array('id' => $RADIATION[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $solarradiation));
+if (strpos($params, 'pm10') !== false)
+    array_push($rawdata, array('id' => $DUSTPM10[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $pm10));
+if (strpos($params, 'pm25') !== false)
+    array_push($rawdata, array('id' => $DUSTPM25[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $pm25));
+if (strpos($params, 'Dew') !== false)
+    array_push($rawdata, array('id' => $DEW[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $Dew));
+if (strpos($params, 'Rain') !== false)
+    array_push($rawdata, array('id' => $RAIN[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $Rain));
+if (strpos($params, 'Bar') !== false)
+    array_push($rawdata, array('id' => $BAR[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $Bar));
+if (strpos($params, 'RainRate') !== false)
+    array_push($rawdata, array('id' => $RAINRATE[$lang], 'color' =>  'hsl(247, 70%, 50%)', 'data' => $RainRate));
 $json_pretty = json_encode($rawdata);
 echo  $json_pretty;

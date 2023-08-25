@@ -12,7 +12,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './i18n';
 
 
-const app_layout =  [ "current", "forecast24", "NextDays", "External"];
+const app_layout =  [ "current", "forecast24", "NextDays", "External", "now"];
 
 const router = createBrowserRouter([
       {
@@ -22,7 +22,12 @@ const router = createBrowserRouter([
       },
       {
         path: "Now/:nowId",
-        element: <App layout={app_layout[0]}/>,
+        element: <App layout="now"/>,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "Now",
+        element: <App layout="now"/>,
         errorElement: <ErrorPage />,
       },
       {

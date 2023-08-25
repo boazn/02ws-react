@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactModal  from 'react-modal';
 import { voteLike } from '../helpers/Utils';
-
+import { useContext } from 'react';
+import {ConfigContext} from "../helpers/ConfigContext";
 const ColdMeter = (props) => {
   var resultCMVote;
   const { t } = useTranslation();
+  const configData = useContext(ConfigContext);
   const callVoteLike = async () => {
-    var gender = window.localStorage.getItem('gender');
+    var gender = localStorage.getItem('gender');
     const json = await voteLike(cm_value, gender);
     console.log (json.result.message);
     setCMResult(json.result.message);
@@ -50,6 +52,7 @@ const ColdMeter = (props) => {
       top: '50%',
       left: '50%',
       right: 'auto',
+      direction: (configData.lang === 1) ? 'rtl' : '',
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
@@ -107,7 +110,7 @@ const ColdMeter = (props) => {
         <div id="heatindex">
             {heatindex}
         </div>
-        <div id="itfeels_title">{t("IT_FEELS")}</div>
+        <div id="itfeels_title"></div>
         <div id="shadow_sun_wrapper">         
         <div className="shadow" >
         <h4 >{t("SHADE")} {props.shadowtemp}°</h4>

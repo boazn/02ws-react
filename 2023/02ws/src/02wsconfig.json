@@ -1,3 +1,4 @@
 {"layout":"current",
  "lang": 1,
+ "params": "temp, temp2, temp3, hum, pm10, pm25, windspd, rad, dew, pressure, uv, rain",
 "theme":"dark"}

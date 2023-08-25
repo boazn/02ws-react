@@ -1145,7 +1145,7 @@ $query = "SELECT * FROM  `content_sections` WHERE TYPE =  'LAlert'";
 $result = mysqli_query($link, $query);
 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
-<div  class=" <? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell shrinked"  id="LAlert<?=$line["lang"]?>">
+<div  class=" <? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell shrinked"  id="LAlert<?=$line["lang"]?>" style="display:none">
 <div class="invcell shrinked">
 		
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
@@ -1196,7 +1196,7 @@ $query = "SELECT * FROM  `content_sections` WHERE TYPE =  'forecast'";
 $result = mysqli_query($link, $query);
 while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ?>
-<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell alert"  id="forecast<?=$line["lang"]?>">
+<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> invcell alert"  id="forecast<?=$line["lang"]?>" style="display:none">
 <div id="forecast_href_plugin" class="invcell shrinked" >
 			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>
 	

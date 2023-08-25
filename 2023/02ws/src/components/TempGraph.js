@@ -2,11 +2,11 @@ import { ResponsiveLine } from '@nivo/line';
 import { getLatestArchiveData } from '../helpers/Utils';
 import { React, useEffect, useState } from 'react';
 
-const TempGraph = () => {
+const TempGraph = ({limit, params, lang}) => {
     const [jsondata, setJsonData] = useState([]);
     useEffect(() =>{
         const fetchJson = async () => {
-            const data = await getLatestArchiveData(1000);
+            const data = await getLatestArchiveData(limit, params, lang);
             setJsonData(data);
             console.log("getLatestArchiveData:"+data);
         }

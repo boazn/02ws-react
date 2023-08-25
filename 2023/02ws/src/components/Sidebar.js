@@ -43,6 +43,9 @@ function Sidebar() {
                     </div>
                 </li>
                 <li>
+                <a href={`/`}>דף ראשי</a>
+                </li>
+                <li>
                 <a href={`/Now/2`}>Current first</a>
                 </li>
                 <li>
@@ -70,7 +73,7 @@ function Sidebar() {
                     <Link to={`/Radar`} onClick={() => do_something()} >{t("RAIN_RADAR")}</Link>
                 </li>
                 <li>
-                    <Link to={`/Satellite`} onClick={() => do_something()} >{t("Satellite")}</Link>
+                    <Link to={`/Satellite`} onClick={() => do_something()} >{t("SATELLITE")}</Link>
                 </li>
                 <li>
                     <Link to={`/Rain`} onClick={() => do_something()} >{t("RAIN")}</Link>
@@ -91,7 +94,7 @@ function Sidebar() {
                     <Link to={`/LastWeek`} onClick={() => do_something()} >{t("LAST_WEEK")}</Link>
                 </li>
                 <li>
-                    <Link to={`/ThisMonth`} onClick={() => do_something()} >{t("THIS_MONTH")}</Link>
+                    <Link to={`/ThisMonth`} onClick={() => do_something()} >8/23 {t("MONTH")}</Link>
                 </li>
                 <li>
                     <Link to={`/ChooseMonthYear`} onClick={() => do_something()} >{t("CHOOSE")}</Link>

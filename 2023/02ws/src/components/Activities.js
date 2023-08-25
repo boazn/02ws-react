@@ -1,16 +1,19 @@
 import Btn from './Button';
 import ReactModal  from 'react-modal';
 import { useState } from 'react';
+import { useContext } from 'react';
+import {ConfigContext} from "../helpers/ConfigContext";
 const Activities = (props) => {
     const [isOpen, setPopupIsOpen] = useState(false);
     const [currentActivity, setCurrentActivity] = useState(false);
     const [currentTitle, setCurrentTitle] = useState(false);
-    
+    const configData = useContext(ConfigContext);
     const customStyles = {
         content: {
           width:'400px',
           top: '50%',
           left: '50%',
+          direction: (configData.lang === 1) ? 'rtl' : '',
           right: 'auto',
           bottom: 'auto',
           marginRight: '-50%',
@@ -62,9 +65,9 @@ const Activities = (props) => {
         setPopupIsOpen(true);
     }
     return (
-        <div className="white_transp_box">
+        <div className="">
         {props.activities.map((activity, i) => {
-        return <div className="white_box inline activity" key={i}>
+        return <div className="white_transp_box inline activity" key={i}>
             
                 <img onClick={() => openDetails(activity)} src={`https://www.02ws.co.il/images/activities/${activity.activity.toString().toLowerCase()}.png`} height="30" width="30" alt="something" ></img> 
                
