@@ -817,7 +817,7 @@ $JSON .= "]";
 $JSON .= ",\"forecastDays\":[";
 $surise_suset_json = getSunriseSunset($day_f['date']);
 $day_idx = 0;
-foreach ($forecastDaysDB as $day_f){
+foreach ($forecastDaysDB as $key => $day_f){
     $daily_sunrise = $surise_suset_json->location->time[$day_idx]->sunrise->time;
     $daily_sunset = $surise_suset_json->location->time[$day_idx]->sunset->time;
     $daily_moonrise = $surise_suset_json->location->time[$day_idx]->moonrise->time;
@@ -827,6 +827,8 @@ foreach ($forecastDaysDB as $day_f){
     $lang_idx = 0;
     $JSON .= "{";
     $JSON .= "\"day_name0\":"."\"".$day_f['day_name']."\"";
+    $JSON .= ",";
+    $JSON .= "\"id\":"."\"".$key."\"";
     $JSON .= ",";
     $JSON .= "\"TempLowClothTitle0\":"."\"".getClothTitle($day_f['TempLowCloth'], $day_f['TempLow'], $day_f['windMorning'], $day_f['humMorning'])."\"";
     $JSON .= ",";

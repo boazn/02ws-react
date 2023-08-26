@@ -9,7 +9,6 @@ nav {
 
 .menu{
     cursor: pointer;
-    display:flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
@@ -47,7 +46,7 @@ nav {
         transform:translateY(0) rotate(90deg);
        }
     &:after {
-        transform:translateY(0) rotate(-90deg);
+          transform:translateY(0) rotate(-90deg);
        }
    }
 

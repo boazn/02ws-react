@@ -1,7 +1,7 @@
 import Btn from './Button';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import {updateLikesCall} from '../helpers/Utils';
 const ForecastDay = (props) => {
     const prevDay = () => {
         setTogglePrev(!togglePrev);
@@ -14,6 +14,16 @@ const ForecastDay = (props) => {
         const toggler = () => { setToggleValue(!toggleValue) };
         return [toggleValue, toggler]
       };
+      const updateLikes = async (id, likedislike) => {
+        const res_vote = await updateLikesCall(id, likedislike);
+        if (likedislike === "like"){
+            console.log('updateLikesCall: likes=' + res_vote.likes[0].count);
+        }
+        else {
+            console.log('updateLikesCall: dislikes=' + res_vote.dislikes[0].count);
+        }
+                
+      }
       const [toggle, setToggle] = useToggle();
       const [togglePrev, setTogglePrev] = useToggle();
     
@@ -138,16 +148,16 @@ const ForecastDay = (props) => {
             </li>
             <li className="forcast_text">
              <div dangerouslySetInnerHTML={{__html: eval(`props.lang${props.lang}`)}}></div>
-                                                                                <div id="divlikes2584" className="likedislike">		
-                    <Btn className="btn-secondary" onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'like');"><img src="https://www.02ws.co.il/images/like_white.png" width="15px" height="15px" alt="אהבתי" style={{'cursor':'pointer'}} /></Btn>
-                    <span className="likes">31</span>&nbsp;
-                    <Btn className="btn-secondary" onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'dislike');"><img src="https://www.02ws.co.il/images/dislike_white.png" width="15px" height="15px" alt="לא אהבתי" style={{'cursor':'pointer'}} /></Btn>
-                    <span className="dislikes">7</span>
+             <div id={`divlikes${props.id}`} className="likedislike">		
+                    <Btn className="btn-secondary" img="HandThumbsUp" btnOnClick={() => updateLikes(props.id, 'like')} onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'like');"></Btn>
+                    <span className="likes"></span>&nbsp;
+                    <Btn className="btn-secondary" img="HandThumbsDown" btnOnClick={() => updateLikes(props.id, 'dislike')} onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'dislike');"></Btn>
+                    <span className="dislikes"></span>
             </div>
                                                                                     
             </li>
             <li className="more">
-                <Btn btnOnClick={() => setToggle()} btnTitleText={t("MORE_INFO")} img="ArrowDown">
+                <Btn btnOnClick={() => setToggle()}  img={toggle ? "ArrowUp" : "ArrowDown" }>
                     
                 </Btn>
                 

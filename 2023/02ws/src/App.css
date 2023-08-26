@@ -528,12 +528,12 @@ a.info:hover span.info
   text-align: right;
 }
 .likedislike{
-  display:none
+ 
 }
 
 
 #sidebar {
-  width: 22rem;
+  width: 25rem;
   background-color: #f7f7f7;
   border-right: solid 1px #e3e3e3;
   display: flex;
@@ -752,7 +752,20 @@ i {
   top: 0;
 }
 
-
+#controls li
+{
+  float: right;
+    padding: 0 0.9em;
+    color: #ffffff;
+    font-size: 1.1em;
+    list-style:none
+}
+#controls
+{
+  display:block;
+  height:20px;
+  width:500px;
+}
 .night{
   background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 20%, #7480bb 40%, #737fbb 100%);
 }
@@ -861,6 +874,10 @@ i {
   padding: 1rem;
   cursor: pointer;
 }
+.parambox a, #controls a{
+  text-decoration:none;
+  color:unset
+}
 #tempdivvalue
 {
   display:inline-table;
@@ -928,6 +945,10 @@ background-position: 0px 0px;
   font-size:1.2em
 }
 @media only screen and (max-width: 500px) {
+ 
+  #sidebar nav{
+    width:100%
+  }
   #forcast_days li
   {
     font-size: 0.8em;

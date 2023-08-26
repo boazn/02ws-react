@@ -1,6 +1,5 @@
 
 <?php
-header("Access-Control-Allow-Origin: null");
  require_once 'include.php';
  include_once("start.php");
 class DB_Functions {

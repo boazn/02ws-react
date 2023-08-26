@@ -81,6 +81,21 @@ export async function getParamsData() {
     let result = fetchJson();
    return result;
 }
+export async function updateLikesCall(idx, command) {
+  const fetchJson = async () => {
+    var opts = {
+       
+        
+      }
+    const response = await fetch("https://www.02ws.co.il/forecastlikes_service.php?idx=" + idx + "&command=" + command , opts);
+    const json = await response.json();
+    return json;
+    
+  };
+  let result = fetchJson();
+  return result;
+
+}
 
 export async function voteLike(cm_value, gender) {
   const fetchJson = async () => {
