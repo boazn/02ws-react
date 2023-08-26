@@ -8,18 +8,21 @@ const ForecastDay = (props) => {
     
     };
     const { t } = useTranslation();
+    const [currentlikes, setCurrentLikes]= useState(props.likes);
+    const [currentdislikes, setCurrentDislikes] = useState(props.dislikes);
     const useToggle = (initialState) => {
         const [toggleValue, setToggleValue] = useState(initialState);
     
         const toggler = () => { setToggleValue(!toggleValue) };
-        return [toggleValue, toggler]
-      };
+        return [toggleValue, toggler]};
       const updateLikes = async (id, likedislike) => {
         const res_vote = await updateLikesCall(id, likedislike);
         if (likedislike === "like"){
+            setCurrentLikes(res_vote.likes[0].count);
             console.log('updateLikesCall: likes=' + res_vote.likes[0].count);
         }
         else {
+            setCurrentDislikes(res_vote.dislikes[0].count);
             console.log('updateLikesCall: dislikes=' + res_vote.dislikes[0].count);
         }
                 
@@ -150,9 +153,9 @@ const ForecastDay = (props) => {
              <div dangerouslySetInnerHTML={{__html: eval(`props.lang${props.lang}`)}}></div>
              <div id={`divlikes${props.id}`} className="likedislike">		
                     <Btn className="btn-secondary" img="HandThumbsUp" btnOnClick={() => updateLikes(props.id, 'like')} onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'like');"></Btn>
-                    <span className="likes"></span>&nbsp;
+                    <span className="likes">{currentlikes}</span>&nbsp;
                     <Btn className="btn-secondary" img="HandThumbsDown" btnOnClick={() => updateLikes(props.id, 'dislike')} onclick="updateLikes(event, this.parentNode.parentNode.parentNode.parentNode.id, 'dislike');"></Btn>
-                    <span className="dislikes"></span>
+                    <span className="dislikes">{currentdislikes}</span>
             </div>
                                                                                     
             </li>
