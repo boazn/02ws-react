@@ -4,6 +4,7 @@ nav {
     padding: 1rem;
     color: #000;
     background: linear-gradient(45deg, rgb(205, 206, 216), rgb(137, 137, 140));
+   
 }
 
 
@@ -73,5 +74,10 @@ nav {
     }
    }
 
-
+   @media only screen and (max-width: 500px) {
+    nav.open {
+        height:auto;
+        width:100%;
+    }
+   }
 

@@ -15,8 +15,12 @@ $laundry_con_title_heb = $laundry_con[1];
 $laundry_addon_heb = $laundry_con[1]." (".($laundry_con[2] != "" ?  $REMOVE_LAUNDRY[$lang_idx]." ".$IN[$lang_idx]." ".$laundry_con[2]." ".$HOURS[$lang_idx]: "").")";
 $laundry_addon = array($laundry_addon_eng, $laundry_addon_heb);
 $now_recommendations = getRecommendations(TimeFrame::Hourly, $hour,  $current->get_temp(), $current->get_windspd(), $current->get_hum(), $current->get_rainchance(), $current->get_pm10(), $current->get_uv());
+
+foreach ($now_recommendations as $key => $rec){
+      
+}
+
 array_push($ACTIVITIES_ARR, array('name' => Activities::AC, 'title0' => 'Turn on AC', 'lang0' => 'It is recommended to use a ceiling fan in most cases. This will keep the room cool and it is also better for the environment. It is recommended to turn on the AC during extreme hot and humid conditions. ', 'title1' => 'להדליק את המזגן', 'lang1' => 'כדאי להשתמש במאוורר תקרה לרוב המצבים החמים. זה יספיק כדי למזג את החדר וגם ישמור טוב יותר על כדור הארץ. במצבי חום ולחות קיצוניים מומלץ להדליק מזגן. מומלץ להדליק מזגן בגלל טמפרטורה גבוהה או לחות גבוהה.'));
-array_push($ACTIVITIES_ARR, array('name' => Activities::Bicycle, 'title0' => 'Ride the bike to work place', 'lang0' => 'It is not recommended to bike when strong winds (X km/hour) and/or lots of rain (X mm) are expected', 'title1' => 'לרכוב על אופניים לעבודה', 'lang1' => 'לא מומלץ להשתמש באופניים כאשר משבי הרוח צפויים להיות חזקים ( קמש - ערך מהתחזית) או כמות הגשם גדולה מדי ( ממ- ערך מהתחזית).'));
 array_push($ACTIVITIES_ARR, array('name' => Activities::Boiler, 'title0' => 'Turn on the boiler', 'lang0' => 'It is best to turn on the water heater when there are few daylight hours and/or low temerature at night. There is no need to turn on the water heater in the summer, if the temperatures do not fall below 19-20 celsius degrees. If there is enough daylight during the winter, the water heater need to be turned on only in the early morning hours.     ', 'title1' => '  להדליק את הדוד (בוילר)', 'lang1' => 'כדאי להדליק דוד במצב של מעט שעות שמש ו/או טמפרטורה נמוכה בלילה. בקיץ אם הטמפרטורה לא יורדת מתחת ל-19-20 מעלות אין צורך להדליק דוד. בחורף יש צורך להדליק רק לפנות בוקר אם יש מספיק שעות שמש.'));
 array_push($ACTIVITIES_ARR, array('name' => Activities::CAMPFIRE, 'title0' => 'Campfire', 'lang0' => 'Campfire and barbeque are both activities that are sensitive to the wind, dust and rain. It is recommended to choose low places that are hidden from the west side and therefore will have less wind. It is not recommended to have a barbeque or campfire during strong winds, dust or rain', 'title1' => 'לעשות על האש או מדורה', 'lang1' => 'קומזיץ ומנגל הן פעילויות רגישות לרוח, אבק וגשם. כדאי לבחור מקומות נמוכים ומוסתרים מצד מערב שבהם יש פחות רוח. לא מומלץ בזמן רוח ערה, אבק או גשם.'));
 array_push($ACTIVITIES_ARR, array('name' => Activities::Camping, 'title0' => 'Camping', 'lang0' => 'It is recommended to situate the tent in the valley, that has weaker wind. There is no problem to camp if strong wind and/or rain are not expected (most tents can stand light rain)', 'title1' => 'קמפינג בשטח', 'lang1' => 'מומלץ למקם את האוהל בעמק - שם יש רוח חלשה יותר. אם אין רוח חזקה וגשם משמעותי (כמה טיפות אוהל סביר יכול לספוג) אין בעיה לעשות קמפינג'));
@@ -49,4 +53,6 @@ function getActivityTitle($activity, $lang) {
         }
     }
 }
+print("<pre>".print_r($now_recommendations,true)."</pre>");
+print("<pre>".print_r($ACTIVITIES_ARR,true)."</pre>");
 ?>

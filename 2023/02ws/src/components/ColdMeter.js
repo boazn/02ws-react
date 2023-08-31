@@ -48,7 +48,7 @@ const ColdMeter = (props) => {
   const [cm_value_sun, setCMSunvalue] = useState(false);
   const customStyles = {
     content: {
-      width:'400px',
+      width:'740px',
       top: '50%',
       left: '50%',
       right: 'auto',
@@ -153,7 +153,7 @@ const ColdMeter = (props) => {
         style={customStyles}
         onRequestClose={() => setIsOpen(false)}
       >
-         <iframe src="https://www.02ws.co.il/small/?section=survey.php&amp;survey_id=2&amp;" width={320} height={600} sandbox='allow-scripts allow-modal' loading='eager' title="iframePopup"></iframe>
+         <iframe src="https://www.02ws.co.il/small/?section=survey.php&amp;survey_id=2&amp;" width={680} height={600} sandbox='allow-scripts allow-modal allow-forms allow-same-origin' scrolling="no" loading='eager' title="iframePopup" ></iframe>
       </ReactModal>
 
       <ReactModal

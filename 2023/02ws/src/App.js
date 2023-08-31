@@ -19,7 +19,6 @@ function App({layout, src}) {
   
   const [isLoading, setIsLoading] = useState(true);
   const [configData, setConfig] = useState(true);
-  const [app_layout, setLayout] = useState([]);
   const [json, setJson] = useState([]);
   const [activities, setActivities] = useState(false);
   const [current, setCurrent] = useState([]);
@@ -27,8 +26,6 @@ function App({layout, src}) {
   const [nav, setNav] = useState(navValues.home);
   const counter = useRef(0);
   
-  
-
    useEffect(() =>{
       const fetchJson = async () => {
       const json = await getMainData();
@@ -38,12 +35,12 @@ function App({layout, src}) {
       setJson(json);
       setCurrent(current);
       setStates(states);
-      setNav(nav);
-      setLayout({layout});
+      setNav(isRoot ? layout : configData.layout);
       setActivities({activities});
       importConfigData();
       counter.current++;
       setIsLoading(false);
+      
     };
    fetchJson();
     const timer = setInterval(() => {
@@ -77,8 +74,16 @@ function App({layout, src}) {
 
   
   });
-   
- if ((layout === 'current') || (layout === '')){
+
+  function isRoot() {
+    return true;
+  }
+ 
+ 
+  
+    
+
+ if ((nav === 'current') || (nav === '')){
   return (
     isLoading ?
     <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
@@ -90,7 +95,7 @@ function App({layout, src}) {
      </ConfigContext.Provider>
     
     
- )} else  if (layout === 'forecast24') {
+ )} else  if (nav === 'forecast24') {
     return (
       isLoading ?
       <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
@@ -101,7 +106,7 @@ function App({layout, src}) {
       </CurrentUserProvider>
       </ConfigContext.Provider> 
       
-   )}  else  if (layout === 'NextDays'){
+   )}  else  if (nav === 'NextDays'){
     return (
       isLoading ?
       <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
@@ -112,7 +117,7 @@ function App({layout, src}) {
         </CurrentUserProvider> 
         </ConfigContext.Provider>
       
-    )}  else  if (layout === 'External') {
+    )}  else  if (nav === 'External') {
     return (
       isLoading ?
       <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
@@ -123,7 +128,7 @@ function App({layout, src}) {
         </CurrentUserProvider>
         </ConfigContext.Provider>
       
-    )} else  if (layout === 'now') {
+    )} else  if (nav === 'now') {
       return (
         isLoading ?
         <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :

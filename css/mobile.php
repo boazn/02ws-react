@@ -312,7 +312,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 }
 #radio_toolbar_container
 {
-    margin:0em 1em;width:90%;text-align: center;
+    margin:0em 1em;width:310px;text-align: center;
 }
 #current_feeling_link
 {
@@ -622,7 +622,7 @@ display:block
 text-align:center;
 -webkit-transform: translate3d(0,0,0);
 margin: 0 auto;
-width:320px;
+width:100%;
 
 }
 #startinfo_container .currentcloth

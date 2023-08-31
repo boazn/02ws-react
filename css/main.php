@@ -4951,7 +4951,7 @@ border-top:none; margin:0; padding:0;
     
 }
 .inparamdiv .coldmeterline{
-   opacity:0.6;
+   opacity:0.7;
    margin:0;
    display:block;
    border:none;
@@ -4963,11 +4963,14 @@ border-top:none; margin:0; padding:0;
     background: no-repeat;
     font-family: nextexitfotlight;
     width: 11em;
+    padding-<?=get_s_align()?>:1.2em;
 }
 .inparamdiv .coldmeterline:hover{
    opacity:1;  
 }
-
+.colmetercontainer{
+    background-position: <?=get_s_align()?>;
+}
 .radio-toolbar{
     margin-bottom:0.2em;
     border-radius: 8px;
@@ -5079,7 +5082,7 @@ border-top:none; margin:0; padding:0;
 }
 #genderchoose
 {
-position:absolute;top:0px;width:430px;z-index:9999;<?=get_s_align()?>:500px
+position:absolute;top:0px;width:430px;z-index:9999;<?=get_s_align()?>:100px
 }
 #graphmain
 {

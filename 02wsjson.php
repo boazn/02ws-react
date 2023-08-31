@@ -113,7 +113,8 @@ $CURRENT_JSON .= ",\"recommendations\":[";
 foreach ($now_recommendations as $r){
 $CURRENT_JSON .= "{";
 $CURRENT_JSON .= "\"activity\":"."\"".$r['activity']."\",";
-//$CURRENT_JSON .= "\"sig\":"."\"".$r['sig']."\",";
+$CURRENT_JSON .= "\"sig0\":"."\"".$r['sig0']."\",";
+$CURRENT_JSON .= "\"sig1\":"."\"".$r['sig1']."\",";
 $CURRENT_JSON .= "\"value\":"."\"".$r['value']."\"";
 $CURRENT_JSON .= "},";
 }
@@ -766,7 +767,6 @@ $JSON .= "\"timeframe\":"."\"".$r['timeframe']."\",";
 $JSON .= "\"sig0\":"."\"".$r['sig0']."\",";
 $JSON .= "\"sig1\":"."\"".$r['sig1']."\",";
 $JSON .= "\"activity\":"."\"".$r['activity']."\",";
-//$JSON .= "\"sig\":"."\"".$r['sig']."\",";
 $JSON .= "\"value\":"."\"".$r['value']."\"";
 $JSON .= "},";
 }
@@ -1323,16 +1323,27 @@ $JSON .= "}";
 
 $ADS_JSON = ",\"Ads\":[";
 $Ads = $mem->get('Ads');
-foreach ($Ads as $ad){
-$ADS_JSON .= "{";
-$ADS_JSON .= "\"img_url\":"."\"".$ad['img_url']."\"";
-$ADS_JSON .= ",";
-$ADS_JSON .= "\"width\":"."\"".$ad['w']."\"";
-$ADS_JSON .= ",";
-$ADS_JSON .= "\"height\":"."\"".$ad['h']."\"";
-$ADS_JSON .= ",";
-$ADS_JSON .= "\"link\":"."\"".$ad['href']."\"";
-$ADS_JSON .= "},";
+foreach ($Ads as $key => $ad){
+if ((time() >= $ad['start']) && (time() <= $ad['end'])){
+    $ADS_JSON .= "{";
+    $ADS_JSON .= "\"img_url\":"."\"".$ad['img_url']."\"";
+    $ADS_JSON .= ",";
+    $ADS_JSON .= "\"width\":"."\"".$ad['w']."\"";
+    $ADS_JSON .= ",";
+    $ADS_JSON .= "\"height\":"."\"".$ad['h']."\"";
+    $ADS_JSON .= ",";
+    $ADS_JSON .= "\"link\":"."\"".$ad['href']."\"";
+    $ADS_JSON .= ",";
+    $ADS_JSON .= "\"index\":"."\"".$key."\"";
+    $ADS_JSON .= ",";
+    $ADS_JSON .= "\"guid\":"."\"".$ad['guid']."\"";
+    $ADS_JSON .= ",";
+    $ADS_JSON .= "\"daily_or_global\":"."\"".$ad['daily_or_global']."\"";
+    $ADS_JSON .= ",";
+    $ADS_JSON .= "\"session_or_pageviews\":"."\"".$ad['session_or_pageviews']."\"";
+    $ADS_JSON .= "},";
+}
+
 }
 $ADS_JSON = rtrim($ADS_JSON, ",");
 $ADS_JSON .= "]";

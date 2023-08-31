@@ -12,7 +12,7 @@ $JSON_ROOT = "{\"jws\":{";
 $ACTIVITIES_JSON = " \"Activities\": [";
 foreach ($ACTIVITIES_ARR as $activity){
      $ACTIVITIES_JSON .= "{\"name\":"."\"".$activity['name']."\",
-                \"title0\":"."\"".$activity['title0']."\",  
+               \"title0\":"."\"".$activity['title0']."\",  
                \"lang0\":"."\"".$activity['lang0']."\", 
                \"title1\":"."\"".$activity['title1']."\", 
                \"lang1\":"."\"".$activity['lang1']."\"  }";

@@ -1626,25 +1626,25 @@ function startup(lang, from, update)
         }
         else {}
      }
-     function getActivityTitle(activity, lang, act_json){
+     function getActivityTitle(activity, lang, act_json, add_on){
         for (j = 0; j< act_json.jws.Activities.length; j++){
             if (act_json.jws.Activities[j].name == activity){
                 if (lang == 0)
-                    return act_json.jws.Activities[j].title0;
+                    return add_on + ' ' + act_json.jws.Activities[j].title0;
                 else
-                    return act_json.jws.Activities[j].title1;
+                    return add_on + ' ' + act_json.jws.Activities[j].title1;
             }
 
         }
        
      }
-     function getActivityDesc(activity, lang, act_json){
+     function getActivityDesc(activity, lang, act_json, add_on){
         for (j = 0; j< act_json.jws.Activities.length; j++){
             if (act_json.jws.Activities[j].name == activity){
                 if (lang == 0)
-                    return act_json.jws.Activities[j].lang0;
+                    return add_on + '<br/>' + act_json.jws.Activities[j].lang0;
                 else
-                    return act_json.jws.Activities[j].lang1;
+                    return add_on + '<br/>' + act_json.jws.Activities[j].lang1;
             }
 
         }
@@ -1654,12 +1654,12 @@ function startup(lang, from, update)
         var activities_yes = "", activities_no = "";
        for (i = 0; i< all_json.jws.current.recommendations.length; i++){
         var act_container = 'latest_' + all_json.jws.current.recommendations[i].activity.toLowerCase();
-        $('#' + act_container + ' .exp').html(getActivityDesc(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json));
-        $('#' + act_container + ' .paramtitle').html(getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json));
+        $('#' + act_container + ' .exp').html(getActivityDesc(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json, all_json.jws.current.recommendations[i].sig<?=$lang_idx?>));
+        $('#' + act_container + ' .paramtitle').html(getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json, (all_json.jws.current.recommendations[i].value == 1)? '<?=$NOT_GOOD_TIME_FOR[$lang_idx]?>' : ''));
           if (all_json.jws.current.recommendations[i].value == 1)
-            activities_yes += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"span-value\" data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json) + "\"  onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"<?=BASE_URL?>/images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" + width=\"25\" height=\"25\" /></li>" ;
+            activities_yes += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"span-value\"  data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json, '') + "\"  onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\" width=\"25\" height=\"25\" /></li>" ;
          else
-            activities_no += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"no span-value\" data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json) + "\" onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"<?=BASE_URL?>/images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" +  width=\"25\" height=\"25\" /></li>"  ;
+            activities_no += "<li id=\"" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "_btn\" class=\"no span-value\" data-value=\"" + getActivityTitle(all_json.jws.current.recommendations[i].activity, <?=$lang_idx?>, act_json, '') + "\" onclick=\"change_circle('" + all_json.jws.current.recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.current.recommendations[i].activity.toLowerCase() + ".png\" width=\"25\" height=\"25\" /></li>"  ;
        }
       // $('#bottombar').html(activities_yes+activities_no);
         $('#activities_yes').html(activities_yes);
@@ -1669,12 +1669,12 @@ function startup(lang, from, update)
             activities_yes = "";activities_no = "";
             for (i = 0; i< all_json.jws.forecastHours[hour_idx].recommendations.length; i++){
                 var act_container = 'latest_' + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase();
-                $('#' + act_container + ' .exp').html(getActivityDesc(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json));
-                $('#' + act_container + ' .paramtitle').html(getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json));
+                $('#' + act_container + ' .exp').html(getActivityDesc(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json, all_json.jws.forecastHours[hour_idx].recommendations[i].sig<?=$lang_idx?>));
+                $('#' + act_container + ' .paramtitle').html(getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json, ''));
                 if (all_json.jws.forecastHours[hour_idx].recommendations[i].value == 1)
-                    activities_yes += "<li id=\"" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "_btn\" class=\"span-value\" data-value=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json) + "\"  onclick=\"change_circle('" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" + width=\"25\" height=\"25\" /></li>" ;
+                    activities_yes += "<li id=\"" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "_btn\" class=\"span-value\"  data-value=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json) + "\"  onclick=\"change_circle('" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + ".png\" width=\"25\" height=\"25\" /></li>" ;
                 else
-                    activities_no += "<li id=\"" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "_btn\" class=\"no span-value\" data-value=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json) + "\" onclick=\"change_circle('" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + ".png\" alt=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json)+ "\" +  width=\"25\" height=\"25\" /></li>"  ;
+                    activities_no += "<li id=\"" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "_btn\" class=\"no span-value\" data-value=\"" + getActivityTitle(all_json.jws.forecastHours[hour_idx].recommendations[i].activity, <?=$lang_idx?>, act_json) + "\" onclick=\"change_circle('" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + "', '" + act_container + "')\"><img src=\"images/activities/" + all_json.jws.forecastHours[hour_idx].recommendations[i].activity.toLowerCase() + ".png\" width=\"25\" height=\"25\" /></li>"  ;
             }
 
             $('#activities_perhour').append("<ul style=\"display:none\" class=\"activity\" id=\"activities_yes" + hour_idx + "\"></ul>");
@@ -1720,6 +1720,32 @@ function redirect_to_desktop(lang){
 function isOnMobilePage(){
     var loc = document.URL;
     return(loc.indexOf('small') > 0);
+}
+// Function to be called when the banner is in view
+function handleIntersection(entries, observer) {
+    entries.forEach(entry=>{
+        if ((entry.isIntersecting)&&(entry.target.scrollHeight > 0)) {
+            count = saveCount(entry.target.id, entry.target.attributes.idx.value);
+            // Banner is fully visible, you can perform actions here
+            console.log("Banner " + entry.target.id + " is visible!" );
+            
+            // Unobserve the banner since you're done with the observation
+            observer.unobserve(entry.target);
+        }
+    }
+    );
+}
+
+function saveCount(id, idx){
+    var count = parseInt(localStorage.getItem("Banner" + idx + "Count"));
+    localStorage.setItem("Banner" + idx + "Count", ++count);
+    fetch("https://www.02ws.co.il/ads.php?debug=0&type=updatecounts&idx=" + idx,{
+                timeout: 3000
+                })
+                .then(response => response.json())
+                .then(data => console.log("banner " +  id + " index=" + idx + " count=" + data.count))
+                .catch(error => console.log("error in saveCount:" + error))
+    
 }
 
 function loadPostData(jsonstr, coldmeter_size)
@@ -1793,7 +1819,30 @@ function loadPostData(jsonstr, coldmeter_size)
           //  $(".removeadlink a").attr("target", "_blank");
 
         }
-                   
+        // Check if sessionStorage has a session identifier
+        if (!sessionStorage.getItem('sessionId')) {
+        // Generate a random session identifier and store it in sessionStorage
+        const sessionId = Math.random().toString(36).substring(2);
+        sessionStorage.setItem('sessionId', sessionId);
+        console.log('New session started. Session ID:', sessionId);
+        } else {
+        // Session identifier already exists in sessionStorage
+        const storedSessionId = sessionStorage.getItem('sessionId');
+        console.log('Existing session. Session ID:', storedSessionId);
+        }
+        // Create an observer instance
+        const observer = new IntersectionObserver(handleIntersection, {
+        root: null, // Use the viewport as the root
+        threshold: 1.0, // Fully visible threshold
+        });
+        const banner = document.getElementById('if1');
+         observer.observe(banner);
+         const banner2 = document.getElementById('if2');
+         observer.observe(banner2);
+         const banner3 = document.getElementById('if3');
+         observer.observe(banner3);     
+         const banner4 = document.getElementById('if4');
+         observer.observe(banner4);     
 	}
     /*!
 loadCSS: load a CSS file asynchronously.
@@ -2333,6 +2382,8 @@ Licensed MIT
         ad_html = "<a href='"+json.jws.Ads[i].link+"' >" + "<img src=\"" + json.jws.Ads[i].img_url + "\" width=\"" + json.jws.Ads[i].width  + "\" height=\"" + json.jws.Ads[i].height  +  "\" /></a>";
         ad_container = '#if'+(i+1);
         $(ad_container).html(ad_html);
+        $(ad_container).attr('idx', json.jws.Ads[i].index);
+        $(ad_container).attr('type', json.jws.Ads[i].session_or_pageviews);
        }
 
             $("#bg2-1").hide();$("#bg2-4").hide();$("#bg2-6").hide();$("#bg2-7").hide();$("#bg1-3").hide();$("#bg1-4").hide();$("#bg1-5").hide();$("#bg1-6").hide();$("#bg2-2").hide();$("#bg2-8").hide();$("#bg1-1").hide();$("#bg1-2").hide();$("#bg1-7").hide();$("#bg1-8").hide();$("#bg2-5").hide();$("#bg2-9").hide();$("#bg2-10").hide();$("#bg1-9").hide();$("#bg1-10").hide();     

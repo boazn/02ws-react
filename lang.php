@@ -291,10 +291,10 @@ $COLD = array("Cold (coat)", "קור של מעיל", "Холодно","fraicheur
 $VCOLD = array("Very cold (gloves etc)", "קור ברמה של כפפות", "Собачий холод","froid, portez des gants");
 $VVCOLD = array("Extremely cold", " קור של ש** ", "Мороз","froid de neige");
 $HOT_GROUND = array("Hot ground", "קרקע רותחת", "Дорога","sol ardent");
-$GENDER = array("Gender", "מין", "Пол","sexe");
+$GENDER = array("Gender", "מגדר", "Пол","sexe");
 $MALE = array("Male", "גבר", "Мужчина","homme");
 $FEMALE = array("Female", "אישה", "Женщина","femme");
-$NOR_MALE_NOR_FEMALE = array("no male nor female", "לא רוצה לציין", "не заполнять","je ne souhaite pas préciser");
+$NOR_MALE_NOR_FEMALE = array("no male nor female", "אחר, נייטרלי, לא רוצה לציין", "не заполнять","je ne souhaite pas préciser");
 $GENDER_NOTICE = array("The cold estimator is evaluated from you being", "מדד הקור במחשב זה נגזר מהיותך", "Шкала холода на этом компьютере высчитывается при помощи "," votre thermomètre du froid dérive de votre ");
 $GENDER_NOTICE2 = array("To alter this assumption go to vote again.", " אפשר לשנות את זה בהצבעה הבאה.", "Это можно изменить <a
 href=\"http://www.02ws.co.il/station.php?section=survey.php&amp;amp;survey_id=2&amp;amp;lang=0\">
@@ -391,6 +391,7 @@ array("Good time to stay outside", " וואלה נחמד להיות בחוץ", "
 array("Good time to stay outside", " כמה שזה נשמע הזוי, לצאת זה רצוי", "Советуем выйти сегодня из дома", "même si ça vous semble délirant, sortir c’est mieux"),
 array("Good time to stay outside", " כל מי שיוצא מקבל חיוך", "Советуем выйти сегодня из дома","celui qui sort reçoit un sourire"));
 $GOOD_TIME_FOR = array ("good time for", "זמן טוב ל", "", "");
+$NOT_GOOD_TIME_FOR = array ("not a good time for", "לא זמן טוב ל", "", "");
 $GOOD_DAY_FOR = array ("good day for", "יום טוב ל", "", "");
 $GOOD_LAUNDRY = array("Good time to dry laundry", "זמן טוב לייבש את הכביסה", "Благоприятная погода для сушки белья","temps idéal pour laisser sécher le linge");
 $SOSO_LAUNDRY = array("Not Ideal time to dry laundry, but acceptable", "לא תנאים אידיאליים לכביסה, אבל אפשרי", "Не идеальная погода для сушки белья, но сушить можно","pas un temps idéal pour laisser sécher le linge, mais c’est possible.");

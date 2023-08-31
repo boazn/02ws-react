@@ -1,5 +1,5 @@
 
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
 import '../css/navbar.css';
 import { useTranslation } from 'react-i18next';
@@ -42,9 +42,9 @@ function Sidebar() {
         setIsWhatHappendOpen(!isWhatHappendOpen);
     }
     return (
-        <div id="sidebar">
+        <div id="sidebar" className={(langcode === 1)? 'rtl' : ''}>
                         
-            <nav>
+            <nav className={`${isOpen ? 'open': ''}`}>
             <ul className={`links ${isOpen ? 'open': ''}`}>
                 <li>
                      <div id="trans_btns">

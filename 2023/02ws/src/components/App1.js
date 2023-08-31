@@ -11,7 +11,6 @@ import PicOfTheDay from './PicOfTheDay';
 import UserPics from './UserPics';
 import Activities from './Activities';
 import AdsInternal from './AdsInternal';
-import { Outlet, Link } from "react-router-dom";
 import LatestNow from './LatestNow';
 import {useCurrentUser} from "../helpers/UserContext";
 import {ConfigContext} from "../helpers/ConfigContext";
@@ -34,7 +33,7 @@ function App1({json, cssClasses, activities_json}) {
   console.log ('saved' + JSON.stringify(configData));
  }
 
-  const nextDays = json.jws.forecastDays;
+   const nextDays = json.jws.forecastDays;
   const nextHours = json.jws.forecastHours;
   const ads = json.jws.Ads;
   const current = json.jws.current;

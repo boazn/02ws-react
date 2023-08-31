@@ -1,13 +1,14 @@
-import Btn from './Button';
 import ReactModal  from 'react-modal';
 import { useState } from 'react';
 import { useContext } from 'react';
 import {ConfigContext} from "../helpers/ConfigContext";
+import { useTranslation } from 'react-i18next';
 const Activities = (props) => {
     const [isOpen, setPopupIsOpen] = useState(false);
     const [currentActivity, setCurrentActivity] = useState(false);
     const [currentTitle, setCurrentTitle] = useState(false);
     const configData = useContext(ConfigContext);
+    const { t } = useTranslation();
     const customStyles = {
         content: {
           width:'400px',
@@ -65,7 +66,7 @@ const Activities = (props) => {
         setPopupIsOpen(true);
     }
     return (
-        <div className="">
+        <div className=""> {t("GOOD_TIME_FOR")}
         {props.activities.map((activity, i) => {
         return <div className="white_transp_box inline activity" key={i}>
             
