@@ -4,6 +4,7 @@ import ReactModal  from 'react-modal';
 import { voteLike } from '../helpers/Utils';
 import { useContext } from 'react';
 import {ConfigContext} from "../helpers/ConfigContext";
+import Btn from './Button';
 const ColdMeter = (props) => {
   var resultCMVote;
   const { t } = useTranslation();
@@ -48,7 +49,6 @@ const ColdMeter = (props) => {
   const [cm_value_sun, setCMSunvalue] = useState(false);
   const customStyles = {
     content: {
-      width:'740px',
       top: '50%',
       left: '50%',
       right: 'auto',
@@ -111,9 +111,10 @@ const ColdMeter = (props) => {
             {heatindex}
         </div>
         <div id="itfeels_title"></div>
-        <div id="shadow_sun_wrapper">         
-        <div className="shadow" >
-        <h4 >{t("SHADE")} {props.shadowtemp}°</h4>
+        <div id="shadow_sun_wrapper">
+        {(props.showShadow) ?          
+        <div className="shade" >
+        
         <div className="inlineGrid">
         <a href="WhatToWear.php#tshirt" className="info"> 
         <span id="current_feeling_link">
@@ -127,10 +128,11 @@ const ColdMeter = (props) => {
         
         </div> 
         
-        </div>
-         {(props.issun === 'true') ? 
+        </div> : ''
+        }
+         {(props.issun === 'true')&&(props.showSun) ? 
           <div className="sun" >
-          <h4>{t("IN_THE_SUN")} {props.suntemp}°</h4>
+          
           <div className="inlineGrid">
           <a href="WhatToWear.php#tshirt" className="info">  
           <span id="current_feeling_link">
@@ -148,21 +150,29 @@ const ColdMeter = (props) => {
         
         
         <ReactModal
+        className=""
         isOpen={isOpen}
         contentLabel="Example Modal"
         style={customStyles}
         onRequestClose={() => setIsOpen(false)}
       >
-         <iframe src="https://www.02ws.co.il/small/?section=survey.php&amp;survey_id=2&amp;" width={680} height={600} sandbox='allow-scripts allow-modal allow-forms allow-same-origin' scrolling="no" loading='eager' title="iframePopup" ></iframe>
+         <Btn btnOnClick={() => setIsOpen(false)} btnTitleText={""}  img={"X"}>
+                 
+          </Btn>
+         <iframe src="https://www.02ws.co.il/small/?section=survey.php&amp;survey_id=2&amp;"  sandbox='allow-scripts allow-modal allow-forms allow-same-origin' scrolling="no" loading='eager' title="iframePopup" ></iframe>
       </ReactModal>
 
       <ReactModal
+        className=""
         isOpen={isCMResultOpen}
         ariaHideApp={false}
         contentLabel="מדד הקור"
         style={customStyles}
         onRequestClose={() => setIsCMResultOpen(false)}
       >
+        <Btn btnOnClick={() => setIsCMResultOpen(false)} btnTitleText={""}  img={"X"}>
+                 
+                 </Btn>
         <h4>הצבעה למדד הקור</h4>
          {cm_value_result}
       </ReactModal>

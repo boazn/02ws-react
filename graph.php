@@ -15,10 +15,10 @@
         }
     }
     #moregraphs{ 
-		list-style-type: bullet;float:<?=get_s_align();?>;margin-<?=get_s_align();?>:2em;margin-top:1em
+		list-style-type: bullet;float:<?=get_s_align();?>;margin-<?=get_s_align();?>:4em;margin-top:1em
 	}
 	#relatedgraphs{ 
-		list-style-type: bullet;width: 180px;margin-<?=get_s_align();?>:3em;;margin-top:1em
+		list-style-type: bullet;width: 180px;margin-<?=get_s_align();?>:4em;;margin-top:1em
 	}
 	#currentinfo_container
 	{
@@ -52,7 +52,7 @@
 		text-decoration: underline
 
 	}
-	#moregraphs li{
+	#moregraphs li, #relatedgraphs li{
 		line-height: 30px
 	}
     
@@ -531,7 +531,7 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
  
 <div id="graphmain"  class="<?if ($_GET["graph"] != "AirDensityHistory.gif") echo "inv_plain_2"; ?>">
 <hr id="graphs_line" style="display:none" />
-<div id="exp" class="float exp inv_plain_3_zebra" style="width:95%;">
+<div id="exp" class="float exp inv_plain_3_zebra" style="width:95%;padding:2em 1em">
 		<? echo getExp();?>
  </div>
 <div id="graphsportal" class="float " >	
@@ -559,7 +559,7 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
 		<? if (($profile <=3)|| ((strstr(strtolower($_GET['graph']), 'uv'))||
 	(strstr(strtolower($_GET['graph']), 'solar'))||
 	(strstr(strtolower($_GET['graph']), 'eth')))) {?>
-                <a class="enlarge" href="images/profile<? echo $_REQUEST['profile']."/".$graph;?>?level=<?=($_REQUEST['profile'])?>&amp;freq=2<?=$datasource?>&amp;w=1600&amp;lang=<?=$lang_idx?>" target="_system" title="click to enlarge">
+                <a class="enlarge" href="https://www.02ws.co.il/images/profile<? echo $_REQUEST['profile']."/".$graph;?>?level=<?=($_REQUEST['profile'])?>&amp;freq=2<?=$datasource?>&amp;w=1600&amp;lang=<?=$lang_idx?>" target="_system" title="click to enlarge">
                 <span></span>
 		<img name="baseGraph" id="baseGraph" src="https://www.02ws.co.il/images/profile<? echo $_REQUEST['profile']."/".$graph;?>?level=<?=($_REQUEST['profile'])?>&amp;freq=2<?=$datasource?>&amp;lang=<?=$lang_idx?>" alt="<? echo getPageTitle()?>" <? if (strstr($_GET['graph'], 'Hum')) echo "class=\"inv_plain\"";?> style="padding:0;margin:0"/>
                 </a>
@@ -615,12 +615,12 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
             ?>
             <div class="float" id="additionalgraphs" style="padding:1em 1em">
                     <a href="images/profile<? echo $_REQUEST['profile']."/".$alternategraph;?>" class='colorbox' title="<?=$alternategraphtitle?>">
-                    <img name="alternateGraph" id="alternateGraph" src="./images/profile<? echo $_REQUEST['profile']."/".$alternategraph;?>" width="290" alt="<?=$alternategraphtitle?>" style="padding:0;margin:0"/>
+                    <img name="alternateGraph" id="alternateGraph" src="<?=BASE_URL?>/images/profile<? echo $_REQUEST['profile']."/".$alternategraph;?>" width="290" alt="<?=$alternategraphtitle?>" style="padding:0;margin:0"/>
                     </a>
                     <div class="small" style="padding:0"><?=$alternategraphtitle?></div>
             </div>
                        
-	  
+			
 
 <!--
 <div class="float" style="margin:1.8em 0.1em">

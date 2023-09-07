@@ -1,5 +1,5 @@
 import './App.css';
-import { React, useEffect, useState, useRef } from 'react';
+import { React, useEffect, useState, useRef, useContext } from 'react';
 import navValues from './helpers/navValues';
 import classnames from "classnames";
 import { CurrentUserProvider } from './helpers/UserContext';
@@ -13,6 +13,7 @@ import {getActivitiesData} from './helpers/Utils';
 import Sidebar from './components/Sidebar';
 import configJson from "./02wsconfig.json";
 import ConfigContext from "./helpers/ConfigContext";
+import ExternalContext from "./helpers/ExternalContext";
 import TempGraph from './components/TempGraph';
 
 function App({layout, src}) {
@@ -25,6 +26,7 @@ function App({layout, src}) {
   const [states, setStates] = useState([]);
   const [nav, setNav] = useState(navValues.home);
   const counter = useRef(0);
+  var target = useContext(ExternalContext);
   
    useEffect(() =>{
       const fetchJson = async () => {
@@ -40,6 +42,7 @@ function App({layout, src}) {
       importConfigData();
       counter.current++;
       setIsLoading(false);
+      
       
     };
    fetchJson();
@@ -121,12 +124,14 @@ function App({layout, src}) {
     return (
       isLoading ?
       <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
+      <ExternalContext.Provider value={target}>
       <ConfigContext.Provider value={configData}>
       <CurrentUserProvider>
         <Sidebar />
         <AppExternal src={src} json={json} cssClasses={cssClasses}  activities_json={activities}/>
         </CurrentUserProvider>
         </ConfigContext.Provider>
+        </ExternalContext.Provider>
       
     )} else  if (nav === 'now') {
       return (

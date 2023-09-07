@@ -3516,7 +3516,7 @@ function getSunriseSunset($date){
     
     $fulldate = date("Y-m-d");
     curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api.met.no/weatherapi/sunrise/2.0/.json?lat=31.8&lon=35.2&offset=0".GMT_TZ.":00&days=7&date=".$fulldate,
+        CURLOPT_URL => "https://api.met.no/weatherapi/sunrise/3.0/sun?lat=31.8&lon=35.2&offset=+0".GMT_TZ.":00&date=".$date,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_ENCODING => "",
@@ -3526,7 +3526,41 @@ function getSunriseSunset($date){
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_HTTPHEADER => [
             "accept-encoding: application/gzip",
-            "content-type: application/x-www-form-urlencoded"
+            "content-type: application/x-www-form-urlencoded",
+            "User-Agent: 02ws.co.il 02wsApp/2.0 02ws@02ws.co.il"
+        ],
+    ]);
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    //echo $response;
+    curl_close($curl);
+
+    if ($err) {
+        return "cURL Error #:" . $err;
+    } else {
+        $result = json_decode($response);
+        //var_dump($result_tr);
+        return $result;
+    }
+}
+function getMoonriseMoonset($date){
+    $curl = curl_init();
+    
+    $fulldate = date("Y-m-d");
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api.met.no/weatherapi/sunrise/3.0/moon?lat=31.8&lon=35.2&offset=+0".GMT_TZ.":00&date=".$date,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "accept-encoding: application/gzip",
+            "content-type: application/x-www-form-urlencoded",
+            "User-Agent: 02ws.co.il 02wsApp/2.0 02ws@02ws.co.il"
         ],
     ]);
 

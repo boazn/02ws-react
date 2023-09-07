@@ -1,7 +1,5 @@
 import Button from 'react-bootstrap/Button';
-import { ArrowDown } from 'react-bootstrap-icons';
-import { ArrowUp } from 'react-bootstrap-icons';
-import { HandThumbsDown, HandThumbsUp } from 'react-bootstrap-icons';
+import { ArrowDown,ArrowUp,ArrowLeft, ArrowRight, HandThumbsDown, HandThumbsUp, XLg } from 'react-bootstrap-icons';
 const Btn = (props) => {
     return (
     <Button as="b" onClick={props.btnOnClick} variant="light" >
@@ -13,12 +11,24 @@ const Btn = (props) => {
          <ArrowUp />
          : ''
         }
+        {props.img == "ArrowLeft" ?
+         <ArrowLeft />
+         : ''
+        }
+        {props.img == "ArrowRight" ?
+         <ArrowRight />
+         : ''
+        }
         {props.img == "HandThumbsUp" ?
          <HandThumbsUp />
          : ''
         }
         {props.img == "HandThumbsDown" ?
          <HandThumbsDown />
+         : ''
+        }
+         {props.img == "X" ?
+         <XLg />
          : ''
         }
         {props.btnTitleText}

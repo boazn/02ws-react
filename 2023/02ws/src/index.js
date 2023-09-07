@@ -55,6 +55,12 @@ const router = createBrowserRouter([
         
       },
       {
+        path: "AppDynExternal",
+        element: <App layout={app_layout[3]} />,
+        errorElement: <ErrorPage />,
+        
+      },
+      {
         path: "ForecastAbroad",
         element: <App src="https://www.02ws.co.il/small/?section=forecast/getForecast&lang=1" layout={app_layout[3]}/>,
         errorElement: <ErrorPage />,

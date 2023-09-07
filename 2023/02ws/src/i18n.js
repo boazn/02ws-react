@@ -933,6 +933,7 @@ i18n
               "sympa de rester papoter dehors"
           ],
           "GOOD_TIME_FOR": "זמן טוב ל",
+          "NOT_GOOD_TIME_FOR": "לא זמן טוב ל",
           "GOOD_DAY_FOR": "יום טוב ל",
           "GOOD_LAUNDRY": "זמן טוב לייבש את הכביסה",
           "SOSO_LAUNDRY": "לא תנאים אידיאליים לכביסה, אבל אפשרי",

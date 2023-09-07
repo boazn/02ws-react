@@ -1725,10 +1725,9 @@ function isOnMobilePage(){
 function handleIntersection(entries, observer) {
     entries.forEach(entry=>{
         if ((entry.isIntersecting)&&(entry.target.scrollHeight > 0)) {
-            count = saveCount(entry.target.id, entry.target.attributes.idx.value);
             // Banner is fully visible, you can perform actions here
-            console.log("Banner " + entry.target.id + " is visible!" );
-            
+            console.log("Banner " + entry.target.id + " is visible! new_session=" + new_session);
+            saveCount(entry.target.id, entry.target.attributes.idx.value);
             // Unobserve the banner since you're done with the observation
             observer.unobserve(entry.target);
         }
@@ -1824,6 +1823,7 @@ function loadPostData(jsonstr, coldmeter_size)
         // Generate a random session identifier and store it in sessionStorage
         const sessionId = Math.random().toString(36).substring(2);
         sessionStorage.setItem('sessionId', sessionId);
+        new_session = true;
         console.log('New session started. Session ID:', sessionId);
         } else {
         // Session identifier already exists in sessionStorage
@@ -2444,6 +2444,7 @@ Licensed MIT
 // startup script
 //
 var isUserAdApproved = false;
+var new_session = false;
 var sessions = getCookie('sessions');
 if (sessions == 'NaN') {sessions = 0};
 sessions = parseInt(sessions) + 1;

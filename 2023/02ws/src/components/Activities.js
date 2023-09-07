@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useContext } from 'react';
 import {ConfigContext} from "../helpers/ConfigContext";
 import { useTranslation } from 'react-i18next';
+import Btn from './Button';
 const Activities = (props) => {
     const [isOpen, setPopupIsOpen] = useState(false);
     const [currentActivity, setCurrentActivity] = useState(false);
@@ -23,17 +24,18 @@ const Activities = (props) => {
       };
     
 
-    function getActivityTitle(activity, lang, act_json){
+    function getActivityTitle(activity, lang, act_json, good, not_good){
         var j;
         if (act_json.jws === undefined)
             return;
+        var pref = (activity.value == 1) ? good : not_good;
         for (j = 0; j< act_json.jws.Activities.length; j++){
-            if (act_json.jws.Activities[j].name === activity){
+            if (act_json.jws.Activities[j].name === activity.activity){
                 if (lang === 0) {
-                    return act_json.jws.Activities[j].title0;
+                    return  pref + act_json.jws.Activities[j].title0;
                 }
                 else {
-                    return act_json.jws.Activities[j].title1;
+                    return pref + act_json.jws.Activities[j].title1;
                 }
             }
 
@@ -43,13 +45,14 @@ const Activities = (props) => {
         var j;
         if (act_json.jws === undefined)
             return;
+        
         for (j = 0; j< act_json.jws.Activities.length; j++){
-            if (act_json.jws.Activities[j].name === activity){
+            if (act_json.jws.Activities[j].name === activity.activity){
                 if (lang === 0){ 
-                     return act_json.jws.Activities[j].lang0;
+                     return  activity.sig0 + '<br /> ' + act_json.jws.Activities[j].lang0;
                     }
                     else {
-                     return act_json.jws.Activities[j].lang1;
+                     return  activity.sig1 + '<br />  ' + act_json.jws.Activities[j].lang1;
                     }
             }
 
@@ -60,32 +63,51 @@ const Activities = (props) => {
         
         setPopupIsOpen(isOpen);
       }
-    const openDetails = (activity) => {
-        setCurrentTitle(getActivityTitle(activity.activity, props.lang, props.activities_json.activities));
-        setCurrentActivity(getActivityDesc(activity.activity, props.lang, props.activities_json.activities));
+    const openDetails = (activity, good, not_good) => {
+        setCurrentTitle(getActivityTitle(activity, props.lang, props.activities_json.activities, good, not_good));
+        setCurrentActivity(getActivityDesc(activity, props.lang, props.activities_json.activities));
         setPopupIsOpen(true);
     }
     return (
-        <div className=""> {t("GOOD_TIME_FOR")}
+        <div className={" " + (props.lang === 1? 'rtl textright' : 'textleft')}> {t("GOOD_TIME_FOR")}
         {props.activities.map((activity, i) => {
-        return <div className="white_transp_box inline activity" key={i}>
+        return activity.value == 1 ? <div className="white_transp_box inline activity" key={i}>
             
-                <img onClick={() => openDetails(activity)} src={`https://www.02ws.co.il/images/activities/${activity.activity.toString().toLowerCase()}.png`} height="30" width="30" alt="something" ></img> 
+                <img onClick={() => openDetails(activity, t("GOOD_TIME_FOR"), t("NOT_GOOD_TIME_FOR"))} src={`https://www.02ws.co.il/images/activities/${activity.activity.toString().toLowerCase()}.png`} height="30" width="30" alt="something" ></img> 
                
             
            
-            </div>
+            </div>: ''
+        
+        })}<br/>
+        {t("NOT_GOOD_TIME_FOR")}
+        {props.activities.map((activity, i) => {
+        return activity.value == 0 ? <div className="white_transp_box inline activity" key={i}>
+            
+                <img onClick={() => openDetails(activity, t("GOOD_TIME_FOR"), t("NOT_GOOD_TIME_FOR"))} src={`https://www.02ws.co.il/images/activities/${activity.activity.toString().toLowerCase()}.png`} height="30" width="30" alt="something" ></img> 
+               
+            
+           
+            </div> : ''
         
         })}
         <ReactModal
+        
         isOpen={isOpen}
         contentLabel="Example Modal"
         style={customStyles}
         onRequestClose={() => setIsOpen(false)}
 
       >
+         <Btn btnOnClick={() => setIsOpen(false)} btnTitleText={""}  img={"X"}>
+                
+        </Btn>
         <h3>{currentTitle}</h3>
-         {currentActivity}
+        <div dangerouslySetInnerHTML={{__html:currentActivity}}></div>
+         <br/><br/><br/>
+         <Btn btnOnClick={() => setIsOpen(false)} btnTitleText={"Ok"} >
+                
+        </Btn>
       </ReactModal>
     </div>
     );

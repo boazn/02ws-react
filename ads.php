@@ -13,7 +13,32 @@ class DB_Functions {
  
     private $db;
  
-      
+    public function storeAd($active, $guid, $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $rotation_or_fixed, $max_count) {
+        // insert user into database
+        global $link;
+       
+        
+        //$result = db_init("call SaveDailyAdCount ('$name', '$email', '$apn_regid', $lang, $active, $active_shortterm, $active_tips, $dailyforecast, $active_dust, $active_uv, $active_dry)", "");
+        //$query = "call SaveGCMUser ('$name', '$email', '$gcm_regid', $lang, $active, $active_rain_etc, $active_tips, $active_dust, $active_uv,  $active_dry, $approved, '$billingtoken', '$billingDate', $dailyforecast, '$oldregid', 1)";
+        // check for successful store
+       
+       
+   
+    }
+
+    public function storeAdDaily($guid, $count) {
+        // insert user into database
+        global $link;
+       
+        
+        $result = db_init("call SaveDailyAdCount ('$guid', '$count', SYSDATE())", "");
+        //$query = "call SaveGCMUser ('$name', '$email', '$gcm_regid', $lang, $active, $active_rain_etc, $active_tips, $active_dust, $active_uv,  $active_dry, $approved, '$billingtoken', '$billingDate', $dailyforecast, '$oldregid', 1)";
+        // check for successful store
+       
+       echo "<br/>done saving count for ".$guid;
+       exit;
+   
+    }
  
     /**
      * Storing new user
@@ -135,6 +160,14 @@ function updateCounts($idx, $guid){
     echo $json_str;
     exit;
 }
+function saveDailyCounts(){
+    $db = new DB_Functions();
+    global $mem;
+    $Ads = $mem->get('Ads');
+    foreach ($Ads as $key => &$ad) 	{
+        $db->storeAdDaily($ad['guid'], $ad['count']);
+    }
+}
 function clearCounts(){
     global $mem;
     $Ads = $mem->get('Ads');
@@ -147,7 +180,7 @@ function clearCounts(){
     echo "clearCounts done";
     exit;
 }
-function updateAds ($active, $idx, $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $max_count )
+function updateAds ($active, $idx, $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $rotation_or_fixed, $max_count )
 {   
     global $mem, $AD_LINK, $lang_idx;
     //echo "<br/>".$active." idx=".$idx." ".$command." ".$img_url." ".$href." ".$w." ".$h;
@@ -187,24 +220,40 @@ function updateAds ($active, $idx, $command, $img_url, $href, $w, $h, $date_star
         unset($Ads[$idx]);
     }
     $mem->set('Ads', $Ads);
-   
+    $db = new DB_Functions();
+    $db->storeAd($active, $_REQUEST['guid'], $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $rotation_or_fixed, $max_count);
      
      foreach ($Ads as $key => &$ad) 	{?>
+     <style>
+ .ads_container{
+    width:320px;
+    margin-bottom:60px;
+    text-align: left;
+    margin: 0 auto;
+ }
+ @media only screen and (min-width: 1000px) {
+    .ads_container{
+        width:620px
+    }
+    
+ }
+</style>
     <div id="ads_container<?=$idx?>" class="ads_container inv_plain_3_zebra invcell" style="margin-top:40px;" >
     <div class="cell">
-    <div class="cell">index <input id="index<?=$key?>" name="index<?=$key?>" size="5"  value="<?=$key?>" style="width:20px;text-align:left"  /></div>
-    <div class="cell">guid <span id="guid<?=$key?>" name="index<?=$key?>"  style="width:20px;text-align:left"  ><?=$ad['guid']?></span><div>
-    <div class="cell">link </div><div class="cell"><input id="hrefads<?=$key?>" name="hrefads" size="18"  value="<?=$ad['href']?>" style="width:320px;text-align:left"  /></div>
-    <div class="cell">img_url </div><div class="cell"><input id="imgads<?=$key?>" name="imgads" size="18"  value="<?=$ad['img_url']?>" style="width:320px;text-align:left"  /><img src="<?=$ad['img_url']?>" width="320" alt="pic" />
-    <div class="cell">width <div class="cell"><input id="imgwidth<?=$key?>" name="imgwidth" size="18"  value="<?=$ad['w']?>" style="width:50px;text-align:left"  />
-        <div class="cell">height </div><div class="cell"><input id="imgheight<?=$key?>" name="imgheight" size="18"  value="<?=$ad['h']?>" style="width:50px;text-align:left"  /></div></div></div>
+    <div class="cell">index <input id="index<?=$key?>" name="index<?=$key?>" size="5"  value="<?=$key?>" style="width:20px;"  /></div>
+    <div class="cell">guid <span id="guid<?=$key?>" name="guid<?=$key?>"  style="width:20px;"  ><?=$ad['guid']?></span><div>
+    <div class="cell">link </div><div class="cell"><input id="hrefads<?=$key?>" name="hrefads" size="18"  value="<?=$ad['href']?>" style="width:320px;"  /></div>
+    <div class="cell">img_url </div><div class="cell"><input id="imgads<?=$key?>" name="imgads" size="18"  value="<?=$ad['img_url']?>" style="width:320px;"  /><img src="<?=$ad['img_url']?>" width="320" alt="pic" />
+    <div class="cell">width <div class="cell"><input id="imgwidth<?=$key?>" name="imgwidth" size="18"  value="<?=$ad['w']?>" style="width:50px;"  />
+        <div class="cell">height </div><div class="cell"><input id="imgheight<?=$key?>" name="imgheight" size="18"  value="<?=$ad['h']?>" style="width:50px;"  /></div></div></div>
     </div>
     
-    <div class="cell">start </div><div class="cell"><input id="start<?=$key?>" name="start" size="18"  value="<?=date('Y-m-d', $ad['start'])?>" style="width:120px;text-align:left"  /></div>
-    <div class="cell">end </div><div class="cell"><input id="end<?=$key?>" name="end" size="18"  value="<?=date('Y-m-d', $ad['end'])?>" style="width:120px;text-align:left"  /></div>
-    <div class="cell">max count </div><div class="cell"><input id="max_count<?=$key?>" name="max_count" size="18"  value="<?=$ad['max_count']?>" style="width:120px;text-align:left"  /></div>
-    <div class="cell"></div><div class="cell"><input id="session_or_pageviews<?=$key?>" name="session_or_pageviews" size="18"  value="<?=$ad['session_or_pageviews']?>" style="width:120px;text-align:left"  /></div> 
-    <div class="cell"></div><div class="cell"><input id="daily_or_global<?=$key?>" name="daily_or_global" size="18"  value="<?=$ad['daily_or_global']?>" style="width:120px;text-align:left"  /></div> 
+    <div class="cell">start </div><div class="cell"><input id="start<?=$key?>" name="start" size="18"  value="<?=date('Y-m-d', $ad['start'])?>" style="width:120px;"  /></div>
+    <div class="cell">end </div><div class="cell"><input id="end<?=$key?>" name="end" size="18"  value="<?=date('Y-m-d', $ad['end'])?>" style="width:120px;"  /></div>
+    <div class="cell">max count </div><div class="cell"><input id="max_count<?=$key?>" name="max_count" size="18"  value="<?=$ad['max_count']?>" style="width:120px;"  /></div>
+    <div class="cell"></div><div class="cell"><input id="session_or_pageviews<?=$key?>" name="session_or_pageviews" size="18"  value="<?=$ad['session_or_pageviews']?>" style="width:120px;"  /></div> 
+    <div class="cell"></div><div class="cell"><input id="daily_or_global<?=$key?>" name="daily_or_global" size="18"  value="<?=$ad['daily_or_global']?>" style="width:120px;"  /></div>
+    <div class="cell"></div><div class="cell"><input id="rotation_or_fixed<?=$key?>" name="rotation_or_fixed" size="18"  value="<?=$ad['rotation_or_fixed']?>" style="width:120px;"  /></div>  
      </div>
      <div class="cell shrinked">
             active
@@ -234,16 +283,44 @@ if ((trim($_REQUEST['type']) == "ads"))
     $height = $db->storePic($_REQUEST['picname'], 0);
     $file_path = "https://".$_SERVER["HTTP_HOST"]."/".PIC_PREFIX_PATH.$_REQUEST['picname'];
     // echo "height=".$height." ".$file_path." start=".$_REQUEST['dateStart']." end=".$_REQUEST['dateEnd'];
-    updateAds (1, $_REQUEST['idx'], "I", PIC_PREFIX_PATH.$_REQUEST['picname'], urldecode($_REQUEST['href']), 320, $height, $_REQUEST['dateStart'], $_REQUEST['dateEnd'], "global", "pageviews", 5000);
+    updateAds (1, 
+                $_REQUEST['idx'], 
+                "I", 
+                PIC_PREFIX_PATH.$_REQUEST['picname'], 
+                urldecode($_REQUEST['href']), 
+                320, 
+                $height, 
+                $_REQUEST['dateStart'], 
+                $_REQUEST['dateEnd'], 
+                $_REQUEST['daily_or_global'] , 
+                $_REQUEST['session_or_pageviews'], 
+                $_REQUEST['rotation_or_fixed'], 
+                $_REQUEST['max_count']);
     echo "------------------ done --------------------------";
 }
 else if ((trim($_REQUEST['type']) == "updateads"))
 {
-    updateAds ($_REQUEST['active'], $_REQUEST['idx'], $_REQUEST['command'], ($_REQUEST['img_url']), urldecode($_REQUEST['href']), $_REQUEST['w'], $_REQUEST['h'], $_REQUEST['start'], $_REQUEST['end'], "global", "pageviews", 5000);
+    updateAds ($_REQUEST['active'], 
+               $_REQUEST['idx'], 
+               $_REQUEST['command'], 
+               ($_REQUEST['img_url']), 
+               urldecode($_REQUEST['href']), 
+               $_REQUEST['w'], 
+               $_REQUEST['h'], 
+               $_REQUEST['start'], 
+               $_REQUEST['end'], 
+               $_REQUEST['daily_or_global'], 
+               $_REQUEST['session_or_pageviews'], 
+               $_REQUEST['rotation_or_fixed'], 
+               $_REQUEST['max_count']);
 }
 else if ((trim($_REQUEST['type']) == "updatecounts"))
 {
     updateCounts ($_REQUEST['idx'], $_REQUEST['guid']);
+}
+else if ((trim($_REQUEST['type']) == "savecounts"))
+{
+    saveDailyCounts ();
 }
 else if ((trim($_REQUEST['type']) == "clearcounts"))
 {
@@ -294,14 +371,16 @@ else {
 <form method="post" action="small.php?section=ads.php" enctype="multipart/form-data">
 <input type='file' onchange="readURL(this);" accept="image/*" name="imagefile" id="imagefile"   size="120"  style="float:left;width:150px"/><br />
 <img id="localimg" src="#" alt="your image" width="300"/><br />
-<div class="cell">pic name </div>
-<div class="cell"><input  name="picname" id="picname" size="30"  style="width:320px" wrap="soft" /></div><br />
-<div class="cell">link </div>
-<div class="cell"><input  name="link" id="link" size="30"   style="width:320px" wrap="soft" /></div><br />
+<div class="cell"><input  name="picname" id="picname" size="30"  style="width:320px" wrap="soft" placeholder="pic name" /></div><br />
+<div class="cell"><input  name="link" id="link" size="30"   style="width:320px" wrap="soft" placeholder="link" /></div><br />
 <div class="cell">index </div>
-<div class="cell"><input  name="idx" id="idx" size="30"  value="0" style="width:20px" wrap="soft" /></div><br />
-<div class="cell">Date Start: <input type="text" id="dateStart" style="width:120px"></div><br />
-<div class="cell">Date End: <input type="text" id="dateEnd" style="width:120px"></div>
+<div class="cell"><input  name="idx" id="idx" size="30"  value="0" style="width:20px" wrap="soft" />
+                  <input type="text" id="dateStart" style="width:120px" placeholder="Date Start">
+                  <input type="text" id="dateEnd" style="width:120px" placeholder="Date End"><br/><br/>
+                  <select size="1" name="session_or_pageviews" id="session_or_pageviews" style="width:150px"><option value="" >pageviews/session</option><option value="session" >session</option><option value="pageviews" >pageviews</option></select>
+                  <select size="1" name="daily_or_global" id="daily_or_global"><option value="" >daily/global</option><option value="daily">daily</option><option value="global" >global</option></select>
+                  <select size="1" name="rotation_or_fixed" id="rotation_or_fixed"><option value="" >rotation/fixed</option><option value="rotation">rotation</option><option value="fixed" >fixed</option></select>
+                </div><br />
 <input type='button' class="button" name='upload_btn' value='upload' onclick="javascript:postToServer();" style="width:150px" size="60"/>
 </form>
 <progress></progress> 
@@ -311,19 +390,21 @@ else {
 <? foreach ($Ads as $key => &$ad) 	{?>
 <div id="ads_container<?=$idx?>" class="ads_container inv_plain_3_zebra invcell" style="margin-top:40px;" >
 <div class="cell">
-<div class="cell  ">index <input id="index<?=$key?>" name="index<?=$key?>" size="5"  value="<?=$key?>" style="width:20px;text-align:left"  /><div class="cell ">guid <span id="guid<?=$key?>" name="index<?=$key?>"  style="width:20px;text-align:left"  ><?=$ad['guid']?></span><div></div>
+<div class="cell  ">index <input id="index<?=$key?>" name="index<?=$key?>" size="5"  value="<?=$key?>" style="width:20px;"  /><div class="cell ">guid <span id="guid<?=$key?>" name="index<?=$key?>"  style="width:20px;"  ><?=$ad['guid']?></span><div></div>
 
-<div class="cell">link </div><div class="cell"><input id="hrefads<?=$key?>" name="hrefads" size="18"  value="<?=$ad['href']?>" style="width:420px;text-align:left"  /></div>
-<div class="cell">img_url </div><div class="cell"><input id="imgads<?=$key?>" name="imgads" size="18"  value="<?=$ad['img_url']?>" style="width:320px;text-align:left"  /><img src="<?=$ad['img_url']?>" width="320" alt="pic" />
-<div class="cell float">width <br/><input id="imgwidth<?=$key?>" name="imgwidth" size="18"  value="<?=$ad['w']?>" style="width:50px;text-align:left"  /></div>
- <div class="cell float">height <br/><div class="cell float"><input id="imgheight<?=$key?>" name="imgheight" size="18"  value="<?=$ad['h']?>" style="width:50px;text-align:left"  /></div></div>
+<div class="cell">link </div><div class="cell"><input id="hrefads<?=$key?>" name="hrefads" size="18"  value="<?=$ad['href']?>" style="width:420px;"  /></div>
+<div class="cell">img_url </div><div class="cell"><input id="imgads<?=$key?>" name="imgads" size="18"  value="<?=$ad['img_url']?>" style="width:320px;"  /><img src="<?=$ad['img_url']?>" width="320" alt="pic" />
+<div class="cell float">width <br/><input id="imgwidth<?=$key?>" name="imgwidth" size="18"  value="<?=$ad['w']?>" style="width:50px;"  /></div>
+ <div class="cell float">height <br/><div class="cell float"><input id="imgheight<?=$key?>" name="imgheight" size="18"  value="<?=$ad['h']?>" style="width:50px;"  /></div></div>
 
-<div class="cell">start </div><div class="cell"><input id="start<?=$key?>" name="start" size="18"  value="<?=date('Y-m-d', $ad['start'])?>" style="width:120px;text-align:left"  /><span><? echo " passed? ".((time() > $ad['start']) ? 'true' : 'false');  ?></span></div>
-<div class="cell">end </div><div class="cell"><input id="end<?=$key?>" name="end" size="18"  value="<?=date('Y-m-d', $ad['end'])?>" style="width:120px;text-align:left"  /><span><? echo " passed? ".((time() > $ad['end']) ? 'true' : 'false');  ?></span></div>
-<div class="cell">count </div><div class="cell"><input id="count<?=$key?>" name="count" size="18"  value="<?=$ad['count']?>" style="width:120px;text-align:left" readonly /></div>
-<div class="cell">max count </div><div class="cell"><input id="max_count<?=$key?>" name="max_count" size="18"  value="<?=$ad['max_count']?>" style="width:120px;text-align:left"  /></div>
-<div class="cell "></div><div class="cell float"><input id="session_or_pageviews<?=$key?>" name="session_or_pageviews" size="18"  value="<?=$ad['session_or_pageviews']?>" style="width:120px;text-align:left"  /></div>  
-<div class="cell "></div><div class="cell float"><input id="daily_or_global<?=$key?>" name="daily_or_global" size="18"  value="<?=$ad['daily_or_global']?>" style="width:120px;text-align:left"  /></div>
+<div class="cell">start </div><div class="cell"><input id="start<?=$key?>" name="start" size="18"  value="<?=date('Y-m-d', $ad['start'])?>" style="width:120px;"  /><span><? echo " passed? ".((time() > $ad['start']) ? 'true' : 'false');  ?></span></div>
+<div class="cell">end </div><div class="cell"><input id="end<?=$key?>" name="end" size="18"  value="<?=date('Y-m-d', $ad['end'])?>" style="width:120px;"  /><span><? echo " passed? ".((time() > $ad['end']) ? 'true' : 'false');  ?></span></div>
+<div class="cell">count </div><div class="cell"><input id="count<?=$key?>" name="count" size="18"  value="<?=$ad['count']?>" style="width:120px;" readonly /></div>
+<div class="cell">max count </div><div class="cell"><input id="max_count<?=$key?>" name="max_count" size="18"  value="<?=$ad['max_count']?>" style="width:120px;"  /></div>
+<div class="cell ">
+    <select size="1" name="session_or_pageviews<?=$key?>" id="session_or_pageviews<?=$key?>"><option value="" >pageviews/session</option><option value="session" <? echo ($ad['session_or_pageviews'] == 'session') ? 'selected' : ''; ?>>session</option><option value="pageviews" <? echo ($ad['session_or_pageviews'] == 'pageviews') ? 'selected' : ''; ?>>pageviews</option></select> 
+    <select size="1" name="daily_or_global<?=$key?>" id="daily_or_global<?=$key?>"><option value="" >daily/global</option><option value="daily" <? echo ($ad['daily_or_global'] == 'daily') ? 'selected' : ''; ?>>daily</option><option value="global" <? echo ($ad['daily_or_global'] == 'global') ? 'selected' : ''; ?>>global</option></select>
+    <select size="1" name="rotation_or_fixed<?=$key?>" id="rotation_or_fixed<?=$key?>"><option value="" >rotation/fixed</option><option value="daily" <? echo ($ad['rotation_or_fixed'] == 'rotation') ? 'selected' : ''; ?>>rotation</option><option value="global" <? echo ($ad['rotation_or_fixed'] == 'fixed') ? 'selected' : ''; ?>>fixed</option></select></div>
 </div>
  <div class="cell shrinked">
 		active
@@ -358,7 +439,20 @@ else {
 	
     if (type == "ads")
     {
-        var postData = "oldidx=" + adToSave + "&idx=" + $("#index"+adToSave).val() + "&command=" + command + "&type=updateads&w=" + $("#imgwidth"+adToSave).val() + "&h=" + $("#imgheight"+adToSave).val() + "&img_url=" + $("#imgads"+adToSave).val() + "&end=" + $("#end"+adToSave).val() + "&start=" + $("#start"+adToSave).val() + "&href=" + $("#hrefads"+adToSave).val() + "&active=" + $("#adsactive"+adToSave).prop("checked");
+        var postData = "oldidx=" + adToSave 
+                      + "&idx=" + $("#index"+adToSave).val() 
+                      + "&command=" + command 
+                      + "&type=updateads&w=" + $("#imgwidth"+adToSave).val() 
+                      + "&h=" + $("#imgheight"+adToSave).val() 
+                      + "&img_url=" + $("#imgads"+adToSave).val() 
+                      + "&start=" + $("#start"+adToSave).val() 
+                      + "&end=" + $("#end"+adToSave).val() 
+                      + "&daily_or_global=" + $("#daily_or_global"+adToSave).val() 
+                      + "&session_or_pageviews=" + $("#session_or_pageviews"+adToSave).val()
+                      + "&rotation_or_fixed=" + $("#rotation_or_fixed"+adToSave).val()  
+                      + "&href=" + $("#hrefads"+adToSave).val() 
+                      + "&max_count=" + $("#max_count"+adToSave).val() 
+                      + "&active=" + $("#adsactive"+adToSave).prop("checked");
     }
     
     
@@ -390,9 +484,14 @@ function postToServer(){
     fd.append( 'imagefile', $('#imagefile')[0].files[0] );
     fd.append( 'picname', $('#picname').val() );
     fd.append( 'idx', $('#idx').val() );
+    fd.append( 'guid', $('#guid').val() );
     fd.append( 'href', $('#link').val() );
     fd.append( 'dateStart', $('#dateStart').val() );
     fd.append( 'dateEnd', $('#dateEnd').val() );
+    fd.append( 'session_or_pageviews', $('#session_or_pageviews').val() );
+    fd.append( 'daily_or_global', $('#daily_or_global').val() );
+    fd.append( 'rotation_or_fixed', $('#rotation_or_fixed').val() );
+    fd.append( 'max_count', 5000 );
     fd.append( 'type', 'ads' );
     $('progress').show();
     $.ajax({

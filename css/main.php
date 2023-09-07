@@ -1408,6 +1408,7 @@ float:<?=get_s_align()?>
     list-style:none;
     display:inline-block;
     text-align:center;
+    cursor:pointer;
 	
     
 }

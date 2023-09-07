@@ -85,7 +85,9 @@ function App1({json, cssClasses, activities_json}) {
       </div>
       <div className="col-xs-4 col-lg-4">
         <Notifications notifications={messages} lang={langcode} className={cssClasses}/>
+        <Forecast24h hours={nextHours} lang={langcode} className={cssClasses} vertical={true} />
       </div>
+      
        </div>
        
        <div className="row">

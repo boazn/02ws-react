@@ -72,14 +72,7 @@ function getNextPage($addToPage)
 		</div>
 	</div>
 	<div id="chat_links">
-			<div>   
 			
-			<a href="<? echo get_query_edited_url($url_cur, 'section', 'SendEmailForm');?>" title="<?=$MANAGER[$lang_idx]?>">
-				<?=$CONTACT_ME[$lang_idx]." - ".$PRIVATE_MSG[$lang_idx]?><?=get_arrow()?>
-			</a>&nbsp;&nbsp;
-			<a href="<? echo get_query_edited_url($url_cur, 'section', 'faq');?>"  title="<?=$FAQ[$lang_idx]?>"><? echo $FAQ[$lang_idx];?><?=get_arrow()?>
-			</a>
-			</div>
 			<?
 	                if ($_GET['section'] == "chatmobile.php")
 	                {

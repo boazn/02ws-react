@@ -255,6 +255,7 @@ function saveForecastDay($idx,
     $forecastDaysDB = $mem->get('forecastDaysDB');
     $forecastDaysDB[$idx]['day_name'] = $day_name;
     $forecastDaysDB[$idx]['date'] = $date;
+    $forecastDaysDB[$idx]['fulldate'] = $date;
     $forecastDaysDB[$idx]['TempLow'] = $temp_low;
     $forecastDaysDB[$idx]['TempLowCloth'] = $temp_morning_cloth;
     $forecastDaysDB[$idx]['TempHigh'] = $temp_high;

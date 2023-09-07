@@ -251,7 +251,12 @@ body {
   cursor: pointer;
   
 }
-.x-axis-bar-item-container {
+.x-axis-bar-item.vertical {
+  width:100%;
+  height: 65px;
+}
+.vertical .x-axis-bar-item-container {
+  position: relative;
 }
 .x-axis-bar {
    text-align:center;  
@@ -262,8 +267,57 @@ body {
     font-size: 1.2em;
     line-height:0.6em
 }
-  
-  
+.vertical .x-axis-bar {
+  height:60px
+}
+.x-axis-bar-item .primary {
+  height: 100%
+}  
+.x-axis-bar-item .humidity {
+  height: 42%
+}
+.x-axis-bar-item .cloth {
+  height: 20%
+}
+.x-axis-bar-item .icon {
+  height: 85%
+}
+.x-axis-bar-item .temp {
+  height: 60%
+}
+.x-axis-bar-item .text {
+  display:none
+}
+
+.x-axis-bar-item.vertical .primary {
+  width: 15%;
+  height:40px
+}  
+.x-axis-bar-item.vertical .humidity {
+  width: 60%;
+  height:40px
+}
+.x-axis-bar-item.vertical .cloth {
+  width: 65%;
+  height:40px
+}
+.x-axis-bar-item.vertical .icon {
+  width: 45%;
+  height:40px
+}
+.x-axis-bar-item.vertical .temp {
+  width: 85%;
+  height:40px
+}
+.x-axis-bar-item.vertical .text {
+  display:inline;
+  width: 35%;
+  font-size: 0.8em;
+  height:40px
+}
+.vertical .x-axis-bar{
+  text-align: left;
+}
 .x-axis-bar.primary {
     background:transparent;
     line-height: 0.6em;
@@ -464,7 +518,21 @@ a.info:hover span.info
     color: #2C3A42;
 
 }
-
+#innernow
+{
+  display: inline-grid;
+  width: 50%;
+}
+#innernow
+{
+  display: inline-grid;
+  width: 50%;
+}
+#coldmeterwrapper
+{
+  display: inline-grid;
+  width: 50%;
+}
 #forcast_hours, #forcast_hours_table {
     text-align:right;
     max-height: 480px;
@@ -472,7 +540,13 @@ a.info:hover span.info
     width:2100px;
     padding:0
 }
-
+#forcast_hours.vertical{
+  max-height: none;
+  width:100%
+}
+#graph_forcast.vertical{
+  overflow-x:hidden
+}
 
 #for24_graph_ng{
     padding:0
@@ -526,6 +600,9 @@ a.info:hover span.info
 }
 .textright {
   text-align: right;
+}
+.textleft {
+  text-align: left;
 }
 .likedislike{
  
@@ -670,12 +747,15 @@ i {
   color:black
 }
 #coldmeter .shadow, #coldmeter .sun{
-  width:50%
+  
 }
 #sigweather, #more_sigweather, #forcast_days{
   list-style: none;
   font-size: 1.1em;
   padding:0.1em
+}
+#sigweather{
+  padding:0.2em 0.9em
 }
 #sigweather a{
   text-decoration: none;
@@ -686,7 +766,7 @@ i {
   color:black;
 }
 #latestnow .parambox{
-  font-size:4em;
+  font-size:2em;
 }
 .cm_like, .cm_dislike{
   display: table-cell;
@@ -766,6 +846,26 @@ i {
   height:20px;
   width:500px;
 }
+#sunshade_controls
+{
+  display:inline-flex;
+  height:20px;
+  font-size: 1em;
+    list-style:none;
+   
+}
+#sunshade_controls li
+{
+  margin:0.3em
+}
+#sunshade_controls a{
+  text-decoration: none;
+}
+
+#sunshade_controls .selected
+{
+  text-decoration: underline;
+}
 .night{
   background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 20%, #7480bb 40%, #737fbb 100%);
 }
@@ -783,7 +883,7 @@ i {
 }
 
 .rain{
-  background-color:#648AA5;
+  background-color:#bdccd657;
 }
 
 .snow{
@@ -847,10 +947,11 @@ i {
 .clouds-3 {
   background-repeat: repeat-x;
   position: absolute;
-  top: 2  0;
+  top: 200px;
   right: 0;
   left: 0;
   height: 340px;
+  z-index: -100;
 }
 
 .display_on {
@@ -869,14 +970,30 @@ i {
 .parambox
 {
   display:inline-table;
-  width:200px;
-  margin: 1rem;
-  padding: 1rem;
   cursor: pointer;
 }
 .parambox a, #controls a{
   text-decoration:none;
   color:unset
+}
+.cm_modal
+{
+  inset: 50% auto auto 50%;
+  direction: rtl;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+ 
+}
+.ReactModalPortal iframe{
+  width:680px;
+  height:600px
 }
 #tempdivvalue
 {
@@ -915,6 +1032,11 @@ background-position: 0px 0px;
 {
   width:100%
 }
+#itfeels
+{
+  font-size: 0.9em;
+  line-height:1em;
+}
 #shadow_sun_wrapper
 {
   display:flex
@@ -940,9 +1062,14 @@ background-position: 0px 0px;
 {
   display:none
 }
+.box_text
+{
+  padding: 0.2em 1em
+}
 #alerts
 {
-  font-size:1.2em
+  font-size:1.2em;
+  padding:0 1em
 }
 @media only screen and (max-width: 500px) {
  
@@ -964,7 +1091,11 @@ background-position: 0px 0px;
     text-overflow: ellipsis;
   }
   
-#forcast_days{    
-  height:800px
-}
+  #forcast_days{    
+    height:800px
+  }
+  .ReactModalPortal iframe{
+    width:320px;    
+    height:900px
+  }
 }

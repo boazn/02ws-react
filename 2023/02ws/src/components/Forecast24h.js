@@ -46,15 +46,15 @@ const Forecast24h = (props) => {
                                 <Link onClick={() => ShowCloth()} >{t("CLOTH")}</Link>
                             </li>
                             <li>
-                                <Link onClick={() => ShowRainrate()} >{t("RAIN_RATE")}</Link>
+                                <Link onClick={() => ShowRainrate()} >{t("CHANCE_OF") }{t("RAIN")}</Link>
                             </li>
                     </ul>
             </div>     			
-            <div id="graph_forcast"  className={"metric-chart h-bar-chart " + (props.lang === 1? 'rtl' : '')}>
+            <div id="graph_forcast"  className={"metric-chart h-bar-chart " + (props.lang === 1? 'rtl ' : '') + (props.vertical == true ? "vertical": "") }>
             
-            <ul id="forcast_hours" className="for24_graph_ng x-axis-bar-list count-10">
+            <ul id="forcast_hours" className={"for24_graph_ng x-axis-bar-list count-10 " + (props.vertical == true ? "vertical": "") }>
             {props.hours.map((hour, i) => {
-                return <ForecastHour key={i} {...hour} lang={props.lang} isTemp={isTemp} isHumidity={isHumidity} isCloth={isCloth} isRainrate={isRainrate} ></ForecastHour>;
+                return <ForecastHour key={i} {...hour} lang={props.lang} isTemp={isTemp} isHumidity={isHumidity} isCloth={isCloth} isRainrate={isRainrate} vertical={props.vertical} isText={true} ></ForecastHour>;
             })}
             </ul>
             </div>
