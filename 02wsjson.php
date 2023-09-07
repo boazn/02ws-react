@@ -815,15 +815,18 @@ $JSON .= "},";
 $JSON = trim($JSON, ",");
 $JSON .= "]";
 $JSON .= ",\"forecastDays\":[";
-$surise_suset_json = getSunriseSunset($day_f['date']);
+
 $day_idx = 0;
 foreach ($forecastDaysDB as $key => $day_f){
-    $daily_sunrise = $surise_suset_json->location->time[$day_idx]->sunrise->time;
-    $daily_sunset = $surise_suset_json->location->time[$day_idx]->sunset->time;
-    $daily_moonrise = $surise_suset_json->location->time[$day_idx]->moonrise->time;
-    $daily_moonset = $surise_suset_json->location->time[$day_idx]->moonset->time;
-    $daily_moonphase = $surise_suset_json->location->time[0]->moonphase->value;
-    $day_idx++;
+    list($fday, $fmonth, $fyear) = explode('/', $day_f['date']."/".$year);
+    $full_date = date ("Y-m-d", mktime (0, 0, 0, $fmonth, $fday , $fyear));
+    $surise_suset_json = getSunriseSunset($full_date);
+    $daily_sunrise = $surise_suset_json->properties->sunrise->time;
+    $daily_sunset = $surise_suset_json->properties->sunset->time;
+    $daily_moonrise = "";
+    $daily_moonset = "";
+    $daily_moonphase = "";
+    $day_idx++; 
     $lang_idx = 0;
     $JSON .= "{";
     $JSON .= "\"day_name0\":"."\"".$day_f['day_name']."\"";
