@@ -112,6 +112,7 @@ if (isRadarPage())
 <meta property="og:image" content="https://www.02ws.co.il/02ws_short.png" />
 <meta name="viewport" content="width=<?=$width?><? if (isFastPage()) echo ", initial-scale=1.15 ,user-scalable=no";?>" />
 <title><?=$WEBSITE_TITLE[$lang_idx]." - ".$MOBILE_FRIENDLY[$lang_idx]?></title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script id="loadGA">
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -813,11 +814,11 @@ else {?>
     
 </ul>
 </div>    
-<div id="spacer1" style="clear:both;height: 15px;">&nbsp;</div>
+<div id="spacer1" style="clear:both;height: 25px;">&nbsp;</div>
 <div id="what_is_h"></div>
-<div id="spacer2" style="clear:both;height: 10px;">&nbsp;</div>
+<div id="spacer2" style="clear:both;height: 15px;">&nbsp;</div>
 <div id="latestalert"></div>
-<div id="spacer3" style="clear:both;height: 10px;">&nbsp;</div>    
+<div id="spacer3" style="clear:both;height: 15px;">&nbsp;</div>    
 <div id="for24_given">
 							
 	</div>
@@ -1037,6 +1038,25 @@ else {?>
  <div style="display:none">
     
 <div id="loginform" style="padding:1em">
+        <div id="g_id_onload"
+                data-client_id="1056747824588-jkeqcbv1b2i8pr671vsts93dq81f8nu2.apps.googleusercontent.com"
+                data-callback="google_si_OnSuccess"
+                data-auto_select="true"
+                data-itp_support="true"
+                >
+        </div>
+        <div class="g_id_signin"
+        <? if (isHeb()) {?>data-locale="he"<?}?>
+                data-type="standard"
+                data-size="medium"
+                data-theme="outline"
+                data-text="sign_in_with"
+                data-shape="rectangular"
+                data-click_listener="google_to_signin"
+                data-logo_alignment="left">
+        </div>
+        
+        <br/>
 	<div class="float">
         <input type="text" name="email" value="" placeholder="<?=$EMAIL[$lang_idx]?>" id="loginform_email" size="30" tabindex="1" /><br /><br />
         <input type="password" name="password" placeholder="<?=$PASSWORD[$lang_idx]?>" value="" id="loginform_password" tabindex="2" size="15"/><br /><br />
@@ -1058,6 +1078,16 @@ else {?>
  	
 </div>
 <div id="registerform" style="padding:0.5em">
+<div class="g_id_signin"
+<? if (isHeb()) {?>data-locale="he"<?}?>
+    data-type="standard"
+    data-shape="rectangular"
+    data-theme="outline"
+    data-text="signup_with"
+    data-size="medium"
+    data-click_listener="google_to_signup"
+    data-logo_alignment="left">
+    </div><br/>
 <div id="registerinput" class="float">
 <table>
 <tr><td></td><td><input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="registerform_email" size="30" tabindex="3" style="direction:ltr"/></td></tr>
@@ -1111,7 +1141,7 @@ else {?>
                 <br /><br /><br /><br /><br /><br />
 </div>
 <div id="startupdiv" style="display:none;" class role="dialog">
-<button type="button" id="cboxClose" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();"></button>
+<button type="button" id="cboxClose_startupdiv" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();"></button>
 
 <div class="removeadlink">&nbsp; 
 </div>
@@ -1141,6 +1171,8 @@ else {?>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script type="text/javascript">
   var isUserAdApproved = false;
+  var lang=<?=$lang_idx?>;
+
 <!--
     /*!
 loadCSS: load a CSS file asynchronously.
@@ -1936,7 +1968,7 @@ Licensed MIT
       window.open(url,"_system");
     });
   }, false);
-   <? if (mainPage()||isGraphsPage()||($_REQUEST['section'] == "alerts.php")) {?>
+   <? if (mainPage()||isGraphsPage()||($_REQUEST['section'] == "alerts.php")||($_REQUEST['section'] == "alerts")) {?>
     $.ajax({
       type: "GET",
       url: "<?=BASE_URL?>/02wsjson.txt",
@@ -1956,6 +1988,7 @@ Licensed MIT
 
 //-->
 </script>
+
 <? if (!isFastPage()) { ?>
 <script src="<?=BASE_URL?>/js/tinymce/tinymce.min.07032017.js" type="text/javascript"></script>
 <script src="<?=BASE_URL?>/footerScripts180422.php?lang=<?=$lang_idx?>&email=<?=$_GET['email']?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>

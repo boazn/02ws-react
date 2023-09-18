@@ -789,10 +789,12 @@ function attachEnter(){
                     $("#personal_message").html('<?=$PERSONAL_COLD_METER_ALERT[$lang_idx]?>');
                  var nextClass = $("#profileform #user_icon_contentbox").children().first().children().first().attr('class');
                  console.assert(nextClass != undefined);
-                 if ((jsonT.user.icon != undefined )
+                 icon = decodeURIComponent(jsonT.user.icon).replace(/\+/g, ' ');
+                  if ((icon != undefined )
+                    &&(icon.indexOf('http') == -1 )
                     &&(nextClass != undefined )
-                    &&(jsonT.user.icon != "" )
-                    &&(jsonT.user.icon != "admin_avatar"))
+                    &&(icon != "" )
+                    &&(icon != "admin_avatar"))
                     while (jsonT.user.icon != nextClass){
                        nextClass = change_icon('right', $("#profileform .icon_right"));
                     }
@@ -1287,6 +1289,121 @@ function fillLikes(jsonstr)
         gutter: 8
         });
     }
+    function decodeJwtResponse(token) {
+        var base64Url = token.split(".")[1];
+        var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        var jsonPayload = decodeURIComponent(
+          atob(base64)
+            .split("")
+            .map(function (c) {
+              return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join("")
+        );
+       
+        return JSON.parse(jsonPayload);
+      }
+      function google_to_signup(){
+        localStorage.setItem("g_state", "signup");
+      }
+      function google_to_signin(){
+        localStorage.setItem("g_state", "signin");
+      }
+      function google_su_OnSuccess(responsePayload){
+        
+        var C_STARTUP_AD_INTERVAL = 5;
+        var g_email = responsePayload.email;
+        $('#registerform_email').val(responsePayload.email);
+        $('#registerform_displayname').val(responsePayload.given_name+responsePayload.family_name);
+        $('#registerform_userid').val(responsePayload.family_name);
+        $("#registerform_password").val(Math.floor(100000 + Math.random() * 900000));
+        
+        $.ajax({
+		  type: "POST",
+		  url: "<?=BASE_URL?>/checkauth.php?action=register_with_google&lang="+lang+"&username="+$("#registerform_userid").val()+"&email=" + $("#registerform_email").val()+"&password="+$("#registerform_password").val()+"&user_display_name="+$("#registerform_displayname").val()+"&user_icon="+$("#chosen_user_icon").val()+"&user_nice_name="+$("#registerform_nicename").val()+"&priority="+($("#registerform_priority").is(':checked') ? 1 : 0),
+                  beforeSend: function(){$(".loading").show();},
+		  data: { username:$("#registerform_userid").val(),
+		  	  email: $("#registerform_email").val(), 
+		          password: $("#registerform_password").val(), 
+		          user_display_name: $("#registerform_displayname").val(),
+                          user_icon:$("#user_icon").html(), 
+		          user_nice_name:$("#registerform_nicename").val(), 
+		          priority:$("#registerform_priority").is(':checked') ? 1 : 0 }
+		}).done(function( msg ) {
+                  $(".loading").hide();
+		  $("#registerform_result").html( msg );
+		  $('#cboxClose').click();  
+		});
+      }
+      function google_si_OnSuccess(response){
+        var g_state = localStorage.getItem("g_state");
+       
+        const responsePayload = decodeJwtResponse(response.credential);
+        var C_STARTUP_AD_INTERVAL = 5;
+        console.log("ID: " + responsePayload.sub);
+        console.log('Full Name: ' + responsePayload.name);
+        console.log('Given Name: ' + responsePayload.given_name);
+        console.log('Family Name: ' + responsePayload.family_name);
+        console.log("Image URL: " + responsePayload.picture);
+        console.log("Email: " + responsePayload.email);
+        $('#chosen_user_icon').val(responsePayload.picture);
+        $('#user_name').html(responsePayload.given_name);
+        $('#user_icon').html('<img src="' + responsePayload.picture + '" width=40 />');
+        localStorage.setItem("g_email", responsePayload.email);
+        localStorage.setItem("g_name", responsePayload.given_name);
+        if (g_state == "signup")
+                return google_su_OnSuccess(responsePayload);
+        var g_email = responsePayload.email;
+                $.ajax({
+            type: "GET",
+            headers: {  'Access-Control-Allow-Origin': 'https://www.02ws.co.il' },
+            url: "<?=BASE_URL?>/checkauth.php?action=getuser&lang=" + lang +"&reg_id=<?=$_GET['reg_id']?>"+"&email=" + g_email
+        })
+        .done(function( jsonstr ) {
+           
+            try{
+                var jsonT = JSON.parse( jsonstr  );
+                if (jsonT.user.approved == 1)
+                    isUserAdApproved = true;
+                    if (!jsonT.user.loggedin){
+                toggle('notloggedin');
+                    $("#user_name").html('<?=$LOGIN[$lang_idx]?>/<?=$REGISTER[$lang_idx]?>');
+                    $("#chosen_user_icon").val($("#user_icon_contentbox").children().first().children().first().attr('class'));
+                    if (jsonT.user.locked)
+                        $("#user_name").html('<?=$USER_LOCKED[$lang_idx]?>');
+                }
+                else {
+                    toggle('loggedin'); 
+                    fillUserDetails (JSON.parse( jsonstr  ) );
+                    $('#cboxClose').click();
+                    if (document.getElementById('new_post_btn')){
+                            $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
+                    }
+                }
+                if (!isUserAdApproved)
+                {   
+                $(".adunit").show();
+                    if (sessions % C_STARTUP_AD_INTERVAL == 0)
+                    {
+                        $("#startupdiv").show();
+                    }
+                }  
+                else{
+                    $('#adsense_start').remove();
+                    $(".adunit").remove();
+                    $("#adunit1").css('visibility', 'hidden');
+                }
+            }
+            catch (e)
+            {
+                console.error(e);
+            } 
+        });
+        }
+    function google_si_onFailure()
+    {
+        console.log('google login failed ');  
+    }
     function redirect(url)
    {
        top.location.href = url;
@@ -1490,10 +1607,17 @@ function fillLikes(jsonstr)
   
 function startup(lang, from, update)
      {
-            
+           
        $("#current_forum_filter").val($("#forum_filter").children().first().attr('class'));
        $("#current_forum_filter").attr('data-key',$("#forum_filter").children().first().attr('data-key'));
        var cur_feel_link=document.getElementById('current_feeling_link');
+       var email_i = "";
+        if ('<?=$_GET['email']?>' != '')
+            email_i = '<?=$_GET['email']?>';
+       g_email = localStorage.getItem("g_email");
+       console.log("logged in google account: " + g_email); 
+       if ((email_i == "")&&(g_email != "")&&(g_email != null)&&g_email)
+            email_i = g_email;  
        if (typeof coldmeter_size == 'undefined') 
           coldmeter_size = 60;
        if (cur_feel_link)
@@ -1510,7 +1634,7 @@ function startup(lang, from, update)
         $.ajax({
             type: "GET",
             headers: {  'Access-Control-Allow-Origin': 'https://www.02ws.co.il' },
-            url: "<?=BASE_URL?>/checkauth.php?action=getuser&lang=" + lang +"&reg_id=<?=$_GET['reg_id']?>"+"&email=<?=$_GET['email']?>"
+            url: "<?=BASE_URL?>/checkauth.php?action=getuser&lang=" + lang +"&reg_id=<?=$_GET['reg_id']?>"+"&email=" + email_i
         })
         .done(function( jsonstr ) {
             try{
@@ -2004,12 +2128,23 @@ Licensed MIT
         var latest_user_pic = "<a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=userPics.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestUserPic[0].picname + "\" width=\"320\" title=\"userpic\" /></br>" + decodeURIComponent(json.jws.LatestUserPic[0].name.replace(/\+/g, " ")) + ": " + decodeURIComponent(json.jws.LatestUserPic[0].comment.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";      
         var latest_pic_of_the_day = "<div class=\"txtindiv\"><?=$PIC_OF_THE_DAY[$lang_idx]?>" + "<br/>" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")) + "</div><a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=picoftheday.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"320\" title=\"pic of the day\" /></a>";
         var latest_pic_of_the_day_text = "<a href=\"javascript:void(0)\" class=\"info\" ><div class=\"title\">" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")).substring(0, 30) + "...</div>" + "<span class=\"info\"> <div class=\"\"><?=$PIC_OF_THE_DAY[$lang_idx]?>: " + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")) + "</div><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"320\" title=\"pic of the day\" /></span></a>";
-
-        $('#alerts').children('#message').html('<h3>' + json.jws.Messages.latestalert_title<?=$lang_idx?> + '</h3>'
-                                                + json.jws.Messages.timelatestalert1 + '<br/>' 
-                                                + decodeURIComponent(json.jws.Messages.latestalert<?=$lang_idx?>
-                                                + '<h3 >' + json.jws.Messages.detailedforecast_title<?=$lang_idx?> + '</h3>' 
-                                                + json.jws.Messages.detailedforecast<?=$lang_idx?>).replace(/\+/g, ' ').replace(/(\r\n|\r|\n)/g, '<br/>'));
+        var alerts = "";
+        var ImgOrVid = "";
+        for (i = 0; i< json.jws.Messages.alerts.length; i++){
+            ImgOrVid = "";
+            var date = new Date(json.jws.Messages.alerts[i].ts * 1000);
+            var dateStr = date.toLocaleString('he-IL', { weekday: 'narrow' }) + ' ' + date.toLocaleString('he-IL');
+            if ((json.jws.Messages.alerts[i].img_src != "")&&(json.jws.Messages.alerts[i].img_src != "null"))
+            {
+                ImgOrVid = (json.jws.Messages.alerts[i].img_src.indexOf("mp4") > 0) ? "<video width=\"310\" height=\"240\" controls><source src=\""+ json.jws.Messages.alerts[i].img_src + "\" type=\"video/mp4\"></video><br/>" : "<a hre=\"" + json.jws.Messages.alerts[i].img_src + "\"><img src=\"" + json.jws.Messages.alerts[i].img_src + "\" width=\"320\" /></a><br/>"
+            }
+              
+            alerts += '<h3>' + decodeURIComponent(json.jws.Messages.alerts[i].title<?=$lang_idx?>).replace(/\+/g, ' ') + '</h3>'
+                                                + dateStr + '<br/>'
+                                                + ImgOrVid 
+                                                + decodeURIComponent(json.jws.Messages.alerts[i].desc<?=$lang_idx?>).replace(/\+/g, ' ').replace(/(\r\n|\r|\n)/g, '<br/>');
+        }
+        $('#alerts').children('#message').html(alerts);
         $('#tempdivvalue, #tempdivvaluestart').html('<div class="shade">' + ((json.jws.current.islight == 1) ? "" : "") + '</div>' + c_or_f(json.jws.current.temp, tempunit)+'<div class="param">'+tempunit+'</div>').removeClass('glow');
         $('#tempdivvalue').css('visibility', 'visible').addClass('glow');
         $('#tempdivvaluestart').fadeIn(30);

@@ -64,7 +64,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
         <? }?>
         <? }?>
         <link rel="icon" type="image/png" href="img/favicon_sun.png">
-       
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
                 <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-FC82DP541T"></script>
         <script>
@@ -237,11 +237,13 @@ $sigforecastHour = $mem->get('sigforecastHour');
 			</ul>
 		    </div>
         	     <div>
+                     
 			<ul class="nav" id="user_info">
 			      <li><p id="user_name"></p><div id="user_icon"></div><span class="arrow_down">&#9660;</span>
 					  <ul style="<?echo get_s_align();?>: -2em;">
 						<li>
 							<div id="notloggedin" style="display:none">
+                                                        
 								<div><a href="javascript: void(0)" id="login" title="<?=$LOGIN[$lang_idx]?>" ><?=$LOGIN[$lang_idx]?></a></div>
 								<div><a href="javascript: void(0)" class="register" id="register" title="<?=$REGISTER[$lang_idx]?>"><?=$REGISTER[$lang_idx]?></a></div>
 								
@@ -1471,6 +1473,25 @@ else {  ?>
                          <div style="display:none">
 
                             <div id="loginform" style="padding:1em">
+                                        <div id="g_id_onload"
+                                                data-client_id="1056747824588-jkeqcbv1b2i8pr671vsts93dq81f8nu2.apps.googleusercontent.com"
+                                                data-callback="google_si_OnSuccess"
+                                                data-auto_select="true"
+                                                data-itp_support="true"
+                                                >
+                                        </div>
+                                        <div class="g_id_signin"
+                                        <? if (isHeb()) {?>data-locale="he"<?}?>
+                                                data-type="standard"
+                                                data-size="medium"
+                                                data-theme="outline"
+                                                data-text="sign_in_with"
+                                                data-shape="rectangular"
+                                                data-click_listener="google_to_signin"
+                                                data-logo_alignment="left">
+                                        </div>
+                                        
+                                        <br/><br/>
                                     <div class="float">
                                     <input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="loginform_email" size="30" tabindex="1" /><br /><br />
                                     <input type="password" placeholder="<?=$PASSWORD[$lang_idx]?>" name="password" value="" id="loginform_password" tabindex="2" size="15"/><br />&nbsp;&nbsp;
@@ -1485,6 +1506,17 @@ else {  ?>
 
                             </div>
                             <div id="registerform" style="padding:0.5em">
+                          
+                           
+                                <div class="g_id_signin"
+                                data-type="standard"
+                                data-shape="rectangular"
+                                data-theme="outline"
+                                data-text="signup_with"
+                                data-size="medium"
+                                data-click_listener="google_to_signup"
+                                data-logo_alignment="left">
+                                </div><br/>
                                 <div id="registerinput" class="float">
                                 <table>
                                 <tr><td></td><td><input type="text" placeholder="<?=$EMAIL[$lang_idx]?>" name="email" value="" id="registerform_email" size="30" tabindex="3" style="direction:ltr"/></td></tr>
@@ -1616,11 +1648,14 @@ var lang=<?=$lang_idx?>;
               // window.location.replace('https://www.02ws.co.il/small.php?size=l&amp;lang='+lang);
            }
     <?}?>
+    
     startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
-    if (isUserAdApproved){
-         $("#mainadsense").hide();
-    }
+        if (isUserAdApproved){
+                $("#mainadsense").hide();
+        }
+     google_to_signin();  
 
+    
     function refreshContent(){
         $.ajax({
         type: "GET",
@@ -1644,6 +1679,7 @@ var lang=<?=$lang_idx?>;
        
 /* ]]> */
 </script>
+
 <script>
     var apiKey = "83b355eb58c30fd0b8dae36a4e47877706609da9";
     var storeId = "0E3C23CCEEFF44";

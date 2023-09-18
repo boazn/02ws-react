@@ -2,6 +2,12 @@
 	body{ 
 		background:white; 
 	}
+	#alerts{
+		color:black;
+		padding:1em;
+		max-height: 980px;
+
+	}
 </style>
 
 

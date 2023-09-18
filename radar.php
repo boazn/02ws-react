@@ -1002,11 +1002,11 @@ function imgError(image) {
 </div>
 </div><!-- id="wrapper" -->
 </div>
-<div id="geshemspace" class="float" style="margin-<?echo get_s_align();?>:0px">
+<div id="geshemspace" class="float" >
 <iframe src="https://geshem.space/" width="420px" height="640px" scrolling="auto" id="iframegeshem" class="base" allowtransparency="true" marginHeight="0" marginWidth="0" frameborder="0" ></iframe>
    
  </div>
- <div id="rainviewer" class="float" style="margin-<?echo get_s_align();?>:0px">
+ <div id="rainviewer" class="float" >
  <iframe src="https://www.rainviewer.com/map.html?loc=32.147,33.7281,7&oFa=0&oC=0&oU=0&oCS=1&oF=0&oAP=0&rmt=4&c=1&o=83&lm=0&th=0&sm=1&sn=1" width="420px" frameborder="0" style="border:0;height:63vh;" allowfullscreen></iframe>
    </div>
 <div style="clear:both;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">

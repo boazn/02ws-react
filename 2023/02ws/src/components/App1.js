@@ -5,7 +5,7 @@ import Forecast24h from './Forecast24h';
 import NextDays from './NextDays';
 import Notifications from './Notifications';
 import Ad from './Ad';
-import { React, useContext } from 'react';
+import { React, useContext, useState } from 'react';
 import Statuses from './Statuses';
 import PicOfTheDay from './PicOfTheDay';
 import UserPics from './UserPics';
@@ -16,21 +16,30 @@ import {useCurrentUser} from "../helpers/UserContext";
 import {ConfigContext} from "../helpers/ConfigContext";
 import TempGraph from './TempGraph';
 import Btn from './Button';
+import ReactModal  from 'react-modal';
 
 function App1({json, cssClasses, activities_json}) {
   
   const { t, i18n } = useTranslation();
   const { currentUser, fetchCurrentUser } = useCurrentUser();
+  const [isOpen, setPopupIsOpen] = useState(false);
+  const [currentTitle, setCurrentTitle] = useState(false);
   const configData = useContext(ConfigContext);
   var langcode = configData.lang;
   if (json.length === 0){ 
     return <div>loading...</div>
   }
-  
+  const setIsOpen = ({isOpen}) => {
+        
+    setPopupIsOpen(isOpen);
+  } 
+ 
  const saveConfigData = () => {
   configData.layout = "current";
   localStorage.setItem('configData', JSON.stringify(configData));
   console.log ('saved' + JSON.stringify(configData));
+  setCurrentTitle('saved' + JSON.stringify(configData));
+  setPopupIsOpen(true);
  }
 
    const nextDays = json.jws.forecastDays;
@@ -53,13 +62,20 @@ function App1({json, cssClasses, activities_json}) {
     <div className={"clouds container-fluid App " + cssClasses}>
       
       <header className={"App-header row mb-2 " + (langcode === 1? 'rtl' : '')}>
-        <div className="col-12 ">
-        <div><img src={logo} className="App-logo" alt="logo" />  {t("SLOGAN")} - {t("WEBSITE_TITLE")} 
-        <Btn btnOnClick={() => saveConfigData()} btnTitleText="set as default layout" img="ArrowDown">
-                    
-        </Btn>
+      <div className="row ">
+        <div className="col-4 ">
+        <Btn btnOnClick={() => saveConfigData()} btnTitleText="לשמור כדף פתיחה" img="ArrowDown">
+                      
+                      </Btn>
         </div>
-        </div>
+          <div className="col-4 ">
+          <div><img src={logo} className="App-logo" alt="logo" />  {t("SLOGAN")} - {t("WEBSITE_TITLE")} 
+        
+          </div>
+          </div>
+          <div className="col-4 "></div>
+      </div>
+      
        </header>
        
       
@@ -107,6 +123,24 @@ function App1({json, cssClasses, activities_json}) {
        <div className="col-xs-4 col-lg-4 "><UserPics userPics={userpics} lang={langcode} /></div>
        </div>
      </div>
+     <ReactModal
+        
+        isOpen={isOpen}
+        contentLabel="Example Modal"
+        
+        onRequestClose={() => setIsOpen(false)}
+
+      >
+         <Btn btnOnClick={() => setIsOpen(false)} btnTitleText={""}  img={"X"}>
+                
+        </Btn>
+        {currentTitle}
+        
+         <br/><br/><br/>
+         <Btn btnOnClick={() => setIsOpen(false)} btnTitleText={"Ok"} >
+                
+        </Btn>
+      </ReactModal>
      </>
     )
   

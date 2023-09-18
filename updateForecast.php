@@ -6,6 +6,9 @@ define("CLOTHES_PATH","images/clothes");
 ini_set('error_reporting', E_ERROR | E_PARSE);
 ?>
 <style>
+    body{
+        
+    }
     #section input
     {
         width:20px;
@@ -35,7 +38,7 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
         position:absolute;top:3em;left:30em;width:100px
     }
     .cell{
-        float:right;padding:1.2em 1.35em 0 1.35em
+        float:right;padding:1.1em;font-size: 1.2em;
     }
     .invcell{
         float:left;padding:5px 1em
@@ -51,13 +54,16 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
         height:35px;
     }
     textarea.floated{
-        width:310px;
+        width:340px;
         height:35px;
+    }
+    #forDetails{
+        width:375px
     }
     .btnsstart, .temp_high, .temp_night, .tempstart, .textforecast, .synop{clear:both;}
     @media only screen and (min-width: 1000px) {
         textarea{
-            width:580px;
+            width:570px;
             height:12px;
         }
         textarea.floated{
@@ -65,11 +71,14 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
         
         }
         .cell{
-            float:right;padding:1.2em 1.4em 0 1.5em
+            float:right;padding:1.2em 1.4em 0 1.5em;
         }
         .btnsstart, .temp_high, .temp_night, .tempstart, .textforecast, .synop{clear:none;}
         .cell{
             padding:1em
+        }
+        #forDetails{
+        width:100%
         }
     }
     @media only screen and (max-width: 500px) {
@@ -428,9 +437,9 @@ function updateAlert ($id, $description, $title, $type, $href, $img_src, $action
     if ($action=="DAlert")
          unset($Alerts[$id]);
     else if($action=="UAlert") 
-        $Alerts[$id] = array('title0' => $title[0], 'description0' => $description[0], 'title1' => $title[1], 'description1' => $description[1], 'img_src' => $img_src, 'messageType' => $type, 'href' => $href, 'ts' => $ts, 'ttl' => $ttl);     
+        $Alerts[$id] = array('title0' => $title[0], 'description0' => $description[0], 'title1' => $title[1], 'description1' => $description[1], 'img_src' => strip_tags($img_src), 'messageType' => $type, 'href' => $href, 'ts' => $ts, 'ttl' => $ttl);     
     else if($action=="IAlert") 
-        $Alerts[$now] = array('title0' => $title[0], 'description0' => $description[0], 'title1' => $title[1], 'description1' => $description[1], 'img_src' => $img_src, 'messageType' => $type, 'href' => $href, 'ts' => $now, 'ttl' => $ttl);      
+        $Alerts[$now] = array('title0' => $title[0], 'description0' => $description[0], 'title1' => $title[1], 'description1' => $description[1], 'img_src' => strip_tags($img_src), 'messageType' => $type, 'href' => $href, 'ts' => $now, 'ttl' => $ttl);      
         
     $Alerts_r = array_reverse($Alerts);
     updateMessagesFromAlertsArray($Alerts_r);
@@ -859,7 +868,7 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 	<div class="cell shrinked">
 		
 		<!-- <input id="commandtaf" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
-		<img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'taf')" style="cursor:pointer" />
+		<img src="<?=BASE_URL?>/images/check.png" width="20px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'taf')" style="cursor:pointer" />
 	</div>
 	<div class="cell shrinked">
 		
@@ -893,7 +902,7 @@ while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
 	</div>
 <div class="cell shrinked" id="synop<?=$line["lang"]?>">synop
         <input id="langsynop<?=$line["lang"]?>" name="lang<?=$line["lang"]?>" size="1"  value="<?=$line["lang"]?>" style="width:0"  />
-		<img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOneUFService(this.parentNode.id, 'U', 'synop')" style="cursor:pointer" />
+		<img src="<?=BASE_URL?>/images/check.png" width="20px" onclick="getOneUFService(this.parentNode.id, 'U', 'synop')" style="cursor:pointer" />
 	</div>
     
     <div class="cell shrinked">
@@ -977,7 +986,7 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
     &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
 	<div class="cell">
-	<img src="<?=BASE_URL?>/images/x.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'D', 'forecastd')" style="cursor:pointer" />
+	<img src="<?=BASE_URL?>/images/x.png" width="20px" onclick="getOneUFService(this.parentNode.parentNode.id, 'D', 'forecastd')" style="cursor:pointer" />
     </div>
     <div class="cell cellspace ">
     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1116,14 +1125,14 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 			
             <textarea id="lang1<?=$key?>" name="lang1<?=$key?>" size="80" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  max-height: 215px;text-align:right;direction:rtl;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang1"]), ENT_QUOTES, "UTF-8")?></textarea>
         </div>
-		<div id="day_href_plugin<?=$key?>" class="cell">
+		<div id="day_href_plugin<?=$key?>" class="cell shrinked">
 			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>
     </div>
      <div  class="cell shrinked textforecast">
         <textarea id="lang0<?=$key?>" name="lang0<?=$key?>" size="40" rows="1"  value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif; max-height: 215px;text-align:left;margin:0" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["lang0"]), ENT_QUOTES, "UTF-8")?></textarea>
         <span style="font-size:2.1em"><?//=$forecastDaysDB[$key]['lang2']?></span>
 	</div>
-	<div id="day_href_plugin<?=$key?>" class="cell" >
+	<div id="day_href_plugin<?=$key?>" class="cell shrinked" >
 			<a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>
 	</div>
 	
@@ -1204,7 +1213,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			<a href="javascript: void(0)" id="hrefforecast<?=$line["lang"]?>" onclick="additalic(getSelText(), 'descriptionforecast<?=$line["lang"]?>')"><img src="<?=BASE_URL?>/images/italic.png" title="italic" width="16" height="16" /></a>
 			
 		<!-- <input id="commandforecast<?=$line["lang"]?>" name="command<?=$line["lang"]?>" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
-		<img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecast')" style="cursor:pointer" />
+		<img src="<?=BASE_URL?>/images/check.png" width="20px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecast')" style="cursor:pointer" />
 	</div>
 	<div class="cell shrinked" style="clear:both">
 		
@@ -1248,8 +1257,8 @@ foreach ($Alerts_r as $key => &$alert){
     <div id="alerts_href_plugin" class="invcell shrinked" >
 		<!-- <input id="commandforecast0" name="command0" size="1" value="<?=$_POST['command']?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" /> -->
         <img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'IAlert', 'alert')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <img src="<?=BASE_URL?>/images/check.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'UAlert', 'alert')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <img src="<?=BASE_URL?>/images/x.png" width="16px" onclick="getOneUFService(this.parentNode.parentNode.id, 'DAlert', 'alert')" style="cursor:pointer" />
+        <img src="<?=BASE_URL?>/images/check.png" width="20px" onclick="getOneUFService(this.parentNode.parentNode.id, 'UAlert', 'alert')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="<?=BASE_URL?>/images/x.png" width="20px" onclick="getOneUFService(this.parentNode.parentNode.id, 'DAlert', 'alert')" style="cursor:pointer" />
 	</div>
 	
     <div class="cell " style="width:60px">
@@ -1264,8 +1273,12 @@ foreach ($Alerts_r as $key => &$alert){
     </div>
     <? if (!empty($alert["img_src"])) 
     { 
-        echo "<img src=\"".$alert["img_src"]."\" width=\"260px\" />";
+        if (stristr($alert["img_src"], "mp4"))
+        echo "<video width=\"310\" height=\"240\" controls><source src=\"".strip_tags($alert["img_src"])."\" type=\"video/mp4\"></video><div class=\"cell \" ><input id=\"img_alert".$key."\" name=\"img_alert".$key."\"  value=\"".$alert["img_src"]."\" style=\"width:310px;text-align:left\" /></div>";
+        else
+        echo "<img src=\"".strip_tags($alert["img_src"])."\" width=\"100px\" /><div class=\"cell \" ><input id=\"img_alert".$key."\" name=\"img_alert".$key."\"  value=\"".$alert["img_src"]."\" style=\"width:310px;text-align:left\" /></div>";
         }?>
+        
     <div class="cell " >
     <input id="title0_alert<?=$key?>" name="alert_title0<?=$key?>"  value="<?=$alert["title0"]?>" style="width:280px;text-align:left" /><br/>
     <textarea id="descriptionalert<?=$key?>0" oninput="inputtextChanged(this)" class="floated" name="descriptionalert0<?=$key?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $alert["description0"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $alert["description0"]), ENT_QUOTES, "UTF-8")?></textarea>
@@ -1600,11 +1613,14 @@ function getOneUFService(dayToSave, command, type)
         }
         var title0 = document.getElementById('title0_'+dayToSave).value;
         var title1 = document.getElementById('title1_'+dayToSave).value;
+        var img_src;
+        if (document.getElementById('img_'+dayToSave))
+            img_src = document.getElementById('img_'+dayToSave).value;
         var id = document.getElementById('id_'+dayToSave).value;
         var ttl = document.getElementById('ttl_'+dayToSave).value;
         var ts = document.getElementById('ttl_'+dayToSave).value;
         var alert_type = document.getElementById('type_'+dayToSave).innerText;
-        var postData = "ts=" + id + "&alert_type=" + alert_type + "&ttl=" + ttl + "&id=" + id + "&command=" + command + "&description1=" + escape(encodeURI(description1)) + "&description0=" + escape(encodeURI(description0)) + "&title1=" + escape(encodeURI(title1)) + "&title0=" + escape(encodeURI(title0)) + "&active=" + active + "&type=" + type + "&img_src=" + escape(encodeURI(img_src)) + "&href=" + escape(encodeURI(href));
+        var postData = "ts=" + id + "&alert_type=" + alert_type + "&ttl=" + ttl + "&img_src=" + img_src + "&id=" + id + "&command=" + command + "&description1=" + escape(encodeURI(description1)) + "&description0=" + escape(encodeURI(description0)) + "&title1=" + escape(encodeURI(title1)) + "&title0=" + escape(encodeURI(title0)) + "&active=" + active + "&type=" + type + "&img_src=" + escape(encodeURI(img_src)) + "&href=" + escape(encodeURI(href));
 
     }
 	else if (!document.getElementById('description'+dayToSave))

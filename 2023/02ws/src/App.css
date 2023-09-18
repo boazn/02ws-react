@@ -88,7 +88,7 @@ body {
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #4aaed7;
   min-height: 4vh;
   display: flex;
   flex-direction: column;
@@ -764,6 +764,7 @@ i {
 #latestnow{
   font-size:1.2em;
   color:black;
+  display: flex;
 }
 #latestnow .parambox{
   font-size:2em;
@@ -792,6 +793,7 @@ i {
   color:black;
   border-radius: 10px;
   margin:8px 8px;
+  padding: 10px;
   
 }
 .white_transp_box{
@@ -801,8 +803,8 @@ i {
   
 }
 .white_transp_box.inline.activity{
-  padding:0.5em;
-  margin:0.5em;
+  padding:0.4em;
+  margin:0.3em;
   display:inline-block;
 }
 .blue_transp_box{
@@ -994,6 +996,10 @@ i {
 .ReactModalPortal iframe{
   width:680px;
   height:600px
+}
+ .sidepopup iframe{
+  width:350px;
+  height:800px
 }
 #tempdivvalue
 {

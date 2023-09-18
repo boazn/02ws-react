@@ -69,11 +69,14 @@ const Activities = (props) => {
         setPopupIsOpen(true);
     }
     return (
-        <div className={" " + (props.lang === 1? 'rtl textright' : 'textleft')}> {t("GOOD_TIME_FOR")}
+        <div className={"white_box " + (props.lang === 1? 'rtl textright' : 'textleft')}> {t("GOOD_TIME_FOR")}
         {props.activities.map((activity, i) => {
-        return activity.value == 1 ? <div className="white_transp_box inline activity" key={i}>
-            
-                <img onClick={() => openDetails(activity, t("GOOD_TIME_FOR"), t("NOT_GOOD_TIME_FOR"))} src={`https://www.02ws.co.il/images/activities/${activity.activity.toString().toLowerCase()}.png`} height="30" width="30" alt="something" ></img> 
+        return activity.value == 1 ? <div className="blue_transp_box inline activity" key={i}>
+                <a href="javascript:void(0)" className="info">
+                <img onClick={() => openDetails(activity, t("GOOD_TIME_FOR"), t("NOT_GOOD_TIME_FOR"))} src={`https://www.02ws.co.il/images/activities/${activity.activity.toString().toLowerCase()}.png`} height="25" width="25" alt="something" ></img> 
+                    <span className="info">{getActivityTitle(activity, props.lang, props.activities_json.activities, t("GOOD_TIME_FOR"), t("NOT_GOOD_TIME_FOR"))}</span>
+                </a>
+                
                
             
            
@@ -82,9 +85,9 @@ const Activities = (props) => {
         })}<br/>
         {t("NOT_GOOD_TIME_FOR")}
         {props.activities.map((activity, i) => {
-        return activity.value == 0 ? <div className="white_transp_box inline activity" key={i}>
+        return activity.value == 0 ? <div className="blue_transp_box inline activity" key={i}>
             
-                <img onClick={() => openDetails(activity, t("GOOD_TIME_FOR"), t("NOT_GOOD_TIME_FOR"))} src={`https://www.02ws.co.il/images/activities/${activity.activity.toString().toLowerCase()}.png`} height="30" width="30" alt="something" ></img> 
+                <img onClick={() => openDetails(activity, t("GOOD_TIME_FOR"), t("NOT_GOOD_TIME_FOR"))} src={`https://www.02ws.co.il/images/activities/${activity.activity.toString().toLowerCase()}.png`} height="25" width="25" alt="something" ></img> 
                
             
            

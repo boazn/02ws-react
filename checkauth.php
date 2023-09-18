@@ -90,7 +90,7 @@ function get_user(){
             $userJSON .= ",";
             $userJSON .= "\"nicename\":"."\"".$line['user_nicename']."\"";
             $userJSON .= ",";
-            $userJSON .= "\"icon\":"."\"".$line['user_icon']."\"";
+            $userJSON .= "\"icon\":"."\"".urlencode($line['user_icon'])."\"";
 	    $userJSON .= ",";
             $userJSON .= "\"priority\":".$line['priority'];
             $userJSON .= ",";
@@ -167,6 +167,21 @@ function get_userid_from_key($key){
    if (!empty($line[1]))
        return $line[1];
    return null;
+}
+function user_register_with_g($email, $user, $pass, $user_nice_name, $user_display_name, $user_icon, $reg_id){
+    // if is checked "remember me" when registaring
+    $email = strtolower($email);
+    
+    $key = base64_encode(random_bytes(20)); // 
+    $link = new mysqli(MYSQL_IP, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+    $link->query("SET NAMES utf8;");
+    $email = $link->real_escape_string ($email);
+    $user = $link->real_escape_string ($user);
+    $pass = $link->real_escape_string ($pass);
+    $user_nice_name = $link->real_escape_string ($user_nice_name);
+    $user_display_name = $link->real_escape_string ($user_display_name);
+    $query = "call SaveUserWithG ('$email','$user', '$pass', '$user_nice_name', '$key', '$user_display_name', '$user_icon', '$reg_id')";
+    $link->query($query);
 }
 function user_wants_to_register($email, $user, $pass, $user_nice_name, $user_display_name, $user_icon, $reg_id){
     // if is checked "remember me" when registaring
@@ -486,6 +501,14 @@ else if ($_REQUEST['action']=="register"){
     $email_ok = check_email_address(trim($_REQUEST['email']));
     if ($email_ok)
         user_wants_to_register(trim($_REQUEST['email']), $_POST['username'], md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon'], $_REQUEST['reg_id']);
+    else
+        echo "Email not OK";
+    
+}
+else if ($_REQUEST['action']=="register_with_google"){
+    $email_ok = check_email_address(trim($_REQUEST['email']));
+    if ($email_ok)
+        user_register_with_g(trim($_REQUEST['email']), $_POST['username'], md5($_REQUEST['password']), $_REQUEST['user_nice_name'], $_REQUEST['user_display_name'], $_REQUEST['user_icon'], $_REQUEST['reg_id']);
     else
         echo "Email not OK";
     

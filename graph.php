@@ -581,10 +581,10 @@ else if ((strstr(strtolower($_GET['graph']), 'uv'))||
                 </form>
                 <ul id="moregraphs">
                 <li><a href="/wxwugraphs/graphy1a.php?y=<?=$year?>&theme=default&w=1020&h=500" rel="external"><? echo $BY_DATE[$lang_idx];?></a></li>
-                <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'latest.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$TODAY[$lang_idx];?></a></li>
-                <li><a href="<? echo get_query_edited_url($url_cur, 'section', '2weeks.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_WEEK[$lang_idx];?></a></li>
-                <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'month.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_MONTH[$lang_idx];?></a></li>
-                <li><a href="<? echo get_query_edited_url($url_cur, 'section', '3months.php');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - 3 ".$MONTHS[$lang_idx];?></a></li>
+                <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'latest');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$TODAY[$lang_idx];?></a></li>
+                <li><a href="<? echo get_query_edited_url($url_cur, 'section', '2weeks');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_WEEK[$lang_idx];?></a></li>
+                <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'month');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - ".$LAST_MONTH[$lang_idx];?></a></li>
+                <li><a href="<? echo get_query_edited_url($url_cur, 'section', '3months');?>" class="hlink"><? echo $ALL_GRAPHS[$lang_idx]." - 3 ".$MONTHS[$lang_idx];?></a></li>
                 </ul>
 				<ul class="float" id="relatedgraphs">
                     <li><a href="<? echo get_query_edited_url($url_cur, 'graph', 'tempheat.php');?>"><?=$TEMP[$lang_idx]."/".$HEAT_IDX[$lang_idx];?></a></li>
@@ -846,7 +846,7 @@ if (strstr(strtolower($_GET['graph']), 'rain'))
 		</a>
         <br />
         
-	<a href="<? echo get_query_edited_url($url_cur, 'section', 'RainSeasons.php');?>">
+	<a href="<? echo get_query_edited_url($url_cur, 'section', 'RainSeasons');?>">
 		150 <? echo $RAIN_SEASONS[$lang_idx]; ?>...
 	</a>
 		</div>

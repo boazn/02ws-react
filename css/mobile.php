@@ -392,7 +392,10 @@ width:320px;
     position:absolute;
 }
 #radarimg{
-    margin-<?echo get_s_align();?>:-60px;
+    margin-<?echo get_s_align();?>:-100px;
+}
+#geshemspace, #rainviewer{
+    margin-<?echo get_s_align();?>:-80px;
 }
 #wrapper{
     width: 570px;
@@ -1533,7 +1536,7 @@ z-index:10;
 #info_btns_wrapper
 {
 overflow-x: scroll;
-width: 320px;
+width: 100%;
 direction:rtl;
 }
 .forecasttimebox
@@ -1843,11 +1846,15 @@ margin:5px 27px 11px 11px
 {
     margin-top:10px;
 }
+#if1, #if2, #if3, #if4
+{
+    width:100%
+}
 #graph_forcastWrapper
 {
     
     text-align: justify;
-    width:320px;
+    width:100%;
     -webkit-overflow-scrolling: touch;
     -webkit-transform: translateZ(0px);
     -webkit-transform: translate3d(0,0,0);

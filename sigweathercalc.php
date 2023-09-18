@@ -154,13 +154,15 @@ function getRecommendations($timeframe, $idx,  $temp, $wind10min, $humidity, $ra
 		array_push($reco, array('sig0' => '', 'sig1' => '', 'activity' => Activities::Dog, 'value' => Recommendations::Yes, 'timeframe' => $timeframe));
 	   }
 
-	if (($rainperc > 0)||($dust > 100)||($temp<22)||($temp>29)||
+	if (($rainperc > 0)||($dust > 100)||($temp<22)&&($current->get_intemp()<22)||($temp>29)&&($current->get_intemp()>25)||
 		($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)){
 			if ($dust > 100 )
 				$sigRecommendation = array($DUST[0].":".$dust, $DUST[1].":".$dust);
 			if ($rainperc > 0)
 				$sigRecommendation = array($CHANCE_OF[0].$RAIN[0].":".$rainperc."%" , $CHANCE_OF[1].$RAIN[1].":".$rainperc."%");
 			if ((($temp<22)&&($current->get_intemp()<22)))
+				$sigRecommendation = array($TEMP[0].":".$temp."°", $TEMP[1].":".$temp."°");
+			if ((($temp>29)&&($current->get_intemp()>25)))
 				$sigRecommendation = array($TEMP[0].":".$temp."°", $TEMP[1].":".$temp."°");
 			if ($nextSigForecast['hrs']<3&&$is_now&&$is_sig_forecast)
 				$sigRecommendation = array($TEMP[0].":".$temp.", ".$HUMIDITY[0].":".$humidity.", ".$CHANCE_OF[0].$RAIN[0].":".$rainperc.", ".$DUST[0].":".$dust, $TEMP[1].":".$temp.", ".$HUMIDITY[1].":".$humidity.", ".$CHANCE_OF[1].$RAIN[1].":".$rainperc.", ".$DUST[1].":".$dust);

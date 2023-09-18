@@ -63,8 +63,9 @@ const Statuses = (props) => {
           <Btn btnOnClick={() => toggleOpen(false)} btnTitleText={""}  img={"X"}>
                  
          </Btn>
-         <External src={`https://www.02ws.co.il/small/${url}`} width="350" height="95%" className={props.cssClasses}/>
- 
+         <div className="sidepopup">
+          <External src={`https://www.02ws.co.il/small/${url}`} width="350" height="95%" className={props.cssClasses}/>  
+         </div>
        </ReactModal>
        </>
     );
