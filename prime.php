@@ -65,33 +65,26 @@
                     <li class="hourly" style="padding:0.3em 1em;cursor: pointer;"><div class="big" onClick="change_main('#forcast_hours', this, '<?=$lang_idx?>');"><? echo($HOURLY[$lang_idx]).get_arrow();?></div></li>
 				</ul>
 				<ul id="forcast_table">
-					<? if  (count($forecastDaysDB) == 0) 
-						{
-							echo $frcstTable;
-							echo "<ul style=\"height:5px\"><li colspan=\"4\">".$SOURCE[$lang_idx].": ".$IMS[$lang_idx]."</li></ul>";	
-	 
-						}
-						else 
-						{
-                                                    $textsum = 0;
-                                                    $date_a = explode("/", array_slice($forecastDaysDB, 0, 1)[0]['date']);
-                                                      if ($date_a[0] == $day)//passed midnight
-                                                      {
-                                                          $hightemp_value = $yest->get_temp_day();
-                                                          $lowtemp_value = $yest->get_temp_morning();
-                                                          $nighttemp_value = $yest->get_temp_night();
-                                                          $day_value = replaceDays(date("D ",  mktime ($hour, $min, 0, $month, $day-1 ,$year)));
-                                                          $date_value = date("j/n",  mktime ($hour, $min, 0, $month, $day-1 ,$year));
-                                                      }
-                                                      else
-                                                      {
-                                                          $hightemp_value = $today->get_temp_day();
-                                                          $lowtemp_value = $today->get_temp_morning();
-                                                          $nighttemp_value = $current->get_temp();
-                                                          $day_value = replaceDays(date("D ",  mktime ($hour, $min, 0, $month, $day ,$year)));
-                                                          $date_value = date("j/n",  mktime ($hour, $min, 0, $month, $day ,$year));
-                                                      }
-                                                }  
+					<? 
+                        $textsum = 0;
+                        $date_a = explode("/", array_slice($forecastDaysDB, 0, 1)[0]['date']);
+                            if ($date_a[0] == $day)//passed midnight
+                            {
+                                $hightemp_value = $yest->get_temp_day();
+                                $lowtemp_value = $yest->get_temp_morning();
+                                $nighttemp_value = $yest->get_temp_night();
+                                $day_value = replaceDays(date("D ",  mktime ($hour, $min, 0, $month, $day-1 ,$year)));
+                                $date_value = date("j/n",  mktime ($hour, $min, 0, $month, $day-1 ,$year));
+                            }
+                            else
+                            {
+                                $hightemp_value = $today->get_temp_day();
+                                $lowtemp_value = $today->get_temp_morning();
+                                $nighttemp_value = $current->get_temp();
+                                $day_value = replaceDays(date("D ",  mktime ($hour, $min, 0, $month, $day ,$year)));
+                                $date_value = date("j/n",  mktime ($hour, $min, 0, $month, $day ,$year));
+                            }
+                                                  
 							?>
                                                         <li class="forcast_each" id="yesterday_line" style="display:none">
 							<ul>
@@ -144,13 +137,13 @@
                             <? }?>
 							<li class="forcast_each <?if ($i >= TASHKIF_START) echo "tashkif";?>" id="<?=$key?>" name="<?=$key?>">
 							<ul>
-                                                                <li class="forcast_off_day">
-                                                                    <?if ($i == 0) {?>
-                                                                    <a hrf="javascript:void(0)" onclick="toggle('yesterday_line');">
-                                                                        <img src="images/yesterday.png" width="14" height="14" title="<?=$LAST_DAY[$lang_idx]?>" />
-                                                                    </a>
-                                                                    <?}?>
-                                                                </li>
+                                <li class="forcast_off_day">
+                                    <?if ($i == 0) {?>
+                                    <a hrf="javascript:void(0)" onclick="toggle('yesterday_line');">
+                                        <img src="images/yesterday.png" width="14" height="14" title="<?=$LAST_DAY[$lang_idx]?>" />
+                                    </a>
+                                    <?}?>
+                                </li>
 								<li class="forcast_day">
 								<? echo replaceDays($forecastday['day_name']." ");?><? if ($i >= TASHKIF_START) echo "<p>".$overlook_d."</p>";?>
 								</li>
@@ -277,17 +270,16 @@
                                             </li>
                                             
                                            <li>
-                                               <img src="<?=$MIDRAG_I[$random_midrag]?>" width="45" height="55" alt="מדרג"/>
+                                               
                                             </li>
-                                            <li class="forcast_text below_forecast" style="line-height: 15px;direction:rtl;width:180px">
-                                                 <a href="https://www.google.com/maps?q=%D7%91%D7%99%D7%9C%D7%95+16+%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D&entry=gmail&source=g" target="_blank" >
-                                                     <? if (isHeb()) {?> 
-                                                         <a href="<?=$MIDRAG_L[$random_midrag]?>"><?=$MIDRAG_T[$random_midrag]?></a>
-                       
-                                                     <?} else {?>
-                                                       
-                                                     <?}?>
-												 </a>
+                                            <li class="forcast_text below_forecast" >
+                                                 
+                                            
+                                                <a href="https://careers.topmatch.co.il/midrag/index.html" target="_blank">
+                                                <img src="https://res.cloudinary.com/midrag/image/upload/02wsBaner.png" width="320" height="50" alt="מדרג"/> 
+                                                </a>
+            
+												
                                             </li>
                                             
 					     
@@ -514,102 +506,102 @@
              
             </div>
             <div id="if2">
-                    <!--<a href="https://hazira.org.il/" target=_blank><img src="images/Banner-02ws-3-small.gif" alt="hazira" width="300" height="100" /></a>-->
-                </div>
-                <div id="if3" style="width:300px">
-                </div>
-                <div id="if4">
-                <div id="belowmainad" class="white_box" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
-                <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
-    קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2023 בירושלים<?}?></a>
-                </div>
-                </div>
+                <!--<a href="https://hazira.org.il/" target=_blank><img src="images/Banner-02ws-3-small.gif" alt="hazira" width="300" height="100" /></a>-->
+            </div>
+            <div id="if3" style="width:300px">
+            </div>
+            <div id="if4">
+            <div id="belowmainad" class="white_box" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
+            <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
+קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2023 בירושלים<?}?></a>
+            </div>
+            </div>
             
 	   </div>
 			
-		    <div class="row" style="margin: 5px -20px">
-                
-                <div id="mainstory" class="span7 offset3 white_box">
-                <?if ($lang_idx <= 1) {?>
-                    <h2><?php echo $MainStory->get_title();?></h2>
-                    <div class="box_text">
-                                    
-                                <?php echo mb_substr($MainStory->get_description(), 0, 200, "UTF-8");?>... 
-                                <?php
-                                    $box_img_src = $MainStory->get_img_src();$img_title = $MainStory->get_title();
-                                    //echo "<img src=\"$box_img_src\" title=\"".$img_title."\" id=\"mainpic\" alt=\"".$img_title."\" width=\"40px\" />";
-                                    ?>
-                                    
-                                    <a href="<? echo "station.php?section=mainstory&amp;lang=".$lang_idx;?>" class="invfloat">
-                                        <?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
-                                    </a>
-                    </div>
-                    <?}?> 
+        <div class="row" style="margin: 5px -20px">
+            
+            <div id="mainstory" class="span7 offset3 white_box">
+            <?if ($lang_idx <= 1) {?>
+                <h2><?php echo $MainStory->get_title();?></h2>
+                <div class="box_text">
+                                
+                            <?php echo mb_substr($MainStory->get_description(), 0, 200, "UTF-8");?>... 
+                            <?php
+                                $box_img_src = $MainStory->get_img_src();$img_title = $MainStory->get_title();
+                                //echo "<img src=\"$box_img_src\" title=\"".$img_title."\" id=\"mainpic\" alt=\"".$img_title."\" width=\"40px\" />";
+                                ?>
+                                
+                                <a href="<? echo "station.php?section=mainstory&amp;lang=".$lang_idx;?>" class="invfloat">
+                                    <?echo $MORE_INFO[$lang_idx];?><?=get_arrow()?>
+                                </a>
                 </div>
-                <div id="windy_widget" class="span4">
-                <h2><?=$SYNOP_TITLE[$lang_idx]?></h2>
-                <iframe width="300" height="180" src="https://embed.windy.com/embed2.html?lat=31.775&lon=35.156&detailLat=31.728&detailLon=34.942&width=300&height=180&zoom=7&level=850h&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=true&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>               
-                <?=$synop?>   
-		        </div>      
-                <div id="adexternal" class="span3" style="display:none">
-                                 
-                  
-                </div>
+                <?}?> 
             </div>
+            <div id="windy_widget" class="span4">
+            <h2><?=$SYNOP_TITLE[$lang_idx]?></h2>
+            <iframe width="300" height="180" src="https://embed.windy.com/embed2.html?lat=31.775&lon=35.156&detailLat=31.728&detailLon=34.942&width=300&height=180&zoom=7&level=850h&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=true&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>               
+            <?=$synop?>   
+            </div>      
+            <div id="adexternal" class="span3" style="display:none">
+                                
+                
+            </div>
+        </div>
 		    
-		    <div class="row more_stuff">
-                        
-			<div id="did_you_know" class="span3">
+        <div class="row more_stuff">
+                    
+            <div id="did_you_know" class="span3">
                             
                             <h2><?=$DID_YOU_KNOW[$lang_idx]?></h2>
-			    <p><?=$DID_YOU_KNOW_EX[$random_did_you_know][$lang_idx]?></p>
+                <p><?=$DID_YOU_KNOW_EX[$random_did_you_know][$lang_idx]?></p>
                 <a href="<?=$DID_YOU_KNOW_LINK[$random_did_you_know]?>"><?=$DID_YOU_KNOW_TITLE[$random_did_you_know];?></a>
                 <br/>
                 <div id="gender_notice">
                 <? echo $GENDER_NOTICE[$lang_idx]." <em id=\"gendertype\"></em>. ".$GENDER_NOTICE2[$lang_idx]; ?>
                 </div>
-			</div>
-			<div class="span7 offset1 more_icons">
+            </div>
+            <div class="span7 offset1 more_icons">
                             
-			    <ul>
-				<li></li>
+                <ul>
+                <li></li>
                                 <li></li>
-				<li></li>
-			    </ul>
-			</div>
-                       			
-                   </div>
-                    
-                    
-                    <div class="row"> 
-                           <div id="gp_icon" class="span8">
-                               
-                               <div id="more_icons_container">
-                                    <a id="weather_movies" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'weatherclips');?>" title="<? echo $WEATHER_CLIPS[$lang_idx];?>" class="hlink"><? echo $WEATHER_CLIPS[$lang_idx];?></a>
-                                    <a id="weather_songs" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'songs');?>"><?=$SONGS[$lang_idx]?></a>
-                                    <a id="snow_poems" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'snow');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a>
-                                    <?if (isHeb()){?>
-                                    <a id="myths" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'myths');?>" class="hlink"><? echo $MYTHS[$lang_idx];?></a>
-                                    <?}?>
-                                    <a id="weather_hul" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a>
-                                    <a id="weather_israel" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a>
-                                    <a id="likeddislikedforecasts" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'forecastDays');?>"><? echo $LIKED_FORECAST[$lang_idx];?></a>
-
-                               </div>
-                            </div>
-                            <?php if (isHeb()) {?>
+                <li></li>
+                </ul>
+            </div>
                             
-                            <ul id="outside_links">
-                               <li><a href="http://shabat.open.org.il/?fbclid=IwAR34It8gX-qQFVGGLmnHYlCiBhduy0y-XsHcw30rUjs3kCpFvO7NVMoBUX4" title='open02' target="_blank">פתוח בשבת</a></li>
-                               <li><a href="http://www.weather2day.co.il" title='Weather2day' target="_blank">מזג האוויר - Weather2day</a></li>
-                               <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tracks');?>">טיולים בירושלים</a></li>
-                            </ul>
-                           <?}?>
-                    </div>
-                    <div class="row"> 
-                        
+        </div>
+                    
+                    
+        <div class="row"> 
+                <div id="gp_icon" class="span8">
+                    
+                    <div id="more_icons_container">
+                        <a id="weather_movies" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'weatherclips');?>" title="<? echo $WEATHER_CLIPS[$lang_idx];?>" class="hlink"><? echo $WEATHER_CLIPS[$lang_idx];?></a>
+                        <a id="weather_songs" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'songs');?>"><?=$SONGS[$lang_idx]?></a>
+                        <a id="snow_poems" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'snow');?>" class="hlink"><? echo $SNOW_JER[$lang_idx];?></a>
+                        <?if (isHeb()){?>
+                        <a id="myths" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'myths');?>" class="hlink"><? echo $MYTHS[$lang_idx];?></a>
+                        <?}?>
+                        <a id="weather_hul" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ABROD[$lang_idx]); ?>" ><? echo($WORLD[$lang_idx]); ?></a>
+                        <a id="weather_israel" class="more_icons" href="<?=BASE_URL;?>?section=forecast/getForecast&amp;region=isr&amp;lang=<? echo $lang_idx;?>" title="<? echo($FORECAST_ISR[$lang_idx]); ?>"><? echo($FORECAST_ISR[$lang_idx]); ?></a>
+                        <a id="likeddislikedforecasts" class="more_icons" href="<? echo get_query_edited_url($url_cur, 'section', 'forecastDays');?>"><? echo $LIKED_FORECAST[$lang_idx];?></a>
 
                     </div>
+                </div>
+                <?php if (isHeb()) {?>
+                
+                <ul id="outside_links">
+                    <li><a href="http://shabat.open.org.il/?fbclid=IwAR34It8gX-qQFVGGLmnHYlCiBhduy0y-XsHcw30rUjs3kCpFvO7NVMoBUX4" title='open02' target="_blank">פתוח בשבת</a></li>
+                    <li><a href="http://www.weather2day.co.il" title='Weather2day' target="_blank">מזג האוויר - Weather2day</a></li>
+                    <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tracks');?>">טיולים בירושלים</a></li>
+                </ul>
+                <?}?>
+        </div>
+        <div class="row"> 
+            
+
+        </div>
 
 					
 	</article>
@@ -618,7 +610,10 @@
 				
 	<article id="pics">
 					<div class="row">
-					<div id="middleadsense_container" class="span11" >
+					<div id="middleadsense_container" class="span12" >
+                                        <a href="https://careers.topmatch.co.il/midrag/index.html" target="_blank" style="float:left">
+                                                <img src="https://res.cloudinary.com/midrag/image/upload/02wsBaner.png" width="300" height="50" alt="מדרג"/> 
+                                                </a>
 					<div id="middleadsense">
                     <div data-onpage=true 
                         data-adpath="/339474670,22847485332/02WS/Desktop_728x90">
@@ -824,7 +819,4 @@
 		<img id="hill6" src="img/hill2_night.png" alt="hill"/>
                 <?}?>
 		  	
-        </article>
-    <script type="text/javascript">
-   
-</script>
+        </article> 

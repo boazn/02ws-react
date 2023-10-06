@@ -372,6 +372,7 @@ i18n
               " Nice for picnic"
           ],
           "GOOD_TIME_FOR": "good time for",
+          "NOT_GOOD_TIME_FOR": "not good for",
           "GOOD_DAY_FOR": "good day for",
           "GOOD_LAUNDRY": "Good time to dry laundry",
           "SOSO_LAUNDRY": "Not Ideal time to dry laundry, but acceptable",

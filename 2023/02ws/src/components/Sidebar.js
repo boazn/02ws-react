@@ -23,11 +23,14 @@ function Sidebar() {
     const handleTrans = (code) => {
         i18n.changeLanguage(code);
         langcode = code;
+        configs.lang = code;
+        setConfig(configs);
       };
     const [isOpen, setIsOpen] = useState(false);
     const [isForecastOpen, setIsForecastOpen] = useState(false);
     const [iswhatelseOpen, setIswhatelseOpen] = useState(false);
     const [isWhatHappendOpen, setIsWhatHappendOpen] = useState(false);
+    const [configData, setConfig] = useState(true);
   
     function handleToggle(){
         setIsOpen(!isOpen);

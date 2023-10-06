@@ -17,6 +17,7 @@ import {ConfigContext} from "../helpers/ConfigContext";
 import TempGraph from './TempGraph';
 import Btn from './Button';
 import ReactModal  from 'react-modal';
+import CurrentStory from './CurrentStory';
 
 function App1({json, cssClasses, activities_json}) {
   
@@ -107,13 +108,16 @@ function App1({json, cssClasses, activities_json}) {
        </div>
        
        <div className="row">
-       <div className="graph col-xs-4 col-lg-4 ">
+       <div className="graph col-xs-4 col-lg-3 ">
+       <CurrentStory lang={langcode} />
+      </div>
+       <div className="graph col-xs-4 col-lg-3 ">
        <TempGraph className={cssClasses} lang={langcode} limit={1000} params={'temp,temp2,temp3'}/>
        </div>
-       <div className="graph col-xs-4 col-lg-4 ">
+       <div className="graph col-xs-4 col-lg-3 ">
        <AdsInternal ads={ads} />
        </div>
-       <div className="graph col-xs-4 col-lg-4 ">
+       <div className="graph col-xs-4 col-lg-3 ">
        <Ad/>
        </div>    
        </div>

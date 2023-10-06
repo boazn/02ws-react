@@ -798,6 +798,9 @@ function attachEnter(){
                     while (jsonT.user.icon != nextClass){
                        nextClass = change_icon('right', $("#profileform .icon_right"));
                     }
+                if  (icon.indexOf('http') > 0 ){
+                    $("#user_icon").html(icon);
+                }
         }
         function signout_from_server(lang, limit, update)
         {
@@ -1333,6 +1336,7 @@ function fillLikes(jsonstr)
                   $(".loading").hide();
 		  $("#registerform_result").html( msg );
 		  $('#cboxClose').click();  
+          startup(<?=$lang_idx?>, 0, '');
 		});
       }
       function google_si_OnSuccess(response){
@@ -1360,8 +1364,8 @@ function fillLikes(jsonstr)
             url: "<?=BASE_URL?>/checkauth.php?action=getuser&lang=" + lang +"&reg_id=<?=$_GET['reg_id']?>"+"&email=" + g_email
         })
         .done(function( jsonstr ) {
-           
-            try{
+          
+           try{
                 var jsonT = JSON.parse( jsonstr  );
                 if (jsonT.user.approved == 1)
                     isUserAdApproved = true;
@@ -1379,6 +1383,7 @@ function fillLikes(jsonstr)
                     if (document.getElementById('new_post_btn')){
                             $('#new_post_btn').attr('onclick','openNewPost('+lang+')');
                     }
+                    startup(<?=$lang_idx?>, 0, '');
                 }
                 if (!isUserAdApproved)
                 {   

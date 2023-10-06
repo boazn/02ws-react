@@ -66,7 +66,7 @@ function App({layout, src}) {
   const cssClasses = classnames ({
     snow: (states.issnowing  === 'true'),
     rain: (states.israining  === 'true'),
-    night: (current.issun  === 'false'),
+    night: (current.islight  === 'false'),
     dust: (current.isdusty === 'true'),
     windy: (current.iswindy === 'true'),
     sunset: (current.issunset === 'true'),

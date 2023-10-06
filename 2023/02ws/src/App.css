@@ -470,7 +470,6 @@ body {
 }
 #forcast_days{
   
-  height: 600px;
 }
 #forcast_days li {
   list-style: none;
@@ -1098,7 +1097,6 @@ background-position: 0px 0px;
   }
   
   #forcast_days{    
-    height:800px
   }
   .ReactModalPortal iframe{
     width:320px;    

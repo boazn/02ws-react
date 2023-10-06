@@ -1,4 +1,4 @@
-function sprintf(fstring)
+ function sprintf(fstring)
   { var pad = function(str,ch,len)
       { var ps='';
         for(var i=0; i<Math.abs(len); i++) ps+=ch;

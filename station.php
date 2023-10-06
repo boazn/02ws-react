@@ -1608,7 +1608,7 @@ var lang=<?=$lang_idx?>;
 <? }?>
 <script src="js/tinymce/tinymce.min.07032017.js"></script>
 <script src="js/modernizr.custom.37797.js"></script> 
-<script src="footerScripts180422.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&guid=<?=$_GET['guid']?>"  type="text/javascript"></script>
+<script src="footerScripts260923.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&guid=<?=$_GET['guid']?>"  type="text/javascript"></script>
 <script type="text/javascript">
 /* <![CDATA[ */
 <? if ($current->get_cloudiness() > 2) {?>

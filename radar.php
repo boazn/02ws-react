@@ -1,14 +1,6 @@
-<html>
 
-  <head>
-
-    <title>
-
-      daily pic loop
-
-    </title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
-	<script type="text/javascript" src="/sprintf2.js"></script>
+	<script type="text/javascript" src="/sprintf2.js?foo=222"></script>
 
 	<script language="javascript" type="text/javascript">
    function checkImageExists(imageSrc, good, bad) {
@@ -29,7 +21,6 @@
       //console.log(imagepath);
       checkImageExists(imagepath,
       function(){ 
-         
          //alert(imagepath);
          console.log(imagepath + " found");
          found = true;
@@ -1046,7 +1037,7 @@ function imgError(image) {
 </div>
 <div style="clear:both"></div>
 
-<div class="float" style="width:100%">
+<div class="float">
 <h2 style="padding:1em"><?=$ARCHIVE[$lang_idx]?></h2>
 <div style="padding:1em"><?=$BY_DATE[$lang_idx]?></div>
 <?
@@ -1071,8 +1062,6 @@ function imgError(image) {
 	?>	
 
 </div>
-</body>
-
 <script language="javascript" type="text/javascript">
         //document.images['animation'].src = "http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=19&TotalImages=20&LangID=1&Location=";
 	startup();
@@ -1085,5 +1074,5 @@ function imgError(image) {
         
 </script>
 
-</html>
+
 

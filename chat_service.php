@@ -8,7 +8,7 @@ include_once("lang.php");
 define("MANAGER_NAME","bn19");
 define("VICE_MANAGER","vmvm");
 
-//ini_set("display_errors","On");
+ini_set("display_errors","On");
 
 function isValidIP ($currnet_ip)
 {
@@ -89,7 +89,7 @@ function updateMessage ($idx, $body, $isPartialDelete)
 		$p_email = $_SESSION['email'];
 		if (empty($p_email))
 		{
-			logger("empty session in message:".$idx." ".$body);
+			logger("empty session in message:".$idx." ".$body, 0, "chat", "db", "updateMessage");
 			return ;
 		}
         //logger("last positions:".substr ($body, strlen($body)-strlen("</div>")));

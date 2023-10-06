@@ -180,7 +180,7 @@ background:#eeeeee
 }
 #legends
 {
-    width: 320px;
+    width: 100%;
     padding: 0 0.5em;
 }
 #forecastnextdays_table .icon_day, #nextdays_table .icon_day{
@@ -380,7 +380,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
     margin-right: 120px;
 }
 #snowtable{
-width:320px;
+width:100%;
 }
 #radarcontrols{
      top:40px;
@@ -398,9 +398,12 @@ width:320px;
     margin-<?echo get_s_align();?>:-80px;
 }
 #wrapper{
-    width: 570px;
+    width: 600px;
     margin: 0 -210px;
     clear: both;
+}
+#radarad{
+    margin-left:220px;
 }
 .chatdate
 {
@@ -933,7 +936,7 @@ text-align:<?=get_s_align()?>;
 .forcast_title_btns
 {
 	display:inline-block;
-    width:24%;
+    width:19%;
     padding-<?=get_inv_s_align()?>:1px;
     text-align:center;
     padding-top:5px;
@@ -1145,7 +1148,7 @@ bottom:-200px;
 margin-top: 50px;
 z-index: -10;
 height: 220px;
-width:320px
+width:100%
 }
 
 
@@ -1447,7 +1450,7 @@ display:block;z-index: 100;padding-top: 7px;width: 30px;
     background-color: #eeeeee;
 }
 #startupdiv, #register_suggest{
-    top: 0; padding:55px 10px;left: 0;z-index:999999; position: absolute;background-color: #FFFFFF;
+    top: 0; padding:55px 40px;left: 0;z-index:999999; position: absolute;background-color: #FFFFFF;
     <? if (isHeb()) echo "direction:rtl"; ?>;
     
 }
@@ -1472,7 +1475,7 @@ ul { list-style-type: none;}
 {
 	float:<? echo get_inv_s_align(); ?>;
 	<? if (isHeb()) echo "direction:rtl"; ?>;
-	text-align: <?=get_inv_s_align()?>;
+	text-align: <?=get_inv_s_align()?>;ןמג
 }
 .button
 {
@@ -1855,7 +1858,7 @@ margin:5px 27px 11px 11px
     
     text-align: justify;
     width:100%;
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;ןמגק
     -webkit-transform: translateZ(0px);
     -webkit-transform: translate3d(0,0,0);
     -webkit-perspective: 1000;

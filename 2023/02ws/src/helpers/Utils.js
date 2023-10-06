@@ -81,6 +81,21 @@ export async function getParamsData() {
     let result = fetchJson();
    return result;
 }
+export async function getStories() {
+  const fetchJson = async () => {
+      var opts = {
+          headers: {
+           
+          }
+        }
+      const response = await fetch("https://www.02ws.co.il/stories.json", opts);
+      const json = await response.json();
+      return json;
+      
+    };
+    let result = fetchJson();
+   return result;
+}
 export async function updateLikesCall(idx, command) {
   const fetchJson = async () => {
     var opts = {

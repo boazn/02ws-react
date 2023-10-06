@@ -2033,7 +2033,7 @@ width:250px
 #did_you_know {
      position:absolute;
     width:130px;
-    margin-top:60px;
+    margin-top:-60px;
      line-height:18px;
 }
 
@@ -2877,7 +2877,7 @@ a#expandclick, a#contractclick {
 }
 #middleadsense{
 height:100px;
-margin-top:50px;
+margin-top:0px;
 width:730px;
 float:left;
 background-color:#fff;
@@ -4964,6 +4964,7 @@ border-top:none; margin:0; padding:0;
     background: no-repeat;
     font-family: nextexitfotlight;
     width: 11em;
+    background-position-x: <?=get_s_align()?>;
     padding-<?=get_s_align()?>:1.2em;
 }
 .inparamdiv .coldmeterline:hover{
@@ -4983,49 +4984,49 @@ border-top:none; margin:0; padding:0;
     
 }
 .radio-toolbar.color0, .colmetercontainer .color0{
-    background-color:#5F55D0 ;
+    
     background-image:url(../images/clothes/cold.svg);
     
 }
 .radio-toolbar.color1, .colmetercontainer .color1{
-    background-color:#0F6ADB ;
+    
     background-image:url(../images/clothes/gloves.svg);
     
 }
 .radio-toolbar.color2, .colmetercontainer .color2{
-    background-color:#15A3DC ;
+    
     background-image:url(../images/clothes/coat_n4.svg);
     
 }
 .radio-toolbar.color3, .colmetercontainer .color3{
-    background-color:#00D5F2 ;
+    
     background-image:url(../images/clothes/jacket_n4.svg);
     
 }
 .radio-toolbar.color4, .colmetercontainer .color4{
-    background-color:#5AEAAD ;
+    
     background-image:url(../images/clothes/lightjacket_n4.svg);
     
 }
 .radio-toolbar.color5, .colmetercontainer .color5{
-    background-color:#98DD71 ;
+    
     background-image:url(../images/clothes/longsleeves_n4.svg);
    
 }
 .radio-toolbar.color6, .colmetercontainer .color6{
-    background-color:#F2D227 ;
+    
     background-image:url(../images/clothes/tshirt_n4.svg);
 }
 .radio-toolbar.color7, .colmetercontainer .color7{
-    background-color:#FFAC30 ;
+    
     background-image:url(../images/clothes/shorts_n4.svg);
 }
 .radio-toolbar.color8, .colmetercontainer .color8{
-    background-color:#FF7324 ;
+   
     background-image:url(../images/clothes/singlet.svg);
 }
 .radio-toolbar.color9, .colmetercontainer .color9{
-    background-color:#FF3E3E ;
+    
     background-image:url(../images/clothes/singlet.svg);
 }
 .radio-toolbar label{

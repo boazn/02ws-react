@@ -67,7 +67,7 @@ function isContactPage(){
     return (($_REQUEST['section'] == "SendEmailForm.php"));
 }
 function isRadarPage(){
-    return (($_REQUEST['section'] == "radar.php"));
+    return (($_REQUEST['section'] == "radar.php")||($_REQUEST['section'] == "radar"));
 }
 function isForumPage(){
     return (($_REQUEST['section'] == "chatmobile.php"));
@@ -94,14 +94,14 @@ if ($lang_idx == "")
 $width = "320";
 if (isRadarPage())
 {
-  $width = "570";  
+  $width = "420";  
 }
 
 ?>
 <!DOCTYPE html>
 <html  <? if (isHeb()) echo "lang=\"he\" xml:lang=\"he\"" ; ?> xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
+ra
 <link rel="stylesheet" href="<?=BASE_URL?>/css/main<?=getCssIdx($lang_idx);?>.css" type="text/css" />
 <link rel="stylesheet" href="<?=BASE_URL?>/css/mobile<?=getCssIdx($lang_idx);?>.css" type="text/css" />
 <link rel="manifest" href="manifest.php?lang=<?=$lang_idx?>">
@@ -176,6 +176,11 @@ if (isRadarPage())
         <div id="alerts_title" class="alerts_title forcast_title_btns">
         <a href="#main_cellphone_container" id="" onclick="navMain('messages_box', $(this).parent().attr('id'), 'none')">
                 <? echo($MESSAGES[$lang_idx]); ?>
+        </a>
+        </div>
+        <div id="forum_title" class="forum_title forcast_title_btns">
+        <a href="./?section=chatmobile.php&lang=<?=$lang_idx?>" >
+                <? echo($CHAT_TITLE[$lang_idx]); ?>
         </a>
         </div>
         
@@ -844,6 +849,12 @@ else {?>
         
         </div>
         <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
+        <div id="adunit6" class="adunit">
+        <a href="https://careers.topmatch.co.il/midrag/index.html" target="_blank">
+        <img src="https://res.cloudinary.com/midrag/image/upload/02wsBaner.png" width="320" height="50" alt="מדרג"/> 
+        </a>
+        </div>
+        <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
         <div id="for24_hours"></div>
         <div id="spacer4" style="clear:both;height:10px">&nbsp;</div>
         
@@ -941,6 +952,13 @@ else {?>
     <div id="if4">
       
     </div>
+    <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
+        <div id="adunit7" class="adunit">
+        <a href="https://careers.topmatch.co.il/midrag/index.html" target="_blank">
+        <img src="https://res.cloudinary.com/midrag/image/upload/02wsBaner.png" width="320" height="50" alt="מדרג"/> 
+        </a>
+    </div>
+    <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
     <div data-onpage=true 
       data-adpath="/339474670,22847485332/02WS/Mobile_320x50">
  <!-- small unit 2 -->
@@ -1285,7 +1303,7 @@ Licensed MIT
 	function loadPostData(jsonstr, coldmeter_size, all_json)
 	{
             var C_STARTUP_AD_INTERVAL = 2;
-		 $.getScript( "<?=BASE_URL?>/footerScripts180422.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>" , function( data, textStatus, jqxhr) {
+		 $.getScript( "<?=BASE_URL?>/footerScripts260923.php?lang=<?=$lang_idx?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>" , function( data, textStatus, jqxhr) {
 							if (jsonstr  != undefined){
                                 fillcoldmeter_fromjson(jsonstr, coldmeter_size);
                                  fetch("https://www.02ws.co.il/activities.json")
@@ -1991,7 +2009,7 @@ Licensed MIT
 
 <? if (!isFastPage()) { ?>
 <script src="<?=BASE_URL?>/js/tinymce/tinymce.min.07032017.js" type="text/javascript"></script>
-<script src="<?=BASE_URL?>/footerScripts180422.php?lang=<?=$lang_idx?>&email=<?=$_GET['email']?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>
+<script src="<?=BASE_URL?>/footerScripts260923.php?lang=<?=$lang_idx?>&email=<?=$_GET['email']?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>
 <script type="text/javascript">
 startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
 </script>

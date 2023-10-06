@@ -43,8 +43,9 @@ function getWindHumSituation($hum, $dew, $windspd)
 }
 function getWindHumExp($currenttemp, $currenthum, $currentdew, $windspd, $windspd10min, $solarradiation)
 {
-	global $HEB, $EN, $HIGH_HUM_EXP, $LOW_HUM_LOW_TEMP_EXP, $LOW_HUM_HIGH_TEMP_EXP, $HIGH_WIND_HIGH_TEMP_EXP, $HIGH_WIND_EXP, $LIGHT_WIND_NIGHT_EXP, $NO_WIND_LOW_TEMP_EXP, $HIGH_WIND_HIGH_TEMP_EXP;
-	$windhum_exp = array();
+	global $HEB, $EN, $HIGH_HUM_EXP, $LOW_HUM_LOW_TEMP_EXP, $LOW_HUM_HIGH_TEMP_EXP, $HIGH_WIND_HIGH_TEMP_EXP, $HIGH_WIND_EXP, $LIGHT_WIND_NIGHT_EXP, $NO_WIND_LOW_TEMP_EXP, $HIGH_WIND_HIGH_TEMP_EXP, $KMH;
+	$windhum_exp = array($currenttemp."°"." / ".$currenthum."%"." / ".$windspd10min." ".$KMH[0], $currenttemp."°"." / ".$currenthum."%"." / ".$KMH[1]." ".$windspd10min);
+	
 	if ((($windspd10min < 2)&&($currenttemp > 12))&&(($currenthum > 85)||($currentdew > c_or_f(16))))
 	{
 		$windhum_exp = $HIGH_HUM_EXP;

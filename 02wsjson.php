@@ -109,17 +109,19 @@ $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"issunset\":"."\"".($current->is_sunset() ? "true" : "false")."\"";
 $CURRENT_JSON .= ",";
 $CURRENT_JSON .= "\"issunrise\":"."\"".($current->is_sunrise()? "true" : "false")."\"";
-$CURRENT_JSON .= ",\"recommendations\":[";
+$CURRENT_NO_REC_JSON = $CURRENT_JSON."}";
+$CURRENT_REC_JSON = ",\"recommendations\":[";
 foreach ($now_recommendations as $r){
-$CURRENT_JSON .= "{";
-$CURRENT_JSON .= "\"activity\":"."\"".$r['activity']."\",";
-$CURRENT_JSON .= "\"sig0\":"."\"".$r['sig0']."\",";
-$CURRENT_JSON .= "\"sig1\":"."\"".$r['sig1']."\",";
-$CURRENT_JSON .= "\"value\":"."\"".$r['value']."\"";
-$CURRENT_JSON .= "},";
+$CURRENT_REC_JSON .= "{";
+$CURRENT_REC_JSON .= "\"activity\":"."\"".$r['activity']."\",";
+$CURRENT_REC_JSON .= "\"sig0\":"."\"".$r['sig0']."\",";
+$CURRENT_REC_JSON .= "\"sig1\":"."\"".$r['sig1']."\",";
+$CURRENT_REC_JSON .= "\"value\":"."\"".$r['value']."\"";
+$CURRENT_REC_JSON .= "},";
 }
-$CURRENT_JSON = trim($CURRENT_JSON, ",");
-$CURRENT_JSON .= "]";
+$CURRENT_REC_JSON = rtrim($CURRENT_REC_JSON, ",");
+$CURRENT_REC_JSON .= "]";
+$CURRENT_JSON .= $CURRENT_REC_JSON;
 $CURRENT_JSON .= "}";
 
 $JSON .= $CURRENT_JSON;
@@ -817,6 +819,7 @@ $JSON .= "]";
 $JSON .= ",\"forecastDays\":[";
 
 $day_idx = 0;
+$SHORT_FORECAST_DAY = "";
 foreach ($forecastDaysDB as $key => $day_f){
     list($fday, $fmonth, $fyear) = explode('/', $day_f['date']."/".$year);
     $full_date = date ("Y-m-d", mktime (0, 0, 0, $fmonth, $fday , $fyear));
@@ -962,6 +965,8 @@ foreach ($forecastDaysDB as $key => $day_f){
     $JSON = trim($JSON, ",");
     $JSON .= "]";
     $JSON .= "},";
+    if ($day_idx == 1)
+        $SHORT_FORECAST_DAY = ",\"forecastDay\":"."{"."\"lang1\":"."\"".str_replace('"', '``',urldecode($day_f['lang1']))."\"".","."\"lang0\":"."\"".urldecode($day_f['lang0'])."\"".","."\"date\":"."\"".$day_f['date']."\"".","."\"day_name1\":"."\"".replaceDays($day_f['day_name']." ")."\"".","."\"day_name0\":"."\"".$day_f['day_name']."\"".","."\"TempLow\":"."\"".$day_f['TempLow']."\"".","."\"TempHigh\":"."\"".$day_f['TempHigh']."\"".","."\"TempNight\":"."\"".$day_f['TempNight']."\""."}";
 }
 $random_did_you_know = rand(0, count($DID_YOU_KNOW_EX)-1);
 if (($month > 3) && ($month < 11))
@@ -1081,15 +1086,15 @@ $itfeels = array();
 $itfeels = $current->get_itfeels();
 $itfeels_avg = $current->get_itfeels_avg();
 
-$JSON .= ",\"feelslike\":";
-$JSON .= "{";
-$JSON .= "\"state\":"."\"".$itfeels[0]."\"";
-$JSON .= ",";
-$JSON .= "\"value\":"."\"".$itfeels[1]."\"";
-$JSON .= ",";
-$JSON .= "\"avg\":"."\"".$itfeels_avg."\"";
-$JSON .= "}";
-
+$FEELS_LIKE_JSON = ",\"feelslike\":";
+$FEELS_LIKE_JSON .= "{";
+$FEELS_LIKE_JSON .= "\"state\":"."\"".$itfeels[0]."\"";
+$FEELS_LIKE_JSON .= ",";
+$FEELS_LIKE_JSON .= "\"value\":"."\"".$itfeels[1]."\"";
+$FEELS_LIKE_JSON .= ",";
+$FEELS_LIKE_JSON .= "\"avg\":"."\"".$itfeels_avg."\"";
+$FEELS_LIKE_JSON .= "}";
+$JSON .= $FEELS_LIKE_JSON;
 $JSON .= ",\"states\":";
 $JSON .= "{";
 $index_hour = 0;
@@ -1391,7 +1396,7 @@ $JSON .= "}";
 $JSON .= "}";
 
 echo $JSON;
-$JSON_SHORT = $CURRENT_JSON.$RUNWALK_JSON."}";
+$JSON_SHORT = $CURRENT_NO_REC_JSON.$RUNWALK_JSON.$SHORT_FORECAST_DAY."}";
 $file = fopen($output_json_file_path_short,"w");
 @fwrite ($file, $JSON_SHORT);
 @fclose ($file);

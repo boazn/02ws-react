@@ -44,6 +44,10 @@ function get_user(){
         $line = get_user_from_email($_GET['email']);
         //logger( $_GET['email']." authenticated with _GET: "."\"display\":"."\"".$line['display_name']."\""." \"nicename\":"."\"".$line['user_nicename']."\""." \"priority\":".$line['priority']." \"admin\":".$line['admin']);
         $_SESSION['loggedin'] = "true";
+        $_SESSION['email'] = $_GET['email'];
+        $_SESSION['isAdmin'] = $line['admin'];
+        $_SESSION['MsgCount'] = $line['MsgCount'];
+        $_SESSION['MsgStart'] = $line['MsgStart'];
     }
     else {
         // This means the session file doesn't exist, is empty, or there is no valid userid
