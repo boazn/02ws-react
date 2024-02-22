@@ -121,7 +121,7 @@ if (isset($_POST['SendButton'])) {
 		
  פלטפורמת ירושמיים מציעה מגוון אפשרויות פרסום לבעלי עסקים ומוסדות תרבות.<br/>
 לפרטים יש ליצור קשר במייל: <a href = "mailto: media@just-brief.com">לחצו כאן</a>
-או לשלוח טופס הזמנה  <a href="https://forms.clickup.com/3850230/f/3nfzp-36182/R06IO5L5VZU3CH4PMN" target="_blank">בקישור זה</a> ונחזור אליכם
+או לשלוח טופס הזמנה  <a href="https://forms.monday.com/forms/9c49d1eb497e423f5acc4df054de237d?r=euc1" target="_blank">בקישור זה</a> ונחזור אליכם
 
 
 			
@@ -129,7 +129,7 @@ if (isset($_POST['SendButton'])) {
 	<br/><br/>
 	
 	
-<div id="if_jerusky" style="display: block;"><a href="https://forms.clickup.com/3850230/f/3nfzp-36182/R06IO5L5VZU3CH4PMN" target="_blank"><img src="images/Brief.gif" width="820"  alt="Brief"/></a></div>
+<div id="if_jerusky" style="display: block;"><a href="https://forms.monday.com/forms/9c49d1eb497e423f5acc4df054de237d?r=euc1" target="_blank"><img src="images/Brief.gif" width="820"  alt="Brief"/></a></div>
 	<br/>
 
 </div>

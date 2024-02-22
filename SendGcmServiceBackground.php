@@ -70,7 +70,7 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
       //      array_push ($registrationIDs1, "fgI8C6OaSCiDzZm5r1W8vj:APA91bFdPevwP4fBuexfvGgJbUhycxKl7sUQsz3PcKZDk7cYf2zpA1z1nYX-QssATz7njbFIaC7orMqcov1WQsrfM9DKF0m9AjAe1uy-rGRGIG93Zlg8mmh3pkZDB94pXHg953QTePXx");
          
      //
-     array_push ($registrationIDs1, "fgI8C6OaSCiDzZm5r1W8vj:APA91bFdPevwP4fBuexfvGgJbUhycxKl7sUQsz3PcKZDk7cYf2zpA1z1nYX-QssATz7njbFIaC7orMqcov1WQsrfM9DKF0m9AjAe1uy-rGRGIG93Zlg8mmh3pkZDB94pXHg953QTePXx");
+     array_push ($registrationIDs1, "eHHYFurWS8OeGj455xtzr8:APA91bG1JTVN7YXkRbyz-acfeGhj4uQNK9GeaMr0VR6L5WHcylHbU7mfreBjN9MlHxnQ0gqKBN2ExWIm4c3zDexa8VLhV18YFt_p1LDu9mYACRdZAk-_L0XScuh2ktm8O9gwJJ2aow61");
      //array_push ($registrationIDs1, $_REQUEST["reg_id"]);    
      logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1), 0, "FCM", "sendingGCMMessage", "sendingGCMMessage");
      $result = "";

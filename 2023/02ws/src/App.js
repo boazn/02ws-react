@@ -12,7 +12,7 @@ import {getMainData} from './helpers/Utils';
 import {getActivitiesData} from './helpers/Utils';
 import Sidebar from './components/Sidebar';
 import configJson from "./02wsconfig.json";
-import ConfigContext from "./helpers/ConfigContext";
+import {ConfigContext} from "./helpers/ConfigContext";
 import ExternalContext from "./helpers/ExternalContext";
 import TempGraph from './components/TempGraph';
 
@@ -24,22 +24,24 @@ function App({layout, src}) {
   const [activities, setActivities] = useState(false);
   const [current, setCurrent] = useState([]);
   const [states, setStates] = useState([]);
+  const [thisMonth, setThisMonth] = useState([]);
   const [nav, setNav] = useState(navValues.home);
   const counter = useRef(0);
   var target = useContext(ExternalContext);
-  
    useEffect(() =>{
       const fetchJson = async () => {
       const json = await getMainData();
       const activities = await getActivitiesData();
       const current = json.jws.current;
       const states = json.jws.states;
+      const thisMonth = json.jws.thisMonth;
       setJson(json);
       setCurrent(current);
       setStates(states);
-      setNav(isRoot ? layout : configData.layout);
-      setActivities({activities});
       importConfigData();
+      setNav(getNav());
+      setActivities({activities});
+      setThisMonth(thisMonth);
       counter.current++;
       setIsLoading(false);
       
@@ -50,6 +52,17 @@ function App({layout, src}) {
       fetchJson();
     }, 60000);
   }, [])
+
+function getNav(){
+    if (isRoot())
+      {return configData.layout;}
+    else
+      {return layout;}
+}
+
+function isRoot() {
+  return false;
+}
 
  const importConfigData = () => {
    
@@ -78,15 +91,8 @@ function App({layout, src}) {
   
   });
 
-  function isRoot() {
-    return true;
-  }
  
- 
-  
-    
-
- if ((nav === 'current') || (nav === '')){
+ if ((layout === 'current') || (layout === '')){
   return (
     isLoading ?
     <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
@@ -98,7 +104,7 @@ function App({layout, src}) {
      </ConfigContext.Provider>
     
     
- )} else  if (nav === 'forecast24') {
+ )} else  if (layout === 'forecast24') {
     return (
       isLoading ?
       <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
@@ -109,7 +115,7 @@ function App({layout, src}) {
       </CurrentUserProvider>
       </ConfigContext.Provider> 
       
-   )}  else  if (nav === 'NextDays'){
+   )}  else  if (layout === 'NextDays'){
     return (
       isLoading ?
       <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
@@ -120,7 +126,7 @@ function App({layout, src}) {
         </CurrentUserProvider> 
         </ConfigContext.Provider>
       
-    )}  else  if (nav === 'External') {
+    )}  else  if (layout === 'External') {
     return (
       isLoading ?
       <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :
@@ -133,7 +139,7 @@ function App({layout, src}) {
         </ConfigContext.Provider>
         </ExternalContext.Provider>
       
-    )} else  if (nav === 'now') {
+    )} else  if (layout === 'now') {
       return (
         isLoading ?
         <div className="splash"><img src="https://www.02ws.co.il/img/logo.png" width="200" alt="logo" className="rounded mx-auto d-block img-fluid" ></img></div>  :

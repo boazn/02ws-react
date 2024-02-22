@@ -82,7 +82,7 @@ const ColdMeter = (props) => {
           const heatindex = json.coldmeter.heatindex;
           const cm_value = json.coldmeter.current_value;
           const cm_value_sun = json.coldmeter_sun.current_value;
-          //const output = `<a href="javascript:void(0)" class="info currentcloth" ><span class="info">${clothtitle}</span><img src="images/clothes/${clothimage}" height=100" style="vertical-align: middle" /></a><a class="info" id="coldmetertitle" href="javascript:void(0)" ><span class="info" style="cursor: default;" onclick="redirect('https://www.02ws.co.il?section=survey.php&amp;survey_id=2&amp;lang=1&amp;email=')">לא מסכימים? הצביעו!</span>${coldmeter_title}</a>${asterisk} </div>`;
+          
           const output = `${clothtitle} ${coldmeter_title} ${asterisk}`;
           const output_sun = `${clothtitle_sun} ${coldmeter_title_sun} ${asterisk_sun}`;
           setColdMeter(output);

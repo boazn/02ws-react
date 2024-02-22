@@ -288,7 +288,7 @@ $NHOTNCOLD = array("Neither hot nor cold", "לא חם ולא קר", "Не жар
 $COLDISH = array("Cool, light jacket", "קריר, ג'קט קל כזה", "Прохладно, лёгкая курточка","frais, veste légère");
 $LCOLD = array("Chilly","קור מורגש בקטנה", "Прохладно","frais");
 $COLD = array("Cold (coat)", "קור של מעיל", "Холодно","fraicheur, portez (qu’)un manteau");
-$VCOLD = array("Very cold (gloves etc)", "קור ברמה של כפפות", "Собачий холод","froid, portez des gants");
+$VCOLD = array("Very cold (gloves etc)", "קור מעיל פלוס", "Собачий холод","froid, portez des gants");
 $VVCOLD = array("Extremely cold", " קור של ש** ", "Мороз","froid de neige");
 $HOT_GROUND = array("Hot ground", "קרקע רותחת", "Дорога","sol ardent");
 $GENDER = array("Gender", "מגדר", "Пол","sexe");
@@ -308,7 +308,7 @@ $SUN_SHADE_CLOTH = array("short in the sun, long in the shade", "בשמש קצר
 $SUN_SHADE_JACKET = array("open in the sun, closed in the shade", "בשמש פתוח או להוריד, בצל קר", "","ouvert au soleil, fermé à l'ombre");
 $SWEATSHIRT = array("Sweatshirt", "חולצה ארוכה עבה", "Толстовка","un haut long et épais");
 $SWEATER = array("Sweater or something warm", "סוודר או משהו חם", "Свитер","pull");
-$JACKET = array("Jacket or fleese", "ג'קט או פליז", "Толстовка","veste");
+$JACKET = array("Jacket or fleece", "ג'קט או פליז", "Толстовка","veste");
 $COAT = array("Coat", "מעיל", "Куртка","manteau");
 $RAINCOAT = array("Rain coat", "מעיל גשם", "Дождевик","imperméable");
 $LIGHTCOAT = array("light coat", "מעיל דק", "Легкая курточка","k-way");
@@ -345,9 +345,9 @@ l’évènement est indifférent à la pluie et prévoir un abri pour quelques p
 simplement porter un impérméable et un parapluie. Forte probabilité (80%) – incompatible avec
 une activité continue à l’extérieur. Mais en fait, pourquoi pas avec un impérméable et un
 parapluie ? ","");
-$PRESSURE_IS_FALLING = array("Pressure&#39;s falling", "הלחץ יורד", "Давление быстро падает","la pression baisse");
+$PRESSURE_IS_FALLING = array("Pressure&#39;s falling", "לחץ-האוויר יורד", "Давление быстро падает","la pression baisse");
 $DRASTIC_TEMP_DROP = array("Temp drop", "התקררות", "Температура сильно упала","chute de température");
-$DRASTIC_PRESSURE_RISE = array("Pressure rise", "עלייה בלחץ", "Давление быстро растет","pression augmente");
+$DRASTIC_PRESSURE_RISE = array("Pressure rise", "עלייה בלחץ-האוויר", "Давление быстро растет","pression augmente");
 $DRASTIC_TEMP_RISE = array("Temp rise", "התחממות", "Температура сильно выросла","réchauffement");
 $DRASTIC_WIND_RISE = array("Wind rise", "הרוח מתחזקת", "Ветер усилился","le vent souffre plus fort");
 $VERY_DRY = array("Very dry", "יבש מאד", "Очень сухо","très sec");

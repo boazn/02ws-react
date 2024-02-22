@@ -149,6 +149,14 @@ if ( isset( $_POST["comment1"]) )
 <head>
 <link rel="stylesheet" href="css/main.php?lang=1&type=" type="text/css">
 <meta name="viewport" content="width=320" />
+<style>
+    .result{
+        display:block;
+        width:80%;
+        font-size:1.2em;
+        padding:1em
+    }
+</style>
 </head>
 <body>
 <?

@@ -516,23 +516,23 @@ else if (($today->get_lowhum() == $thisMonth->get_lowhum())
 if (($today->get_highbar() === $thisYear->get_highbar())
     &&($min30->get_prschange() < -0.4))
 		setBrokenData("yearly", "high", 
-					  $today->get_highbar()."mb", 
+					  $today->get_highbar()." ".$MB[$lang_idx], 
 					  "pressure");
 else if (($today->get_highbar() === $thisMonth->get_highbar())
          &&($min30->get_prschange() < -0.4))
             setBrokenData("monthly", "high", 
-							$today->get_highbar()."mb", 
+							$today->get_highbar()." ".$MB[$lang_idx], 
 							"pressure");
 ///////////////////////////  lowbar ////////////////////////////
 if (($today->get_lowbar() === $thisYear->get_lowbar())
     &&($min30->get_prschange() > 0.4))
 		setBrokenData("yearly", "low", 
-					 $today->get_lowbar()."mb", 
+					 $today->get_lowbar()." ".$MB[$lang_idx], 
 					 "pressure");
 else if (($today->get_lowbar() === $thisMonth->get_lowbar())
          &&($min30->get_prschange() > 0.4))
 			setBrokenData("monthly", "low", 
-						  $today->get_lowbar()."mb", 
+						  $today->get_lowbar()." ".$MB[$lang_idx], 
 						"pressure");
 ///////////////////////////  highwind ////////////////////////////        
 if (($today->get_highwind() == $thisYear->get_highwind())
@@ -558,11 +558,11 @@ $LATEST_ALERT_BODY = array(str_replace("\n", "",replaceDays(date('D H:i ', $mem-
                            str_replace("\n", "",$LATEST_ALERT[$RU][0]." ".$LATEST_ALERT[$RU][2]), 
                            str_replace("\n", "",$LATEST_ALERT[$FR][0]." ".$LATEST_ALERT[$FR][2]), 
                            str_replace("\n", "",$LATEST_ALERT[$AR][0]." ".$LATEST_ALERT[$AR][2]));
-$LATEST_ALERT_BODY_CUT = array(mb_substr($LATEST_ALERT_BODY[$EN], 0, 52, "UTF-8"), 
-							   mb_substr($LATEST_ALERT_BODY[$HEB], 0, 52, "UTF-8"), 
-							   mb_substr($LATEST_ALERT_BODY[$RU], 0, 50, "UTF-8"), 
-							   mb_substr($LATEST_ALERT_BODY[$FR], 0, 90, "UTF-8"), 
-							   mb_substr($LATEST_ALERT_BODY[$AR], 0, 90, "UTF-8"));
+$LATEST_ALERT_BODY_CUT = array(mb_substr($LATEST_ALERT_BODY[$EN], 0, 105, "UTF-8"), 
+							   mb_substr($LATEST_ALERT_BODY[$HEB], 0, 105, "UTF-8"), 
+							   mb_substr($LATEST_ALERT_BODY[$RU], 0, 105, "UTF-8"), 
+							   mb_substr($LATEST_ALERT_BODY[$FR], 0, 105, "UTF-8"), 
+							   mb_substr($LATEST_ALERT_BODY[$AR], 0, 105, "UTF-8"));
 
 if ((max($today->get_highrainrate(),$today->get_highrainrate2())  == "0.2") && 
     ($current->get_rainrate() == "0.0")&&(IS_SNOWING != 1))
@@ -579,7 +579,7 @@ if ((max($today->get_highrainrate(),$today->get_highrainrate2())  == "0.2") &&
 }*/
 if (($latestalert_passedts < 3600)&&(!empty(trim($LATEST_ALERT_BODY_CUT[$HEB]))))
 {
-	updateSigWeather(
+	/*updateSigWeather(
 		"profile1/rain.php?level=1&freq=1&amp;lang={$lang_idx}", 
 		$LATEST_ALERT_TITLE, 
 		array(array($LATEST_ALERT_BODY_CUT[$EN],$LATEST_ALERT_BODY_CUT[$EN]), 
@@ -587,7 +587,7 @@ if (($latestalert_passedts < 3600)&&(!empty(trim($LATEST_ALERT_BODY_CUT[$HEB])))
 				array($LATEST_ALERT_BODY_CUT[$RU],$LATEST_ALERT_BODY_CUT[$RU]), 
 				array($LATEST_ALERT_BODY_CUT[$FR],$LATEST_ALERT_BODY_CUT[$FR]), 
 				array($LATEST_ALERT_BODY_CUT[$AR],$LATEST_ALERT_BODY_CUT[$AR])), 
-                "?section=alerts&amp;lang={$lang_idx}");
+                "?section=alerts&amp;lang={$lang_idx}");*/
 }
 
 if (($hour < 10)&&($dew_over_night))

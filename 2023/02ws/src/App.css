@@ -80,7 +80,9 @@ body {
   height: 4vmin;
   pointer-events: none;
 }
-
+.adunit{
+  width: 100%;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -471,7 +473,7 @@ body {
 #forcast_days{
   
 }
-#forcast_days li {
+#forcast_days li, #forcast_day_popup li, #thismonth_box li{
   list-style: none;
   display: inline-block;
   text-align: center;
@@ -748,7 +750,7 @@ i {
 #coldmeter .shadow, #coldmeter .sun{
   
 }
-#sigweather, #more_sigweather, #forcast_days{
+#sigweather, #more_sigweather, #forcast_days, #forcast_day_popup{
   list-style: none;
   font-size: 1.1em;
   padding:0.1em
@@ -875,7 +877,7 @@ i {
   background: linear-gradient(180deg, #65625a 0%, #4f5352 10%, #4f5352 60%, #65625a 100%);
 }
 
-.sunet{
+.sunset{
   background:linear-gradient(180deg, #b3d1cf 0%, #d2d5c6 4%, #ded0ba 8%, #f6c185 90%, #fbc066 100%);
 }
 
@@ -895,13 +897,13 @@ i {
 
 }
 .cloudy{
-
+  background:linear-gradient(180deg, #adb5bd 0%, #d2d5c6 4%, #ded0ba 8%, #e9ecef 90%, #ced4da 100%);
 }
 .partlycloudy{
-
+  background:linear-gradient(180deg, #adb5bd 0%, #d2d5c6 4%, #ded0ba 8%, #e9ecef 90%, #ced4da 100%);
 }
 .fewclouds{
-
+  background:linear-gradient(180deg, #0d6efd 0%, #0d6efd 4%, #20c997 8%, #e9ecef 90%, #ced4da 100%);
 }
 .paramunit{
   display:inline
@@ -1079,7 +1081,7 @@ background-position: 0px 0px;
 @media only screen and (max-width: 500px) {
  
   
-  #forcast_days li
+  #forcast_days li, #forcast_day_popup li
   {
     font-size: 0.8em;
   }

@@ -25,18 +25,41 @@ class DB_Functions {
        
    
     }
+    public function getAdDaily() {
+        global $link;
+        echo "<table id=\"table_counts\">";
+        echo "<tr class=\"row\">";
+                echo "<th>Date</th>";
+                echo "<th>GUID</th>";
+                echo "<th>URL</th>";
+                echo "<th>Count</th>";
+                
+           echo "</tr>";      
+        $result = db_init("SELECT * FROM `AdsReport` ORDER BY `Id` DESC", "");
+        
+        while ($line = $result["result"]->fetch_array(MYSQLI_ASSOC)) {
+           echo "<tr class=\"row\">";
+                echo "<td>".$line["CountDate"]."</td>";
+                echo "<td>".$line["GUID"]."</td>";
+                echo "<td>".$line["img_url"]."</td>";
+                echo "<td>".$line["count"]."</td>";
+                
+           echo "</tr>";
+        }
+        echo "</table>";
 
-    public function storeAdDaily($guid, $count) {
+    }
+    public function storeAdDaily($guid, $count, $img_url) {
         // insert user into database
         global $link;
        
         
-        $result = db_init("call SaveDailyAdCount ('$guid', '$count', SYSDATE())", "");
+        $result = db_init("call SaveDailyAdCount ('$guid', '$count', SYSDATE(), '$img_url')", "");
         //$query = "call SaveGCMUser ('$name', '$email', '$gcm_regid', $lang, $active, $active_rain_etc, $active_tips, $active_dust, $active_uv,  $active_dry, $approved, '$billingtoken', '$billingDate', $dailyforecast, '$oldregid', 1)";
         // check for successful store
        
-       echo "<br/>done saving count for ".$guid;
-       exit;
+       echo "<br/>done saving count for ".$guid." ".$img_url;
+      
    
     }
  
@@ -165,7 +188,7 @@ function saveDailyCounts(){
     global $mem;
     $Ads = $mem->get('Ads');
     foreach ($Ads as $key => &$ad) 	{
-        $db->storeAdDaily($ad['guid'], $ad['count']);
+        $db->storeAdDaily($ad['guid'], $ad['count'], $ad['img_url']);
     }
 }
 function clearCounts(){
@@ -425,6 +448,7 @@ else {
        echo "</pre>";*/?>
 <?}?>		
 </div>
+<?  $db = new DB_Functions(); $db->getAdDaily(); ?>
 <script
   src="https://code.jquery.com/jquery-3.7.0.min.js"
   integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="

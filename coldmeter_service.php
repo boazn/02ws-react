@@ -1,7 +1,7 @@
 <?
 header("Access-Control-Allow-Origin: *");
 header('Content-type: text/html; charset=utf-8');
-ini_set("display_errors","Off");	
+ini_set("display_errors","on");	
 ini_set('error_reporting', E_ERROR | E_PARSE);
 session_start();
 /*foreach ($_SESSION as $key=>$value)
@@ -25,7 +25,7 @@ $coldmeter_size = $_REQUEST['coldmetersize'];
 $cloth_type = $_REQUEST['cloth_type'];
 $is_jason = $_REQUEST['json'];
 $is_mobile = $_REQUEST['m'];
-if ($coldmeter_size =="")
+if ($coldmeter_size == "")
     $coldmeter_size = 17;
 if ($current->get_temp() == "")
     exit;
@@ -41,7 +41,7 @@ $temp_to2 = $current->get_temp2_to_coldmeter() + 0.5;
 $row_verdict = array();$row_comment = array();
 $row_verdict_sun = array();
 $is_personal = "";
-//logger("coldmeter_service:".$personal_coldmeter." ".$_SESSION['loggedin']." ".$_SESSION['email']." ".$temp_from." ".$temp_to);
+//logger("coldmeter_service:".$personal_coldmeter." ".$_SESSION['loggedin']." ".$_SESSION['email']." ".$temp_from." ".$temp_to, "coldmeter", "", "coldmeter");
 if (($personal_coldmeter == 1)&&($_SESSION['loggedin'] == "true")){
     $query_verdict = "call GetColdMeter({$temp_from}, {$temp_to}, {$temp_from2}, {$temp_to2}, '{$pgender}', '{$_SESSION['email']}');";
     //logger( $query_verdict);
@@ -113,7 +113,7 @@ if (empty($is_personal)){
 $current_feeling = get_name($feeling_verdict);
 $current_feeling_sun = get_name($feeling_verdict_sun);
 //if ($current_feeling === $VVCOLD[$lang_idx])
-//logger("coldmeter: ".$current_feeling.": ".$feeling_verdict." ".$_SESSION['email']);
+//logger("coldmeter: ".$current_feeling.": ".$feeling_verdict." ".$_SESSION['email'], "coldmeter", "", "coldmeter");
  $cloth_name = getClothName($current_feeling, $cloth_type);
  $cloth_name_sun = getClothName($current_feeling_sun, $cloth_type);
  $arCloth_name =  explode('_', $cloth_name);
@@ -143,7 +143,7 @@ $json_res .= "{";
     $json_res .= ",";
     $json_res .= "\"temp_value\":\"".$temp_to_cold_meter."\"";
     $json_res .= ",";
-    $json_res .= "\"asterisk\":\"".checkAsterisk($row_verdict, $is_jason)." ".$shade."\"";
+    $json_res .= "\"asterisk\":\"".checkAsterisk($row_verdict, $is_jason)."\"";
     $json_res .= ",";
     $json_res .= "\"heatindex\":\"".$current_heat_index."\"";
 $json_res .= "}";
@@ -164,7 +164,7 @@ if (!empty($current->get_temp2_to_coldmeter())){
         $json_res .= ",";
         $json_res .= "\"temp_value\":\"".$current->get_temp2_to_coldmeter()."\"";
         $json_res .= ",";
-        $json_res .= "\"asterisk\":\"".checkAsterisk($row_verdict_sun, $is_jason)." ".$sun."\"";
+        $json_res .= "\"asterisk\":\"".checkAsterisk($row_verdict_sun, $is_jason)."\"";
         $json_res .= ",";
         $json_res .= "\"heatindex\":\"".$current_heat_index."\"";
     $json_res .= "}";

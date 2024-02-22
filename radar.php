@@ -871,137 +871,13 @@ function imgError(image) {
 
 
 <div id="wrapper">
-
-
-<div id="waiting" class="topbase" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="display:none;">
-<? if (isHeb()) echo "טוען..."; else echo "Loading...";?>&nbsp;
-<img src="images/loading.gif" alt="loading" width="32" height="32"/>
-</div>
-
 <div  id="imsradar" class="float" >
-<!--<div class="il_map">
-   <div id="leaflet_map" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="height: 430px; position: relative; outline: none;">
-      <div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(-157px, 0px, 0px);">
-      <div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;">
-      <div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 18; transform: translate3d(0px, 0px, 0px) scale(1);">
-      <img alt="" role="presentation" src="img/152/103.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(151px, -6px, 0px); opacity: 1;">
-      <img alt="" role="presentation" src="img/152/104.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(151px, 250px, 0px); opacity: 1;">
-     
-   </div>
-  </div>
-  </div>
-  <div class="leaflet-pane leaflet-shadow-pane"></div>
-  <div class="leaflet-pane leaflet-overlay-pane">
-   <img class="leaflet-image-layer leaflet-zoom-animated" src="/sites/default/files/ims_data/map_images/IMSRadar4GIS/IMSRadar4GIS_202301031350_0.png" alt="" style="z-index: 1; opacity: 0.7; transform: translate3d(-172px, -333px, 0px); width: 1034px; height: 1126px;"></div>
-   <div class="leaflet-pane leaflet-marker-pane"></div>
-   <div class="leaflet-pane leaflet-tooltip-pane"></div>
-   <div class="leaflet-pane leaflet-popup-pane"></div>
-   <div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(39057.5px, 26589px, 0px) scale(128);">
-   </div></div>
-   <div class="leaflet-control-container">
-      <div class="leaflet-top leaflet-left">
-         <div class="leaflet-control-zoom leaflet-bar leaflet-control">
-            <a class="leaflet-control-zoom-in" href="#" title="Zoom in" role="button" aria-label="Zoom in">+</a>
-            <a class="leaflet-control-zoom-out" href="#" title="Zoom out" role="button" aria-label="Zoom out">−</a>
-         </div>
-      <div class="leaflet-bar easy-button-container leaflet-control">
-         <button class="easy-button-button leaflet-bar-part leaflet-interactive unnamed-state-active" type="button" title="Center">
-            <span class="button-state state-unnamed-state unnamed-state-active">
-               <span class="fas fa-crosshairs"></span>
-            </span>
-         </button>
-      </div>
-   </div>
-   <div class="leaflet-top leaflet-right"></div>
-   <div class="leaflet-bottom leaflet-left"></div>
-   <div class="leaflet-bottom leaflet-right">
-      <div class="leaflet-control-attribution leaflet-control"><a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © Survey of Israel</div>
-   </div>
-   </div>
-</div>
-  
-   <link rel="stylesheet" href="css/leaflet.css">
-   <script src="js/leaflet.js"></script>
-   <script src="js/leaflet.wms.js"></script>
-   <link rel="stylesheet" href="css/easy-button.css">
-   <script src="js/easy-button.js"></script>
-</div>-->
-<div style="display:none;margin:0.5em;width:60px;float:<?echo get_s_align();?>;z-index:2;<?echo get_s_align();?>:-110px;top:370px;position:absolute" id="downloadStatus"></div>
-<div id="radarimg" >
-<div id="radarcontrols" >                        
-<a href="javascript: func()" onclick="launch();toggle('play');toggle('fasterslowercontrols');" id="playcontrol">
-	<img id="play" width="60" height="60" src="images/play.png" alt="start התחל" style="display:none;"/>
-</a>
-<br/><!--
-<a href="javascript: func()" onclick="incrementimage(++current_image)">
-	<img src="images/forward.png" alt="forward קדימה"/>
-</a>
-&nbsp;&nbsp;
--->
-
-<!--
-&nbsp;&nbsp;
-<a href="javascript: func()" onclick="decrementimage(--current_image)">
-	<img src="images/backward.png" alt="backward אחורה"/>
-</a>-->
-
-<div id="imagedownloaded_wrapper" style="">
-	<div id="imagedownloaded" style="display:inline">
-	</div>
-</div>
- <div id="run_title" style="display:none" class="inv_plain_3">
- <a href="javascript: func()" onclick="change_mode(2);fwd()">
-	<? if (isHeb()) echo "הרצה"; else echo "Play"; ?>
-</a><?=get_arrow()?><?=get_arrow()?>
-</div>
-
-<!--<div id="fasterslowercontrols" style="display:none;width:550px">
-<a  href="javascript: func()" onclick="stop();toggle('play');">
-	<img src="images/stop.png" alt="stop עצור" width="20px"/>
-</a>
-<div style="margin:0 0.5em;padding: 0.7em;display:inline" class="inv_plain_3 big">
-<a href="javascript: func()" onclick="change_speed(delay_step)">
-	<? if (isHeb()) echo "לאט יותר"; else echo "slower"; ?>
-</a>
-</div>
-<div style="margin:0 0.5em;padding: 0.7em;display:inline" class="inv_plain_3 big">
-<a href="javascript: func()" onclick="change_speed(-delay_step)" >
-	<? if (isHeb()) echo "מהר יותר"; else echo "faster"; ?>
-</a>
-</div>
-<div id="speedintervalwrapper" class="inv_plain_2 big" style="display:inline;<? if (isHeb()) echo "direction:rtl"; ?>"><span id="speedinterval"></span><? if (isHeb()) echo " פריים לשנייה "; else echo " frame per sec"; ?></div>
-<div class="float" style="display:inline">
-<form method="post" name="profileChanger" action="" style="background:transparent;" <? if (isHeb()) echo "dir=\"rtl\""; ?>>
-				
-				<select size="1" id="profile" name="profile" class="inv_plain_2" onchange="changeNumOfPics(this.options[this.selectedIndex].value)" <? if (isHeb()) echo "dir=\"rtl\""; ?>> 
-						<option	<? if ($_REQUEST['pics'] == "10") echo " selected ";?> value="10">10 <?=$PICS[$lang_idx];?></option>
-						<option	<? if ($_REQUEST['pics'] == "15") echo " selected ";?> value="15">15 <?=$PICS[$lang_idx];?></option>
-						<option	<? if ($_REQUEST['pics'] == "20") echo " selected ";?> value="20">20 <?=$PICS[$lang_idx];?></option>
-						
-				</select>
-    <input type="hidden" name="myPHPvar" id="hiddenPics" value="" />
-    </form>
-</div>
-</div>-->
-</div>
- <div id="frametime" class="number big" style="position:absolute;margin:250px 180px"></div>
- <img name="animation" id="noBaseGraph" onerror="imgError(this);" src="" width="520px" height="520px" alt="IMS radar" style="z-index:0"/>
- 
- 
- <div style="margin:0.5em">
-	<? echo $SOURCE[$lang_idx].": ".$IMS[$lang_idx];?>
-</div>
-</div><!-- id="wrapper" -->
+<iframe src="https://www.02ws.co.il/radarLeaflet.php" width="420px" frameborder="0" style="border:0;height:63vh;" allowfullscreen></iframe>
 </div>
 <div id="geshemspace" class="float" >
-<iframe src="https://geshem.space/" width="420px" height="640px" scrolling="auto" id="iframegeshem" class="base" allowtransparency="true" marginHeight="0" marginWidth="0" frameborder="0" ></iframe>
+<!--<iframe src="https://geshem.space/" width="420px" height="640px" scrolling="auto" id="iframegeshem" class="base" allowtransparency="true" marginHeight="0" marginWidth="0" frameborder="0" ></iframe>-->
    
- </div>
- <div id="rainviewer" class="float" >
- <iframe src="https://www.rainviewer.com/map.html?loc=32.147,33.7281,7&oFa=0&oC=0&oU=0&oCS=1&oF=0&oAP=0&rmt=4&c=1&o=83&lm=0&th=0&sm=1&sn=1" width="420px" frameborder="0" style="border:0;height:63vh;" allowfullscreen></iframe>
-   </div>
-<div style="clear:both;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
-<div id="adunit2">
+   <div id="adunit4" class="adunit">
 <div data-onpage=true 
       data-adpath="/339474670,22847485332/02WS/Mobile_320x320">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2706630587106567"
@@ -1016,23 +892,12 @@ function imgError(image) {
 </script>
  </div>
 </div>
+ </div>
+ <div id="rainviewer" class="float" >
+ <iframe src="https://www.rainviewer.com/map.html?loc=31.847,34.2281,7&oFa=0&oC=0&oU=0&oCS=1&oF=0&oAP=0&rmt=4&c=1&o=83&lm=0&th=0&sm=1&sn=1" width="420px" frameborder="0" style="border:0;height:63vh;" allowfullscreen></iframe>
+   </div>
 </div>
-</div>
-<div style="display:none;width:120px;right: -100px;top: 780px;position:absolute;z-index:2">
-
-	
-
-	<form method="post" name="control_form">
-
-	Pic #:          
-
-	<input type="text" name="frame_nr" value='' size="1" onfocus="this.select()" onchange="go2image(this.value)"></input>
-
-	                       
-
-	</form>
-
-	
+<div style="clear:both;z-index:0;<?if  (stristr($_SERVER['SCRIPT_NAME'], 'small')) echo "clear:both";?>" id="radarad">
 
 </div>
 <div style="clear:both"></div>
@@ -1062,17 +927,6 @@ function imgError(image) {
 	?>	
 
 </div>
-<script language="javascript" type="text/javascript">
-        //document.images['animation'].src = "http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=19&TotalImages=20&LangID=1&Location=";
-	startup();
-	//launch();
-
-	var disableLoopHeader = true;
-
-	//show('locdiv', 'noBaseGraph', 'radarimg',+182, +105);
-        
-        
-</script>
 
 
 

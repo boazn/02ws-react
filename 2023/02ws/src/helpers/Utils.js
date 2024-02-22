@@ -96,6 +96,51 @@ export async function getStories() {
     let result = fetchJson();
    return result;
 }
+export async function getLatestMaxMinTemp() {
+  const fetchJson = async () => {
+      var opts = {
+          headers: {
+           
+          }
+        }
+      const response = await fetch("https://www.02ws.co.il/getLatestMaxMinTemp.php", opts);
+      const json = await response.json();
+      return json;
+      
+    };
+    let result = fetchJson();
+   return result;
+}
+export async function getLatestDailyRain() {
+  const fetchJson = async () => {
+      var opts = {
+          headers: {
+           
+          }
+        }
+      const response = await fetch("https://www.02ws.co.il/getLatestDailyRain.php", opts);
+      const json = await response.json();
+      return json;
+      
+    };
+    let result = fetchJson();
+   return result;
+}
+export async function GetLatestYearsRainForToday() {
+  const fetchJson = async () => {
+      var opts = {
+          headers: {
+           
+          }
+        }
+      const response = await fetch("https://www.02ws.co.il/GetLatestYearsRainForToday.php", opts);
+      const json = await response.json();
+      return json;
+      
+    };
+    let result = fetchJson();
+   return result;
+}
 export async function updateLikesCall(idx, command) {
   const fetchJson = async () => {
     var opts = {

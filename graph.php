@@ -41,10 +41,7 @@
 	{
 		top:3.6em
 	}
-	.graphslink
-	{
-		visibility:hidden;
-	}
+	
     .inparamdiv{
 		height:280px;
 	}    

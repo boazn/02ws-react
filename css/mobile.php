@@ -93,7 +93,7 @@ top:0px;
 }
 #forecastnextdays, #nextdays_table
 {
-	padding:0.1em 0.1em;;width:100%;
+	padding:0.1em 0.1em;;width:95%;margin: 0 auto;
 	<? if (isHeb()) echo "direction:rtl"; ?>
 }
 #forecastnextdays table, #nextdays_table table
@@ -109,11 +109,17 @@ top:0px;
 }
 #forecastnextdays td
 {
-    
+    padding-left:0;
+    padding-right:0;
 }
 #forecastnextdays tr, #nextdays_table tr
 {
-    margin-top:0.2em
+    margin-top:0.2em;
+    background: #eeeeee;
+}
+#titlerow
+{
+    background: transparent;
 }
 #forecastnextdays .plus, #nextdays_table .plus{
     background:#eeeeee
@@ -128,7 +134,7 @@ top:0px;
     background:#eeeeee;
     font-size:1.1em
 }
-#forecastnextdays .tsfh .icon, #nextdays_table .tsfh .icon{
+#forecastnextdays .tsfh .icon, #nextdays_table .tsfh .icon, #forecastnextdays .tsfh .cloth, #nextdays_table .tsfh .cloth{
     margin-top:10px;
 }
 #forecastnextdays .paramunit, #nextdays_table .paramunit{
@@ -173,7 +179,8 @@ font-size:1.60em;
 line-height: 0.7em;
 text-align:center;
 padding: 0.6em 0;
-background:#eeeeee
+background:#eeeeee;
+width:2.2em
 }
 #forecastnextdays .enlarge, #nextdays_table .enlarge{
     margin: 4.2em 0px;
@@ -181,7 +188,7 @@ background:#eeeeee
 #legends
 {
     width: 100%;
-    padding: 0 0.5em;
+    margin:0
 }
 #forecastnextdays_table .icon_day, #nextdays_table .icon_day{
     background:#eeeeee;
@@ -309,6 +316,7 @@ position:relative;float:none;width:auto;top:0;margin:0;
 #coldmeter
 {
           float:<?echo get_s_align();?>;top: <? if (isHeb()) echo "5.2"; else echo "6.2"; ?>em;
+          width:54%
 }
 #radio_toolbar_container
 {
@@ -394,8 +402,8 @@ width:100%;
 #radarimg{
     margin-<?echo get_s_align();?>:-100px;
 }
-#geshemspace, #rainviewer{
-    margin-<?echo get_s_align();?>:-80px;
+#geshemspace, #rainviewer, #imsradar{
+    margin-<?echo get_s_align();?>:-40px;
 }
 #wrapper{
     width: 600px;
@@ -755,7 +763,7 @@ width:100%;
 
 #windy
 {
-width:33%;left:9.5em;top:3em
+width:33%;left:10.5em;top:2em
 } 
 .open-close-button{
   width: 1.4em;
@@ -868,11 +876,11 @@ border-radius: 0px;
 }
 #what_is_h, #what_is_h_start
 {
-	font-size:1.1em;
+	font-size:1.3em;
 	margin-top:0.2em;
     padding:1em;
-    width: 70%;
-    margin: 1em auto 0;
+    width: 85%;
+    margin: 1em auto;
     line-height:16px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -890,7 +898,7 @@ border-radius: 0px;
     
 }
 #what_is_h .rainpercent{
-    margin: -24em 11.5em;
+    margin: -24em 13.5em;
 }
 #msgDetails .white_box2
 {
@@ -1075,17 +1083,17 @@ width: 160px;
     margin:4px
 }
 #activities_yes, #activities_no{
-   width:750px
+   width:800px
 }
 
 #cm_dislike
 {
-    <?=get_inv_s_align()?>: 1em;
+    <?=get_inv_s_align()?>: 1.1em;
     top: <? if (isHeb()) echo "6.2"; else echo "7";?>em;
 }
 #cm_like
 {
-    <?=get_inv_s_align()?>:3.2em;
+    <?=get_inv_s_align()?>:3.6em;
     top: <? if (isHeb()) echo "6.2"; else echo "7";?>em;
 }
 #tempdivvaluestart
@@ -1094,6 +1102,8 @@ width: 160px;
     margin-<?=get_s_align()?>:0.4em
 }
 .shade{
+    font-size:1em;
+    position: absolute;
     <? if (isHeb()) echo "margin: 4.5em 0 0 0.8em;"; else echo "margin: 4.5em 0 0 0.6em;";?>; 
 }
 #latestnow
@@ -1179,7 +1189,9 @@ color:#000000;
 #adunit1, #adunit2, #adunit3{
 line-height:0;
 clear:both;
-text-align:center
+text-align:center;
+height: 50px;
+width: 320px;
 }
 #forecasthours ul li
 {
@@ -1268,7 +1280,7 @@ border-top:0px;top:95px;margin:0
     position: absolute;
     top: 220px;
     text-align: right;
-    width: 290px;
+    width: 90%;
     left: 10px;
     opacity: 1;
     z-index: 9999;
@@ -1450,7 +1462,7 @@ display:block;z-index: 100;padding-top: 7px;width: 30px;
     background-color: #eeeeee;
 }
 #startupdiv, #register_suggest{
-    top: 0; padding:55px 40px;left: 0;z-index:999999; position: absolute;background-color: #FFFFFF;
+    top: 0; padding:55px 10px;left: 0;z-index:999999; position: absolute;background-color: #FFFFFF;
     <? if (isHeb()) echo "direction:rtl"; ?>;
     
 }
@@ -1825,18 +1837,22 @@ margin:5px 27px 11px 11px
     margin: -5.1em 1.5em;
     position:absolute;
 }
-#0{
-    margin: 0.3em;
+#for24_graph_ng{
+    padding: 1em 0;
+    height: 80%;
+    margin: 1em 0;
+    position: relative;
 }
 #graph_forcast{
-        height:160px;
-        margin: 5px 0 0 0;
-        
-    }
+    
+    margin: 0;
+    height:220px
+}
 #graphForcastContainer
 {
     position:relative
 }
+
 .inparamdiv#chartjs-tooltip
 {
     top:25px;
@@ -1848,6 +1864,8 @@ margin:5px 27px 11px 11px
 #for24_hours
 {
     margin-top:10px;
+    width: 90%;
+    float:none
 }
 #if1, #if2, #if3, #if4
 {
@@ -1855,10 +1873,9 @@ margin:5px 27px 11px 11px
 }
 #graph_forcastWrapper
 {
-    
+    background-color: #eeeeee;
     text-align: justify;
     width:100%;
-    -webkit-overflow-scrolling: touch;ןמגק
     -webkit-transform: translateZ(0px);
     -webkit-transform: translate3d(0,0,0);
     -webkit-perspective: 1000;
@@ -1877,7 +1894,12 @@ margin:5px 27px 11px 11px
     top: 170px;
 }
 #legends li{
-    font-size: 1.2em;
+    font-size: 1.1em;
+    padding: 0.2em 1em;
+
+}
+#cboxCloseMobileRedirect{
+    display:none
 }
 .dotstyle ul {
 	position: relative;

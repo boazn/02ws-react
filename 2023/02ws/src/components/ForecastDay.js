@@ -1,15 +1,34 @@
 import Btn from './Button';
+import ReactModal  from 'react-modal';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {updateLikesCall} from '../helpers/Utils';
+import Activities from './Activities';
 const ForecastDay = (props) => {
     const prevDay = () => {
         setTogglePrev(!togglePrev);
     
     };
     const { t } = useTranslation();
+    const [isOpen, setPopupIsOpen] = useState(false);
     const [currentlikes, setCurrentLikes]= useState(props.likes);
     const [currentdislikes, setCurrentDislikes] = useState(props.dislikes);
+    const customStyles = {
+        content: {
+          width:'800px',
+          top: '50%',
+          left: '50%',
+          direction: (props.lang === 1) ? 'rtl' : '',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+        },
+      };
+    const setIsOpen = ({isOpen}) => {
+        
+        setPopupIsOpen(isOpen);
+      }
     const useToggle = (initialState) => {
         const [toggleValue, setToggleValue] = useState(initialState);
     
@@ -50,12 +69,15 @@ const ForecastDay = (props) => {
 
         <ul className={"white_box box_text " + (props.lang === 1? 'rtl' : '')}>
             
-            {props.a_key == 0 ? <li className="forcast_off_day"><Btn className="btn-link" btnOnClick={() => prevDay()} btnTitleText={"קודם"} img="ArrowUp">
+            {(props.a_key == 0 && !props.isPopup) ? <li className="forcast_off_day"><Btn className="btn-link" btnOnClick={() => prevDay()} btnTitleText={"קודם"} img="ArrowUp">
                 <img src="images/yesterday.png" width="14" height="14" title="יום אחרון" alt=""  />
             </Btn></li> : ''}
             
             <li className="forcast_day">{eval(`props.day_name${props.lang}`)} </li>
-            <li className="forcast_date">{props.date}</li>
+            <li className="forcast_date">
+                {props.date}
+               {props.isPopup && <Activities activities_json={props.activities_json} activities={props.recommendations} lang={props.lang} /> }
+            </li>
             <li className="expand_plus">
             <div id="0" className="open-close-button" index="0"></div>
             </li>
@@ -69,7 +91,7 @@ const ForecastDay = (props) => {
                         </a>
                     </div>
                 </div>
-                {toggle && (
+                {(toggle || props.isPopup) && (
                 <>
                 <div className="extra">
                {props.humMorning}%
@@ -80,11 +102,11 @@ const ForecastDay = (props) => {
                 </>
                 
                 )}
-                {toggle && ( <div className="icon extra" id="morning_icon">
+                {(toggle || props.isPopup) && ( <div className="icon extra" id="morning_icon">
                     <img src={`https://www.02ws.co.il/${props.morning_icon}`} width="28" height="28" alt="https://www.02ws.co.il/images/icons/day/n4_cloud_5_sun_3.svg" />
                 </div>)}
                 <div className="icon extra">
-                {toggle && ( <div className={`wind_icon ${props.windMorning}`} title="">{props.windMorningSpd}kmh
+                {(toggle || props.isPopup) && ( <div className={`wind_icon ${props.windMorning}`} title="">{props.windMorningSpd}kmh
                     </div>)}
                 </div>
             </li>
@@ -99,7 +121,7 @@ const ForecastDay = (props) => {
                     </div>
                 </div>
                 
-                {toggle && (
+                {(toggle || props.isPopup) && (
                 <>
                 <div className="extra">
                {props.humDay}%
@@ -110,9 +132,9 @@ const ForecastDay = (props) => {
                 </>
                 
                 )}
-                {toggle && (<div className="icon extra" id="day_icon0"><img src={`https://www.02ws.co.il/${props.icon}`} width="28" height="28" alt="images/icons/day/n4_cloud_5_sun_3.svg" /></div>)}                                       
+                {(toggle || props.isPopup) && (<div className="icon extra" id="day_icon0"><img src={`https://www.02ws.co.il/${props.icon}`} width="28" height="28" alt="images/icons/day/n4_cloud_5_sun_3.svg" /></div>)}                                       
                 <div className="icon extra">
-                {toggle && (<div className={`wind_icon ${props.windDay}`}> {props.windDaySpd}kmh</div>)}
+                {(toggle || props.isPopup) && (<div className={`wind_icon ${props.windDay}`}> {props.windDaySpd}kmh</div>)}
                 <div>
                 </div>
                 </div>
@@ -127,7 +149,7 @@ const ForecastDay = (props) => {
                         </a>
                     </div>
                 </div>  
-                {toggle && (
+                {(toggle || props.isPopup) && (
                 <>
                 <div className="extra">
                {props.humNight}%
@@ -138,9 +160,9 @@ const ForecastDay = (props) => {
                 </>
                 
                 )}
-                {toggle && (<div className="icon extra" id="night_icon0"><img src={`https://www.02ws.co.il/${props.night_icon}`} width="28" height="28" alt="https://www.02ws.co.il/images/icons/day/n4_moon.svg" /></div>)}
+                {(toggle || props.isPopup) && (<div className="icon extra" id="night_icon0"><img src={`https://www.02ws.co.il/${props.night_icon}`} width="28" height="28" alt="https://www.02ws.co.il/images/icons/day/n4_moon.svg" /></div>)}
                 <div className="icon extra">
-                {toggle && (  <div className={`wind_icon ${props.windNight}`} >{props.windNightSpd}kmh</div> )}
+                {(toggle || props.isPopup) && (  <div className={`wind_icon ${props.windNight}`} >{props.windNightSpd}kmh</div> )}
                     <div></div></div>
             </li>
             <li className="icon_day"><div className="spriteB up" title="במגמת עליה"></div>                      
@@ -159,13 +181,37 @@ const ForecastDay = (props) => {
             </div>
                                                                                     
             </li>
-            <li className="more">
+            {
+                !props.isPopup &&
+                (<li className="more">
                 <Btn btnOnClick={() => setToggle()}  img={toggle ? "ArrowUp" : "ArrowDown" }>
                     
                 </Btn>
+
+                <Btn btnOnClick={() => setPopupIsOpen(true)}  img={"ArrowLeft"}>
+                    
+                </Btn>
                 
-            </li>
+                </li>)
+            }
+           
         </ul>
+        <ReactModal
+        
+        isOpen={isOpen}
+        contentLabel="Example Modal"
+        style={customStyles}
+        onRequestClose={() => setIsOpen(false)}
+
+      >
+         <Btn btnOnClick={() => setIsOpen(false)} btnTitleText={""}  img={"X"}>
+                
+        </Btn>
+        <ul id="forcast_day_popup">
+           <ForecastDay className="white_box" {...props} isPopup={true}/>
+        </ul>
+         
+      </ReactModal>
         </>
     );
 }

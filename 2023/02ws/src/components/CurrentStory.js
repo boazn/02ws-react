@@ -52,7 +52,7 @@ const CurrentStory = (props) => {
                  { isImg && <img src={eval(`story.img_src${props.lang}`)} width="320" alt="" />}
                  { isVideo && <video width="310" height="240" controls><source src={eval(`story.img_src${props.lang}`)} type="video/mp4" /></video>}                 
                 <div dangerouslySetInnerHTML={{__html: decodeUriComponent(eval(`story.Description${props.lang}`)).replace(/\+/g, ' ').replace(/(\r\n|\r|\n)/g, '<br/>')}}></div>
-                <Ad />
+               
             </div>
         )
             

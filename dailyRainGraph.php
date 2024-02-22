@@ -134,6 +134,7 @@ foreach($rawdata as $key) {
         $current_date = ret_value("date");
         $Rain = ret_value("Rain2");
         $RainDepartFromNorm = ret_value("RainDepartFromNorm");
+        $RainAverage = ret_value("RainAverage");
         debug_out("Xaxis = " . $current_date);
         debug_out("Y1axis = " . $Rain );
         debug_out("Y2axis = " . $RainDepartFromNorm );
@@ -169,7 +170,8 @@ foreach($rawdata as $key) {
         {
             $rx[] =  $ts;
             $ry1[] = $Rain;
-            $ry2[] = $Rain - $RainDepartFromNorm;
+            //$ry2[] = $Rain - $RainDepartFromNorm;
+            $ry2[] = $RainAverage;
 
             $SITE['tempunit'] 	= "&#xb0;" . "C";
             $SITE['pressunit'] 	= "mb";

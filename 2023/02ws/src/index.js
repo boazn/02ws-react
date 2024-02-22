@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import './index.css';
 import App from './App';
+import About from './components/About';
 import ErrorPage from './pages/error-page';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -17,7 +18,7 @@ const app_layout =  [ "current", "forecast24", "NextDays", "External", "now"];
 const router = createBrowserRouter([
       {
         path: "/",
-        element: <App layout={app_layout[0]} />,
+        element: <App layout={app_layout[0]}  />,
         errorElement: <ErrorPage />,
       },
       {
@@ -32,19 +33,19 @@ const router = createBrowserRouter([
       },
       {
         path: "App1",
-        element: <App layout="NextDays"/>,
+        element: <App layout="current" />,
         errorElement: <ErrorPage />,
         
       },
       {
         path: "App2",
-        element: <App layout={app_layout[1]}/>,
+        element: <App layout="forecast24"/>,
         errorElement: <ErrorPage />,
         
       },
       {
         path: "App3",
-        element: <App layout={app_layout[2]}/>,
+        element: <App layout="NextDays"/>,
         errorElement: <ErrorPage />,
         
       },
@@ -206,13 +207,13 @@ const router = createBrowserRouter([
       },
       {
         path: "About",
-        element: <App src="https://www.02ws.co.il/small/?section=contact&lang=1" layout={app_layout[3]}/>,
+        element: <About/>,
         errorElement: <ErrorPage />,
         
       },
       {
         path: "Contact",
-        element: <App src="https://www.02ws.co.il/small/?section=SendFeedback&lang=1" layout={app_layout[3]}/>,
+        element: <App src="https://www.02ws.co.il/small/?section=SendFeedback&lang=1" layout="External"/>,
         errorElement: <ErrorPage />,
         
       },

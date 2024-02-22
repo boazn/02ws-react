@@ -63,14 +63,15 @@ function insertNewMessage ($survey_id, $value, $temp, $comments)
   		@mysqli_free_result($result);
 		
 	//}
-}  
+} 
+
 if (isset($_REQUEST['SendSurveyButton'])&&($_REQUEST['survey']!='')) {
 
 	$msgSent = true;
 	$displayVotes = false;
 			$itfeels = array();
 			$itfeels = $current->get_itfeels();
-			$temp_to_cold_meter = $itfeels[1];
+			$temp_to_cold_meter = ($_REQUEST['is_sun'] == "true") ? $current->get_thsw() : $itfeels[1];
 			$result = insertNewMessage($_REQUEST['survey_id'], $_REQUEST['survey'], $temp_to_cold_meter, $_REQUEST['comments']);
 	
 	if (isset($_REQUEST['json_res'])) {

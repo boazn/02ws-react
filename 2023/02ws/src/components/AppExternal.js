@@ -1,16 +1,29 @@
 import logo from '../logo.svg';
 import '../App.css';
 import { useTranslation } from 'react-i18next';
-import { React } from 'react';
+import { React, useContext } from 'react';
 import External from './Extrenal';
+import {useCurrentUser} from "../helpers/UserContext";
+import {ConfigContext} from "../helpers/ConfigContext";
+import Btn from './Button';
 
 
 
 function AppExternal({json, cssClasses, src}) {
   
   const { t, i18n } = useTranslation();
-  var langcode = 1;
+  const { currentUser, fetchCurrentUser } = useCurrentUser();
+  const configData = useContext(ConfigContext);
+  var langcode = configData.lang;
+  if (json.length === 0){ 
+    return <div>loading...</div>
+  }
   
+ const saveConfigData = () => {
+  configData.layout = "NextDays";
+  localStorage.setItem('configData', JSON.stringify(configData));
+  console.log ('saved' + JSON.stringify(configData));
+ }
   if (json.length === 0){ 
     return <div>loading...</div>
   }
@@ -18,13 +31,32 @@ function AppExternal({json, cssClasses, src}) {
       <>
       <div className={"container-fluid App " + cssClasses}>
       <header className={"App-header row mb-2 " + (langcode === 1? 'rtl' : '')}>
-        <div className="col-12 ">
-        <h4><img src={logo} className="App-logo" alt="logo" />  {t("welcome")}{t("site")}</h4>
-           
+      <div className="row ">
+        
+          <div className="col-12 ">
+          <div><img src={logo} className="App-logo" alt="logo" />  {t("SLOGAN")} - {t("WEBSITE_TITLE")} 
+        
+          </div>
+          </div>
+          
+      </div>
+      <div className="row ">
+      <div className="col-4 ">
+             <Btn btnOnClick={() => saveConfigData()} btnTitleText="לשמור כדף פתיחה" img="ArrowDown">
+                      
+               </Btn>
         </div>
+        <div className="col-4 ">
+
+        </div>
+        <div className="col-4 ">
+
+        </div>
+      </div>
+      
        </header>
        <div className={"row "  + (langcode === 1? 'rtl' : '')}>
-       <div className="col-12 col-sm-9 bg-light p-3 border"><External src={src} width="1920" height="800" className={cssClasses}/></div>
+       <div className="col-12 col-sm-9 bg-light p-3 border"><External src={src} width="800" height="1000" className={cssClasses}/></div>
        </div> 
        
      </div>

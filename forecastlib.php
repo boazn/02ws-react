@@ -534,6 +534,8 @@ function updateForecastHour($currentPri, $title, $icon){
                         $forecast_img = $icon;
                         if (($currentPri <= 55)&&(($hour_f['time']>19)||($hour_f['time']<6)))
                               $forecast_img =  ($currentPri < 30) ? "n4_moon.svg" : "n4_moonpc2.svg";
+                        if (($currentPri >= 78)&&($currentPri <= 80)&&(($hour_f['time']>19)||($hour_f['time']<6)))
+                              $forecast_img =  ($currentPri < 80) ? "n4_moonlightrain.svg" : "n4_rainmostlycloudy.svg";
                           $hour_f['icon'] = $forecast_img;
                         if ($_REQUEST["debug"] >= 3){
                                  echo " icon into ".$forecast_img;
@@ -894,7 +896,14 @@ for ($i = 0; $i < count($taf_tokens); $i++)
     else if (stristr ($taf_tokens[$i], "TS")) updateForecast(80,$THUNDERSTORM, "n4_ts.svg");
     else if ((stristr ($taf_tokens[$i], "-SHRA"))||
             (stristr ($taf_tokens[$i], "-RA"))) updateForecast(75, $LIGHT_RAIN, "n4_sun_lightrain.svg");
-    else if (stristr ($taf_tokens[$i], "RA")) updateForecast(78, $RAIN, "n4_rain2.svg");
+    else if (stristr ($taf_tokens[$i], "RA")){
+        if ($prob_mag == Chance::VLow)
+             updateForecast(78, $RAIN, "n4_sun_rain2.svg");
+        else if ($prob_mag == Chance::Low)
+             updateForecast(79, $RAIN, "n4_lightshowers.svg");
+        else
+             updateForecast(80, $RAIN, "n4_rain2.svg");
+    }
 
     if (stristr ($taf_tokens[$i], "DZ")) updateForecast(68, $DRIZZLE, "n4_rainpc.svg");
     if (stristr ($taf_tokens[$i], "CB")) updateForecast(62, $SEVERE_CLOUDS, "n4_mostlycloudy.svg");
@@ -903,7 +912,7 @@ for ($i = 0; $i < count($taf_tokens); $i++)
     if (stristr ($taf_tokens[$i], "DU")) updateForecast(50, $DUST, "n4_dust.svg");
     if (stristr ($taf_tokens[$i], "TCU")) updateForecast(48, $SEVERE_CLOUDS, "n4_mostlycloudy.svg");
     if (stristr ($taf_tokens[$i], "OVC"))   {
-        $currentPri = 45;`
+        $currentPri = 45;
 
         if ($currentPri != $priority){
              $last_priority = $currentPri;

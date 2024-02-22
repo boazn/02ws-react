@@ -295,8 +295,11 @@ try {
     
         $msgToBuffer = $msgSpecial[1]." ".$picture_url;
         if (strlen($title[1]) > 0) {$msgToBuffer = $title[1].": ".$msgToBuffer;}
-        if ($_POST["social"]=="true")
-        $result .= "\r\n".post_to_bufferApp($msgToBuffer, $picture_url); 
+        if ($_POST["social"]=="true"){
+            $picture_url = (empty($picture_url)) ? "https://www.02ws.co.il/images/webCamera0.jpg" : $picture_url;
+            $result .= "\r\n".post_to_bufferApp($msgToBuffer, $picture_url); 
+        }
+        
 } 
 catch (Exception $ex) {
     $result .= " exception post_to_bufferApp:".$ex->getMessage();

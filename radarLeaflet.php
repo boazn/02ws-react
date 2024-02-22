@@ -10,17 +10,29 @@
        background-clip: padding-box;
        
        padding: 5px;
-       height: 67.5px;
+       height: 80.5px;
 }
 
 .leaflet-radar .leaflet-radar-timestamp {
-       text-align: center;
+       text-align: center;font-size:1.2em
 }
+.leaflet-radar-slider{
+    margin-top: 10px
+}
+.leaflet-radar-slider input {
+   width:100%;
+}
+.leaflet-radar-toggle input{
+   width:20px;height:20px
+}
+.leaflet-right .leaflet-control {
+	margin-right: 30px;
+	}
 </style>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+<link rel="stylesheet" href="css/leaflet.css"/>
    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
    <script type="text/javascript" src="sprintf2.js"></script>
-   <script src="leaflet-radar.js?foo=1239"></script>
+   <script src="leaflet-radar.js?foo=1292"></script>
   
 </head>
 <body style="padding: 0; margin: 0;">
@@ -28,7 +40,7 @@
 
                 <script type="text/javascript">
 
-                        var map = L.map("map").setView([31.2, 35.12], 8);
+                        var map = L.map("map").setView([31.77, 35.19], 8);
                         //[[34.5318966003582659, 37.8648132475530090], [29.4468656950938161, 31.7662931774178858]]
                         //var corner1 = L.latLng(33.653387, 33.349726),
                         //corner2 = L.latLng(29.39597, 35.929833),
@@ -52,7 +64,13 @@
                         ).addTo(map);
                         L.control.radar({}).addTo(map);
                         //L.rectangle(map_bounds).addTo(map);
-                        $('input[type=checkbox]').click(); 
+                     
+
+                       (function() {
+                        var checkbox = document.getElementById('leaflet-radar-toggle');
+                       //checkbox.click();
+
+                        })();
                   </script>
                               
 <div  id="imsradar" class="float" >

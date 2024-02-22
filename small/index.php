@@ -94,15 +94,15 @@ if ($lang_idx == "")
 $width = "320";
 if (isRadarPage())
 {
-  $width = "420";  
+  $width = "470";  
 }
 
 ?>
 <!DOCTYPE html>
 <html  <? if (isHeb()) echo "lang=\"he\" xml:lang=\"he\"" ; ?> xmlns="http://www.w3.org/1999/xhtml">
 <head>
-ra
-<link rel="stylesheet" href="<?=BASE_URL?>/css/main<?=getCssIdx($lang_idx);?>.css" type="text/css" />
+
+<link rel="stylesheet" href="<?=BASE_URL?>/css/main.php?lang=<?=getCssIdx($lang_idx);?>" type="text/css" />
 <link rel="stylesheet" href="<?=BASE_URL?>/css/mobile<?=getCssIdx($lang_idx);?>.css" type="text/css" />
 <link rel="manifest" href="manifest.php?lang=<?=$lang_idx?>">
 <!--<meta name="apple-mobile-web-app-capable" content="yes">
@@ -110,7 +110,7 @@ ra
 <link rel="apple-touch-icon" href="/img/logo.svg">
 <link rel="icon" type="image/png" href="img/favicon_sun.png" />
 <meta property="og:image" content="https://www.02ws.co.il/02ws_short.png" />
-<meta name="viewport" content="width=<?=$width?><? if (isFastPage()) echo ", initial-scale=1.15 ,user-scalable=no";?>" />
+<meta name="viewport" content="width=<?=$width?>, user-scalable=no " />
 <title><?=$WEBSITE_TITLE[$lang_idx]." - ".$MOBILE_FRIENDLY[$lang_idx]?></title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script id="loadGA">
@@ -832,6 +832,8 @@ else {?>
 		</span>
 	</div>
         <div id="for24_hours_s" style="display:none"></div>
+        
+        <div id="graph_forcastWrapper" >
         <div id="legends">
             <ul>
                 <li><span id="legend0" style="text-decoration: underline;" onclick="showHourlyParam('temp', 0)" ><?=$TEMP[$lang_idx]?></span></li>
@@ -841,8 +843,8 @@ else {?>
                 
             </ul>
         </div>    
-        <div id="graph_forcastWrapper" >
         <div id="graph_forcast" class="metric-chart h-bar-chart" >
+        
         <ul id="for24_graph_ng" class="x-axis-bar-list">
         </ul>   
         </div>
@@ -854,9 +856,9 @@ else {?>
         <img src="https://res.cloudinary.com/midrag/image/upload/02wsBaner.png" width="320" height="50" alt="מדרג"/> 
         </a>
         </div>
-        <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
-        <div id="for24_hours"></div>
         <div id="spacer4" style="clear:both;height:10px">&nbsp;</div>
+        <div id="for24_hours"></div>
+        <div id="spacer5" style="clear:both;height:10px">&nbsp;</div>
         
         <div id="adunit5" class="adunit" style="">
         <div data-onpage=true 
@@ -872,9 +874,9 @@ else {?>
         </div>
         </div>
         
-        <div id="spacer4" style="clear:both;height:15px">&nbsp;</div>
+        <div id="spacer6" style="clear:both;height:15px">&nbsp;</div>
       <? if (mainPage()) {   ?>
-    <table id="nextdays_table" class="forecastnextdays" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="width:100%">
+    <table id="nextdays_table" class="forecastnextdays" <? if (isHeb()) echo "dir=\"rtl\""; ?> style="width:95%;margin: 0 auto;">
             
     </table> 
     <?}?>
@@ -882,7 +884,7 @@ else {?>
 
 </div>
 <div style="clear:both;height:1px">&nbsp;</div>
-<div style="display:none;padding:0.1em 0.4em" id="forcast_hours_table">
+<div style="display:none;padding:0.1em 0.7em" id="forcast_hours_table">
 </div>
 <div id="genderchoose" style="display:none">
     <form method="post" action="<?=BASE_URL;?>?section=survey.php&amp;lang=<? echo $lang_idx;?>">
@@ -939,26 +941,15 @@ else {?>
 </script>
 <? } ?>
 <div id="adunit2" class="adunit" style="display:none">
-    
-    <div id="if1"> 
-        
-    </div>
-    <div id="if2">
-      
-    </div>
-    <div id="if3">
-       
-    </div>
-    <div id="if4">
-      
-    </div>
     <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
         <div id="adunit7" class="adunit">
         <a href="https://careers.topmatch.co.il/midrag/index.html" target="_blank">
         <img src="https://res.cloudinary.com/midrag/image/upload/02wsBaner.png" width="320" height="50" alt="מדרג"/> 
         </a>
     </div>
-    <div id="spacer3" style="clear:both;height:10px">&nbsp;</div>
+    <div id="spacer3" style="clear:both;height:15px">&nbsp;</div>
+    
+    
     <div data-onpage=true 
       data-adpath="/339474670,22847485332/02WS/Mobile_320x50">
  <!-- small unit 2 -->
@@ -970,7 +961,20 @@ else {?>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 </div>
+<div id="spacer7" style="clear:both;height:10px">&nbsp;</div>
 </div>
+<div id="if1"> 
+        
+    </div>
+    <div id="if2">
+      
+    </div>
+    <div id="if3">
+       
+    </div>
+    <div id="if4">
+      
+    </div>
 <ul id="sigweather" class="white_box" style="display:none">
 
 </ul>
@@ -1142,7 +1146,7 @@ else {?>
 
  </div>
  <?}?>
- <div id="mobile_redirect" class="big inv_plain_3_zebra" style="display:none;" class role="dialog">
+ <div id="mobile_redirect" class="big inv_plain_3_zebra" style="display:none;position:relative;margin-top:20px" class role="dialog">
         <button type="button" id="cboxCloseMobileRedirect" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
         <br />
         <h2 class="big inv_plain_2"><br /><div>
@@ -1187,6 +1191,8 @@ else {?>
   integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
   crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="<?=BASE_URL?>/js/tinymce/tinymce.min.07032017.js" type="text/javascript"></script>
+<script src="<?=BASE_URL?>/footerScripts260923.php?lang=<?=$lang_idx?>&email=<?=$_GET['email']?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>
 <script type="text/javascript">
   var isUserAdApproved = false;
   var lang=<?=$lang_idx?>;
@@ -1437,7 +1443,7 @@ Licensed MIT
         $('#date').html(json.jws.current.date<?=$lang_idx?>);
         
         var latestalerttext = decodeURIComponent(json.jws.Messages.latestalert<?=$lang_idx?>).replace(/\+/g, ' ');
-        var latest_user_pic = "<a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=userPics.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestUserPic[0].picname + "\" width=\"320\" title=\"userpic\" /></br>" + decodeURIComponent(json.jws.LatestUserPic[0].name.replace(/\+/g, " ")) + ": " + decodeURIComponent(json.jws.LatestUserPic[0].comment.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";      
+        var latest_user_pic = "<a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=userPics&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestUserPic[0].picname + "\" width=\"320\" title=\"userpic\" /></br>" + decodeURIComponent(json.jws.LatestUserPic[0].name.replace(/\+/g, " ")) + ": " + decodeURIComponent(json.jws.LatestUserPic[0].comment.replace(/\+/g, " ")) + "</a>&nbsp;&nbsp;";      
         var latest_pic_of_the_day = "<div class=\"txtindiv\"><?=$PIC_OF_THE_DAY[$lang_idx]?>" + "<br/>" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")) + "</div><a href=\"<?=$_SERVER['SCRIPT_NAME']?>?section=picoftheday.php&amp;lang=<?=$lang_idx."&amp;fullt=".$_GET['fullt']."&amp;s=".$_GET['s']."&amp;c=".$_GET['c'];?>\"><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"320\" title=\"pic of the day\" /></a>";
         var latest_pic_of_the_day_text = "<a href=\"javascript:void(0)\" class=\"info\" ><div class=\"title\">" + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")).substring(0, 30) + '<? echo get_arrow();?>' + "</div>" + "<span class=\"info\"> <div class=\"\"><?=$PIC_OF_THE_DAY[$lang_idx]?>: " + decodeURIComponent(json.jws.LatestPicOfTheDay.caption<?=$lang_idx?>.replace(/\+/g, " ")) + "</div><img src=\"" +  json.jws.LatestPicOfTheDay.picurl + "\" width=\"320\" title=\"pic of the day\" /></span></a>";
         var latest_tip_of_the_day = "<a href=\"javascript:void(0)\" class=\"info\" ><div class=\"title\">" + decodeURIComponent(json.jws.Messages.tip<?=$lang_idx?>.replace(/\+/g, " ")).substring(0, 30) + '<? echo get_arrow();?>' + "</div>" + "<span class=\"info\"> <div class=\"inv_plain_3_zebra\">" + decodeURIComponent(json.jws.Messages.tip<?=$lang_idx?>.replace(/\+/g, " ")) + "</div></span></a>";
@@ -1649,7 +1655,7 @@ Licensed MIT
        var max_temp = -10; var min_temp = 110;
        var max_hum = -10; var min_hum = 110;
         for (i = 0; i< json.jws.forecastHours.length; i++){
-        if (i >= json.jws.states.nowHourIndex){
+        //if (i >= json.jws.states.nowHourIndex){
             if (parseInt(json.jws.forecastHours[i].temp) > max_temp) max_temp = json.jws.forecastHours[i].temp; 
             if (parseInt(json.jws.forecastHours[i].temp) < min_temp) min_temp = json.jws.forecastHours[i].temp;
             if (json.jws.forecastHours[i].hum > max_hum) max_hum = json.jws.forecastHours[i].hum; 
@@ -1672,7 +1678,7 @@ Licensed MIT
                 forecastHoursD += "</ul></li>";
                 
             }
-        }
+       // }
         
        if (i == 4) {
                // forecastHoursD += "<ul class=\"nav \" ><li style=\"padding:0 10px 0 0\"><a style=\"text-decoration:none\" href=\"https://www.jerusalemoutoftheframe.com/graffiti/?fbclid=IwAR0GUeawNnjlWbFA5GkSEbEHL42jRW-0Hn-inyKlAOV73KRx2TF_lnPOFx8\" target=_blank >סיור גרפיטי ״50 גוונים של ירושלים״ <?=get_arrow();?> כאן</a></li></ul>  ";
@@ -1681,8 +1687,8 @@ Licensed MIT
        }
        var prev_wind, bottom, tempclass, addonclass;
        for (i = 0; i< json.jws.forecastHours.length; i++){
-        if (i >= json.jws.states.nowHourIndex)
-        {
+       //if (i >= json.jws.states.nowHourIndex)
+        //{
             forecastHoursNG += "<li class=\"x-axis-bar-item\">";
             toptime =  (json.jws.forecastHours[i].time % 4 == 0) ? json.jws.forecastHours[i].day<?=$lang_idx;?>+"&nbsp;"+json.jws.forecastHours[i].time+":00" : json.jws.forecastHours[i].time + ":00";
             forecastHoursNG += "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('"+toptime+"','"+json.jws.forecastHours[i].icon+"',"+ json.jws.forecastHours[i].temp+","+json.jws.forecastHours[i].wind+",'"+json.jws.forecastHours[i].cloth.substring(json.jws.forecastHours[i].cloth.split('/', 2).join('/').length)+"',"+json.jws.forecastHours[i].rain+","+json.jws.forecastHours[i].hum+")\">";
@@ -1710,7 +1716,7 @@ Licensed MIT
             forecastHoursNG += "</div>";
             forecastHoursNG += "</li>";
             prev_wind = json.jws.forecastHours[i].wind;
-        }
+        //}
        }
        //$('#for24_given').html('<? echo $GIVEN[$lang_idx]." ".$AT[$lang_idx]." ";?>' + json.jws.TAF.timetaf + ':00 ' + json.jws.TAF.dayF + '/' + json.jws.TAF.monthF + '/' + json.jws.TAF.yearF);
        $('#for24_hours_s').html(forecastHours);
@@ -1746,12 +1752,12 @@ Licensed MIT
          date_value = json.jws.today.date;
        }
        forecastDays = "<table style=\"border-spacing:4px;width:100%\">";
-       forecastDays += "<tr style=\"height:2em\">";
+       forecastDays += "<tr id=\"titlerow\" style=\"height:2em;background: transparent;\">";
        link_for_yest = "<a id=\"linkyesterday\" hrf=\"javascript:void(0)\" onclick=\"$('#yesterday_line').show();\"><img src=\"<?=BASE_URL?>/images/yesterday.png\" width=\"14\" height=\"14\" title=\"<?=$LAST_DAY[$lang_idx]?>\" /></a>";
-       forecastDays += "<td></td><td id=\"plus\">" + link_for_yest + "</td>";
-       forecastDays += "<td id=\"morning\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"<?=BASE_URL?>//img/morning_icon.png\" width=\"30\" /><span class=\"info\">" + json.jws.desc.early_morning<? echo $lang_idx;?> + "</span></a></td>";
-       forecastDays += "<td id=\"noon\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"<?=BASE_URL?>//img/noon_icon.png\" width=\"18\" /><span class=\"info\">" + json.jws.desc.noon<? echo $lang_idx;?> + "</span></a></td>";
-       forecastDays += "<td id=\"night\"><a href=\"javascript:void(0)\" class=\"info\" ><img src=\"<?=BASE_URL?>//img/night_icon.png\" width=\"18\" /><span class=\"info\">" + json.jws.desc.night_temp_exp<? echo $lang_idx;?> + "</span></a></td>";
+       forecastDays += "<td>" + link_for_yest + "</td><td id=\"plus\"></td>";
+       forecastDays += "<td id=\"morning\">" + json.jws.desc.early_morning<? echo $lang_idx;?> + "</td>";
+       forecastDays += "<td id=\"noon\">" + json.jws.desc.noon<? echo $lang_idx;?> + "</td>";
+       forecastDays += "<td id=\"night\"><?=$NIGHT[$lang_idx]?></td>";
        forecastDays += "<td></td>";
        forecastDays += "<td></td>";
        forecastDays += "</tr>";
@@ -1783,9 +1789,9 @@ Licensed MIT
                             <?}?>
              forecastDays += "<tr>";
              forecastDays += "<td class=\"date\" >"  + json.jws.forecastDays[i].day_name<?=$lang_idx?> + "<div class=\"datetext\">" + json.jws.forecastDays[i].date + "<div></td><td class=\"plus\">" + "<div index=\"" + i + "\" id=\"" + i + "\" class='open-close-button'></div>" + "</td>";
-            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempLow, tempunit) + TempLowCloth +  "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humMorning + "%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"morning_icon" + i + "\">" + TempLowClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].morning_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].morning_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windMorning + "\">" + json.jws.forecastDays[i].windMorningSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
-            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempHigh, tempunit) + TempHighCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humDay +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"day_icon" + i + "\">" + TempHighClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windDay + "\">" + json.jws.forecastDays[i].windDaySpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
-            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempNight, tempunit) + TempNightCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humNight +"%</div></div>" + "<div class=\"icon extra" + i + "\" id=\"night_icon" + i + "\">" + TempNightClothfull + "<a href=\"legend.php\" rel=\"external\"><img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].night_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].night_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windNight + "\">" + json.jws.forecastDays[i].windNightSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
+            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempLow, tempunit) + TempLowCloth +  "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humMorning + "%</div></div>" + TempLowClothfull + "<div class=\"icon extra" + i + "\" id=\"morning_icon" + i + "\">" + "<a href=\"legend.php\" rel=\"external\"><img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].morning_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].morning_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windMorning + "\">" + json.jws.forecastDays[i].windMorningSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
+            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempHigh, tempunit) + TempHighCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humDay +"%</div></div>" + TempHighClothfull + "<div class=\"icon extra" + i + "\" id=\"day_icon" + i + "\">" + "<a href=\"legend.php\" rel=\"external\"><img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windDay + "\">" + json.jws.forecastDays[i].windDaySpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
+            forecastDays += "<td class=\"tsfh\"><div class=\"number\">" + c_or_f(json.jws.forecastDays[i].TempNight, tempunit) + TempNightCloth + "</div><div class=\"icon extra" + i + "\"><div class=\"humidity\">" + json.jws.forecastDays[i].humNight +"%</div></div>" + TempNightClothfull + "<div class=\"icon extra" + i + "\" id=\"night_icon" + i + "\">" + "<a href=\"legend.php\" rel=\"external\"><img src=\"<?=BASE_URL?>/" + json.jws.forecastDays[i].night_icon + "\" width=\"28\" height=\"28\" alt=\"" + json.jws.forecastDays[i].night_icon +"\" /></a></div><div class=\"icon extra" + i + "\"><div class=\"wind_icon " + json.jws.forecastDays[i].windNight + "\">" + json.jws.forecastDays[i].windNightSpd + " <span class=\"param\"><?=$WIND_UNIT[$lang_idx]?></span></div></div></td>";
             forecastDays += "<td class=\"forcast_each icon_day\" >";
             if (i==0)
                 forecastDays += noon_value_change;
@@ -1986,33 +1992,36 @@ Licensed MIT
       window.open(url,"_system");
     });
   }, false);
-   <? if (mainPage()||isGraphsPage()||($_REQUEST['section'] == "alerts.php")||($_REQUEST['section'] == "alerts")) {?>
-    $.ajax({
-      type: "GET",
-      url: "<?=BASE_URL?>/02wsjson.txt",
-      beforeSend: function(){$(".loading").show();}
-    }).done(function( jsonstr  ) {
-      try{
-
-          fillAllJson(jsonstr);
-          $(".loading").hide();
-      }
-      catch (e) {
-          alert ('error:' + e);
-      }
-    });
-	
-   <?}else{?> $(".loading").hide(); <?}?>
 
 //-->
 </script>
 
-<? if (!isFastPage()) { ?>
-<script src="<?=BASE_URL?>/js/tinymce/tinymce.min.07032017.js" type="text/javascript"></script>
-<script src="<?=BASE_URL?>/footerScripts260923.php?lang=<?=$lang_idx?>&email=<?=$_GET['email']?>&temp_unit=<?if (empty($_GET['tempunit'])) echo "°c"; else echo $_GET['tempunit'];?>"  type="text/javascript"></script>
+
 <script type="text/javascript">
-startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
+startup(<?=$lang_idx?>, 7, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");
+google_to_signin();  
+
+    
+    function refreshContent(){
+        $.ajax({
+        type: "GET",
+        url: "02wsjson.txt",
+        beforeSend: function(){$(".loading").show();}
+        }).done(function( jsonstr  ) {
+        try{
+
+                fillAllJson(jsonstr);
+                $(".loading").hide();
+        }
+        catch (e) {
+                console.error ('error in refreshContent:' + e);
+        }
+        });
+    }
+    refreshContent();
+    setInterval(refreshContent, 60000);
 </script>
+<? if (!isFastPage()) { ?>
 <style>
     body{
         background:white;

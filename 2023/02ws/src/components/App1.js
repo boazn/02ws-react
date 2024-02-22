@@ -18,6 +18,7 @@ import TempGraph from './TempGraph';
 import Btn from './Button';
 import ReactModal  from 'react-modal';
 import CurrentStory from './CurrentStory';
+import ThisMonthClimate from './ThisMonthClimate';
 
 function App1({json, cssClasses, activities_json}) {
   
@@ -50,7 +51,7 @@ function App1({json, cssClasses, activities_json}) {
   const feelslike = json.jws.feelslike;
   const messages = json.jws.Messages;
   const statuses = json.jws.states.sigweather;
-  const states = json.jws.states;
+  const thisMonth = json.jws.thisMonth;
   const yest = json.jws.yest;
   const windstatus = json.jws.windstatus;
   const picoftheday = json.jws.LatestPicOfTheDay;
@@ -64,17 +65,26 @@ function App1({json, cssClasses, activities_json}) {
       
       <header className={"App-header row mb-2 " + (langcode === 1? 'rtl' : '')}>
       <div className="row ">
-        <div className="col-4 ">
-        <Btn btnOnClick={() => saveConfigData()} btnTitleText="לשמור כדף פתיחה" img="ArrowDown">
-                      
-                      </Btn>
-        </div>
-          <div className="col-4 ">
+        
+          <div className="col-12 ">
           <div><img src={logo} className="App-logo" alt="logo" />  {t("SLOGAN")} - {t("WEBSITE_TITLE")} 
         
           </div>
           </div>
-          <div className="col-4 "></div>
+          
+      </div>
+      <div className="row ">
+      <div className="col-4 ">
+             <Btn btnOnClick={() => saveConfigData()} btnTitleText="לשמור כדף פתיחה" img="ArrowDown">
+                      
+               </Btn>
+        </div>
+        <div className="col-4 ">
+        {eval(`current.date${langcode}`)}
+        </div>
+        <div className="col-4 ">
+
+        </div>
       </div>
       
        </header>
@@ -97,7 +107,8 @@ function App1({json, cssClasses, activities_json}) {
           <Forecast24h hours={nextHours} lang={langcode} className={cssClasses} />
         </div>
         <div className="col mt-12">
-            <NextDays days={nextDays} lang={langcode} className={cssClasses} yest={yest}/>
+            <NextDays days={nextDays} lang={langcode} className={cssClasses} yest={yest} activities_json={activities_json}/>
+            <ThisMonthClimate ThisMonth={thisMonth} lang={langcode} />
         </div>
       </div>
       <div className="col-xs-4 col-lg-4">

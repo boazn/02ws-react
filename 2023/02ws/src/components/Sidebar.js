@@ -61,19 +61,19 @@ function Sidebar() {
                 <a href={`/`}>דף ראשי</a>
                 </li>
                 <li>
-                <a href={`/Now/2`}>Current first</a>
+                    <Link to={`/App1`} >Current </Link>
                 </li>
                 <li>
-                    <Link to={`/App1`} onClick={() => do_something()} >Current </Link>
+                    <Link to={`/App2`}  >24H first</Link>
                 </li>
                 <li>
-                    <Link to={`/App2`} onClick={() => do_something()} >24H first</Link>
+                    <Link to={`/App3`}  >Nextdays first</Link>
                 </li>
                 <li>
-                    <Link to={`/App3`} onClick={() => do_something()} >Nextdays first</Link>
+                    <Link to={`/Now`}  >Now - all params</Link>
                 </li>
                 <li>
-                    <Link to={`/About`} onClick={() => do_something()} >{t("CONTACT_INFO")}</Link>
+                    <Link to={`/About`}  >{t("CONTACT_INFO")}</Link>
                 </li>
                 <li>
                     <Link to={`/Contact`} onClick={() => do_something()} >{t("CONTACT_ME")}</Link>
@@ -124,13 +124,13 @@ function Sidebar() {
                     {isWhatHappendOpen &&
                     <ul id="whathappend">
                         <li>
-                            <Link to={`/Average`} onClick={() => do_something()} >{t("AVERAGE")}</Link>
+                            <Link to={`/Average`}  >{t("AVERAGE")}</Link>
                         </li>
                         <li>
-                            <Link to={`/Last2days`} onClick={() => do_something()} >{t("LAST_DAY")}</Link>
+                            <Link to={`/Last2days`}  >{t("LAST_DAY")}</Link>
                         </li>
                         <li>
-                            <Link to={`/LastWeek`} onClick={() => do_something()} >{t("LAST_WEEK")}</Link>
+                            <Link to={`/LastWeek`}  >{t("LAST_WEEK")}</Link>
                         </li>
                         <li>
                             <Link to={`/ThisMonth`} onClick={() => do_something()} >8/23 {t("MONTH")}</Link>
@@ -175,13 +175,6 @@ function Sidebar() {
                     <Link to={`/Tips`} onClick={() => do_something()} >{t("TIPS")}</Link>
                 </li>
                
-                
-                <li>
-                    <Link to={`/AppExternal/1`} onClick={() => do_something()} >External</Link>
-                </li>
-                <li>
-                    <Link to={`/AppExternal/2`} onClick={() => do_something()} >External2</Link>
-                </li>
                 
             </ul>
             

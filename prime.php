@@ -329,7 +329,7 @@
                                  foreach ($forecastHour as $hour_f){
                                     $index_hr++;
                                     
-                                     if ($index_hr >= $nowIndex) {
+                                     //if ($index_hr >= $nowIndex) {
                                         echo "<li class=\"x-axis-bar-item\">";
                                         $toptime =  ($index_hr % 4 == 0) ? replaceDays(date("D ", $hour_f['currentDateTime']))."</br>".$hour_f['time'].":00" : $hour_f['time'].":00";
                                         echo "<div class=\"x-axis-bar-item-container\" onclick=\"showcircleperhour('".$toptime."','".$hour_f['icon']."',".$hour_f['temp'].",".$hour_f['wind'].",'".$hour_f['cloth']."',".$hour_f['rain'].",".$hour_f['humidity'].")\">";
@@ -360,7 +360,7 @@
                                         echo "</li>";
                                         $prev_wind = $hour_f['wind'];
 
-                                     }
+                                     //}
 				 }?>                                 
                  </ul>               
                                 
@@ -446,7 +446,7 @@
         position: absolute;
         margin-left: 48px;
         margin-top: -5px;
-        z-index: 9999;"><?if (isHeb()){?><?}?></a>
+        z-index: 9999;"><?if (isHeb()){?>>המרוץ שמנפץ את חומות השנאה<?}?></a>
                 <div class="cloud2-more">
                 
                 </div>
@@ -468,11 +468,20 @@
                 <div id="if1" >  
                 
                 </div>
-               
-                
-                <div>
-                
+                <div id="if2">
+                <!--<a href="https://hazira.org.il/" target=_blank><img src="images/Banner-02ws-3-small.gif" alt="hazira" width="300" height="100" /></a>-->
                 </div>
+                <div id="if3">
+               
+                </div>
+                <div id="if4">
+                <!--<div id="belowmainad" class="white_box" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
+                <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
+קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2024 בירושלים<?}?></a>
+                </div>-->
+                </div>
+                
+              
                
                 <?}?>                
                                
@@ -505,17 +514,9 @@
                 </div>
              
             </div>
-            <div id="if2">
-                <!--<a href="https://hazira.org.il/" target=_blank><img src="images/Banner-02ws-3-small.gif" alt="hazira" width="300" height="100" /></a>-->
-            </div>
-            <div id="if3" style="width:300px">
-            </div>
-            <div id="if4">
-            <div id="belowmainad" class="white_box" style="width:270px;padding:10px 15px;line-height: 15px;text-align:right">
-            <a href="https://runnerswithoutborders.org/race/" style=""><?if (isHeb()){?>המרוץ שמנפץ את חומות השנאה:
-קבלו פרטים על המרוץ היהודי-ערבי הגדול שיתקיים ב-2023 בירושלים<?}?></a>
-            </div>
-            </div>
+           
+            
+           
             
 	   </div>
 			
@@ -539,9 +540,13 @@
                 <?}?> 
             </div>
             <div id="windy_widget" class="span4">
-            <h2><?=$SYNOP_TITLE[$lang_idx]?></h2>
-            <iframe width="300" height="180" src="https://embed.windy.com/embed2.html?lat=31.775&lon=35.156&detailLat=31.728&detailLon=34.942&width=300&height=180&zoom=7&level=850h&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=true&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>               
-            <?=$synop?>   
+            <div class="float">
+                <iframe width="150" height="100" src="https://embed.windy.com/embed2.html?lat=31.775&lon=35.156&detailLat=31.728&detailLon=34.942&width=300&height=180&zoom=7&level=850h&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=true&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>               
+            </div>
+            <div class="float" style="width:45%;padding:0.5em;line-height: 1em;">
+            <?=$SYNOP_TITLE[$lang_idx]?>: 
+            <?=$synop?> 
+            </div>      
             </div>      
             <div id="adexternal" class="span3" style="display:none">
                                 

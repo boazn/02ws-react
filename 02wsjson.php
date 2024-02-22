@@ -1100,7 +1100,7 @@ $JSON .= "{";
 $index_hour = 0;
 foreach ($forecastHour as $hour_f){
     $index_hour++;    
-    if ((abs($hour_f['currentDateTime']) - time()) < 1800){
+    if ((abs($hour_f['currentDateTime']) - time()) < 3600){
          $nowHourIndex = $index_hour;
          $mem->set('nowHourIndex', $nowHourIndex);
          break;
@@ -1115,7 +1115,7 @@ if (isOpenOrClose()==$OPEN[$lang_idx]){$window_class="window_open";}else{$window
 $JSON .= "\"window_class\":"."\"".$window_class."\"";
 $JSON .= ",";
 $JSON .= "\"windowtitle0\":"."\"".$YOU_BETTER[$lang_idx]." ".isOpenOrClose()." ".$THE_WINDOW[$lang_idx]."\"";
-$JSON .= ",";
+$JSON .= ",";               
 $JSON .= "\"windowdesc0\":"."\"".$INSIDE[$lang_idx].": ".$current->get_intemp()." <br/ > ".$OUTSIDE[$lang_idx].": ".$current->get_temp()." <br/>".$PIVOT_DESC[$lang_idx]." ".$PIVOT_TEMP."\"";
 $JSON .= ",";
 $lang_idx = 1;

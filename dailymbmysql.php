@@ -124,7 +124,7 @@ if ($fp) {
        $info .= "'".$value."', ";
 	   
     }
-	$info .= $pm10.", ".$pm25.", ".$seasonTillNow->get_raindiffav();
+	$info .= $pm10.", ".$pm25.", ".$seasonTillNow->get_raindiffav().", ".$averageTillNow->get_rain();
     $info .= ")\n";
     if (fileIsNew())
 	{

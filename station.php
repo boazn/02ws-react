@@ -34,7 +34,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                 padding-bottom: 40px;
             }
         </style>
-        <link rel="stylesheet"  href="css/main<?=getCssIdx($lang_idx);?>.css" type="text/css">
+        <link rel="stylesheet"  href="css/main.php?lang=<?=getCssIdx($lang_idx);?>" type="text/css">
         <? if ($current->is_sunset()) { ?>
         <link rel="stylesheet" title="mystyle" href="css/sunset.min.css" type="text/css">
         <? }?>
@@ -130,7 +130,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                                                                 </a>
                                                         </li>
                                                         <li>
-                                                                <a href="https://en.sat24.com/en/is" title="<? echo  $SATELLITE[$lang_idx];?>" rel="external">		
+                                                                <a href="https://meteologix.com/il/satellite/israel" title="<? echo  $SATELLITE[$lang_idx];?>" rel="external">		
                                                                         <? echo  $SATELLITE[$lang_idx].get_arrow();?>
                                                                 </a>
                                                         </li>
@@ -231,6 +231,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                                    </ul>
                              </li>
                             <li><a href="<?=BASE_URL;?>/?section=survey&amp;lang=<? echo $lang_idx;?>&amp;survey_id=1" title="<?=$FSEASON[$lang_idx]?>"><?=$FSEASON_T[$lang_idx]?></a></li>
+                            <? if (isHeb()) {?><li><a href="https://pub.02ws.co.il" title="פרסום">פרסום בירושמיים</a></li><?}?>
                             <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'faq');?>" title="<?=$FAQ[$lang_idx]?>"><?=$FAQ[$lang_idx ]?></a></li>
                             <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'tips');?>" title="<?=$TIPS[$lang_idx]?>"><?=$TIPS[$lang_idx ]?></a></li>
 			    <li><a href="<? echo get_query_edited_url($url_cur, 'section', 'SendFeedback');?>" class="hlink" title="<? echo $CONTACT_ME[$lang_idx];?>"><? echo $CONTACT_ME[$lang_idx];?></a></li>
@@ -410,35 +411,52 @@ $sigforecastHour = $mem->get('sigforecastHour');
                            </div>
                             <div class="" id="itfeels">
                             
-                             <?$itfeels = array();
+                             <?
+                               echo $IT_FEELS[$lang_idx]."";
+                               $itfeels = array();
                                $itfeels = $current->get_itfeels();
                                
                                 if ($current->is_sun()) { ?>
-                                        <? echo $IT_FEELS[$lang_idx]; ?><br/>
-                                         <a title="<?=$THSW[$lang_idx]?>"  href="<?=BASE_URL?>?section=graph&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
-                                               
-                                                <span id="itfeels_thsw" dir="ltr" ><span class="value" data-value="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span></span><span class="info"><?=$THSW[$lang_idx]?></span> 
-                                         </a><a href="javascript:void()" class="info"><span class="info"><? echo $IN_THE_SUN[$lang_idx]."/".$SHADE[$lang_idx]; ?></span><img src="images/shadow.png" width="18" title="<? echo $IN_THE_SUN[$lang_idx]."/".$SHADE[$lang_idx]; ?>" alt="<? echo $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" /></a><? }
-                                else if (!empty($itfeels[0]))
-                                        echo "<span>".$IT_FEELS[$lang_idx]."</span>"; 
-                                if ($itfeels[0] == "windchill" ){ ?>
-                                         <a href="<? echo BASE_URL; ?>?section=graph&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
-                                                <span id="itfeels_windchill" dir="ltr"><span dir="ltr" class="value" data-value="<?=$THSW[$lang_idx]?>" ><? echo $itfeels[1];  ?></span></span><span class="info"><?=$THSW[$lang_idx]?></span> 
+                                        
+                                       <!--  <a title="<?=$THSW[$lang_idx]?>"  href="<?=BASE_URL?>?section=graph&amp;graph=THSWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
+                                                <span id="itfeels_thsw" dir="ltr" >
+                                                        <span class="value" data-value="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span>
+                                                </span>
+                                                <span class="info"><?=$THSW[$lang_idx]?></span> 
                                          </a>
-                                 <? } 
-                                else if ($itfeels[0] == "heatindex"){ ?>
-                                <a  href="<?=BASE_URL?>?section=graph&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
-                                <span id="itfeels_heatidx" dir="ltr"><span class="value" data-value="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1];  ?></span></span><span class="info"><?=$HEAT_IDX[$lang_idx]?></span> 
-                                </a>
-                                <?}else if ($itfeels[0] == "thw"){?>
-                                <a  href="<?=BASE_URL?>?section=graph&amp;graph=THWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
-                                <span id="itfeels_thw" dir="ltr" ><span class="value" data-value="<?=$THW[$lang_idx]?>"><? echo $itfeels[1];  ?></span></span><span class="info"><?=$THW[$lang_idx]?></span> 
-                                </a>
-                              <?}?>
-                            <? if ($current->is_sun()) { ?>
-                            <div class="sunshade"></div> 
+                                         <a href="javascript:void()" class="info">
+                                                <span class="info"><? echo $IN_THE_SUN[$lang_idx]."/".$SHADE[$lang_idx]; ?></span>
+                                                <img src="images/shadow.png" width="18" title="<? echo $IN_THE_SUN[$lang_idx]."/".$SHADE[$lang_idx]; ?>" alt="<? echo $SHADE[$lang_idx]."/".$IN_THE_SUN[$lang_idx]; ?>" />
+                                        </a>-->
+                                <? }
+                                else{
+                                         ?>
+                                                <a href="<? echo BASE_URL; ?>?section=graph&amp;graph=tempwchill.php&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
+                                                       <span id="itfeels_windchill" dir="ltr" style="display:none"><span dir="ltr" class="value" data-value="<?=$WIND_CHILL[$lang_idx]?>" ><? echo $itfeels[1];  ?></span></span><span class="info"><?=$WIND_CHILL[$lang_idx]?></span> 
+                                                </a>
+                                        
+                                       <a  href="<?=BASE_URL?>?section=graph&amp;graph=tempheat.php&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
+                                       <span id="itfeels_heatidx" dir="ltr" style="display:none"><span class="value" data-value="<?=$HEAT_IDX[$lang_idx]?>" ><? echo $itfeels[1];  ?></span></span><span class="info"><?=$HEAT_IDX[$lang_idx]?></span> 
+                                       </a>
+                                      
+                                       <a  href="<?=BASE_URL?>?section=graph&amp;graph=THWHistory.gif&amp;profile=1&amp;lang=<?=$lang_idx?>" class="info"> 
+                                       <span id="itfeels_thw" dir="ltr" style="display:none"><span class="value" data-value="<?=$THW[$lang_idx]?>" ><? echo $itfeels[1];  ?></span></span><span class="info"><?=$THW[$lang_idx]?></span> 
+                                       </a>
+                                     <?
+                                     }
+                             if ($current->is_sun()) { ?>
+                            <div class="sunshade"></div>
+                                <ul class="sun_shade_nav">
+                                        <li class="shade_toggle active" onclick="toggleSunShade()">
+                                                <span id="itfeels_windchill" style="display:none"><span dir="ltr" class="value" data-value="<?=$WIND_CHILL[$lang_idx]?>" ><? echo $itfeels[1];  ?></span></span>
+                                                <span id="itfeels_heatidx" style="display:none"><span class="value" data-value="<?=$HEAT_IDX[$lang_idx]?>"><? echo $itfeels[1];  ?></span></span>
+                                                <span id="itfeels_thw"><span class="value"  data-value="<?=$THW[$lang_idx]?>"><? echo $itfeels[1];  ?></span></span> 
+                                                <?=$SHADE[$lang_idx]?>
+                                        </li>
+                                        <li id="itfeels_thsw" class="sun_toggle" onclick="toggleSunShade()"><span  class="value" data-value="<?=$THSW[$lang_idx]?>"><? echo $current->get_thsw();  ?></span> <?=$IN_THE_SUN[$lang_idx]?></li>
+                                </ul> 
                             <? } ?>
-                            
+                                
                             </div>
                             <div id="heatindex"></div>
                             <div id="status">
@@ -1114,7 +1132,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                                 <?
                                 $result = getSurvey(2);
                                 foreach ($result as $row) {
-                                    print "\n\t\t<input name=\"survey\" onclick=\"toggle('genderchoose');$('#votechosen').val(".$row["field_id"].");$('#survey_id').val(2);\" class=\"coldmeterline color".($row["field_id"])."\" value=\"".get_name($row["field_name"])."\"";
+                                    print "\n\t\t<input name=\"survey\" onclick=\"toggle('genderchoose');$('#votechosen').val(".$row["field_id"].");$('#is_sun').val(!$('.shade_toggle').hasClass( 'active' ));$('#survey_id').val(2);\" class=\"coldmeterline color".($row["field_id"])."\" value=\"".get_name($row["field_name"])."\"";
                                     echo " />";
                                  
                                 }
@@ -1158,6 +1176,8 @@ $sigforecastHour = $mem->get('sigforecastHour');
                                 <input type="submit" class="slogan inv_plain_3_zebra big button"  style="padding: 0.5em;" name="SendSurveyButton" value="<? if (isHeb()) echo "הצבעה"; else echo "Vote"; ?>"/>
                                 <input type="hidden" id="votechosen" name="survey" />
                                 <input type="hidden" id="cm_current" name="cm_current" />
+                                <input type="hidden" id="cm_current_sun" name="cm_current_sun" />
+                                <input type="hidden" id="is_sun" name="is_sun" />
                                 <input type="hidden" id="survey_id" name="survey_id" />
                                 </div>
                                 </form>
@@ -1169,50 +1189,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
                       </ul>
                     </div>
                     <ul id="activities_bar">
-                      <li id="sigweather_bar"><ul id="seker_btns">
-			<!--<li id="cold_btn" onclick="change_circle('cold_line', 'coldmetersurvey')" title="<?=$COLD_METER[$lang_idx]?>"><?=$HOTORCOLD_T[$lang_idx]?>                               
-                        </li>-->
-			
-<!--			<li id="mood_btn" onclick="change_circle('-2200px', 'mood_line')">סקר מצב רוח</li>
-			<hr id="mood_line"></hr>-->
-			<li id="now_stuff" onmouseover="javascript:$('#more_sigweather').show();$('#sigweather').show();" onmouseout="javascript:$('#more_sigweather').hide();$('#sigweather').hide();">
-                        <div id="what_is_h">
-                        <? if (count($sig) == 0){
-                                  echo "<a class=\"hlink\" title=\"\" href=\"".BASE_URL.$sigRun[1]['url']."\" >{$sigRun[1]['sig'][$lang_idx]}</a>\n";
-                         }
-                         else{
-                          ?>  
-                        <a href="<? echo BASE_URL.$sig[0]['url'];?>" class="hlink"  title="<?echo $WHAT_ELSE[$lang_idx];?>">
-			 	<? echo "{$sig[0]['sig'][$lang_idx]}"; ?>; 
-				<div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx][0]; if ($sig[0]['extrainfo'][$lang_idx][0] != "") echo " ";?>&nbsp;<? echo "<span class=\"arrow_down\">&#9660;</span>";?></div>
-                         </a>           
-                         <?}?>
-                         </div>
-                           <ul id="more_sigweather" class="">
-                                <li>
-                                <ul id="sigweather">
-                               
-                                        <li class="">
-                                                <div id="brokenlatesttemp"></div>
-                                                <div id="brokenlatesthumidity"></div>
-                                                <div id="brokenlatestpressure"></div>
-                                                <div id="brokenlatestwind"></div>
-                                                <div id="brokenlatestrainrate" ></div>
-                                        </li>
-                               
-                                
-                                <?
-                                if (count($sig) > 0)
-                                        for ($i = 0; $i < count($sig); $i++) {
-
-                                        echo "<li>";
-                                        echo "<a class=\"hlink\" style=\"font-weight:normal\" title=\"\" href=\"".BASE_URL.$sig[$i]['url']."\" >{$sig[$i]['sig'][$lang_idx]} "." - ".$sig[$i]['extrainfo'][$lang_idx][0].get_arrow()."</a></li>\n";          
-                                } ?> 
-                                </ul>
-                                </li>
-                           </ul>
-                        </li>
-           	        </ul></li>
+                      
                             <li id="now_btn" style="clear:both" onclick="change_circle('now_line', 'latestnow')" class="span-value" data-value="<? echo $NOW[$lang_idx];?>"></li>
                             <li id="temp2_btn" onclick="change_circle('temp2_line', 'latesttemp')"  class="span-value" data-value="<? echo $TEMP[$lang_idx]." ".$MOUNTAIN[$lang_idx];?>"></li>
                             <li id="temp_btn" onclick="change_circle('temp_line', 'latesttemp2')" class="span-value" data-value="<? echo $TEMP[$lang_idx]." ".$VALLEY[$lang_idx];?>"></li>
@@ -1234,10 +1211,65 @@ $sigforecastHour = $mem->get('sigforecastHour');
                             <li><ul id="activities_yes" class="activity"></ul></li>
                             <li style="clear:both"><ul id="activities_no" class="activity" ></ul></li>
                             <li style="clear:both"><div id="activities_perhour" ></div></li>
-                    </div>        
+                            
+                                
+                          
                     <hr id="cold_line" />
                     <hr id="fseason_line" />
-		</ul>
+		  </ul>
+                  <ul id="sigweather_container" style="width:360px;
+    height: 265px;
+    background: linear-gradient(to top,rgba(255, 255, 255, 0.55),rgba(255, 255, 255, 0.55));
+    border-radius: 40px;margin: 0;
+    margin-top: 8px;
+    padding: 10px;">
+                  <li id="sigweather_bar"><ul id="seker_btns">
+                                        <!--<li id="cold_btn" onclick="change_circle('cold_line', 'coldmetersurvey')" title="<?=$COLD_METER[$lang_idx]?>"><?=$HOTORCOLD_T[$lang_idx]?>                               
+                                        </li>-->
+                                        
+                <!--			<li id="mood_btn" onclick="change_circle('-2200px', 'mood_line')">סקר מצב רוח</li>
+                                        <hr id="mood_line"></hr>-->
+                                        <li id="now_stuff" onmouseover="javascript:$('#more_sigweather').show();$('#sigweather').show();" onmouseout="javascript:$('#more_sigweather').hide();$('#sigweather').hide();">
+                                        <div id="what_is_h">
+                                        <? if (count($sig) == 0){
+                                                echo "<a class=\"hlink\" title=\"\" href=\"".BASE_URL.$sigRun[1]['url']."\" >{$sigRun[1]['sig'][$lang_idx]}</a>\n";
+                                        }
+                                        else{
+                                        ?>  
+                                        <a href="<? echo BASE_URL.$sig[0]['url'];?>" class="hlink"  title="<?echo $WHAT_ELSE[$lang_idx];?>">
+                                                <? echo "{$sig[0]['sig'][$lang_idx]}"; ?>; 
+                                                <div id="extrainfo"><? echo $sig[0]['extrainfo'][$lang_idx][0]; if ($sig[0]['extrainfo'][$lang_idx][0] != "") echo " ";?>&nbsp;<? echo "<span class=\"arrow_down\">&#9660;</span>";?></div>
+                                        </a>           
+                                        <?}?>
+                                        </div>
+                                        <ul id="more_sigweather" class="">
+                                                <li>
+                                                <ul id="sigweather">
+                                        
+                                                        <li class="">
+                                                                <div id="brokenlatesttemp"></div>
+                                                                <div id="brokenlatesthumidity"></div>
+                                                                <div id="brokenlatestpressure"></div>
+                                                                <div id="brokenlatestwind"></div>
+                                                                <div id="brokenlatestrainrate" ></div>
+                                                        </li>
+                                        
+                                                
+                                                <?
+                                                if (count($sig) > 0)
+                                                        for ($i = 0; $i < count($sig); $i++) {
+
+                                                        echo "<li>";
+                                                        echo "<a class=\"hlink\" style=\"font-weight:normal\" title=\"\" href=\"".BASE_URL.$sig[$i]['url']."\" >{$sig[$i]['sig'][$lang_idx]} "." - ".$sig[$i]['extrainfo'][$lang_idx][0].get_arrow()."</a></li>\n";          
+                                                } ?> 
+                                                </ul>
+                                                </li>
+                                        </ul>
+                                        </li>
+                                        </ul>
+                                </li>
+                  </ul>
+                  </div>  
 
     </div>
                  </article>
@@ -1405,6 +1437,29 @@ else {  ?>
                 }*/
             ?>
             
+        </div>
+        <div id="startupdiv" style="display:none;" class role="dialog">
+        <button type="button" id="cboxClose_startupdiv" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();"></button>
+
+        <div class="removeadlink">&nbsp; 
+        </div>
+        <div class="removeadlink">
+                
+        </div>
+        
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- startup mobile -->
+
+        <ins class="adsbygoogle"
+        style="display:inline-block;width:300px;height:250px"
+        data-ad-client="ca-pub-2706630587106567"
+        data-ad-slot="5793963685"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        <div class="removeadlink">
+                
+        </div>
         </div>
         <div id="mobile_redirect" class="big inv_plain_3_zebra" style="opacity:1;text-align:center;z-index:9999;display:none;position:absolute;top:50px;left:0px;width:400px;height:850px;margin:0 auto" >
         <button type="button" id="cboxCloseMobileRedirect" style="top:20px" class="close_icon" onclick="$( this ).parent().hide();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>

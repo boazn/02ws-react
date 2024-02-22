@@ -1,7 +1,6 @@
 <?
 include ("include.php");
 ini_set('display_errors', 'on' );
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
  $file=$_REQUEST['f'];
  /*if (stristr($file,"TX"))
@@ -23,7 +22,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
  // change that according to file
  //
  //
- $SITE['cvalues'] = array("stationid","date", "Rain");
+ $SITE['cvalues'] = array("stationid","date", "rain");
  $key_split = "/,+/";
  function ret_value($lookup) {
 	global $SITE, $DATA;
@@ -53,13 +52,13 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 	 echo "f is missing (e.g. IMS_DATA)";
 	 exit;
  }
-
+//print_r($rawdata);
 foreach($rawdata as $key) {
 	$DATA = preg_split($key_split, $key);
-	//echo ret_value("date")."B".ret_value("HiTemp")."B".ret_value("LowTemp");
-	//echo "<br />";
-	if (ret_value("date") != "date")
-	{
+	//echo ret_value("date")."B".ret_value("HiTemp")."B".ret_value("LowTemp")."<br />";
+	//echo $key;
+	//if (ret_value("date") != "date")
+	//{
 	$value = ret_value($nameOfParam);
 	$value = str_replace('"', '', $value);
 	$date = ret_value("date");
@@ -72,7 +71,7 @@ foreach($rawdata as $key) {
 				 echo ("update `archivemin`  set `".$nameOfParam."`=$value  where `Date`='$date';<br>");
                                 else
 				  echo "insert or update?";
-	}
+	//}
 }
 
 

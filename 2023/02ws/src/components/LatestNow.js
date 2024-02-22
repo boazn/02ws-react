@@ -22,7 +22,6 @@ const LatestNow = (props) => {
         return "loading...";
     return (
           <div id="latestnow" className={"white_box " + (props.lang === 1? 'rtl' : '')}>
-            {eval(`props.current.date${props.lang}`)}<br/>
                 <div id="innernow">
                 {props.current.issun === 'true' ?
                     <ul id="sunshade_controls">
@@ -33,14 +32,14 @@ const LatestNow = (props) => {
                                 <Link onClick={() => showSun()} className={isSun ? "selected" : ""}>{t("IN_THE_SUN")}</Link>
                             </li>
                       </ul> : ''}
-                <div  title="" className="mx-auto parambox white_box float">
+                <div  title="" className="mx-auto parambox float">
                 <div  id="windy">   
                     <div dangerouslySetInnerHTML={{__html: props.windstatus.lang1}}></div>
                 </div>
                 <Link to={`/Now`}  >{props.current.temp}°</Link>
                 </div>
                 <div className="" id="itfeels">
-                {t("IT_FEELS")} <br/>{feelslike}°
+                {t("IT_FEELS")}  {feelslike}°
              </div>
             
                 <div className="rainpercent">

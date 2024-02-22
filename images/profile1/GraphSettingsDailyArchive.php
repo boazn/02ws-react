@@ -100,7 +100,7 @@ $SITE['debug']          = 0;        # Adjustable via debug
 $SITE['info']           = 1;        # Adjustable via info
 #---------------------------------------------------------------------------
 // Current field names (matches tag fields) used
-$SITE['cvalues'] = array("date", "temp","temp2","temp3","hum","windspd","winddir","thw","thw2","HeatIndex", "uv", "solarradiation", "pm10", "pm25", "Dew", "Rain" ,"Bar", "RainRate", "RainDepartFromNorm", "Rain2");
+$SITE['cvalues'] = array("date", "temp","temp2","temp3","hum","windspd","winddir","thw","thw2","HeatIndex", "uv", "solarradiation", "pm10", "pm25", "Dew", "Rain" ,"Bar", "RainRate", "RainDepartFromNorm", "Rain2", "RainAverage");
 $SITE['humidexval'] = array(
 	"0" => array("0","29","Little or no discomfort"),
 	"1" => array("30","34","Noticeable discomfort"),
@@ -113,7 +113,7 @@ $SITE['beufort'] = array("Calm","Light Air","Light Breeze","Gentle Breeze",
 	"Gale", "Strong Gale", "Storm", "Violent Storm","Hurricane");	
 $SITE['compass'] = array(0 => 'N', 45 => 'NE', 90 =>'E', 135 => 'SE', 180 => 'S', 
         225 => 'SW', 270 => 'W', 315 => 'NW', 360 => 'N');
-$resultarichive = db_init("select date, temp,temp2,temp3,hum,windspd,winddir,thw,thw2,HeatIdx, uv, solarradiation, pm10, pm25, Dew, Rain, Bar, RainRate, RainDepartFromNorm, Rain2 from  `archiveDaily` order by ID Desc", "");
+$resultarichive = db_init("select date, temp,temp2,temp3,hum,windspd,winddir,thw,thw2,HeatIdx, uv, solarradiation, pm10, pm25, Dew, Rain, Bar, RainRate, RainDepartFromNorm, Rain2, RainAverage from  `archiveDaily` order by ID Desc", "");
 $rawdata = array();
 while ($line = $resultarichive["result"]->fetch_array(MYSQLI_ASSOC)) {
     array_push($rawdata, $line);

@@ -124,6 +124,7 @@
 	z-index: 800;
 	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
 	pointer-events: auto;
+	width: 80%;
 	}
 .leaflet-top,
 .leaflet-bottom {
@@ -160,7 +161,7 @@
 	margin-left: 10px;
 	}
 .leaflet-right .leaflet-control {
-	margin-right: 10px;
+	margin-right: 20px;
 	}
 
 
@@ -638,3 +639,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	margin-left: -12px;
 	border-right-color: #fff;
 	}
+input[type=range]::-webkit-slider-runnable-track {
+	height:30px
+}

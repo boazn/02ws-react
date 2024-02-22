@@ -11,7 +11,7 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
     }
     #section input
     {
-        width:20px;
+        width:26px;
     }
     .contentbox
     {
@@ -38,10 +38,10 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
         position:absolute;top:3em;left:30em;width:100px
     }
     .cell{
-        float:right;padding:1.1em;font-size: 1.2em;
+        float:right;padding:1.1em;font-size: 1.1em;
     }
     .invcell{
-        float:left;padding:5px 1em
+        float:left;padding:0.1em 0.2em
     }
     .shrinked{
         padding:0.3em 0.3em 0em 0.3em
@@ -50,7 +50,7 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
         padding:0.3em 0.5em 0 0.5em
     }
     textarea{
-        width:310px;
+        width:300px;
         height:35px;
     }
     textarea.floated{
@@ -58,10 +58,31 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
         height:35px;
     }
     #forDetails{
-        width:375px
+        width:100%
+    }
+    .forecastday .cell{
+        padding:0.9em
+    }
+    .forecastday .cell input{
+        font-size: 1.7em;
+        width:24px
+      
+    }
+    .forecastday .cellspace{
+        margin: 0.8em
     }
     .btnsstart, .temp_high, .temp_night, .tempstart, .textforecast, .synop{clear:both;}
+    #section input.date { width:42px}
     @media only screen and (min-width: 1000px) {
+        #section input{
+            width: 20px
+        }
+        .forecastday .cellspace{
+            margin: 0.6em;
+        }
+        .forecastday .cell input{
+            font-size: 2.7em;
+        }
         textarea{
             width:570px;
             height:12px;
@@ -84,10 +105,18 @@ ini_set('error_reporting', E_ERROR | E_PARSE);
     @media only screen and (max-width: 500px) {
        
         #logo, #slogan, #to_home{display:none}
-        .alert{clear:both}
+        .alert{clear:both; width:100%}
         .contentbox-wrapper{display:none}
         #ads, #forcast_title, .contentbox{display:none}
         #reload_container{top:2em;width: 20px;left:0}
+        #section input.date { width:60px}
+        textarea
+        {
+
+        }
+        textarea.floated {
+            width: 90%
+        }
     }
     
     input{border:0}
@@ -126,6 +155,8 @@ function refreshCssFile($url, $local_file_path){
         $file = fopen($local_file_path,"w");
         fwrite ($file, $result);
         fclose ($file);
+        echo "<br/>";
+        echo $local_file_path. " renewed";
 }
 
 function translateText($text, $target_lang){
@@ -454,19 +485,24 @@ function updateMessagesFromAlertsArray($Alerts){
             updateMessages ($alert["description1"], 1, 'LAlert', 1, $alert["href"],  $alert["img_src"],  $alert["title1"], 0);
         }
         else{
+            $passedts = time() - $alert["ts"];
             if ($idx == 1)
             {
                 $title0 = $alert["title0"];
                 $title1 = $alert["title1"];
             }
-            $time_a = replaceDays(date('D H:i', $alert["ts"])); 
-            $description0.=$time_a."\n".$alert["title0"]."\n".$alert["description0"]."\n";
-            $description1.=$time_a."\n".$alert["title1"]."\n".$alert["description1"]."\n";
+            $time_a = replaceDays(date('D H:i', $alert["ts"]));
+            if  (($passedts <= $alert["ttl"])||($alert["ttl"] == "")){
+                $description0.=$time_a."\n".$alert["title0"]."\n".$alert["description0"]."\n";
+                $description1.=$time_a."\n".$alert["title1"]."\n".$alert["description1"]."\n";
+            }
+                
         }
         $idx++;
     }
     updateMessages ($description0, 1, 'forecast', 0, $alert["href"],  $alert["img_src"],  $title0, 0);
     updateMessages ($description1, 1, 'forecast', 1, $alert["href"],  $alert["img_src"],  $title1, 0);
+    
 
 }
 function updateMessages ($description, $active, $type, $lang, $href, $img_src, $title, $append)
@@ -519,7 +555,7 @@ function updateMessages ($description, $active, $type, $lang, $href, $img_src, $
         //echo "<br/>".$query;
         if ($type == 'LAlert'){
             $mem->set('latestalert'.$lang, $description);
-            $mem->set('latestalerttime'.$lang, time());
+            //$mem->set('latestalerttime'.$lang, time());
             $mem->set('latestalertttl', $ttl*60);
             $mem->set('latestalerttype', $messageType);
             $mem->set('latestalert_title'.$lang, $title);
@@ -535,7 +571,7 @@ function updateMessages ($description, $active, $type, $lang, $href, $img_src, $
         }   
         else if ($type == 'forecast'){
             $mem->set('descriptionforecast'.$lang, $description);
-            $mem->set('descriptionforecasttime'.$lang, time());
+            //$mem->set('descriptionforecasttime'.$lang, time());
             $mem->set('descriptionforecast_title'.$lang, $title);
             echo "forecast->descriptionforecast_title=".$title;
             if ($lang == 0)
@@ -981,34 +1017,31 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 							{*/
 	?>
 
-<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> small invcell" style="clear:both;margin-bottom:0.5em" id="<?=$key?>">
+<div  class="<? if ($line["active"]==1) echo "inv_plain_3_zebra";?> small invcell forecastday" style="clear:both;margin-bottom:0.5em" id="<?=$key?>">
     <div class="cell cellspace ">
-    &nbsp;&nbsp;&nbsp;&nbsp;
+   
         </div>
 	<div class="cell">
 	<img src="<?=BASE_URL?>/images/x.png" width="20px" onclick="getOneUFService(this.parentNode.parentNode.id, 'D', 'forecastd')" style="cursor:pointer" />
     </div>
-    <div class="cell cellspace ">
-    &nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
+   
 	<div class="cell">
 			<a href="javascript: void(0)" onclick="additalic(getSelText(), 'lang1<?=$key?>')"><img src="<?=BASE_URL?>/images/italic.png" title="italic" width="16" height="16" /></a>
     </div>
-    <div class="cell cellspace ">
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
-        <div class="cell">		
-			<img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="<?=BASE_URL?>/images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecastd')" style="cursor:pointer" />
-			
+    <div class="cell">
+    <img src="<?=BASE_URL?>/images/plus.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, '', 'forecastd')" style="cursor:pointer" />
     </div>
     <div class="cell cellspace ">
-    &nbsp;&nbsp;&nbsp;&nbsp;
+   
         </div>
+     <div class="cell">		
+			<img src="<?=BASE_URL?>/images/check.png" width="18px" onclick="getOneUFService(this.parentNode.parentNode.id, 'U', 'forecastd')" style="cursor:pointer" />
+    </div>
+    
 	<div class="cell shrinked">
 		<input type="checkbox" id="active<?=$key?>" name="active<?=$key?>" value="<?=$line["active"]?>"  onclick="empty(this, '<?=$BODY[$lang_idx]?>');" <? if ($line["active"] == 1) echo "checked=\"checked\""; ?>  />
 	</div>
-        <div class="cell shrinked">
+        <div class="">
 			 
 		<input id="idx<?=$key?>" name="idx<?=$key?>" size="1"  value="<?=$key?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:0px" />
 		
@@ -1029,21 +1062,21 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
     </div>
     
 	<div class="cell ">
-			<input id="date<?=$key?>" name="date<?=$key?>" size="3"  value="<?=$line["date"]?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" style="width:40px"/>
+			<input id="date<?=$key?>" name="date<?=$key?>" size="3"  value="<?=$line["date"]?>"  onclick="empty(this, '<?=$NAME[$lang_idx]?>');" class="date" />
 	</div>
     
 	<div  class="cell tempstart">
-    <input id="templow<?=$key?>" name="templow<?=$key?>" size="1"  value="<?=$line["TempLow"]?>" style="width:20px;background-color:#33CCFF" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
+    <input id="templow<?=$key?>" name="templow<?=$key?>" size="1"  value="<?=$line["TempLow"]?>" style="background-color:#33CCFF" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
 		
 	</div>
     <div class="cell ">
-		<input id="humMorning<?=$key?>" name="humMorning<?=$key?>" size="1"  value="<?=$line["humMorning"]?>" style="width:20px;background-color:#DDA0DD" />
+		<input id="humMorning<?=$key?>" name="humMorning<?=$key?>" size="1"  value="<?=$line["humMorning"]?>" style="background-color:#DDA0DD" />
 	</div>
     <div class="cell ">
-		<input id="dustMorning<?=$key?>" name="dustMorning<?=$key?>" size="1"  value="<?=$line["dustMorning"]?>" style="width:20px;background-color:#DDD000" />
+		<input id="dustMorning<?=$key?>" name="dustMorning<?=$key?>" size="1"  value="<?=$line["dustMorning"]?>" style="background-color:#DDD000;width:32px" />
 	</div>
     <div class="cell ">
-		<input id="windMorning<?=$key?>" name="windMorning<?=$key?>" size="1"  value="<?=$line["windMorning"]?>" style="width:20px;background-color:#DDA000" />
+		<input id="windMorning<?=$key?>" name="windMorning<?=$key?>" size="1"  value="<?=$line["windMorning"]?>" style="background-color:#DDA000" />
 	</div>
     <div class="cell">
 		<a class="templow" title="temp_morning_cloth<?=$key?>" href="javascript:void(0)" id="temp_morning_cloth<?=$key?>"><img src="<? echo BASE_URL."/".CLOTHES_PATH."/".$line["TempLowCloth"];?>" width="25px" height="25px" id="temp_morning_cloth<?=$key?>_img" alt="<?=$line["TempLowCloth"]?>" /></a>
@@ -1052,20 +1085,18 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
     <div class="cell ">
 		<a class="icon_forecast" title="morning_icon<?=$key?>" href="javascript:void(0)" id="morning_icon<?=$key?>"><img src="<?=BASE_URL?>/images/icons/day/<?=$line["iconmorning"]?>" width="30px"  height="30px" id="morning_icon<?=$key?>_img" /></a>
     </div>
-    <div class="cell cellspace ">
-    &nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
+    
 	<div class="cell temp_high">
-			<input id="temphigh<?=$key?>" name="temphigh<?=$line["day"]?>" size="1"  value="<?=$line["TempHigh"]?>" style="width:20px;background-color:#FF3300" onclick="empty(this, '<?=$NAME[$lang_idx]?>');" />
+			<input id="temphigh<?=$key?>" name="temphigh<?=$line["day"]?>" size="1"  value="<?=$line["TempHigh"]?>" style="background-color:#FF3300" onclick="empty(this, '<?=$NAME[$lang_idx]?>');" />
 	</div>
         <div class="cell ">
-		<input id="humDay<?=$key?>" name="humDay<?=$key?>" size="1"  value="<?=$line["humDay"]?>" style="width:20px;background-color:#DDA0DD" />
+		<input id="humDay<?=$key?>" name="humDay<?=$key?>" size="1"  value="<?=$line["humDay"]?>" style="background-color:#DDA0DD" />
 	</div>
     <div class="cell ">
-		<input id="dustDay<?=$key?>" name="dustDay<?=$key?>" size="1"  value="<?=$line["dustDay"]?>" style="width:20px;background-color:#DDD000" />
+		<input id="dustDay<?=$key?>" name="dustDay<?=$key?>" size="2"  value="<?=$line["dustDay"]?>" style="background-color:#DDD000;width:32px" />
 	</div>
     <div class="cell ">
-		<input id="windDay<?=$key?>" name="windDay<?=$key?>" size="1"  value="<?=$line["windDay"]?>" style="width:20px;background-color:#DDA000" />
+		<input id="windDay<?=$key?>" name="windDay<?=$key?>" size="1"  value="<?=$line["windDay"]?>" style="background-color:#DDA000" />
 	</div>
     <div class="cell">
 		<a class="temphigh" title="temphigh_cloth<?=$key?>" href="javascript:void(0)" id="temphigh_cloth<?=$key?>"><img src="<? echo BASE_URL."/".CLOTHES_PATH."/".$line["TempHighCloth"];?>" width="25px" height="25px" id="temphigh_cloth<?=$key?>_img" alt="<?=$line["TempHighCloth"]?>" /></a>
@@ -1074,21 +1105,18 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
 		<a class="icon_forecast" title="day_icon<?=$key?>" href="javascript:void(0)" id="day_icon<?=$key?>"><img src="<?=BASE_URL?>/images/icons/day/<?=$line["icon"]?>" width="30px"  height="30px" id="day_icon<?=$key?>_img" /></a>
     </div>
    
-	
-    <div class="cell cellspace ">
-    &nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
+	   
 	<div class="cell temp_night">
-		<input id="tempnight<?=$key?>" name="tempnight<?=$key?>" size="1"  value="<?=$line["TempNight"]?>" style="width:20px;background-color:#33CCFF;" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
+		<input id="tempnight<?=$key?>" name="tempnight<?=$key?>" size="1"  value="<?=$line["TempNight"]?>" style="background-color:#33CCFF;" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" />
 	</div>
         <div class="cell ">
-		<input id="humNight<?=$key?>" name="humNight<?=$key?>" size="1"  value="<?=$line["humNight"]?>" style="width:20px;background-color:#DDA0DD" />
+		<input id="humNight<?=$key?>" name="humNight<?=$key?>" size="1"  value="<?=$line["humNight"]?>" style="background-color:#DDA0DD" />
 	</div>
     <div class="cell ">
-		<input id="dustNight<?=$key?>" name="dustNight<?=$key?>" size="1"  value="<?=$line["dustNight"]?>" style="width:20px;background-color:#DDD000" />
+		<input id="dustNight<?=$key?>" name="dustNight<?=$key?>" size="1"  value="<?=$line["dustNight"]?>" style="background-color:#DDD000;width:32px" />
 	</div>
     <div class="cell ">
-		<input id="windNight<?=$key?>" name="windNight<?=$key?>" size="1"  value="<?=$line["windNight"]?>" style="width:20px;background-color:#DDA000" />
+		<input id="windNight<?=$key?>" name="windNight<?=$key?>" size="1"  value="<?=$line["windNight"]?>" style="background-color:#DDA000" />
 	</div>
 	<div class="cell ">
 			<a class="tempnight" title="tempnight_cloth<?=$key?>" href="javascript:void(0)" id="tempnight_cloth<?=$key?>"><img src="<?echo BASE_URL."/".CLOTHES_PATH."/".$line["TempNightCloth"];?>" width="25px" height="25px" id="tempnight_cloth<?=$key?>_img" alt="<?=$line["TempNightCloth"]?>" /></a>
@@ -1096,23 +1124,22 @@ while ($line = $results->fetch_array(MYSQLI_ASSOC)) {
     <div class="cell ">
 		<a class="icon_forecast" title="night_icon<?=$key?>" href="javascript:void(0)" id="night_icon<?=$key?>"><img src="<?=BASE_URL?>/images/icons/day/<?=$line["iconnight"]?>" width="30px"  height="30px" id="night_icon<?=$key?>_img" /></a>
     </div>
-    <div class="cell cellspace ">
-    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="cell cellspace ">    
         </div>
     <div class="cell ">
-		<input id="visDay<?=$key?>" name="visDay<?=$key?>" size="1"  value="<?=$line["visDay"]?>" style="width:20px;background-color:#8aa6df" />
+		<input id="visDay<?=$key?>" name="visDay<?=$key?>" size="1"  value="<?=$line["visDay"]?>" style="background-color:#8aa6df" />
 	</div>
     <div class="cell ">
-		<input id="uvmax<?=$key?>" name="uvmax<?=$key?>" size="1"  value="<?=$line["uvmax"]?>" style="width:20px;background-color:#9d83d2" />
+		<input id="uvmax<?=$key?>" name="uvmax<?=$key?>" size="1"  value="<?=$line["uvmax"]?>" style="background-color:#9d83d2" />
 	</div>
     <div class="cell ">
-		<input id="rainFrom<?=$key?>" name="rainFrom<?=$key?>" size="1"  value="<?=$line["rainFrom"]?>" style="width:20px;background-color:#5ee8d7" />
+		<input id="rainFrom<?=$key?>" name="rainFrom<?=$key?>" size="1"  value="<?=$line["rainFrom"]?>" style="background-color:#5ee8d7" />
 	</div>
     <div class="cell ">
-		<input id="rainTo<?=$key?>" name="rainTo<?=$key?>" size="1"  value="<?=$line["rainTo"]?>" style="width:20px;background-color:#5ee8d7" />
+		<input id="rainTo<?=$key?>" name="rainTo<?=$key?>" size="1"  value="<?=$line["rainTo"]?>" style="background-color:#5ee8d7" />
 	</div>
     <div class="cell cellspace ">
-    &nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;
         </div>
     
        
@@ -1178,7 +1205,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		
 	</div>
 	<div class="cell shrinked" >
-        <input id="latestALert_title<?=$line["lang"]?>" name="latestALert_title<?=$line["lang"]?>" size="1"  value="<?=$line["Title"]?>" style="width:240px;text-align:<?if ($line["lang"] == "1") echo "right"; else echo "left;direction:ltr";?>;" /><br/>
+        <input id="latestALert_title<?=$line["lang"]?>" name="latestALert_title<?=$line["lang"]?>" size="1"  value="<?=$line["Title"]?>" style="width:240px;text-align:<?if ($line["lang"] == "1") echo "right;direction:rtl"; else echo "left;direction:ltr";?>;" /><br/>
 		<textarea oninput="inputtextChanged(this)" id="descriptionLAlert<?=$line["lang"]?>" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 20px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
@@ -1230,7 +1257,7 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 		
 	</div>
 	<div class="cell shrinked" >
-        <input id="descriptionforecast_title<?=$line["lang"]?>" name="descriptionforecast_title<?=$line["lang"]?>" size="1"  value="<?=$line["Title"]?>" style="width:280px;text-align:<?if ($line["lang"] == "1") echo "right"; else echo "left;direction:ltr";?>;" /><br/>
+        <input id="descriptionforecast_title<?=$line["lang"]?>" name="descriptionforecast_title<?=$line["lang"]?>" size="1"  value="<?=$line["Title"]?>" style="width:280px;text-align:<?if ($line["lang"] == "1") echo "right;direction:rtl"; else echo "left;direction:ltr";?>;" /><br/>
 		<textarea id="descriptionforecast<?=$line["lang"]?>" oninput="inputtextChanged(this)" class="floated" name="Description<?=$line["lang"]?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 20px;text-align:<?if ($line["lang"] == 1) echo "right"; else echo "left";?>;direction:<?if ($line["lang"] == 1) echo "rtl";?>" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $line["Description"]), ENT_QUOTES, "UTF-8")?></textarea>
 		
 	</div>
@@ -1247,10 +1274,25 @@ while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 //apc_store('descriptionforecasttime'.$line["lang"], strtotime($line["updatedTime"]));
 } ?>
 <?
+
 $Alerts = array();
 $Alerts = $mem->get('alerts');
-$Alerts_r = array_reverse($Alerts, true);
 //var_dump($Alerts);
+if (!$Alerts) {
+    $query = "SELECT * FROM `AlertsArchive` ORDER BY `Id` DESC Limit 4";
+    $result = mysqli_query($link, $query);
+    while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $a_Time = strtotime($line['updatedTime']);
+        $a_title = $line['Title'];
+        $a_Description = $line['Description'];
+        $a_lang = $line['lang'];
+        $Alerts[$a_Time] = array('title'.$a_lang => $a_title, 'description'.$a_lang => $line['Description'], 'img_src' => $line['img_src'], 'ts' => $a_Time);     
+   }
+  //  $mem->set('alerts', $Alerts);
+}
+echo "count($Alerts)=".count($Alerts);
+$Alerts_r = array_reverse($Alerts, true);
+
 foreach ($Alerts_r as $key => &$alert){
 ?>
 <div  class="inv_plain_3_zebra invcell alert"  id="alert<?=$key?>">
@@ -1267,7 +1309,7 @@ foreach ($Alerts_r as $key => &$alert){
 		
 	</div>
     <div class="cell " >
-    <input id="title1_alert<?=$key?>" name="alert_title1<?=$key?>"  value="<?=$alert["title1"]?>" style="width:280px;text-align:right;direction:ltr" /><br/>
+    <input id="title1_alert<?=$key?>" name="alert_title1<?=$key?>"  value="<?=$alert["title1"]?>" style="width:280px;text-align:right;direction:rtl" /><br/>
     <textarea id="descriptionalert<?=$key?>1" oninput="inputtextChanged(this)" class="floated" name="descriptionalert1<?=$key?>" rows="1" value="<?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $alert["description1"]), ENT_QUOTES , "UTF-8")?>" style="font: bold 12px/14px Helvetiva, Arial, sans-serif;  height: 50px;text-align:right;direction:rtl" onclick="empty(this, '<?=$BODY[$lang_idx]?>');" ><?=htmlentities (preg_replace('`<br(?: /)?>([\\n\\r])`', '$1', $alert["description1"]), ENT_QUOTES, "UTF-8")?></textarea>
     <a class="href" title="<?=$AD_LINK[$lang_idx]?>" href="#" ><img src="<?=BASE_URL?>/images/adlink.png" width="20" height="15"  /></a>&nbsp;&nbsp;
     </div>

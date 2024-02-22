@@ -365,7 +365,7 @@ display:inline-block;
     margin: 3px;
     
 }
-#bottombar li, #topbar li, #sidebar li, #activities_yes li , #activities_no li, #activities_bar li {
+#bottombar li, #topbar li, #sidebar li, #activities_yes li , #activities_no li, #activities_bar li, #sigweather_container li {
     margin: 6px 0 6px 10px;
     list-style: none;
 }
@@ -376,7 +376,11 @@ display:inline-block;
     margin-<?=get_s_align()?>:4px
 }
 #activities_bar{
-    width:400px
+    width:360px;
+    background: linear-gradient(to top,rgba(255, 255, 255, 0.55),rgba(255, 255, 255, 0.55));
+    border-radius: 40px;
+    margin: 8px;
+    padding:10px
 }
 #sigweather_bar{
     margin-bottom:5px
@@ -388,8 +392,8 @@ display:inline-block;
     margin-top:5px;
 }
 #current_info .inparamdiv{
-   width:420px;
-   height:260px;
+   width:380px;
+   height:285px;
    border-radius:40px;
 }
 #seker_btns{
@@ -1236,7 +1240,7 @@ background-color:#ebe8ed;
 
 #forcast_main {
     margin-top:15px;
-    width:830px;
+    width:820px;
     <?=get_s_align()?>:155px;
     position:absolute;
     text-align:right;
@@ -1635,7 +1639,7 @@ font-size:0.35em
     background-position-x: 105px;
 }
 #wrapper{
-    width:120%
+    
 }
 #rainsummery, #mouseover{
     font-size: 1.3em;
@@ -1651,7 +1655,7 @@ z-index:9999;
 #activities_yes, #activities_no, #activities_perhour{
     background-size: 15%;
     margin-top: 10px;
-    width: 700px;
+    width: 380px;
     margin:0
 }
 #activities_yes{
@@ -1693,7 +1697,7 @@ margin-<?=get_s_align()?>:0.5em
 }
 #mainadsense {
    
-   margin-top:40px;
+   
    float:<?=get_inv_s_align()?>;
    width:300px;
    height:310px;
@@ -1742,12 +1746,13 @@ margin-<?=get_s_align()?>:0.5em
     clear:both;
     height:23px;
     z-index:9999;
-    width:max-content;
+    height:auto;
+    width:100%;
     <? if (isHeb()) echo "direction:rtl"; else echo "direction:ltr"; ?>
 }
 #what_is_h{
     padding-top: 0.1em;
-    font-size:1.8em
+    font-size:1.5em
 }
 #now_stuff a{
     color:#000
@@ -1862,7 +1867,7 @@ text-align:<?=get_s_align()?>;
 }
 #windy_widget{
     margin-<?=get_s_align()?>:80px;
-    margin-top:-60px;
+    margin-top:40px;
     <? if (isHeb()) echo "direction:rtl;"; ?>
 }
 .white_box {
@@ -2059,6 +2064,7 @@ width:250px
     max-height: 280px;
     overflow-y: auto;
     width: 720px;
+    z-index: 300;
     line-height: 1.2em;
     <? if (isHeb()) echo "direction:rtl;"; ?>
     
@@ -3449,9 +3455,10 @@ color: #fff;
 .not_fixed_nav #logo{
     position:absolute
 }
-.main_nav li {
+.main_nav li, .sun_shade_nav li  {
     list-style:none;
     margin-bottom:5px;
+    cursor:pointer;
 }
 
 .now, .forum, .pics, .whatmore, .forecast {
@@ -3472,7 +3479,7 @@ color: #fff;
     border-style:none;
 }
 
-.main_nav a:hover {
+.main_nav a:hover, .sun_shade_nav a:hover {
     color:#FFFFFF;
     text-decoration:none;
 }
@@ -3526,11 +3533,11 @@ color: #fff;
 			top: 770px;
 			width:1280px;
 			float:right;
-			z-index: 13;
+			
 			}
 		#pics {
 			position: absolute;
-			top: 1560px;
+			top: 1590px;
 			z-index: 13;
 			}
 		#section {
@@ -4408,7 +4415,7 @@ a.info:hover span.info
 .inparamdiv
 {
     font-family: nextexitfotlight;
-    background:linear-gradient(to top,rgba(255, 255, 255, 0),rgba(255, 255, 255, 0.25));
+    background:linear-gradient(to top,rgba(255, 255, 255, 0.55),rgba(255, 255, 255, 0.55));
     text-align:center;
    -moz-border-radius: 999px;
     border-radius: 999px;
@@ -4489,7 +4496,7 @@ a.info:hover span.info
 .glow {
   animation: glowing 500ms ease-out;
 }
-.shade
+.shade_old
 {
     font-size:0.15em;
     position: absolute;
@@ -4652,7 +4659,7 @@ top:85px
 }
 #windy
 {
-          margin: 0 auto;position: absolute;font-size:0.95em;width: 50%;z-index: 100;top:9em;<?=get_inv_s_align()?>: 9.5em;
+          margin: 0 auto;position: absolute;font-size:0.95em;width: 50%;z-index: 100;top:10em;<?=get_inv_s_align()?>: 9.5em;
 }
 #windy .wind_title
 {
@@ -4677,14 +4684,14 @@ margin:0 auto
 {
     position: absolute;
     top: 7em;
-    <?=get_inv_s_align()?>: 2.4em;
+    <?=get_inv_s_align()?>: 1.8em;
     cursor: pointer;
 }
 #cm_like
 {
     position: absolute;
     top: 7em;
-    <?=get_inv_s_align()?>: 3.8em;
+    <?=get_inv_s_align()?>: 3.4em;
     cursor: pointer;
 }
 #status .wind_title
@@ -4711,7 +4718,7 @@ margin:0 auto
 {
     text-align: center;
     width: 48%;
-    top: 3.1em;
+    top: 2.6em;
     position: absolute;      
 }
 .color9{
@@ -5005,7 +5012,7 @@ border-top:none; margin:0; padding:0;
 }
 .radio-toolbar.color4, .colmetercontainer .color4{
     
-    background-image:url(../images/clothes/lightjacket_n4.svg);
+    background-image:url(../images/clothes/jacketlight_n4.svg);
     
 }
 .radio-toolbar.color5, .colmetercontainer .color5{
@@ -5040,6 +5047,7 @@ border-top:none; margin:0; padding:0;
     text-align: <? echo get_s_align(); ?>;
     padding-<? echo get_s_align(); ?>: 40px;
     opacity:0.35;
+    cursor:pointer;
 }
 .radio-toolbar label:hover
 {
@@ -5103,7 +5111,8 @@ margin-<?=get_s_align()?>: 200px;
 #legends li{
     float:<?=get_s_align()?>;
     padding:0 0.9em;
-    color:#ffffff;
+    color:black;
+    background-color:#eeeeee;
     font-size: 1.1em;
 }
 #section h1, #section h2, #section h3
@@ -5261,8 +5270,8 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 .button
 {
     cursor:pointer;
-    padding:4px;
-    width:120px;
+    padding:10px;
+    width:140px;
     
 }
 .invfloat
@@ -5372,7 +5381,7 @@ position:relative
 #chart-1, #graph_forcast {
   height: 190px;
   width: 1980px;
-  color:white;
+  color:black;
     <?if (isHeb()) echo "direction:rtl;";?>
 
 }
@@ -5527,10 +5536,10 @@ position:relative
     font-size: 1.2em;
     line-height:0.6em
 }
-  
-}
-.x-axis-bar.primary {
-    background:transparent;
+
+
+.x-axis-bar .primary {
+    background:#eeeeee;
     line-height: 0.6em;
     font-size: 1em;
 }
@@ -5540,7 +5549,7 @@ position:relative
  }
 .x-axis-bar.secondaryalt {
     z-index:999;
-   background-image: linear-gradient(to top, rgba(247,148,30,0.5) 0%, rgba(247,148,30,0.05) 75%, rgba(247,148,30,0.0) 100%);
+   background-image: linear-gradient(to top, rgba(247,148,30,0.4) 0%, rgba(247,148,30,0.05) 75%, rgba(247,148,30,0.0) 100%);
   
 }
 .x-axis-bar.rain {
@@ -5952,7 +5961,7 @@ position:absolute;
     position:absolute;
     margin: -1.5em 0.5em;
 }
-.tsfh .icon, .tsfh .icon .cloth, #forcast_table .icon, #forcast_table .icon .cloth, .fulltext, #forcast_hours_table .humidity, #forcast_hours_table .dust, #forcast_hours_table .feelslike, #forcast_hours_table .UV{
+.tsfh .icon, .tsfh .cloth, #forcast_table .icon, #forcast_table .icon .cloth, .fulltext, #forcast_hours_table .humidity, #forcast_hours_table .dust, #forcast_hours_table .feelslike, #forcast_hours_table .UV{
 display:none
 }
 .icon{

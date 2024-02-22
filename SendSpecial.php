@@ -35,7 +35,11 @@
   background: #fff;
   box-shadow: inset 1px 3px 6px rgba(0, 0, 0, 0.12);
 }
-
+#container{
+    max-width: 600px;
+    margin:0 auto;
+    padding:0.5em
+}
 #progress-wrp .progress-bar {
   height: 100%;
   border-radius: 3px;
@@ -57,12 +61,14 @@ select{
 #SendSpecialResult{
     line-break: anywhere;
 }
-#combos{text-align:left}
+#combos{text-align:left;clear:both}
 #combos label{width: 50px;
 display: inline-block;
 margin-left: 10px;}
 #tohome{ display:none}
 </style>
+<div id="container">
+<div class="inv_plain_3" style="text-align:right">
 <input type='file' onchange="readURL(this);" accept="video/*,image/*,video/mp4,video/x-m4v" name="imagefile" id="imagefile"   size="60"  style="float:left;width:150px"/><br />
 <img id="localimg" src="#" alt="your image" width="300"/><br />
 <video id="localvid" width="320" height="240" controls>
@@ -126,26 +132,27 @@ margin-left: 10px;}
    <option value="240">240</option>
 </select>
 </div>
-<div class="inv_plain_3" style="margin:0 auto;padding:0.5em;width:300px;text-align:right">
-	    <input id="title1" name="title1" size="18"  value="" style="width:290px;direction:rtl"  placeholder="כותרת"/>
-        <textarea id="message1" name="message1" cols="3   0" rows="3" value="<? echo $message; ?>" style="direction:rtl;font-size: 1em;width:290px"><? echo $message; ?></textarea><br/>
+</div>
+<div class="inv_plain_3" style="text-align:right">
+	    <input id="title1" name="title1" size="18"  value="" style="width:100%;direction:rtl"  placeholder="כותרת"/>
+        <textarea id="message1" name="message1" cols="3   0" rows="3" value="<? echo $message; ?>" style="direction:rtl;font-size: 1em;width:100%"><? echo $message; ?></textarea><br/>
 </div>   
-<div class="inv_plain_3" style="margin:0 auto;padding:0.5em;width:300px;text-align:left">
+<div class="inv_plain_3" style="text-align:left">
 	
-         <input id="title0" name="title0" size="18"  value="" style="width:290px;" placeholder="title" /><br />
-        <textarea id="message0" name="message0" cols="3   0" rows="3"  value="<? echo $message; ?>" style="text-align:left;font-size: 1em;width:290px"><? echo $message; ?></textarea><br/>
+         <input id="title0" name="title0" size="18"  value="" style="width:100%" placeholder="title" /><br />
+        <textarea id="message0" name="message0" cols="3   0" rows="3"  value="<? echo $message; ?>" style="text-align:left;font-size: 1em;width:100%"><? echo $message; ?></textarea><br/>
  </div>
-<div class="inv_plain_3" style="margin:0 auto;padding:0.5em;width:300px;text-align:right">
-      	picture url<input id="picture_url" name="picture_url1" size="20"  value="https://www.02ws.co.il/images/webCamera0_r.jpg" style="width:225px;text-align:left"  /><br />
-	external url<input id="embedded_url" name="embedded_url1" size="20"  value="" style="width:225px;text-align:left"  /><br /><br />
+<div class="inv_plain_3" style="text-align:right">
+      	picture url<input id="picture_url" name="picture_url" size="20"  value="https://www.02ws.co.il/images/webCamera0_r.jpg" style="width:100%;text-align:left"  /><br />
+	    external url<input id="embedded_url" name="embedded_url" size="20"  value="" style="width:100%;text-align:left"  /><br /><br />
         <div style="text-align: left">
-        <input type="checkbox" id="short_range" name="short_range" value="" style="width:25px"/>short range&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="checkbox" id="long_range" name="long_range" value="" style="width:25px"/>long range&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="checkbox" id="tip" name="tip" value="" style="width:25px"/>tip
+        <input type="checkbox" id="short_range" name="short_range" value="" style="width:20px"/>short range&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="long_range" name="long_range" value="" style="width:20px"/>long range&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tip" name="tip" value="" style="width:20px"/>tip
         </div>
         <div style="text-align: left">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="social" name="tip" value="" style="width:35px"/>social&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="checkbox" id="is_video" name="tip" value="" style="width:30px"/>video
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="social" name="tip" value="" style="width:20px"/>social&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="is_video" name="tip" value="" style="width:20px"/>video
         </div>
 		
 </div>
@@ -159,7 +166,7 @@ margin-left: 10px;}
 	<input type="submit" id="SendButton" name="SendButton" value="Go" onClick="javascript:SendSpecial(1);" style="font-size: 2em;width:70%"/>
 	
 </div>
-
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
 <script type="text/javascript">
         var Upload = function (file, put_alert_section) {
@@ -275,7 +282,7 @@ Upload.prototype.progressHandling = function (event) {
         function togglewebcam()
         {
            if ($("#picture_url").val() == "")
-                $("#picture_url").val("https://www.02ws.co.il/images/webCamera0_r.jpg");
+                $("#picture_url").val("https://www.02ws.co.il/images/webCamera0.jpg");
             else
               $("#picture_url").val("");
         }

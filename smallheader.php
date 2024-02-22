@@ -178,9 +178,9 @@ else
      margin: auto 7em;
  }
  #what_is_h{
-     font-size: 0.9em;
+     font-size: 0.4em;
      line-height: 1em;
-     margin-<?=get_s_align()?>:-210px;
+     margin-<?=get_s_align()?>:-290px;
      top: 50px;
      width:30%;
      font-weight: bold;
@@ -191,7 +191,8 @@ else
      
  }
  #coldmeter{
-    top:5em
+    top:5em;
+    width:60%
  }
  #currentinfo_container .currentcloth
  {
@@ -199,7 +200,7 @@ else
  }
  #latestnow .currentcloth
  {
-    width: 10%;margin: 0em auto;
+    width: 10%;margin: -1em 2.2em;
  }
  .paramunit{
      font-family: Alef;
@@ -311,9 +312,7 @@ else if ($itfeels[0] == "heatindex"){ ?>
         <div  id="coldmeter">
         
     <?php 
-    $_REQUEST['lang'] = $lang_idx;
-    $_REQUEST['coldmetersize'] = 40;
-    include_once BASE_URL."/coldmeter_service.php";?>
+    include_once BASE_URL."/coldmeter_service.php?coldmetersize=40&lang=".$lang_idx;?>
         
         </div>
 </div>
@@ -409,7 +408,7 @@ else if ($itfeels[0] == "heatindex"){ ?>
 <script src="js/snow.js"></script>
 <?php   }?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
-<script src="footerScripts180422.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
+<script src="footerScripts260923.php?lang=<?=$lang_idx?>"  type="text/javascript"></script>
 <script type="text/javascript">
 var coldmeter_size = 40;
 //startup(<?=$lang_idx?>, <?=$limitLines?>, "<?=(isset($_GET['update'])?$_GET['update']:'')?>");

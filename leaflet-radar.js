@@ -23,6 +23,9 @@ function checkImageExists(imageSrc, good, bad) {
        console.log(imagepath + " found");
        found = true;
        buildImageArray(rounded);
+       //var checkbox = document.getElementById('leaflet-radar-toggle');
+       //checkbox.click();
+       //L.control.radar({}).toggle();
     }, 
     function(){ 
        
@@ -72,9 +75,11 @@ function buildImageArray(rounded){
           rounded.setMinutes( rounded.getMinutes() - 5 ); // default = 5
  
        }
+       modImages = modImages.reverse();
+       timeImages = timeImages.reverse();
       
  }
- var numOfPics = 10;
+ var numOfPics = 20;
 var numSearched = 0;
 modImages = new Array();
 timeImages = new Array();
@@ -94,10 +99,10 @@ L.Control.Radar = L.Control.extend({
     timeLayers: [],
 
     options: {
-        position: `topright`,
+        position: `bottomright`,
         opacity: 0.575,
         zIndex: 200,
-        transitionMs: 750,
+        transitionMs: 500,
         playHTML: `&#9658;`,
         pauseHTML: `&#9616;`,
     },
@@ -138,6 +143,12 @@ L.Control.Radar = L.Control.extend({
 
         checkbox_div.appendChild(checkbox_label);
 
+        this.timestamp_div = L.DomUtil.create(
+            `div`,
+            `leaflet-radar-timestamp`,
+            this.container
+        );
+
         let slider_div = L.DomUtil.create(
             `div`,
             `leaflet-radar-slider`,
@@ -151,15 +162,9 @@ L.Control.Radar = L.Control.extend({
 
         slider_div.appendChild(this.slider);
 
-        this.timestamp_div = L.DomUtil.create(
-            `div`,
-            `leaflet-radar-timestamp`,
-            this.container
-        );
-
-        this.setDisabled(true);
-        this.isPaused = true;
-
+        //this.setDisabled(true);
+        this.isPaused = false;
+       
         return this.container;
     },
 
@@ -263,12 +268,12 @@ L.Control.Radar = L.Control.extend({
     generateLayers: function () {
         let timeLayers = [];
 
-        const TOTAL_INTERVALS = 10;
+        const TOTAL_INTERVALS = numOfPics;
         const INTERVAL_LENGTH_HRS = 5;
 
         const currentTime = new Date();
-        const r_Imagse = modImages.reverse();
-        const r_timeImagse = timeImages.reverse();
+        const r_Imagse = modImages;
+        const r_timeImagse = timeImages;
         for (let i = 0; i <= TOTAL_INTERVALS; i++) {
 
             const timeDiffMins =
@@ -290,14 +295,14 @@ L.Control.Radar = L.Control.extend({
             });
             //[[34.5318966003582659, 37.8648132475530090], [29.4468656950938161, 31.7662931774178858]]
             var layer = L.imageOverlay(r_Imagse[i], map_bounds);
-            layer.setOpacity(0.8);
+            layer.setOpacity(0.85);
 
             const timeString = new Date(
                 currentTime.valueOf() - timeDiffMins * 60 * 1000
-            ).toLocaleTimeString();
+            ).toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
             if (timeDiffMins > 0)
             timeLayers.push({
-                timestamp: r_timeImagse[i],
+                timestamp: r_timeImagse[i].toLocaleString('he-IL'),
                 tileLayer: layer
             });
 

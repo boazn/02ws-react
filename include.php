@@ -3173,7 +3173,7 @@ function updateMessageFromMessages ($description, $active, $type, $lang, $href, 
         }
         else if ($type == 'forecast'){
             $mem->set('descriptionforecast'.$lang, $description);
-            $mem->set('descriptionforecasttime'.$lang, time());
+            //$mem->set('descriptionforecasttime'.$lang, time());
             $mem->set('descriptionforecast_title'.$lang, $title);
             echo "descriptionforecast".$lang."=".date('Y-m-d G:i D', $mem->get('descriptionforecasttime'.$lang));
             logger($description, 0, "descriptionforecast", "updateMessageFromMessages", "updateMessageFromMessages");
@@ -3646,8 +3646,10 @@ function getClothName($current_feeling, $cloth_type){
     else if ($current_feeling == $VVCOLD[$lang_idx])
     {$cloth_name = "cold".$cloth_name_e.".svg";}
     if ($current != null)
-    if (isRaining())
-        $cloth_name = "coatrain_n4.svg";
+    if ((isRaining())&&
+        ($current_feeling != $VCOLD[$lang_idx])&&
+        ($current_feeling != $VVCOLD[$lang_idx]))
+        $cloth_name = "coatrain_n4".".svg";
     return $cloth_name;
 }
 function getPageTitle()
@@ -4350,6 +4352,7 @@ function checkAsterisk($row_verdict, $is_json)
         else
             return "<a href=\"javascript:void(0)\" id=\"asterisk\" class=\"info\" >&#x002A;<span class=\"info\">".$close_to_sec_coldmeter."</span></a>";
     }
+    return "";
         
 }
 function get_heat_index($temp, $hum)

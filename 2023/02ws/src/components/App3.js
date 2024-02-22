@@ -52,14 +52,30 @@ function App3({json, cssClasses, activities_json}) {
     
     <div className={"clouds container-fluid App " + cssClasses}>
       
-      <header className={"App-header row mb-2 " + (langcode === 1? 'rtl' : '')}>
-        <div className="col-12 ">
-        <div><img src={logo} className="App-logo" alt="logo" />  {t("SLOGAN")} - {t("WEBSITE_TITLE")} 
-        <Btn btnOnClick={() => saveConfigData()} btnTitleText="set as default layout" img="ArrowDown">
-                    
-        </Btn>
+    <header className={"App-header row mb-2 " + (langcode === 1? 'rtl' : '')}>
+      <div className="row ">
+        
+          <div className="col-12 ">
+          <div><img src={logo} className="App-logo" alt="logo" />  {t("SLOGAN")} - {t("WEBSITE_TITLE")} 
+        
+          </div>
+          </div>
+          
+      </div>
+      <div className="row ">
+      <div className="col-4 ">
+             <Btn btnOnClick={() => saveConfigData()} btnTitleText="לשמור כדף פתיחה" img="ArrowDown">
+                      
+               </Btn>
         </div>
+        <div className="col-4 ">
+        {eval(`current.date${langcode}`)}
         </div>
+        <div className="col-4 ">
+
+        </div>
+      </div>
+      
        </header>
        
       <div className={"row "  + (langcode === 1? 'rtl' : '')}>
