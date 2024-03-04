@@ -164,7 +164,7 @@ include_once("start.php");
 			  src="https://code.jquery.com/jquery-3.6.0.min.js"
 			  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 			  crossorigin="anonymous"></script>
-<script src="footerScripts180422.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&reg_id=<?=(empty($_REQUEST['reg_id']))? $_REQUEST['regId'] : $_REQUEST['reg_id']?>"  type="text/javascript"></script>
+<script src="footerScripts260923.php?lang=<?=$lang_idx?>&temp_unit=<?echo $current->get_tempunit();?>&reg_id=<?=(empty($_REQUEST['reg_id']))? $_REQUEST['regId'] : $_REQUEST['reg_id']?>"  type="text/javascript"></script>
 <script>
 	
         fetch("checkauth.php?action=getuser&lang=" + <?=$lang_idx?> +"&reg_id=<?=(empty($_REQUEST['reg_id']))? $_REQUEST['regId'] : $_REQUEST['reg_id']?>")    

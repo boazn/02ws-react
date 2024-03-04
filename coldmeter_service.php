@@ -143,7 +143,7 @@ $json_res .= "{";
     $json_res .= ",";
     $json_res .= "\"temp_value\":\"".$temp_to_cold_meter."\"";
     $json_res .= ",";
-    $json_res .= "\"asterisk\":\"".checkAsterisk($row_verdict, $is_jason)."\"";
+    $json_res .= "\"asterisk\":\" ".checkAsterisk($row_verdict, $is_jason)."\"";
     $json_res .= ",";
     $json_res .= "\"heatindex\":\"".$current_heat_index."\"";
 $json_res .= "}";
@@ -164,7 +164,7 @@ if (!empty($current->get_temp2_to_coldmeter())){
         $json_res .= ",";
         $json_res .= "\"temp_value\":\"".$current->get_temp2_to_coldmeter()."\"";
         $json_res .= ",";
-        $json_res .= "\"asterisk\":\"".checkAsterisk($row_verdict_sun, $is_jason)."\"";
+        $json_res .= "\"asterisk\":\" ".checkAsterisk($row_verdict_sun, $is_jason)."\"";
         $json_res .= ",";
         $json_res .= "\"heatindex\":\"".$current_heat_index."\"";
     $json_res .= "}";

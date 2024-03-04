@@ -330,7 +330,7 @@ $sigforecastHour = $mem->get('sigforecastHour');
 				<? if ((first_page())||($template_routing=="frommobile")) { ?>
             <div class="fixed_nav span2">
                  <div id="logo">
-                     			
+                     	<img src="img/134.svg"	alt="134" width="30" />	
 		 </div>
                  <ul class="main_nav">
                     <li>

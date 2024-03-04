@@ -123,20 +123,18 @@ function sendPUSHMessage($messageBody, $title, $picture_url, $embedded_url, $sho
      //
      $result = "";
      $resultCall = array();
-     $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
-     foreach ($arrOfRegID0 as $regIDs){
-        
-        $resultCall = callGCMSender ($key, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
-        handleInvalidTokens($resultCall[1], $regIDs, $key);
-      }
-    
      $arrOfRegID1 = array_chunk($registrationIDs1, 1000);
      foreach ($arrOfRegID1 as $regIDs){
         
         $resultCall = callGCMSender ($key, $regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url);
         handleInvalidTokens($resultCall[1], $regIDs, $key);
      }
-    
+     $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
+     foreach ($arrOfRegID0 as $regIDs){
+        
+        $resultCall = callGCMSender ($key, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
+        handleInvalidTokens($resultCall[1], $regIDs, $key);
+      }
      
      $result .= ' --- '.count($registrationIDs1).' '.$res_fcm.' Completed';
      $result .= ' --- '.count($registrationIDs0).' eng '.$res_fcm.' Completed';

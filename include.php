@@ -3749,7 +3749,7 @@ function getClothTitle($imagename, $temp, $wind, $hum)
 		$title = $LIGHTJACKET[$lang_idx]." ".$OR[$lang_idx]." ".$SWEATER[$lang_idx];
 	else if (stristr(strtolower($imagename), 'jacket')){
 		$title = $JACKET[$lang_idx];
-                if ($temp < 13)
+                if (($temp < 13)||($wind>=30))
                     $title .= ", ".$LAYERS_BELOW2[$lang_idx];
                  else if ($temp < 20)
                     $title .= ", ".$LAYERS_BELOW[$lang_idx];
