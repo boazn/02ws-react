@@ -1231,14 +1231,14 @@ function fillLikes(jsonstr)
         var clothimage_sun, clothtitle_sun, coldmeter_title_sun, asterisk_sun = "";
         const clothimage = json.coldmeter.cloth_name;
         const clothtitle = json.coldmeter.clothtitle;
-        const asterisk = json.coldmeter.asterisk;
+        const asterisk = json.coldmeter.asterisk.trim();
         const coldmeter_title = json.coldmeter.current_feeling;
         if (json.coldmeter_sun)
         {
             $('#cm_current_sun').val(json.coldmeter_sun.current_value);
             clothimage_sun = json.coldmeter_sun.cloth_name;
             clothtitle_sun = json.coldmeter_sun.clothtitle;
-            asterisk_sun = json.coldmeter_sun.asterisk;
+            asterisk_sun = json.coldmeter_sun.asterisk.trim();
             coldmeter_title_sun = json.coldmeter_sun.current_feeling;
         }
         
