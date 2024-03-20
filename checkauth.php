@@ -3,7 +3,7 @@
 include ("include.php");
 include ("lang.php");
 session_start();
-
+//header('Content-type: application/json; charset=utf-8');
 
 function get_user_from_email($email){
     $query = "select user_login, u_pswd, user_status, display_name, user_rememberme, user_nicename, user_icon, priority, locked, admin, MsgCount, MsgStart, classification, PersonalColdMeter, SeasonPref, VoteCount  from users where email=?";

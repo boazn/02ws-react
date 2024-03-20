@@ -1,23 +1,23 @@
 <?php
 define("DATE_FORMAT", "j/m/y");
-define("BASE_URL","https://www.02ws.co.il/test");
+define("BASE_URL","https://www.02ws.co.il");
 define("INTERVAL",10);    
 define("RAIN_TOTAL",522.1);    
 define("RAINYDAYS_TOTAL",58);  
 define("ELEVATION",775);
 define("TAF_STATION","OJAM"); // OJAM OJAI LLBG BIRK
-define("FILE_ARCHIVE",$_SERVER['DOCUMENT_ROOT']."/reports/downld02.txt");
-define("FILE_THIS_MONTH",$_SERVER['DOCUMENT_ROOT']."/reports/NOAAMO.TXT");    
-define("FILE_PREV_MONTH",$_SERVER['DOCUMENT_ROOT']."/reports/NOAAPRMO.TXT");
-define("FILE_THIS_YEAR",$_SERVER['DOCUMENT_ROOT']."/reports/NOAAYR.TXT");
-define("FILE_PREV_YEAR",$_SERVER['DOCUMENT_ROOT']."/reports/NOAAPRYR.TXT");
+define("FILE_ARCHIVE", $_SERVER['DOCUMENT_ROOT']."reports/downld02.txt");
+define("FILE_THIS_MONTH",$_SERVER['DOCUMENT_ROOT']."reports/NOAAMO.TXT");    
+define("FILE_PREV_MONTH",$_SERVER['DOCUMENT_ROOT']."reports/NOAAPRMO.TXT");
+define("FILE_THIS_YEAR","reports/NOAAYR.TXT");
+define("FILE_PREV_YEAR","reports/NOAAPRYR.TXT");
 define("IMAGE_TYPE","gif");
 define("LIMIT_CHAT_LINES","10");
-define("JSON_FILE_PATH", "/home/boazn/public/02ws.com/test/02wsjson.txt");
-define("FILE_XML_FULLDATA",$_SERVER['DOCUMENT_ROOT']."/fulldatacumulus.xml");
-define("FILE_XML_FULLDATA2",$_SERVER['DOCUMENT_ROOT']."/fulldata.xml");
-define("FILE_XML_FULLDATA3",$_SERVER['DOCUMENT_ROOT']."/realtimemb.xml");
-define("FILE_XML_MONTHLY_YEARLY",$_SERVER['DOCUMENT_ROOT']."/monthlyyearlymb.xml");
+define("JSON_FILE_PATH", "/home/boazn/public/02ws.com/public/02wsjson.txt");
+define("FILE_XML_FULLDATA",$_SERVER['DOCUMENT_ROOT']."fulldatacumulus.xml");
+define("FILE_XML_FULLDATA2",$_SERVER['DOCUMENT_ROOT']."fulldata.xml");
+define("FILE_XML_FULLDATA3",$_SERVER['DOCUMENT_ROOT']."realtimemb.xml");
+define("FILE_XML_MONTHLY_YEARLY",$_SERVER['DOCUMENT_ROOT']."monthlyyearlymb.xml");
 define("FILE_CACHE","APC");
 define("EMAIL_ADDRESS","02ws.yerushamaim@gmail.com");
 define("GOOGLE_API_KEY", "AIzaSyA6nyCsWgrwXuh2tbsisPopkdgVRjQcTeQ");
@@ -48,8 +48,8 @@ $recapcha_secret_key = "6LcQXKMcAAAAAEYEjtSTYpwZmzFhFq1EcRkTNzjF";
 $header_pic = "img/logo.png";//header_small1.JPG//header_lights11.jpg
 $PLACE = array("Jerusalem", "ירושלים", "Jerusalem");
 $SLOGAN = array("Jerusalem Weather Station", "תחנת מזג-אוויר עדכנית בי-ם עם קור-טוב של הומור", "Иерусалимская метеорологическая станция");
-$LOGO = array("02WS TEST", "ירושמים TEST", "02WS");
-$WEBSITE_TITLE = array ("Jerusalem Weather Forecast Station TEST", " יTEST רושמים - תחזית ומזג-האוויר בירושלים בזמן אמת", "Иерусалимская метеорологическая станция");
+$LOGO = array("02WS", "ירושמים", "02WS");
+$WEBSITE_TITLE = array ("Jerusalem Weather Forecast Station", "ירושמים - תחזית ומזג-האוויר בירושלים בזמן אמת", "Иерусалимская метеорологическая станция");
 $error_db = false;
 $fulldatatotake = FILE_XML_FULLDATA;
 $mySite = true;
@@ -57,10 +57,10 @@ $user_locked = false;
 $PIVOT_TEMP = 22;
 $PRIMARY_TEMP = 2;
 // 30 min diff
-if (((@filemtime(FILE_XML_FULLDATA) + 1800) < @filemtime(FILE_XML_FULLDATA2)) || (!file_exists(FILE_XML_FULLDATA)))
+if (((@filemtime(FILE_XML_FULLDATA) + 900) < @filemtime(FILE_XML_FULLDATA2)) || (!file_exists(FILE_XML_FULLDATA)))
 	$fulldatatotake = FILE_XML_FULLDATA2;
 $fulldatatotake = FILE_XML_FULLDATA3;
-//$fulldatatotake = FILE_XML_FULLDATA2;
+$fulldatatotake = FILE_XML_FULLDATA2;
 /***********************************************************************/
 
 /*

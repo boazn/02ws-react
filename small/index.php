@@ -242,7 +242,7 @@ if (isRadarPage())
                 }
                 else
                 {
-                    include('../'.$_GET['section']);
+                   include('../'.$_GET['section']);
                 }  
      ?>
 </article>
@@ -1947,7 +1947,7 @@ Licensed MIT
         
        }
       <?if ($_REQUEST['section'] == "alerts.php") echo "last_container = 'messages_box';";?>
-	   navMain(last_container, last_nodeid, 'none');
+	   //navMain(last_container, last_nodeid, 'none');
       // if (last_container == 'startinfo_container')
        //     $('#currentinfo_container').show();
 		$('#logo').show();
