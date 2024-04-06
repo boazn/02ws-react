@@ -13,7 +13,7 @@ class DB_Functions {
  
     private $db;
  
-    public function storeAd($active, $guid, $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $rotation_or_fixed, $max_count) {
+    public function storeAd($active, $guid, $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $rotation_or_fixed, $max_count, $location) {
         // insert user into database
         global $link;
        
@@ -203,7 +203,7 @@ function clearCounts(){
     echo "clearCounts done";
     exit;
 }
-function updateAds ($active, $idx, $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $rotation_or_fixed, $max_count )
+function updateAds ($active, $idx, $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $rotation_or_fixed, $max_count, $location )
 {   
     global $mem, $AD_LINK, $lang_idx;
     //echo "<br/>".$active." idx=".$idx." ".$command." ".$img_url." ".$href." ".$w." ".$h;
@@ -226,6 +226,7 @@ function updateAds ($active, $idx, $command, $img_url, $href, $w, $h, $date_star
         $Ads[$idx]['daily_or_global'] = $daily_or_global;
         $Ads[$idx]['session_or_pageviews'] = $session_or_pageviews;
         $Ads[$idx]['max_count'] = $max_count;
+        $Ads[$idx]['location'] = $location;
     }
     else if ($active == "true")
     {
@@ -238,13 +239,14 @@ function updateAds ($active, $idx, $command, $img_url, $href, $w, $h, $date_star
         $Ads[$idx]['daily_or_global'] = $daily_or_global;
         $Ads[$idx]['session_or_pageviews'] = $session_or_pageviews;
         $Ads[$idx]['max_count'] = $max_count;
+        $Ads[$idx]['location'] = $location;
     }
     else{
         unset($Ads[$idx]);
     }
     $mem->set('Ads', $Ads);
     $db = new DB_Functions();
-    $db->storeAd($active, $_REQUEST['guid'], $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $rotation_or_fixed, $max_count);
+    $db->storeAd($active, $_REQUEST['guid'], $command, $img_url, $href, $w, $h, $date_start, $date_end, $daily_or_global, $session_or_pageviews, $rotation_or_fixed, $max_count, $location);
      
      foreach ($Ads as $key => &$ad) 	{?>
      <style>
@@ -277,6 +279,7 @@ function updateAds ($active, $idx, $command, $img_url, $href, $w, $h, $date_star
     <div class="cell"></div><div class="cell"><input id="session_or_pageviews<?=$key?>" name="session_or_pageviews" size="18"  value="<?=$ad['session_or_pageviews']?>" style="width:120px;"  /></div> 
     <div class="cell"></div><div class="cell"><input id="daily_or_global<?=$key?>" name="daily_or_global" size="18"  value="<?=$ad['daily_or_global']?>" style="width:120px;"  /></div>
     <div class="cell"></div><div class="cell"><input id="rotation_or_fixed<?=$key?>" name="rotation_or_fixed" size="18"  value="<?=$ad['rotation_or_fixed']?>" style="width:120px;"  /></div>  
+    <div class="cell"></div><div class="cell"><input id="location<?=$key?>" name="location" size="18"  value="<?=$ad['location']?>" style="width:120px;"  /></div>  
      </div>
      <div class="cell shrinked">
             active
@@ -318,7 +321,8 @@ if ((trim($_REQUEST['type']) == "ads"))
                 $_REQUEST['daily_or_global'] , 
                 $_REQUEST['session_or_pageviews'], 
                 $_REQUEST['rotation_or_fixed'], 
-                $_REQUEST['max_count']);
+                $_REQUEST['max_count'], 
+                $_REQUEST['location']);
     echo "------------------ done --------------------------";
 }
 else if ((trim($_REQUEST['type']) == "updateads"))
@@ -335,7 +339,8 @@ else if ((trim($_REQUEST['type']) == "updateads"))
                $_REQUEST['daily_or_global'], 
                $_REQUEST['session_or_pageviews'], 
                $_REQUEST['rotation_or_fixed'], 
-               $_REQUEST['max_count']);
+               $_REQUEST['max_count'], 
+               $_REQUEST['location']);
 }
 else if ((trim($_REQUEST['type']) == "updatecounts"))
 {
@@ -400,9 +405,27 @@ else {
 <div class="cell"><input  name="idx" id="idx" size="30"  value="0" style="width:20px" wrap="soft" />
                   <input type="text" id="dateStart" style="width:120px" placeholder="Date Start">
                   <input type="text" id="dateEnd" style="width:120px" placeholder="Date End"><br/><br/>
-                  <select size="1" name="session_or_pageviews" id="session_or_pageviews" style="width:150px"><option value="" >pageviews/session</option><option value="session" >session</option><option value="pageviews" >pageviews</option></select>
-                  <select size="1" name="daily_or_global" id="daily_or_global"><option value="" >daily/global</option><option value="daily">daily</option><option value="global" >global</option></select>
-                  <select size="1" name="rotation_or_fixed" id="rotation_or_fixed"><option value="" >rotation/fixed</option><option value="rotation">rotation</option><option value="fixed" >fixed</option></select>
+                  <select size="1" name="location<?=$key?>" id="location<?=$key?>">
+                    <option value="" >location</option>
+                    <option value="first" <? echo ($ad['location'] == 'first') ? 'selected' : ''; ?>>first</option>
+                    <option value="popup" <? echo ($ad['location'] == 'popup') ? 'selected' : ''; ?>>popup</option>
+                    <option value="other" <? echo ($ad['location'] == 'other') ? 'selected' : ''; ?>>other</option>
+                 </select>
+                  <select size="1" name="session_or_pageviews" id="session_or_pageviews" style="width:150px">
+                    <option value="" >pageviews/session</option>
+                    <option value="session" >session</option>
+                    <option value="pageviews" >pageviews</option>
+                  </select>
+                  <select size="1" name="daily_or_global" id="daily_or_global">
+                        <option value="" >daily/global</option>
+                        <option value="daily">daily</option>
+                        <option value="global" >global</option>
+                 </select>
+                  <select size="1" name="rotation_or_fixed" id="rotation_or_fixed">
+                        <option value="" >rotation/fixed</option>
+                        <option value="rotation">rotation</option>
+                        <option value="fixed" >fixed</option>
+                </select>
                 </div><br />
 <input type='button' class="button" name='upload_btn' value='upload' onclick="javascript:postToServer();" style="width:150px" size="60"/>
 </form>
@@ -424,10 +447,32 @@ else {
 <div class="cell">end </div><div class="cell"><input id="end<?=$key?>" name="end" size="18"  value="<?=date('Y-m-d', $ad['end'])?>" style="width:120px;"  /><span><? echo " passed? ".((time() > $ad['end']) ? 'true' : 'false');  ?></span></div>
 <div class="cell">count </div><div class="cell"><input id="count<?=$key?>" name="count" size="18"  value="<?=$ad['count']?>" style="width:120px;" readonly /></div>
 <div class="cell">max count </div><div class="cell"><input id="max_count<?=$key?>" name="max_count" size="18"  value="<?=$ad['max_count']?>" style="width:120px;"  /></div>
+
 <div class="cell ">
-    <select size="1" name="session_or_pageviews<?=$key?>" id="session_or_pageviews<?=$key?>"><option value="" >pageviews/session</option><option value="session" <? echo ($ad['session_or_pageviews'] == 'session') ? 'selected' : ''; ?>>session</option><option value="pageviews" <? echo ($ad['session_or_pageviews'] == 'pageviews') ? 'selected' : ''; ?>>pageviews</option></select> 
-    <select size="1" name="daily_or_global<?=$key?>" id="daily_or_global<?=$key?>"><option value="" >daily/global</option><option value="daily" <? echo ($ad['daily_or_global'] == 'daily') ? 'selected' : ''; ?>>daily</option><option value="global" <? echo ($ad['daily_or_global'] == 'global') ? 'selected' : ''; ?>>global</option></select>
-    <select size="1" name="rotation_or_fixed<?=$key?>" id="rotation_or_fixed<?=$key?>"><option value="" >rotation/fixed</option><option value="daily" <? echo ($ad['rotation_or_fixed'] == 'rotation') ? 'selected' : ''; ?>>rotation</option><option value="global" <? echo ($ad['rotation_or_fixed'] == 'fixed') ? 'selected' : ''; ?>>fixed</option></select></div>
+    <select size="1" name="location<?=$key?>" id="location<?=$key?>">
+        <option value="" >location</option>
+        <option value="first" <? echo ($ad['location'] == 'first') ? 'selected' : ''; ?>>first</option>
+        <option value="popup" <? echo ($ad['location'] == 'popup') ? 'selected' : ''; ?>>popup</option>
+        <option value="other" <? echo ($ad['location'] == 'other') ? 'selected' : ''; ?>>other</option>
+    </select>
+    <select size="1" name="session_or_pageviews<?=$key?>" id="session_or_pageviews<?=$key?>">
+            <option value="" >pageviews/session</option>
+            <option value="session" <? echo ($ad['session_or_pageviews'] == 'session') ? 'selected' : ''; ?>>session</option>
+            <option value="pageviews" <? echo ($ad['session_or_pageviews'] == 'pageviews') ? 'selected' : ''; ?>>pageviews</option>
+    </select> 
+    <select size="1" name="daily_or_global<?=$key?>" id="daily_or_global<?=$key?>">
+            <option value="" >daily/global</option>
+            <option value="daily" <? echo ($ad['daily_or_global'] == 'daily') ? 'selected' : ''; ?>>daily</option>
+            <option value="global" <? echo ($ad['daily_or_global'] == 'global') ? 'selected' : ''; ?>>global</option>
+    </select>
+    <select size="1" name="rotation_or_fixed<?=$key?>" id="rotation_or_fixed<?=$key?>">
+            <option value="" >rotation/fixed</option>
+            <option value="daily" <? echo ($ad['rotation_or_fixed'] == 'rotation') ? 'selected' : ''; ?>>rotation</option>
+            <option value="fixed" <? echo ($ad['rotation_or_fixed'] == 'fixed') ? 'selected' : ''; ?>>fixed</option>
+    </select></div>
+    
+    </div>
+
 </div>
  <div class="cell shrinked">
 		active
@@ -473,7 +518,8 @@ else {
                       + "&end=" + $("#end"+adToSave).val() 
                       + "&daily_or_global=" + $("#daily_or_global"+adToSave).val() 
                       + "&session_or_pageviews=" + $("#session_or_pageviews"+adToSave).val()
-                      + "&rotation_or_fixed=" + $("#rotation_or_fixed"+adToSave).val()  
+                      + "&rotation_or_fixed=" + $("#rotation_or_fixed"+adToSave).val() 
+                      + "&location=" + $("#location"+adToSave).val()  
                       + "&href=" + $("#hrefads"+adToSave).val() 
                       + "&max_count=" + $("#max_count"+adToSave).val() 
                       + "&active=" + $("#adsactive"+adToSave).prop("checked");
@@ -513,6 +559,7 @@ function postToServer(){
     fd.append( 'dateStart', $('#dateStart').val() );
     fd.append( 'dateEnd', $('#dateEnd').val() );
     fd.append( 'session_or_pageviews', $('#session_or_pageviews').val() );
+    fd.append( 'location', $('#location').val() );
     fd.append( 'daily_or_global', $('#daily_or_global').val() );
     fd.append( 'rotation_or_fixed', $('#rotation_or_fixed').val() );
     fd.append( 'max_count', 5000 );

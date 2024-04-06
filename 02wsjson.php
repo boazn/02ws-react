@@ -1348,6 +1348,8 @@ if ((time() >= $ad['start']) && (time() <= $ad['end'])){
     $ADS_JSON .= ",";
     $ADS_JSON .= "\"daily_or_global\":"."\"".$ad['daily_or_global']."\"";
     $ADS_JSON .= ",";
+    $ADS_JSON .= "\"location\":"."\"".$ad['location']."\"";
+    $ADS_JSON .= ",";
     $ADS_JSON .= "\"session_or_pageviews\":"."\"".$ad['session_or_pageviews']."\"";
     $ADS_JSON .= "},";
 }
