@@ -286,6 +286,8 @@ if (searchNext ($tok, $now->get_date())){// found the date in the file{}
     }
     if (($current->get_thsw()==""))
         $current->set_thsw($min15->get_thsw());
+    if ($_GET['debug'] >= 1)
+        echo "set_thsw=".$current->get_thsw();
 }
 else if ($_GET['debug'] >= 1)
     echo "<strong>NOT FOUND</strong>";

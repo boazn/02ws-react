@@ -70,15 +70,16 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
       //      array_push ($registrationIDs1, "fgI8C6OaSCiDzZm5r1W8vj:APA91bFdPevwP4fBuexfvGgJbUhycxKl7sUQsz3PcKZDk7cYf2zpA1z1nYX-QssATz7njbFIaC7orMqcov1WQsrfM9DKF0m9AjAe1uy-rGRGIG93Zlg8mmh3pkZDB94pXHg953QTePXx");
          
      //
-     array_push ($registrationIDs1, "eHHYFurWS8OeGj455xtzr8:APA91bG1JTVN7YXkRbyz-acfeGhj4uQNK9GeaMr0VR6L5WHcylHbU7mfreBjN9MlHxnQ0gqKBN2ExWIm4c3zDexa8VLhV18YFt_p1LDu9mYACRdZAk-_L0XScuh2ktm8O9gwJJ2aow61");
+     array_push ($registrationIDs1, "e4_JdCeBSdCXDxVP0aycU7:APA91bFcqJTeZJhL9-3HfO8UtwwEbM1C9F-KG4IcRcqqeWTIA8-7SxPS4Q8yjOugBLw2SLNdWv1NLnjCBtreVz9vnEfifyJOOyokJX94DpU5sqTDgCt6JhVzVPpWmdNt7aA0zBVh57vB");
      //array_push ($registrationIDs1, $_REQUEST["reg_id"]);    
      logger("sendingGCMMessage CloudMessageType=".$CloudMessageType.": En:".count($registrationIDs0)." Heb:".count($registrationIDs1), 0, "FCM", "sendingGCMMessage", "sendingGCMMessage");
      $result = "";
      $resultCall = array();
+     $channelId = ($short_range == 'true') ? "short_range" : ( ($long_range == 'true') ? "long_range" : "tip");
      $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
      foreach ($arrOfRegID0 as $regIDs){
         
-        $resultCall = callGCMSender ($key, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
+        $resultCall = callGCMSender ($key, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url, $channelId);
         print_r($resultCall[1]);
         handleInvalidTokens($resultCall[1], $regIDs, $key);
       }
@@ -86,7 +87,7 @@ function sendGCMMessage($messageBody, $title, $picture_url, $embedded_url, $shor
      $arrOfRegID1 = array_chunk($registrationIDs1, 1000);
      foreach ($arrOfRegID1 as $regIDs){
         
-        $resultCall = callGCMSender ($key, $regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url);
+        $resultCall = callGCMSender ($key, $regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url, $channelId);
         print_r($resultCall[1]);
         handleInvalidTokens($resultCall[1], $regIDs, $key);
      }

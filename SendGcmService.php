@@ -1,6 +1,9 @@
 <?
 ini_set("display_errors","On");
 //include_once ("include.php");
+
+include ("include.php");
+include ("lang.php");
 include ("lang.php");
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
 class CloudMessageType {
@@ -16,6 +19,32 @@ function send_push($msgSpecial, $title, $picture_url, $embedded_url, $short_rang
     $result = "<br/>{$command}";
     // execute in shell
     //$output = shell_exec("/usr/bin/nohup {$command} >/dev/null 2>&1 &");
+     //array_push ($registrationIDs1, $_REQUEST["reg_id"]);    
+     
+     $result = "";
+     $resultCall = array();
+     $registrationIDs0 = array();
+    $registrationIDs1 = array();
+    array_push ($registrationIDs1, "cMOl7HAtQI-0omh2NkAL5r:APA91bHxpQd8lDIno8ca5TlGtk-V5SKYT3LVAU1IS4VnTty4zjUHIlI5eKHqeM5A3nfno9HrfncuUvNa6l4pxo4ucTs9rlRA4Owaix9kl2G7jb2Zr9LdFyMQnaJNVm1_toBjtaGWYlLC");
+   
+    $key = FCM_API_KEY;
+    $channelId = ($short_range == 'true') ? "short_range" : ( ($long_range == 'true') ? "long_range" : "tip");
+     $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
+     foreach ($arrOfRegID0 as $regIDs){
+        
+        $resultCall = callGCMSender ($key, $regIDs, $msgSpecial[0], $title[0], $picture_url, $embedded_url, $channelId);
+        print_r($resultCall[1]);
+        handleInvalidTokens($resultCall[1], $regIDs, $key);
+      }
+    
+     $arrOfRegID1 = array_chunk($registrationIDs1, 1000);
+     foreach ($arrOfRegID1 as $regIDs){
+        
+        $resultCall = callGCMSender ($key, $regIDs, $msgSpecial[1], $title[1], $picture_url, $embedded_url, $channelId);
+        print_r($resultCall[1]);
+        $output .= $resultCall[1];
+        handleInvalidTokens($resultCall[1], $regIDs, $key);
+     }
     $result .= $output;
     return $result;
 }

@@ -41,7 +41,7 @@ class DB_Functions {
             $lang = (empty($lang)? 'null' : $lang);
             $query = "call SaveGCMUser ('$name', '$email', '$gcm_regid', $lang, $active, $active_rain_etc, $active_tips, $approved, $active_dust, $active_uv,  $active_dry, '$billingtoken', '$billingDate', '$oldregid', $dailyforecast, 0)";
             $result = db_init($query, "");
-            //logger($query,0, "gcm_register", "SaveGCMUser", "storeUser");
+            logger($query,0, "gcm_register", "SaveGCMUser", "storeUser");
             // check for successful store
         
             // get user details

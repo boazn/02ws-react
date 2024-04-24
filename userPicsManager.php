@@ -53,7 +53,7 @@ function sendMessageToUser($reg_id)
         return false;
     $registrationIDs = array();
     array_push($registrationIDs, $reg_id);
-    $result = callGCMSender(FCM_API_KEY, $registrationIDs, "Your picture is live now התמונה אושרה ועלתה לאוויר", "", "", "");
+    $result = callGCMSender(FCM_API_KEY, $registrationIDs, "Your picture is live now התמונה אושרה ועלתה לאוויר", "", "", "", "other");
     return $result;
 }
 function isAndroid($reg_id){

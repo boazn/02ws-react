@@ -409,6 +409,7 @@ else {
                     <option value="" >location</option>
                     <option value="first" <? echo ($ad['location'] == 'first') ? 'selected' : ''; ?>>first</option>
                     <option value="popup" <? echo ($ad['location'] == 'popup') ? 'selected' : ''; ?>>popup</option>
+                    <option value="aboveDailyForecast" <? echo ($ad['location'] == 'aboveDailyForecast') ? 'selected' : ''; ?>>above Daily Forecast</option>
                     <option value="other" <? echo ($ad['location'] == 'other') ? 'selected' : ''; ?>>other</option>
                  </select>
                   <select size="1" name="session_or_pageviews" id="session_or_pageviews" style="width:150px">
@@ -453,6 +454,7 @@ else {
         <option value="" >location</option>
         <option value="first" <? echo ($ad['location'] == 'first') ? 'selected' : ''; ?>>first</option>
         <option value="popup" <? echo ($ad['location'] == 'popup') ? 'selected' : ''; ?>>popup</option>
+        <option value="aboveDailyForecast" <? echo ($ad['location'] == 'aboveDailyForecast') ? 'selected' : ''; ?>>above daily forecast</option>
         <option value="other" <? echo ($ad['location'] == 'other') ? 'selected' : ''; ?>>other</option>
     </select>
     <select size="1" name="session_or_pageviews<?=$key?>" id="session_or_pageviews<?=$key?>">

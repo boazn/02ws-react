@@ -270,7 +270,8 @@ if (time() - $mem->get('thsw_ttime') > 120)
 }
 else
     $current->set_thsw($mem->get('thsw'));
-    
+if ($_GET['debug'] >= 1)
+    echo "set_thsw=".$current->get_thsw();   
         
 
 fillPastTime ($oneHour, $ary_parsed_file, '60');

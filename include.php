@@ -3260,7 +3260,7 @@ function callAPNSender($key, $registrationIDs, $messageBody, $title, $picture_ur
         }
     return array($resultHttpCode, json_decode($result, true));
 }
-function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_url, $embedded_url){
+function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_url, $embedded_url, $channelId){
      
     //logger("callGCMSender: header_key(SenderID)=".$key."  count=".count($registrationIDs)." ".$messageBody." ".$title." ".$picture_url." ".$embedded_url);
     // Set POST variables
@@ -3269,11 +3269,11 @@ function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_ur
     $fields = array(
         'priority' => 10,
         'apns' => array( "headers" => array( "apns-priority" => "5")),
-        'android' => array("priority" => "high" ),
+        'android' => array("priority" => "high", "channelId" => $channelId ,"sound" => "default", 'notification' => array("imageUrl" => $picture_url)),
         'aps' => array("sound" => "default" ),
         'registration_ids' => $registrationIDs,
-        'notification' => array( "body" => $messageBody, "title" => $title, "picture_url" => $picture_url, "embedded_url" => $embedded_url, "sound" => "default", "channelId"=>"default"),
-        'data' => array( "body" => $messageBody, "title" => $title, "embedded_url" => $embedded_url, "sound" => "default", "channelId"=>"default"),
+        'notification' => array( "body" => $messageBody, "title" => $title, "imageUrl" => $picture_url, "embedded_url" => $embedded_url, "sound" => "default", "channelId" => $channelId,'android' => array("priority" => "high", "imageUrl" => $picture_url, "channelId" => $channelId,"sound" => "default" )),
+        'data' => array( "body" => $messageBody, "title" => $title, "embedded_url" => $embedded_url, "sound" => "default", "channelId" => $channelId,'android' => array("priority" => "high", "imageUrl" => $picture_url, "channelId" => $channelId,"sound" => "default" )),
     );
         
     $headers = array(
@@ -3284,7 +3284,7 @@ function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_ur
     // Open connection
     $ch = curl_init();
     //print_r($headers);
-    //print_r($registrationIDs);
+    print_r(json_encode( $fields));
     // Set the URL, number of POST vars, POST data
     curl_setopt( $ch, CURLOPT_URL, $url);
     curl_setopt( $ch, CURLOPT_POST, true);
@@ -3328,16 +3328,19 @@ function callCustomAlertSender($messageBody, $title, $picture_url, $embedded_url
     $query_extension = "";
     if (($customAlert == CustomAlert::Dust)||($customAlert == CustomAlert::HighDust)){
         $query = "select lang, gcm_regid  FROM fcm_users where active_dust=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_dust=1".$query_extension;
-        
+        $channelId = "active_dust";
     }
     else if (($customAlert == CustomAlert::HighET)||($customAlert == CustomAlert::Dry)){
         $query = "select lang, gcm_regid  FROM fcm_users where active_dry=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_dry=1".$query_extension;
+        $channelId = "active_dry";
     }
     else if (($customAlert == CustomAlert::HighUV)||($customAlert == CustomAlert::ExtremeUV)){
         $query = "select lang, gcm_regid  FROM fcm_users where active_uv=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_uv=1".$query_extension;
+        $channelId = "active_uv";
     }
     else if (($customAlert == CustomAlert::LowRadiation)||($customAlert == CustomAlert::HotGround)){
         $query = "select lang, gcm_regid  FROM fcm_users where active_tips=1 UNION select lang, apn_regid gcm_regid FROM apn_users where active_tips=1".$query_extension;
+        $channelId = "tips";
     }
       
     $result = db_init($query, "");
@@ -3353,13 +3356,13 @@ function callCustomAlertSender($messageBody, $title, $picture_url, $embedded_url
      $resultCall = array();
      $arrOfRegID0 = array_chunk($registrationIDs0, 1000);
      foreach ($arrOfRegID0 as $regIDs){
-        $resultCall = callGCMSender (FCM_API_KEY, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url);
+        $resultCall = callGCMSender (FCM_API_KEY, $regIDs, $messageBody[0], $title[0], $picture_url, $embedded_url, $channelId);
         //handleInvalidTokens($resultCall[1], $regIDs, FCM_API_KEY);
       }
     
      $arrOfRegID1 = array_chunk($registrationIDs1, 1000);
      foreach ($arrOfRegID1 as $regIDs){
-        $resultCall = callGCMSender (FCM_API_KEY, $regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url);
+        $resultCall = callGCMSender (FCM_API_KEY, $regIDs, $messageBody[1], $title[1], $picture_url, $embedded_url, $channelId);
         //handleInvalidTokens($resultCall[1], $regIDs, FCM_API_KEY);
      }
      logger($query." number of lines:".$lines." count:".count($arrOfRegID1)." "." Completed", 0, "FCM", "", "callCustomAlertSender"); 
