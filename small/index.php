@@ -242,6 +242,7 @@ if (isRadarPage())
                 }
                 else
                 {
+                   //echo "inclding ".'../'.$_GET['section'];
                    include('../'.$_GET['section']);
                 }  
      ?>
@@ -1946,7 +1947,7 @@ Licensed MIT
         last_nodeid = 'now_title';
         
        }
-      <?if ($_REQUEST['section'] == "alerts.php") echo "last_container = 'messages_box';";?>
+      <?if ($_REQUEST['section'] == "alerts") echo "last_container = 'messages_box';";?>
 	   navMain(last_container, last_nodeid, 'none');
       // if (last_container == 'startinfo_container')
        //     $('#currentinfo_container').show();

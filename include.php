@@ -1798,6 +1798,7 @@ class Parameters {
     const AirPressure = "AirPressure";
     const Radiation = "Radiation";
     const RainChance = "RainChance";
+    const Rain = "Rain";
     
 }
 class Recommendations {
@@ -3269,11 +3270,13 @@ function callGCMSender($key, $registrationIDs, $messageBody, $title, $picture_ur
     $fields = array(
         'priority' => 10,
         'apns' => array( "headers" => array( "apns-priority" => "5")),
-        'android' => array("priority" => "high", "channelId" => $channelId ,"sound" => "default", 'notification' => array("imageUrl" => $picture_url)),
+        'android' => array("priority" => "PRIORITY_HIGH", "channelId" => $channelId ,"sound" => "default", 'notification' => array("imageUrl" => $picture_url)),
         'aps' => array("sound" => "default" ),
         'registration_ids' => $registrationIDs,
-        'notification' => array( "body" => $messageBody, "title" => $title, "imageUrl" => $picture_url, "embedded_url" => $embedded_url, "sound" => "default", "channelId" => $channelId,'android' => array("priority" => "high", "imageUrl" => $picture_url, "channelId" => $channelId,"sound" => "default" )),
-        'data' => array( "body" => $messageBody, "title" => $title, "embedded_url" => $embedded_url, "sound" => "default", "channelId" => $channelId,'android' => array("priority" => "high", "imageUrl" => $picture_url, "channelId" => $channelId,"sound" => "default" )),
+        'notification' => array( "body" => $messageBody, "title" => $title, "image" => $picture_url, "embedded_url" => $embedded_url, "sound" => "default", "channelId" => $channelId,
+                                'android' => array('priority' => "PRIORITY_HIGH", 'imageUrl' => $picture_url, 'channelId' => $channelId, "sound" => "default" )),
+        'data' => array( "body" => $messageBody, "title" => $title, "embedded_url" => $embedded_url, "sound" => "default", "channelId" => $channelId,
+                        'android' => array('priority' => "high", 'imageUrl' => $picture_url, 'channelId' => $channelId, 'sound' => "default" )),
     );
         
     $headers = array(
