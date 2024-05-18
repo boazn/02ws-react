@@ -21,27 +21,30 @@ class DB_Functions {
         // insert user into database
         global $link;
         $billingDate = date('Y-m-d H:i:s', (int)$billingtime);
-        if (empty($active_dust))
-            $active_dust = 0;
-        if (empty($active_uv))
-            $active_uv = 0;
-        if (empty($active_dry))
-            $active_dry = 0;
+       
         try {
             //$active_rain_etc = $_POST["active_rain_etc"];
-      
-            $active_rain_etc = (empty($active_rain_etc)? '0' : $active_rain_etc);
-            $active_tips = (empty($active_tips)? '0' : $active_tips);
-            $active = (empty($active)? '0' : $active);
-            $dailyforecast = (empty($dailyforecast)? 'null' : $dailyforecast);
-            $active_dust = (empty($active_dust)? '0' : $active_dust);
-            $active_uv = (empty($active_uv)? '0' : $active_uv);
-            $active_dry = (empty($active_dry)? '0' : $active_dry);
-            $approved = (empty($approved)? 'null' : $approved);
+            //logger('input: approved='.$approved.' dailyforecast='.$dailyforecast.' active_tips='.$active_tips, 0, "gcm_register", "SaveGCMUser", "storeUser");
+            //$active_rain_etc = (empty($active_rain_etc)? 'null' : $active_rain_etc);
+            //$active_tips = (empty($active_tips)? 'null' : $active_tips);
+            //$active = (empty($active)? 'null' : $active);
+            $dailyforecast = (($dailyforecast == "")? 'null' : $dailyforecast);
+            //$active_dust = (empty($active_dust)? 'null' : $active_dust);
+            //$active_uv = (empty($active_uv)? 'null' : $active_uv);
+            //$active_dry = (empty($active_dry)? 'null' : $active_dry);
+            $approved = (($approved == "")? 'null' : $approved);
             $lang = (empty($lang)? 'null' : $lang);
-            $query = "call SaveGCMUser ('$name', '$email', '$gcm_regid', $lang, $active, $active_rain_etc, $active_tips, $approved, $active_dust, $active_uv,  $active_dry, '$billingtoken', '$billingDate', '$oldregid', $dailyforecast, 0)";
-            $result = db_init($query, "");
-            logger($query,0, "gcm_register", "SaveGCMUser", "storeUser");
+            if (!empty($gcm_regid))
+            {
+                $query = "call SaveGCMUser ('$name', '$email', '$gcm_regid', $lang, $active, $active_rain_etc, $active_tips, $approved, $active_dust, $active_uv,  $active_dry, '$billingtoken', '$billingDate', '$oldregid', $dailyforecast, 0)";
+                $result = db_init($query, "");
+                logger($query,0, "gcm_register", "SaveGCMUser", "storeUser");
+            }
+            else
+            {
+                logger($email.": not saving - empty regid",4, "gcm_register", "SaveGCMUser", "storeUser");
+            }
+           
             // check for successful store
         
             // get user details

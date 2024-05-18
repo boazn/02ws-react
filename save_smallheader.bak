@@ -1,4 +1,5 @@
 #!/bin/bash
 cd /home/boazn/public/02ws.com/public
+#killall "phantomjs"
 phantomjs save_smallheader.js
 phantomjs save_smallheader_eng.js

@@ -4659,7 +4659,7 @@ top:85px
 }
 #windy
 {
-          margin: 0 auto;position: absolute;font-size:0.95em;width: 50%;z-index: 100;top:10em;<?=get_inv_s_align()?>: 9.5em;
+          margin: 0 auto;position: absolute;font-size:0.95em;width: 50%;z-index: 100;top:5.5em;<?=get_inv_s_align()?>: 11.3em;
 }
 #windy .wind_title
 {

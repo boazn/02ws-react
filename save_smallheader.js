@@ -1,14 +1,14 @@
 /*var page = require('webpage').create();
-page.open('http://www.02ws.co.il/smallheader.php', function() {
+page.open('https://www.02ws.co.il/smallheader.php', function() {
   page.render('02ws_short.png');
   page.close();
   phantom.exit();
 });*/
 
 
-var resourceWait  = 4000,
+var resourceWait  = 6000,
     maxRenderWait = 10000,
-    url           = 'http://www.02ws.co.il/smallheader.php';
+    url           = 'https://www.02ws.co.il/smallheader.php';
 
 var page          = require('webpage').create(),
     count         = 0,
@@ -40,7 +40,7 @@ page.onResourceReceived = function (res) {
 
 page.open(url, function (status) {
     if (status !== "success") {
-        console.log('Unable to load url');
+        console.log('Unable to load url:' + status);
         phantom.exit();
     } else {
         forcedRenderTimeout = setTimeout(function () {

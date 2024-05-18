@@ -109,7 +109,7 @@ if (isRadarPage())
 <meta name="apple-mobile-web-app-status-bar-style" content="black">-->
 <link rel="apple-touch-icon" href="/img/logo.svg">
 <link rel="icon" type="image/png" href="img/favicon_sun.png" />
-<meta property="og:image" content="https://www.02ws.co.il/images/webCameraB.jpg" />
+<meta property="og:image" content="https://www.02ws.co.il/02ws_short.png" />
 <meta name="viewport" content="width=<?=$width?>, user-scalable=no " />
 <title><?=$WEBSITE_TITLE[$lang_idx]." - ".$MOBILE_FRIENDLY[$lang_idx]?></title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
